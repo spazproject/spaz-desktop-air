@@ -1,0 +1,13 @@
+/* The main thing this does is to hide the <body> element,
+which will be re-shown when a theme kicks in. This, of course,
+means themes must use display:block on the <body> element */
+
+body {display:none;}
+
+#SpryDebugWindow {
+	display:fixed;
+	bottom:	20px !important;
+	left:	20px !important;
+	height:100px !important;
+	overflow: auto;
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UpdateDescriptor>
+	<version>0.2.9</version>
+	<filename>SpazAIR.air</filename>
+	<description>
+		<![CDATA[
+			<strong>These are the changes in the new version:</strong>
+			<ul>
+				<li>Alpha support for Markdown syntax via Showdown JS library </li>
+				<li>Fixed bug where Spry data errors would sometimes be thrown on startup on Windows</li>
+			</ul>
+		 ]]>
+	</description>
+	<ui>
+		<upgrade>
+			<![CDATA[
+				<div id="update-description">
+				<h2>A new version ({version}) is available!</h2>
+				
+				<p>Do you want to install the new version now (Spaz will restart)?
+
+				<form name="UpdateForm">
+					<input type="button" id="SpazUpdate_update" value="Yes"/>
+					<input type="button" id="SpazUpdate_cancel" value="No"/>
+				</form>
+				
+				Alternately, download this update manually at <a onClick='openInBrowser("http://funkatron.com/getspaz")'>http://funkatron.com/getspaz</a>.
+				
+				<p>{description}</p>
+				
+				</div>
+			]]>
+		</upgrade>
+		<downgrade>
+			<![CDATA[
+				The version installed on your machine is newer than the one online!
+			]]>			
+		</downgrade>
+		<noupgrade>
+			<![CDATA[
+				There are no new versions available at this time!
+			]]>		
+		</noupgrade>
+		<downloading>Downloading upgrade...</downloading>
+	</ui>
+</UpdateDescriptor>

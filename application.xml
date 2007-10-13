@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<application xmlns="http://ns.adobe.com/air/application/1.0.M5" appId="Spaz.AIR" version="0.2.9">
+	<name>Spaz</name>
+	
+	  <initialWindow>
+		<title>Spaz</title>
+	
+		<content>root.html</content>
+		<systemChrome>none</systemChrome>
+		<transparent>true</transparent>
+		<visible>false</visible>
+	
+		<width>500</width> 
+		<height>580</height>
+	  </initialWindow>
+	
+	<icon>
+		<image128x128>images/spaz-icon-alpha.png</image128x128>
+	</icon>
+</application>

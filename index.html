@@ -1,0 +1,1067 @@
+<!--
+TODO:
+* Feature: option to NOT save password
+* Add encryption to password (and username?) storage
+* auto-completing usernames when typing "@" or "d "
+* Some sort of tinyURL or urlTea integration
+* Feature: adding favorite tweets
+* Feature: View Favorites
+* Feature: block users
+	
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:spry="http://ns.adobe.com/spry">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Spaz</title>
+
+
+	<!-- <script src="SpryAssets/SpryDebug.js" type="text/javascript"></script>
+		<link href="SpryAssets/SpryDebug.css" rel="stylesheet" type="text/css" /> -->
+
+	<link rel="stylesheet" href="assets/init.css" type="text/css" media="screen" charset="utf-8" />
+
+
+	<!-- Spry libs -->
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/xpath.js"></script>
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/SpryData.js"></script>
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/SpryNestedXMLDataSet.js"></script>
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/SpryJSONDataSet.js"></script>
+	<script language="javascript" src="SpryAssets/SpryEffects.js" type="text/javascript"></script>
+
+
+	<!-- Spry Widgets -->
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/tabbedpanels/SpryTabbedPanels.js"></script>
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/textareavalidation/SpryValidationTextarea.js" ></script>
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/textfieldvalidation/SpryValidationTextField.js"></script>
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/collapsiblepanel/SpryCollapsiblePanel.js"></script>
+	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/htmlpanel/SpryHTMLPanel.js"></script>
+	<link rel="stylesheet" type="text/css" href="SpryAssets/widgets/tabbedpanels/SpryTabbedPanels.css" />
+	<link rel="stylesheet" type="text/css" href="SpryAssets/widgets/textareavalidation/SpryValidationTextarea.css" />
+	<link rel="stylesheet" type="text/css" href="SpryAssets/widgets/textareavalidation/SpryValidationTextField.css" />
+	<link rel="stylesheet" type="text/css" href="SpryAssets/widgets/htmlpanel/SpryHTMLPanels.css" />
+
+
+	<!-- base64 encoding lib -->
+	<script src="assets/webtoolkit.base64.js" type="text/javascript"></script>
+
+
+
+	<!-- jQuery libs -->
+	<script src="assets/jquery.js" type="text/javascript"></script>
+	<script src="assets/jquery.cookie.js" type="text/javascript"></script>
+	<script src="assets/jquery.tooltip/jquery.dimensions.js" type="text/javascript"></script>
+	<script src="assets/jquery.tooltip/chili-1.7.pack.js" type="text/javascript"></script>
+	<script src="assets/jquery.tooltip/jquery.tooltip.js" type="text/javascript"></script>
+	<script src="assets/jquery.moreSelectors.js" type="text/javascript"></script>
+	<script src="assets/interface.js" type="text/javascript"></script>
+	<!-- <script src="assets/thickbox.js" type="text/javascript"></script> -->
+
+
+
+	<!-- Spaz libs -->
+	<script src="assets/spaz.js"        type="text/javascript"></script>
+	<script src="assets/spaz.data.js"   type="text/javascript"></script>
+	<script src="assets/spaz.debug.js"  type="text/javascript"></script>
+	<script src="assets/spaz.cache.js"  type="text/javascript"></script>
+	<script src="assets/spaz.ui.js"     type="text/javascript"></script>
+	<script src="assets/spaz.update.js" type="text/javascript"></script>
+	<script src="assets/spaz.bridge.js" type="text/javascript"></script>
+
+
+	<!-- User CSS override file -->
+	<link href="" id="UserCSSOverride" rel="stylesheet" type="text/css" />
+
+	<!-- Firebug lite -->
+	<script language="javascript" type="text/javascript" src="assets/firebug/firebug.js"></script>
+
+	<!-- Showdown -->
+	<script src="assets/showdown.js" type="text/javascript" charset="utf-8"></script>
+	
+
+	<script type="text/javascript" charset="utf-8">
+		// We do this WELL before the DOM is ready, otherwise
+		// Spry will freak the fuck out
+		Spaz.Data.makeDataSets();
+	</script>
+</head>
+
+<body id="home">
+
+<div id="container">
+
+
+
+<h1 onmousedown="onNativeMove();">
+	<div id="window-buttons">
+
+		<span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
+		<span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span>
+		<span id="minimize" class="window-button" onclick="nativeWindow.minimize()" title="Minimize">&ndash;</span>
+		<span id="close" class="window-button" onclick="Spaz.Bridge.windowClosingHandler()" title="Close">&times;</span>
+	</div>
+	Spaz
+</h1>
+
+
+<!-- 
+	Spaz.Content.friends = {
+		index:		0,
+		tabid:		'tab-friends',
+		panelid:	'panel-friends',
+		ds:			Spaz.Data.ds_friends,
+		region:		
+		
+	}
+	Spaz.Content.replies = {
+		index:		1,
+		tabid:		'tab-replies',
+		panelid:	'panel-replies',
+		ds:			Spaz.Data.ds_replies,
+		region:		
+	}
+	Spaz.Content.dms = {
+		index:		1,
+		tabid:		'tab-dms',
+		panelid:	'panel-dms',
+		ds:			Spaz.Data.ds_dms,
+		region:		
+	}
+	 -->
+
+
+<div id="tabs" class="TabbedPanels">
+	<ul class="TabbedPanelsTabGroup" id="timeline-tabs">
+		<!-- YOUR TIMELINE -->
+		<li class="TabbedPanelsTab" tabindex="0" 
+			onmouseover="$('a.reload-button', '#'+this.id).show()" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide()"
+			id="tab-friends" onclick="setSelectedTab(this)"><img title="Your timeline" class="tab-icon" src="{theme-dir}/images/tab-icon-timeline.png" /> <a class='reload-button' 
+			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<!-- REPLIES -->
+		<li class="TabbedPanelsTab" tabindex="0"
+			onmouseover="$('a.reload-button', '#'+this.id).show()" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide()"
+			id="tab-replies" onclick="setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-replies.png" title="Replies directed at you" /> <a class='reload-button' 
+			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<!-- DMs -->
+		<li class="TabbedPanelsTab" tabindex="0"
+			onmouseover="$('a.reload-button', '#'+this.id).show()" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide()"
+			id="tab-dms" onclick="setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-dms.png" title="Direct messages you've received" /> <a class='reload-button' 
+			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<!-- SEND STATUSES -->
+		<li class="TabbedPanelsTab" tabindex="0"
+			onmouseover="$('a.reload-button', '#'+this.id).show()" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide()"
+			id="tab-user" onclick="setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-user.png" title="Tweets you've sent" /> <a class='reload-button' 
+			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<!-- PUBLIC -->
+		<li class="TabbedPanelsTab" tabindex="0"
+			onmouseover="$('a.reload-button', '#'+this.id).show()" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide()"
+			id="tab-public" onclick="setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" title="Public timeline" /> <a class='reload-button' 
+			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+
+		<!-- FOLLOWING LIST -->
+		<li class="TabbedPanelsTab" tabindex="0"
+			onmouseover="$('a.reload-button', '#'+this.id).show()" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide()"
+			id="tab-friendslist" onclick="setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-following.png" title="Users you are following" /> <a 
+			class='reload-button' onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>		
+		<!-- FOLLOWERS LIST -->
+		<li class="TabbedPanelsTab" tabindex="0"
+			onmouseover="$('a.reload-button', '#'+this.id).show()" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide()"
+			id="tab-followerslist" onclick="setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-followers.png" title="Users following you" /> <a class='reload-button' 
+			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		
+		<!-- PREFS -->
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-prefs" 
+			onclick="setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-prefs.png" title="Preferences" /></li>
+	</ul>
+	
+	
+	
+	
+	<!-- BEGIN CONTENT TABS -->
+	<div class="TabbedPanelsContentGroup" id="timeline-tabs-content">
+
+		<!-- FRIENDS AND YOU TIMELINE -->
+		<div class="TabbedPanelsContent" id="panel-friends">
+			<div spry:region="Spaz.Data.ds_friends" id="friends-timeline" class="timeline SpryHiddenRegion">
+				
+				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even">
+					<div class="user" id="user-{user/id}">
+						<div class="user-image"><a title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}' onclick='openInBrowser("http://twitter.com/{user/screen_name}")'><img height="48" width="48" src="{user/profile_image_url}" alt='{user/screen_name}' /></a></div>
+						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}'>{user/screen_name}</a></div>
+					</div>
+			
+					<div class="status" id="status-{id}">
+						<div class="status-text" id="#status-text-{id}">{text}</div>
+						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
+						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="timeline-pager">
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
+			</div>
+		</div>
+
+
+		<!-- REPLIES TIMELINE -->
+		<div class="TabbedPanelsContent" id="panel-replies">
+			
+			<div spry:region="Spaz.Data.ds_replies" id="replies-timeline" class="timeline SpryHiddenRegion">
+				
+				<div spry:repeat="Spaz.Data.ds_replies" class="timeline-entry" spry:odd="odd" spry:even="even">
+					<div class="user" id="user-{user/id}">
+						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
+						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
+					</div>
+			
+					<div class="status" id="status-{id}">					
+						<div class="status-text" id="#status-text-{id}">{text}</div>
+						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
+						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
+						
+					</div>
+				</div>
+				
+			</div>
+			<div class="timeline-pager">
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
+			</div>
+		</div>
+
+		
+		<!-- DIRECT MESSAGES -->
+		<div class="TabbedPanelsContent" id="panel-dms">
+			
+			<div spry:region="Spaz.Data.ds_dms" id="dm-timeline" class="timeline SpryHiddenRegion">
+				
+				<div spry:repeat="Spaz.Data.ds_dms" class="timeline-entry" spry:odd="odd" spry:even="even">
+					<div class="user" id="user-{sender/id}">
+						<div class="user-image"><a title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}"><img height="48" width="48" src="{sender/profile_image_url}" alt="{sender/screen_name}" onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' /></a></div>
+						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}">{sender/screen_name}</a></div>
+					</div>
+			
+					<div class="status" id="status-{id}">					
+						<div class="status-text" id="#status-text-{id}">{text}</div>
+						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
+						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-protected">{sender/protected}</span></div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="timeline-pager">
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
+			</div>
+		</div>
+
+		
+		<!-- YOUR SENT MESSAGES -->
+		<div class="TabbedPanelsContent" id="panel-user">
+			<div spry:region="Spaz.Data.ds_user" id="user-timeline" class="timeline SpryHiddenRegion">				
+				<div spry:repeat="Spaz.Data.ds_user" class="timeline-entry" spry:odd="odd" spry:even="even">
+					<div class="user" id="user-{user/id}">
+						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
+						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
+					</div>
+			
+					<div class="status" id="status-{id}">					
+						<div class="status-text" id="#status-text-{id}">{text}</div>
+						<div class="status-actions"><a onclick="Spaz.Data.destroyStatus('{id}')" title="Delete this status" class="status-action-delete">delete</a></div>
+						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="timeline-pager">
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
+			</div>
+		</div>
+
+		
+		<!-- PUBLIC TIMELINE -->
+		<div class="TabbedPanelsContent" id="panel-public">
+			<div spry:region="Spaz.Data.ds_public" id="public-timeline" class="timeline SpryHiddenRegion">
+				<div spry:repeat="Spaz.Data.ds_public" class="timeline-entry" spry:odd="odd" spry:even="even">
+					<div class="user" id="user-{user/id}">
+						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br/>{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
+						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
+					</div>
+			
+					<div class="status" id="status-{id}">						
+						<div class="status-text" id="#status-text-{id}">{text}</div>
+						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
+						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<!-- LIST OF PEOPLE YOU ARE FOLLOWING -->
+		<div class="TabbedPanelsContent" id="panel-friendslist">
+			<div class="timeline directory">
+				<div id="friendslist-detail" spry:detailregion="Spaz.Data.ds_friendslist" class="SpryHiddenRegion">
+					<div class="user-image"><a title="Click to open profile in browser" onclick='openInBrowser("http://twitter.com/{screen_name}")'><img height="48" width="48" src="{profile_image_url}" alt="{screen_name}" /></a></div>
+					<div class="user-list-details">
+						<h2>{name} ({screen_name})</h2>
+						<div class="user-location"><a onclick="Spaz.UI.showLocationOnMap('{location}')" title="Open this location on Yahoo! Maps in broswer">{location}</a></div>
+						
+						<div class="user-description">{description}</div>
+						<div class="user-menu"><a onclick="followUser('{screen_name}')" class="follow">Follow</a> <a onclick="stopFollowUser('{screen_name}')" class="stop-follow">Stop Following</a> <a onclick='Spaz.UI.prepDirectMessage("{screen_name}")' class="dm">DM</a> <a onclick="Spaz.UI.prepReply('{screen_name}')" class="reply">Reply</a></div>
+						<div class="status-text" id="#status-text-{id}"><strong>Last update:</strong> {status/text}</div>
+					</div>
+				</div>
+				<div id="friendslist" class="user-list" spry:region="Spaz.Data.ds_friendslist">
+					<div class="user-list-wrapper">
+						<div spry:repeat="Spaz.Data.ds_friendslist" spry:setrow="Spaz.Data.ds_friendslist"  class="user" id="friends-user-{id}">
+							<div class="user-image"><a title="{screen_name}"><img height="48" width="48" src="{profile_image_url}" alt="{screen_name}"  /></a></div>
+							<div class="user-screen-name" id="friends-user-screen-name-{id}" title="{name}">{screen_name}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="timeline-pager">
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
+			</div>
+		</div>
+		
+		
+		
+		<!-- LIST OF FOLLOWERS -->
+		<div class="TabbedPanelsContent" id="panel-followerslist">
+			<div class="timeline directory">
+				<div id="followerslist-detail" spry:detailregion="Spaz.Data.ds_followerslist" class="SpryHiddenRegion">
+					<div class="user-image"><a title="Click to open profile in browser" onclick='openInBrowser("http://twitter.com/{screen_name}")'><img height="48" width="48" src="{profile_image_url}" alt="{screen_name}" /></a></div>
+					<div class="user-list-details">
+						<h2>{name} ({screen_name})</h2>
+						<div class="user-location"><a onclick="Spaz.UI.showLocationOnMap('{location}')" title="Open this location on Yahoo! Maps in broswer">{location}</a></div>
+						<div class="user-description">{description}</div>
+						
+						<div class="user-menu"><a onclick="followUser('{screen_name}')" class="follow">Follow</a> <a onclick="stopFollowUser('{screen_name}')" class="stop-follow">Stop Following</a> <a onclick='Spaz.UI.prepDirectMessage("{screen_name}")' class="dm">DM</a> <a onclick="Spaz.UI.prepReply('{screen_name}')" class="reply">Reply</a></div>
+						<div class="status-text" id="#status-text-{id}"><strong>Last update:</strong> {status/text}</div>
+					</div>
+				</div>
+				<div id="followerslist" class="user-list" spry:region="Spaz.Data.ds_followerslist">
+					<div class="user-list-wrapper">
+						<div spry:repeat="Spaz.Data.ds_followerslist" spry:setrow="Spaz.Data.ds_followerslist"  class="user" id="followers-user-{id}">
+							<div class="user-image"><a title="{name}"><img height="48" width="48" src="{profile_image_url}" alt="{screen_name}" /></a></div>
+							<div class="user-screen-name" id="followers-user-screen-name-{id}" title="{name}">{screen_name}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="timeline-pager">
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
+			</div>
+		</div>
+		
+		
+		<!-- PREFS -->
+		<div class="TabbedPanelsContent" id="panel-prefs">
+			<div class="timeline" id="prefs-timeline">
+				<form id="prefs-form" onsubmit="Spaz.Bridge.setPrefs(); return false;">
+				<div id="prefsCPG" class="CollapsiblePanelGroup">
+					
+					<div id="prefs-user-fieldset" class="CollapsiblePanel">
+						<h2 class="CollapsiblePanelTab" tabindex="0">Account Information</h2>
+						<div class="CollapsiblePanelContent">
+							<div class="formrow">
+								<label for="username">Username</label>
+								<input type="text" name="username" id="prefs-username" value="" />
+							</div>
+							<div class="formrow">
+								<label for="password">Password</label>
+								<input type="password" name="password" id="prefs-password" value="" />
+							</div>
+						</div>
+					</div>
+					
+					<div id="prefs-style-fieldset" class="CollapsiblePanel">
+						<h2 class="CollapsiblePanelTab" tabindex="1">Style</h2>
+						<div class="CollapsiblePanelContent">
+							<div class="formrow">
+								<label for="user-stylesheet">User CSS</label>
+								<input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" />
+								<input type="button" name="user-stylesheet-button" value="..." id="prefs-user-stylesheet-button" onclick="Spaz.UI.browseForUserCss()" />
+								<input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.UI.clearUserStyleSheet()" />
+							</div>
+							<div class="formrow">
+								<label for="base-theme">Theme</label>
+								<select id="prefs-base-theme" name="base-theme" onChange="Spaz.UI.setCurrentTheme()">
+									<!-- stuff goes here -->
+								</select>
+							</div>
+							<div class="formrow">
+								<label for="base-theme">Opacity</label>
+								<input type="text" onchange="Spaz.Bridge.checkWindowOpacity(this.value)"
+									name="opacity-percentage" id="prefs-opacity-percentage"
+									value="100" maxlength="3" size="3" />%
+							</div>
+						</div>
+					</div>
+					
+					<div id="prefs-sound-fieldset" class="CollapsiblePanel">
+						<h2 class="CollapsiblePanelTab" tabindex="3">Sound</h2>
+						<div class="CollapsiblePanelContent">
+							<div class="formrow">
+								<label for="sound-enabled">Play sounds</label>
+								<input type="checkbox" name="sound-enabled" value="1" id="prefs-sound-enabled" onclick="Spaz.UI.setSoundState(this.checked)" />
+							</div>
+						</div>
+					</div>
+										
+					<div id="prefs-sound-fieldset" class="CollapsiblePanel">
+						<h2 class="CollapsiblePanelTab" tabindex="2">Upgrades</h2>
+						<div class="CollapsiblePanelContent">
+							<div class="formrow">
+								<label for="sound-enabled">Check on startup</label>
+								<input type="checkbox" name="checkupdate-enabled" value="1" id="prefs-checkupdate-enabled" onclick="Spaz.Update.setCheckUpdateState(this.checked)" />
+								<input type="button" name="user-stylesheet-button" value="Check Now &bull;" id="prefs-checkupdate-button" onclick="Spaz.Bridge.checkForUpdate()" />
+							</div>
+						</div>
+					</div>
+
+					<div id="prefs-network-fieldset" class="CollapsiblePanel">
+						<h2 class="CollapsiblePanelTab" tabindex="4">Networking</h2>
+						<div class="CollapsiblePanelContent">
+							<div class="formrow">
+								<label for="refresh-interval">Refresh interval</label>
+								<input type="text" onchange="Spaz.Bridge.checkRefreshPeriod(this.value)" name="refresh-interval" id="prefs-refresh-interval" value="2" maxlength="2" size="2" /> minutes
+
+							</div>
+						</div>
+					</div>
+					
+					<div id="prefs-debugging-fieldset" class="CollapsiblePanel">
+						<h2 class="CollapsiblePanelTab" tabindex="5">Debugging</h2>
+						<div class="CollapsiblePanelContent">
+							<div class="formrow">
+								<label for="debugging-enabled">Enabled</label>
+								<input type="checkbox" name="debugging-enabled" value="1" id="prefs-debugging-enabled" onclick="Spaz.Bridge.setDebugEnable(this.checked)" /> <span class="prefs-restart-msg">restart required</span>
+							</div>
+							<div class="formrow">
+								<input type="button" id="prefs-console-button" name="open-console" value="Open Firebug console &bull;" onclick="console.open()" />
+								<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
+							</div>
+						</div>
+					</div>
+					
+				</div>
+
+				<div class="formrow" style="text-align:right; margin-top:15px">
+					<span id="verification-result">&nbsp;</span>
+					<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
+						onclick="Spaz.Data.verifyPassword()" /> 
+				</div>
+
+				</form>
+
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+
+<!-- ENTRYFORM -->
+<form id="entryform" onSubmit="return false;">
+	<textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar()'></textarea>
+	<div id="entrystats"><span id="chars-left"></span> chars left</div>
+	<input type="button" onclick="sendUpdate()" id="updateButton" value="Send &raquo;" />
+</form>
+
+<!-- STATUSBAR -->
+<div id="statusbar" onmousedown="onNativeMove();">
+	<!-- LOADING -->
+	<span id='loading'><img src='{theme-dir}/images/loading.gif' /></span>
+	<span id='statusbar-text'>Ready</span>
+</div>
+
+
+<div id="resize-sw" onmousedown="onResize()">
+</div>
+
+
+
+<!-- ABOUT -->
+
+
+<div id="aboutWindow" style="display:none">
+	<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideAbout()" title="Close">&times;</span></div>
+	<img src="images/spaz-icon-alpha.png" width="64" height="64" id="spazIcon" />
+	<h2>Spaz</h2>
+	<h3>A Twitter client for the Adobe Integrated Runtime</h3>
+	<p><span id="about-version"></span></p>
+
+	<p>Created by <a onclick="openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
+
+	<div id="about-thanks">Special thanks to Alexandru Chiculita and the AIR engineering team</div>
+
+	<ul>
+		<li><a onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
+		<li><a onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
+		<li><a href="http://funkatron.com/apps/spaz/AIR/whatsnew.html" target="_blank">What's new</a></li>
+	</ul>
+
+
+	<table id="sysinfo">
+		<tr>
+			<td class="label">OS</td>
+			<td class="value" id="sysinfo-os"></td>
+		</tr>
+		<!-- <tr>
+			<td class="label">Version</td>
+			<td class="value" id="sysinfo-version"></td>
+		</tr>
+		<tr>
+			<td class="label">Manufacturer</td>
+			<td class="value" id="sysinfo-manufacturer"></td>
+		</tr> -->
+		<tr>
+			<td class="label">Memory Used</td>
+			<td class="value" id="sysinfo-totalMemory"></td>
+		</tr>
+	</table>	
+</div>
+
+<div id="helpWindow" style="display:none">
+	<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideHelp()" title="Close">&times;</span></div>
+	<h2>Help</h2>
+
+	<h3>Keyboard shortcuts</h3>
+	<table id="help-shortcuts" class="data">
+		<tbody>
+			<tr>
+				<th>key</th>
+				<th>command</th>
+			</tr>
+			<tr>
+				<td class="label">r</td>
+				<td class="value">reload current view</td>
+			</tr>
+			<tr>
+				<td class="label">1-8</td>
+				<td class="value">Switch to tab 1-8</td>
+			</tr>
+		</tbody>
+	</table>	
+</div>
+
+</div>
+
+<div id="updateCheckWindow" style="display:none;"> 
+	Checking for updates...
+</div>
+
+
+<!-- CACHE -->
+<div id="cache" style="display:none">
+	<div id="sources">
+
+
+	</div>
+
+</div>
+
+
+</div> <!-- <div id="container"> -->
+
+
+
+<div id="popupPanel" style="display:none">
+	<div id="popupPanel-dragBar" style="text-align:right"><span id="popupPanel-close" onclick="Spaz.UI.closePopup">[X]</span></div>
+	<div id="popupPanel-content">
+		Here's some static content for the panel
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+<!--
+
+
+/**
+ * Default prefs vars
+ */
+var selectedTab = null;
+
+var reloadID; // identifier for the auto-reloader
+var memoryRefreshID; 
+
+var entryBoxHint = "What are you doing?";
+
+var toolTipPrefs = {
+	track: false, 
+	delay: 300, 
+	showURL: false, 
+	showBody: false,
+	extraClass: "tab-tooltip",
+	opacity: 0.8,
+};
+
+
+/*
+This is stuff we do right after the document is ready
+*/
+$(document).ready(function(){
+//window.onload = function(){
+	Spaz.Bridge.$init(function() {
+		
+		//*************************
+		// START ME UP
+		//*************************
+	
+
+	
+		// insert theme CSS links
+		var themePaths = Spaz.Bridge.getThemePaths();
+		for(x in themePaths) {
+			$('head').append('<link href="'+themePaths[x].themecss+'" title="'+themePaths[x].themename+'" rel="stylesheet" type="text/css" />');
+		}
+
+
+		// build the dropdown menu
+		$('#prefs-base-theme').empty();
+	
+		/**
+		* Styleswitch stylesheet switcher built on jQuery
+		* Under an Attribution, Share Alike License
+		* By Kelvin Luck ( http://www.kelvinluck.com/ )
+		**/
+		$('link[@rel*=style][@title]').each(function(i){
+			var title = this.getAttribute('title');
+			$('#prefs-base-theme').append('<option value="'+title+'">'+title+'</option>');
+			Spaz.dump("css:"+this.title);
+		});
+	
+		if (Spaz.UI.currentTheme) {
+			$('#prefs-base-theme').val(Spaz.UI.currentTheme);
+		}
+		Spaz.UI.setCurrentTheme();
+		
+		
+
+
+
+
+	
+		/*************************** 
+		 * Apply prefs 
+		 **************************/	 
+		$('#prefs-username').val(Spaz.Bridge.getUser());
+		$('#prefs-password').val(Spaz.Bridge.getPass());
+		$('#prefs-refresh-interval').val(Spaz.Bridge.getRefreshInterval()/60000);
+
+	
+		// User Stylesheet
+		if (Spaz.UI.userStyleSheet) {
+			Spaz.UI.setUserStyleSheet(Spaz.UI.userStyleSheet);
+			$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
+		}
+	
+		// Sounds
+		if (Spaz.UI.playSounds) {
+			Spaz.UI.soundOn();
+			$('#prefs-sound-enabled').attr('checked', 'checked');
+		} else {
+			Spaz.UI.soundOff();
+			$('#prefs-sound-enabled').attr('checked', '');
+		}
+	
+	
+		//DONE: Check for Update
+		if (Spaz.Update.checkUpdate()) {
+		//	Spaz.Update.setCheckUpdateState(true);
+			$('#prefs-checkupdate-enabled').attr('checked', 'checked');
+			Spaz.dump('Starting check for update');
+			Spaz.Bridge.checkForUpdate();
+			Spaz.dump('Ending check for update');
+		} else {
+		//	Spaz.Update.setCheckUpdateState(false);
+			$('#prefs-checkupdate-enabled').attr('checked', '');
+		}
+		Spaz.dump('Prefs Apply: check for update')
+	
+		if ($('html').attr('debug') == 'true') {
+			$('#prefs-debugging-enabled').attr('checked', 'checked');
+		}else{
+			$('#prefs-debugging-enabled').attr('checked', '');
+		}
+		Spaz.dump('Prefs Apply: debugging');
+		
+		
+	
+		/************************
+		 * Other stuff to do when document is ready
+		 ***********************/
+		memoryRefreshID = window.setInterval(Spaz.UI.updateMemoryUsage, 5000);
+		Spaz.dump('Started MemoryUsage timer');
+	
+		
+		Spry.Data.Region.addObserver("public-timeline", regionObserver);
+		Spry.Data.Region.addObserver("friends-timeline", regionObserver);
+		Spry.Data.Region.addObserver("replies-timeline", regionObserver);
+		Spry.Data.Region.addObserver("user-timeline", regionObserver);
+		Spry.Data.Region.addObserver("dm-timeline", regionObserver);
+		Spry.Data.Region.addObserver("friendslist-detail", regionObserver);
+		Spry.Data.Region.addObserver("friendslist", regionObserver);
+		Spry.Data.Region.addObserver("followerslist-detail", regionObserver);
+		Spry.Data.Region.addObserver("followerslist", regionObserver);
+		Spaz.dump('Added region observers');
+	
+		
+		Spaz.UI.playSoundStartup(Spaz.Bridge.makeWindowVisible);
+		Spaz.dump('Added region observers');
+		
+		Spaz.Bridge.makeWindowVisible();
+
+		$('#about-version').text("v"+Spaz.Bridge.getVersion());
+
+
+
+
+		Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
+
+
+		Spaz.UI.entryBox = new Spry.Widget.ValidationTextarea("entrybox",
+			{ maxChars:140,
+			counterType:"chars_remaining",
+			counterId:'chars-left',
+			hint:entryBoxHint,
+			useCharacterMasking:true }
+		);
+
+		Spaz.UI.prefsCPG = new Spry.Widget.CollapsiblePanelGroup("prefsCPG",
+			{ contentIsOpen:false, duration:200 }
+		);
+		// var AccountPanel = Spaz.UI.prefsCPG.openPanel(0);
+
+		$('img.tab-icon').each( function(i) {
+			this.title = this.title + '<br />Shortcut: <strong>'+(parseInt(i)+1)+'</strong>';
+		});
+		Spaz.dump('Set shortcut info in tab titles');
+
+		$('*[@title]').Tooltip(toolTipPrefs);
+		Spaz.dump('Added tooltips');
+
+		if ($('html').attr('debug') == 'true') {
+			console.open();
+			Spaz.dump('debug console opened');
+		}
+
+		setSelectedTab(document.getElementById('tab-friends'));
+		Spaz.dump('set selected tab');
+
+
+		Spaz.dump('ended document.ready()');
+		
+	});
+}); // end window.onload
+
+
+
+window.onload = function(){
+	
+
+
+
+	
+	
+}
+
+
+
+/**
+Keyboard shortcut definitions
+**/
+document.onkeydown = function(event) {
+	e = event || window.event;
+	el = e.srcElement || e.target;
+	
+	if (el.name) {
+		return true;
+	}
+
+	// if (e.which == 13 && e.shiftKey == true && e.srcElement.id == 'entrybox') {
+	if (e.which == 13 && e.srcElement.id == 'entrybox') {
+		sendUpdate();
+	}
+	
+	// reload the current tab
+	if (e.which == 82 && e.srcElement.id == 'home') {
+		reloadCurrentTab();
+		restartReloadTimer();
+	}
+
+	// Numbers for tabs
+	if ( (e.which >= 49 && e.which <= 56) && e.srcElement.id == 'home') {
+		var panelId = e.which-49;
+		setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[panelId]);
+		Spaz.UI.tabbedPanels.showPanel(panelId);
+	}
+
+	
+	if (e.srcElement.id == 'home') {
+		Spaz.dump('keyboard Event =================');
+		Spaz.dump("keyIdentifier:"+ e.keyIdentifier);
+		Spaz.dump("KeyCode:" + e.keyCode);
+		Spaz.dump("which:"+ e.which);
+		Spaz.dump("type:"+ e.type);
+		Spaz.dump("shift:"+ e.shiftKey);
+		Spaz.dump("ctrl:"+ e.ctrlKey);
+		Spaz.dump("alt:"+ e.altKey);
+		Spaz.dump("meta:"+ e.metaKey);
+		Spaz.dump("src:"+ e.srcElement.id);
+	}
+
+
+	return true;
+}
+
+
+function windowActiveHandler() {
+	Spaz.dump('Window ACTIVE');
+	if ($('body').focus()) {
+	}
+	
+}
+
+
+// observer that cleans up each status entry once the dataRegion has loaded
+function regionObserver(notificationState, notifier, data) {
+	
+	if (notificationState == "onPostUpdate") {
+		Spaz.dump('onPostUpdate triggered');
+		
+		// make it here so we don't instantiate on every loopthrough
+		var md = new Showdown.converter();
+		
+		$("div.status-text", "#"+data.regionID).each(function(i){
+			
+			// check for cached status
+			var statusHTML = Spaz.Cache.getStatus(this.id);
+			if (statusHTML){
+				this.innerHTML = statusHTML;
+			} else {
+								
+				// fix extra ampersand encoding
+				this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
+				
+				// fix entity &#123; style extra encoding
+				this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
+
+
+							
+				// convert inline links
+				this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
+			
+				// email addresses
+				this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '<a onclick="openInBrowser(\'mailto:$2@$3\')" title="Email $2@$3" class="inline-email">$2@$3</a>');
+			
+				// convert @username reply indicators
+				this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" title="View $2\'s profile" class="inline-reply">@$2</a>');
+							
+				// @usernames at the beginning of lines
+				this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
+
+				// Markdown conversion with Showdown
+				
+				this.innerHTML = md.makeHtml(this.innerHTML);
+
+				// replace hrefs from markdown with onClick calls 
+				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" title="Open $1 in a browser window" class="inline-link"');
+
+
+				// cache this converted status
+				Spaz.Cache.setStatus(this.id, this.innerHTML);
+			}
+		});
+		
+		// convert post times to relative
+		$("span.status-created-at", "#"+data.regionID).each(function(i) {
+			this.innerHTML = get_relative_time(this.innerHTML);
+		});
+		
+		$("span.status-source-label", "#"+data.regionID).each(function(i) {
+			
+			var sourceHTML = Spaz.Cache.getSource(this.innerHTML);			
+
+			if (this.innerHTML.length>0){
+				if (!sourceHTML) {
+					var old      = this.innerHTML;
+					var linkhtml = $(decodeEntities(this.innerHTML));
+					// Spaz.dump('linkhtml:'+linkhtml);
+					var href;
+					if (href = linkhtml.attr('href')) {
+						linkhtml.attr('onclick', 'openInBrowser(\''+href+'\')');
+						// Spaz.dump(linkhtml.attr('onclick'));
+						linkhtml.removeAttr('href');
+						linkhtml.attr('title', 'View information about this posting method');
+						this.innerHTML=linkhtml[0].outerHTML;
+						Spaz.Cache.addSource(old, this.innerHTML);
+						// Spaz.dump(this);
+					}
+				} else {
+					this.innerHTML=sourceHTML;
+				}
+				//
+			} else {
+				//Spaz.dump('nothing to convert');
+			}
+		});
+		
+		$('span.status-protected', "#"+data.regionID).each(function(i) {
+			if (this.innerHTML == 'true') {
+				this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />';
+			} else {
+				this.innerHTML = '';
+			}
+		});
+
+		// tab tooltip setup
+		$('a[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
+
+		// tab tooltip setup
+		$('img[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
+		
+		$('br[clear]').hide();
+		
+		// init thickbox for this stuff
+		// tb_init('a.thickbox, area.thickbox, input.thickbox', "#"+data.regionID);//pass where to apply thickbox
+		// imgLoader = new Image();// preload image
+		// imgLoader.src = tb_pathToImage;
+		
+	}
+}
+
+
+
+/* sends a twitter status update for the current user */
+function sendUpdate() {
+	var entrybox = $('#entrybox');
+	if (entrybox.val() != '' && entrybox.val() != entryBoxHint) {
+		Spaz.Data.update(entrybox.val(), Spaz.Bridge.getUser(), Spaz.Bridge.getPass());
+		// entrybox.val('');
+	}
+}
+
+
+function followUser(userid) {
+	Spaz.Data.followUser(userid);
+}
+
+function stopFollowUser(userid) {
+	Spaz.UI.statusBar('Follow stop: ' + userid)
+	Spaz.Data.stopFollowingUser(userid);
+	Spaz.UI.resetStatusBar();
+}
+
+
+
+function setSelectedTab(tab) {
+	selectedTab = tab;
+	Spaz.dump('selectedTab: '+ selectedTab.id);
+	
+	restartReloadTimer();
+	
+	// force loading data if empty
+	var thisDs = Spaz.Data.getDsForTab(tab);
+	if (!thisDs.data || thisDs.data.length < 1) {
+		Spaz.Data.loadDataForTab(tab);
+	}
+}
+
+
+function reloadCurrentTab() {
+	Spaz.dump('reloading the current tab');
+	Spaz.Data.loadDataForTab(selectedTab);
+}
+
+
+function autoReloadCurrentTab() {
+	Spaz.dump('auto-reloading the current tab');
+	Spaz.Data.loadDataForTab(selectedTab, true);
+}
+
+
+function startReloadTimer() {
+	var refreshInterval = Spaz.Bridge.getRefreshInterval();
+	Spaz.dump('started timer with refresh of ' + refreshInterval + ' msecs');
+	reloadID = window.setInterval(autoReloadCurrentTab, refreshInterval);
+	
+	return reloadID;
+}
+
+
+function stopReloadTimer() {
+	if (reloadID) {
+		window.clearInterval(reloadID);
+		Spaz.dump('stopped timer');
+	}
+	
+}
+
+function restartReloadTimer() {
+	Spaz.dump('trying to restart timer');
+	stopReloadTimer();
+	startReloadTimer();
+}
+
+
+
+
+
+function decodeEntities(str) {
+	str = str.replace(/&gt;/gi, '>');
+	str = str.replace(/&lt;/gi, '<');
+	return str;
+}
+
+
+
+
+
+
+/**
+ * Window manip funcs
+ */
+function onNativeMove(){
+	Spaz.Bridge.startMove();
+}
+function onResize(){
+	Spaz.Bridge.startResize();
+}
+
+//-->
+
+
+
+
+
+</script>
+
+</body>
+</html>
