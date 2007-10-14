@@ -98,7 +98,7 @@ Spaz.Prefs.processXMLData = function()
 		Spaz.Prefs.refreshInterval = parseInt(networkData.getAttribute("refreshinterval"));
 	}
 	if (isNaN(Spaz.Prefs.refreshInterval)) {Spaz.Prefs.refreshInterval = 120000;}
-	if (Spaz.Prefs.refreshInterval < 120000) { Spaz.Prefs.refreshInterval = 120000 }
+	if (Spaz.Prefs.refreshInterval < 60000) { Spaz.Prefs.refreshInterval = 60000 } // minimum 1 minute
 	Spaz.dump('Spaz.Prefs.refreshInterval:'+Spaz.Prefs.refreshInterval);
 }
 
@@ -229,8 +229,8 @@ Spaz.Prefs.setCurrentUser = function() {
 
 Spaz.Prefs.checkRefreshPeriod = function(val) {
 	val = parseInt(val);
-	if (val < 2) {
-		val = 2;
+	if (val < 1) {
+		val = 1;
 	} else if (val > 60) {
 		val = 60;
 	}

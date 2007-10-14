@@ -254,8 +254,8 @@ TODO:
 			
 					<div class="status" id="status-{id}">					
 						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-protected">{sender/protected}</span></div>
+						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{sender/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{sender/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
+						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{sender/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-protected">{sender/protected}</span></div>
 					</div>
 				</div>
 				
