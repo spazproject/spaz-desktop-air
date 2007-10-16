@@ -272,6 +272,212 @@ Spaz.UI.prepReply = function(username) {
 	eb[0].setSelectionRange(eb.val().length-3, eb.val().length)
 };
 
+/* sends a twitter status update for the current user */
+Spaz.UI.sendUpdate = function() {
+	var entrybox = $('#entrybox');
+	if (entrybox.val() != '' && entrybox.val() != entryBoxHint) {
+		Spaz.Data.update(entrybox.val(), Spaz.Bridge.getUser(), Spaz.Bridge.getPass());
+		// entrybox.val('');
+	}
+}
+
+
+
+
+Spaz.UI.decodeSourceLinkEntities = function(str) {
+	str = str.replace(/&gt;/gi, '>');
+	str = str.replace(/&lt;/gi, '<');
+	return str;
+}
+
+
+Spaz.UI.setSelectedTab = function(tab) {
+	selectedTab = tab;
+	Spaz.dump('selectedTab: '+ selectedTab.id);
+	
+	Spaz.restartReloadTimer();
+	
+	// force loading data if empty
+	var thisDs = Spaz.Data.getDsForTab(tab);
+	if (!thisDs.data || thisDs.data.length < 1) {
+		Spaz.Data.loadDataForTab(tab);
+	}
+}
+
+
+Spaz.UI.reloadCurrentTab = function() {
+	Spaz.dump('reloading the current tab');
+	Spaz.Data.loadDataForTab(selectedTab);
+}
+
+
+Spaz.UI.autoReloadCurrentTab = function() {
+	Spaz.dump('auto-reloading the current tab');
+	Spaz.Data.loadDataForTab(selectedTab, true);
+}
+
+
+
+Spaz.UI.windowActiveHandler = function () {
+	Spaz.dump('Window ACTIVE');
+	if ($('body').focus()) {
+	}
+	
+}
+
+
+
+// observer that cleans up each status entry once the dataRegion has loaded
+Spaz.UI.regionObserver = function(notificationState, notifier, data) {
+	
+	if (notificationState == "onPostUpdate") {
+		Spaz.dump('onPostUpdate triggered');
+		
+		// make it here so we don't instantiate on every loopthrough
+		var md = new Showdown.converter();
+		
+		$("div.status-text", "#"+data.regionID).each(function(i){
+			
+			// check for cached status
+			var statusHTML = Spaz.Cache.getStatus(this.id);
+			if (statusHTML){
+				this.innerHTML = statusHTML;
+			} else {
+								
+				// fix extra ampersand encoding
+				this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
+				
+				// fix entity &#123; style extra encoding
+				this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
+
+
+							
+				// convert inline links
+				this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
+			
+				// email addresses
+				this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '<a onclick="openInBrowser(\'mailto:$2@$3\')" title="Email $2@$3" class="inline-email">$2@$3</a>');
+			
+				// convert @username reply indicators
+				this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" title="View $2\'s profile" class="inline-reply">@$2</a>');
+							
+				// @usernames at the beginning of lines
+				this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
+
+				// Markdown conversion with Showdown
+				
+				this.innerHTML = md.makeHtml(this.innerHTML);
+
+				// replace hrefs from markdown with onClick calls 
+				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" title="Open $1 in a browser window" class="inline-link"');
+
+
+				// cache this converted status
+				Spaz.Cache.setStatus(this.id, this.innerHTML);
+			}
+		});
+		
+		// convert post times to relative
+		$("span.status-created-at", "#"+data.regionID).each(function(i) {
+			this.innerHTML = get_relative_time(this.innerHTML);
+		});
+		
+		$("span.status-source-label", "#"+data.regionID).each(function(i) {
+			
+			var sourceHTML = Spaz.Cache.getSource(this.innerHTML);			
+
+			if (this.innerHTML.length>0){
+				if (!sourceHTML) {
+					var old      = this.innerHTML;
+					var linkhtml = $(Spaz.UI.decodeSourceLinkEntities(this.innerHTML));
+					// Spaz.dump('linkhtml:'+linkhtml);
+					var href;
+					if (href = linkhtml.attr('href')) {
+						linkhtml.attr('onclick', 'openInBrowser(\''+href+'\')');
+						// Spaz.dump(linkhtml.attr('onclick'));
+						linkhtml.removeAttr('href');
+						linkhtml.attr('title', 'View information about this posting method');
+						this.innerHTML=linkhtml[0].outerHTML;
+						Spaz.Cache.addSource(old, this.innerHTML);
+						// Spaz.dump(this);
+					}
+				} else {
+					this.innerHTML=sourceHTML;
+				}
+				//
+			} else {
+				//Spaz.dump('nothing to convert');
+			}
+		});
+		
+		$('span.status-protected', "#"+data.regionID).each(function(i) {
+			if (this.innerHTML == 'true') {
+				this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />';
+			} else {
+				this.innerHTML = '';
+			}
+		});
+
+		// tab tooltip setup
+		$('a[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
+
+		// tab tooltip setup
+		$('img[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
+		
+		$('br[clear]').hide();
+		
+		// init thickbox for this stuff
+		// tb_init('a.thickbox, area.thickbox, input.thickbox', "#"+data.regionID);//pass where to apply thickbox
+		// imgLoader = new Image();// preload image
+		// imgLoader.src = tb_pathToImage;
+		
+	}
+}
+
+
+Spaz.UI.keyboardHandler = function(event) {
+	e = event || window.event;
+	el = e.srcElement || e.target;
+	
+	if (el.name) {
+		return true;
+	}
+
+	// if (e.which == 13 && e.shiftKey == true && e.srcElement.id == 'entrybox') {
+	if (e.which == 13 && e.srcElement.id == 'entrybox') {
+		Spaz.UI.sendUpdate();
+	}
+	
+	// reload the current tab
+	if (e.which == 82 && e.srcElement.id == 'home') {
+		Spaz.UI.reloadCurrentTab();
+		Spaz.restartReloadTimer();
+	}
+
+	// Numbers for tabs
+	if ( (e.which >= 49 && e.which <= 56) && e.srcElement.id == 'home') {
+		var panelId = e.which-49;
+		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[panelId]);
+		Spaz.UI.tabbedPanels.showPanel(panelId);
+	}
+
+	
+	if (e.srcElement.id == 'home') {
+		Spaz.dump('keyboard Event =================');
+		Spaz.dump("keyIdentifier:"+ e.keyIdentifier);
+		Spaz.dump("KeyCode:" + e.keyCode);
+		Spaz.dump("which:"+ e.which);
+		Spaz.dump("type:"+ e.type);
+		Spaz.dump("shift:"+ e.shiftKey);
+		Spaz.dump("ctrl:"+ e.ctrlKey);
+		Spaz.dump("alt:"+ e.altKey);
+		Spaz.dump("meta:"+ e.metaKey);
+		Spaz.dump("src:"+ e.srcElement.id);
+	}
+
+
+	return true;
+}
 
 
 //	$('#tab-friends .timeline-pager-number').html(4);

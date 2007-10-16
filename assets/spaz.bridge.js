@@ -334,7 +334,7 @@ if(typeof runtime!='undefined'){
 	}
 	
 	Spaz.Bridge.windowActiveHandler = function(){
-		windowActiveHandler();
+		Spaz.UI.windowActiveHandler();
 	}
 	
 	Spaz.Bridge.windowClosingHandler = function(event){

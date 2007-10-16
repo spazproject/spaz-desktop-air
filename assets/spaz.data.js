@@ -27,8 +27,8 @@ Spaz.Data.url_follow           = "https://twitter.com/friendships/create/{{ID}}.
 Spaz.Data.url_stop_follow      = "https://twitter.com/friendships/destroy/{{ID}}.xml";
 Spaz.Data.url_start_notifications = "https://twitter.com/notifications/follow/{{ID}}.json";
 Spaz.Data.url_stop_notifications  = "https://twitter.com/notifications/remove/{{ID}}.json";
-Spaz.Data.url_favorites_create = "https://twitter.com/favorites/create/{{ID}}.json";
-Spaz.Data.url_favorites_destroy= "https://twitter.com/favorites/destroy/{{ID}}.json";
+Spaz.Data.url_favorites_create = "https://twitter.com/favourings/create/{{ID}}.json";
+Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.json";
 Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials";
 
 
@@ -328,8 +328,8 @@ Spaz.Data.followUser = function(userid) {
 		},
 		success:function(data){
 			Spaz.dump(data);
-			setSelectedTab(document.getElementById('tab-friendslist'));
-			reloadCurrentTab();
+			Spaz.UI.setSelectedTab(document.getElementById('tab-friendslist'));
+			Spaz.UI.reloadCurrentTab();
 			Spaz.UI.statusBar("Now following " + userid);
 		},
 		beforeSend:function(xhr){
@@ -348,6 +348,7 @@ Spaz.Data.followUser = function(userid) {
 
 
 Spaz.Data.stopFollowingUser = function(userid) {
+	
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
 	
@@ -369,8 +370,8 @@ Spaz.Data.stopFollowingUser = function(userid) {
 		},
 		success:function(data){
 			Spaz.dump(data);
-			setSelectedTab(document.getElementById('tab-friendslist'));
-			reloadCurrentTab();
+			Spaz.UI.setSelectedTab(document.getElementById('tab-friendslist'));
+			Spaz.UI.reloadCurrentTab();
 			Spaz.UI.statusBar("Stop following " + userid);
 		},
 		beforeSend:function(xhr){

@@ -54,6 +54,182 @@ Spaz.getRegionForTab = function(tab) {
 
 
 
+Spaz.startReloadTimer = function() {
+	var refreshInterval = Spaz.Bridge.getRefreshInterval();
+	Spaz.dump('started timer with refresh of ' + refreshInterval + ' msecs');
+	reloadID = window.setInterval(Spaz.UI.autoReloadCurrentTab, refreshInterval);
+	
+	return reloadID;
+}
+
+
+Spaz.stopReloadTimer = function() {
+	if (reloadID) {
+		window.clearInterval(reloadID);
+		Spaz.dump('stopped timer');
+	}
+	
+}
+
+Spaz.restartReloadTimer = function() {
+	Spaz.dump('trying to restart timer');
+	Spaz.stopReloadTimer();
+	Spaz.startReloadTimer();
+}
+
+
+
+Spaz.childFrameInit = function() {
+	
+	//*************************
+	// START ME UP
+	//*************************
+
+
+
+	// insert theme CSS links
+	var themePaths = Spaz.Bridge.getThemePaths();
+	for(x in themePaths) {
+		$('head').append('<link href="'+themePaths[x].themecss+'" title="'+themePaths[x].themename+'" rel="stylesheet" type="text/css" />');
+	}
+
+
+	// build the dropdown menu
+	$('#prefs-base-theme').empty();
+
+	/**
+	* Styleswitch stylesheet switcher built on jQuery
+	* Under an Attribution, Share Alike License
+	* By Kelvin Luck ( http://www.kelvinluck.com/ )
+	**/
+	$('link[@rel*=style][@title]').each(function(i){
+		var title = this.getAttribute('title');
+		$('#prefs-base-theme').append('<option value="'+title+'">'+title+'</option>');
+		Spaz.dump("css:"+this.title);
+	});
+
+	if (Spaz.UI.currentTheme) {
+		$('#prefs-base-theme').val(Spaz.UI.currentTheme);
+	}
+	Spaz.UI.setCurrentTheme();
+	
+	
+
+
+
+
+
+	/*************************** 
+	 * Apply prefs 
+	 **************************/	 
+	$('#prefs-username').val(Spaz.Bridge.getUser());
+	$('#prefs-password').val(Spaz.Bridge.getPass());
+	$('#prefs-refresh-interval').val(Spaz.Bridge.getRefreshInterval()/60000);
+
+
+	// User Stylesheet
+	if (Spaz.UI.userStyleSheet) {
+		Spaz.UI.setUserStyleSheet(Spaz.UI.userStyleSheet);
+		$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
+	}
+
+	// Sounds
+	if (Spaz.UI.playSounds) {
+		Spaz.UI.soundOn();
+		$('#prefs-sound-enabled').attr('checked', 'checked');
+	} else {
+		Spaz.UI.soundOff();
+		$('#prefs-sound-enabled').attr('checked', '');
+	}
+
+
+	//DONE: Check for Update
+	if (Spaz.Update.checkUpdate()) {
+	//	Spaz.Update.setCheckUpdateState(true);
+		$('#prefs-checkupdate-enabled').attr('checked', 'checked');
+		Spaz.dump('Starting check for update');
+		Spaz.Bridge.checkForUpdate();
+		Spaz.dump('Ending check for update');
+	} else {
+	//	Spaz.Update.setCheckUpdateState(false);
+		$('#prefs-checkupdate-enabled').attr('checked', '');
+	}
+	Spaz.dump('Prefs Apply: check for update')
+
+	if ($('html').attr('debug') == 'true') {
+		$('#prefs-debugging-enabled').attr('checked', 'checked');
+	}else{
+		$('#prefs-debugging-enabled').attr('checked', '');
+	}
+	Spaz.dump('Prefs Apply: debugging');
+	
+	
+
+	/************************
+	 * Other stuff to do when document is ready
+	 ***********************/
+	memoryRefreshID = window.setInterval(Spaz.UI.updateMemoryUsage, 5000);
+	Spaz.dump('Started MemoryUsage timer');
+
+	
+	Spry.Data.Region.addObserver("public-timeline",			Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("friends-timeline",		Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("replies-timeline",		Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("user-timeline",			Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("dm-timeline",				Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("friendslist-detail",		Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("friendslist",				Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("followerslist-detail",	Spaz.UI.regionObserver);
+	Spry.Data.Region.addObserver("followerslist",			Spaz.UI.regionObserver);
+	Spaz.dump('Added region observers');
+
+	
+	Spaz.UI.playSoundStartup(Spaz.Bridge.makeWindowVisible);
+	Spaz.dump('Added region observers');
+	
+	Spaz.Bridge.makeWindowVisible();
+
+	$('#about-version').text("v"+Spaz.Bridge.getVersion());
+
+
+	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
+
+
+	Spaz.UI.entryBox = new Spry.Widget.ValidationTextarea("entrybox",
+		{ maxChars:140,
+		counterType:"chars_remaining",
+		counterId:'chars-left',
+		hint:entryBoxHint,
+		useCharacterMasking:true }
+	);
+
+	Spaz.UI.prefsCPG = new Spry.Widget.CollapsiblePanelGroup("prefsCPG",
+		{ contentIsOpen:false, duration:200 }
+	);
+	// var AccountPanel = Spaz.UI.prefsCPG.openPanel(0);
+
+	$('img.tab-icon').each( function(i) {
+		this.title = this.title + '<br />Shortcut: <strong>'+(parseInt(i)+1)+'</strong>';
+	});
+	Spaz.dump('Set shortcut info in tab titles');
+
+	$('*[@title]').Tooltip(toolTipPrefs);
+	Spaz.dump('Added tooltips');
+
+	if ($('html').attr('debug') == 'true') {
+		console.open();
+		Spaz.dump('debug console opened');
+	}
+
+	Spaz.UI.setSelectedTab(document.getElementById('tab-friends'));
+	Spaz.dump('set selected tab');
+
+
+	Spaz.dump('ended document.ready()');
+	
+}
+
+
 /*
 makes relative time out of "Sun Jul 08 19:01:12 +0000 2007" type string
 Borrowed from Mike Demers (slightly altered)
