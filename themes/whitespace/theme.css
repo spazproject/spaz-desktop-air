@@ -30,6 +30,11 @@ legend {
 	font-size:14px;
 }
 
+h1, h2, h3, h4, h5 {
+	padding:0;
+	margin:0;
+}
+
 #container {
 	overflow:hidden;
 	background-color:#FFFFFF;
@@ -46,7 +51,7 @@ legend {
 
 
 
-h1 {
+#header {
 	background:#FFFFFF;
 	color:#CCCCCC;
 	font-size:22px;
@@ -76,10 +81,10 @@ h1 {
 }
 
 .window-button {
-	padding:0px 2px 2px;
+	padding:0px 4px 2px;
 	color:#CCCCCC;
 	background-color:#FFFFFF;
-	-khtml-border-radius:5px;
+	-khtml-border-radius:2px;
 	font-size:13px;
 	font-weight:bold;
 	cursor:pointer;
@@ -466,6 +471,7 @@ legend {
 	font-size:14px;
 	color:#999999;
 	border-bottom:1px solid #cccccc;
+	padding-top:8px;
 	padding-bottom:2px;
 	cursor: pointer;
 	margin-bottom:0px;
@@ -600,7 +606,7 @@ a.reload-button {
 
 
 
-#aboutWindow, #updateCheckWindow, #helpWindow {
+div.popupWindow {
 	position:absolute;
 	z-index: 999;
 	font-size:12px;
@@ -614,6 +620,19 @@ a.reload-button {
 	padding:10px;
 	-webkit-box-shadow:0px 0px 6px #333333;
 }
+div.popupWindow h2 {
+	margin:0 0 5px 0;
+	padding:0;
+	font-size:20px;
+	letter-spacing: -1px;
+}
+div.popupWindow h3 {
+	margin:0 0 5px 0;
+	padding:0;
+	font-size:14px;
+	letter-spacing: -1px;
+}
+
 div.popupWindowBar {
 	text-align:right;
 	border-bottom:2px solid #999999;
@@ -638,20 +657,6 @@ div.popupWindowBar .window-button:hover {
 	border:3px double #999999;
 	float:right;
 	margin:0px 0px 5px 5px;
-}
-
-#aboutWindow h2, #updateCheckWindow h2, #helpWindow h2 {
-	margin:0 0 5px 0;
-	padding:0;
-	font-size:20px;
-	letter-spacing: -1px;
-}
-
-#aboutWindow h3, #updateCheckWindow h3, #helpWindow h3 {
-	margin:0 0 5px 0;
-	padding:0;
-	font-size:14px;
-	letter-spacing: -1px;
 }
 
 #about-version {
@@ -696,6 +701,34 @@ div.popupWindowBar .window-button:hover {
 	padding:2px;
 	text-align:left;
 }
+#shortLinkWindow {
+	height:190px;
+}
+#shortenLink-form {
+	width:100%;
+}
+#shortenLink-form label {
+	min-width:15%;
+	text-align:right;
+	margin-right:5px;
+	font-weight:bold;
+	display:block;
+	float:left;
+	padding:5px;
+	color:#999999;
+}
+#shortenLink-form input[type='password'],
+#shortenLink-form input[type='text'],
+#shortenLink-form select {
+	border:1px solid #CCCCCC;
+	color: #999999;
+	background-color:#FFFFEE;
+	padding:4px;
+	width:75%;
+	/*-khtml-border-radius:5px;*/
+}
+
+
 
 img.tab-icon {
 	margin-bottom:-1px;

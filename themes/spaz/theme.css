@@ -24,9 +24,13 @@ legend, h2.CollapsiblePanelTab {
 	font-weight:bold;
 	font-size:13px;
 	color:#999999;
+	padding-top:8px;
 }
 
-
+h1, h2, h3, h4, h5 {
+	padding:0;
+	margin:0;
+}
 
 #container {
 	overflow:hidden;
@@ -43,7 +47,7 @@ legend, h2.CollapsiblePanelTab {
 
 
 
-h1 {
+#header {
 	background:#000000;
 	color:#FFFFFF;
 	font-size:18px;
@@ -307,6 +311,12 @@ div.status-text {
 	font-family:Palatino,Georgia, "Times New Roman", Times, serif;
 	margin-bottom:4px;
 }
+/*div.status-text h1, div.status-text h2, div.status-text h3, div.status-text h4, div.status-text h5 {
+	position:relative;
+	background:transparent;
+	font-wei
+}
+*/
 
 div.status-link {
 	font-size:10px;
@@ -595,7 +605,7 @@ a.reload-button {
 
 
 
-#aboutWindow, #updateCheckWindow, #helpWindow, #popupPanel {
+div.popupWindow {
 	position:fixed;
 	z-index: 999;
 	font-size:12px;
@@ -610,6 +620,18 @@ a.reload-button {
 	border:3px solid #333333;
 	padding:10px;
 	-webkit-box-shadow:0px 0px 6px #333333;
+}
+div.popupWindow h2 {
+	margin:0 0 5px 0;
+	padding:0;
+	font-size:20px;
+	letter-spacing: -1px;
+}
+div.popupWindow h3 {
+	margin:0 0 5px 0;
+	padding:0;
+	font-size:14px;
+	letter-spacing: -1px;
 }
 div.popupWindowBar {
 	text-align:right;
@@ -635,20 +657,6 @@ div.popupWindowBar .window-button:hover {
 	border:3px double #999999;
 	float:right;
 	margin:0px 0px 5px 5px;
-}
-
-#aboutWindow h2, #updateCheckWindow h2, #helpWindow h2 {
-	margin:0 0 5px 0;
-	padding:0;
-	font-size:20px;
-	letter-spacing: -1px;
-}
-
-#aboutWindow h3, #updateCheckWindow h3, #helpWindow h3 {
-	margin:0 0 5px 0;
-	padding:0;
-	font-size:14px;
-	letter-spacing: -1px;
 }
 
 #about-version {
@@ -693,6 +701,32 @@ div.popupWindowBar .window-button:hover {
 	padding:2px;
 	text-align:left;
 }
+#shortLinkWindow {
+	height:190px;
+}
+#shortenLink-form {
+	width:100%;
+}
+#shortenLink-form label {
+	min-width:19%;
+	text-align:right;
+	margin-right:5px;
+	font-weight:bold;
+	/*letter-spacing:-1px;*/
+	display:block;
+	float:left;
+	padding:5px;
+}
+#shortenLink-form input[type='password'],
+#shortenLink-form input[type='text'],
+#shortenLink-form select {
+	border:1px solid #666;
+	padding:4px;
+	width:75%;
+	/*-khtml-border-radius:5px;*/
+}
+
+
 
 img.tab-icon {
 	margin-bottom:-1px;

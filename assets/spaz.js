@@ -133,6 +133,15 @@ Spaz.childFrameInit = function() {
 		$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 	}
 
+	// Markdown
+	if (Spaz.UI.useMarkdown) {
+		Spaz.UI.markdownOn();
+		$('#prefs-markdown-enabled').attr('checked', 'checked');
+	} else {
+		Spaz.UI.markdownOff();
+		$('#prefs-markdown-enabled').attr('checked', '');
+	}
+
 	// Sounds
 	if (Spaz.UI.playSounds) {
 		Spaz.UI.soundOn();
@@ -168,7 +177,7 @@ Spaz.childFrameInit = function() {
 	/************************
 	 * Other stuff to do when document is ready
 	 ***********************/
-	memoryRefreshID = window.setInterval(Spaz.UI.updateMemoryUsage, 5000);
+	//memoryRefreshID = window.setInterval(Spaz.UI.updateMemoryUsage, 5000);
 	Spaz.dump('Started MemoryUsage timer');
 
 	

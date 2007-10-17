@@ -14,6 +14,7 @@ Spaz.UI.tabbedPanels = {};
 Spaz.UI.entryBox = {};
 
 Spaz.UI.playSounds = 1; // default state
+Spaz.UI.useMarkdown = 1;
 
 Spaz.UI.SOUND_UPDATE	= '/assets/sounds/TokyoTrainStation/Csnd.mp3';
 Spaz.UI.SOUND_STARTUP	= '/assets/sounds/TokyoTrainStation/On.mp3';
@@ -120,23 +121,39 @@ Spaz.UI.clearUserStyleSheet = function() {
 	$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 }
 
+Spaz.UI.setMarkdownState = function(state) {
+	Spaz.dump("MarkdownState: "+state);
+	if (state) {
+		Spaz.UI.markdownOn()
+	} else {
+		Spaz.UI.markdownOff()
+	}
+}
+Spaz.UI.markdownOn = function() {
+	Spaz.dump("Sounds are ON");
+	Spaz.UI.useMarkdown = 1;
+}
+Spaz.UI.markdownOff = function() {
+	Spaz.dump("Sounds are OFF");
+	Spaz.UI.useMarkdown = 0;
+}
 
 Spaz.UI.showAbout = function() {
-	Spaz.UI.centerPopup('aboutWindow');
-	Spaz.UI.hideHelp();
+	//$('div.popupWindow').fadeTo('fast', 0);
 	Spaz.dump('showing aboutWindow...');
 	$('#aboutWindow').fadeTo('fast', 1.0, function() {
 		Spaz.dump('fadeIn:'+'faded in!');
 		Spaz.dump('fadeIn:'+$('#aboutWindow').css('display'));
 		Spaz.dump('fadeIn:'+$('#aboutWindow').css('opacity'));
 	});
+	Spaz.UI.centerPopup('aboutWindow');
 	var info = Spaz.Bridge.getRuntimeInfo();
 	$('#sysinfo-os').text(info.os);
 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
 }
 Spaz.UI.updateMemoryUsage = function() {
 	var info = Spaz.Bridge.getRuntimeInfo();
-	Spaz.dump('NEW Memory Usage: ' + info.totalMemory);
+	//Spaz.dump('NEW Memory Usage: ' + info.totalMemory);
 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
 }
 Spaz.UI.hideAbout = function() {
@@ -149,14 +166,14 @@ Spaz.UI.hideAbout = function() {
 	});
 }
 Spaz.UI.showHelp = function() {
-	Spaz.UI.centerPopup('helpWindow');
-	Spaz.UI.hideAbout();
+	//$('div.popupWindow').fadeTo('fast', 0);
 	Spaz.dump('showing helpWindow...');
 	$('#helpWindow').fadeTo('fast', 1.0, function() {
 		Spaz.dump('fadeIn:'+'faded in!');
 		Spaz.dump('fadeIn:'+$('#helpWindow').css('display'));
 		Spaz.dump('fadeIn:'+$('#helpWindow').css('opacity'));
 	});
+	Spaz.UI.centerPopup('helpWindow');
 }
 Spaz.UI.hideHelp = function() {
 	Spaz.dump('hiding helpWindow...');
@@ -165,6 +182,29 @@ Spaz.UI.hideHelp = function() {
 		Spaz.dump('fadeOut:'+$('#helpWindow').css('display'));
 		Spaz.dump('fadeOut:'+$('#helpWindow').css('opacity'));
 		$('#helpWindow').hide();
+	});
+}
+Spaz.UI.showShortLink = function() {
+	//$('div.popupWindow').fadeTo('fast', 0);
+	Spaz.dump('showing shortLinkWindow...');
+	$('#shortLinkWindow').fadeTo('fast', 1.0, function() {
+		Spaz.dump('fadeIn:'+'faded in!');
+		Spaz.dump('fadeIn:'+$('#shortLinkWindow').css('display'));
+		Spaz.dump('fadeIn:'+$('#shortLinkWindow').css('opacity'));
+	});
+	Spaz.UI.centerPopup('shortLinkWindow');
+	Spaz.dump("val:"+$('#shorten-original-link').val());
+	$('#shorten-original-link').focus();
+	$('#shorten-original-link').val('http://');
+	$('#shorten-original-link').select();
+}
+Spaz.UI.hideShortLink = function() {
+	Spaz.dump('hiding shortLinkWindow...');
+	$('#shortLinkWindow').fadeTo('fast', 0, function(){
+		Spaz.dump('fadeOut:'+'faded out!');
+		Spaz.dump('fadeOut:'+$('#shortLinkWindow').css('display'));
+		Spaz.dump('fadeOut:'+$('#shortLinkWindow').css('opacity'));
+		$('#shortLinkWindow').hide();
 	});
 }
 
@@ -225,20 +265,36 @@ Spaz.UI.showWhatsNew = function() {
 // http://jquery.com/demo/thickbox/
 Spaz.UI.centerPopup = function(windowid) {
 	var jqWin  		= $('#'+windowid);
-	var jqBody 		= $('body');
-	var pageHeight 	= jqBody.height();
-	var pageWidth  	= jqBody.width();
-	var winHeight  	= jqWin.height();
-	var winWidth   	= jqWin.width();
+	var jqBody 		= $('#container');
 
 	jqWin.css('margin', 0);	
-	jqWin.css('top',  (pageHeight/2)-(winHeight/2));
-	jqWin.css('left', (pageWidth/2)-(winWidth/2));
-
-	Spaz.dump("pageHeight:"+pageHeight);
-	Spaz.dump("pageWidth :"+pageWidth );
-	Spaz.dump("winHeight :"+winHeight );
-	Spaz.dump("winWidth  :"+winWidth  );
+	
+	// WIDTH
+	var winWidth = jqWin[0].scrollWidth;
+	if (jqBody.width() > winWidth) {
+		jqWin.css('left', (jqBody.width() - winWidth)/2);
+	} else {
+		// jqWin.width()(jqBody.width() - 20);
+		// jqWin.width() = jqWin.width()();
+		jqWin.css('left', 0);
+	}
+	
+	// HEIGHT
+	var winHeight = jqWin[0].scrollHeight;
+	if (jqBody.height() > winHeight) {
+		jqWin.css('top', (jqBody.height() - winHeight)/2);
+	} else {
+		// jqWin.width()(jqBody.width() - 20);
+		// jqWin.width() = jqWin.width()();
+		jqWin.css('top', 0);
+	}
+	// jqBody.css('border', '1px solid red');
+	// jqWin.css('border', '1px solid blue');
+	
+	Spaz.dump("jqBody.height():"+jqBody.height());
+	Spaz.dump("jqBody.width() :"+jqBody.width() );
+	Spaz.dump("jqWin.height() :"+winHeight);
+	Spaz.dump("jqWin.width()  :"+winWidth);
 	Spaz.dump("margin    :"+jqWin.css('margin'));
 	Spaz.dump("top       :"+jqWin.css('top'));
 	Spaz.dump("left      :"+jqWin.css('left'));
@@ -364,13 +420,14 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 				// @usernames at the beginning of lines
 				this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
 
-				// Markdown conversion with Showdown
-				
-				this.innerHTML = md.makeHtml(this.innerHTML);
 
-				// replace hrefs from markdown with onClick calls 
-				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" title="Open $1 in a browser window" class="inline-link"');
+				if (Spaz.UI.useMarkdown) {
+					// Markdown conversion with Showdown
+					this.innerHTML = md.makeHtml(this.innerHTML);
 
+					// replace hrefs from markdown with onClick calls 
+					this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" title="Open $1 in a browser window" class="inline-link"');
+				}
 
 				// cache this converted status
 				Spaz.Cache.setStatus(this.id, this.innerHTML);
@@ -398,7 +455,7 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 						linkhtml.removeAttr('href');
 						linkhtml.attr('title', 'View information about this posting method');
 						this.innerHTML=linkhtml[0].outerHTML;
-						Spaz.Cache.addSource(old, this.innerHTML);
+						Spaz.Cache.setSource(old, this.innerHTML);
 						// Spaz.dump(this);
 					}
 				} else {
@@ -443,22 +500,32 @@ Spaz.UI.keyboardHandler = function(event) {
 		return true;
 	}
 
-	// if (e.which == 13 && e.shiftKey == true && e.srcElement.id == 'entrybox') {
+	// 'ENTER' if (e.which == 13 && e.shiftKey == true && e.srcElement.id == 'entrybox') {
 	if (e.which == 13 && e.srcElement.id == 'entrybox') {
 		Spaz.UI.sendUpdate();
+		return false;
 	}
 	
-	// reload the current tab
+	// 'r' reload the current tab
 	if (e.which == 82 && e.srcElement.id == 'home') {
 		Spaz.UI.reloadCurrentTab();
 		Spaz.restartReloadTimer();
+		return false;
 	}
 
-	// Numbers for tabs
+	// 'l' show shorten link dialog
+	if (e.which == 76 && e.srcElement.id == 'home') {
+		Spaz.UI.showShortLink();
+		return false;
+	}
+	
+
+	// '1-9' Numbers for tabs
 	if ( (e.which >= 49 && e.which <= 56) && e.srcElement.id == 'home') {
 		var panelId = e.which-49;
 		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[panelId]);
 		Spaz.UI.tabbedPanels.showPanel(panelId);
+		return false;
 	}
 
 	

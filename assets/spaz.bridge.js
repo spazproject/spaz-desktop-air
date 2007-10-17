@@ -356,13 +356,15 @@ if(typeof runtime!='undefined'){
 		return {
 			userStyleSheet: Spaz.UI.userStyleSheet,
 			currentTheme: Spaz.UI.currentTheme,
-			playSounds: Spaz.UI.playSounds
+			playSounds: Spaz.UI.playSounds,
+			useMarkdown: Spaz.UI.useMarkdown,
 		};
 	}
 	
 	Spaz.Bridge.setUI = function(id, value){
-		if("currentTheme,userStyleSheet,playSounds".indexOf(id)>-1){
+		if("currentTheme,userStyleSheet,playSounds,useMarkdown".indexOf(id)>-1){
 			Spaz.UI[id]=value;
+			Spaz.dump('Spaz.UI['+id+']='+value);
 		}
 	}
 	
@@ -371,7 +373,6 @@ if(typeof runtime!='undefined'){
 	}
 	
 	Spaz.Bridge.cookie = function (arg1, arg2){
-	
 		return $.cookie(arg1, arg2);
 	}
 	

@@ -70,9 +70,13 @@ Spaz.Prefs.processXMLData = function()
 	if (themeData) {
 		Spaz.Bridge.setUI('currentTheme', themeData.getAttribute("basetheme"));
 		Spaz.Bridge.setUI('userStyleSheet', themeData.getAttribute("userstylesheet"));
+		if (themeData.getAttribute("usemarkdown")) {
+			Spaz.Bridge.setUI('useMarkdown', parseInt(themeData.getAttribute("usemarkdown")));
+		}
 		var info = Spaz.Bridge.getUIInfo();
 		Spaz.dump("Spaz.UI.currentTheme:"+info.currentTheme);
 		Spaz.dump("Spaz.UI.userStyleSheet:"+info.userStyleSheet);
+		Spaz.dump("Spaz.UI.useMarkdown:"+info.useMarkdown);
 	}
 	
 	var soundData = Spaz.Prefs.XML.getElementsByTagName("sound")[0];
@@ -145,6 +149,7 @@ Spaz.Prefs.createXMLData = function()
 					+ "    <network refreshinterval = '"+Spaz.Prefs.refreshInterval.toString()+"'"+cr
 					+ "        />" + cr
 					+ "    <theme "+ cr
+					+ "        usemarkdown = '"+info.useMarkdown.toString()+"'" + cr
 					+ "        userstylesheet = '"+info.userStyleSheet+"'" + cr
 					+ "        basetheme = '"+info.currentTheme+"'"+ "/>" + cr
 					+ "    <sound enabled = '"+info.playSounds.toString()+"'" + cr

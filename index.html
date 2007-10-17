@@ -90,7 +90,7 @@ TODO:
 
 
 
-<h1 onmousedown="Spaz.UI.onNativeMove();">
+<h1 id="header" onmousedown="Spaz.UI.onNativeMove();">
 	<div id="window-buttons">
 
 		<span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
@@ -252,7 +252,7 @@ TODO:
 			
 					<div class="status" id="status-{id}">					
 						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{sender/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a></div>
+						<div class="status-actions"><a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{sender/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a></div>
 						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{sender/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-protected">{sender/protected}</span></div>
 					</div>
 				</div>
@@ -415,6 +415,10 @@ TODO:
 									name="opacity-percentage" id="prefs-opacity-percentage"
 									value="100" maxlength="3" size="3" />%
 							</div>
+							<div class="formrow">
+								<label for="markdown-enabled">Use Markdown</label>
+								<input type="checkbox" name="markdown-enabled" value="1" id="prefs-markdown-enabled" onclick="Spaz.UI.setMarkdownState(this.checked)" />
+							</div>
 						</div>
 					</div>
 					
@@ -505,7 +509,7 @@ TODO:
 <!-- ABOUT -->
 
 
-<div id="aboutWindow" style="display:none">
+<div id="aboutWindow" class="popupWindow" style="display:none">
 	<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideAbout()" title="Close">&times;</span></div>
 	<img src="images/spaz-icon-alpha.png" width="64" height="64" id="spazIcon" />
 	<h2>Spaz</h2>
@@ -558,6 +562,10 @@ TODO:
 				<td class="value">reload current view</td>
 			</tr>
 			<tr>
+				<td class="label">l</td>
+				<td class="value">open shorten link dialog</td>
+			</tr>
+			<tr>
 				<td class="label">1-8</td>
 				<td class="value">Switch to tab 1-8</td>
 			</tr>
@@ -565,9 +573,30 @@ TODO:
 	</table>	
 </div>
 
+<div id="shortLinkWindow" class="popupWindow" style="display:none">
+	<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideShortLink()" title="Close">&times;</span></div>
+	<h2>Shorten Link</h2>
+	<form id="shortenLink-form" onsubmit="Spaz.Data.shortenLink(); return false;">
+		<div class="formrow">
+			<label for="original-link">Link</label>
+			<input type="text" name="original-link" id="shorten-original-link" value="http://" />
+		</div>
+		<div class="formrow">
+			<label for="short-link">Short</label>
+			<input type="text" name="short-link" id="shorten-short-link" value="" />
+		</div>
+		<div class="formrow" style="text-align:right; margin-top:15px">
+			<span id="verification-result">&nbsp;</span>
+			<input type="button" id="prefs-update-button" name="update" value="Shorten &bull;"
+				onclick="Spaz.Data.shortenLink()" /> 
+		</div>
+	</form>
 </div>
 
-<div id="updateCheckWindow" style="display:none;"> 
+
+</div>
+
+<div id="updateCheckWindow" class="popupWindow" style="display:none;"> 
 	Checking for updates...
 </div>
 
@@ -600,56 +629,54 @@ TODO:
 <!--
 
 
-/**
- * Default prefs vars
- */
-var selectedTab = null;
+	/**
+	 * Default prefs vars
+	 */
+	var selectedTab = null;
 
-var reloadID; // identifier for the auto-reloader
-var memoryRefreshID; 
+	var reloadID; // identifier for the auto-reloader
+	var memoryRefreshID; 
 
-var entryBoxHint = "What are you doing?";
+	var entryBoxHint = "What are you doing?";
 
-var toolTipPrefs = {
-	track: false, 
-	delay: 300, 
-	showURL: false, 
-	showBody: false,
-	extraClass: "tab-tooltip",
-	opacity: 0.8,
-};
+	var toolTipPrefs = {
+		track: false, 
+		delay: 300, 
+		showURL: false, 
+		showBody: false,
+		extraClass: "tab-tooltip",
+		opacity: 0.8,
+	};
 
-/**
-Keyboard shortcut definitions
-**/
-document.onkeydown = Spaz.UI.keyboardHandler
+	/**
+	Keyboard shortcut definitions
+	**/
+	document.onkeydown = Spaz.UI.keyboardHandler
 
 
-/*
-This is stuff we do right after the document is ready
-*/
-$(document).ready(function(){
-//window.onload = function(){
-	Spaz.Bridge.$init(Spaz.childFrameInit);
-}); // end window.onload
+	/* This is stuff we do right after the document is ready */
+	$(document).ready(function(){
+	//window.onload = function(){
+		Spaz.Bridge.$init(Spaz.childFrameInit);
+	}); // end window.onload
 
 
 
-window.onload = function(){
-}
+	window.onload = function(){
+	}
 
 
-/**
- * Window manip funcs
- */
-Spaz.UI.onNativeMove = function(){
-	Spaz.Bridge.startMove();
-}
-Spaz.UI.onResize = function(){
-	Spaz.Bridge.startResize();
-}
+	/**
+	 * Window manip funcs
+	 */
+	Spaz.UI.onNativeMove = function(){
+		Spaz.Bridge.startMove();
+	}
+	Spaz.UI.onResize = function(){
+		Spaz.Bridge.startResize();
+	}
 
-//-->
+	//-->
 
 
 

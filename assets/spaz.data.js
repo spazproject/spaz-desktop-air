@@ -127,7 +127,8 @@ Spaz.Data.verifyPassword = function() {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 			Spaz.UI.hideLoading();
 		},
@@ -187,7 +188,8 @@ Spaz.Data.update = function(msg, username, password) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 			Spaz.UI.hideLoading();
 		},
@@ -239,7 +241,8 @@ Spaz.Data.destroyStatus = function(postid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 			Spaz.UI.hideLoading();
 		},
@@ -277,7 +280,8 @@ Spaz.Data.makeFavorite = function(postid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 			Spaz.UI.hideLoading();
 		},
@@ -317,7 +321,8 @@ Spaz.Data.followUser = function(userid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 			Spaz.UI.hideLoading();
 		},
@@ -359,7 +364,8 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 			Spaz.UI.hideLoading();
 		},
@@ -453,7 +459,8 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, msg){
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
 			//Spaz.dump(xhr, 'dir');
 			Spaz.dump(url + ": COMPLETE: " + msg);
 			var thisRegion = Spaz.Data.getRegionForDs(ds);
@@ -507,7 +514,45 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 
 }
 
-
+Spaz.Data.shortenLink = function() {
+	var origlink = encodeURI($('#shorten-original-link').val());
+	
+	Spaz.dump('OrigLink:'+origlink);
+	
+	Spaz.UI.statusBar('Shortening URL: ' + origlink);
+	Spaz.UI.showLoading();
+	
+	var xhr = $.ajax({
+		complete:function(xhr, rstr){
+			Spaz.dump('Response-headers:');
+			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump('XHR Object:');
+			Spaz.dump(xhr, 'dir');
+			Spaz.dump("COMPLETE: " + rstr);
+			Spaz.dump(xhr.responseText);
+			Spaz.UI.statusBar("Shortened URL:"+xhr.responseText);
+			$('#shorten-short-link').val(xhr.responseText);
+			$('#shorten-short-link').focus();
+			$('#shorten-short-link').select();
+			Spaz.UI.hideLoading();
+		},
+		error:function(xhr, rstr){
+			Spaz.dump("ERROR: " + rstr);
+			Spaz.UI.statusBar('Error trying to shorten link');
+			Spaz.UI.flashStatusBar();
+		},
+		success:function(data){
+			// Spaz.dump(data);
+			// Spaz.UI.statusBar("Shortened URL");
+			// $('#shorten-short-link').val(data);
+		},
+		beforeSend:function(xhr){},
+		processData:false,
+		type:"GET",
+		url:'http://urltea.com/api/text/',
+		data:"&url="+origlink
+	});
+};
 
 Spaz.Data.getDsForTab = function(tab) {
 	switch (tab.id) {
