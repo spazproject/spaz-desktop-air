@@ -6,8 +6,15 @@
 		<![CDATA[
 			<strong>These are the changes in the new version:</strong>
 			<ul>
-				<li>Alpha support for Markdown syntax via Showdown JS library </li>
-				<li>Fixed bug where Spry data errors would sometimes be thrown on startup on Windows</li>
+				<li>Can now add favorites by clicking on star icon in status</li>
+				<li>Changed action links in statuses to icons</li>
+				<li>Removed "reply" link from dm timeline because I keep hitting the wrong link</li>
+				<li>Minor theme changes: made paging arrows larger, reduced size of textarea in mini theme</li>
+				<li>Changed minimum refresh time to 1 minute (default is still 2 minutes)</li>
+				<li>Fixed bug in caching where source links weren't cached properly</li>
+				<li>Popup panels now center more accurately</li>
+				<li>Changes to themes and index.html markup to prevent markdown h1 headers from causing mayhem</li>
+				<li>Added enable/disable Markdown syntax parsing in prefs</li>
 			</ul>
 		 ]]>
 	</description>
