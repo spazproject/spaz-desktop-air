@@ -638,6 +638,7 @@ div.popupWindowBar {
 	border-bottom:2px solid #999999;
 	padding-bottom:3px;
 	margin-bottom:10px;
+	cursor:pointer;
 }
 div.popupWindowBar .window-button {
 	padding:2px;
@@ -958,4 +959,17 @@ table.data td.label:after { /*content:":";*/ }
 table.data td.value {
 	padding:2px;
 	text-align:left;
+}
+
+
+.selecteditem
+{
+	background-color:#dddddd;
+	color:#333333;
+}
+.selecthelper
+{
+	background-color: #666666;
+	opacity: 0.3;
+	border:2px solid #000000;
 }

@@ -638,6 +638,7 @@ div.popupWindowBar {
 	border-bottom:2px solid #999999;
 	padding-bottom:3px;
 	margin-bottom:10px;
+	cursor:pointer;
 }
 div.popupWindowBar .window-button {
 	padding:2px;
