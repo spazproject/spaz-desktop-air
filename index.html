@@ -189,7 +189,7 @@ TODO:
 		<div class="TabbedPanelsContent" id="panel-friends">
 			<div spry:region="Spaz.Data.ds_friends" id="friends-timeline" class="timeline SpryHiddenRegion">
 				
-				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even">
+				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even" id="{id}">
 					<div class="user" id="user-{user/id}">
 						<div class="user-image"><a title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}' onclick='openInBrowser("http://twitter.com/{user/screen_name}")'><img height="48" width="48" src="{user/profile_image_url}" alt='{user/screen_name}' /></a></div>
 						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}'>{user/screen_name}</a></div>
@@ -677,7 +677,6 @@ TODO:
 	}
 
 	//-->
-
 
 
 

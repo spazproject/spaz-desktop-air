@@ -217,6 +217,26 @@ Spaz.childFrameInit = function() {
 	);
 	// var AccountPanel = Spaz.UI.prefsCPG.openPanel(0);
 
+	// Make Draggables
+	$('div.popupWindow').each(function(i){
+		$('#'+this.id).Draggable({
+			handle: 	$('#'+this.id+' popupWindowBar')[0],
+			containment:'parent',
+			opacity: 	0.7,
+		});
+	});
+
+	$('#panel-friends').Selectable({
+		accept:'status',
+		opacity : 0.2,
+		selectedclass : 'selecteditem',
+		helperclass : 'selecthelper',
+		onselect : function(serial)
+		{
+			alert(serial.hash);
+		}
+	});
+
 	$('img.tab-icon').each( function(i) {
 		this.title = this.title + '<br />Shortcut: <strong>'+(parseInt(i)+1)+'</strong>';
 	});
