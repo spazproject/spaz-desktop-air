@@ -25,7 +25,7 @@ if(typeof runtime!='undefined'){
 			}
 		}
 		
-		iframe.contentWindow.parentSandboxBridge = bridge;		
+		iframe.contentWindow.parentSandboxBridge = bridge;
 		
 		Spaz.Bridge.$iframe = iframe;
 	
@@ -275,6 +275,11 @@ if(typeof runtime!='undefined'){
 		var val  = parseInt(percentage)/100;
 		window.htmlControl.alpha = val;
 	}
+
+	Spaz.Bridge.displayContextMenu = function(event) {
+		Spaz.Menus.displayContextMenu(event);
+	}
+
 	
 }else{
 	
@@ -301,6 +306,9 @@ if(typeof runtime!='undefined'){
 		
 		//check if we got root loaded
 		Spaz.Bridge.$checkParent();
+		
+		// this lets the Parent access the firebug console
+		Spaz.Bridge.console = console;
 			
 	}
 	

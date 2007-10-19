@@ -194,30 +194,39 @@ Spaz.Data.update = function(msg, username, password) {
 			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
-			Spaz.dump("ERROR: " + rstr);
-			$('#entrybox').attr('disabled', false);
-			$('#updateButton').attr('disabled', false);
-			$('#updateButton').val(oldButtonLabel);
-			Spaz.UI.statusBar("Update failed");
-			Spaz.UI.flashStatusBar();
+			if (xhr.status != 200) { // sanity check
+	 			Spaz.dump("ERROR: " + rstr);
+				$('#entrybox').attr('disabled', false);
+				$('#updateButton').attr('disabled', false);
+				$('#updateButton').val(oldButtonLabel);
+				Spaz.UI.statusBar("Update failed");
+				Spaz.UI.flashStatusBar();				
+			} else {
+				
+			}
 		},
 		success:function(data){
-			Spaz.dump(data);
+			Spaz.dump('SUCCESS:'+data);
 			$('#entrybox').attr('disabled', false);
 			$('#updateButton').attr('disabled', false);
 			$('#entrybox').val('');
+			Spaz.dump('Emptied #entrybox');
 			$('#updateButton').val(oldButtonLabel);
+			Spaz.dump('reset #updateButton label');
 			Spaz.UI.playSoundUpdate();
 			Spaz.UI.statusBar("Update succeeded");
+			
+			Spaz.UI.entryBox.reset();
+			Spaz.dump('reset entryBox (Spry)');
+			$('#entrybox')[0].blur();
+			Spaz.dump('Blurred entryBox (DOM)');
 			//Spaz.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
 			// cookies just get in the way.  eliminate them
-			xhr.setRequestHeader("Cookie", null);
+			xhr.setRequestHeader("Cookie", '');
 			// have to kill referer header to post 
-			xhr.setRequestHeader("Referer", null);
-			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
 		type:"POST",
@@ -261,7 +270,7 @@ Spaz.Data.destroyStatus = function(postid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"POST",
+		type:"GET",
 		url:Spaz.Data.url_destroy_status.replace(/{{ID}}/, postid),
 	});
 	
@@ -303,7 +312,7 @@ Spaz.Data.makeFavorite = function(postid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"POST",
+		type:"GET",
 		url:Spaz.Data.url_favorites_create.replace(/{{ID}}/, postid),
 	});
 };
@@ -344,7 +353,7 @@ Spaz.Data.followUser = function(userid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"POST",
+		type:"GET",
 		url:Spaz.Data.url_follow.replace(/{{ID}}/, userid),
 	});
 	
@@ -387,7 +396,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"POST",
+		type:"GET",
 		url:Spaz.Data.url_stop_follow.replace(/{{ID}}/, userid),
 	});
 	
@@ -427,12 +436,19 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 		page = 1;
 	}
 	
+	// put ms timestamp in data to create unique request
+	var now = new Date();
+	var nowms = now.getTime();
+	var data  = '&_=' + nowms;
+	
 	// caching problems with "page 1" means we can't pass page=1 without missing updates
 	if (page != 1) {
-		var data = "&page="+page;
-	} else {
-		var data = '';
+		data = data + "&page="+page;
 	}
+	
+
+	
+	
 	
 	Spaz.dump("Loading page "+page+" for "+tabid);
 	
@@ -463,36 +479,48 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			//Spaz.dump(xhr, 'dir');
 			Spaz.dump(url + ": COMPLETE: " + msg);
+			
+			if (xhr.status == 400) {
+				Spaz.dump(url + ": ERROR: 400 error - Probably exceeded request limit");
+				Spaz.UI.statusBar('Error: May have exceeded request limit');
+				return;
+			}
+			
 			var thisRegion = Spaz.Data.getRegionForDs(ds);
-			if (msg == 'success') {
-				data = createXMLFromString(xhr.responseText);
-				Spaz.dump("XML retrieved from " + url);
-				Spaz.dump("Setting data to DS from " + url);
-				
-				thisRegion.clearContent();
-				ds.setDataFromDoc(data);
-								
-				if (!ds.data[0]) {
-					Spaz.UI.statusBar('No data returned');
-				} else if (!oldFirstStatus || (oldFirstStatus != ds.data[0].id) ) {
-					Spaz.dump('old: ' + oldFirstStatus);
-					Spaz.dump('new: ' + ds.data[0].id);
-					Spaz.UI.playSoundNew();
-					Spaz.UI.statusBar('Updates found');
-				} else {
-					Spaz.UI.resetStatusBar();
-				}
+			// if (msg == 'success') {
+			data = createXMLFromString(xhr.responseText);
+			Spaz.dump("XML retrieved from " + url);
+			Spaz.dump("Setting data to DS from " + url);
+			
+			thisRegion.clearContent();
+			ds.setDataFromDoc(data);
+							
+			if (!ds.data[0]) {
+				Spaz.UI.statusBar('No data returned');
+			} else if (!oldFirstStatus || (oldFirstStatus != ds.data[0].id) ) {
+				Spaz.dump('old: ' + oldFirstStatus);
+				Spaz.dump('new: ' + ds.data[0].id);
+				Spaz.UI.playSoundNew();
+				Spaz.UI.statusBar('Updates found');
+			} else {
+				Spaz.UI.resetStatusBar();
 			}
-			if (msg == "notmodified") {
-				Spry.Data.updateRegion(thisRegion.name);
-				Spaz.UI.statusBar('Ready (no changes)');
-			}
+			// }
+			// if (msg == "notmodified") {
+			// 	Spry.Data.updateRegion(thisRegion.name);
+			// 	Spaz.UI.statusBar('Ready (no changes)');
+			// }
 			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, msg){
-			Spaz.dump(url + ": ERROR: " + msg);
-			Spaz.UI.statusBar('Error loading ' + url.replace(/http:\/\/(www\.)?twitter\.com/, ''));
-			Spaz.UI.flashStatusBar();
+			if (xhr.status == 400) {
+				Spaz.dump(url + ": ERROR: 400 error - Probably exceeded request limit");
+				Spaz.UI.statusBar('Error: May have exceeded request limit');
+			} else {
+				Spaz.dump(url + ": ERROR: " + xhr.statusText);
+				Spaz.UI.statusBar('Error loading ' + url.replace(/http:\/\/(www\.)?twitter\.com/ + ":"+xhr.status, ''));
+				Spaz.UI.flashStatusBar();
+			}
 		},
 		success:function(data) {
 			Spaz.dump(url + ": SUCCESS");
@@ -500,8 +528,8 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
-			xhr.setRequestHeader("Cookie", "");
-			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
+			xhr.setRequestHeader("Cookie", '');
+//			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 1999 00:00:00 GMT');
 		},
 		processData:false,
 		type:"GET",

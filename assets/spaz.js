@@ -23,7 +23,7 @@ $.ajaxSetup(
 	{
 		timeout:1000*20, // 20 second timeout
 		async:true,
-		ifModified:false,
+		cache:false
 	}
 );
 
@@ -219,23 +219,21 @@ Spaz.childFrameInit = function() {
 
 	// Make Draggables
 	$('div.popupWindow').each(function(i){
-		$('#'+this.id).Draggable({
+		$('#'+this.id).draggable({
 			handle: 	$('#'+this.id+' popupWindowBar')[0],
-			containment:'parent',
+			containment:'#container',
 			opacity: 	0.7,
 		});
 	});
 
-	$('#panel-friends').Selectable({
-		accept:'status',
-		opacity : 0.2,
-		selectedclass : 'selecteditem',
-		helperclass : 'selecthelper',
-		onselect : function(serial)
-		{
-			alert(serial.hash);
-		}
+	// make tweets selectable
+	$('div.timeline-entry').bind('click', function(event){
+		$('#'+event.target.id).toggleClass('ui-selected');
+	});	
+	$('#friends-timeline').selectable({
+		filter:'div.timeline-entry'
 	});
+
 
 	$('img.tab-icon').each( function(i) {
 		this.title = this.title + '<br />Shortcut: <strong>'+(parseInt(i)+1)+'</strong>';
@@ -253,6 +251,7 @@ Spaz.childFrameInit = function() {
 	Spaz.UI.setSelectedTab(document.getElementById('tab-friends'));
 	Spaz.dump('set selected tab');
 
+//	$('#header').contextMenu('linkContentMenu');
 
 	Spaz.dump('ended document.ready()');
 	
@@ -296,6 +295,7 @@ function openInBrowser(url) {
 	Spaz.dump('opening '+url);
 	Spaz.Bridge.navigateToURL(url);
 }
+
 
 /*TODO: UNUSED FUNCTIONS
 

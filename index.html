@@ -46,15 +46,25 @@ TODO:
 
 
 	<!-- jQuery libs -->
-	<script src="assets/jquery.js" type="text/javascript"></script>
+	<script src="assets/jquery-1.2.1.js" type="text/javascript"></script>
 	<script src="assets/jquery.cookie.js" type="text/javascript"></script>
 	<script src="assets/jquery.tooltip/jquery.dimensions.js" type="text/javascript"></script>
 	<script src="assets/jquery.tooltip/chili-1.7.pack.js" type="text/javascript"></script>
 	<script src="assets/jquery.tooltip/jquery.tooltip.js" type="text/javascript"></script>
 	<script src="assets/jquery.moreSelectors.js" type="text/javascript"></script>
+	<script src="assets/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/interface.js" type="text/javascript"></script>
 	<!-- <script src="assets/thickbox.js" type="text/javascript"></script> -->
 
+
+
+	<!-- jQuery.UI libs -->
+	<!-- <script src="assets/jquery.ui-1.0/ui.draggable.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.ui-1.0/ui.droppable.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.ui-1.0/ui.mouse.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.ui-1.0/jquery.dimensions.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.ui-1.0/ui.selectable.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="assets/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
 
 
 	<!-- Spaz libs -->
@@ -192,7 +202,7 @@ TODO:
 				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even" id="{id}">
 					<div class="user" id="user-{user/id}">
 						<div class="user-image"><a title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}' onclick='openInBrowser("http://twitter.com/{user/screen_name}")'><img height="48" width="48" src="{user/profile_image_url}" alt='{user/screen_name}' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}'>{user/screen_name}</a></div>
+						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}' oncontextmenu='Spaz.Bridge.displayContextMenu(event)'>{user/screen_name}</a></div>
 					</div>
 			
 					<div class="status" id="status-{id}">
@@ -594,11 +604,31 @@ TODO:
 </div>
 
 
-</div>
-
 <div id="updateCheckWindow" class="popupWindow" style="display:none;"> 
 	Checking for updates...
 </div>
+
+
+
+<div id="linkContentMenu">
+	<ul>
+		<li id="menu-copyLink">Copy Link Address</li>
+		<li id="menu-copyImage">Copy Image</li>
+	</ul>
+</div>
+
+
+<!-- <div id="popupPanel" style="display:none">
+	<div id="popupPanel-dragBar" style="text-align:right"><span id="popupPanel-close" onclick="Spaz.UI.closePopup">[X]</span></div>
+	<div id="popupPanel-content">
+		Here's some static content for the panel
+	</div>
+</div> -->
+
+
+
+</div> <!-- End #container -->
+
 
 
 <!-- CACHE -->
@@ -615,18 +645,11 @@ TODO:
 
 
 
-<div id="popupPanel" style="display:none">
-	<div id="popupPanel-dragBar" style="text-align:right"><span id="popupPanel-close" onclick="Spaz.UI.closePopup">[X]</span></div>
-	<div id="popupPanel-content">
-		Here's some static content for the panel
-	</div>
-</div>
-
 
 
 
 <script type="text/javascript">
-<!--
+
 
 
 	/**
@@ -675,10 +698,7 @@ TODO:
 	Spaz.UI.onResize = function(){
 		Spaz.Bridge.startResize();
 	}
-
-	//-->
-
-
+	
 
 
 </script>

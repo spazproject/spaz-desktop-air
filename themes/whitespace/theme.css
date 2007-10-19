@@ -961,13 +961,14 @@ table.data td.value {
 	text-align:left;
 }
 
-
-.selecteditem
+/* selectables */
+.ui-selected
 {
-	background-color:#dddddd;
-	color:#333333;
+	background-color:#B7D5F6;
+	background-image:none !important;
+	color:#000000;
 }
-.selecthelper
+.ui-selecting
 {
 	background-color: #666666;
 	opacity: 0.3;

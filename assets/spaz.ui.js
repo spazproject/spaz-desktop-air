@@ -72,17 +72,24 @@ Spaz.UI.resetStatusBar = function() {
 }
 
 Spaz.UI.flashStatusBar = function() {
-	$('#statusbar').Pulsate(400, 2);
+	for (var i = 0;i < 3; i++) {
+		$('#statusbar').fadeOut(400);
+		$('#statusbar').fadeIn(400);
+	}
 }
 
 Spaz.UI.showLoading = function() {
 	//$('#loading').show();
-	$('#loading').DropInLeft(500);
+	$('#loading').fadeIn(500);	
+	// $('#loading').animate({left:currentLeft-100},500);
+	//$('#loading').DropInLeft(500);
+	
 }
 
 Spaz.UI.hideLoading = function() {
 	//$('#loading').hide();
-	$('#loading').DropOutLeft(500);
+	// $('#loading').DropOutLeft(500);
+	$('#loading').fadeOut(500);
 }
 
 /**
@@ -388,6 +395,11 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 	
 	if (notificationState == "onPostUpdate") {
 		Spaz.dump('onPostUpdate triggered');
+		
+		// make tweets selectable
+		$('div.timeline-entry').bind('click', function(event){
+			$('#'+event.target.id).toggleClass('ui-selected');
+		});
 		
 		// make it here so we don't instantiate on every loopthrough
 		var md = new Showdown.converter();

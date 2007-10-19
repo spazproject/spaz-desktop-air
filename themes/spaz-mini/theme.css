@@ -603,6 +603,7 @@ input[type='text']#prefs-opacity-percentage {
 	text-align:center;
 	width:13px;
 	height:13px;
+	opacity:0.5;
 }
 
 

@@ -31,6 +31,10 @@ Spaz.Cache.sourcesSize = function() {
 	}
 	return x;
 };
+Spaz.Cache.sourcesClear = function() {
+	Spaz.Cache.sources = {}
+	Spaz.dump('Cleared sources cache');
+};
 Spaz.Cache.sourcesDump = function() {
 	var str = '';
 	for(i in Spaz.Cache.sources) {
@@ -63,6 +67,10 @@ Spaz.Cache.statusesSize = function() {
 	}
 	return x;
 };
+Spaz.Cache.statusesClear = function() {
+	Spaz.Cache.statuses = {}
+	Spaz.dump('Cleared satuses cache');
+}
 Spaz.Cache.statusesDump = function() {
 	var str = '';
 	for(i in Spaz.Cache.statuses) {

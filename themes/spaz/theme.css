@@ -599,6 +599,7 @@ a.reload-button {
 	text-align:center;
 	width:13px;
 	height:13px;
+	opacity:0.5;
 }
 
 
@@ -793,6 +794,20 @@ table.data td.value {
 	text-align:left;
 }
 
+
+
+/* selectables */
+.ui-selected
+{
+	background-color:#B7D5F6 !important;
+	background-image:none !important;
+	color:#000000;
+}
+.ui-selecting
+{
+	background-color: #666666 !important;
+	opacity:0.6;
+}
 
 
 /* This is the selector for the main TabbedPanels container. For our

@@ -162,3 +162,11 @@ Spaz.dump = function(msg) {
 }
 
 
+Spaz.Debug.showProps = function(obj, objName) {
+	air.trace('dumping '+objName);
+	var result = "";
+	for (var i in obj) {
+	   result += objName + "." + i + " = " + obj[i] + "\n";
+	}
+	air.trace(result);
+}
