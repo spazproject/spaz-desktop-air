@@ -225,14 +225,16 @@ Spaz.childFrameInit = function() {
 			opacity: 	0.7,
 		});
 	});
+	
+	
 
 	// make tweets selectable
-	$('div.timeline-entry').bind('click', function(event){
-		$('#'+event.target.id).toggleClass('ui-selected');
-	});	
-	$('#friends-timeline').selectable({
-		filter:'div.timeline-entry'
-	});
+	// $('div.timeline-entry').bind('click', function(event){
+	// 	$('#'+event.target.id).toggleClass('ui-selected');
+	// });	
+	// $('#friends-timeline').selectable({
+	// 	filter:'div.timeline-entry'
+	// });
 
 
 	$('img.tab-icon').each( function(i) {

@@ -251,7 +251,8 @@ if(typeof runtime!='undefined'){
 	}
 	
 	$.cookie = function(arg1, arg2){
-		return Spaz.Bridge.cookie(arg1, arg2);	
+		//return Spaz.Bridge.cookie(arg1, arg2);	
+		alert('Cookie access deprecated');
 	}
 	
 	Spaz.Bridge.setCheckUpdateState = function(state){
@@ -381,7 +382,8 @@ if(typeof runtime!='undefined'){
 	}
 	
 	Spaz.Bridge.cookie = function (arg1, arg2){
-		return $.cookie(arg1, arg2);
+		// return $.cookie(arg1, arg2);
+		alert('Cookie access deprecated')
 	}
 	
 	Spaz.Bridge.verifyPassword = function(){

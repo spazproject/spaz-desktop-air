@@ -397,9 +397,11 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 		Spaz.dump('onPostUpdate triggered');
 		
 		// make tweets selectable
-		$('div.timeline-entry').bind('click', function(event){
-			$('#'+event.target.id).toggleClass('ui-selected');
-		});
+		// $('div.timeline-entry').bind('click', function(event){
+		// 	$('#'+event.target.id).toggleClass('ui-selected');
+		// });
+		
+		
 		
 		// make it here so we don't instantiate on every loopthrough
 		var md = new Showdown.converter();
@@ -493,7 +495,15 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 		// tab tooltip setup
 		$('img[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
 		
+		// contextmenu setup
+		// $('a', "#"+data.regionID).bind('contextmenu', function(event){
+		// 	
+		// })
+		$('a', '#'+data.regionID).contextMenu('linkContentMenu');
+		
 		$('br[clear]').hide();
+		
+		
 		
 		// init thickbox for this stuff
 		// tb_init('a.thickbox, area.thickbox, input.thickbox', "#"+data.regionID);//pass where to apply thickbox

@@ -211,12 +211,7 @@ Spaz.Prefs.loadPassword = function() {
 };
 
 Spaz.Prefs.setPrefs = function() {
-	// if ( Spry.Widget.Form.validate($('#prefs-form')[0]) ) {
-		Spaz.Bridge.verifyPassword();
-		// Spaz.Prefs.refreshInterval = 1000*60*parseInt($('#prefs-refresh-interval').val());
-		// if (Spaz.Prefs.refreshInterval < 1000*60*2) { Spaz.Prefs.refreshInterval = 1000*60*2; }
-		// if (Spaz.Prefs.refreshInterval > 1000*60*60) { Spaz.Prefs.refreshInterval = 1000*60*60; }
-	// }
+	Spaz.Bridge.verifyPassword();
 }
 
 Spaz.Prefs.setCurrentUser = function() {
