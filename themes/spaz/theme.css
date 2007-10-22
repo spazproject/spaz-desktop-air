@@ -809,6 +809,40 @@ table.data td.value {
 	opacity:0.6;
 }
 
+/* context menus */
+div.context-menu {
+	position:fixed;
+	z-index: 1010;
+	font-size:10px;
+	font-weight: bold;
+	top:10px;
+	left:10px;
+	overflow: auto;
+	background-color: #EEEEEE;
+	background-repeat: repeat-x;
+	border:2px solid #333333;
+	color:#333333;
+	-webkit-box-shadow:0px 0px 6px #333333;
+	display:none;
+	padding:5px;
+	opacity:0.8;
+	-khtml-border-radius:5px;
+}
+div.context-menu ul {
+	padding:0;
+	margin:0;
+	list-style: none;
+}
+div.context-menu li {
+	list-style: none;
+	padding:4px;
+}
+div.context-menu li:hover {
+	background-color:#333333;
+	color:#ffffff;
+	cursor: pointer;
+	-khtml-border-radius:5px;
+}
 
 /* This is the selector for the main TabbedPanels container. For our
  * default style, this container does not contribute anything visually,

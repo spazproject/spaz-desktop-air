@@ -130,7 +130,7 @@ TODO:
 
 
 <div id="tabs" class="TabbedPanels">
-	<ul class="TabbedPanelsTabGroup" id="timeline-tabs">
+	<ul class="TabbedPanelsTabGroup" id="timeline-tabs" tabindex="0">
 		<!-- YOUR TIMELINE -->
 		<li class="TabbedPanelsTab" tabindex="0" 
 			onmouseover="$('a.reload-button', '#'+this.id).show()" 
@@ -190,7 +190,7 @@ TODO:
 		<div class="TabbedPanelsContent" id="panel-friends">
 			<div spry:region="Spaz.Data.ds_friends" id="friends-timeline" class="timeline SpryHiddenRegion">
 				
-				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even" id="{id}">
+				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even">
 					<div class="user" id="user-{user/id}">
 						<div class="user-image"><a title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}' onclick='openInBrowser("http://twitter.com/{user/screen_name}")'><img height="48" width="48" src="{user/profile_image_url}" alt='{user/screen_name}' /></a></div>
 						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}'>{user/screen_name}</a></div>
@@ -396,7 +396,7 @@ TODO:
 					</div>
 					
 					<div id="prefs-style-fieldset" class="CollapsiblePanel">
-						<h2 class="CollapsiblePanelTab" tabindex="1">Style</h2>
+						<h2 class="CollapsiblePanelTab" tabindex="0">Style</h2>
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
 								<label for="user-stylesheet">User CSS</label>
@@ -424,7 +424,7 @@ TODO:
 					</div>
 					
 					<div id="prefs-sound-fieldset" class="CollapsiblePanel">
-						<h2 class="CollapsiblePanelTab" tabindex="3">Sound</h2>
+						<h2 class="CollapsiblePanelTab" tabindex="0">Sound</h2>
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
 								<label for="sound-enabled">Play sounds</label>
@@ -434,7 +434,7 @@ TODO:
 					</div>
 										
 					<div id="prefs-sound-fieldset" class="CollapsiblePanel">
-						<h2 class="CollapsiblePanelTab" tabindex="2">Upgrades</h2>
+						<h2 class="CollapsiblePanelTab" tabindex="0">Upgrades</h2>
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
 								<label for="sound-enabled">Check on startup</label>
@@ -445,7 +445,7 @@ TODO:
 					</div>
 
 					<div id="prefs-network-fieldset" class="CollapsiblePanel">
-						<h2 class="CollapsiblePanelTab" tabindex="4">Networking</h2>
+						<h2 class="CollapsiblePanelTab" tabindex="0">Networking</h2>
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
 								<label for="refresh-interval">Refresh interval</label>
@@ -456,7 +456,7 @@ TODO:
 					</div>
 					
 					<div id="prefs-debugging-fieldset" class="CollapsiblePanel">
-						<h2 class="CollapsiblePanelTab" tabindex="5">Debugging</h2>
+						<h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
 								<label for="debugging-enabled">Enabled</label>
@@ -489,7 +489,7 @@ TODO:
 
 <!-- ENTRYFORM -->
 <form id="entryform" onSubmit="return false;">
-	<textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar()'></textarea>
+	<textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar()' tabindex="0"></textarea>
 	<div id="entrystats"><span id="chars-left"></span> chars left</div>
 	<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" />
 </form>
@@ -610,7 +610,7 @@ TODO:
 
 
 
-<div id="linkContentMenu">
+<div id="linkContextMenu" class="context-menu">
 	<ul>
 		<li id="menu-copyLink">Copy Link Address</li>
 		<li id="menu-copyImage">Copy Image</li>
@@ -675,6 +675,10 @@ TODO:
 	Keyboard shortcut definitions
 	**/
 	document.onkeydown = Spaz.UI.keyboardHandler
+	
+	document.onmouseover = Spaz.UI.focusHandler
+	document.onmouseout  = Spaz.UI.blurHandler
+	
 
 
 	/* This is stuff we do right after the document is ready */

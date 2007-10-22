@@ -397,11 +397,20 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 		Spaz.dump('onPostUpdate triggered');
 		
 		// make tweets selectable
-		// $('div.timeline-entry').bind('click', function(event){
-		// 	$('#'+event.target.id).toggleClass('ui-selected');
-		// });
+		$('div.timeline-entry').each( function(index) {
+			$(this).bind('click', {el:this}, function(event){
+				var el = event.data.el;
+				Spaz.dump('selecting tweet');
+				$('div.timeline-entry').removeClass('ui-selected');
+				Spaz.dump('unselected tweets');
+				$(el).addClass('ui-selected');
+				Spaz.dump('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
+			});
+		});
 		
 		
+		
+	
 		
 		// make it here so we don't instantiate on every loopthrough
 		var md = new Showdown.converter();
@@ -499,7 +508,36 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 		// $('a', "#"+data.regionID).bind('contextmenu', function(event){
 		// 	
 		// })
-		$('a', '#'+data.regionID).contextMenu('linkContentMenu');
+		
+		//$('a', '#'+data.regionID).contextMenu('linkContextMenu');
+		$('a', '#'+data.regionID).each( function(i) {
+			$(this).bind('contextmenu', {el:this}, function(event) {
+				var el = event.data.el;
+				
+				// hide any showing tooltips
+				Spaz.dump('hiding tooltip');
+				$('#tooltip').hide();
+				
+				// show the link context menu
+				Spaz.dump('opening context menu');
+				$('#linkContextMenu').css('left', event.pageX)
+					.css('top',  event.pageY)
+					.show();
+				
+				//Spaz.dump($('#linkContextMenu'));
+				
+				//Spaz.dump('oncontextmenu:'+$(el).html());
+				$(document).one('click', function() {
+					$('#linkContextMenu').hide();
+				});
+				Spaz.dump('set one-time link context menu close event for click on document');
+			});
+		});
+		
+		$(document).one('click', function() {
+			$('#linkContextMenu').hide();
+		});
+		
 		
 		$('br[clear]').hide();
 		
@@ -568,5 +606,20 @@ Spaz.UI.keyboardHandler = function(event) {
 	return true;
 }
 
+Spaz.UI.focusHandler = function(event) {
+	e = event || window.event;
+	el = e.srcElement || e.target;
+	
+	// Spaz.Bridge.trace(e.name);
+	// Spaz.Bridge.trace(el.id);
+};
+
+Spaz.UI.blurHandler = function(event) {
+	e = event || window.event;
+	el = e.srcElement || e.target;
+	
+	// Spaz.Bridge.trace(e.name);
+	// Spaz.Bridge.trace(el.id);
+};
 
 //	$('#tab-friends .timeline-pager-number').html(4);

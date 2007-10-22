@@ -215,8 +215,6 @@ Spaz.Prefs.setPrefs = function() {
 }
 
 Spaz.Prefs.setCurrentUser = function() {
-	$.cookie('_twitter_session', null);
-	
 	Spaz.Prefs.user = $('#prefs-username').val();
 	Spaz.Prefs.pass = $('#prefs-password').val();
 	
