@@ -512,7 +512,7 @@ TODO:
 
 <div id="aboutWindow" class="popupWindow" style="display:none">
 	<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideAbout()" title="Close">&times;</span></div>
-	<img src="images/spaz-icon-alpha.png" width="64" height="64" id="spazIcon" />
+	<a onclick="openInBrowser('http://twitter.com/spaz/')"><img src="images/spaz-icon-alpha.png" width="64" height="64" id="spazIcon" /></a>
 	<h2>Spaz</h2>
 	<h3>A Twitter client for the Adobe Integrated Runtime</h3>
 	<p><a href="http://funkatron.com/apps/spaz/AIR/whatsnew.html" target="_blank"><span id="about-version"></span> – What's new</a></p>
@@ -524,9 +524,18 @@ TODO:
 	<ul>
 		<li><a onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
 		<li><a onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
+		<li><a onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
 	</ul>
 
-
+	<h3>Libraries used</h3>
+	<ul>
+		<li><a onclick="openInBrowser('http://www.jquery.com/');">jQuery</a></li>
+		<li><a onclick="openInBrowser('http://labs.adobe.com/technologies/spry/');">Spry</a></li>
+		<li><a onclick="openInBrowser('http://www.getfirebug.com/lite.html');">Firebug Lite</a></li>
+		<li><a onclick="openInBrowser('http://www.webtoolkit.info/javascript-md5.html');">Webtoolkit Base64</a></li>
+		<li><a onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html');">Showdown</a></li>
+	</ul>
+	
 	<table id="sysinfo">
 		<tr>
 			<td class="label">OS</td>
