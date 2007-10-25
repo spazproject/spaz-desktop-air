@@ -5,6 +5,7 @@ Spaz.UI
 ***********/
 if (!Spaz.UI) Spaz.UI = {};
 
+// the currently selected tab (should be the element)
 Spaz.UI.selectedTab = null;
 
 Spaz.UI.currentTheme = '';
@@ -18,6 +19,9 @@ Spaz.UI.entryBox = {};
 Spaz.UI.playSounds  = 1; // default state
 Spaz.UI.useMarkdown = 1;
 
+Spaz.UI.showContextMenus = 1;
+
+// Paths to sound files
 Spaz.UI.SOUND_UPDATE	= '/assets/sounds/TokyoTrainStation/Csnd.mp3';
 Spaz.UI.SOUND_STARTUP	= '/assets/sounds/TokyoTrainStation/On.mp3';
 Spaz.UI.SOUND_SHUTDOWN	= '/assets/sounds/TokyoTrainStation/Off.mp3';
@@ -420,7 +424,7 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 			if (statusHTML){
 				this.innerHTML = statusHTML;
 			} else {
-								
+				Spaz.dump('Pre-conversion:'+this.innerHTML);
 				// fix extra ampersand encoding
 				this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
 				
@@ -441,15 +445,20 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 				// @usernames at the beginning of lines
 				this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
 
-
+				
 				if (Spaz.UI.useMarkdown) {
+					Spaz.dump('Pre-Markdown:'+this.innerHTML);
 					// Markdown conversion with Showdown
 					this.innerHTML = md.makeHtml(this.innerHTML);
-
+					
+					Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
+					
 					// replace hrefs from markdown with onClick calls 
 					this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" title="Open $1 in a browser window" class="inline-link"');
 				}
-
+				
+				Spaz.dump('Post conversion:'+this.innerHTML);
+				
 				// cache this converted status
 				Spaz.Cache.setStatus(this.id, this.innerHTML);
 			}
@@ -503,47 +512,51 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 		// tab tooltip setup
 		$('img[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
 		
-				
-		//$('a', '#'+data.regionID).contextMenu('linkContextMenu');
-		$('a', '#'+data.regionID).each( function(i) {
-			$(this).bind('contextmenu', {el:this}, function(event) {
-				
-				var el = event.data.el;
-				
-				// hide any showing tooltips
-				Spaz.dump('hiding tooltip');
-				
-				$('#tooltip').hide();
-				
-				// show the link context menu
-				Spaz.dump('opening context menu');
-				$('#linkContextMenu').css('left', event.pageX)
-					.css('top',  event.pageY)
-					.show();
-
-				Spaz.dump('outerHTML:'+el.outerHTML);				
-				var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
-				var elurl = urlarray[0];
-				Spaz.dump('url from element:'+elurl);
-				
-				$('#menu-copyLink').one('click', {url:elurl}, function(event) {
-					Spaz.Bridge.setClipboardText(event.data.url);
-					Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
+		
+		if (Spaz.UI.showContextMenus) {
+			// add context menus
+			//$('a', '#'+data.regionID).contextMenu('linkContextMenu');
+			$('a', '#'+data.regionID).each( function(i) {
+				$(this).bind('contextmenu', {el:this}, function(event) {
+					
+					var el = event.data.el;
+					
+					// hide any showing tooltips
+					Spaz.dump('hiding tooltip');
+					
+					$('#tooltip').hide();
+					
+					// show the link context menu
+					Spaz.dump('opening context menu');
+					$('#linkContextMenu').css('left', event.pageX)
+						.css('top',  event.pageY)
+						.show();
+	
+					Spaz.dump('outerHTML:'+el.outerHTML);				
+					var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
+					if (urlarray.length > 0) {
+						var elurl = urlarray[0];
+					}
+					Spaz.dump('url from element:'+elurl);
+					
+					$('#menu-copyLink').one('click', {url:elurl}, function(event) {
+						Spaz.Bridge.setClipboardText(event.data.url);
+						Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
+					});
+					Spaz.dump('Set one-time click event on #menu-copyLink');
+					
+					$(document).one('click', function() {
+						$('#linkContextMenu').hide();
+					});
+					Spaz.dump('set one-time link context menu close event for click on document');
+					
 				});
-				Spaz.dump('Set one-time click event on #menu-copyLink');
-				
-				$(document).one('click', function() {
-					$('#linkContextMenu').hide();
-				});
-				Spaz.dump('set one-time link context menu close event for click on document');
-				
 			});
-		});
-		
-		$(document).one('click', function() {
-			$('#linkContextMenu').hide();
-		});
-		
+			
+			$(document).one('click', function() {
+				$('#linkContextMenu').hide();
+			});
+		}
 		
 		$('br[clear]').hide();
 		

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Spaz</title>
+
+<script type="text/javascript" src="/assets/AIRAliases.js"></script>
+
+<script src="assets/spaz.file.js"   type="text/javascript"></script>
+<script src="assets/spaz.debug.js"  type="text/javascript"></script>
+<script src="assets/spaz.info.js"   type="text/javascript"></script>
+<script src="assets/spaz.prefs.js"  type="text/javascript"></script>
+<script src="assets/spaz.update.js" type="text/javascript"></script>
+<script src="assets/spaz.bridge.js" type="text/javascript"></script>
+<script src="assets/spaz.menus.js" type="text/javascript" charset="utf-8"></script>
+
+
+<!-- Firebug lite -->
+<script language="javascript" type="text/javascript" src="assets/firebug/firebug.js"></script>
+
+
+
+</head>
+
+<body onload="makeLightweightWindow();">
+</body>
+</html>
+<script>
+
+function makeLightweightWindow() {
+	var options = new air.NativeWindowInitOptions();
+	options.systemChrome = "none";
+	
+	if (Spaz.Prefs.minimizeToSystray && air.Shell.supportsSystemTrayIcon) {
+		options.type = "lightweight";
+	}
+	
+	
+	
+	options.transparent = true
+	
+	var windowBounds = new air.Rectangle(200,250,300,400);
+	newWindow = window.runtime.flash.html.HTMLControl.createRootWindow(true, options, true, windowBounds);
+	newWindow.load(new runtime.flash.net.URLRequest("root.html"));
+}
+
+</script>

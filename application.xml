@@ -5,10 +5,11 @@
 	  <initialWindow>
 		<title>Spaz</title>
 	
-		<content>root.html</content>
+		<content>start.html</content>
 		<systemChrome>none</systemChrome>
 		<transparent>true</transparent>
 		<visible>false</visible>
+		
 	
 		<width>350</width> 
 		<height>580</height>

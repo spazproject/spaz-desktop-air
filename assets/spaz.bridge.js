@@ -281,6 +281,8 @@ if(typeof runtime!='undefined'){
 	Spaz.Bridge.displayContextMenu = function(event) {
 		Spaz.Menus.displayContextMenu(event);
 	}
+	
+	
 
 
 	Spaz.Bridge.getClipboardText = function() {
@@ -293,15 +295,18 @@ if(typeof runtime!='undefined'){
 	}
 
 	Spaz.Bridge.setClipboardText = function(text) {
+		//Spaz.dump('Current clipboard:'+Spaz.Bridge.getClipboardText());
 		Spaz.dump('Copying "' + text + '" to clipboard');
-		air.Clipboard.generalClipboard.clear();
-		Spaz.dump('Cleared generalClipboard');
-		var rs = air.Clipboard.generalClipboard.setData(text, "text/plain", false);
-		if (!rs) {
-			Spaz.dump('Copy to clipboard failed!');
-		} else {
-			Spaz.dump('Copy to clipboard succeeded!');
-		}
+		//air.Clipboard.generalClipboard.clear();
+		//Spaz.dump('Cleared generalClipboard');
+		//var rs = air.Clipboard.generalClipboard.setData(text, "text/plain", false);
+		air.System.setClipboard(text);
+		// if (!rs) {
+// 			Spaz.dump('Copy to clipboard failed!');
+// 		} else {
+// 			Spaz.dump('Copy to clipboard succeeded!');
+// 		}
+		//Spaz.dump('Current clipboard:'+Spaz.Bridge.getClipboardText());
 	}
 
 
@@ -340,7 +345,7 @@ if(typeof runtime!='undefined'){
 		
 		// this lets the Parent access the firebug console
 		Spaz.Bridge.console = console;
-			
+		
 	}
 	
 	Spaz.Bridge.$checkParent = function(){
@@ -494,16 +499,20 @@ if(typeof runtime!='undefined'){
 	
 	
 	Spaz.Bridge.menuAbout = function() {
-		
+		Spaz.UI.showAbout();
 	}
 	
 	Spaz.Bridge.menuHelp = function() {
-		
+		Spaz.UI.showHelp();
 	}
 	
-	Spaz.Bridge.menuCheckForUpdates = function() {
-		
+	Spaz.Bridge.menuFeedback = function() {
+		Spaz.UI.prepReply('spaz');
 	}
+	
+	// Spaz.Bridge.menuCheckForUpdates = function() {
+	// 	
+	// }
 	
 	
 	

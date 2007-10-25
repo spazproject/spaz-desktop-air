@@ -30,13 +30,16 @@
 </html>
 <script>
 function rootInit() {
+	
 	window.htmlControl.manageCookies = false;
 	window.htmlControl.paintsDefaultBackground = false;
 	//window.htmlControl.opaqueBackground(null);
 	window.htmlControl.filters = window.runtime.Array(
 				new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
 				);
-	Spaz.Menus.initAll();
+	if (Spaz.Prefs.showNativeMenus) {
+		Spaz.Menus.initAll();
+	}
 }
 
 </script>

@@ -130,13 +130,13 @@ if(typeof runtime!='undefined'){
 						console.dirxml(msg);
 						break;
 				}	
-				air.trace('DEBUG (string):'+msg);
+				air.trace('(string):'+msg);
 			} else {
 				console.dir(msg);
-				air.trace('DEBUG (obj):'+msg);
+				air.trace('(obj):'+msg);
 			}
 		} else {
-			air.trace('NODEBUG:'+msg);
+			air.trace(msg);
 		}
 	}
 

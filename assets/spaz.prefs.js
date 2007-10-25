@@ -10,8 +10,18 @@ Spaz.Prefs.XML; // The XML data
 Spaz.Prefs.stream; // The FileStream object used to read and write Spaz.Prefs.file data.
 Spaz.Prefs.user = '';
 Spaz.Prefs.pass = '';
+
+// Prefs for window look
 Spaz.Prefs.refreshInterval = 120000; // 2 minutes in msecs
 Spaz.Prefs.windowOpacity   = 100;
+
+// TODO: Prefs for window behaviors
+Spaz.Prefs.hideAfterDelay		= 1;
+Spaz.Prefs.restoreOnUpdates		= 1;
+Spaz.Prefs.minimizeToSystray	= 1;
+
+// Show NativeMenus -- hardcoded
+Spaz.Prefs.showNativeMenus 		= 1;
 
 Spaz.Prefs.load = function() {
 
