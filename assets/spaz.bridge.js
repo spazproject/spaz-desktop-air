@@ -58,6 +58,7 @@ if(typeof runtime!='undefined'){
 	
 	
 	
+	
 	Spaz.Bridge.navigateToURL = function (url){
 		window.runtime.flash.net.navigateToURL(new window.runtime.flash.net.URLRequest(url));
 	}
@@ -281,6 +282,35 @@ if(typeof runtime!='undefined'){
 		Spaz.Menus.displayContextMenu(event);
 	}
 
+
+	Spaz.Bridge.getClipboardText = function() {
+		if(air.Clipboard.generalClipboard.hasFormat("text/plain")){
+		    var text = air.Clipboard.generalClipboard.getData("text/plain");
+			return text;
+		} else {
+			return '';
+		}
+	}
+
+	Spaz.Bridge.setClipboardText = function(text) {
+		Spaz.dump('Copying "' + text + '" to clipboard');
+		air.Clipboard.generalClipboard.clear();
+		Spaz.dump('Cleared generalClipboard');
+		var rs = air.Clipboard.generalClipboard.setData(text, "text/plain", false);
+		if (!rs) {
+			Spaz.dump('Copy to clipboard failed!');
+		} else {
+			Spaz.dump('Copy to clipboard succeeded!');
+		}
+	}
+
+
+
+
+
+
+
+
 	
 }else{
 	
@@ -447,4 +477,34 @@ if(typeof runtime!='undefined'){
 	Spaz.Bridge.setPrefsFormVal = function(id, val) {
 		$('#'+id).val(val);
 	}
+	
+	
+	Spaz.Bridge.menuReload = function() {
+		Spaz.dump('in Spaz.Bridge.menuReload');
+		Spaz.UI.reloadCurrentTab();
+		Spaz.restartReloadTimer();
+	};
+	
+	
+	Spaz.Bridge.menuPrefs  = function() {
+		Spaz.dump('in Spaz.Bridge.menuPrefs');
+		Spaz.UI.setSelectedTab(7);
+		Spaz.UI.tabbedPanels.showPanel(7);
+	};
+	
+	
+	Spaz.Bridge.menuAbout = function() {
+		
+	}
+	
+	Spaz.Bridge.menuHelp = function() {
+		
+	}
+	
+	Spaz.Bridge.menuCheckForUpdates = function() {
+		
+	}
+	
+	
+	
 }

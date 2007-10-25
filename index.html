@@ -1,8 +1,15 @@
 <!--
 TODO:
+* copying to clipboard for context menus
+* NativeMenus
+* NativeMenus shortcuts
+* minimize to systray mode
+* auto-hide mode
+* auto-show on updates mode
+* User CSS
+* Soft restart
 * Feature: option to NOT save password
 * auto-completing usernames when typing "@" or "d "
-* Some sort of tinyURL or urlTea integration
 * Feature: View Favorites
 * Feature: block users
 	
@@ -48,7 +55,6 @@ TODO:
 	<!-- jQuery libs -->
 	<script src="assets/jquery-1.2.1.js" type="text/javascript"></script>
 	<script src="assets/jquery.tooltip/jquery.dimensions.js" type="text/javascript"></script>
-	<script src="assets/jquery.tooltip/chili-1.7.pack.js" type="text/javascript"></script>
 	<script src="assets/jquery.tooltip/jquery.tooltip.js" type="text/javascript"></script>
 	<script src="assets/jquery.moreSelectors.js" type="text/javascript"></script>
 	<script src="assets/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
@@ -205,8 +211,8 @@ TODO:
 				
 			</div>
 			<div class="timeline-pager">
-				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
-				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
 				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
 			</div>
 		</div>
@@ -233,8 +239,8 @@ TODO:
 				
 			</div>
 			<div class="timeline-pager">
-				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
-				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
 				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
 			</div>
 		</div>
@@ -260,8 +266,8 @@ TODO:
 				
 			</div>
 			<div class="timeline-pager">
-				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
-				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
 				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
 			</div>
 		</div>
@@ -284,8 +290,8 @@ TODO:
 				</div>
 			</div>
 			<div class="timeline-pager">
-				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
-				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
 				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
 			</div>
 		</div>
@@ -336,8 +342,8 @@ TODO:
 				</div>
 			</div>
 			<div class="timeline-pager">
-				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
-				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
 				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
 			</div>
 		</div>
@@ -368,8 +374,8 @@ TODO:
 				</div>
 			</div>
 			<div class="timeline-pager">
-				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(selectedTab);" title="Load newer entries">&laquo;</a></div>				
-				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(selectedTab);" title="Load older entries">&raquo;</a></div>
+				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
+				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
 				<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
 			</div>
 		</div>
@@ -613,7 +619,6 @@ TODO:
 <div id="linkContextMenu" class="context-menu">
 	<ul>
 		<li id="menu-copyLink">Copy Link Address</li>
-		<li id="menu-copyImage">Copy Image</li>
 	</ul>
 </div>
 
@@ -655,20 +660,20 @@ TODO:
 	/**
 	 * Default prefs vars
 	 */
-	var selectedTab = null;
-
 	var reloadID; // identifier for the auto-reloader
-	var memoryRefreshID; 
+	var memoryRefreshID; // identifier for the memory reporter
 
 	var entryBoxHint = "What are you doing?";
 
 	var toolTipPrefs = {
 		track: false, 
-		delay: 300, 
+		delay: 0, 
 		showURL: false, 
 		showBody: false,
 		extraClass: "tab-tooltip",
 		opacity: 0.8,
+		top:10,
+		left:0
 	};
 
 	/**

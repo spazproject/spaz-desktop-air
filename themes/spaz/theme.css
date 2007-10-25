@@ -334,8 +334,6 @@ div.user-follow {
 }
 
 span.status-protected img {
-	width:16px;
-	height:16px;
 	position:absolute;
 	opacity:0.8;
 }
@@ -612,7 +610,7 @@ div.popupWindow {
 	font-size:12px;
 	width: 275px;
 	height:300px;
-	top:10px;
+	top: 10px;
 	left:10px;
 	overflow: auto;
 	background-image: url('images/entry-odd-bg.png');
@@ -799,8 +797,8 @@ table.data td.value {
 /* selectables */
 .ui-selected
 {
-	background-color:#B7D5F6 !important;
-	background-image:none !important;
+	background-color:#D3D7FA !important;
+	background-image: url('images/entry-selected-bg.png') !important;
 	color:#000000;
 }
 .ui-selecting
@@ -814,13 +812,13 @@ div.context-menu {
 	position:fixed;
 	z-index: 1010;
 	font-size:10px;
-	font-weight: bold;
+	font-weight: normal;
 	top:10px;
 	left:10px;
 	overflow: auto;
 	background-color: #EEEEEE;
 	background-repeat: repeat-x;
-	border:2px solid #333333;
+	border:1px solid #333333;
 	color:#333333;
 	-webkit-box-shadow:0px 0px 6px #333333;
 	display:none;

@@ -2,6 +2,13 @@ var Spaz; if (!Spaz) Spaz = {};
 if (!Spaz.Menus) Spaz.Menus = {};
 
 
+// Spaz.Menus.methods = new object{
+// 	'Preferences…':			Spaz.Bridge.Menus.prefs,
+// 	'Reload current view': 	Spaz.Bridge.Menus.reload, 
+// }
+
+
+
 Spaz.Menus.initAll = function() {
 	//For application menu (on MAC OS X)
 	if(air.Shell.supportsMenu){
@@ -20,17 +27,32 @@ Spaz.Menus.displayContextMenu = function(event) {
 
 //Reports the chosen menu command
 Spaz.Menus.itemSelected = function(event){
-	air.trace("Selected item: " + event.target.label);
-	Spaz.Debug.showProps(event.target, 'eventtarget');
-	air.trace('event.target:' + event.target);
+	Spaz.dump("Selected item: " + event.target.label);
+//	Spaz.Debug.showProps(event.target, 'eventtarget');
+	Spaz.dump('event.target.name:' + event.target.name);
 //	Spaz.Debug.showProps(Spaz.Menus, 'Spaz.Menus');
-	console.open();
-	console.log('event.target:');
-	console.dir(event.target);
-	console.log('Spaz.Menus:');
-	console.dir(Spaz.Menus);
+//	console.open();
+	// console.log('event.target:');
+	// console.dir(event.target);
 	
-	//eventLog.innerHTML = "Selected item: " + event.target.label + "\n";
+	//eventLog.innerHTML = "Selected item: " + event.target.label + "\n";e
+	
+	if (event.target.name == "reload") {
+		Spaz.dump('Calling Spaz.Bridge.menuReload');
+		Spaz.Bridge.menuReload();
+	}
+	
+	else if (event.target.name == "prefs") {
+		Spaz.dump('Calling Spaz.Bridge.menuPrefs');
+		Spaz.Bridge.menuPrefs();
+	}
+	
+	else {
+		Spaz.dump('No matching call for this menu item');
+	}
+	
+	
+	
 }
 
 Spaz.Menus.createContextMenu = function() {
@@ -50,6 +72,22 @@ Spaz.Menus.createRootMenu = function(type){
 	}
 	menu.addSubmenu(Spaz.Menus.createViewMenu(),"View");
 	menu.addSubmenu(Spaz.Menus.createHelpMenu(),"Help");
+	
+	// var appmenu = menu.items[1].submenu;
+	
+	// console.open();
+	// console.log('EditMenu:');
+	// console.dir(appmenu);
+	
+// 	for(var i = 0; i < appmenu.items.length; i++){
+// 		item = appmenu.items[i];
+// 		console.open();
+// 		console.log('Item'+i+":");
+// 		console.log(item.label);
+// 		console.dir(item);
+// //		item.addEventListener(air.Event.SELECT,Spaz.Menus.itemSelected);
+// 	}
+	
 	return menu;
 }
 
@@ -83,8 +121,29 @@ Spaz.Menus.createEditMenu = function(){
 }
 
 Spaz.Menus.createViewMenu = function(){
+	
+	// 17 = CONTROL
+	// 16 = SHIFT
+	// 15 = CMD
+	
+	var miReload = new air.NativeMenuItem("Reload current view");
+	miReload.name = 'reload';
+	miReload.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.ALTERNATE);
+	miReload.keyEquivalentModifiers.mnemonicIndex = 0;
+	miReload.keyEquivalent = 'r';
+
+	
+	var miPrefs = new air.NativeMenuItem("Preferences…");
+	miPrefs.name = 'prefs';
+	miPrefs.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
+	miReload.keyEquivalentModifiers.mnemonicIndex = 0;
+	miPrefs.keyEquivalent = ',';
+
+	
 	var menu = new air.NativeMenu();
-	menu.addItem(new air.NativeMenuItem("Reload current view"));
+	menu.addItem(miReload);
+	menu.addItem(miPrefs);
+	
 	for(var i = 0; i < menu.items.length; i++){
 		item = menu.items[i];
 		item.addEventListener(air.Event.SELECT,Spaz.Menus.itemSelected);

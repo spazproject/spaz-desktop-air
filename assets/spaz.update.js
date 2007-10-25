@@ -197,15 +197,15 @@ if(typeof runtime!='undefined'){
 		
 		var pieces = siteVersion.split('.');
 		Spaz.dump(pieces);
-		siteV.major = pieces[0];
-		siteV.minor = pieces[1];
-		siteV.micro = pieces[2];
+		siteV.major = parseInt(pieces[0]);
+		siteV.minor = parseInt(pieces[1]);
+		siteV.micro = parseInt(pieces[2]);
 		
 		var pieces = currentVersion.split('.');
 		Spaz.dump(pieces);
-		currV.major = pieces[0];
-		currV.minor = pieces[1];
-		currV.micro = pieces[2];
+		currV.major = parseInt(pieces[0]);
+		currV.minor = parseInt(pieces[1]);
+		currV.micro = parseInt(pieces[2]);
 		
 		
 		if (siteV.major > currV.major) {
@@ -321,6 +321,8 @@ if(typeof runtime!='undefined'){
 	Spaz.Update.prototype.handleUpgrade = function(str)
 	{
 	   this.uiDiv.innerHTML = str; //Spaz.Utils.prepareTemplate(this.ui['upgrade'], this.updateXMLLoadedProperties);
+	   
+	   Spaz.UI.centerPopup(this.uiDiv.id);
 	   this.uiDiv.style.display = "block";
 	   var self = this;
 	

@@ -5,6 +5,8 @@ Spaz.UI
 ***********/
 if (!Spaz.UI) Spaz.UI = {};
 
+Spaz.UI.selectedTab = null;
+
 Spaz.UI.currentTheme = '';
 Spaz.UI.userStyleSheet = '';
 Spaz.UI.themeDir = '';
@@ -13,7 +15,7 @@ Spaz.UI.tabbedPanels = {};
 
 Spaz.UI.entryBox = {};
 
-Spaz.UI.playSounds = 1; // default state
+Spaz.UI.playSounds  = 1; // default state
 Spaz.UI.useMarkdown = 1;
 
 Spaz.UI.SOUND_UPDATE	= '/assets/sounds/TokyoTrainStation/Csnd.mp3';
@@ -145,15 +147,37 @@ Spaz.UI.markdownOff = function() {
 	Spaz.UI.useMarkdown = 0;
 }
 
-Spaz.UI.showAbout = function() {
-	//$('div.popupWindow').fadeTo('fast', 0);
-	Spaz.dump('showing aboutWindow...');
-	$('#aboutWindow').fadeTo('fast', 1.0, function() {
-		Spaz.dump('fadeIn:'+'faded in!');
-		Spaz.dump('fadeIn:'+$('#aboutWindow').css('display'));
-		Spaz.dump('fadeIn:'+$('#aboutWindow').css('opacity'));
+
+Spaz.UI.showPopup = function(panelid) {
+	Spaz.dump('showing '+panelid+'...');
+	$('#'+panelid).css('opacity', 0);
+	$('#'+panelid).show();
+	$('#'+panelid).fadeTo('fast', 1.0, function() {
+		Spaz.dump(panelid+':fadeIn:'+'faded in!');
+		Spaz.dump(panelid+':display:'+$('#'+panelid).css('display'));
+		Spaz.dump(panelid+':opacity:'+$('#'+panelid).css('opacity'));
 	});
-	Spaz.UI.centerPopup('aboutWindow');
+	Spaz.UI.centerPopup(panelid);
+};
+Spaz.UI.hidePopup = function(panelid) {
+	Spaz.dump('hiding '+panelid+'...');
+	$('#'+panelid).fadeTo('fast', 0, function(){
+		Spaz.dump('fadeOut:'+'faded out!');
+		Spaz.dump('fadeOut:'+$('#'+panelid).css('display'));
+		Spaz.dump('fadeOut:'+$('#'+panelid).css('opacity'));
+		$('#'+panelid).hide();
+	});
+}
+
+
+Spaz.UI.showUpdateCheck = function() {
+	Spaz.UI.showPopup('updateCheckWindow');
+}
+Spaz.UI.hideUpdateCheck = function() {
+	Spaz.UI.hidePopup('updateCheckWindow');
+}
+Spaz.UI.showAbout = function() {
+	Spaz.UI.showPopup('aboutWindow');
 	var info = Spaz.Bridge.getRuntimeInfo();
 	$('#sysinfo-os').text(info.os);
 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
@@ -164,55 +188,23 @@ Spaz.UI.updateMemoryUsage = function() {
 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
 }
 Spaz.UI.hideAbout = function() {
-	Spaz.dump('hiding aboutWindow...');
-	$('#aboutWindow').fadeTo('fast', 0, function(){
-		Spaz.dump('fadeOut:'+'faded out!');
-		Spaz.dump('fadeOut:'+$('#aboutWindow').css('display'));
-		Spaz.dump('fadeOut:'+$('#aboutWindow').css('opacity'));
-		$('#aboutWindow').hide();
-	});
+	Spaz.UI.hidePopup('aboutWindow');
 }
 Spaz.UI.showHelp = function() {
-	//$('div.popupWindow').fadeTo('fast', 0);
-	Spaz.dump('showing helpWindow...');
-	$('#helpWindow').fadeTo('fast', 1.0, function() {
-		Spaz.dump('fadeIn:'+'faded in!');
-		Spaz.dump('fadeIn:'+$('#helpWindow').css('display'));
-		Spaz.dump('fadeIn:'+$('#helpWindow').css('opacity'));
-	});
-	Spaz.UI.centerPopup('helpWindow');
+	Spaz.UI.showPopup('helpWindow');
 }
 Spaz.UI.hideHelp = function() {
-	Spaz.dump('hiding helpWindow...');
-	$('#helpWindow').fadeTo('fast', 0, function(){
-		Spaz.dump('fadeOut:'+'faded out!');
-		Spaz.dump('fadeOut:'+$('#helpWindow').css('display'));
-		Spaz.dump('fadeOut:'+$('#helpWindow').css('opacity'));
-		$('#helpWindow').hide();
-	});
+	Spaz.UI.hidePopup('helpWindow');
 }
 Spaz.UI.showShortLink = function() {
-	//$('div.popupWindow').fadeTo('fast', 0);
-	Spaz.dump('showing shortLinkWindow...');
-	$('#shortLinkWindow').fadeTo('fast', 1.0, function() {
-		Spaz.dump('fadeIn:'+'faded in!');
-		Spaz.dump('fadeIn:'+$('#shortLinkWindow').css('display'));
-		Spaz.dump('fadeIn:'+$('#shortLinkWindow').css('opacity'));
-	});
-	Spaz.UI.centerPopup('shortLinkWindow');
+	Spaz.UI.showPopup('shortLinkWindow');
 	Spaz.dump("val:"+$('#shorten-original-link').val());
 	$('#shorten-original-link').focus();
 	$('#shorten-original-link').val('http://');
 	$('#shorten-original-link').select();
 }
 Spaz.UI.hideShortLink = function() {
-	Spaz.dump('hiding shortLinkWindow...');
-	$('#shortLinkWindow').fadeTo('fast', 0, function(){
-		Spaz.dump('fadeOut:'+'faded out!');
-		Spaz.dump('fadeOut:'+$('#shortLinkWindow').css('display'));
-		Spaz.dump('fadeOut:'+$('#shortLinkWindow').css('opacity'));
-		$('#shortLinkWindow').hide();
-	});
+	Spaz.UI.hidePopup('shortLinkWindow');
 }
 
 Spaz.UI.pageLeft = function(tabEl) {
@@ -256,16 +248,16 @@ Spaz.UI.showLocationOnMap = function(location) {
 	openInBrowser(url);
 };
 
-Spaz.UI.showPopup = function(contentid) {
-	if (!Spaz.UI.popupPanel) {
-		Spaz.UI.popupPanel = new Spry.Widget.HTMLPanel("mainContent");
-	}
-	Spaz.UI.popupPanel.setContent($('#'+contentid).html());
-}
+// Spaz.UI.showPopup = function(contentid) {
+// 	if (!Spaz.UI.popupPanel) {
+// 		Spaz.UI.popupPanel = new Spry.Widget.HTMLPanel("mainContent");
+// 	}
+// 	Spaz.UI.popupPanel.setContent($('#'+contentid).html());
+// }
 
-Spaz.UI.showWhatsNew = function() {
-	Spaz.UI.popupPanel.loadContent('whatsnew.html');
-}
+// Spaz.UI.showWhatsNew = function() {
+// 	Spaz.UI.popupPanel.loadContent('whatsnew.html');
+// }
 
 
 // taken from ThickBox 
@@ -277,7 +269,7 @@ Spaz.UI.centerPopup = function(windowid) {
 	jqWin.css('margin', 0);	
 	
 	// WIDTH
-	var winWidth = jqWin[0].scrollWidth;
+	var winWidth = jqWin.outerWidth();
 	if (jqBody.width() > winWidth) {
 		jqWin.css('left', (jqBody.width() - winWidth)/2);
 	} else {
@@ -287,7 +279,7 @@ Spaz.UI.centerPopup = function(windowid) {
 	}
 	
 	// HEIGHT
-	var winHeight = jqWin[0].scrollHeight;
+	var winHeight = jqWin.outerHeight();
 	if (jqBody.height() > winHeight) {
 		jqWin.css('top', (jqBody.height() - winHeight)/2);
 	} else {
@@ -297,7 +289,7 @@ Spaz.UI.centerPopup = function(windowid) {
 	}
 	// jqBody.css('border', '1px solid red');
 	// jqWin.css('border', '1px solid blue');
-	
+	Spaz.dump("windowid:#"+windowid);
 	Spaz.dump("jqBody.height():"+jqBody.height());
 	Spaz.dump("jqBody.width() :"+jqBody.width() );
 	Spaz.dump("jqWin.height() :"+winHeight);
@@ -330,9 +322,15 @@ Spaz.UI.prepDirectMessage = function(username) {
 
 Spaz.UI.prepReply = function(username) {
 	var eb = $('#entrybox');
+	var newText = '@'+username+' ';
 	eb.focus();
-	eb.val('@'+username+': ...');
-	eb[0].setSelectionRange(eb.val().length-3, eb.val().length)
+	if (eb.val() != '') {
+		eb.val(newText + eb.val());
+		eb[0].setSelectionRange(eb.val().length, eb.val().length);
+	} else {
+		eb.val('@'+username+': ...');
+		eb[0].setSelectionRange(eb.val().length-3, eb.val().length);
+	}
 };
 
 /* sends a twitter status update for the current user */
@@ -355,8 +353,8 @@ Spaz.UI.decodeSourceLinkEntities = function(str) {
 
 
 Spaz.UI.setSelectedTab = function(tab) {
-	selectedTab = tab;
-	Spaz.dump('selectedTab: '+ selectedTab.id);
+	Spaz.UI.selectedTab = tab;
+	Spaz.dump('Spaz.UI.selectedTab: '+ Spaz.UI.selectedTab.id);
 	
 	Spaz.restartReloadTimer();
 	
@@ -370,13 +368,13 @@ Spaz.UI.setSelectedTab = function(tab) {
 
 Spaz.UI.reloadCurrentTab = function() {
 	Spaz.dump('reloading the current tab');
-	Spaz.Data.loadDataForTab(selectedTab);
+	Spaz.Data.loadDataForTab(Spaz.UI.selectedTab);
 }
 
 
 Spaz.UI.autoReloadCurrentTab = function() {
 	Spaz.dump('auto-reloading the current tab');
-	Spaz.Data.loadDataForTab(selectedTab, true);
+	Spaz.Data.loadDataForTab(Spaz.UI.selectedTab, true);
 }
 
 
@@ -498,24 +496,23 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 			}
 		});
 
+
 		// tab tooltip setup
 		$('a[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
 
 		// tab tooltip setup
 		$('img[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
 		
-		// contextmenu setup
-		// $('a', "#"+data.regionID).bind('contextmenu', function(event){
-		// 	
-		// })
-		
+				
 		//$('a', '#'+data.regionID).contextMenu('linkContextMenu');
 		$('a', '#'+data.regionID).each( function(i) {
 			$(this).bind('contextmenu', {el:this}, function(event) {
+				
 				var el = event.data.el;
 				
 				// hide any showing tooltips
 				Spaz.dump('hiding tooltip');
+				
 				$('#tooltip').hide();
 				
 				// show the link context menu
@@ -523,14 +520,23 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 				$('#linkContextMenu').css('left', event.pageX)
 					.css('top',  event.pageY)
 					.show();
+
+				Spaz.dump('outerHTML:'+el.outerHTML);				
+				var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
+				var elurl = urlarray[0];
+				Spaz.dump('url from element:'+elurl);
 				
-				//Spaz.dump($('#linkContextMenu'));
+				$('#menu-copyLink').one('click', {url:elurl}, function(event) {
+					Spaz.Bridge.setClipboardText(event.data.url);
+					Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
+				});
+				Spaz.dump('Set one-time click event on #menu-copyLink');
 				
-				//Spaz.dump('oncontextmenu:'+$(el).html());
 				$(document).one('click', function() {
 					$('#linkContextMenu').hide();
 				});
 				Spaz.dump('set one-time link context menu close event for click on document');
+				
 			});
 		});
 		
@@ -579,9 +585,23 @@ Spaz.UI.keyboardHandler = function(event) {
 		return false;
 	}
 	
+	// '@' reply to selected user
+	if (e.which == 50 && e.shiftKey && e.srcElement.id == 'home') {
+		// get the current selection username
+		Spaz.dump('getting current selection');
+		Spaz.dump('getting username from current selection');
+		console.open();
+		console.dir($('.ui-selected .user-screen-name', Spaz.UI.selectedTab));
+		var username = $('div.ui-selected .user-screen-name').text();
+		
+		console.log('username is:'+username);
+//		var username = '';
+		Spaz.UI.prepReply(username);
+		return false;
+	}
 
 	// '1-9' Numbers for tabs
-	if ( (e.which >= 49 && e.which <= 56) && e.srcElement.id == 'home') {
+	if ( (e.which >= 49 && e.which <= 56) && !e.shiftKey && e.srcElement.id == 'home') {
 		var panelId = e.which-49;
 		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[panelId]);
 		Spaz.UI.tabbedPanels.showPanel(panelId);
