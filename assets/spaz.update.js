@@ -158,9 +158,9 @@ if(typeof runtime!='undefined'){
 		
 		var fileData = new air.ByteArray();
 		this.urlStream.readBytes(fileData, 0, this.urlStream.bytesAvailable);
-		air.trace("DL filename:"+this.updateXMLLoadedProperties["filename"])
+		Spaz.dump("DL filename:"+this.updateXMLLoadedProperties["filename"])
 		var appStorageDir = air.File.applicationStorageDirectory;
-		air.trace("AppStorageDir:"+appStorageDir.nativePath);
+		Spaz.dump("AppStorageDir:"+appStorageDir.nativePath);
 		var file = air.File.applicationStorageDirectory.resolvePath(this.updateXMLLoadedProperties["filename"]);
 		
 		var fileStream = new air.FileStream();
@@ -334,7 +334,7 @@ if(typeof runtime!='undefined'){
 	Spaz.Update.prototype.updateBtnClick = function() 
 	{
 		// @TODO: check EULA
-		air.trace('updateBtnClick()');
+		Spaz.dump('updateBtnClick()');
 		this.uiDiv.innerHTML = 'Downloading upgrade...';
 		Spaz.Bridge.startDownloadNewVersion();
 	};

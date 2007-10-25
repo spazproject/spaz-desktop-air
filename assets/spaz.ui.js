@@ -588,15 +588,13 @@ Spaz.UI.keyboardHandler = function(event) {
 	// '@' reply to selected user
 	if (e.which == 50 && e.shiftKey && e.srcElement.id == 'home') {
 		// get the current selection username
-		Spaz.dump('getting current selection');
-		Spaz.dump('getting username from current selection');
-		console.open();
-		console.dir($('.ui-selected .user-screen-name', Spaz.UI.selectedTab));
-		var username = $('div.ui-selected .user-screen-name').text();
+		// Spaz.dump('getting current selection');
+		Spaz.dump('getting screenname from current selection');
+		var screenname = $('div.ui-selected .user-screen-name').text();
 		
-		console.log('username is:'+username);
+		Spaz.dump('username for reply is:'+screenname);
 //		var username = '';
-		Spaz.UI.prepReply(username);
+		Spaz.UI.prepReply(screenname);
 		return false;
 	}
 

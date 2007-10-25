@@ -79,14 +79,14 @@ Spaz.Menus.createRootMenu = function(type){
 	// console.log('EditMenu:');
 	// console.dir(appmenu);
 	
-// 	for(var i = 0; i < appmenu.items.length; i++){
-// 		item = appmenu.items[i];
-// 		console.open();
-// 		console.log('Item'+i+":");
-// 		console.log(item.label);
-// 		console.dir(item);
-// //		item.addEventListener(air.Event.SELECT,Spaz.Menus.itemSelected);
-// 	}
+	// 	for(var i = 0; i < appmenu.items.length; i++){
+	// 		item = appmenu.items[i];
+	// 		console.open();
+	// 		console.log('Item'+i+":");
+	// 		console.log(item.label);
+	// 		console.dir(item);
+	// //		item.addEventListener(air.Event.SELECT,Spaz.Menus.itemSelected);
+	// 	}
 	
 	return menu;
 }
