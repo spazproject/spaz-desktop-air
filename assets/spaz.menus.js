@@ -26,7 +26,7 @@ Spaz.Menus.initAll = function() {
         iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
                                                 Spaz.Menus.iconLoadComplete);
         iconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
-        air.Shell.shell.icon.menu = iconMenu;
+        air.Shell.shell.icon.menu = Spaz.Menus.createRootMenu();
     } else if(air.Shell.supportsSystemTrayIcon) {
 		Spaz.dump('Making Windows system tray menu')
 	    air.Shell.shell.icon.tooltip = "Spaz loves you";
@@ -69,10 +69,10 @@ Spaz.Menus.displayContextMenu = function(event) {
 //Reports the chosen menu command
 Spaz.Menus.itemSelected = function(event){
 	Spaz.dump("Selected item: " + event.target.label);
-//	Spaz.Debug.showProps(event.target, 'eventtarget');
+	//	Spaz.Debug.showProps(event.target, 'eventtarget');
 	Spaz.dump('event.target.name:' + event.target.name);
-//	Spaz.Debug.showProps(Spaz.Menus, 'Spaz.Menus');
-//	console.open();
+	//	Spaz.Debug.showProps(Spaz.Menus, 'Spaz.Menus');
+	//	console.open();
 	// console.log('event.target:');
 	// console.dir(event.target);
 	
@@ -161,7 +161,7 @@ Spaz.Menus.createFileMenu = function(){
 	var menu = new air.NativeMenu();
 	menu.addItem(new air.NativeMenuItem("",true));//separator
 	
-	var miExit = new air.NativeMenuItem("Exit");
+	var miExit = new air.NativeMenuItem("Quit Spaz");
 	miExit.name = 'exit';
 	miExit.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
 	miExit.mnemonicIndex = 0;

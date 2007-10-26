@@ -1,7 +1,7 @@
 <!--
 TODO:
 * NativeMenus
-* NativeMenus shortcuts
+* NativeMenus keyboard shortcuts
 * Open user Account Info panel on start
 * minimize to systray mode - need user-defined pref loaded by start.html
 * minimize on close mode
@@ -9,13 +9,14 @@ TODO:
 * Notification popups
 * auto-hide mode
 * auto-show on updates mode
+* always on top mode
 * User CSS
 * Soft restart
 * Feature: option to NOT save password
 * auto-completing usernames when typing "@" or "d "
 * Feature: View Favorites
 * Feature: block users
-	
+* snap-to-edge of screen	
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:spry="http://ns.adobe.com/spry">
@@ -102,7 +103,6 @@ TODO:
 
 <h1 id="header" onmousedown="Spaz.UI.onNativeMove();">
 	<div id="window-buttons">
-
 		<span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
 		<span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span>
 		<span id="minimize" class="window-button" onclick="nativeWindow.minimize()" title="Minimize">&ndash;</span>
@@ -405,7 +405,7 @@ TODO:
 					</div>
 					
 					<div id="prefs-style-fieldset" class="CollapsiblePanel">
-						<h2 class="CollapsiblePanelTab" tabindex="0">Style</h2>
+						<h2 class="CollapsiblePanelTab" tabindex="0">Interface</h2>
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
 								<label for="user-stylesheet">User CSS</label>
@@ -429,6 +429,11 @@ TODO:
 								<label for="markdown-enabled">Use Markdown</label>
 								<input type="checkbox" name="markdown-enabled" value="1" id="prefs-markdown-enabled" onclick="Spaz.UI.setMarkdownState(this.checked)" />
 							</div>
+							<div class="formrow">
+								<label for="markdown-enabled">Use Markdown</label>
+								<input type="checkbox" name="markdown-enabled" value="1" id="prefs-markdown-enabled" onclick="Spaz.UI.setMarkdownState(this.checked)" />
+							</div>
+
 						</div>
 					</div>
 					

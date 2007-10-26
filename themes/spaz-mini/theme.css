@@ -830,13 +830,13 @@ div.context-menu {
 	position:fixed;
 	z-index: 1010;
 	font-size:10px;
-	font-weight: bold;
+	font-weight: normal;
 	top:10px;
 	left:10px;
 	overflow: auto;
-	background-color: #EEEEEE;
+	background-color: #FFFFFF;
 	background-repeat: repeat-x;
-	border:2px solid #333333;
+/*	border:1px solid #333333;*/
 	color:#333333;
 	-webkit-box-shadow:0px 0px 6px #333333;
 	display:none;

@@ -19,7 +19,7 @@ Spaz.UI.entryBox = {};
 Spaz.UI.playSounds  = 1; // default state
 Spaz.UI.useMarkdown = 1;
 
-Spaz.UI.showContextMenus = 1;
+Spaz.UI.showContextMenus = 1; // hard-coded - this works properly now
 
 // Paths to sound files
 Spaz.UI.SOUND_UPDATE	= '/assets/sounds/TokyoTrainStation/Csnd.mp3';
@@ -534,21 +534,24 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 	
 					Spaz.dump('outerHTML:'+el.outerHTML);				
 					var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
-					if (urlarray.length > 0) {
+					if (urlarray && urlarray.length > 0) {
 						var elurl = urlarray[0];
+					
+						Spaz.dump('url from element:'+elurl);
+					
+						$('#menu-copyLink').one('click', {url:elurl}, function(event) {
+							Spaz.Bridge.setClipboardText(event.data.url);
+							Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
+						});
+						Spaz.dump('Set one-time click event on #menu-copyLink');
+					
+						$(document).one('click', function() {
+							$('#linkContextMenu').hide();
+						});
+						Spaz.dump('set one-time link context menu close event for click on document');
+					} else {
+						Spaz.dump('no http link found');
 					}
-					Spaz.dump('url from element:'+elurl);
-					
-					$('#menu-copyLink').one('click', {url:elurl}, function(event) {
-						Spaz.Bridge.setClipboardText(event.data.url);
-						Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
-					});
-					Spaz.dump('Set one-time click event on #menu-copyLink');
-					
-					$(document).one('click', function() {
-						$('#linkContextMenu').hide();
-					});
-					Spaz.dump('set one-time link context menu close event for click on document');
 					
 				});
 			});
