@@ -35,7 +35,7 @@ Spaz.Menus.initAll = function() {
 	    systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
 	                                                            Spaz.Menus.iconLoadComplete);
 	    systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
-	    air.Shell.shell.icon.addEventListener(window.runtime.flash.events.MouseEvent.CLICK, Spaz.Menus.onSystrayClick);
+	    air.Shell.shell.icon.addEventListener('click', Spaz.Menus.onSystrayClick);
 	}
 	
 	Spaz.dump('Create Native context Menus');
@@ -45,10 +45,15 @@ Spaz.Menus.initAll = function() {
 
 Spaz.Menus.onSystrayClick = function(event) {
 	Spaz.dump('clicked on systray');
+	Spaz.dump(nativeWindow.displayState);
+	Spaz.dump('id:'+air.Shell.shell.id);
+	
 	if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
 		Spaz.dump('restoring window');
  		nativeWindow.restore();
  	}
+ 	Spaz.dump('activating application');
+ 	air.Shell.shell.activateApplication()
 	Spaz.dump('activating window');
 	nativeWindow.activate();
 	Spaz.dump('ordering-to-front window');

@@ -556,7 +556,8 @@ Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 				});
 			});
 			
-			$(document).one('click', function() {
+			Spaz.dump('Binding event to close #linkContextMenu to document.onclick');
+			$(document).bind('click', function() {
 				$('#linkContextMenu').hide();
 			});
 		}

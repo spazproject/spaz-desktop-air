@@ -514,7 +514,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, msg){
-			if (xhr && xhr.status && xhr.status == 400) {
+			if (xhr.status && xhr.status == 400) {
 				Spaz.dump(url + ": ERROR: 400 error - Probably exceeded request limit");
 				Spaz.UI.statusBar('Error: May have exceeded request limit');
 			} else {

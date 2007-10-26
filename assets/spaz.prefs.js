@@ -19,6 +19,8 @@ Spaz.Prefs.windowOpacity   = 100;
 Spaz.Prefs.hideAfterDelay		= 1;
 Spaz.Prefs.restoreOnUpdates		= 1;
 Spaz.Prefs.minimizeToSystray	= 1;
+Spaz.Prefs.minimizeOnDeactivate	= 1;
+Spaz.Prefs.restoreOnActivate	= 1;
 
 // Show NativeMenus -- hardcoded
 Spaz.Prefs.showNativeMenus 		= 1;
