@@ -16,11 +16,11 @@ Spaz.Prefs.refreshInterval = 120000; // 2 minutes in msecs
 Spaz.Prefs.windowOpacity   = 100;
 
 // TODO: Prefs for window behaviors
-Spaz.Prefs.hideAfterDelay		= 1;
-Spaz.Prefs.restoreOnUpdates		= 1;
-Spaz.Prefs.minimizeToSystray	= 1;
-Spaz.Prefs.minimizeOnDeactivate	= 1;
-Spaz.Prefs.restoreOnActivate	= 1;
+// Spaz.Prefs.hideAfterDelay		= 1; // TODO not yet implemented
+// Spaz.Prefs.restoreOnUpdates		= 1; // TODO not yet implemented
+// Spaz.Prefs.minimizeToSystray	= 1;
+// Spaz.Prefs.minimizeOnDeactivate	= 1;
+// Spaz.Prefs.restoreOnActivate	= 1;
 
 // Show NativeMenus -- hardcoded
 Spaz.Prefs.showNativeMenus 		= 1;
@@ -34,6 +34,10 @@ Spaz.Prefs.load = function() {
 	Spaz.Prefs.readXML();
 
 }
+
+
+
+
 /**
 * Called when the application is first rendered, and when the user clicks the Save button.
 * If the preferences file *does* exist (the application has been run previously), the method 
@@ -85,10 +89,33 @@ Spaz.Prefs.processXMLData = function()
 		if (themeData.getAttribute("usemarkdown")) {
 			Spaz.Bridge.setUI('useMarkdown', parseInt(themeData.getAttribute("usemarkdown")));
 		}
+		if (themeData.getAttribute("hideafterdelay")) {
+			Spaz.Bridge.setUI('hideAfterDelay', parseInt(themeData.getAttribute("hideafterdelay")));
+		}
+		if (themeData.getAttribute("restoreonupdates")) {
+			Spaz.Bridge.setUI('restoreOnUpdates', parseInt(themeData.getAttribute("restoreonupdates")));
+		}
+		if (themeData.getAttribute("minimizetosystray")) {
+			Spaz.Bridge.setUI('minimizeToSystray', parseInt(themeData.getAttribute("minimizetosystray")));
+		}
+		if (themeData.getAttribute("minimizeonbackground")) {
+			Spaz.Bridge.setUI('minimizeOnBackground', parseInt(themeData.getAttribute("minimizeonbackground")));
+		}
+		if (themeData.getAttribute("restoreonactivate")) {
+			Spaz.Bridge.setUI('restoreOnActivate', parseInt(themeData.getAttribute("restoreonactivate")));
+		}
+		
+		
 		var info = Spaz.Bridge.getUIInfo();
 		Spaz.dump("Spaz.UI.currentTheme:"+info.currentTheme);
 		Spaz.dump("Spaz.UI.userStyleSheet:"+info.userStyleSheet);
 		Spaz.dump("Spaz.UI.useMarkdown:"+info.useMarkdown);
+		
+		Spaz.dump("Spaz.UI.hideAfterDelay:"+info.hideAfterDelay);
+		Spaz.dump("Spaz.UI.restoreOnUpdates:"+info.restoreOnUpdates);
+		Spaz.dump("Spaz.UI.minimizeToSystray:"+info.minimizeToSystray);
+		Spaz.dump("Spaz.UI.minimizeOnBackground:"+info.minimizeOnBackground);
+		Spaz.dump("Spaz.UI.restoreOnActivate:"+info.restoreOnActivate);
 	}
 	
 	var soundData = Spaz.Prefs.XML.getElementsByTagName("sound")[0];
@@ -117,6 +144,55 @@ Spaz.Prefs.processXMLData = function()
 	if (Spaz.Prefs.refreshInterval < 60000) { Spaz.Prefs.refreshInterval = 60000 } // minimum 1 minute
 	Spaz.dump('Spaz.Prefs.refreshInterval:'+Spaz.Prefs.refreshInterval);
 }
+
+
+// this extracts just the necessary prefs data for the start.html file to make decisions
+Spaz.Prefs.loadForStart = function() {
+	Spaz.Prefs.file = air.File.applicationStorageDirectory;
+	Spaz.Prefs.file = Spaz.Prefs.file.resolvePath("preferences.xml"); 
+	
+	// load and process XML prefs file
+	Spaz.Prefs.stream = new air.FileStream();
+	if (Spaz.Prefs.file.exists) {
+		Spaz.Prefs.stream.open(Spaz.Prefs.file, air.FileMode.READ);
+		
+		Spaz.Prefs.XML = Spaz.Prefs.stream.readUTFBytes(Spaz.Prefs.stream.bytesAvailable);
+		Spaz.dump(Spaz.Prefs.XML);
+		Spaz.Prefs.stream.close();
+		var domParser = new DOMParser();
+		Spaz.Prefs.XML = domParser.parseFromString(Spaz.Prefs.XML, "text/xml");
+		
+		var themeData = Spaz.Prefs.XML.getElementsByTagName("theme")[0];
+		if (themeData) {
+			var startPrefs = {};
+			startPrefs.currentTheme		= themeData.getAttribute("basetheme");
+			startPrefs.userStyleSheet	= themeData.getAttribute("userstylesheet");
+			if (themeData.getAttribute("usemarkdown")) {
+				startPrefs.useMarkdown	= parseInt(themeData.getAttribute("usemarkdown"));
+			}
+			if (themeData.getAttribute("hideafterdelay")) {
+				startPrefs.hideAfterDelay	= parseInt(themeData.getAttribute("hideafterdelay"));
+			}
+			if (themeData.getAttribute("restoreonupdates")) {
+				startPrefs.restoreOnUpdates	= parseInt(themeData.getAttribute("restoreonupdates"));
+			}
+			if (themeData.getAttribute("minimizetosystray")) {
+				startPrefs.minimizeToSystray	= parseInt(themeData.getAttribute("minimizetosystray"));
+			}
+			if (themeData.getAttribute("minimizeonbackground")) {
+				startPrefs.minimizeOnBackground	= parseInt(themeData.getAttribute("minimizeonbackground"));
+			}
+			if (themeData.getAttribute("restoreonactivate")) {
+				startPrefs.restoreOnActivate	= parseInt(themeData.getAttribute("restoreonactivate"));
+			}
+			return startPrefs;
+		}
+		
+	}
+	return false;
+};
+
+
 
 /**
 * Called when the user closes the window.
@@ -161,7 +237,12 @@ Spaz.Prefs.createXMLData = function()
 					+ "    <network refreshinterval = '"+Spaz.Prefs.refreshInterval.toString()+"'"+cr
 					+ "        />" + cr
 					+ "    <theme "+ cr
-					+ "        usemarkdown = '"+info.useMarkdown.toString()+"'" + cr
+					+ "        hideafterdelay = '"+parseInt(info.hideAfterDelay).toString()+"'" + cr
+					+ "        restoreonupdates = '"+parseInt(info.restoreOnUpdates).toString()+"'" + cr
+					+ "        minimizetosystray = '"+parseInt(info.minimizeToSystray).toString()+"'" + cr
+					+ "        minimizeonbackground = '"+parseInt(info.minimizeOnBackground).toString()+"'" + cr
+					+ "        restoreonactivate = '"+parseInt(info.restoreOnActivate).toString()+"'" + cr
+					+ "        usemarkdown = '"+parseInt(info.useMarkdown).toString()+"'" + cr
 					+ "        userstylesheet = '"+info.userStyleSheet+"'" + cr
 					+ "        basetheme = '"+info.currentTheme+"'"+ "/>" + cr
 					+ "    <sound enabled = '"+info.playSounds.toString()+"'" + cr
@@ -173,6 +254,7 @@ Spaz.Prefs.createXMLData = function()
 					+     "</saveDate>" + cr
 					+ "</preferences>";
 	Spaz.dump('Made XML for prefs');
+	Spaz.dump(Spaz.Prefs.XML);
 }
 
 /**

@@ -142,6 +142,36 @@ Spaz.childFrameInit = function() {
 		$('#prefs-markdown-enabled').attr('checked', '');
 	}
 
+	// Minimize to Systray
+	if (Spaz.UI.minimizeToSystray) {
+		Spaz.UI.minimizeToSystrayOn();
+		$('#prefs-minimize-systray').attr('checked', 'checked');
+	} else {
+		Spaz.UI.minimizeToSystrayOff();
+		$('#prefs-minimize-systray').attr('checked', '');
+	}
+	
+	// Minimize on BG
+	if (Spaz.UI.minimizeOnBackground) {
+		Spaz.UI.minimizeOnBackgroundOn();
+		Spaz.Bridge.setMinimizeOnBackground(true);
+		$('#prefs-minimize-background').attr('checked', 'checked');
+	} else {
+		Spaz.UI.minimizeOnBackgroundOn();
+		$('#prefs-minimize-background').attr('checked', '');
+	}
+
+	// Restore on Activate
+	if (Spaz.UI.restoreOnActivate) {
+		Spaz.UI.restoreOnActivateOn();
+		Spaz.Bridge.setRestoreOnActivate(true);
+		$('#prefs-maximize-foreground').attr('checked', 'checked');
+	} else {
+		Spaz.UI.restoreOnActivateOff();
+		$('#prefs-maximize-foreground').attr('checked', '');
+	}
+
+
 	// Sounds
 	if (Spaz.UI.playSounds) {
 		Spaz.UI.soundOn();

@@ -22,22 +22,28 @@
 
 </head>
 
-<body onload="makeLightweightWindow();">
+<body onload="startApp();">
 </body>
 </html>
 <script>
 
-function makeLightweightWindow() {
+function startApp() {
+	
+	var prefs = Spaz.Prefs.loadForStart();
+	
+	// for (var i in prefs) {
+	// 	air.trace(i + ":" + prefs[i]);
+	// }
+	// 
+	
 	var options = new air.NativeWindowInitOptions();
 	options.systemChrome = "none";
+	options.transparent = true;
 	
-	if (Spaz.Prefs.minimizeToSystray && air.Shell.supportsSystemTrayIcon) {
-		options.type = "utility";
+	// we use a lightweight window to have the app not show in the taskbar
+	if (prefs.minimizeToSystray && air.Shell.supportsSystemTrayIcon) {
+		options.type = "lightweight";
 	}
-	
-	
-	
-	options.transparent = true
 	
 	var windowBounds = new air.Rectangle(200,250,300,400);
 	newWindow = window.runtime.flash.html.HTMLControl.createRootWindow(true, options, true, windowBounds);

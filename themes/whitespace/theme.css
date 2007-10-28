@@ -505,7 +505,19 @@ div.formrow {
 	padding:5px;
 	color:#999999;
 }
-
+#prefs-form label.checkbox {
+	float: none;
+	padding:0;
+	margin:0 0 0 5px;
+	display:inline;
+}
+input[type='checkbox'] {
+	vertical-align:-20%;
+}
+option {
+	font-family:sans-serif;
+	size:.9em;
+}
 #prefs-form input[type='password'],
 #prefs-form input[type='text'],
 #prefs-form select {

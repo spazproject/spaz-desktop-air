@@ -511,9 +511,18 @@ div.formrow {
 	width:125px;
 	/*-khtml-border-radius:5px;*/
 }
-
+#prefs-form label.checkbox {
+	float: none;
+	padding:0;
+	margin:0 0 0 5px;
+	display:inline;
+}
 input[type='checkbox'] {
-	top:3px;
+	vertical-align:-20%;
+}
+option {
+	font-family:sans-serif;
+	size:.9em;
 }
 
 input[type='button'], input[type='submit'] {

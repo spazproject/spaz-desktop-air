@@ -50,7 +50,9 @@ if(typeof runtime!='undefined'){
 		}
 	
 		if ( Spaz.Debug.enabled ) {
-			Spaz.Bridge.consoleDump(msg, type);
+			if (Spaz.Bridge && Spaz.Bridge.consoleDump) {
+				Spaz.Bridge.consoleDump(msg, type);
+			}
 			Spaz.Debug.logToFile(msg);
 		}
 	}

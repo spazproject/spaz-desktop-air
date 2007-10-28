@@ -19,6 +19,12 @@ Spaz.UI.entryBox = {};
 Spaz.UI.playSounds  = 1; // default state
 Spaz.UI.useMarkdown = 1;
 
+Spaz.UI.hideAfterDelay			= 1; // TODO not yet implemented
+Spaz.UI.restoreOnUpdates		= 1; // TODO not yet implemented
+Spaz.UI.minimizeToSystray		= 1;
+Spaz.UI.minimizeOnBackground	= 1;
+Spaz.UI.restoreOnActivate		= 1;
+
 Spaz.UI.showContextMenus = 1; // hard-coded - this works properly now
 
 // Paths to sound files
@@ -52,6 +58,7 @@ Spaz.UI.playSoundNew = function() {
 }
 
 
+// Spaz.UI.setSoundState
 Spaz.UI.setSoundState = function(state) {
 	Spaz.dump("State: "+state);
 	if (state) {
@@ -68,6 +75,121 @@ Spaz.UI.soundOff = function() {
 	Spaz.dump("Sounds are OFF");
 	Spaz.UI.playSounds = 0;
 }
+
+
+// Spaz.UI.setMarkdownState
+Spaz.UI.setMarkdownState = function(state) {
+	Spaz.dump("MarkdownState: "+state);
+	if (state) {
+		Spaz.UI.markdownOn()
+	} else {
+		Spaz.UI.markdownOff()
+	}
+}
+Spaz.UI.markdownOn = function() {
+	Spaz.dump("useMarkdown ON");
+	Spaz.UI.useMarkdown = 1;
+}
+Spaz.UI.markdownOff = function() {
+	Spaz.dump("useMarkdown OFF");
+	Spaz.UI.useMarkdown = 0;
+}
+
+
+// Spaz.UI.setMinimizeToSystray
+Spaz.UI.setMinimizeToSystray = function(state) {
+	Spaz.dump("MinimizeToSystray: "+state);
+	if (state) {
+		Spaz.UI.minimizeToSystrayOn()
+	} else {
+		Spaz.UI.minimizeToSystrayOff()
+	}
+}
+Spaz.UI.minimizeToSystrayOn = function() {
+	Spaz.dump("minimizeToSystray ON");
+	Spaz.UI.minimizeToSystray = 1;
+}
+Spaz.UI.minimizeToSystrayOff = function() {
+	Spaz.dump("minimizeToSystray OFF");
+	Spaz.UI.minimizeToSystray = 0;
+}
+
+
+// Spaz.UI.setMinimizeOnBackground
+Spaz.UI.setMinimizeOnBackground = function(state) {
+	Spaz.dump("MinimizeOnBackground: "+state);
+	if (state) {
+		Spaz.UI.minimizeOnBackgroundOn()
+	} else {
+		Spaz.UI.minimizeOnBackgroundOff()
+	}
+}
+Spaz.UI.minimizeOnBackgroundOn = function() {
+	Spaz.dump("minimizeOnBackground ON");
+	Spaz.UI.minimizeOnBackground = 1;
+}
+Spaz.UI.minimizeOnBackgroundOff = function() {
+	Spaz.dump("minimizeOnBackground OFF");
+	Spaz.UI.minimizeOnBackground = 0;
+}
+
+
+// Spaz.UI.setRestoreOnActivate
+Spaz.UI.setRestoreOnActivate = function(state) {
+	Spaz.dump("RestoreOnActivate: "+state);
+	if (state) {
+		Spaz.UI.restoreOnActivateOn()
+	} else {
+		Spaz.UI.restoreOnActivateOff()
+	}
+}
+Spaz.UI.restoreOnActivateOn = function() {
+	Spaz.dump("restoreOnActivate ON");
+	Spaz.UI.restoreOnActivate = 1;
+}
+Spaz.UI.restoreOnActivateOff = function() {
+	Spaz.dump("restoreOnActivate OFF");
+	Spaz.UI.restoreOnActivate = 0;
+}
+
+
+// Spaz.UI.restoreOnUpdates
+Spaz.UI.setRestoreOnUpdates = function(state) {
+	Spaz.dump("restoreOnUpdates: "+state);
+	if (state) {
+		Spaz.UI.restoreOnUpdatesOn()
+	} else {
+		Spaz.UI.restoreOnUpdatesOff()
+	}
+}
+Spaz.UI.restoreOnUpdatesOn = function() {
+	Spaz.dump("restoreOnUpdates ON");
+	Spaz.UI.restoreOnUpdates = 1;
+}
+Spaz.UI.restoreOnUpdatesOff = function() {
+	Spaz.dump("restoreOnUpdates OFF");
+	Spaz.UI.restoreOnUpdates = 0;
+}
+
+
+// Spaz.UI.hideAfterDelay
+Spaz.UI.setRestoreOnUpdates = function(state) {
+	Spaz.dump("hideAfterDelay: "+state);
+	if (state) {
+		Spaz.UI.hideAfterDelayOn()
+	} else {
+		Spaz.UI.hideAfterDelayOff()
+	}
+}
+Spaz.UI.hideAfterDelayOn = function() {
+	Spaz.dump("hideAfterDelay ON");
+	Spaz.UI.hideAfterDelay = 1;
+}
+Spaz.UI.hideAfterDelayOff = function() {
+	Spaz.dump("hideAfterDelay OFF");
+	Spaz.UI.hideAfterDelay = 0;
+}
+
 
 Spaz.UI.statusBar = function(txt) {
 	$('#statusbar-text').html(txt);
@@ -134,22 +256,7 @@ Spaz.UI.clearUserStyleSheet = function() {
 	$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 }
 
-Spaz.UI.setMarkdownState = function(state) {
-	Spaz.dump("MarkdownState: "+state);
-	if (state) {
-		Spaz.UI.markdownOn()
-	} else {
-		Spaz.UI.markdownOff()
-	}
-}
-Spaz.UI.markdownOn = function() {
-	Spaz.dump("Sounds are ON");
-	Spaz.UI.useMarkdown = 1;
-}
-Spaz.UI.markdownOff = function() {
-	Spaz.dump("Sounds are OFF");
-	Spaz.UI.useMarkdown = 0;
-}
+
 
 
 Spaz.UI.showPopup = function(panelid) {

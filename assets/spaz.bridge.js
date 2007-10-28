@@ -278,6 +278,23 @@ if(typeof runtime!='undefined'){
 		window.htmlControl.alpha = val;
 	}
 
+	// Window behaviors
+	Spaz.Bridge.setMinimizeOnBackground = function(enable) {
+		if (enable) {
+			air.Shell.shell.addEventListener('deactivate', function() {
+				window.nativeWindow.minimize();
+			})
+		}	
+	};
+
+	Spaz.Bridge.setRestoreOnActivate = function(enable) {
+		if (enable) {
+			air.Shell.shell.addEventListener('activate', function() {
+				window.nativeWindow.restore();
+			})
+		}
+	}
+
 	Spaz.Bridge.displayContextMenu = function(event) {
 		Spaz.Menus.displayContextMenu(event);
 	}
@@ -398,17 +415,22 @@ if(typeof runtime!='undefined'){
 	}
 	Spaz.Bridge.getUIInfo = function(){
 		return {
-			userStyleSheet: Spaz.UI.userStyleSheet,
-			currentTheme: Spaz.UI.currentTheme,
-			playSounds: Spaz.UI.playSounds,
-			useMarkdown: Spaz.UI.useMarkdown,
+			userStyleSheet:		Spaz.UI.userStyleSheet,
+			currentTheme:		Spaz.UI.currentTheme,
+			playSounds:			Spaz.UI.playSounds,
+			useMarkdown:		Spaz.UI.useMarkdown,
+			hideAfterDelay:		Spaz.UI.hideAfterDelay,
+			restoreOnUpdates:	Spaz.UI.restoreOnUpdates,
+			minimizeToSystray:	Spaz.UI.minimizeToSystray,
+			minimizeOnBackground:Spaz.UI.minimizeOnBackground,
+			restoreOnActivate: 	Spaz.UI.restoreOnActivate,
 		};
 	}
 	
 	Spaz.Bridge.setUI = function(id, value){
-		if("currentTheme,userStyleSheet,playSounds,useMarkdown".indexOf(id)>-1){
+		if("currentTheme, userStyleSheet, playSounds, useMarkdown, hideAfterDelay, restoreOnUpdates, minimizeToSystray, minimizeOnBackground, restoreOnActivate".indexOf(id)>-1){
 			Spaz.UI[id]=value;
-			Spaz.dump('Spaz.UI['+id+']='+value);
+			Spaz.dump('setUI: Spaz.UI['+id+']='+value);
 		}
 	}
 	
@@ -483,7 +505,7 @@ if(typeof runtime!='undefined'){
 		$('#'+id).val(val);
 	}
 	
-	
+	// BEGIN NATIVEMENU HOOKS
 	Spaz.Bridge.menuReload = function() {
 		Spaz.dump('in Spaz.Bridge.menuReload');
 		Spaz.UI.reloadCurrentTab();
@@ -509,6 +531,8 @@ if(typeof runtime!='undefined'){
 	Spaz.Bridge.menuFeedback = function() {
 		Spaz.UI.prepReply('spaz');
 	}
+	
+	// END NATIVEMENU HOOKS
 	
 	// Spaz.Bridge.menuCheckForUpdates = function() {
 	// 	

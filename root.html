@@ -42,41 +42,43 @@ function rootInit() {
 	window.htmlControl.filters = window.runtime.Array(
 				new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
 				);
+
+
 	if (Spaz.Prefs.showNativeMenus) {
 		Spaz.Menus.initAll();
 	}
 	
+	// 
+	// myListener = new Object();
+	// 
+	// myListener.onKeyDown = function (event) {
+	// 	//alert ("You pressed a key.");
+	// 	air.trace(event.toString());
+	// }
+	// myListener.onKeyUp = function (event) {
+	// 	//alert ("You released a key.");
+	// }
 	
-	myListener = new Object();
-	
-	myListener.onKeyDown = function (event) {
-		//alert ("You pressed a key.");
-		air.trace(event.toString());
-	}
-	myListener.onKeyUp = function (event) {
-		//alert ("You released a key.");
-	}
-	
-	if (Spaz.Prefs.minimizeOnDeactivate) {
-		air.Shell.shell.addEventListener('deactivate', function() {
-			window.nativeWindow.minimize();
-		})
-	}
-
-	if (Spaz.Prefs.restoreOnActivate) {
-		air.Shell.shell.addEventListener('activate', function() {
-			window.nativeWindow.restore();
-		})
-	}
+	// if (Spaz.Prefs.minimizeOnDeactivate) {
+	// 	air.Shell.shell.addEventListener('deactivate', function() {
+	// 		window.nativeWindow.minimize();
+	// 	})
+	// }
+	// 
+	// if (Spaz.Prefs.restoreOnActivate) {
+	// 	air.Shell.shell.addEventListener('activate', function() {
+	// 		window.nativeWindow.restore();
+	// 	})
+	// }
 	
 	air.Shell.shell.idleThreshold = 10;
-	air.trace('idle time:'+air.Shell.shell.idleThreshold);
+	Spaz.dump('idle time:'+air.Shell.shell.idleThreshold);
 	
 	air.Shell.shell.addEventListener(window.runtime.flash.events.Event.USER_IDLE, function(event) {
-		air.trace('user has gone idle');
+		Spaz.dump('user has gone idle');
 	})
 	air.Shell.shell.addEventListener(air.Event.USER_PRESENT, function(event) {
-		air.trace('user has returned');
+		Spaz.dump('user has returned');
 	})
 	
 }

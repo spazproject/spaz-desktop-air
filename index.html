@@ -426,14 +426,32 @@ TODO:
 									value="100" maxlength="3" size="3" />%
 							</div>
 							<div class="formrow">
-								<label for="markdown-enabled">Use Markdown</label>
 								<input type="checkbox" name="markdown-enabled" value="1" id="prefs-markdown-enabled" onclick="Spaz.UI.setMarkdownState(this.checked)" />
+								<label for="markdown-enabled" class="checkbox">Parse Markdown in messages</label>
 							</div>
 							<div class="formrow">
-								<label for="markdown-enabled">Use Markdown</label>
-								<input type="checkbox" name="markdown-enabled" value="1" id="prefs-markdown-enabled" onclick="Spaz.UI.setMarkdownState(this.checked)" />
+								<input type="checkbox" name="minimize-systray" value="1"
+									id="prefs-minimize-systray"
+									onclick="Spaz.UI.setMinimizeToSystray(this.checked)" />
+								<label for="minimize-systray" class="checkbox">Minimize to Systray</label>
 							</div>
-
+							<div class="formrow">
+								<input type="checkbox" name="minimize-background" value="1"
+									id="prefs-minimize-background"
+									onclick="Spaz.UI.setMinimizeOnBackground(this.checked)" />
+								<label for="minimize-background" class="checkbox">Minimize when in background</label>
+							</div>
+							<div class="formrow">
+								<input type="checkbox" name="maximize-foreground" value="1"
+									id="prefs-maximize-foreground"
+									onclick="Spaz.UI.setRestoreOnActivate(this.checked)" />
+								<label for="maximize-foreground" class="checkbox">Restore when in foreground</label>
+							</div>
+							<!-- Spaz.Prefs.hideAfterDelay		= 1;
+							Spaz.Prefs.restoreOnUpdates		= 1;
+							Spaz.Prefs.minimizeToSystray	= 1;
+							Spaz.Prefs.minimizeOnDeactivate	= 1;
+							Spaz.Prefs.restoreOnActivate	= 1; -->
 						</div>
 					</div>
 					
@@ -533,13 +551,15 @@ TODO:
 
 	<p>Created by <a onclick="openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
 
-	<div id="about-thanks">Special thanks to Alexandru Chiculita and the AIR engineering team</div>
-
 	<ul>
 		<li><a onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
 		<li><a onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
 		<li><a onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
 	</ul>
+
+	
+	<div id="about-thanks">Special thanks to Alexandru Chiculita and the AIR engineering team</div>
+
 
 	<h3>Libraries used</h3>
 	<ul>
@@ -550,24 +570,24 @@ TODO:
 		<li><a onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html');">Showdown</a></li>
 	</ul>
 	
-	<table id="sysinfo">
+	<!-- <table id="sysinfo">
 		<tr>
 			<td class="label">OS</td>
 			<td class="value" id="sysinfo-os"></td>
 		</tr>
-		<!-- <tr>
+		<tr>
 			<td class="label">Version</td>
 			<td class="value" id="sysinfo-version"></td>
 		</tr>
 		<tr>
 			<td class="label">Manufacturer</td>
 			<td class="value" id="sysinfo-manufacturer"></td>
-		</tr> -->
+		</tr>
 		<tr>
 			<td class="label">Memory Used</td>
 			<td class="value" id="sysinfo-totalMemory"></td>
 		</tr>
-	</table>	
+	</table> -->	
 </div>
 
 <div id="helpWindow" class="popupWindow" style="display:none">
@@ -685,8 +705,8 @@ TODO:
 		showBody: false,
 		extraClass: "tab-tooltip",
 		opacity: 0.8,
-		top:10,
-		left:0
+		top:15,
+		left:8
 	};
 
 	/**

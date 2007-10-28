@@ -352,6 +352,10 @@ div.user-image img {
 */	float:right;
 /*	-khtml-border-radius:2px;*/
 }
+div user-image a {
+	opacity:0.5;
+	background-color:#009900;
+}
 div.user img:hover {
 	opacity:1.0;
 }
@@ -412,7 +416,7 @@ div.status-actions a, div.status-link a {
 }
 div.status-actions img, span.status-protected img {
 	vertical-align:-20%;
-	display:inline;
+	display:inline !important;
 }
 div.status-actions a {
 	border:none !important;
@@ -424,9 +428,6 @@ div.user-follow {
 
 .status-source {
 	display:none;
-}
-
-span.status-protected img {
 }
 
 div.even {
@@ -619,7 +620,6 @@ div.formrow {
 	float:left;
 	padding:5px;
 }
-
 #prefs-form input[type='password'],
 #prefs-form input[type='text'],
 #prefs-form select {
@@ -629,6 +629,19 @@ div.formrow {
 	background-color:#000000;
 	width:100px;
 	/*-khtml-border-radius:5px;*/
+}
+#prefs-form label.checkbox {
+	float: none;
+	padding:0;
+	margin:0 0 0 5px;
+	display:inline;
+}
+input[type='checkbox'] {
+	vertical-align:-20%;
+}
+option {
+	font-family:sans-serif;
+	size:.9em;
 }
 
 input[type='button'], input[type='submit'] {
