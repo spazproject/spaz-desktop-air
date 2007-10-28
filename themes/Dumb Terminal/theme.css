@@ -684,8 +684,8 @@ input[type='text']#prefs-opacity-percentage {
 
 #resize-sw {
 	position:absolute;
-	bottom: 0px;
-	right:  0px;
+	bottom: 3px;
+	right:  3px;
 	font-size:12px;
 	background-image:url('images/resize-sw.png');
 	background-color:006600;

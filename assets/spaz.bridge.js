@@ -117,7 +117,7 @@ if(typeof runtime!='undefined'){
 				var thisthemecss = thisthemedir.resolvePath('theme.css');
 				var thisthemejs  = thisthemedir.resolvePath('theme.js');
 				var thisthemeinfo= thisthemedir.resolvePath('info.js');
-
+				
 				// we need relative paths for the child sandbox
 				var thistheme = {
 					themename: thisthemename,
@@ -127,8 +127,11 @@ if(typeof runtime!='undefined'){
 					themeinfo: appdir.getRelativePath(thisthemeinfo,true)
 
 				}
-
-				themes.push(thistheme);
+				
+				// sanity check to make sure the themedir actually has something in it
+				if (thisthemecss.exists) {
+					themes.push(thistheme);
+				}
 			}
 		}
 
