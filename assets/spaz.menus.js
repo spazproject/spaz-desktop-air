@@ -135,13 +135,50 @@ Spaz.Menus.createRootMenu = function(type){
 	if (type == 'OSX'){
 		var menu = air.Shell.shell.menu;
 		menu.addSubmenuAt(Spaz.Menus.createFileMenu(),1,"File");
+		menu.addSubmenu(Spaz.Menus.createViewMenu(),"View");
+		menu.addSubmenu(Spaz.Menus.createHelpMenu(),"Help");
+		
+		
+		var titleMenu = menu.getItemAt(0).submenu;
+		var viewMenu  = menu.getItemAt(3).submenu;
+		var helpMenu  = menu.getItemAt(4).submenu;
+
+		for(var i = 0; i < titleMenu.items.length; i++){
+			item = titleMenu.items[i];
+			air.trace(i+":"+item.label);
+		}
+		for(var i = 0; i < viewMenu.items.length; i++){
+			item = viewMenu.items[i];
+			air.trace(i+":"+item.label);
+		}
+		for(var i = 0; i < helpMenu.items.length; i++){
+			item = helpMenu.items[i];
+			air.trace(i+":"+item.label);
+		}
+		
+		// remove existing item from menu 0, position 0 (generated "About" item)		
+		var genAboutItem = titleMenu.removeItemAt(0);
+
+		// remove existing item from menu 3, position 6 (generated "About" item)
+		var aboutItem = helpMenu.removeItemAt(5);
+		helpMenu.removeItemAt(4); // remove extra separator
+		// helpMenu.removeItemAt(1); // remove extra separator
+		var prefsItem = viewMenu.removeItemAt(1);
+		
+		menu.removeItemAt(1);
+		
+		titleMenu.addItemAt(aboutItem, 0);
+		titleMenu.addItemAt(new air.NativeMenuItem("",true),1);//separator
+		titleMenu.addItemAt(prefsItem, 2);
+		
 	} else {
 		var menu = new air.NativeMenu();
 		menu.addSubmenu(Spaz.Menus.createFileMenu(),"File");
 		menu.addSubmenu(Spaz.Menus.createEditMenu(),"Edit");
+		menu.addSubmenu(Spaz.Menus.createViewMenu(),"View");
+		menu.addSubmenu(Spaz.Menus.createHelpMenu(),"Help");
 	}
-	menu.addSubmenu(Spaz.Menus.createViewMenu(),"View");
-	menu.addSubmenu(Spaz.Menus.createHelpMenu(),"Help");
+	
 	
 	// var appmenu = menu.items[1].submenu;
 	
@@ -164,7 +201,6 @@ Spaz.Menus.createRootMenu = function(type){
 //Creates the file menu
 Spaz.Menus.createFileMenu = function(){
 	var menu = new air.NativeMenu();
-	menu.addItem(new air.NativeMenuItem("",true));//separator
 	
 	var miExit = new air.NativeMenuItem("Quit Spaz");
 	miExit.name = 'exit';

@@ -247,8 +247,10 @@ Spaz.UI.setCurrentTheme = function() {
 
 
 Spaz.UI.browseForUserCss = function() {
-	Spaz.Bridge.browseForUserCss ();	
+	Spaz.dump('Spaz.UI.browseForUserCss');
+	Spaz.Bridge.browseForUserCss();	
 }
+
 
 Spaz.UI.clearUserStyleSheet = function() {
 	Spaz.UI.userStyleSheet = '';

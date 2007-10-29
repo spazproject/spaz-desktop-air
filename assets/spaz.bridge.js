@@ -87,6 +87,7 @@ if(typeof runtime!='undefined'){
 
 	
 	Spaz.Bridge.browseForUserCss = function() {
+		Spaz.dump('Spaz.Bridge.browseForUserCss');
 		// var cssFilter = new air.FileFilter("StyleSheets", "~~.css;");
 		// var imagesFilter = new air.FileFilter("Images", "~~.jpg;~~.gif;~~.png");
 		// var docFilter = new air.FileFilter("Documents", "~~.pdf;~~.doc;~~.txt");
@@ -94,12 +95,31 @@ if(typeof runtime!='undefined'){
 		userFile.browseForOpen("Choose User CSS File");
 		userFile.addEventListener(air.Event.SELECT, Spaz.Bridge.$userCSSSelected);
 	}
+	
 
 	Spaz.Bridge.$userCSSSelected = function(event) {
 		//TODO: cannot access files outside sandbox
-		alert('User CSS not yet working');
+		//alert('User CSS not yet working');
 		Spaz.dump(event.target.url);
-		Spaz.Bridge.setUserStyleSheet(event.target.url);
+		Spaz.Bridge.setUserStyleSheet(Spaz.Bridge.loadUserStylesFromURL(event.target.url));
+	}
+	
+	
+	Spaz.Bridge.loadUserStylesFromURL = function(fileurl) {
+		var usercssfile = new air.File(fileurl);
+		Spaz.dump(usercssfile.nativePath);
+		
+		var stream = new air.FileStream();
+		if (usercssfile.exists) {
+			stream.open(usercssfile, air.FileMode.READ);
+			stylestr = Spaz.Prefs.stream.readUTFBytes(Spaz.Prefs.stream.bytesAvailable);
+			Spaz.dump(stylestr)
+			return stylestr;
+			//Spaz.Bridge.setUserStyleSheet(stylestr);
+		} else {
+			alert('chosen file '+ event.target/url +'does not exist')
+			return false;
+		}
 	}
 	
 	
@@ -333,9 +353,6 @@ if(typeof runtime!='undefined'){
 
 
 
-
-
-
 	
 }else{
 	
@@ -391,9 +408,12 @@ if(typeof runtime!='undefined'){
 		}
 	}
 	
-	Spaz.Bridge.setUserStyleSheet = function(url) {
+	Spaz.Bridge.setUserStyleSheet = function(stylestr) {
 		Spaz.UI.userStyleSheet = url;
-		$('#UserCSSOverride').attr('href',Spaz.UI.userStyleSheet);
+		
+		
+		
+		$('#UserCSSOverride').html(Spaz.UI.userStyleSheet);
 		$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 	}
 	
