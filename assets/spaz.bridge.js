@@ -101,18 +101,22 @@ if(typeof runtime!='undefined'){
 		//TODO: cannot access files outside sandbox
 		//alert('User CSS not yet working');
 		Spaz.dump(event.target.url);
-		Spaz.Bridge.setUserStyleSheet(Spaz.Bridge.loadUserStylesFromURL(event.target.url));
+		var stylestr = Spaz.Bridge.loadUserStylesFromURL(event.target.url)
+		Spaz.dump(stylestr);
+		Spaz.Bridge.setUserStyleSheet(stylestr, event.target.url);
 	}
 	
 	
 	Spaz.Bridge.loadUserStylesFromURL = function(fileurl) {
 		var usercssfile = new air.File(fileurl);
-		Spaz.dump(usercssfile.nativePath);
+		Spaz.dump('NativePath:' + usercssfile.nativePath);
 		
 		var stream = new air.FileStream();
 		if (usercssfile.exists) {
+			Spaz.dump('opening stream')
 			stream.open(usercssfile, air.FileMode.READ);
-			stylestr = Spaz.Prefs.stream.readUTFBytes(Spaz.Prefs.stream.bytesAvailable);
+			Spaz.dump('readUTFBytes')
+			stylestr = stream.readUTFBytes(stream.bytesAvailable);
 			Spaz.dump(stylestr)
 			return stylestr;
 			//Spaz.Bridge.setUserStyleSheet(stylestr);
@@ -408,12 +412,10 @@ if(typeof runtime!='undefined'){
 		}
 	}
 	
-	Spaz.Bridge.setUserStyleSheet = function(stylestr) {
+	Spaz.Bridge.setUserStyleSheet = function(stylestr, url) {
 		Spaz.UI.userStyleSheet = url;
-		
-		
-		
-		$('#UserCSSOverride').html(Spaz.UI.userStyleSheet);
+		$('#UserCSSOverride').text(stylestr);
+		// $('#UserCSSOverride').attr('href', url);
 		$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 	}
 	

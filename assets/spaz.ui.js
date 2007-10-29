@@ -254,7 +254,7 @@ Spaz.UI.browseForUserCss = function() {
 
 Spaz.UI.clearUserStyleSheet = function() {
 	Spaz.UI.userStyleSheet = '';
-	$('#UserCSSOverride').attr('href',Spaz.UI.userStyleSheet);
+	$('#UserCSSOverride').text('');
 	$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 }
 

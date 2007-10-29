@@ -128,8 +128,9 @@ Spaz.childFrameInit = function() {
 
 
 	// User Stylesheet
-	if (Spaz.UI.userStyleSheet) {
-		$('#prefs-user-stylesheet').text(Spaz.Bridge.loadUserStylesFromURL(Spaz.UI.userStyleSheet));
+	if (Spaz.UI.userStyleSheet) {		
+		$('#UserCSSOverride').text(Spaz.Bridge.loadUserStylesFromURL(Spaz.UI.userStyleSheet));;
+		$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 	}
 
 	// Markdown

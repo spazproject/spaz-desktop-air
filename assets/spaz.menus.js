@@ -145,15 +145,15 @@ Spaz.Menus.createRootMenu = function(type){
 
 		for(var i = 0; i < titleMenu.items.length; i++){
 			item = titleMenu.items[i];
-			air.trace(i+":"+item.label);
+			Spaz.dump(i+":"+item.label);
 		}
 		for(var i = 0; i < viewMenu.items.length; i++){
 			item = viewMenu.items[i];
-			air.trace(i+":"+item.label);
+			Spaz.dump(i+":"+item.label);
 		}
 		for(var i = 0; i < helpMenu.items.length; i++){
 			item = helpMenu.items[i];
-			air.trace(i+":"+item.label);
+			Spaz.dump(i+":"+item.label);
 		}
 		
 		// remove existing item from menu 0, position 0 (generated "About" item)		
@@ -178,23 +178,7 @@ Spaz.Menus.createRootMenu = function(type){
 		menu.addSubmenu(Spaz.Menus.createViewMenu(),"View");
 		menu.addSubmenu(Spaz.Menus.createHelpMenu(),"Help");
 	}
-	
-	
-	// var appmenu = menu.items[1].submenu;
-	
-	// console.open();
-	// console.log('EditMenu:');
-	// console.dir(appmenu);
-	
-	// 	for(var i = 0; i < appmenu.items.length; i++){
-	// 		item = appmenu.items[i];
-	// 		console.open();
-	// 		console.log('Item'+i+":");
-	// 		console.log(item.label);
-	// 		console.dir(item);
-	// //		item.addEventListener(air.Event.SELECT,Spaz.Menus.itemSelected);
-	// 	}
-	
+		
 	return menu;
 }
 
