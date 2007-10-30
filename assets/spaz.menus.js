@@ -44,6 +44,7 @@ Spaz.Menus.initAll = function() {
 
 
 Spaz.Menus.onSystrayClick = function(event) {
+	// TODO replace this with call to Spaz.Bridge.windowRestore()
 	Spaz.dump('clicked on systray');
 	Spaz.dump(nativeWindow.displayState);
 	Spaz.dump('id:'+air.Shell.shell.id);

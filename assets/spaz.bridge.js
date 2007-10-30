@@ -313,7 +313,8 @@ if(typeof runtime!='undefined'){
 	Spaz.Bridge.setMinimizeOnBackground = function(enable) {
 		if (enable) {
 			air.Shell.shell.addEventListener('deactivate', function() {
-				window.nativeWindow.minimize();
+				//window.nativeWindow.minimize();
+				Spaz.Bridge.windowMinimize();
 			})
 		}	
 	};
@@ -321,7 +322,8 @@ if(typeof runtime!='undefined'){
 	Spaz.Bridge.setRestoreOnActivate = function(enable) {
 		if (enable) {
 			air.Shell.shell.addEventListener('activate', function() {
-				window.nativeWindow.restore();
+				//window.nativeWindow.restore();
+				Spaz.BridgeI.windowRestore();
 			})
 		}
 	}
@@ -462,6 +464,16 @@ if(typeof runtime!='undefined'){
 			Spaz.dump('setUI: Spaz.UI['+id+']='+value);
 		}
 	}
+	
+	Spaz.Bridge.windowMinimize = function() {
+		Spaz.UI.windowMinimize();
+	}
+	
+	Spaz.Bridge.windowRestore = function() {
+		Spaz.UI.windowRestore();
+	}
+	
+	
 	
 	Spaz.Bridge.val = function(id){
 		return $(id).val();

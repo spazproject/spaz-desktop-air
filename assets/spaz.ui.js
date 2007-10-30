@@ -506,6 +506,22 @@ Spaz.UI.windowMinimize = function() {
 	}
 	return false;
 };
+Spaz.UI.windowRestore = function() {
+	Spaz.dump('clicked on systray');
+	Spaz.dump(window.nativeWindow.displayState);
+	Spaz.dump('id:'+air.Shell.shell.id);
+	
+	if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
+		Spaz.dump('restoring window');
+ 		nativeWindow.restore();
+ 	}
+ 	Spaz.dump('activating application');
+ 	air.Shell.shell.activateApplication()
+	Spaz.dump('activating window');
+	window.nativeWindow.activate();
+	Spaz.dump('ordering-to-front window');
+	window.nativeWindow.orderToFront();
+};
 
 
 

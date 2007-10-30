@@ -157,7 +157,7 @@ Spaz.childFrameInit = function() {
 		Spaz.Bridge.setMinimizeOnBackground(true);
 		$('#prefs-minimize-background').attr('checked', 'checked');
 	} else {
-		Spaz.UI.minimizeOnBackgroundOn();
+		Spaz.UI.minimizeOnBackgroundOff();
 		$('#prefs-minimize-background').attr('checked', '');
 	}
 

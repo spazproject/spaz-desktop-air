@@ -15,13 +15,6 @@ Spaz.Prefs.pass = '';
 Spaz.Prefs.refreshInterval = 120000; // 2 minutes in msecs
 Spaz.Prefs.windowOpacity   = 100;
 
-// TODO: Prefs for window behaviors
-// Spaz.Prefs.hideAfterDelay		= 1; // TODO not yet implemented
-// Spaz.Prefs.restoreOnUpdates		= 1; // TODO not yet implemented
-// Spaz.Prefs.minimizeToSystray	= 1;
-// Spaz.Prefs.minimizeOnDeactivate	= 1;
-// Spaz.Prefs.restoreOnActivate	= 1;
-
 // Show NativeMenus -- hardcoded
 Spaz.Prefs.showNativeMenus 		= 1;
 
