@@ -507,24 +507,24 @@ Spaz.UI.windowMinimize = function() {
 	return false;
 };
 Spaz.UI.windowRestore = function() {
-	air.trace('clicked on systray');
-	air.trace(window.nativeWindow.displayState);
-	//air.trace('id:'+air.Shell.shell.id);
+	Spaz.dump('restoring window');
+	Spaz.dump('current window state:'+window.nativeWindow.displayState);
+	//Spaz.dump('id:'+air.Shell.shell.id);
 	
 	
 	// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	// 	air.trace('restoring window');
+	// 	Spaz.dump('restoring window');
 	//  		nativeWindow.restore();
 	//  	}
-	air.trace('restoring window');
+	Spaz.dump('restoring window');
 	window.nativeWindow.restore();
 
-	air.trace('activating window');
+	Spaz.dump('activating window');
 	window.nativeWindow.activate();
-	// air.trace('ordering-to-front window');
+	// Spaz.dump('ordering-to-front window');
 	// window.nativeWindow.orderToFront();
 	if (air.Shell) {
-		air.trace('activating application');
+		Spaz.dump('activating application');
 		air.Shell.shell.activateApplication();
 	}
  	

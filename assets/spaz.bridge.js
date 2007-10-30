@@ -470,7 +470,7 @@ if(typeof runtime!='undefined'){
 	}
 	
 	Spaz.Bridge.windowRestore = function() {
-		air.trace('in Spaz.Bridge.windowRestore (from Parent)');
+		Spaz.dump('in Spaz.Bridge.windowRestore (from Parent)');
 		Spaz.UI.windowRestore();
 	}
 	
