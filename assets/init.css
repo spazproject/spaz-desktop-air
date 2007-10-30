@@ -18,3 +18,8 @@ input[type=text], textarea, div.status-text {
 	height:100px !important;
 	overflow: auto;
 }
+
+.restart-required {
+	font-weight:bold;
+	color:#990000;
+}

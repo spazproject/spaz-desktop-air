@@ -417,7 +417,7 @@ TODO:
 								<label for="base-theme">Theme</label>
 								<select id="prefs-base-theme" name="base-theme" onChange="Spaz.UI.setCurrentTheme()">
 									<!-- stuff goes here -->
-								</select>
+								</select> <span class="restart-required">*</span>
 							</div>
 							<div class="formrow">
 								<label for="base-theme">Opacity</label>
@@ -427,25 +427,25 @@ TODO:
 							</div>
 							<div class="formrow">
 								<input type="checkbox" name="markdown-enabled" value="1" id="prefs-markdown-enabled" onclick="Spaz.UI.setMarkdownState(this.checked)" />
-								<label for="markdown-enabled" class="checkbox">Parse Markdown in messages</label>
+								<label for="markdown-enabled" class="checkbox">Parse Markdown in messages</label> <span class="restart-required">*</span>
 							</div>
 							<div class="formrow">
 								<input type="checkbox" name="minimize-systray" value="1"
 									id="prefs-minimize-systray"
 									onclick="Spaz.UI.setMinimizeToSystray(this.checked)" />
-								<label for="minimize-systray" class="checkbox">Minimize to Systray</label>
+								<label for="minimize-systray" class="checkbox">Minimize to Systray</label> <span class="restart-required">*</span>
 							</div>
 							<div class="formrow">
 								<input type="checkbox" name="minimize-background" value="1"
 									id="prefs-minimize-background"
 									onclick="Spaz.UI.setMinimizeOnBackground(this.checked)" />
-								<label for="minimize-background" class="checkbox">Minimize when in background</label>
+								<label for="minimize-background" class="checkbox">Minimize when in background</label> <span class="restart-required">*</span>
 							</div>
 							<div class="formrow">
 								<input type="checkbox" name="maximize-foreground" value="1"
 									id="prefs-maximize-foreground"
 									onclick="Spaz.UI.setRestoreOnActivate(this.checked)" />
-								<label for="maximize-foreground" class="checkbox">Restore when in foreground</label>
+								<label for="maximize-foreground" class="checkbox">Restore when in foreground</label> <span class="restart-required">*</span>
 							</div>
 							<!-- Spaz.Prefs.hideAfterDelay		= 1;
 							Spaz.Prefs.restoreOnUpdates		= 1;
@@ -471,7 +471,7 @@ TODO:
 							<div class="formrow">
 								<label for="sound-enabled">Check on startup</label>
 								<input type="checkbox" name="checkupdate-enabled" value="1" id="prefs-checkupdate-enabled" onclick="Spaz.Update.setCheckUpdateState(this.checked)" />
-								<input type="button" name="user-stylesheet-button" value="Check Now &bull;" id="prefs-checkupdate-button" onclick="Spaz.Bridge.checkForUpdate()" />
+								<input type="button" name="user-stylesheet-button" value="Check Now &bull;" id="prefs-checkupdate-button" onclick="Spaz.Bridge.checkForUpdate()" /> <span class="restart-required">*</span>
 							</div>
 						</div>
 					</div>
@@ -492,7 +492,7 @@ TODO:
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
 								<label for="debugging-enabled">Enabled</label>
-								<input type="checkbox" name="debugging-enabled" value="1" id="prefs-debugging-enabled" onclick="Spaz.Bridge.setDebugEnable(this.checked)" /> <span class="prefs-restart-msg">restart required</span>
+								<input type="checkbox" name="debugging-enabled" value="1" id="prefs-debugging-enabled" onclick="Spaz.Bridge.setDebugEnable(this.checked)" /> <span class="restart-required">*</span>
 							</div>
 							<div class="formrow">
 								<input type="button" id="prefs-console-button" name="open-console" value="Open Firebug console &bull;" onclick="console.open()" />
@@ -502,9 +502,9 @@ TODO:
 					</div>
 					
 				</div>
-
+				
 				<div class="formrow" style="text-align:right; margin-top:15px">
-					<span id="verification-result">&nbsp;</span>
+					<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
 					<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
 						onclick="Spaz.Data.verifyPassword()" /> 
 				</div>
