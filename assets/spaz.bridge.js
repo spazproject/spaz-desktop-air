@@ -323,7 +323,7 @@ if(typeof runtime!='undefined'){
 		if (enable) {
 			air.Shell.shell.addEventListener('activate', function() {
 				//window.nativeWindow.restore();
-				Spaz.BridgeI.windowRestore();
+				Spaz.Bridge.windowRestore();
 			})
 		}
 	}
@@ -470,6 +470,7 @@ if(typeof runtime!='undefined'){
 	}
 	
 	Spaz.Bridge.windowRestore = function() {
+		air.trace('in Spaz.Bridge.windowRestore (from Parent)');
 		Spaz.UI.windowRestore();
 	}
 	

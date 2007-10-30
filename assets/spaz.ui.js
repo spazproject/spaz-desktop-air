@@ -507,20 +507,27 @@ Spaz.UI.windowMinimize = function() {
 	return false;
 };
 Spaz.UI.windowRestore = function() {
-	Spaz.dump('clicked on systray');
-	Spaz.dump(window.nativeWindow.displayState);
-	Spaz.dump('id:'+air.Shell.shell.id);
+	air.trace('clicked on systray');
+	air.trace(window.nativeWindow.displayState);
+	//air.trace('id:'+air.Shell.shell.id);
 	
-	if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-		Spaz.dump('restoring window');
- 		nativeWindow.restore();
- 	}
- 	Spaz.dump('activating application');
- 	air.Shell.shell.activateApplication()
-	Spaz.dump('activating window');
+	
+	// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
+	// 	air.trace('restoring window');
+	//  		nativeWindow.restore();
+	//  	}
+	air.trace('restoring window');
+	window.nativeWindow.restore();
+
+	air.trace('activating window');
 	window.nativeWindow.activate();
-	Spaz.dump('ordering-to-front window');
-	window.nativeWindow.orderToFront();
+	// air.trace('ordering-to-front window');
+	// window.nativeWindow.orderToFront();
+	if (air.Shell) {
+		air.trace('activating application');
+		air.Shell.shell.activateApplication();
+	}
+ 	
 };
 
 
