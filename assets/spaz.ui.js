@@ -8,7 +8,7 @@ if (!Spaz.UI) Spaz.UI = {};
 // the currently selected tab (should be the element)
 Spaz.UI.selectedTab = null;
 
-Spaz.UI.currentTheme = '';
+Spaz.UI.currentTheme = 'spaz';
 Spaz.UI.userStyleSheet = '';
 Spaz.UI.themeDir = '';
 
@@ -498,6 +498,13 @@ Spaz.UI.windowActiveHandler = function () {
 	}
 	
 }
+Spaz.UI.windowMinimize = function() {
+	window.nativeWindow.minimize();
+	if (Spaz.UI.minimizeToSystray && air.Shell.supportsSystemTrayIcon) {
+		window.nativeWindow.visible = false;
+	}
+	return false;
+};
 
 
 

@@ -1,13 +1,8 @@
 <!--
 TODO:
-* NativeMenus
-* NativeMenus keyboard shortcuts
 * Open user Account Info panel on start
-* minimize to systray mode - need user-defined pref loaded by start.html
-* minimize on close mode
-* Change "Style" pref panel to "Interface"
 * Notification popups
-* auto-hide mode
+* auto-hide after delay mode
 * auto-show on updates mode
 * always on top mode
 * User CSS
@@ -110,7 +105,7 @@ TODO:
 	<div id="window-buttons">
 		<span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
 		<span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span>
-		<span id="minimize" class="window-button" onclick="nativeWindow.minimize()" title="Minimize">&ndash;</span>
+		<span id="minimize" class="window-button" onclick="Spaz.UI.windowMinimize()" title="Minimize">&ndash;</span>
 		<span id="close" class="window-button" onclick="Spaz.Bridge.windowClosingHandler()" title="Close">&times;</span>
 	</div>
 	<span id="header-label">Spaz</span>

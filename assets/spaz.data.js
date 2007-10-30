@@ -127,15 +127,24 @@ Spaz.Data.verifyPassword = function() {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+				return;
+			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
 			Spaz.dump("ERROR: " + rstr);
-			Spaz.UI.statusBar('Error verifying password' + ": " + xhr.responseText);
+			Spaz.UI.statusBar('Error verifying password');
 			Spaz.UI.flashStatusBar();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+			}
 			
 		},
 		success:function(data){
@@ -188,17 +197,30 @@ Spaz.Data.update = function(msg, username, password) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump("Update ERROR: Timeout");
+				Spaz.UI.statusBar("Update ERROR: Timeout")
+				return;
+			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
+			Spaz.dump("ERROR");
+			$('#entrybox').attr('disabled', false);
+			$('#updateButton').attr('disabled', false);
+			$('#updateButton').val(oldButtonLabel);
+			
+			if (xhr.readyState < 3) {
+				Spaz.dump("Update ERROR: Timeout");
+				Spaz.UI.statusBar("Update ERROR: Timeout")
+				return;
+			}
+			
 			if (xhr.status != 200) { // sanity check
 	 			Spaz.dump("ERROR: " + rstr);
-				$('#entrybox').attr('disabled', false);
-				$('#updateButton').attr('disabled', false);
-				$('#updateButton').val(oldButtonLabel);
 				Spaz.UI.statusBar("Update failed");
 				Spaz.UI.flashStatusBar();				
 			} else {
@@ -250,14 +272,22 @@ Spaz.Data.destroyStatus = function(postid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout");
+				return;
+			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
 			Spaz.dump("Error destroying status");
 			Spaz.UI.flashStatusBar();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+			}
 		},
 		success:function(data){
 			Spaz.dump(data);
@@ -289,16 +319,25 @@ Spaz.Data.makeFavorite = function(postid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+				return;
+			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
 			Spaz.dump("Error adding favorite " + postid);
 			Spaz.dump(Spaz.Data.url_favorites_create.replace(/{{ID}}/, postid));
 			Spaz.UI.statusBar('Error adding fav: ' + postid);
 			Spaz.UI.flashStatusBar();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+			}
+			
 		},
 		success:function(data){
 			Spaz.dump(data);
@@ -330,15 +369,24 @@ Spaz.Data.followUser = function(userid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+				return;
+			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
 			Spaz.dump("ERROR: " + rstr);
 			Spaz.UI.statusBar('Error following ' + userid + ": " + xhr.responseText);
 			Spaz.UI.flashStatusBar();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+			}
+			
 		},
 		success:function(data){
 			Spaz.dump(data);
@@ -373,15 +421,24 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+				return;
+			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
 			Spaz.dump("ERROR: " + rstr);
 			Spaz.UI.statusBar('Error while ending follow of ' + userid + ": " + xhr.responseText);
 			Spaz.UI.flashStatusBar();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+			}
+			
 		},
 		success:function(data){
 			Spaz.dump(data);
@@ -475,15 +532,20 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, msg){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump(url + ": ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+				return;
+			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			//Spaz.dump(xhr, 'dir');
 			Spaz.dump(url + ": COMPLETE: " + msg);
 			
 			if (xhr.status == 400) {
-				Spaz.dump(url + ": ERROR: 400 error - Probably exceeded request limit");
+				Spaz.dump("ERROR: 400 error - Probably exceeded request limit");
 				Spaz.UI.statusBar('Error: May have exceeded request limit');
-				Spaz.UI.hideLoading();
 				return;
 			}
 			
@@ -497,7 +559,8 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			ds.setDataFromDoc(data);
 							
 			if (!ds.data[0]) {
-				Spaz.UI.statusBar('No data returned');
+				Spaz.dump('No data returned');
+				Spaz.UI.statusBar('No data returned - Twitter may be acting up');
 			} else if (!oldFirstStatus || (oldFirstStatus != ds.data[0].id) ) {
 				Spaz.dump('old: ' + oldFirstStatus);
 				Spaz.dump('new: ' + ds.data[0].id);
@@ -511,16 +574,18 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			// 	Spry.Data.updateRegion(thisRegion.name);
 			// 	Spaz.UI.statusBar('Ready (no changes)');
 			// }
-			Spaz.UI.hideLoading();
 		},
-		error:function(xhr, msg){
-			if (xhr.status && xhr.status == 400) {
+		error:function(xhr, msg, exc) {
+			Spaz.dump("ERROR");
+			Spaz.UI.statusBar('Error loading ' + url.replace(/http:\/\/(www\.)?twitter\.com/, ''));
+			Spaz.UI.flashStatusBar();
+			
+			if (xhr.readyState < 3) {
+				Spaz.dump(url + ": ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+			} else if (xhr.status == 400) {
 				Spaz.dump(url + ": ERROR: 400 error - Probably exceeded request limit");
 				Spaz.UI.statusBar('Error: May have exceeded request limit');
-			} else {
-				Spaz.dump(url + ": ERROR: " + xhr.statusText);
-				Spaz.UI.statusBar('Error loading ' + url.replace(/http:\/\/(www\.)?twitter\.com/ + ":"+xhr.status, ''));
-				Spaz.UI.flashStatusBar();
 			}
 		},
 		success:function(data) {
@@ -553,6 +618,12 @@ Spaz.Data.shortenLink = function() {
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
+			Spaz.UI.hideLoading();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+				return;
+			}
 			Spaz.dump('Response-headers:');
 			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
 			Spaz.dump('XHR Object:');
@@ -563,12 +634,15 @@ Spaz.Data.shortenLink = function() {
 			$('#shorten-short-link').val(xhr.responseText);
 			$('#shorten-short-link').focus();
 			$('#shorten-short-link').select();
-			Spaz.UI.hideLoading();
 		},
 		error:function(xhr, rstr){
 			Spaz.dump("ERROR: " + rstr);
 			Spaz.UI.statusBar('Error trying to shorten link');
 			Spaz.UI.flashStatusBar();
+			if (xhr.readyState < 3) {
+				Spaz.dump("ERROR: Timeout");
+			}
+			
 		},
 		success:function(data){
 			// Spaz.dump(data);

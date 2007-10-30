@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<application xmlns="http://ns.adobe.com/air/application/1.0.M5" appId="Spaz.AIR" version="0.2.10">
+<application xmlns="http://ns.adobe.com/air/application/1.0.M5" appId="Spaz.AIR" version="0.2.9.ACTUALLY_0-2-10_DEV2">
 	<name>Spaz</name>
 	
 	  <initialWindow>
 		<title>Spaz</title>
 	
-		<content>start.html</content>
+		<content>root.html</content>
 		<systemChrome>none</systemChrome>
 		<transparent>true</transparent>
 		<visible>false</visible>
@@ -13,8 +13,6 @@
 	
 		<width>350</width> 
 		<height>580</height>
-		<top>10</top>
-		<left>10</left>
 	  </initialWindow>
 	
 	<icon>

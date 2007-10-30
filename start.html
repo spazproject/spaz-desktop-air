@@ -42,7 +42,7 @@ function startApp() {
 	
 	// we use a lightweight window to have the app not show in the taskbar
 	if (prefs.minimizeToSystray && air.Shell.supportsSystemTrayIcon) {
-		options.type = "lightweight";
+		options.type = "utility";
 	}
 	
 	var windowBounds = new air.Rectangle(200,250,300,400);
