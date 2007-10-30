@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UpdateDescriptor>
-	<version>0.2.9</version>
+	<version>0.3.0</version>
 	<filename>SpazAIR.air</filename>
 	<description>
 		<![CDATA[
 			<strong>These are the changes in the new version:</strong>
 			<ul>
-				<li>Can now add favorites by clicking on star icon in status</li>
-				<li>Changed action links in statuses to icons</li>
-				<li>Removed "reply" link from dm timeline because I keep hitting the wrong link</li>
-				<li>Minor theme changes: made paging arrows larger, reduced size of textarea in mini theme</li>
-				<li>Changed minimum refresh time to 1 minute (default is still 2 minutes)</li>
-				<li>Fixed bug in caching where source links weren't cached properly</li>
-				<li>Popup panels now center more accurately</li>
-				<li>Changes to themes and index.html markup to prevent markdown h1 headers from causing mayhem</li>
-				<li>Added enable/disable Markdown syntax parsing in prefs</li>
+				<li>All timelines now retrieve all data, not just from last 24 hours (including DMs, @s, sent messages, followers/following lists)</li>
+				<li>New theme: "Dumb Terminal." Works best on Windows with Bistream Vera Sans Mono or Iconsolata font; OS X has readable mono fonts by default</li>
+				<li>New window behaviors: Minimize to systray (on by default), minimize when in background, restore when in foreground</li>
+				<li>Added Native Shell Menus under OS X</li>
+				<li>Added System Tray Icon in Windows w/ context menu</li>
+				<li>Added Dock item menu</li>
+				<li>User-defined CSS tweaks file now works again</li>
+				<li>Tweets can now be "selected." Hit '@' (SHIFT+2) to send reply to selected tweet's user</li>
+				<li>Prefs that require restart to be applied are now indicated</li>
+				<li>Better descriptions of data retrieval errors; should properly determine if response timed out or if request limit is exceeded</li>
+				<li>Fixed charcount to reset properly after successful send</li>
+				<li>Added simple DOM context menus - currently allow user to copy URLs to clipboard</li>
+				<li>Use '-khtml-user-select' to limit selectability of elements; should eliminate many problems with onlick operations</li>
+				<li>Popup panels should work a bit better; center properly and drag more easily. Popup panels will be moved to modal windows soon</li>
+				<li>Upgraded to jQuery 1.2.1</li>
+				<li>Dumped Interface lib, added jQuery.UI lib</li>
+				<li>Fixed size of protected post icon</li>
+				<li>Lots of code cleanup and refactoring</li>
 			</ul>
 		 ]]>
 	</description>
