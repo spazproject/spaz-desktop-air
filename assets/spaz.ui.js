@@ -22,8 +22,8 @@ Spaz.UI.useMarkdown = 1;
 Spaz.UI.hideAfterDelay			= 1; // TODO not yet implemented
 Spaz.UI.restoreOnUpdates		= 1; // TODO not yet implemented
 Spaz.UI.minimizeToSystray		= 1;
-Spaz.UI.minimizeOnBackground	= 1;
-Spaz.UI.restoreOnActivate		= 1;
+Spaz.UI.minimizeOnBackground	= 0;
+Spaz.UI.restoreOnActivate		= 0;
 
 Spaz.UI.showContextMenus = 1; // hard-coded - this works properly now
 
@@ -498,9 +498,10 @@ Spaz.UI.windowActiveHandler = function () {
 	}
 	
 }
+
 Spaz.UI.windowMinimize = function() {
 	window.nativeWindow.minimize();
-	if (Spaz.UI.minimizeToSystray && air.Shell.supportsSystemTrayIcon) {
+	if (Spaz.UI.minimizeToSystray && Spaz.Bridge.supportsSystrayIcon()) {
 		window.nativeWindow.visible = false;
 	}
 	return false;

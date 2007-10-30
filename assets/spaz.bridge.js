@@ -304,6 +304,10 @@ if(typeof runtime!='undefined'){
 		var val  = parseInt(percentage)/100;
 		window.htmlControl.alpha = val;
 	}
+	
+	Spaz.Bridge.supportsSystrayIcon = function() {
+		return air.Shell.supportsSystemTrayIcon;
+	};
 
 	// Window behaviors
 	Spaz.Bridge.setMinimizeOnBackground = function(enable) {
