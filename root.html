@@ -13,7 +13,9 @@
 <script src="assets/spaz.update.js" type="text/javascript"></script>
 <script src="assets/spaz.bridge.js" type="text/javascript"></script>
 <script src="assets/spaz.menus.js" type="text/javascript" charset="utf-8"></script>
-
+<script src="assets/spaz.notify.js" type="text/javascript" charset="utf-8"></script>
+<script src="lib/library.swf" type="application/x-shockwave-flash"></script>
+	
 
 <!-- Firebug lite -->
 <script language="javascript" type="text/javascript" src="assets/firebug/firebug.js"></script>
@@ -29,14 +31,32 @@
 </body>
 </html>
 <script>
+
+// function notify() {
+// 	air.trace("init notifier");
+// 	var notifier = new runtime.com.adobe.air.notification.Purr(5);
+// 	air.trace('notifier init-ed')
+// 
+// 	var title = "This is a title";
+// 	var message = "This is a message";
+// 	var where = runtime.com.adobe.air.notification.AbstractNotification.BOTTOM_RIGHT;
+// 	notifier.addTextNotificationByParams(title, message, where, 5, null);
+// }
+
+
+
+
+
 function rootInit() {
 	
 	
 	window.htmlControl.manageCookies = false;
 	window.htmlControl.paintsDefaultBackground = false;
-	window.htmlControl.shouldAuthenticate = false;
 	window.htmlControl.shouldCacheResponse = false;
 	window.htmlControl.useCache = false;
+	window.htmlControl.shouldAuthenticate = false;
+
+	
 	
 	//window.htmlControl.opaqueBackground(null);
 	window.htmlControl.filters = window.runtime.Array(

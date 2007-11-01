@@ -125,8 +125,14 @@ Spaz.childFrameInit = function() {
 	$('#prefs-username').val(Spaz.Bridge.getUser());
 	$('#prefs-password').val(Spaz.Bridge.getPass());
 	$('#prefs-refresh-interval').val(Spaz.Bridge.getRefreshInterval()/60000);
-
-
+	
+	if (Spaz.Bridge.getHandleHTTPAuth()) {
+		$('#prefs-handle-http-auth').attr('checked', 'checked');
+	} else {
+		$('#prefs-handle-http-auth').attr('checked', '');
+	}
+	
+	
 	// User Stylesheet
 	if (Spaz.UI.userStyleSheet) {		
 		$('#UserCSSOverride').text(Spaz.Bridge.loadUserStylesFromURL(Spaz.UI.userStyleSheet));;

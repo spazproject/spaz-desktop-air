@@ -209,6 +209,10 @@ if(typeof runtime!='undefined'){
 		return Spaz.Prefs.refreshInterval;
 	}
 	
+	Spaz.Bridge.getHandleHTTPAuth = function() {
+		return Spaz.Prefs.handleHTTPAuth;
+	}
+	
 	Spaz.Bridge.parentWindowClosingHandler = function(){
 		Spaz.Prefs.windowClosingHandler();
 	
@@ -238,6 +242,10 @@ if(typeof runtime!='undefined'){
 	
 	Spaz.Bridge.checkRefreshPeriod = function(time){
 		Spaz.Prefs.checkRefreshPeriod ( time );
+	}
+	
+	Spaz.Bridge.setHandleHTTPAuth = function(state) {
+		Spaz.Prefs.setHandleHTTPAuth(state);
 	}
 	
 	Spaz.Bridge.checkWindowOpacity = function(percentage) {
@@ -360,7 +368,9 @@ if(typeof runtime!='undefined'){
 	}
 
 
-
+	Spaz.Bridge.notify = function(message, title, where, duration, icon) {
+		Spaz.Notify.add(message, title, where, duration, icon);
+	}
 
 
 	

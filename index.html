@@ -71,7 +71,8 @@ TODO:
 	<script src="assets/spaz.ui.js"     type="text/javascript"></script>
 	<script src="assets/spaz.update.js" type="text/javascript"></script>
 	<script src="assets/spaz.bridge.js" type="text/javascript"></script>
-
+	<script src="assets/spaz.notify.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="lib/library.swf" type="application/x-shockwave-flash"></script> -->
 
 	<!-- User CSS override file -->
 	<style type="text/css" media="screen" id="UserCSSOverride"></style>
@@ -465,7 +466,7 @@ TODO:
 						</div>
 					</div>
 										
-					<div id="prefs-sound-fieldset" class="CollapsiblePanel">
+					<div id="prefs-upgrades-fieldset" class="CollapsiblePanel">
 						<h2 class="CollapsiblePanelTab" tabindex="0">Upgrades</h2>
 						<div class="CollapsiblePanelContent">
 							<div class="formrow">
@@ -483,6 +484,12 @@ TODO:
 								<label for="refresh-interval">Refresh interval</label>
 								<input type="text" onchange="Spaz.Bridge.checkRefreshPeriod(this.value)" name="refresh-interval" id="prefs-refresh-interval" value="2" maxlength="2" size="2" /> minutes
 
+							</div>
+							<div class="formrow">
+								<input type="checkbox" name="handle-http-auth" value="1"
+									id="prefs-handle-http-auth"
+									onclick="Spaz.Bridge.setHandleHTTPAuth(this.checked)" />
+								<label for="handle-http-auth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
 							</div>
 						</div>
 					</div>

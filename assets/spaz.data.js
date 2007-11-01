@@ -546,6 +546,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			if (xhr.status == 400) {
 				Spaz.dump("ERROR: 400 error - Probably exceeded request limit");
 				Spaz.UI.statusBar('Error: May have exceeded request limit');
+				Spaz.Bridge.notify('May have exceeded request limit', 'Error');
 				return;
 			}
 			
@@ -566,6 +567,15 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 				Spaz.dump('new: ' + ds.data[0].id);
 				Spaz.UI.playSoundNew();
 				Spaz.UI.statusBar('Updates found');
+				// console.open();
+				// console.dir(ds.data[0]);
+				// Spaz.Bridge.notify('New updates found', 'New updates');
+				var newest = ds.data[0];
+				if (newest['user/screen_name']) {
+					Spaz.Bridge.notify(newest['text'], newest['user/screen_name'], null, null, newest['user/profile_image_url']);
+				} else if (newest['sender/screen_name']) {
+					Spaz.Bridge.notify(newest['text'], newest['sender/screen_name'], null, null, newest['sender/profile_image_url']);
+				}
 			} else {
 				Spaz.UI.resetStatusBar();
 			}

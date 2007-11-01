@@ -18,6 +18,9 @@ Spaz.Prefs.windowOpacity   = 100;
 // Show NativeMenus -- hardcoded
 Spaz.Prefs.showNativeMenus 		= 1;
 
+// Should AIR's HTMLControl handle HTTP Auth?
+Spaz.Prefs.handleHTTPAuth		= 0;
+
 Spaz.Prefs.load = function() {
 
 	Spaz.Prefs.file = air.File.applicationStorageDirectory;
@@ -56,6 +59,7 @@ Spaz.Prefs.readXML = function()
 Spaz.Prefs.processXMLData = function()
 {
 	Spaz.Prefs.XML = Spaz.Prefs.stream.readUTFBytes(Spaz.Prefs.stream.bytesAvailable);
+	Spaz.dump(Spaz.Prefs.XML);
 	Spaz.Prefs.stream.close();
 	var domParser = new DOMParser();
 	Spaz.Prefs.XML = domParser.parseFromString(Spaz.Prefs.XML, "text/xml");
@@ -132,10 +136,15 @@ Spaz.Prefs.processXMLData = function()
 	var networkData = Spaz.Prefs.XML.getElementsByTagName("network")[0];
 	if (networkData) {
 		Spaz.Prefs.refreshInterval = parseInt(networkData.getAttribute("refreshinterval"));
+		if (networkData.getAttribute("airhandlehttpauth")) {
+			Spaz.Prefs.handleHTTPAuth = parseInt(networkData.getAttribute("airhandlehttpauth"));
+			Spaz.dump('Spaz.Prefs.handleHTTPAuth found:'+Spaz.Prefs.handleHTTPAuth);
+		}
 	}
 	if (isNaN(Spaz.Prefs.refreshInterval)) {Spaz.Prefs.refreshInterval = 120000;}
 	if (Spaz.Prefs.refreshInterval < 60000) { Spaz.Prefs.refreshInterval = 60000 } // minimum 1 minute
 	Spaz.dump('Spaz.Prefs.refreshInterval:'+Spaz.Prefs.refreshInterval);
+	Spaz.dump('Spaz.Prefs.handleHTTPAuth:'+Spaz.Prefs.handleHTTPAuth);
 }
 
 
@@ -228,6 +237,7 @@ Spaz.Prefs.createXMLData = function()
 					// + "        password = '"+Spaz.Prefs.pass+"'" +cr
 					+ "	       />" + cr
 					+ "    <network refreshinterval = '"+Spaz.Prefs.refreshInterval.toString()+"'"+cr
+					+ "        airhandlehttpauth = '" + parseInt(Spaz.Prefs.handleHTTPAuth).toString() + "'" + cr
 					+ "        />" + cr
 					+ "    <theme "+ cr
 					+ "        hideafterdelay = '"+parseInt(info.hideAfterDelay).toString()+"'" + cr
@@ -310,6 +320,20 @@ Spaz.Prefs.setCurrentUser = function() {
 	Spaz.Prefs.saveData();
 	
 	Spaz.dump('saved data');
+}
+
+
+Spaz.Prefs.setHandleHTTPAuth = function(state) {
+	Spaz.dump(state);
+	if (state) {
+		Spaz.Prefs.handleHTTPAuth = 1
+		window.htmlControl.shouldAuthenticate = true;
+	} else {
+		Spaz.Prefs.handleHTTPAuth = 0;
+		window.htmlControl.shouldAuthenticate = false;
+	}
+	Spaz.dump(Spaz.Prefs.handleHTTPAuth);
+	Spaz.dump(window.htmlControl.shouldAuthenticate);
 }
 
 Spaz.Prefs.checkRefreshPeriod = function(val) {
