@@ -177,6 +177,14 @@ Spaz.childFrameInit = function() {
 		$('#prefs-maximize-foreground').attr('checked', '');
 	}
 
+	// Show notification popups
+	if (Spaz.UI.showNotificationPopups) {
+		Spaz.UI.showNotificationPopupsOn();
+		$('#prefs-show-notification-popups').attr('checked', 'checked');
+	} else {
+		Spaz.UI.showNotificationPopupsOff();
+		$('#prefs-show-notification-popups').attr('checked', '');
+	}
 
 	// Sounds
 	if (Spaz.UI.playSounds) {

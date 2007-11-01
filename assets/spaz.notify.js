@@ -12,16 +12,16 @@ Spaz.Notify.iconBMP = null;
 
 Spaz.Notify.params = null;
 
-Spaz.Notify.notify = function(msg) {
-	Spaz.dump("init notifier");
-	var notifier = new runtime.com.adobe.air.notification.Purr(5);
-	Spaz.dump('notifier init-ed')
-
-	var title = "This is a title";
-	// var message = "This is a message";
-	var where = runtime.com.adobe.air.notification.AbstractNotification.BOTTOM_RIGHT;
-	notifier.addTextNotificationByParams(title, msg, where, 5, null);
-}
+// Spaz.Notify.notify = function(msg) {
+// 	Spaz.dump("init notifier");
+// 	var notifier = new runtime.com.adobe.air.notification.Purr(5);
+// 	Spaz.dump('notifier init-ed')
+// 
+// 	var title = "This is a title";
+// 	// var message = "This is a message";
+// 	var where = runtime.com.adobe.air.notification.AbstractNotification.BOTTOM_RIGHT;
+// 	notifier.addTextNotificationByParams(title, msg, where, 5, null);
+// }
 
 
 Spaz.Notify.add  = function(message, title, where, duration, icon) {

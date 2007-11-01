@@ -1,11 +1,9 @@
 <!--
 TODO:
 * Open user Account Info panel on start
-* Notification popups
 * auto-hide after delay mode
 * auto-show on updates mode
 * always on top mode
-* User CSS
 * Soft restart
 * Feature: option to NOT save password
 * auto-completing usernames when typing "@" or "d "
@@ -448,6 +446,12 @@ TODO:
 									onclick="Spaz.UI.setRestoreOnActivate(this.checked)" />
 								<label for="maximize-foreground" class="checkbox">Restore when in foreground</label> <span class="restart-required">*</span>
 							</div>
+							<div class="formrow">
+								<input type="checkbox" name="notification-popups" value="1"
+									id="prefs-show-notification-popups"
+									onclick="Spaz.UI.setShowNotificationPopups(this.checked)" />
+								<label for="notification-popups" class="checkbox">Show notification popups (alpha)</label> <!-- <span class="restart-required">*</span> -->
+							</div>
 							<!-- Spaz.Prefs.hideAfterDelay		= 1;
 							Spaz.Prefs.restoreOnUpdates		= 1;
 							Spaz.Prefs.minimizeToSystray	= 1;
@@ -620,7 +624,6 @@ TODO:
 				<td class="label">@ (SHIFT+2)</td>
 				<td class="value">respond to sender of currently selected message</td>
 			</tr>
-
 			<tr>
 				<td class="label">1-8</td>
 				<td class="value">Switch to tab 1-8</td>
@@ -701,7 +704,7 @@ TODO:
 	 * Default prefs vars
 	 */
 	var reloadID; // identifier for the auto-reloader
-	var memoryRefreshID; // identifier for the memory reporter
+	// var memoryRefreshID; // identifier for the memory reporter
 
 	var entryBoxHint = "What are you doing?";
 

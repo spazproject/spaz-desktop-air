@@ -25,6 +25,9 @@ Spaz.UI.minimizeToSystray		= 1;
 Spaz.UI.minimizeOnBackground	= 0;
 Spaz.UI.restoreOnActivate		= 0;
 
+Spaz.UI.showNotificationPopups	= 1;
+
+
 Spaz.UI.showContextMenus = 1; // hard-coded - this works properly now
 
 // Paths to sound files
@@ -190,6 +193,24 @@ Spaz.UI.hideAfterDelayOff = function() {
 	Spaz.UI.hideAfterDelay = 0;
 }
 
+
+// Spaz.UI.showNotificationPopups
+Spaz.UI.setShowNotificationPopups = function(state) {
+	Spaz.dump("showNotificationPopups: "+state);
+	if (state) {
+		Spaz.UI.showNotificationPopupsOn()
+	} else {
+		Spaz.UI.showNotificationPopupsOff()
+	}
+}
+Spaz.UI.showNotificationPopupsOn = function() {
+	Spaz.dump("showNotificationPopups ON");
+	Spaz.UI.showNotificationPopups = 1;
+}
+Spaz.UI.showNotificationPopupsOff = function() {
+	Spaz.dump("showNotificationPopups OFF");
+	Spaz.UI.showNotificationPopups = 0;
+}
 
 Spaz.UI.statusBar = function(txt) {
 	$('#statusbar-text').html(txt);

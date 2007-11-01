@@ -182,7 +182,8 @@ if(typeof runtime!='undefined'){
 		// 	}
 		// 	
 		// 	air.trace.apply(this, args);
-		air.trace('Spaz.Bridge.trace:'+msg);
+		var now = new Date().toUTCString();
+		air.trace('['+now+']Spaz.Bridge.trace:'+msg);
 	}
 	
 	Spaz.Bridge.dump = function(msg, type){
@@ -369,7 +370,11 @@ if(typeof runtime!='undefined'){
 
 
 	Spaz.Bridge.notify = function(message, title, where, duration, icon) {
-		Spaz.Notify.add(message, title, where, duration, icon);
+		if (Spaz.Bridge.getUIInfo().showNotificationPopups) {
+			Spaz.Notify.add(message, title, where, duration, icon);
+		} else {
+			Spaz.dump('not showing notification popup - Spaz.UI.showNotificationPopups disabled');
+		}
 	}
 
 
@@ -465,11 +470,12 @@ if(typeof runtime!='undefined'){
 			minimizeToSystray:	Spaz.UI.minimizeToSystray,
 			minimizeOnBackground:Spaz.UI.minimizeOnBackground,
 			restoreOnActivate: 	Spaz.UI.restoreOnActivate,
+			showNotificationPopups:Spaz.UI.showNotificationPopups,
 		};
 	}
 	
 	Spaz.Bridge.setUI = function(id, value){
-		if("currentTheme, userStyleSheet, playSounds, useMarkdown, hideAfterDelay, restoreOnUpdates, minimizeToSystray, minimizeOnBackground, restoreOnActivate".indexOf(id)>-1){
+		if("currentTheme, userStyleSheet, playSounds, useMarkdown, hideAfterDelay, restoreOnUpdates, minimizeToSystray, minimizeOnBackground, restoreOnActivate, showNotificationPopups".indexOf(id)>-1){
 			Spaz.UI[id]=value;
 			Spaz.dump('setUI: Spaz.UI['+id+']='+value);
 		}

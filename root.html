@@ -54,17 +54,25 @@ function rootInit() {
 	window.htmlControl.paintsDefaultBackground = false;
 	window.htmlControl.shouldCacheResponse = false;
 	window.htmlControl.useCache = false;
-	window.htmlControl.shouldAuthenticate = false;
-
+	
+	if (Spaz.Prefs.handleHTTPAuth) {
+		Spaz.dump('Turning ON HTTPAuth handling')
+		window.htmlControl.shouldAuthenticate = true;
+	} else {
+		Spaz.dump('Turning OFF HTTPAuth handling')
+		window.htmlControl.shouldAuthenticate = false;
+	}
 	
 	
-	//window.htmlControl.opaqueBackground(null);
+	// apply dropshadow to window
+	Spaz.dump('Applying Flash Filter Dropshadow');
 	window.htmlControl.filters = window.runtime.Array(
-				new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
-				);
+		new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
+	);
 
 
 	if (Spaz.Prefs.showNativeMenus) {
+		Spaz.dump('Initializing NativeMenus')
 		Spaz.Menus.initAll();
 	}
 	
@@ -100,6 +108,13 @@ function rootInit() {
 	air.Shell.shell.addEventListener(air.Event.USER_PRESENT, function(event) {
 		Spaz.dump('user has returned');
 	})
+	
+
+	var memoryTimer = new air.Timer(1000*10, 0);
+	memoryTimer.addEventListener(air.TimerEvent.TIMER, function(event){
+		Spaz.dump('air.System.totalMemory = '+air.System.totalMemory);
+	});
+	memoryTimer.start();
 	
 }
 

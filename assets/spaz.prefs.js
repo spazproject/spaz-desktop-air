@@ -101,6 +101,10 @@ Spaz.Prefs.processXMLData = function()
 		if (themeData.getAttribute("restoreonactivate")) {
 			Spaz.Bridge.setUI('restoreOnActivate', parseInt(themeData.getAttribute("restoreonactivate")));
 		}
+		if (themeData.getAttribute("shownotificationpopups")) {
+			Spaz.Bridge.setUI('showNotificationPopups', parseInt(themeData.getAttribute("shownotificationpopups")));
+		}
+
 		
 		
 		var info = Spaz.Bridge.getUIInfo();
@@ -113,6 +117,8 @@ Spaz.Prefs.processXMLData = function()
 		Spaz.dump("Spaz.UI.minimizeToSystray:"+info.minimizeToSystray);
 		Spaz.dump("Spaz.UI.minimizeOnBackground:"+info.minimizeOnBackground);
 		Spaz.dump("Spaz.UI.restoreOnActivate:"+info.restoreOnActivate);
+		
+		Spaz.dump("Spaz.UI.showNotificationPopups:"+info.showNotificationPopups);
 	}
 	
 	var soundData = Spaz.Prefs.XML.getElementsByTagName("sound")[0];
@@ -242,6 +248,7 @@ Spaz.Prefs.createXMLData = function()
 					+ "    <theme "+ cr
 					+ "        hideafterdelay = '"+parseInt(info.hideAfterDelay).toString()+"'" + cr
 					+ "        restoreonupdates = '"+parseInt(info.restoreOnUpdates).toString()+"'" + cr
+					+ "        shownotificationpopups = '"+parseInt(info.showNotificationPopups).toString()+";" + cr
 					+ "        minimizetosystray = '"+parseInt(info.minimizeToSystray).toString()+"'" + cr
 					+ "        minimizeonbackground = '"+parseInt(info.minimizeOnBackground).toString()+"'" + cr
 					+ "        restoreonactivate = '"+parseInt(info.restoreOnActivate).toString()+"'" + cr
