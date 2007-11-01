@@ -37,8 +37,19 @@
 		<h2>Known Issues</h2>
 		<ul>
 			<li>AIR seems to have garbage collection issues that lead to memory leaks. Will try to find workaround/fix ASAP</li>
+			<li>AIR apps sometimes will crash on startup because the EncryptedLocalStore data has become corrupted. <strong>This is especially common when upgrading your OS</strong>. If you see this behavior, try deleting the following folder:
+				<pre><strong>Windows:</strong> c:\Documents and Settings\username\Application Data\Adobe\AIR\Spaz.AIR
+<strong>OS X:</strong> /Users/username/Application Support/Adobe/AIR/Spaz.AIR</pre>
 		</ul>
 	</div>
+
+	<h2>0.3.1 (2007-11-01)</h2>
+	<ul>
+		<li>Notification popups (aka 'toast' windows, aka Growl-style popups) via <a href="http://code.google.com/p/as3notificationlib/">as3notificationlib</a>. Can be enabled/disabled in prefs. This is <em>experimental</em>, and more control and functionality is forthecoming</li>
+		<li>Added preference to re-enable AIR's built-in handling of HTTP Auth requests. This is necessary for some proxies that require authentication.</li>
+		<li>Added 10 second memory usage timer; outputs to debug log</li>
+		<li>Added timestamp to debug log output</li>
+	</ul>
 
 
 	<h2>0.3.0 (2007-10-30)</h2>

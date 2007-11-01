@@ -99,15 +99,15 @@ function rootInit() {
 	// 	})
 	// }
 	
-	air.Shell.shell.idleThreshold = 10;
-	Spaz.dump('idle time:'+air.Shell.shell.idleThreshold);
-	
-	air.Shell.shell.addEventListener(window.runtime.flash.events.Event.USER_IDLE, function(event) {
-		Spaz.dump('user has gone idle');
-	})
-	air.Shell.shell.addEventListener(air.Event.USER_PRESENT, function(event) {
-		Spaz.dump('user has returned');
-	})
+	// air.Shell.shell.idleThreshold = 10;
+	// Spaz.dump('idle time:'+air.Shell.shell.idleThreshold);
+	// 
+	// air.Shell.shell.addEventListener(window.runtime.flash.events.Event.USER_IDLE, function(event) {
+	// 	Spaz.dump('user has gone idle');
+	// })
+	// air.Shell.shell.addEventListener(air.Event.USER_PRESENT, function(event) {
+	// 	Spaz.dump('user has returned');
+	// })
 	
 
 	var memoryTimer = new air.Timer(1000*10, 0);
