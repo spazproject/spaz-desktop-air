@@ -248,13 +248,14 @@ Spaz.Prefs.createXMLData = function()
 					+ "    <theme "+ cr
 					+ "        hideafterdelay = '"+parseInt(info.hideAfterDelay).toString()+"'" + cr
 					+ "        restoreonupdates = '"+parseInt(info.restoreOnUpdates).toString()+"'" + cr
-					+ "        shownotificationpopups = '"+parseInt(info.showNotificationPopups).toString()+";" + cr
+					+ "        shownotificationpopups = '"+parseInt(info.showNotificationPopups).toString()+"'" + cr
 					+ "        minimizetosystray = '"+parseInt(info.minimizeToSystray).toString()+"'" + cr
 					+ "        minimizeonbackground = '"+parseInt(info.minimizeOnBackground).toString()+"'" + cr
 					+ "        restoreonactivate = '"+parseInt(info.restoreOnActivate).toString()+"'" + cr
 					+ "        usemarkdown = '"+parseInt(info.useMarkdown).toString()+"'" + cr
 					+ "        userstylesheet = '"+info.userStyleSheet+"'" + cr
-					+ "        basetheme = '"+info.currentTheme+"'"+ "/>" + cr
+					+ "        basetheme = '"+info.currentTheme+"'"+ cr
+					+ "	        />" + cr
 					+ "    <sound enabled = '"+info.playSounds.toString()+"'" + cr
 					+ "         />" + cr
 					+ "    <checkupdate enabled = '"+Spaz.Update.checkUpdate.toString()+"'" + cr
