@@ -222,7 +222,7 @@ Spaz.childFrameInit = function() {
 	 * Other stuff to do when document is ready
 	 ***********************/
 	//memoryRefreshID = window.setInterval(Spaz.UI.updateMemoryUsage, 5000);
-	Spaz.dump('Started MemoryUsage timer');
+//	Spaz.dump('Started MemoryUsage timer');
 
 	
 	Spry.Data.Region.addObserver("public-timeline",			Spaz.UI.regionObserver);

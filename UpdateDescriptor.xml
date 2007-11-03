@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UpdateDescriptor>
-	<version>0.3.1</version>
+	<version>0.3.3</version>
 	<filename>SpazAIR.air</filename>
 	<description>
 		<![CDATA[
 			<strong>These are the changes in the new version:</strong>
 			<ul>
-				<li>Notification popups (aka 'toast' windows, aka Growl-style popups) via as3botificationlib. Can be enabled/disabled in prefs. This is <em>experimental</em>, and more control and functionality is forthecoming</li>
-				<li>Added preference to re-enable AIR's built-in handling of HTTP Auth requests. This is necessary for some proxies that require authentication.</li>
-				<li>Added 10 second memory usage timer; outputs to debug log</li>
-				<li>Added timestamp to debug log output</li>
+				<li>Fixed bug(s) in 0.3.2 because of packaging unstable code; all timelines and functionality should be present</li>
 			</ul>
 		 ]]>
 	</description>

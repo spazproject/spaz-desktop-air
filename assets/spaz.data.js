@@ -551,12 +551,13 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			}
 			
 			var thisRegion = Spaz.Data.getRegionForDs(ds);
-			// if (msg == 'success') {
+			
 			data = createXMLFromString(xhr.responseText);
 			Spaz.dump("XML retrieved from " + url);
 			Spaz.dump("Setting data to DS from " + url);
 			
 			thisRegion.clearContent();
+			//ds.setDataFromDoc(xhr.responseText);
 			ds.setDataFromDoc(data);
 							
 			if (!ds.data[0]) {
@@ -617,6 +618,11 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	// Spaz.dump(xhr, 'dir');
 
 }
+
+
+
+
+
 
 Spaz.Data.shortenLink = function() {
 	var origlink = encodeURI($('#shorten-original-link').val());
