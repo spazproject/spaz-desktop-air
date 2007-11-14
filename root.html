@@ -25,9 +25,10 @@
 </head>
 
 <body onload="rootInit()">
+    <h2>Root frame</h2>
 	<iframe style="width:100%;height:100%;top:0px;left:0px;position:absolute;border:none;"
-		src="index.html" sandboxRoot="https://fakedomain.air/" documentRoot="app-resource:/"
-		onload="Spaz.Bridge.$init(this)"></iframe>
+			src="index.html" sandboxRoot="https://fakedomain.air/" documentRoot="app:/"
+			onload="Spaz.Bridge.$init(this)"></iframe>
 </body>
 </html>
 <script>
@@ -50,23 +51,23 @@
 function rootInit() {
 	
 	
-	window.htmlControl.manageCookies = false;
-	window.htmlControl.paintsDefaultBackground = false;
-	window.htmlControl.shouldCacheResponse = false;
-	window.htmlControl.useCache = false;
+	air.HTMLLoader.manageCookies = false;
+	air.HTMLLoader.paintsDefaultBackground = false;
+	air.HTMLLoader.cacheResponse = false;
+	air.HTMLLoader.useCache = false;
 	
 	if (Spaz.Prefs.handleHTTPAuth) {
 		Spaz.dump('Turning ON HTTPAuth handling')
-		window.htmlControl.shouldAuthenticate = true;
+		air.HTMLLoader.authenticate = true;
 	} else {
 		Spaz.dump('Turning OFF HTTPAuth handling')
-		window.htmlControl.shouldAuthenticate = false;
+		air.HTMLLoader.authenticate = false;
 	}
 	
-	
+
 	// apply dropshadow to window
 	Spaz.dump('Applying Flash Filter Dropshadow');
-	window.htmlControl.filters = window.runtime.Array(
+	air.HTMLLoader.filters = window.runtime.Array(
 		new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
 	);
 
@@ -99,8 +100,8 @@ function rootInit() {
 	// 	})
 	// }
 	
-	// air.Shell.shell.idleThreshold = 10;
-	// Spaz.dump('idle time:'+air.Shell.shell.idleThreshold);
+	// air.Shell.shell.applicationIDleThreshold = 10;
+	// Spaz.dump('idle time:'+air.Shell.shell.applicationIDleThreshold);
 	// 
 	// air.Shell.shell.addEventListener(window.runtime.flash.events.Event.USER_IDLE, function(event) {
 	// 	Spaz.dump('user has gone idle');

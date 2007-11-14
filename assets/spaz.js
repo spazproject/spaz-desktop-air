@@ -55,7 +55,7 @@ Spaz.getRegionForTab = function(tab) {
 
 
 Spaz.startReloadTimer = function() {
-	var refreshInterval = Spaz.Bridge.getRefreshInterval();
+	var refreshInterval = Spaz.Prefs.refreshInterval;
 	Spaz.dump('started timer with refresh of ' + refreshInterval + ' msecs');
 	reloadID = window.setInterval(Spaz.UI.autoReloadCurrentTab, refreshInterval);
 	
@@ -79,7 +79,14 @@ Spaz.restartReloadTimer = function() {
 
 
 
+Spaz.navigateToURL = function (url){
+	window.runtime.flash.net.navigateToURL(new window.runtime.flash.net.URLRequest(url));
+}
+
+
 Spaz.childFrameInit = function() {
+	
+
 	
 	//*************************
 	// START ME UP
@@ -87,8 +94,37 @@ Spaz.childFrameInit = function() {
 
 
 
+	// Add behaviors to tabs
+	$('.TabbedPanelsTab').each( function(i) {
+		$(this).bind('mouseover', function(ev) {
+			$('a.reload-button', '#'+this.id).show();
+		}).bind('mouseout', function(ev) {
+			$('a.reload-button', '#'+this.id).hide();
+		}).bind('click', function(ev) {
+			Spaz.UI.setSelectedTab(this);
+		});
+	})
+	
+	
+	// $('li.TabbedPanelsTab').bind('mouseover', {tab:this} function(ev) {
+	// 	air.trace('mouseover:'+tab.id+' - '+tab.tagName);
+	// 	$('a.reload-button', '#'+tab.id).show()
+	// }).bind('mouseout', function(ev) {
+	// 	air.trace('mouseout:'+ev.target.id+' - '+ev.target.tagName);
+	// 	$('a.reload-button', '#'+ev.target.id).hide()
+	// }).bind('click', function(ev) {
+	// 	air.trace('click:'+ev.target.id+' - '+ev.target.tagName);
+	// 	Spaz.UI.setSelectedTab(ev.target);
+	// });
+	
+	// $('a.reload-button').bind('click', function(ev) {
+	// 	Spaz.Data.loadDataForTab(ev.target.parentElement);
+	// });
+
+
+
 	// insert theme CSS links
-	var themePaths = Spaz.Bridge.getThemePaths();
+	var themePaths = Spaz.File.getThemePaths();
 	for(x in themePaths) {
 		$('head').append('<link href="'+themePaths[x].themecss+'" title="'+themePaths[x].themename+'" rel="stylesheet" type="text/css" />');
 	}
@@ -122,11 +158,12 @@ Spaz.childFrameInit = function() {
 	/*************************** 
 	 * Apply prefs 
 	 **************************/	 
-	$('#prefs-username').val(Spaz.Bridge.getUser());
-	$('#prefs-password').val(Spaz.Bridge.getPass());
-	$('#prefs-refresh-interval').val(Spaz.Bridge.getRefreshInterval()/60000);
+	$('#prefs-username').val(Spaz.Prefs.getUser());
+	$('#prefs-password').val(Spaz.Prefs.getPass());
+	$('#prefs-refresh-interval').val(Spaz.Prefs.refreshInterval/60000);
 	
-	if (Spaz.Bridge.getHandleHTTPAuth()) {
+//	if (Spaz.Bridge.getHandleHTTPAuth()) {
+	if (Spaz.Prefs.handleHTTPAuth) {
 		$('#prefs-handle-http-auth').attr('checked', 'checked');
 	} else {
 		$('#prefs-handle-http-auth').attr('checked', '');
@@ -135,7 +172,7 @@ Spaz.childFrameInit = function() {
 	
 	// User Stylesheet
 	if (Spaz.UI.userStyleSheet) {		
-		$('#UserCSSOverride').text(Spaz.Bridge.loadUserStylesFromURL(Spaz.UI.userStyleSheet));;
+		$('#UserCSSOverride').text(Spaz.File.loadUserStylesFromURL(Spaz.UI.userStyleSheet));;
 		$('#prefs-user-stylesheet').val(Spaz.UI.userStyleSheet);
 	}
 
@@ -160,7 +197,7 @@ Spaz.childFrameInit = function() {
 	// Minimize on BG
 	if (Spaz.UI.minimizeOnBackground) {
 		Spaz.UI.minimizeOnBackgroundOn();
-		Spaz.Bridge.setMinimizeOnBackground(true);
+		Spaz.UI.setMinimizeOnBackground(true);
 		$('#prefs-minimize-background').attr('checked', 'checked');
 	} else {
 		Spaz.UI.minimizeOnBackgroundOff();
@@ -170,7 +207,7 @@ Spaz.childFrameInit = function() {
 	// Restore on Activate
 	if (Spaz.UI.restoreOnActivate) {
 		Spaz.UI.restoreOnActivateOn();
-		Spaz.Bridge.setRestoreOnActivate(true);
+		Spaz.UI.setRestoreOnActivate(true);
 		$('#prefs-maximize-foreground').attr('checked', 'checked');
 	} else {
 		Spaz.UI.restoreOnActivateOff();
@@ -195,26 +232,28 @@ Spaz.childFrameInit = function() {
 		$('#prefs-sound-enabled').attr('checked', '');
 	}
 
-
-	//DONE: Check for Update
-	if (Spaz.Update.checkUpdate()) {
-	//	Spaz.Update.setCheckUpdateState(true);
-		$('#prefs-checkupdate-enabled').attr('checked', 'checked');
-		Spaz.dump('Starting check for update');
-		Spaz.Bridge.checkForUpdate();
-		Spaz.dump('Ending check for update');
-	} else {
-	//	Spaz.Update.setCheckUpdateState(false);
-		$('#prefs-checkupdate-enabled').attr('checked', '');
-	}
-	Spaz.dump('Prefs Apply: check for update')
-
-	if ($('html').attr('debug') == 'true') {
-		$('#prefs-debugging-enabled').attr('checked', 'checked');
-	}else{
-		$('#prefs-debugging-enabled').attr('checked', '');
-	}
-	Spaz.dump('Prefs Apply: debugging');
+	// *********************************
+	// TODO: re-enable udpateChecking
+	// *********************************
+	//
+	// if (Spaz.Update.checkUpdate()) {
+	// //	Spaz.Update.setCheckUpdateState(true);
+	// 	$('#prefs-checkupdate-enabled').attr('checked', 'checked');
+	// 	Spaz.dump('Starting check for update');
+	// 	Spaz.Bridge.checkForUpdate();
+	// 	Spaz.dump('Ending check for update');
+	// } else {
+	// //	Spaz.Update.setCheckUpdateState(false);
+	// 	$('#prefs-checkupdate-enabled').attr('checked', '');
+	// }
+	// Spaz.dump('Prefs Apply: check for update')
+	// 
+	// if ($('html').attr('debug') == 'true') {
+	// 	$('#prefs-debugging-enabled').attr('checked', 'checked');
+	// }else{
+	// 	$('#prefs-debugging-enabled').attr('checked', '');
+	// }
+	// Spaz.dump('Prefs Apply: debugging');
 	
 	
 
@@ -224,12 +263,7 @@ Spaz.childFrameInit = function() {
 	//memoryRefreshID = window.setInterval(Spaz.UI.updateMemoryUsage, 5000);
 //	Spaz.dump('Started MemoryUsage timer');
 
-	
-	Spry.Data.Region.addObserver("public-timeline",			Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("friends-timeline",		Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("replies-timeline",		Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("user-timeline",			Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("dm-timeline",				Spaz.UI.regionObserver);
+
 	Spry.Data.Region.addObserver("friendslist-detail",		Spaz.UI.regionObserver);
 	Spry.Data.Region.addObserver("friendslist",				Spaz.UI.regionObserver);
 	Spry.Data.Region.addObserver("followerslist-detail",	Spaz.UI.regionObserver);
@@ -237,12 +271,12 @@ Spaz.childFrameInit = function() {
 	Spaz.dump('Added region observers');
 
 	
-	Spaz.UI.playSoundStartup(Spaz.Bridge.makeWindowVisible);
+	Spaz.UI.playSoundStartup(Spaz.UI.makeWindowVisible);
 	Spaz.dump('Added region observers');
 	
-	Spaz.Bridge.makeWindowVisible();
+	Spaz.UI.makeWindowVisible();
 
-	$('#about-version').text("v"+Spaz.Bridge.getVersion());
+	$('#about-version').text("v"+Spaz.Info.getVersion());
 
 
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
@@ -299,6 +333,20 @@ Spaz.childFrameInit = function() {
 
 //	$('#header').contextMenu('linkContentMenu');
 
+
+
+	if(Spaz.Debug.enabled){
+		// Spaz.UI.insertDebugScripts();
+	}
+
+	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.UI.$windowClosingHandler); 
+	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.UI.windowActiveHandler);
+
+	// load prefs!!!
+	Spaz.Prefs.load();
+
+	Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
+
 	Spaz.dump('ended document.ready()');
 	
 }
@@ -339,7 +387,7 @@ function get_relative_time(time_value) {
 //DONE: we should allow this call through bridge
 function openInBrowser(url) {
 	Spaz.dump('opening '+url);
-	Spaz.Bridge.navigateToURL(url);
+	Spaz.navigateToURL(url);
 }
 
 

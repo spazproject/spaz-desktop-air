@@ -41,8 +41,25 @@ Spaz.UI.playSound = function(url, callback) {
 		Spaz.dump('Not playing sound '+url+'- disabled');
 		return;
 	}
-	Spaz.Bridge.playSound(url, callback);
+	Spaz.dump('Spaz.Bridge.playSound callback:'+callback);
+	Spaz.dump("loading " + url);
+	var req = new air.URLRequest(url);
+	var s = new air.Sound(req);
+	s.play();
+	Spaz.dump("playing " + url);
+	if (callback) {
+		s.addEventListener(air.Event.SOUND_COMPLETE, callback);
+	} else {
+		s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Bridge.$onSoundPlaybackComplete);
+	}
+	s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.UI.makeWindowVisible);
 }
+
+Spaz.UI.$onSoundPlaybackComplete = function(event) {
+	Spaz.dump("The sound has finished playing.");
+}
+
+
 
 Spaz.UI.playSoundUpdate = function() {
 	Spaz.UI.playSound(Spaz.UI.SOUND_UPDATE);
@@ -280,6 +297,25 @@ Spaz.UI.clearUserStyleSheet = function() {
 }
 
 
+Spaz.UI.loadUserStylesFromURL = function(fileurl) {
+	var usercssfile = new air.File(fileurl);
+	Spaz.dump('NativePath:' + usercssfile.nativePath);
+	
+	var stream = new air.FileStream();
+	if (usercssfile.exists) {
+		Spaz.dump('opening stream')
+		stream.open(usercssfile, air.FileMode.READ);
+		Spaz.dump('readUTFBytes')
+		stylestr = stream.readUTFBytes(stream.bytesAvailable);
+		Spaz.dump(stylestr)
+		return stylestr;
+		//Spaz.Bridge.setUserStyleSheet(stylestr);
+	} else {
+		alert('chosen file '+ event.target/url +'does not exist')
+		return false;
+	}
+}
+
 
 
 Spaz.UI.showPopup = function(panelid) {
@@ -441,6 +477,7 @@ Spaz.UI.insertThemeDir = function() {
 };
 
 
+
 Spaz.UI.prepMessage = function() {
 	var eb = $('#entrybox');
 	eb.val('');
@@ -491,12 +528,7 @@ Spaz.UI.setSelectedTab = function(tab) {
 	Spaz.dump('Spaz.UI.selectedTab: '+ Spaz.UI.selectedTab.id);
 	
 	Spaz.restartReloadTimer();
-	
-	// force loading data if empty
-	var thisDs = Spaz.Data.getDsForTab(tab);
-	if (!thisDs.data || thisDs.data.length < 1) {
-		Spaz.Data.loadDataForTab(tab);
-	}
+	Spaz.Data.loadDataForTab(tab);
 }
 
 
@@ -520,6 +552,17 @@ Spaz.UI.windowActiveHandler = function () {
 	
 }
 
+Spaz.UI.windowClosingHandler = function() {
+	if (event&&event.preventDefault) {
+		event.preventDefault();
+	}
+
+	Spaz.UI.playSoundShutdown();
+
+	Spaz.Prefs.windowClosingHandler();
+};
+
+
 Spaz.UI.windowMinimize = function() {
 	window.nativeWindow.minimize();
 	if (Spaz.UI.minimizeToSystray && Spaz.Bridge.supportsSystrayIcon()) {
@@ -530,7 +573,7 @@ Spaz.UI.windowMinimize = function() {
 Spaz.UI.windowRestore = function() {
 	Spaz.dump('restoring window');
 	Spaz.dump('current window state:'+window.nativeWindow.displayState);
-	//Spaz.dump('id:'+air.Shell.shell.id);
+	//Spaz.dump('id:'+air.Shell.shell.applicationID);
 	
 	
 	// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
@@ -550,14 +593,21 @@ Spaz.UI.windowRestore = function() {
 	}
  	
 };
-
+Spaz.UI.makeWindowVisible = function(){
+	Spaz.dump("making window visible");
+	window.nativeWindow.visible = true;
+}
 
 
 Spaz.UI.createTimeline = function(timelineid, data) {
 	
+	air.trace("Creating Timeline")
+	
 	var timeline = $('#'+timelineid);
 	air.trace(timelineid);
 	air.trace(timeline.attr('id'));
+	
+	var secname = timelineid.replace(/timeline-/, '');
 	
 	timeline.html('');
 	
@@ -569,6 +619,12 @@ Spaz.UI.createTimeline = function(timelineid, data) {
 		
 		var entry = $('<div class="timeline-entry"></div>');
 		entry.appendTo(timeline);
+		
+		if (i % 2 == 0) {
+			entry.addClass('even');
+		} else {
+			entry.addClass('odd');
+		}
 		
 		// user
 		var user  = $('<div class="user" id="user-'+data[i].user.id+'"></div>');
@@ -588,8 +644,27 @@ Spaz.UI.createTimeline = function(timelineid, data) {
 		$('<div class="status-text" id="#status-text-'+data[i].id+'">'+data[i].text+'</div>').appendTo(status);
 		
 		// status-actions
-		$('<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite(\''+data[i].id+'\')" id="status='+data[i].id+'-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+data[i].user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+data[i].user.screen_name+'\')" class="status-action-reply" id="status-'+data[i].id+'-reply"><img src=\'{theme-dir}/images/status-reply.png\' /></a></div>').appendTo(status);
-
+		var status_actions = $('<div class="status-actions"></div>').appendTo(status);
+		
+		// action fav
+		var action_fav = $('<a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite(\''+data[i].id+'\')" id="status='+data[i].id+'-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a>');
+		// action dm
+		var action_DM = $('<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+data[i].user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="{theme-dir}/images/status-dm.png" /></a>');
+		// action reply
+		var action_reply = $('<a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+data[i].user.screen_name+'\')" class="status-action-reply" id="status-'+data[i].id+'-reply"><img src=\'{theme-dir}/images/status-reply.png\' /></a>');
+		
+		switch (secname) {
+			case 'dms':
+				status_actions.append(action_DM);
+				break;
+			case 'sent':
+				
+				break;
+			default:
+				status_actions.append(action_fav).append(action_DM).append(action_reply);
+				break;
+		}
+		
 		// status-link
 		$('<div class="status-link"><a onclick="openInBrowser(\'http://twitter.com/'+data[i].user.screen_name+'/statuses/'+data[i].id+'/\')" title="View full post in browser"><span class="status-created-at">'+data[i].created_at+'</span></a> <span class="status-source">from <span class="status-source-label">'+data[i].source+'</span></span> <span class="status-protected">'+data[i].user.protected+'</span></div>').appendTo(status);
 
@@ -1047,5 +1122,30 @@ Spaz.UI.blurHandler = function(event) {
 	// Spaz.Bridge.trace(e.name);
 	// Spaz.Bridge.trace(el.id);
 };
+
+
+
+Spaz.UI.setMinimizeOnBackground = function(enable) {
+	if (enable) {
+		air.Shell.shell.addEventListener('deactivate', function() {
+			//window.nativeWindow.minimize();
+			Spaz.Bridge.windowMinimize();
+		})
+	}	
+};
+
+Spaz.UI.setRestoreOnActivate = function(enable) {
+	if (enable) {
+		air.Shell.shell.addEventListener('activate', function() {
+			//window.nativeWindow.restore();
+			Spaz.Bridge.windowRestore();
+		})
+	}
+}
+
+Spaz.UI.displayContextMenu = function(event) {
+	Spaz.Menus.displayContextMenu(event);
+}
+
 
 //	$('#tab-friends .timeline-pager-number').html(4);

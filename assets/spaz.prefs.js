@@ -72,9 +72,6 @@ Spaz.Prefs.processXMLData = function()
 	
 
 	// load userdata
-	// var userData = Spaz.Prefs.XML.getElementsByTagName("user")[0];
-	// 	Spaz.Prefs.user = userData.getAttribute("username");
-	// 	Spaz.Prefs.pass = userData.getAttribute("password");
 	Spaz.Prefs.user = Spaz.Prefs.loadUsername();
 	Spaz.Prefs.pass = Spaz.Prefs.loadPassword();
 	
@@ -335,14 +332,31 @@ Spaz.Prefs.setHandleHTTPAuth = function(state) {
 	Spaz.dump(state);
 	if (state) {
 		Spaz.Prefs.handleHTTPAuth = 1
-		window.htmlControl.shouldAuthenticate = true;
+		air.HTMLLoader.authenticate = true;
 	} else {
 		Spaz.Prefs.handleHTTPAuth = 0;
-		window.htmlControl.shouldAuthenticate = false;
+		air.HTMLLoader.authenticate = false;
 	}
 	Spaz.dump(Spaz.Prefs.handleHTTPAuth);
-	Spaz.dump(window.htmlControl.shouldAuthenticate);
+	Spaz.dump(air.HTMLLoader.authenticate);
 }
+
+
+Spaz.Prefs.getUser = function(){
+	if (Spaz.Prefs.user == false) {
+		return '';
+	}
+	return Spaz.Prefs.user;
+}
+
+
+Spaz.Prefs.getPass = function(){
+	if (Spaz.Prefs.pass == false) {
+		return '';
+	}
+	return Spaz.Prefs.pass;
+}
+
 
 Spaz.Prefs.checkRefreshPeriod = function(val) {
 	val = parseInt(val);
@@ -375,7 +389,7 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 		val = 1;
 	}
 	
-	window.htmlControl.alpha = val;
+	air.HTMLLoader.alpha = val;
 	
 	Spaz.Prefs.windowOpacity = percentage;
 	Spaz.Bridge.setPrefsFormVal('prefs-opacity-percentage', Spaz.Prefs.windowOpacity);

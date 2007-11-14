@@ -11,16 +11,16 @@ if(typeof runtime!='undefined'){
 	Spaz.Bridge.$child = null;
 	
 	Spaz.Bridge.$init = function(iframe){
-	
+		air.trace('Spaz.Bridge.$init root');
 		var bridge = {};
 		
 		//link every function from Spaz.Bridge to parentSandboxBridge
 		//this will enable calling them from child iframe
 		//do not link private functions (like this one - function name starts with $ sign)
-		
 		for(var i in Spaz.Bridge){
 			if(i[0]!='$')
 			{
+				air.trace(i);
 				bridge[i]=Spaz.Bridge[i];
 			}
 		}
@@ -128,7 +128,7 @@ if(typeof runtime!='undefined'){
 	
 	
 	Spaz.Bridge.getThemePaths = function() {
-		var appdir    = air.File.applicationResourceDirectory;
+		var appdir    = air.File.applicationDirectory;
 		var themesdir = appdir.resolvePath('themes');
 		
 		var list = themesdir.getDirectoryListing();
@@ -311,7 +311,7 @@ if(typeof runtime!='undefined'){
 	}
 	Spaz.Bridge.setWindowOpacity = function(percentage) {
 		var val  = parseInt(percentage)/100;
-		window.htmlControl.alpha = val;
+		air.HTMLLoader.alpha = val;
 	}
 	
 	Spaz.Bridge.supportsSystrayIcon = function() {
@@ -386,6 +386,7 @@ if(typeof runtime!='undefined'){
 /****************************************************/
 	
 	Spaz.Bridge.$init = function(callback){
+		
 		var bridge = {};
 		
 		//link every function from Spaz.Bridge to childSandboxBridge
@@ -398,22 +399,30 @@ if(typeof runtime!='undefined'){
 			}
 		}
 		
+		alert('childSandboxBridge');
 		childSandboxBridge = bridge;
 		
+		alert('callback');
 		Spaz.Bridge.$callback = callback;
 		
+		alert('$checkParent');
 		//check if we got root loaded
 		Spaz.Bridge.$checkParent();
 		
+		alert('console');
 		// this lets the Parent access the firebug console
 		Spaz.Bridge.console = console;
 		
 	}
 	
 	Spaz.Bridge.$checkParent = function(){
+		alert('inside $checkParent');
+		
 		if(!parentSandboxBridge){
-			setTimeout(Spaz.Bridge.$checkParent, 1);
+			alert('parentSandboxNotReady');
+			setTimeout(Spaz.Bridge.$checkParent, 10);
 		}else{
+			alert('parentSandboxReady!!');
 			//copy any function to Spaz.Bridge
 			var bridge = parentSandboxBridge;
 			

@@ -23,6 +23,9 @@ TODO:
 
 	<link rel="stylesheet" href="assets/init.css" type="text/css" media="screen" charset="utf-8" />
 
+	<script src="assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+
+
 
 	<!-- Spry libs -->
 	<script language="JavaScript" type="text/javascript" src="SpryAssets/xpath.js"></script>
@@ -54,7 +57,7 @@ TODO:
 	<script src="assets/jquery.tooltip/jquery.dimensions.js" type="text/javascript"></script>
 	<script src="assets/jquery.tooltip/jquery.tooltip.js" type="text/javascript"></script>
 	<script src="assets/jquery.moreSelectors.js" type="text/javascript"></script>
-	<script src="assets/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>	
 
 
 	<!-- jQuery.UI libs -->
@@ -64,14 +67,18 @@ TODO:
 	<!-- Spaz libs -->
 	<script src="assets/spaz.js"        type="text/javascript"></script>
 	<script src="assets/spaz.section.js" type="text/javascript"></script>
+	<script src="assets/spaz.file.js"  type="text/javascript"></script>
 	<script src="assets/spaz.data.js"   type="text/javascript"></script>
 	<script src="assets/spaz.debug.js"  type="text/javascript"></script>
+	<script src="assets/spaz.info.js"  type="text/javascript"></script>
+	<script src="assets/spaz.prefs.js"  type="text/javascript"></script>
 	<script src="assets/spaz.cache.js"  type="text/javascript"></script>
 	<script src="assets/spaz.ui.js"     type="text/javascript"></script>
 	<script src="assets/spaz.update.js" type="text/javascript"></script>
-	<script src="assets/spaz.bridge.js" type="text/javascript"></script>
+	<script src="assets/spaz.menus.js"  type="text/javascript"></script>
 	<script src="assets/spaz.notify.js" type="text/javascript" charset="utf-8"></script>
-	<!-- <script src="lib/library.swf" type="application/x-shockwave-flash"></script> -->
+	<script src="lib/library.swf" type="application/x-shockwave-flash"></script>
+
 
 	<!-- User CSS override file -->
 	<style type="text/css" media="screen" id="UserCSSOverride"></style>
@@ -111,82 +118,41 @@ TODO:
 	<span id="header-label">Spaz</span>
 </h1>
 
-
-<!-- 
-	Spaz.Content.friends = {
-		index:		0,
-		tabid:		'tab-friends',
-		panelid:	'panel-friends',
-		ds:			Spaz.Data.ds_friends,
-		region:		
-		
-	}
-	Spaz.Content.replies = {
-		index:		1,
-		tabid:		'tab-replies',
-		panelid:	'panel-replies',
-		ds:			Spaz.Data.ds_replies,
-		region:		
-	}
-	Spaz.Content.dms = {
-		index:		1,
-		tabid:		'tab-dms',
-		panelid:	'panel-dms',
-		ds:			Spaz.Data.ds_dms,
-		region:		
-	}
-	 -->
-
-
 <div id="tabs" class="TabbedPanels">
 	<ul class="TabbedPanelsTabGroup" id="timeline-tabs" tabindex="0">
 		<!-- YOUR TIMELINE -->
-		<li class="TabbedPanelsTab" tabindex="0" 
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)"><img title="Your timeline" class="tab-icon" src="{theme-dir}/images/tab-icon-timeline.png" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-friends">
+			<img title="Your timeline" class="tab-icon" src="{theme-dir}/images/tab-icon-timeline.png" /></li>
+			<!-- <a class='reload-button' title="Reload this tab">&#x21A9;</a></li> -->
 		<!-- REPLIES -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-replies" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-replies.png" title="Replies directed at you" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-replies">
+			<img class="tab-icon" src="{theme-dir}/images/tab-icon-replies.png" title="Replies directed at you" /></li>
+			<!-- <a class='reload-button' title="Reload this tab">&#x21A9;</a></li> -->
 		<!-- DMs -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-dms" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-dms.png" title="Direct messages you've received" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-dms">
+			<img class="tab-icon" src="{theme-dir}/images/tab-icon-dms.png" title="Direct messages you've received" /></li>
+			<!-- <a class='reload-button' title="Reload this tab">&#x21A9;</a></li> -->
 		<!-- SENT STATUSES -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-user" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-user.png" title="Tweets you've sent" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-user">
+			<img class="tab-icon" src="{theme-dir}/images/tab-icon-user.png" title="Tweets you've sent" /></li>
+			<!-- <a class='reload-button' title="Reload this tab">&#x21A9;</a></li> -->
 		<!-- PUBLIC -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-public" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" title="Public timeline" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
-
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-public">
+			<img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" title="Public timeline" /></li>
+			<!-- <a class='reload-button' title="Reload this tab">&#x21A9;</a></li> -->
+			
 		<!-- FOLLOWING LIST -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-following.png" title="Users you are following" /> <a 
-			class='reload-button' onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>		
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-friendslist">
+			<img class="tab-icon" src="{theme-dir}/images/tab-icon-following.png" title="Users you are following" /></li>
+			<!-- <a class='reload-button' title="Reload this tab">&#x21A9;</a></li>		 -->
 		<!-- FOLLOWERS LIST -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-followers.png" title="Users following you" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
-		
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-followerslist">
+			<img class="tab-icon" src="{theme-dir}/images/tab-icon-followers.png" title="Users following you" /></li>
+			<!-- <a class='reload-button' title="Reload this tab">&#x21A9;</a></li> -->
+			
 		<!-- PREFS -->
-		<li class="TabbedPanelsTab" tabindex="0" id="tab-prefs" 
-			onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-prefs.png" title="Preferences" /></li>
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-prefs">
+			<img class="tab-icon" src="{theme-dir}/images/tab-icon-prefs.png" title="Preferences" /></li>
 	</ul>
 	
 	
@@ -198,22 +164,6 @@ TODO:
 		<!-- FRIENDS AND YOU TIMELINE -->
 		<div class="TabbedPanelsContent" id="panel-friends">
 			<div id="timeline-friends" class="timeline"></div>
-			<!-- <div spry:region="Spaz.Data.ds_friends" id="timeline-friends" class="timeline SpryHiddenRegion">
-							
-					<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even">
-						<div class="user" id="user-{user/id}">
-							<div class="user-image"><a title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}' onclick='openInBrowser("http://twitter.com/{user/screen_name}")'><img height="48" width="48" src="{user/profile_image_url}" alt='{user/screen_name}' /></a></div>
-							<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}'>{user/screen_name}</a></div>
-						</div>
-				
-						<div class="status" id="status-{id}">
-							<div class="status-text" id="#status-text-{id}">{text}</div>
-							<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
-							<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
-						</div>
-					</div>
-					
-				</div> -->
 			<div class="timeline-pager">
 				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
 				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
@@ -225,23 +175,6 @@ TODO:
 		<!-- REPLIES TIMELINE -->
 		<div class="TabbedPanelsContent" id="panel-replies">
 			<div id="timeline-replies" class="timeline"></div>
-			<!-- <div spry:region="Spaz.Data.ds_replies" id="timeline-replies" class="timeline SpryHiddenRegion">
-				
-				<div spry:repeat="Spaz.Data.ds_replies" class="timeline-entry" spry:odd="odd" spry:even="even">
-					<div class="user" id="user-{user/id}">
-						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
-					</div>
-			
-					<div class="status" id="status-{id}">					
-						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
-						
-					</div>
-				</div>
-				
-			</div> -->
 			<div class="timeline-pager">
 				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
 				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
@@ -253,22 +186,6 @@ TODO:
 		<!-- DIRECT MESSAGES -->
 		<div class="TabbedPanelsContent" id="panel-dms">
 			<div id="timeline-dms" class="timeline"></div>
-			<!-- <div spry:region="Spaz.Data.ds_dms" id="timeline-dms" class="timeline SpryHiddenRegion">
-				
-				<div spry:repeat="Spaz.Data.ds_dms" class="timeline-entry" spry:odd="odd" spry:even="even">
-					<div class="user" id="user-{sender/id}">
-						<div class="user-image"><a title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}"><img height="48" width="48" src="{sender/profile_image_url}" alt="{sender/screen_name}" onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}">{sender/screen_name}</a></div>
-					</div>
-			
-					<div class="status" id="status-{id}">					
-						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{sender/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{sender/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-protected">{sender/protected}</span></div>
-					</div>
-				</div> -->
-				
-			</div>
 			<div class="timeline-pager">
 				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
 				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
@@ -280,20 +197,6 @@ TODO:
 		<!-- YOUR SENT MESSAGES -->
 		<div class="TabbedPanelsContent" id="panel-user">
 			<div id="timeline-user" class="timeline"></div>
-			<!-- <div spry:region="Spaz.Data.ds_user" id="timeline-user" class="timeline SpryHiddenRegion">				
-							<div spry:repeat="Spaz.Data.ds_user" class="timeline-entry" spry:odd="odd" spry:even="even">
-								<div class="user" id="user-{user/id}">
-									<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
-									<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
-								</div>
-						
-								<div class="status" id="status-{id}">					
-									<div class="status-text" id="#status-text-{id}">{text}</div>
-									<div class="status-actions"><a onclick="Spaz.Data.destroyStatus('{id}')" title="Delete this status" class="status-action-delete">delete</a></div>
-									<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
-								</div>
-							</div>
-						</div> -->
 			<div class="timeline-pager">
 				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
 				<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
@@ -304,21 +207,7 @@ TODO:
 		
 		<!-- PUBLIC TIMELINE -->
 		<div class="TabbedPanelsContent" id="panel-public">
-			<div spry:region="Spaz.Data.ds_public" id="timeline-public" class="timeline SpryHiddenRegion">
-				<div spry:repeat="Spaz.Data.ds_public" class="timeline-entry" spry:odd="odd" spry:even="even">
-					<div class="user" id="user-{user/id}">
-						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br/>{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
-					</div>
-			
-					<div class="status" id="status-{id}">						
-						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
-						
-					</div>
-				</div>
-			</div>
+			<div id="timeline-public" class="timeline"></div>			
 		</div>
 		
 		
@@ -583,26 +472,7 @@ TODO:
 		<li><a onclick="openInBrowser('http://www.webtoolkit.info/javascript-md5.html');">Webtoolkit Base64</a></li>
 		<li><a onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html');">Showdown</a></li>
 		<li><a onclick="openInBrowser('http://code.google.com/p/as3notificationlib/')l">as3notificationlib</a></li>
-	</ul>
-	
-	<!-- <table id="sysinfo">
-		<tr>
-			<td class="label">OS</td>
-			<td class="value" id="sysinfo-os"></td>
-		</tr>
-		<tr>
-			<td class="label">Version</td>
-			<td class="value" id="sysinfo-version"></td>
-		</tr>
-		<tr>
-			<td class="label">Manufacturer</td>
-			<td class="value" id="sysinfo-manufacturer"></td>
-		</tr>
-		<tr>
-			<td class="label">Memory Used</td>
-			<td class="value" id="sysinfo-totalMemory"></td>
-		</tr>
-	</table> -->	
+	</ul>	
 </div>
 
 <div id="helpWindow" class="popupWindow" style="display:none">
@@ -649,9 +519,7 @@ TODO:
 			<input type="text" name="short-link" id="shorten-short-link" value="" />
 		</div>
 		<div class="formrow" style="text-align:right; margin-top:15px">
-			<span id="verification-result">&nbsp;</span>
-			<input type="button" id="prefs-update-button" name="update" value="Shorten &bull;"
-				onclick="Spaz.Data.shortenLink()" /> 
+			<input type="button" id="prefs-update-button" name="update" value="Shorten &bull;" onclick="Spaz.Data.shortenLink()" /> 
 		</div>
 	</form>
 </div>
@@ -702,6 +570,51 @@ TODO:
 
 <script type="text/javascript">
 
+	$(document).ready(function() {
+		alert('hi!');
+	});
+
+	function rootInit() {
+		air.URLRequestDefaults.manageCookies = false;
+		air.HTMLLoader.paintsDefaultBackground = false;
+		air.URLRequestDefaults.cacheResponse = false;
+		air.HTMLLoader.useCache = false;
+	
+		if (Spaz.Prefs.handleHTTPAuth) {
+			air.trace('Turning ON HTTPAuth handling')
+			air.HTMLLoader.authenticate = true;
+		} else {
+			air.trace('Turning OFF HTTPAuth handling')
+			air.HTMLLoader.authenticate = false;
+		}
+	
+	
+		// apply dropshadow to window
+		air.trace('Applying Flash Filter Dropshadow');
+		air.HTMLLoader.filters = window.runtime.Array(
+			new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
+		);
+	
+	
+		if (Spaz.Prefs.showNativeMenus) {
+			air.trace('Initializing NativeMenus')
+			Spaz.Menus.initAll();
+		}
+	
+		var memoryTimer = new air.Timer(1000*10, 0);
+		memoryTimer.addEventListener(air.TimerEvent.TIMER, function(event){
+			air.trace('air.System.totalMemory = '+air.System.totalMemory);
+		});
+		memoryTimer.start();
+	
+	}
+	
+	
+	$(document).ready(function(){
+		air.trace('help');
+		rootInit();
+		Spaz.childFrameInit();
+	});
 
 
 	/**
@@ -727,24 +640,10 @@ TODO:
 	Keyboard shortcut definitions
 	**/
 	document.onkeydown = Spaz.UI.keyboardHandler
-	
+
 	document.onmouseover = Spaz.UI.focusHandler
 	document.onmouseout  = Spaz.UI.blurHandler
 	
-
-
-	/* This is stuff we do right after the document is ready */
-	$(document).ready(function(){
-	//window.onload = function(){
-		Spaz.Bridge.$init(Spaz.childFrameInit);
-	}); // end window.onload
-
-
-
-	window.onload = function(){
-	}
-
-
 	/**
 	 * Window manip funcs
 	 */
@@ -755,7 +654,7 @@ TODO:
 		Spaz.Bridge.startResize();
 	}
 	
-
+	 
 
 </script>
 

@@ -23,3 +23,7 @@ input[type=text], textarea, div.status-text {
 	font-weight:bold;
 	color:#990000;
 }
+
+.hidden-data {
+	display:none !important;
+}

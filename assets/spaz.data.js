@@ -70,9 +70,9 @@ Spaz.Data.makeDataSets = function() {
 // 	Spaz.Data.ds_user = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
 // }
 // Spaz.Data.makeDMTimelineDS = function() {
-	Spaz.Data.ds_dms = new Spry.Data.XMLDataSet(null, "/direct-messages/direct_message",
-		{ subPaths: [ "sender" ]});
-}
+// 	Spaz.Data.ds_dms = new Spry.Data.XMLDataSet(null, "/direct-messages/direct_message",
+// 		{ subPaths: [ "sender" ]});
+// }
 Spaz.Data.makeFriendsDS = function() {	
 	Spaz.Data.ds_friendslist = new Spry.Data.XMLDataSet(null, "/users/user", { subPaths: [ "status" ], sortOnLoad:"screen_name", sortOrderOnLoad:"ascending"});
 }
@@ -93,8 +93,8 @@ Spaz.Data.makeFollowersDS = function() {
 // 	Spaz.Data.loadTwitterData(Spaz.Data.url_user_timeline, Spaz.Data.ds_user, tabid, page);	
 // };
 // Spaz.Data.loadDMTimelineData = function(tabid, page) {
-	Spaz.Data.loadTwitterData(Spaz.Data.url_dm_timeline, Spaz.Data.ds_dms, tabid, page);
-};
+// 	Spaz.Data.loadTwitterData(Spaz.Data.url_dm_timeline, Spaz.Data.ds_dms, tabid, page);
+// };
 Spaz.Data.loadFriendsData = function(tabid, page) {
 	Spaz.Data.loadTwitterData(Spaz.Data.url_friendslist, Spaz.Data.ds_friendslist, tabid, page);
 }
@@ -122,7 +122,7 @@ Spaz.Data.verifyPassword = function() {
 	var user = $('#prefs-username').val();
 	var pass = $('#prefs-password').val();
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar("Verifying username and password");	
 	Spaz.UI.showLoading();
@@ -184,7 +184,7 @@ Spaz.Data.update = function(msg, username, password) {
 	var user = username;
 	var pass = password;
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar("Sending update");
 	Spaz.UI.showLoading();
@@ -357,7 +357,7 @@ Spaz.Data.followUser = function(userid) {
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 		
 	Spaz.UI.statusBar('Start following: ' + userid)
 	Spaz.UI.showLoading();
@@ -409,7 +409,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar('Stop following: ' + userid)
 	Spaz.UI.showLoading();
@@ -457,12 +457,12 @@ Spaz.Data.stopFollowingUser = function(userid) {
 
 
 Spaz.Data.loadTwitterData = function(section, page) {
-	air.trace(section.url)
+	air.trace(section.url);
 	
-	var user = Spaz.Bridge.getUser();
-	var pass = Spaz.Bridge.getPass();
+	var user = Spaz.Prefs.getUser();
+	var pass = Spaz.Prefs.getPass();
 
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 
 	// set page
 	if (page) {
@@ -614,7 +614,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 	
 	if (ds.data.length > 0) {
 		var oldFirstStatus = ds.data[0].id;
@@ -836,8 +836,9 @@ Spaz.Data.loadDataForTab = function(tab, auto, page) {
 	if (!page || page < 1) {
 		page = 1;
 	}
+	air.trace('Tab:'+tab.id);
 	var sectionStr = tab.id.replace(/tab-/, '');
-	air.trace(sectionStr);
+	air.trace('section:'+sectionStr);
 	var section = Spaz.Section[sectionStr];
 	air.trace(section);
 	Spaz.dump('load data for tab '+tab.id);

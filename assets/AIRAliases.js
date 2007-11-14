@@ -1,4 +1,4 @@
-/* AIRAliases.js - Revision: 0.9 */
+/* AIRAliases.js - Revision: 0.11 */
 
 // Copyright (c) 2007. Adobe Systems Incorporated.
 // All rights reserved.
@@ -39,7 +39,6 @@ if (window.runtime)
     
     
     // file
-    air.EncryptedLocalStore = window.runtime.flash.filesystem.EncryptedLocalStore;
     air.File = window.runtime.flash.filesystem.File;
     air.FileStream = window.runtime.flash.filesystem.FileStream;
     air.FileMode = window.runtime.flash.filesystem.FileMode;
@@ -63,7 +62,8 @@ if (window.runtime)
     air.TimerEvent = window.runtime.flash.events.TimerEvent;
     air.NativeDragEvent = window.runtime.flash.events.NativeDragEvent;
     air.ActivityEvent = window.runtime.flash.events.ActivityEvent;
-	
+    air.KeyboardEvent =  window.runtime.flash.events.KeyboardEvent;    
+    
     // native window
     air.NativeWindow = window.runtime.flash.display.NativeWindow;
     air.NativeWindowDisplayState = window.runtime.flash.display.NativeWindowDisplayState;
@@ -100,6 +100,10 @@ if (window.runtime)
     
     air.Responder = window.runtime.flash.net.Responder;
     air.ObjectEncoding = window.runtime.flash.net.ObjectEncoding;
+
+    air.NetStream = window.runtime.flash.net.NetStream;
+    air.SharedObjects = window.runtime.flash.net.SharedObjects;
+    air.SharedObjectFlushStatus = window.runtime.flash.net.SharedObjectsFlushStatus;
     
     // system
     air.Capabilities = window.runtime.flash.system.Capabilities;
@@ -116,26 +120,32 @@ if (window.runtime)
     air.Clipboard = window.runtime.flash.desktop.Clipboard;
     air.ClipboardFormats = window.runtime.flash.desktop.ClipboardFormats;
     air.ClipboardTransferMode = window.runtime.flash.desktop.ClipboardTransferMode;
-
-    air.DragManager = window.runtime.flash.desktop.DragManager;
-    air.DragOptions = window.runtime.flash.desktop.DragOptions;
-    air.DragActions = window.runtime.flash.desktop.DragActions;
-
+    
+    air.NativeDragManager = window.runtime.flash.desktop.NativeDragManager;
+    air.NativeDragOptions = window.runtime.flash.desktop.NativeDragOptions;
+    air.NativeDragActions = window.runtime.flash.desktop.NativeDragActions;
+    
     air.Icon = window.runtime.flash.desktop.Icon;
-
-	
+    air.DockIcon = window.runtime.flash.desktop.DockIcon;
+    air.InteractiveIcon = window.runtime.flash.desktop.InteractiveIcon;
+    air.SystemTrayIcon = window.runtime.flash.desktop.SystemTrayIcon;
+    
     // display
-    air.DockIcon = window.runtime.flash.display.DockIcon;
-    air.InteractiveIcon = window.runtime.flash.display.InteractiveIcon;
-    air.NativeMenu = window.runtime.flash.display.NativeMenu;
+	air.NativeMenu = window.runtime.flash.display.NativeMenu;
     air.NativeMenuItem = window.runtime.flash.display.NativeMenuItem;
     air.Screen = window.runtime.flash.display.Screen;
-    air.SystemTrayIcon = window.runtime.flash.display.SystemTrayIcon;
+    
     air.Loader  = window.runtime.flash.display.Loader;
     air.Bitmap = window.runtime.flash.display.Bitmap;
     air.BitmapData = window.runtime.flash.display.BitmapData;
     air.NotificationType = window.runtime.flash.display.NotificationType;
 	
+    // ui
+    air.Keyboard = window.runtime.flash.ui.Keyboard;
+    air.KeyEquivalent = window.runtime.flash.ui.KeyEquivalent;
+    air.Mouse = window.runtime.flash.ui.Mouse;
+
+
     // utils
     air.ByteArray = window.runtime.flash.utils.ByteArray;
     air.CompressionAlgorithm = window.runtime.flash.utils.CompressionAlgorithm;
@@ -144,6 +154,7 @@ if (window.runtime)
     air.Timer = window.runtime.flash.utils.Timer;
     air.XMLSignatureValidator = window.runtime.flash.utils.XMLSignatureValidator;
     
+    air.HTMLLoader = window.runtime.flash.html.HTMLLoader;    
     
     // media
     air.ID3Info = window.runtime.flash.media.ID3Info;
@@ -156,7 +167,8 @@ if (window.runtime)
     air.Video = window.runtime.flash.media.Video;
     air.Camera = window.runtime.flash.media.Camera;
     
-    // sql
+    // data
+	air.EncryptedLocalStore = window.runtime.flash.data.EncryptedLocalStore;
     air.SQLCollationType = window.runtime.flash.data.SQLCollationType;
     air.SQLColumnNameStyle = window.runtime.flash.data.SQLColumnNameStyle;
     air.SQLColumnSchema = window.runtime.flash.data.SQLColumnSchema;
@@ -166,8 +178,8 @@ if (window.runtime)
     air.SQLErrorEvent = window.runtime.flash.events.SQLErrorEvent;
     air.SQLErrorOperation = window.runtime.flash.errors.SQLErrorOperation;
     air.SQLEvent = window.runtime.flash.events.SQLEvent;
-    air.SQLErrorOperation = window.runtime.flash.errors.SQLErrorOperation;
     air.SQLIndexSchema = window.runtime.flash.data.SQLIndexSchema;
+    air.SQLMode = window.runtime.flash.data.SQLMode;
     air.SQLResult = window.runtime.flash.data.SQLResult;
     air.SQLSchema = window.runtime.flash.data.SQLSchema;
     air.SQLSchemaResult = window.runtime.flash.data.SQLSchemaResult;
@@ -179,17 +191,7 @@ if (window.runtime)
     air.SQLUpdateEvent = window.runtime.flash.events.SQLUpdateEvent;
 	
     // service monitoring framework
-    if (window.runtime.air && window.runtime.air.net) 
-    {	
-        air.ServiceMonitor = window.runtime.air.net.ServiceMonitor;
-        air.SocketMonitor = window.runtime.air.net.SocketMonitor;
-        air.URLMonitor = window.runtime.air.net.URLMonitor;
-    }
-    
-    
-    //bee
-    air.HTMLControl = window.runtime.flash.html.HTMLControl;
-    air.Array = window.runtime.Array;
-    air.XMLDocument = window.runtime.flash.xml.XMLDocument;
-    air.XML = window.runtime.XML;
+    air.__defineGetter__("ServiceMonitor", function() { return window.runtime.air.net.ServiceMonitor; })
+    air.__defineGetter__("SocketMonitor", function() { return window.runtime.air.net.SocketMonitor; })
+    air.__defineGetter__("URLMonitor", function() { return window.runtime.air.net.URLMonitor; })
 }
