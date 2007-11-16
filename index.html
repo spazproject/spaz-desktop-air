@@ -94,7 +94,7 @@ TODO:
 	</script>
 </head>
 
-<body id="home">
+<body id="home" onclick="$('#linkContextMenu').hide()">
 
 <div id="container">
 
@@ -109,32 +109,6 @@ TODO:
 	</div>
 	<span id="header-label">Spaz</span>
 </h1>
-
-
-<!-- 
-	Spaz.Content.friends = {
-		index:		0,
-		tabid:		'tab-friends',
-		panelid:	'panel-friends',
-		ds:			Spaz.Data.ds_friends,
-		region:		
-		
-	}
-	Spaz.Content.replies = {
-		index:		1,
-		tabid:		'tab-replies',
-		panelid:	'panel-replies',
-		ds:			Spaz.Data.ds_replies,
-		region:		
-	}
-	Spaz.Content.dms = {
-		index:		1,
-		tabid:		'tab-dms',
-		panelid:	'panel-dms',
-		ds:			Spaz.Data.ds_dms,
-		region:		
-	}
-	 -->
 
 
 <div id="tabs" class="TabbedPanels">
@@ -666,6 +640,10 @@ TODO:
 	</ul>
 </div>
 
+
+<div id="userTooltip" class="tooltip">
+	
+</div>
 
 <!-- <div id="popupPanel" style="display:none">
 	<div id="popupPanel-dragBar" style="text-align:right"><span id="popupPanel-close" onclick="Spaz.UI.closePopup">[X]</span></div>

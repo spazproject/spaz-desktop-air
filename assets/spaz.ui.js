@@ -552,180 +552,201 @@ Spaz.UI.windowRestore = function() {
 };
 
 
+Spaz.UI.selectEntry = function(el) {
+	Spaz.dump('unselected tweets');
+	$('div.timeline-entry').removeClass('ui-selected');
+	
+	Spaz.dump('selecting tweet');
+	$(el).addClass('ui-selected');
+	
+	Spaz.dump('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
+}
 
+Spaz.UI.showContextMenu = function(el) {
+	// hide any showing tooltips
+	air.trace('hiding tooltip');
+	
+	$('#tooltip').hide();
+	
+	// show the link context menu
+	air.trace('opening context menu');
+	$('#linkContextMenu').css('left', el.pageX)
+		.css('top',  el.pageY)
+		.show();
 
+	air.trace('outerHTML:'+el.outerHTML);				
+	var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
+	if (urlarray && urlarray.length > 0) {
+		var elurl = urlarray[0];
+	
+		air.trace('url from element:'+elurl);
+	
+		$('#menu-copyLink').one('click', {url:elurl}, function(event) {
+			Spaz.Bridge.setClipboardText(event.data.url);
+			air.trace('Current Clipboard:'+Spaz.Bridge.getClipboardText());
+		});
+		air.trace('Set one-time click event on #menu-copyLink');
+	
+		$(document).one('click', function() {
+			$('#linkContextMenu').hide();
+		});
+		air.trace('set one-time link context menu close event for click on document');
+	} else {
+		air.trace('no http link found');
+	}
+	
+}
+
+Spaz.UI.showTooltip = function(el, content) {
+	// hide any showing tooltips
+	air.trace('hiding tooltip');
+	
+	$('#userTooltip').hide();
+	
+	// show the link context menu
+	air.trace('opening context menu');
+	$('#userTooltip').css('left', el.pageX)
+		.css('top',  el.pageY)
+		.show();
+
+	air.trace('outerHTML:'+el.outerHTML);				
+	var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
+	if (urlarray && urlarray.length > 0) {
+		var elurl = urlarray[0];
+	
+		air.trace('url from element:'+elurl);
+		air.trace('set one-time link context menu close event for click on document');
+	} else {
+		air.trace('no http link found');
+	}
+	
+}
 
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid) {
 
-	air.trace('onPostUpdate triggered');
+	Spaz.dump('onPostUpdate triggered');
 	
-	//air.trace($('#'+timelineid).text());
+	//Spaz.dump($('#'+timelineid).text());
 
 	// make tweets selectable
-	$('div.timeline-entry', '#'+timelineid).unbind()
-	$('div.timeline-entry', '#'+timelineid).each( function(index) {
-		$(this).bind('click', {el:this}, function(event){
-			var el = event.data.el;
-			air.trace('selecting tweet');
-			$('div.timeline-entry').removeClass('ui-selected');
-			air.trace('unselected tweets');
-			$(el).addClass('ui-selected');
-			air.trace('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
-		});
-		air.trace("selecting tweet "+index)
+	$('div.timeline-entry', '#'+timelineid).unbind();
+	
+	
+	// make it here so we don't instantiate on every loopthrough
+	var md = new Showdown.converter();
+	
+	$("div.status-text", "#"+timelineid).each(function(i){
+		
+		// check for cached status
+		// var statusHTML = Spaz.Cache.getStatus(this.id);
+		// if (statusHTML){
+		// 	this.innerHTML = statusHTML;
+		// } else {
+			Spaz.dump('Pre-conversion:'+this.innerHTML);
+			// fix extra ampersand encoding
+			this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
+			
+			// fix entity &#123; style extra encoding
+			this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
+	
+	
+						
+			// convert inline links
+			this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
+		
+			// email addresses
+			this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="Email $2@$3" class="inline-email">$2@$3</a>');
+		
+			// convert @username reply indicators
+			this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="View $2\'s profile" class="inline-reply">@$2</a>');
+						
+			// @usernames at the beginning of lines
+			this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
+	
+			
+			if (Spaz.UI.useMarkdown) {
+				Spaz.dump('Pre-Markdown:'+this.innerHTML);
+				// Markdown conversion with Showdown
+				this.innerHTML = md.makeHtml(this.innerHTML);
+				
+				Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
+				
+				// replace hrefs from markdown with onClick calls 
+				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="Open $1 in a browser window" class="inline-link"');
+			}
+			
+			Spaz.dump('Post conversion:'+this.innerHTML);
+			
+			// cache this converted status
+			// Spaz.Cache.setStatus(this.id, this.innerHTML);
+		// }
 	});
-	// 
-	// 
-	// 
-	// // make it here so we don't instantiate on every loopthrough
-	// var md = new Showdown.converter();
-	// 
-	// $("div.status-text", "#"+timelineid).each(function(i){
-	// 	
-	// 	// check for cached status
-	// 	// var statusHTML = Spaz.Cache.getStatus(this.id);
-	// 	// if (statusHTML){
-	// 	// 	this.innerHTML = statusHTML;
-	// 	// } else {
-	// 		Spaz.dump('Pre-conversion:'+this.innerHTML);
-	// 		// fix extra ampersand encoding
-	// 		this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-	// 		
-	// 		// fix entity &#123; style extra encoding
-	// 		this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
-	// 
-	// 
-	// 					
-	// 		// convert inline links
-	// 		this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
-	// 	
-	// 		// email addresses
-	// 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" title="Email $2@$3" class="inline-email">$2@$3</a>');
-	// 	
-	// 		// convert @username reply indicators
-	// 		this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" title="View $2\'s profile" class="inline-reply">@$2</a>');
-	// 					
-	// 		// @usernames at the beginning of lines
-	// 		this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
-	// 
-	// 		
-	// 		if (Spaz.UI.useMarkdown) {
-	// 			Spaz.dump('Pre-Markdown:'+this.innerHTML);
-	// 			// Markdown conversion with Showdown
-	// 			this.innerHTML = md.makeHtml(this.innerHTML);
-	// 			
-	// 			Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
-	// 			
-	// 			// replace hrefs from markdown with onClick calls 
-	// 			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" title="Open $1 in a browser window" class="inline-link"');
-	// 		}
-	// 		
-	// 		Spaz.dump('Post conversion:'+this.innerHTML);
-	// 		
-	// 		// cache this converted status
-	// 		// Spaz.Cache.setStatus(this.id, this.innerHTML);
-	// 	// }
-	// });
-	// 
-	// // convert post times to relative
-	// $("span.status-created-at", "#"+timelineid).each(function(i) {
-	// 	this.innerHTML = get_relative_time(this.innerHTML);
-	// 	Spaz.dump(this.innerHTML);
-	// });
-	// 
-	// $("span.status-source-label", "#"+timelineid).each(function(i) {
-	// 	
-	// 	var sourceHTML = Spaz.Cache.getSource(this.innerHTML);			
-	// 
-	// 	if (this.innerHTML.length>0){
-	// 		if (!sourceHTML) {
-	// 			var old      = this.innerHTML;
-	// 			var linkhtml = $(Spaz.UI.decodeSourceLinkEntities(this.innerHTML));
-	// 			// Spaz.dump('linkhtml:'+linkhtml);
-	// 			var href;
-	// 			if (href = linkhtml.attr('href')) {
-	// 				linkhtml.attr('onclick', 'openInBrowser(\''+href+'\')');
-	// 				// Spaz.dump(linkhtml.attr('onclick'));
-	// 				linkhtml.removeAttr('href');
-	// 				linkhtml.attr('title', 'View information about this posting method');
-	// 				this.innerHTML=linkhtml[0].outerHTML;
-	// 				Spaz.Cache.setSource(old, this.innerHTML);
-	// 				Spaz.dump(this.innerHTML);
-	// 			}
-	// 		} else {
-	// 			this.innerHTML=sourceHTML;
-	// 		}
-	// 		//
-	// 	} else {
-	// 		Spaz.dump('nothing to convert');
-	// 	}
-	// });
-	// 
-	// $('span.status-protected', "#"+timelineid).each(function(i) {
-	// 	if (this.innerHTML == 'true') {
-	// 		this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />';
-	// 	} else {
-	// 		this.innerHTML = '';
-	// 	}
-	// });
-	// 
-	// 
-	// // tab tooltip setup
-	// $('a[@title]', "#"+timelineid).Tooltip(toolTipPrefs);
-	// 
-	// // tab tooltip setup
-	// $('img[@title]', "#"+timelineid).Tooltip(toolTipPrefs);
+	
+	// convert post times to relative
+	$("span.status-created-at", "#"+timelineid).each(function(i) {
+		this.innerHTML = get_relative_time(this.innerHTML);
+		Spaz.dump(this.innerHTML);
+	});
+	
+	// convert source link entries
+	$("span.status-source-label", "#"+timelineid).each(function(i) {
+		
+		// var sourceHTML = Spaz.Cache.getSource(this.innerHTML);
+		var sourceHTML = false;
+		
+		if (this.innerHTML.length>0){
+			if (!sourceHTML) {
+				var old      = this.innerHTML;
+				var linkhtml = $(Spaz.UI.decodeSourceLinkEntities(this.innerHTML));
+				// Spaz.dump('linkhtml:'+linkhtml);
+				var href;
+				if (href = linkhtml.attr('href')) {
+					linkhtml.attr('onclick', 'openInBrowser(\''+href+'\')');
+					linkhtml.attr('oncontextmenu', 'Spaz.UI.showContextMenu(\'this\')');
+					// Spaz.dump(linkhtml.attr('onclick'));
+					linkhtml.removeAttr('href');
+					linkhtml.attr('title', 'View information about this posting method');
+					this.innerHTML=linkhtml[0].outerHTML;
+					Spaz.Cache.setSource(old, this.innerHTML);
+					Spaz.dump(this.innerHTML);
+				}
+			} else {
+				this.innerHTML=sourceHTML;
+			}
+
+		} else {
+			Spaz.dump('nothing to convert');
+		}
+	});
+
+	$('span.status-protected', "#"+timelineid).each(function(i) {
+		if (this.innerHTML == 'true') {
+			this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />';
+		} else {
+			this.innerHTML = '';
+		}
+	});
+
+	// link tooltip setup
+	$('a[@title]', "#"+timelineid).Tooltip(toolTipPrefs);
+	
+	// img tooltip setup
+	$('img[@title]', "#"+timelineid).Tooltip(toolTipPrefs);
 	
 	
-	// if (Spaz.UI.showContextMenus) {
-	// 	// add context menus
-	// 	//$('a', '#'+timelineid).contextMenu('linkContextMenu');
-	// 	$('a', '#'+timelineid).each( function(i) {
-	// 		$(this).bind('contextmenu', {el:this}, function(event) {
-	// 			
-	// 			var el = event.data.el;
-	// 			
-	// 			// hide any showing tooltips
-	// 			Spaz.dump('hiding tooltip');
-	// 			
-	// 			$('#tooltip').hide();
-	// 			
-	// 			// show the link context menu
-	// 			Spaz.dump('opening context menu');
-	// 			$('#linkContextMenu').css('left', event.pageX)
-	// 				.css('top',  event.pageY)
-	// 				.show();
-	// 
-	// 			Spaz.dump('outerHTML:'+el.outerHTML);				
-	// 			var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
-	// 			if (urlarray && urlarray.length > 0) {
-	// 				var elurl = urlarray[0];
-	// 			
-	// 				Spaz.dump('url from element:'+elurl);
-	// 			
-	// 				$('#menu-copyLink').one('click', {url:elurl}, function(event) {
-	// 					Spaz.Bridge.setClipboardText(event.data.url);
-	// 					Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
-	// 				});
-	// 				Spaz.dump('Set one-time click event on #menu-copyLink');
-	// 			
-	// 				$(document).one('click', function() {
-	// 					$('#linkContextMenu').hide();
-	// 				});
-	// 				Spaz.dump('set one-time link context menu close event for click on document');
-	// 			} else {
-	// 				Spaz.dump('no http link found');
-	// 			}
-	// 			
-	// 		});
-	// 	});
-	// 	
-	// 	Spaz.dump('Binding event to close #linkContextMenu to document.onclick');
-	// 	$(document).bind('click', function() {
-	// 		$('#linkContextMenu').hide();
-	// 	});
-	// }
+	if (Spaz.UI.showContextMenus) {
+		// add context menus
+		//$('a', '#'+timelineid).contextMenu('linkContextMenu');
+		// $('a', '#'+timelineid).each( function(i) {
+		// 	$(this).bind('contextmenu', {el:this}, Spaz.UI.showContextMenu);
+		// });
+		// 
+		// Spaz.dump('Binding event to close #linkContextMenu to document.onclick');
+// 		$(document).bind('click', function() {
+// 			$('#linkContextMenu').hide();
+// 		});
+	}
 	
 	// $('br[clear]').hide();
 
@@ -740,180 +761,8 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 Spaz.UI.regionObserver = function(notificationState, notifier, data) {
 	
 	if (notificationState == "onPostUpdate") {
-		Spaz.dump('onPostUpdate triggered');
 		
-		// make tweets selectable
-		$('div.timeline-entry').each( function(index) {
-			$(this).bind('click', {el:this}, function(event){
-				var el = event.data.el;
-				Spaz.dump('selecting tweet');
-				$('div.timeline-entry').removeClass('ui-selected');
-				Spaz.dump('unselected tweets');
-				$(el).addClass('ui-selected');
-				Spaz.dump('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
-			});
-		});
-		
-		
-		
-	
-		
-		// make it here so we don't instantiate on every loopthrough
-		var md = new Showdown.converter();
-		
-		$("div.status-text", "#"+data.regionID).each(function(i){
-			
-			// check for cached status
-			var statusHTML = Spaz.Cache.getStatus(this.id);
-			if (statusHTML){
-				this.innerHTML = statusHTML;
-			} else {
-				Spaz.dump('Pre-conversion:'+this.innerHTML);
-				// fix extra ampersand encoding
-				this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-				
-				// fix entity &#123; style extra encoding
-				this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
-
-
-							
-				// convert inline links
-				this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
-			
-				// email addresses
-				this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" title="Email $2@$3" class="inline-email">$2@$3</a>');
-			
-				// convert @username reply indicators
-				this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" title="View $2\'s profile" class="inline-reply">@$2</a>');
-							
-				// @usernames at the beginning of lines
-				this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
-
-				
-				if (Spaz.UI.useMarkdown) {
-					Spaz.dump('Pre-Markdown:'+this.innerHTML);
-					// Markdown conversion with Showdown
-					this.innerHTML = md.makeHtml(this.innerHTML);
-					
-					Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
-					
-					// replace hrefs from markdown with onClick calls 
-					this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" title="Open $1 in a browser window" class="inline-link"');
-				}
-				
-				Spaz.dump('Post conversion:'+this.innerHTML);
-				
-				// cache this converted status
-				Spaz.Cache.setStatus(this.id, this.innerHTML);
-			}
-		});
-		
-		// convert post times to relative
-		$("span.status-created-at", "#"+data.regionID).each(function(i) {
-			this.innerHTML = get_relative_time(this.innerHTML);
-		});
-		
-		$("span.status-source-label", "#"+data.regionID).each(function(i) {
-			
-			var sourceHTML = Spaz.Cache.getSource(this.innerHTML);			
-
-			if (this.innerHTML.length>0){
-				if (!sourceHTML) {
-					var old      = this.innerHTML;
-					var linkhtml = $(Spaz.UI.decodeSourceLinkEntities(this.innerHTML));
-					// Spaz.dump('linkhtml:'+linkhtml);
-					var href;
-					if (href = linkhtml.attr('href')) {
-						linkhtml.attr('onclick', 'openInBrowser(\''+href+'\')');
-						// Spaz.dump(linkhtml.attr('onclick'));
-						linkhtml.removeAttr('href');
-						linkhtml.attr('title', 'View information about this posting method');
-						this.innerHTML=linkhtml[0].outerHTML;
-						Spaz.Cache.setSource(old, this.innerHTML);
-						// Spaz.dump(this);
-					}
-				} else {
-					this.innerHTML=sourceHTML;
-				}
-				//
-			} else {
-				//Spaz.dump('nothing to convert');
-			}
-		});
-		
-		$('span.status-protected', "#"+data.regionID).each(function(i) {
-			if (this.innerHTML == 'true') {
-				this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />';
-			} else {
-				this.innerHTML = '';
-			}
-		});
-
-
-		// tab tooltip setup
-		$('a[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
-
-		// tab tooltip setup
-		$('img[@title]', "#"+data.regionID).Tooltip(toolTipPrefs);
-		
-		
-		if (Spaz.UI.showContextMenus) {
-			// add context menus
-			//$('a', '#'+data.regionID).contextMenu('linkContextMenu');
-			$('a', '#'+data.regionID).each( function(i) {
-				$(this).bind('contextmenu', {el:this}, function(event) {
-					
-					var el = event.data.el;
-					
-					// hide any showing tooltips
-					Spaz.dump('hiding tooltip');
-					
-					$('#tooltip').hide();
-					
-					// show the link context menu
-					Spaz.dump('opening context menu');
-					$('#linkContextMenu').css('left', event.pageX)
-						.css('top',  event.pageY)
-						.show();
-	
-					Spaz.dump('outerHTML:'+el.outerHTML);				
-					var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
-					if (urlarray && urlarray.length > 0) {
-						var elurl = urlarray[0];
-					
-						Spaz.dump('url from element:'+elurl);
-					
-						$('#menu-copyLink').one('click', {url:elurl}, function(event) {
-							Spaz.Bridge.setClipboardText(event.data.url);
-							Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
-						});
-						Spaz.dump('Set one-time click event on #menu-copyLink');
-					
-						$(document).one('click', function() {
-							$('#linkContextMenu').hide();
-						});
-						Spaz.dump('set one-time link context menu close event for click on document');
-					} else {
-						Spaz.dump('no http link found');
-					}
-					
-				});
-			});
-			
-			Spaz.dump('Binding event to close #linkContextMenu to document.onclick');
-			$(document).bind('click', function() {
-				$('#linkContextMenu').hide();
-			});
-		}
-		
-		$('br[clear]').hide();
-		
-		
-		
-		// init thickbox for this stuff
-		// tb_init('a.thickbox, area.thickbox, input.thickbox', "#"+data.regionID);//pass where to apply thickbox
-		// imgLoader = new Image();// preload image
-		// imgLoader.src = tb_pathToImage;
+		Spaz.UI.cleanupTimeline(data.regionID);
 		
 	}
 }

@@ -10,7 +10,7 @@ URLs for various thangs...
 */
 // Timeline URLs
 //Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
-Spaz.Data.url_public_timeline  = "http://127.0.0.1/~coj/public_timeline.json";
+Spaz.Data.url_public_timeline  = "http://homes.cerias.purdue.edu/~coj/public_timeline.json";
 Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.xml";
 Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.xml";
 Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.xml";
@@ -556,15 +556,19 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 //			thisRegion.clearContent();
 			//ds.setDataFromDoc(xhr.responseText);
 			
-			$('#public-timeline *').remove();
+			// hard-coding this for now, but after testing, needs to be dynamic
+			var timelineid = 'public-timeline'
+			
+			$('*', '#'+timelineid).unbind();
+			$('*', '#'+timelineid).remove();
 
 			for (i in data) {
 				var image = data[i].user.profile_image_url;
-				air.trace(image);
+				//air.trace(image);
 				
-				$('#public-timeline').prepend('<div class="timeline-entry even"> \
-					<div class="user" id="user-'+data[i].user.id+'"> \
-						<div class="user-image"><a title="<strong>'+data[i].user.name+'</strong><br /><em>'+data[i].user.location+'</em><br/>'+data[i].user.description+'"><img height="48" width="48" src="'+data[i].user.profile_image_url+'" alt="'+data[i].user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+data[i].user.screen_name+'")\' /></a></div> \
+				$('#'+timelineid).prepend('<div class="timeline-entry even" onclick="Spaz.UI.selectEntry(\'this\')" id="'+timelineid+'-'+data[i].id+'"> \
+					<div class="user" id="user-'+data[i].user.id+'" onmouseover="Spaz.UI.showTooltip(this, "<strong>'+data[i].user.name+'</strong><br /><em>'+data[i].user.location+'</em><br/>'+data[i].user.description+'")> \
+						<div class="user-image"><img height="48" width="48" src="'+data[i].user.profile_image_url+'" alt="'+data[i].user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+data[i].user.screen_name+'")\' /></div> \
 						<div class="user-screen-name"><a onclick=\'openInBrowser("http://twitter.com/'+data[i].user.screen_name+'")\' title="<strong>'+data[i].user.name+'</strong><br /><em>'+data[i].user.location+'</em><br />'+data[i].user.description+'">'+data[i].user.screen_name+'</a></div> \
 					</div> \
 					 \
