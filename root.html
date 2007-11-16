@@ -55,6 +55,10 @@ function rootInit() {
 	window.htmlControl.shouldCacheResponse = false;
 	window.htmlControl.useCache = false;
 	
+	air.URLRequestDefaults.manageCookies = false;
+	air.URLRequestDefaults.shouldCacheResponse = false;
+	air.URLRequestDefaults.useCache = false;
+	
 	if (Spaz.Prefs.handleHTTPAuth) {
 		Spaz.dump('Turning ON HTTPAuth handling')
 		window.htmlControl.shouldAuthenticate = true;
@@ -110,9 +114,9 @@ function rootInit() {
 	// })
 	
 
-	var memoryTimer = new air.Timer(1000*10, 0);
+	var memoryTimer = new air.Timer(1000*3, 0);
 	memoryTimer.addEventListener(air.TimerEvent.TIMER, function(event){
-		Spaz.dump('air.System.totalMemory = '+air.System.totalMemory);
+		air.trace('air.System.totalMemory = '+air.System.totalMemory);
 	});
 	memoryTimer.start();
 	

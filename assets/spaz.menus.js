@@ -189,7 +189,7 @@ Spaz.Menus.createFileMenu = function(){
 	
 	var miExit = new air.NativeMenuItem("Quit Spaz");
 	miExit.name = 'exit';
-	miExit.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
+	// miExit.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
 	miExit.mnemonicIndex = 0;
 	miExit.keyEquivalent = 'q';
 	menu.addItem(miExit);
@@ -225,14 +225,14 @@ Spaz.Menus.createViewMenu = function(){
 	
 	var miReload = new air.NativeMenuItem("Reload current view");
 	miReload.name = 'reload';
-	miReload.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.ALTERNATE);
+	// miReload.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.ALTERNATE);
 	miReload.mnemonicIndex = 0;
 	miReload.keyEquivalent = 'r';
 
 	
 	var miPrefs = new air.NativeMenuItem("Preferences…");
 	miPrefs.name = 'prefs';
-	miPrefs.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
+	// miPrefs.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
 	miPrefs.mnemonicIndex = 0;
 	miPrefs.keyEquivalent = ',';
 
@@ -253,7 +253,7 @@ Spaz.Menus.createHelpMenu = function(){
 	var menu = new air.NativeMenu();
 	var miHelp = new air.NativeMenuItem("Spaz Help");
 	miHelp.name = 'help';
-	miHelp.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
+	// miHelp.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
 	miHelp.mnemonicIndex = 0;
 	miHelp.keyEquivalent = '?';
 	menu.addItem(miHelp);

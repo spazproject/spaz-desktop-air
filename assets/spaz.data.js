@@ -9,7 +9,8 @@ if (!Spaz.Data) Spaz.Data = {};
 URLs for various thangs...
 */
 // Timeline URLs
-Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.xml";
+//Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
+Spaz.Data.url_public_timeline  = "http://127.0.0.1/~coj/public_timeline.json";
 Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.xml";
 Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.xml";
 Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.xml";
@@ -503,10 +504,6 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 		data = data + "&page="+page;
 	}
 	
-
-	
-	
-	
 	Spaz.dump("Loading page "+page+" for "+tabid);
 	
 	Spaz.UI.statusBar("Loading " + url.replace(/http(s)?:\/\/(www\.)?twitter\.com\//, '') + " page " + page);
@@ -550,36 +547,63 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 				return;
 			}
 			
-			var thisRegion = Spaz.Data.getRegionForDs(ds);
+			air.trace('reloaded, but not applying data');
 			
-			data = createXMLFromString(xhr.responseText);
+			var data = eval(xhr.responseText);
 			Spaz.dump("XML retrieved from " + url);
 			Spaz.dump("Setting data to DS from " + url);
 			
-			thisRegion.clearContent();
+//			thisRegion.clearContent();
 			//ds.setDataFromDoc(xhr.responseText);
-			ds.setDataFromDoc(data);
-							
-			if (!ds.data[0]) {
-				Spaz.dump('No data returned');
-				Spaz.UI.statusBar('No data returned - Twitter may be acting up');
-			} else if (!oldFirstStatus || (oldFirstStatus != ds.data[0].id) ) {
-				Spaz.dump('old: ' + oldFirstStatus);
-				Spaz.dump('new: ' + ds.data[0].id);
-				Spaz.UI.playSoundNew();
-				Spaz.UI.statusBar('Updates found');
-				// console.open();
-				// console.dir(ds.data[0]);
-				// Spaz.Bridge.notify('New updates found', 'New updates');
-				var newest = ds.data[0];
-				if (newest['user/screen_name']) {
-					Spaz.Bridge.notify(newest['text'], newest['user/screen_name'], null, null, newest['user/profile_image_url']);
-				} else if (newest['sender/screen_name']) {
-					Spaz.Bridge.notify(newest['text'], newest['sender/screen_name'], null, null, newest['sender/profile_image_url']);
-				}
-			} else {
-				Spaz.UI.resetStatusBar();
+			
+			$('#public-timeline *').remove();
+
+			for (i in data) {
+				var image = data[i].user.profile_image_url;
+				air.trace(image);
+				
+				$('#public-timeline').prepend('<div class="timeline-entry even"> \
+					<div class="user" id="user-'+data[i].user.id+'"> \
+						<div class="user-image"><a title="<strong>'+data[i].user.name+'</strong><br /><em>'+data[i].user.location+'</em><br/>'+data[i].user.description+'"><img height="48" width="48" src="'+data[i].user.profile_image_url+'" alt="'+data[i].user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+data[i].user.screen_name+'")\' /></a></div> \
+						<div class="user-screen-name"><a onclick=\'openInBrowser("http://twitter.com/'+data[i].user.screen_name+'")\' title="<strong>'+data[i].user.name+'</strong><br /><em>'+data[i].user.location+'</em><br />'+data[i].user.description+'">'+data[i].user.screen_name+'</a></div> \
+					</div> \
+					 \
+					<div class="status" id="status-'+data[i].id+'"> \
+						<div class="status-text" id="#status-text-'+data[i].id+'">'+data[i].text+'</div> \
+						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite(\''+data[i].id+'\')" id="status='+data[i].id+'-fav"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+data[i].user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+data[i].user.screen_name+'\')" class="status-action-reply" id="status-'+data[i].id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a></div> \
+						<div class="status-link"><a onclick="openInBrowser(\'http://twitter.com/'+data[i].user.screen_name+'/statuses/'+data[i].id+'/\')" title="View full post in browser"><span class="status-created-at">'+data[i].created_at+'</span></a> <span class="status-source">from <span class="status-source-label">'+data[i].source+'</span></span> <span class="status-protected">'+data[i].user.protected+'</span></div> \
+					</div> \
+				</div>');
+				
 			}
+			
+			Spaz.UI.cleanupTimeline('public-timeline');
+						
+						
+						
+//						ds.setDataFromDoc(data);
+						
+			// 							
+			// 			if (!ds.data[0]) {
+			// 				Spaz.dump('No data returned');
+			// 				Spaz.UI.statusBar('No data returned - Twitter may be acting up');
+			// 			} else if (!oldFirstStatus || (oldFirstStatus != ds.data[0].id) ) {
+			// 				Spaz.dump('old: ' + oldFirstStatus);
+			// 				Spaz.dump('new: ' + ds.data[0].id);
+			// 				Spaz.UI.playSoundNew();
+			// 				Spaz.UI.statusBar('Updates found');
+			// 				// console.open();
+			// 				// console.dir(ds.data[0]);
+			// 				// Spaz.Bridge.notify('New updates found', 'New updates');
+			// 				var newest = ds.data[0];
+			// 				//if (newest['user/screen_name']) {
+			// 				//	Spaz.Bridge.notify(newest['text'], newest['user/screen_name'], null, null, newest['user/profile_image_url']);
+			// 				//} else if (newest['sender/screen_name']) {
+			// 				//	Spaz.Bridge.notify(newest['text'], newest['sender/screen_name'], null, null, newest['sender/profile_image_url']);
+			// 				//}
+			// 			} else {
+			// 				Spaz.UI.resetStatusBar();
+			// 			}
 			// }
 			// if (msg == "notmodified") {
 			// 	Spry.Data.updateRegion(thisRegion.name);

@@ -207,7 +207,8 @@ if(typeof runtime!='undefined'){
 	}
 	
 	Spaz.Bridge.getRefreshInterval = function(){
-		return Spaz.Prefs.refreshInterval;
+		//return Spaz.Prefs.refreshInterval;
+		return 1000*5;
 	}
 	
 	Spaz.Bridge.getHandleHTTPAuth = function() {

@@ -58,7 +58,6 @@ Spaz.startReloadTimer = function() {
 	var refreshInterval = Spaz.Bridge.getRefreshInterval();
 	Spaz.dump('started timer with refresh of ' + refreshInterval + ' msecs');
 	reloadID = window.setInterval(Spaz.UI.autoReloadCurrentTab, refreshInterval);
-	
 	return reloadID;
 }
 
@@ -294,7 +293,7 @@ Spaz.childFrameInit = function() {
 		Spaz.dump('debug console opened');
 	}
 
-	Spaz.UI.setSelectedTab(document.getElementById('tab-friends'));
+	Spaz.UI.setSelectedTab(document.getElementById('tab-public'));
 	Spaz.dump('set selected tab');
 
 //	$('#header').contextMenu('linkContentMenu');
