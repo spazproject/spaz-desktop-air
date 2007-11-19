@@ -200,12 +200,14 @@ if(typeof runtime!='undefined'){
 		siteV.major = parseInt(pieces[0]);
 		siteV.minor = parseInt(pieces[1]);
 		siteV.micro = parseInt(pieces[2]);
+		siteV.builddate = parseInt(pieces[3]);
 		
 		var pieces = currentVersion.split('.');
 		Spaz.dump(pieces);
 		currV.major = parseInt(pieces[0]);
 		currV.minor = parseInt(pieces[1]);
 		currV.micro = parseInt(pieces[2]);
+		currV.builddate = parseInt(pieces[3]);
 		
 		
 		if (siteV.major > currV.major) {
@@ -225,7 +227,13 @@ if(typeof runtime!='undefined'){
 				} else if (siteV.micro < currV.micro) {
 					return -1;
 				} else {
-					return 0;
+					if (siteV.builddate > currV.builddate) {
+						return 1;
+					} else if (siteV.builddate < currV.builddate) {
+						return -1;
+					} else {
+						return 0;
+					}
 				}
 			}
 			

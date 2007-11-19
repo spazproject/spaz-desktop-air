@@ -107,7 +107,7 @@ TODO:
 		<span id="minimize" class="window-button" onclick="Spaz.UI.windowMinimize()" title="Minimize">&ndash;</span>
 		<span id="close" class="window-button" onclick="Spaz.Bridge.windowClosingHandler()" title="Close">&times;</span>
 	</div>
-	<span id="header-label">Spaz</span>
+	<span id="header-label">Dev!</span>
 </h1>
 
 
@@ -170,7 +170,7 @@ TODO:
 
 		<!-- FRIENDS AND YOU TIMELINE -->
 		<div class="TabbedPanelsContent" id="panel-friends">
-			<div spry:region="Spaz.Data.ds_friends" id="friends-timeline" class="timeline SpryHiddenRegion">
+			<div spry:region="Spaz.Data.ds_friends" id="timeline-friends" class="timeline SpryHiddenRegion">
 				
 				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even">
 					<div class="user" id="user-{user/id}">
@@ -197,7 +197,7 @@ TODO:
 		<!-- REPLIES TIMELINE -->
 		<div class="TabbedPanelsContent" id="panel-replies">
 			
-			<div spry:region="Spaz.Data.ds_replies" id="replies-timeline" class="timeline SpryHiddenRegion">
+			<div spry:region="Spaz.Data.ds_replies" id="timeline-replies" class="timeline SpryHiddenRegion">
 				
 				<div spry:repeat="Spaz.Data.ds_replies" class="timeline-entry" spry:odd="odd" spry:even="even">
 					<div class="user" id="user-{user/id}">
@@ -225,7 +225,7 @@ TODO:
 		<!-- DIRECT MESSAGES -->
 		<div class="TabbedPanelsContent" id="panel-dms">
 			
-			<div spry:region="Spaz.Data.ds_dms" id="dm-timeline" class="timeline SpryHiddenRegion">
+			<div spry:region="Spaz.Data.ds_dms" id="timeline-dms" class="timeline SpryHiddenRegion">
 				
 				<div spry:repeat="Spaz.Data.ds_dms" class="timeline-entry" spry:odd="odd" spry:even="even">
 					<div class="user" id="user-{sender/id}">
@@ -251,7 +251,7 @@ TODO:
 		
 		<!-- YOUR SENT MESSAGES -->
 		<div class="TabbedPanelsContent" id="panel-user">
-			<div spry:region="Spaz.Data.ds_user" id="user-timeline" class="timeline SpryHiddenRegion">				
+			<div spry:region="Spaz.Data.ds_user" id="timeline-user" class="timeline SpryHiddenRegion">				
 				<div spry:repeat="Spaz.Data.ds_user" class="timeline-entry" spry:odd="odd" spry:even="even">
 					<div class="user" id="user-{user/id}">
 						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
@@ -275,7 +275,7 @@ TODO:
 		
 		<!-- PUBLIC TIMELINE -->
 		<div class="TabbedPanelsContent" id="panel-public">
-			<div spry:region="Spaz.Data.ds_public" id="public-timeline" class="timeline SpryHiddenRegion">
+			<div spry:region="Spaz.Data.ds_public" id="timeline-public" class="timeline SpryHiddenRegion">
 				<div spry:repeat="Spaz.Data.ds_public" class="timeline-entry" spry:odd="odd" spry:even="even">
 					<div class="user" id="user-{user/id}">
 						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br/>{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
@@ -359,7 +359,7 @@ TODO:
 		
 		<!-- PREFS -->
 		<div class="TabbedPanelsContent" id="panel-prefs">
-			<div class="timeline" id="prefs-timeline">
+			<div class="timeline" id="timeline-prefs">
 				<form id="prefs-form" onsubmit="Spaz.Bridge.setPrefs(); return false;">
 				<div id="prefsCPG" class="CollapsiblePanelGroup">
 					
@@ -641,17 +641,9 @@ TODO:
 </div>
 
 
-<div id="userTooltip" class="tooltip">
+<div id="userTooltip" class="context-menu">
 	
 </div>
-
-<!-- <div id="popupPanel" style="display:none">
-	<div id="popupPanel-dragBar" style="text-align:right"><span id="popupPanel-close" onclick="Spaz.UI.closePopup">[X]</span></div>
-	<div id="popupPanel-content">
-		Here's some static content for the panel
-	</div>
-</div> -->
-
 
 
 </div> <!-- End #container -->

@@ -293,7 +293,7 @@ Spaz.childFrameInit = function() {
 		Spaz.dump('debug console opened');
 	}
 
-	Spaz.UI.setSelectedTab(document.getElementById('tab-public'));
+	Spaz.UI.setSelectedTab(document.getElementById('tab-friends'));
 	Spaz.dump('set selected tab');
 
 //	$('#header').contextMenu('linkContentMenu');

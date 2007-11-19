@@ -564,74 +564,67 @@ Spaz.UI.selectEntry = function(el) {
 
 Spaz.UI.showContextMenu = function(el) {
 	// hide any showing tooltips
-	air.trace('hiding tooltip');
+	Spaz.dump('hiding tooltip');
 	
 	$('#tooltip').hide();
 	
 	// show the link context menu
-	air.trace('opening context menu');
-	$('#linkContextMenu').css('left', el.pageX)
-		.css('top',  el.pageY)
+	Spaz.dump('opening context menu');
+	$('#linkContextMenu').css('left', event.pageX)
+		.css('top',  event.pageY)
 		.show();
 
-	air.trace('outerHTML:'+el.outerHTML);				
+	Spaz.dump('outerHTML:'+el.outerHTML);				
 	var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
 	if (urlarray && urlarray.length > 0) {
 		var elurl = urlarray[0];
 	
-		air.trace('url from element:'+elurl);
+		Spaz.dump('url from element:'+elurl);
 	
 		$('#menu-copyLink').one('click', {url:elurl}, function(event) {
 			Spaz.Bridge.setClipboardText(event.data.url);
-			air.trace('Current Clipboard:'+Spaz.Bridge.getClipboardText());
+			Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
 		});
-		air.trace('Set one-time click event on #menu-copyLink');
+		Spaz.dump('Set one-time click event on #menu-copyLink');
 	
 		$(document).one('click', function() {
 			$('#linkContextMenu').hide();
 		});
-		air.trace('set one-time link context menu close event for click on document');
+		Spaz.dump('set one-time link context menu close event for click on document');
 	} else {
-		air.trace('no http link found');
+		Spaz.dump('no http link found');
 	}
 	
 }
 
-Spaz.UI.showTooltip = function(el, content) {
+Spaz.UI.showTooltip = function(el, userdata) {
+
 	// hide any showing tooltips
-	air.trace('hiding tooltip');
+	air.trace('hiding userTooltips');
+
+	$('#userTooltip').hide();	
+
+	var data = userdata.split('|')
 	
-	$('#userTooltip').hide();
+	var str = "<div><strong>"+data[0]+"</strong></div>";
+	if(data[1]) {
+		var str = str + "<div><em>"+data[1]+"</em></div>";
+	}
+	if(data[2]) {
+		var str = str + "<div>"+data[2]+"</div>";
+	}
 	
 	// show the link context menu
 	air.trace('opening context menu');
-	$('#userTooltip').css('left', el.pageX)
-		.css('top',  el.pageY)
+	$('#userTooltip').css('left', event.pageX+10)
+		.css('top',  event.pageY+20)
+		.html(str)
 		.show();
-
-	air.trace('outerHTML:'+el.outerHTML);				
-	var urlarray = /http:\/\/([^'"]+)/i.exec(el.outerHTML);
-	if (urlarray && urlarray.length > 0) {
-		var elurl = urlarray[0];
-	
-		air.trace('url from element:'+elurl);
-		air.trace('set one-time link context menu close event for click on document');
-	} else {
-		air.trace('no http link found');
-	}
 	
 }
 
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid) {
-
-	Spaz.dump('onPostUpdate triggered');
-	
-	//Spaz.dump($('#'+timelineid).text());
-
-	// make tweets selectable
-	$('div.timeline-entry', '#'+timelineid).unbind();
-	
 	
 	// make it here so we don't instantiate on every loopthrough
 	var md = new Showdown.converter();
@@ -653,16 +646,16 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	
 						
 			// convert inline links
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
+			this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
 		
 			// email addresses
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="Email $2@$3" class="inline-email">$2@$3</a>');
+			this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Email $2@$3" class="inline-email">$2@$3</a>');
 		
 			// convert @username reply indicators
-			this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="View $2\'s profile" class="inline-reply">@$2</a>');
+			this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $2\'s profile" class="inline-reply">@$2</a>');
 						
 			// @usernames at the beginning of lines
-			this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="View $1\'s profile" class="inline-reply">@$1</a>');
+			this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $1\'s profile" class="inline-reply">@$1</a>');
 	
 			
 			if (Spaz.UI.useMarkdown) {
@@ -673,7 +666,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 				Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
 				
 				// replace hrefs from markdown with onClick calls 
-				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" oncontextmenu="Spaz.UI.showContextMenu(\'this\')" title="Open $1 in a browser window" class="inline-link"');
+				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $1 in a browser window" class="inline-link"');
 			}
 			
 			Spaz.dump('Post conversion:'+this.innerHTML);
@@ -703,7 +696,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 				var href;
 				if (href = linkhtml.attr('href')) {
 					linkhtml.attr('onclick', 'openInBrowser(\''+href+'\')');
-					linkhtml.attr('oncontextmenu', 'Spaz.UI.showContextMenu(\'this\')');
+					linkhtml.attr('oncontextmenu', 'Spaz.UI.showContextMenu(this)');
 					// Spaz.dump(linkhtml.attr('onclick'));
 					linkhtml.removeAttr('href');
 					linkhtml.attr('title', 'View information about this posting method');
@@ -727,12 +720,6 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 			this.innerHTML = '';
 		}
 	});
-
-	// link tooltip setup
-	$('a[@title]', "#"+timelineid).Tooltip(toolTipPrefs);
-	
-	// img tooltip setup
-	$('img[@title]', "#"+timelineid).Tooltip(toolTipPrefs);
 	
 	
 	if (Spaz.UI.showContextMenus) {
