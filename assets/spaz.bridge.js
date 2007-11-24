@@ -370,7 +370,7 @@ if(typeof runtime!='undefined'){
 	}
 
 
-	Spaz.Bridge.notify = function(message, title, where, duration, icon) {
+	Spaz.Bridge.notify = function(message, title, where, duration, icon) {		
 		if (Spaz.Bridge.getUIInfo().showNotificationPopups) {
 			Spaz.Notify.add(message, title, where, duration, icon);
 		} else {

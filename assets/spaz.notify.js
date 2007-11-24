@@ -26,6 +26,12 @@ Spaz.Notify.params = null;
 
 Spaz.Notify.add  = function(message, title, where, duration, icon) {
 	
+	message = message.replace(/&amp;/gi, '&');
+	message = message.replace(/&quot;/gi, '"');
+	message = message.replace(/&apos;/gi, '\'');
+	message = message.replace(/&lt;/gi, '<');
+	message = message.replace(/&gt;/gi, '>');
+	
 	Spaz.dump("init notifier");
 	Spaz.Notify.purr = new window.runtime.com.adobe.air.notification.Purr(1);
 

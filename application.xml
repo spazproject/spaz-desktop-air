@@ -10,9 +10,10 @@
 		<transparent>true</transparent>
 		<visible>false</visible>
 		
-	
-		<width>350</width> 
+		<width>400</width> 
 		<height>580</height>
+		<x>50</x>
+		<y>50</y>
 	  </initialWindow>
 	
 	<icon>

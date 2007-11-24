@@ -311,6 +311,15 @@ div.status-text {
 	font-family:Palatino,Georgia, "Times New Roman", Times, serif;
 	margin-bottom:4px;
 }
+
+div.status-text img {
+	display:inline;
+	float:left;
+	border:3px solid red;
+	width:150px;
+	height:150px;
+}
+
 /*div.status-text h1, div.status-text h2, div.status-text h3, div.status-text h4, div.status-text h5 {
 	position:relative;
 	background:transparent;

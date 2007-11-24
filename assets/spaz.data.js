@@ -469,17 +469,26 @@ Spaz.Data.newFirstStatus = 0;
  * Loads Twitter data via XML, and optionally switches to a particular tab
  */
 Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
-	
-	var timelineid = tabid.replace(/tab-/, 'timeline-');
-	
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
-	
 	Spaz.Bridge.dump('user:'+user+' pass:********');
 	
-	if (ds.data.length > 0) {
-		Spaz.Data.oldFirstStatus = ds.data[0].id;
+	var timelineid = tabid.replace(/tab-/, 'timeline-');
+	air.trace(timelineid);
+	
+	var firstStatus = $('.timeline-entry .status:first', '#'+timelineid);
+	if (firstStatus.length > 0) {
+		var oldNewestId = parseInt(firstStatus[0].id.replace(/status-/, ''));
+	} else {
+		var oldNewestId = 0;
 	}
+	
+
+	// get newest tweet id in "old" data	
+	if (ds.data.length > 0) {
+		oldNewestId = parseInt(ds.data[0].id);
+	}
+
 	
 	if (page) {
 		page = parseInt(page);
@@ -487,11 +496,15 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	} else {
 		page = 1;
 	}
+
 	
 	// put ms timestamp in data to create unique request
-	var now = new Date();
-	var nowms = now.getTime();
-	var data  = '&_=' + nowms;
+	// var now = new Date();
+	// var nowms = now.getTime();
+	// var data  = '&_=' + nowms;
+
+	// not doing the unique request string anymore
+	var data = '';
 	
 	// caching problems with "page 1" means we can't pass page=1 without missing updates
 	if (page != 1) {
@@ -547,8 +560,6 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 				return;
 			}
 			
-			air.trace(timelineid);
-			
 			if (/.+\.json$/.test(url)) { // this is a JSON url
 
 				// eval json
@@ -600,7 +611,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 						entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
 						entryHTML = entryHTML + '			<a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+user.screen_name+'\')" class="status-action-reply" id="status-'+data[i].id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a>';
 						if (timelineid == 'timeline-user') {
-							entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">&times;</a>';
+							entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
 						}
 						entryHTML = entryHTML + '		</div>';
 						entryHTML = entryHTML + '		<div class="status-link">';
@@ -611,7 +622,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 					} else {
 						entryHTML = entryHTML + '		<div class="status-actions">';
 						entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
-						entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">&times;</a>';
+						// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
 						entryHTML = entryHTML + '		</div>';					
 					}
 					entryHTML = entryHTML + '	</div>';
@@ -621,10 +632,23 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 
 					$('#'+timelineid).append(entryHTML);
 				}
-
+				
+				
+				var newest = data[0];
+				if (newest.sender) { newest.user  = data[0].sender }
+				
 				Spaz.UI.cleanupTimeline(timelineid);
-				Spaz.UI.playSoundNew();
-				Spaz.UI.statusBar('Updates found');
+				
+				air.trace(oldNewestId);
+				air.trace(newest.id);
+				
+				if (oldNewestId < newest.id) {
+					Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);
+					Spaz.UI.playSoundNew();
+					Spaz.UI.statusBar('Updates found');
+				} else {
+					Spaz.UI.resetStatusBar();
+				}
 
 				
 			} else if(/.+\.xml$/.test(url)) { // this is an XML url

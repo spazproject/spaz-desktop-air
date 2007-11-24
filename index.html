@@ -172,7 +172,7 @@ TODO:
 		<div class="TabbedPanelsContent" id="panel-friends">
 			<div spry:region="Spaz.Data.ds_friends" id="timeline-friends" class="timeline SpryHiddenRegion">
 				
-				<div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even">
+				<!-- <div spry:repeat="Spaz.Data.ds_friends" class="timeline-entry" spry:odd="odd" spry:even="even">
 					<div class="user" id="user-{user/id}">
 						<div class="user-image"><a title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}' onclick='openInBrowser("http://twitter.com/{user/screen_name}")'><img height="48" width="48" src="{user/profile_image_url}" alt='{user/screen_name}' /></a></div>
 						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title='<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}'>{user/screen_name}</a></div>
@@ -183,7 +183,7 @@ TODO:
 						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
 						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
 					</div>
-				</div>
+				</div> -->
 				
 			</div>
 			<div class="timeline-pager">
@@ -199,19 +199,19 @@ TODO:
 			
 			<div spry:region="Spaz.Data.ds_replies" id="timeline-replies" class="timeline SpryHiddenRegion">
 				
-				<div spry:repeat="Spaz.Data.ds_replies" class="timeline-entry" spry:odd="odd" spry:even="even">
-					<div class="user" id="user-{user/id}">
-						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
-					</div>
-			
-					<div class="status" id="status-{id}">					
-						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
-						
-					</div>
-				</div>
+				<!-- <div spry:repeat="Spaz.Data.ds_replies" class="timeline-entry" spry:odd="odd" spry:even="even">
+									<div class="user" id="user-{user/id}">
+										<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
+										<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
+									</div>
+							
+									<div class="status" id="status-{id}">					
+										<div class="status-text" id="#status-text-{id}">{text}</div>
+										<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
+										<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
+										
+									</div>
+								</div> -->
 				
 			</div>
 			<div class="timeline-pager">
@@ -227,18 +227,18 @@ TODO:
 			
 			<div spry:region="Spaz.Data.ds_dms" id="timeline-dms" class="timeline SpryHiddenRegion">
 				
-				<div spry:repeat="Spaz.Data.ds_dms" class="timeline-entry" spry:odd="odd" spry:even="even">
-					<div class="user" id="user-{sender/id}">
-						<div class="user-image"><a title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}"><img height="48" width="48" src="{sender/profile_image_url}" alt="{sender/screen_name}" onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}">{sender/screen_name}</a></div>
-					</div>
-			
-					<div class="status" id="status-{id}">					
-						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{sender/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{sender/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-protected">{sender/protected}</span></div>
-					</div>
-				</div>
+				<!-- <div spry:repeat="Spaz.Data.ds_dms" class="timeline-entry" spry:odd="odd" spry:even="even">
+									<div class="user" id="user-{sender/id}">
+										<div class="user-image"><a title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}"><img height="48" width="48" src="{sender/profile_image_url}" alt="{sender/screen_name}" onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' /></a></div>
+										<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{sender/screen_name}")' title="<strong>{sender/name}</strong><br /><em>{sender/location}</em><br />{sender/description}">{sender/screen_name}</a></div>
+									</div>
+							
+									<div class="status" id="status-{id}">					
+										<div class="status-text" id="#status-text-{id}">{text}</div>
+										<div class="status-actions"><a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{sender/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a></div>
+										<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{sender/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-protected">{sender/protected}</span></div>
+									</div>
+								</div> -->
 				
 			</div>
 			<div class="timeline-pager">
@@ -252,18 +252,18 @@ TODO:
 		<!-- YOUR SENT MESSAGES -->
 		<div class="TabbedPanelsContent" id="panel-user">
 			<div spry:region="Spaz.Data.ds_user" id="timeline-user" class="timeline SpryHiddenRegion">				
-				<div spry:repeat="Spaz.Data.ds_user" class="timeline-entry" spry:odd="odd" spry:even="even">
-					<div class="user" id="user-{user/id}">
-						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
-					</div>
-			
-					<div class="status" id="status-{id}">					
-						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a onclick="Spaz.Data.destroyStatus('{id}')" title="Delete this status" class="status-action-delete">delete</a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
-					</div>
-				</div>
+				<!-- <div spry:repeat="Spaz.Data.ds_user" class="timeline-entry" spry:odd="odd" spry:even="even">
+									<div class="user" id="user-{user/id}">
+										<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
+										<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
+									</div>
+							
+									<div class="status" id="status-{id}">					
+										<div class="status-text" id="#status-text-{id}">{text}</div>
+										<div class="status-actions"><a onclick="Spaz.Data.destroyStatus('{id}')" title="Delete this status" class="status-action-delete">delete</a></div>
+										<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
+									</div>
+								</div> -->
 			</div>
 			<div class="timeline-pager">
 				<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
@@ -276,19 +276,19 @@ TODO:
 		<!-- PUBLIC TIMELINE -->
 		<div class="TabbedPanelsContent" id="panel-public">
 			<div spry:region="Spaz.Data.ds_public" id="timeline-public" class="timeline SpryHiddenRegion">
-				<div spry:repeat="Spaz.Data.ds_public" class="timeline-entry" spry:odd="odd" spry:even="even">
-					<div class="user" id="user-{user/id}">
-						<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br/>{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
-						<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
-					</div>
-			
-					<div class="status" id="status-{id}">						
-						<div class="status-text" id="#status-text-{id}">{text}</div>
-						<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
-						<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
-						
-					</div>
-				</div>
+				<!-- <div spry:repeat="Spaz.Data.ds_public" class="timeline-entry" spry:odd="odd" spry:even="even">
+									<div class="user" id="user-{user/id}">
+										<div class="user-image"><a title="<strong>{user/name}</strong><br /><em>{user/location}</em><br/>{user/description}"><img height="48" width="48" src="{user/profile_image_url}" alt="{user/screen_name}" onclick='openInBrowser("http://twitter.com/{user/screen_name}")' /></a></div>
+										<div class="user-screen-name"><a onclick='openInBrowser("http://twitter.com/{user/screen_name}")' title="<strong>{user/name}</strong><br /><em>{user/location}</em><br />{user/description}">{user/screen_name}</a></div>
+									</div>
+							
+									<div class="status" id="status-{id}">						
+										<div class="status-text" id="#status-text-{id}">{text}</div>
+										<div class="status-actions"><a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite('{id}')" id="status={id}-fav"><img src="{theme-dir}/images/status-fav-off.png" /></a> <a title="Send direct message to this user" onclick='Spaz.UI.prepDirectMessage("{user/screen_name}")' class="status-action-dm" id="status-{id}-dm"><img src="{theme-dir}/images/status-dm.png" /></a> <a title="Send reply to this user" onclick="Spaz.UI.prepReply('{user/screen_name}')" class="status-action-reply" id="status-{id}-reply"><img src='{theme-dir}/images/status-reply.png' /></a></div>
+										<div class="status-link"><a onclick="openInBrowser('http://twitter.com/{user/screen_name}/statuses/{id}/')" title="View full post in browser"><span class="status-created-at">{created_at}</span></a> <span class="status-source">from <span class="status-source-label">{source}</span></span> <span class="status-protected">{user/protected}</span></div>
+										
+									</div>
+								</div> -->
 			</div>
 		</div>
 		
