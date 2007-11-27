@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<application xmlns="http://ns.adobe.com/air/application/1.0.M5" appId="Spaz.AIR" version="0.3.4.20071117231412">
+<application xmlns="http://ns.adobe.com/air/application/1.0.M5" appId="Spaz.AIR" version="0.3.4.20071124184025">
 	<name>Spaz</name>
 	
 	  <initialWindow>
@@ -18,5 +18,8 @@
 	
 	<icon>
 		<image128x128>images/spaz-icon-alpha.png</image128x128>
+		<image48x48>images/spaz-icon-alpha_48.png</image48x48>
+		<image32x32>images/spaz-icon-alpha_32.png</image32x32>
+		<image16x16>images/spaz-icon-alpha_16.png</image16x16>
 	</icon>
 </application>

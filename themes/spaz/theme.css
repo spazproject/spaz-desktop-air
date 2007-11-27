@@ -756,7 +756,7 @@ img.tab-icon {
 	background-color:#000000;
 	color:#FFFFFF;
 	font-size:10px;
-	padding:5px;
+	padding:5px !important;
 	border:0px solid black;
 	opacity:0.8;
 	position:fixed;
@@ -765,6 +765,7 @@ img.tab-icon {
 	left:1px;
 	-khtml-border-radius:5px;
 	display:none;
+	min-width:100px;
 	
 }
 #tooltip h3, #tooltip div {

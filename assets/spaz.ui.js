@@ -598,11 +598,23 @@ Spaz.UI.showContextMenu = function(el) {
 }
 
 Spaz.UI.showTooltip = function(el, userdata) {
+	
+	var minwidth = 100;
 
+	var tt = $('#tooltip');
+	tt.css('width', '');
+	tt.css('height', '');
+
+	// air.trace('border:'+tt.css('border'));
+	// air.trace('padding:'+tt.css('padding'));
+	// air.trace('border:'+document.defaultView.getComputedStyle(tt[0], null)['border'])
+	// air.trace('padding:'+document.defaultView.getComputedStyle(tt[0], null)['padding'])
+	// air.trace('margin:'+document.defaultView.getComputedStyle(tt[0], null)['margin'])
+	
 	// hide any showing tooltips
-	air.trace('hiding userTooltips');
+	Spaz.dump('hiding tooltip');
 
-	$('#userTooltip').hide();	
+	tt.hide();	
 
 	var data = userdata.split('|')
 	
@@ -615,13 +627,89 @@ Spaz.UI.showTooltip = function(el, userdata) {
 	}
 	
 	// show the link context menu
-	air.trace('opening context menu');
-	$('#userTooltip').css('left', event.pageX+10)
+	Spaz.dump('opening context menu');
+	tt.css('left', event.pageX+10)
 		.css('top',  event.pageY+20)
 		.html(str)
-		.show();
+		.show()
+		.css('opacity', 0)
+		.animate({'opacity':'1.0'}, 200);
+	
+	// I kinda stole this from the excellent jquery.tooltip, which caused mem leakage (unfortunately)
+	var vp  = Spaz.UI.getViewport();
+	var off = tt.offset();
+
+	Spaz.dump('vp.x:'+vp.x)
+	Spaz.dump('vp.x:'+vp.y)
+	Spaz.dump('vp.cx:'+vp.cx)
+	Spaz.dump('vp.cy:'+vp.cy)
+	Spaz.dump('off.top:'+off.top)
+	Spaz.dump('off.left:'+off.left)
+	Spaz.dump('tt.width():'+tt.width())
+	Spaz.dump('tt.height():'+tt.height())
+	
+	// if (vp.cx < tt.width()) {
+	// 	tt.css('width', vp.cx-10);
+	// 	air.trace('too wide');
+	// 	// if (tt.css('width') < minwidth) {
+	// 	// 	tt.css('width', minwidth)
+	// 	// }
+	// }
+	
+	// check horizontal position
+	if (vp.x + vp.cx < off.left + tt.width()) {
+		Spaz.dump('horz over')
+		tt.css('left', parseInt(tt.css('left')) - (tt.width() + 20));
+		if (tt.offset().left < 5) {
+			tt.css('left', 5);
+		}
+	}
+	
+	// if (vp.cx < (tt.offset().left + tt.width())) {
+	// 	Spaz.dump('too wide');
+	// 	tt.css('width', vp.cx - 10 - tt.offset().left);
+	// }
+	
+	// if (tt.width() < minwidth) {
+	// 	tt.css('width', minwidth)
+	// }
+	
+	
+	// check vertical position
+	if(vp.y + vp.cy < off.top + tt.height()) {
+		Spaz.dump('vert over');
+		tt.css('top', parseInt(tt.css('top')) - (tt.height() + 20));
+		if (tt.offset().top < 5) {
+			tt.css('top', 5);
+		}
+	}
+	
+	// if (vp.cy < (tt.offset().top + tt.height())) {
+	// 	Spaz.dump('too tall')
+	// 	tt.css('height', vp.cy - 10 - tt.offset().top);
+	// }
+	
+	// Spaz.dump('off.top:'+off.top)
+	// Spaz.dump('off.left:'+off.left)
+	// Spaz.dump('tt.width():'+tt.width())
+	// Spaz.dump('tt.height():'+tt.height())
+	
+	// air.trace(document.defaultView.getComputedStyle(tt[0], '').getPropertyValue('border'))
+	// air.trace(document.defaultView.getComputedStyle(tt[0], '').getPropertyValue('padding'))
+	
 	
 }
+
+
+Spaz.UI.getViewport = function() {
+	return {
+		x: $(window).scrollLeft(),
+		y: $(window).scrollTop(),
+		cx: $(window).width(),
+		cy: $(window).height()
+	};
+}
+
 
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid) {

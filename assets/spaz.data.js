@@ -474,7 +474,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	Spaz.Bridge.dump('user:'+user+' pass:********');
 	
 	var timelineid = tabid.replace(/tab-/, 'timeline-');
-	air.trace(timelineid);
+	Spaz.dump(timelineid);
 	
 	var firstStatus = $('.timeline-entry .status:first', '#'+timelineid);
 	if (firstStatus.length > 0) {
@@ -516,7 +516,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	Spaz.UI.statusBar("Loading " + url.replace(/http(s)?:\/\/(www\.)?twitter\.com\//, '') + " page " + page);
 	Spaz.UI.showLoading();
 	
-	air.trace('loadTwitterXML: tab '+tabid);
+	Spaz.dump('loadTwitterXML: tab '+tabid);
 
 	if (user === undefined || user === "undefined" || user==''
 			|| user == false || user == 'false'
@@ -562,6 +562,13 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			
 			if (/.+\.json$/.test(url)) { // this is a JSON url
 
+				// if data is < 1, then there's a problem
+				if (xhr.responseText.length < 1) {
+					Spaz.dump('No data returned');
+					Spaz.UI.statusBar('No data returned - Twitter may be acting up');
+					return;
+				}
+
 				// eval json
 				var data = eval(xhr.responseText);
 
@@ -580,67 +587,84 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 
 				Spaz.dump("XML retrieved from " + url);
 				Spaz.dump("Setting data to DS from " + url);
-				
-				air.trace('unbind')
-				$('*', '#'+timelineid).unbind();
-				air.trace('remove')
-				$('*', '#'+timelineid).remove();
 
-				// reverse the json
-				// data.sort(function(a,b){return b - a})
-
-				for (i in data) {
-					if (data[i].sender) { var user  = data[i].sender } else { var user  = data[i].user }
-
-					if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
+				// $("#"+timelineid + ' .timeline-entry').animate( {'opacity': '1.0'}, 200, 'linear', function() {
+							
+					air.trace('unbind')
+					$('*', '#'+timelineid).unbind();
+					air.trace('remove')
+					$('*', '#'+timelineid).remove();		
 					
-					// need to double-slash single quotes to escape them properly below
-					var popupStr = (user.name+'|'+user.location+'|'+user.description).replace(/'/gi, "\\'");
-						
-					var entryHTML = '';
-					entryHTML = entryHTML + '<div class="timeline-entry '+rowclass+'" onclick="Spaz.UI.selectEntry(this)" id="'+timelineid+'-'+data[i].id+'">';
-					entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'" onmouseover="Spaz.UI.showTooltip(this, \''+popupStr+'\')" onmouseout="$(\'#userTooltip\').hide()">';
-					entryHTML = entryHTML + '		<div class="user-image"><img height="48" width="48" src="'+user.profile_image_url+'" alt="'+user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+user.screen_name+'")\' /></div>';
-					entryHTML = entryHTML + '		<div class="user-screen-name"><a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'\')">'+user.screen_name+'</a></div>';
-					entryHTML = entryHTML + '	</div>';
-					entryHTML = entryHTML + '	<div class="status" id="status-'+data[i].id+'">';
-					entryHTML = entryHTML + '		<div class="status-text" id="#status-text-'+data[i].id+'">'+data[i].text+'</div>';
-					if (timelineid != 'timeline-dms') {
-						entryHTML = entryHTML + '		<div class="status-actions">';
-						entryHTML = entryHTML + '			<a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite(\''+data[i].id+'\')" id="status-'+data[i].id+'-fav"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" /></a>';
-						entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
-						entryHTML = entryHTML + '			<a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+user.screen_name+'\')" class="status-action-reply" id="status-'+data[i].id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a>';
-						if (timelineid == 'timeline-user') {
-							entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
+					for (i in data) {
+						if (data[i].sender) { var user  = data[i].sender } else { var user  = data[i].user }
+
+						if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
+				
+						// need to double-slash single quotes to escape them properly below
+						var popupStr = (user.name+'|'+user.location+'|'+user.description).replace(/'/gi, "\\'");
+					
+						var entryHTML = '';
+						entryHTML = entryHTML + '<div class="timeline-entry '+rowclass+'" onclick="Spaz.UI.selectEntry(this)" id="'+timelineid+'-'+data[i].id+'">';
+						entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'" onmouseover="Spaz.UI.showTooltip(this, \''+popupStr+'\')" onmouseout="$(\'#tooltip\').hide()">';
+						entryHTML = entryHTML + '		<div class="user-image"><img height="48" width="48" src="'+user.profile_image_url+'" alt="'+user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+user.screen_name+'")\' /></div>';
+						entryHTML = entryHTML + '		<div class="user-screen-name"><a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'\')">'+user.screen_name+'</a></div>';
+						entryHTML = entryHTML + '	</div>';
+						entryHTML = entryHTML + '	<div class="status" id="status-'+data[i].id+'">';
+						entryHTML = entryHTML + '		<div class="status-text" id="#status-text-'+data[i].id+'">'+data[i].text+'</div>';
+						if (timelineid != 'timeline-dms') {
+							entryHTML = entryHTML + '		<div class="status-actions">';
+							entryHTML = entryHTML + '			<a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite(\''+data[i].id+'\')" id="status-'+data[i].id+'-fav"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" /></a>';
+							entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+							entryHTML = entryHTML + '			<a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+user.screen_name+'\')" class="status-action-reply" id="status-'+data[i].id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a>';
+							if (timelineid == 'timeline-user') {
+								entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
+							}
+							entryHTML = entryHTML + '		</div>';
+							entryHTML = entryHTML + '		<div class="status-link">';
+							entryHTML = entryHTML + '			<a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'/statuses/'+data[i].id+'/\')" title="View full post in browser"><span class="status-created-at">'+data[i].created_at+'</span></a>';
+							entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+data[i].source+'</span></span>';
+							entryHTML = entryHTML + '			<span class="status-protected">'+user.protected+'</span>';
+							entryHTML = entryHTML + '		</div>';
+						} else {
+							entryHTML = entryHTML + '		<div class="status-actions">';
+							entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+							// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
+							entryHTML = entryHTML + '		</div>';					
 						}
-						entryHTML = entryHTML + '		</div>';
-						entryHTML = entryHTML + '		<div class="status-link">';
-						entryHTML = entryHTML + '			<a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'/statuses/'+data[i].id+'/\')" title="View full post in browser"><span class="status-created-at">'+data[i].created_at+'</span></a>';
-						entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+data[i].source+'</span></span>';
-						entryHTML = entryHTML + '			<span class="status-protected">'+user.protected+'</span>';
-						entryHTML = entryHTML + '		</div>';
-					} else {
-						entryHTML = entryHTML + '		<div class="status-actions">';
-						entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
-						// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
-						entryHTML = entryHTML + '		</div>';					
+						entryHTML = entryHTML + '	</div>';
+						entryHTML = entryHTML + '</div>';
+
+						//Spaz.dump(entryHTML);
+						
+						var thisentry = $(entryHTML);
+						
+						thisentry.css('opacity', 0);
+						
+						$('#'+timelineid).append(thisentry);
+				
 					}
-					entryHTML = entryHTML + '	</div>';
-					entryHTML = entryHTML + '</div>';
+				
+					Spaz.UI.cleanupTimeline(timelineid);
+				
+					$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
+						air.trace($(this).text());
+						$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
+					})
+				// });
 
-					//air.trace(entryHTML);
-
-					$('#'+timelineid).append(entryHTML);
-				}
+				// $('.timeline-entry', '#'+timelineid).fadeOut('fast', function() {
+				// 
+				// });
+				
 				
 				
 				var newest = data[0];
 				if (newest.sender) { newest.user  = data[0].sender }
 				
-				Spaz.UI.cleanupTimeline(timelineid);
 				
-				air.trace(oldNewestId);
-				air.trace(newest.id);
+				
+				Spaz.dump(oldNewestId);
+				Spaz.dump(newest.id);
 				
 				if (oldNewestId < newest.id) {
 					Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);
@@ -662,18 +686,6 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
  				if (!ds.data[0]) {
  					Spaz.dump('No data returned');
  					Spaz.UI.statusBar('No data returned - Twitter may be acting up');
- 				} else if (!oldFirstStatus || (oldFirstStatus != ds.data[0].id) ) {
- 					// Spaz.dump('old: ' + oldFirstStatus);
- 					// Spaz.dump('new: ' + ds.data[0].id);
- 					Spaz.UI.playSoundNew();
- 					Spaz.UI.statusBar('Updates found');
- 					Spaz.Bridge.notify('New updates found', 'New updates');
- 					var newest = ds.data[0];
- 					if (newest['user/screen_name']) {
- 						Spaz.Bridge.notify(newest['text'], newest['user/screen_name'], null, null, newest['user/profile_image_url']);
- 					} else if (newest['sender/screen_name']) {
- 						Spaz.Bridge.notify(newest['text'], newest['sender/screen_name'], null, null, newest['sender/profile_image_url']);
- 					}
  				} else {
  					Spaz.UI.resetStatusBar();
  				}

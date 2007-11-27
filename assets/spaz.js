@@ -285,8 +285,8 @@ Spaz.childFrameInit = function() {
 	});
 	Spaz.dump('Set shortcut info in tab titles');
 
-	$('*[@title]').Tooltip(toolTipPrefs);
-	Spaz.dump('Added tooltips');
+	// $('*[@title]').Tooltip(toolTipPrefs);
+	// Spaz.dump('Added tooltips');
 
 	if ($('html').attr('debug') == 'true') {
 		console.open();
