@@ -20,21 +20,21 @@ Spaz.Menus.initAll = function() {
 	}
 	
 	// dock/systray icon menus
-	if(air.Shell.supportsDockIcon){
+	if(air.Shell.supportsDockIcon){ // dock on OS X
 		Spaz.dump('Dock Menus for OS X');
 		var iconLoader = new air.Loader();
         iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
                                                 Spaz.Menus.iconLoadComplete);
         iconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
         air.Shell.shell.icon.menu = Spaz.Menus.createRootMenu();
-    } else if(air.Shell.supportsSystemTrayIcon) {
+    } else if(air.Shell.supportsSystemTrayIcon) { // system tray on windows
 		Spaz.dump('Making Windows system tray menu')
 	    air.Shell.shell.icon.tooltip = "Spaz loves you";
 	    air.Shell.shell.icon.menu = Spaz.Menus.createRootMenu();
 	    var systrayIconLoader = new runtime.flash.display.Loader();
 	    systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
 	                                                            Spaz.Menus.iconLoadComplete);
-	    systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
+	    systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));
 	    air.Shell.shell.icon.addEventListener('click', Spaz.Menus.onSystrayClick);
 	}
 	

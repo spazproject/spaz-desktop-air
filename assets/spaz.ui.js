@@ -597,11 +597,28 @@ Spaz.UI.showContextMenu = function(el) {
 	
 }
 
-Spaz.UI.showTooltip = function(el, userdata) {
+
+Spaz.UI.showUserTooltip = function(el, userdata) {
+	var data = userdata.split('|')
+	
+	var str = "<div><strong>"+data[0]+"</strong></div>";
+	if(data[1]) {
+		var str = str + "<div><em>"+data[1]+"</em></div>";
+	}
+	if(data[2]) {
+		var str = str + "<div>"+data[2]+"</div>";
+	}
+	
+	Spaz.UI.showTooltip(el, str);
+};
+
+
+Spaz.UI.showTooltip = function(el, str) {
 	
 	var minwidth = 100;
 
 	var tt = $('#tooltip');
+	tt.stop();
 	tt.css('width', '');
 	tt.css('height', '');
 
@@ -615,16 +632,8 @@ Spaz.UI.showTooltip = function(el, userdata) {
 	Spaz.dump('hiding tooltip');
 
 	tt.hide();	
-
-	var data = userdata.split('|')
 	
-	var str = "<div><strong>"+data[0]+"</strong></div>";
-	if(data[1]) {
-		var str = str + "<div><em>"+data[1]+"</em></div>";
-	}
-	if(data[2]) {
-		var str = str + "<div>"+data[2]+"</div>";
-	}
+	str = "<div>"+str+"</div>";
 	
 	// show the link context menu
 	Spaz.dump('opening context menu');
@@ -633,7 +642,7 @@ Spaz.UI.showTooltip = function(el, userdata) {
 		.html(str)
 		.show()
 		.css('opacity', 0)
-		.animate({'opacity':'1.0'}, 200);
+		.animate({'opacity':'0.85'}, 200);
 	
 	// I kinda stole this from the excellent jquery.tooltip, which caused mem leakage (unfortunately)
 	var vp  = Spaz.UI.getViewport();
@@ -711,6 +720,19 @@ Spaz.UI.getViewport = function() {
 }
 
 
+Spaz.UI.hideTooltips = function() {
+	$('#tooltip').stop();
+	$('#tooltip').animate({'opacity':'0'}, 200, 'linear', function(){
+		air.trace('hiding')
+		$('#tooltip').hide();
+	});
+}
+
+
+
+
+
+
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid) {
 	
@@ -734,16 +756,16 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	
 						
 			// convert inline links
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
+			this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $2://$3 in a browser window" class="inline-link" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()">go&raquo;</a>');
 		
 			// email addresses
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Email $2@$3" class="inline-email">$2@$3</a>');
+			this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Email $2@$3"  onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-email">$2@$3</a>');
 		
 			// convert @username reply indicators
-			this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $2\'s profile" class="inline-reply">@$2</a>');
+			this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $2\'s profile" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-reply">@$2</a>');
 						
 			// @usernames at the beginning of lines
-			this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $1\'s profile" class="inline-reply">@$1</a>');
+			this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $1\'s profile" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-reply">@$1</a>');
 	
 			
 			if (Spaz.UI.useMarkdown) {
@@ -754,7 +776,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 				Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
 				
 				// replace hrefs from markdown with onClick calls 
-				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $1 in a browser window" class="inline-link"');
+				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $1 in a browser window" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-link"');
 			}
 			
 			Spaz.dump('Post conversion:'+this.innerHTML);
@@ -803,7 +825,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 	$('span.status-protected', "#"+timelineid).each(function(i) {
 		if (this.innerHTML == 'true') {
-			this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />';
+			this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="protected-post" />';
 		} else {
 			this.innerHTML = '';
 		}

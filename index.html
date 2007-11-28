@@ -111,52 +111,47 @@ TODO:
 <div id="tabs" class="TabbedPanels">
 	<ul class="TabbedPanelsTabGroup" id="timeline-tabs" tabindex="0">
 		<!-- YOUR TIMELINE -->
-		<li class="TabbedPanelsTab" tabindex="0" 
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)"><img title="Your timeline" class="tab-icon" src="{theme-dir}/images/tab-icon-timeline.png" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" title="Your timeline" 
+			onmouseover="$('a.reload-button', '#'+this.id).show(); Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide(); Spaz.UI.hideTooltips()"
+			id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-timeline.png" /></li>
 		<!-- REPLIES -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-replies" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-replies.png" title="Replies directed at you" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" title="Replies directed at you"
+			onmouseover="$('a.reload-button', '#'+this.id).show(); Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide(); Spaz.UI.hideTooltips()"
+			id="tab-replies" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-replies.png" /></li>
 		<!-- DMs -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-dms" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-dms.png" title="Direct messages you've received" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0"  title="Direct messages you've received"
+			onmouseover="$('a.reload-button', '#'+this.id).show(); Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide(); Spaz.UI.hideTooltips()"
+			id="tab-dms" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-dms.png" /></li>
 		<!-- SEND STATUSES -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-user" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-user.png" title="Tweets you've sent" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" title="Tweets you've sent" 
+			onmouseover="$('a.reload-button', '#'+this.id).show(); Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide(); Spaz.UI.hideTooltips()"
+			id="tab-user" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-user.png" /></li>
 		<!-- PUBLIC -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-public" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" title="Public timeline" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" title="Public timeline" 
+			onmouseover="$('a.reload-button', '#'+this.id).show(); Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide(); Spaz.UI.hideTooltips()"
+			id="tab-public" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" /></li>
 
 		<!-- FOLLOWING LIST -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-following.png" title="Users you are following" /> <a 
-			class='reload-button' onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>		
+		<li class="TabbedPanelsTab" tabindex="0" title="Users you are following"
+			onmouseover="$('a.reload-button', '#'+this.id).show(); Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide(); Spaz.UI.hideTooltips()"
+			id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-following.png" /></li>		
 		<!-- FOLLOWERS LIST -->
-		<li class="TabbedPanelsTab" tabindex="0"
-			onmouseover="$('a.reload-button', '#'+this.id).show()" 
-			onmouseout="$('a.reload-button', '#'+this.id).hide()"
-			id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-followers.png" title="Users following you" /> <a class='reload-button' 
-			onclick='Spaz.Data.loadDataForTab(this.parentElement);' title="Reload this tab">&#x21A9;</a></li>
+		<li class="TabbedPanelsTab" tabindex="0" title="Users following you" 
+			onmouseover="$('a.reload-button', '#'+this.id).show(); Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="$('a.reload-button', '#'+this.id).hide(); Spaz.UI.hideTooltips()"
+			id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-followers.png" /></li>
 		
 		<!-- PREFS -->
-		<li class="TabbedPanelsTab" tabindex="0" id="tab-prefs" 
-			onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-prefs.png" title="Preferences" /></li>
+		<li class="TabbedPanelsTab" tabindex="0" id="tab-prefs" title="Preferences"
+			onmouseover="Spaz.UI.showTooltip(this, this.title)" 
+			onmouseout="Spaz.UI.hideTooltips()"
+			onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-prefs.png" /></li>
 	</ul>
 	
 	

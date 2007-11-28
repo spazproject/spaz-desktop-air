@@ -291,7 +291,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		},
 		success:function(data){
 			Spaz.dump(data);
-			Spaz.loadUserTimelineData('tab-user');
+			Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
@@ -342,7 +342,7 @@ Spaz.Data.makeFavorite = function(postid) {
 		success:function(data){
 			Spaz.dump(data);
 			Spaz.UI.statusBar('Added fav: ' + postid);
-			//Spaz.loadUserTimelineData('tab-user');
+			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
@@ -590,9 +590,9 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 
 				// $("#"+timelineid + ' .timeline-entry').animate( {'opacity': '1.0'}, 200, 'linear', function() {
 							
-					air.trace('unbind')
+					// air.trace('unbind')
 					$('*', '#'+timelineid).unbind();
-					air.trace('remove')
+					// air.trace('remove')
 					$('*', '#'+timelineid).remove();		
 					
 					for (i in data) {
@@ -605,7 +605,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 					
 						var entryHTML = '';
 						entryHTML = entryHTML + '<div class="timeline-entry '+rowclass+'" onclick="Spaz.UI.selectEntry(this)" id="'+timelineid+'-'+data[i].id+'">';
-						entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'" onmouseover="Spaz.UI.showTooltip(this, \''+popupStr+'\')" onmouseout="$(\'#tooltip\').hide()">';
+						entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'" onmouseover="Spaz.UI.showUserTooltip(this, \''+popupStr+'\')" onmouseout="Spaz.UI.hideTooltips()">';
 						entryHTML = entryHTML + '		<div class="user-image"><img height="48" width="48" src="'+user.profile_image_url+'" alt="'+user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+user.screen_name+'")\' /></div>';
 						entryHTML = entryHTML + '		<div class="user-screen-name"><a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'\')">'+user.screen_name+'</a></div>';
 						entryHTML = entryHTML + '	</div>';
@@ -647,7 +647,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 					Spaz.UI.cleanupTimeline(timelineid);
 				
 					$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
-						air.trace($(this).text());
+						//air.trace($(this).text());
 						$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
 					})
 				// });
