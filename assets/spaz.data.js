@@ -655,7 +655,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 				// $('.timeline-entry', '#'+timelineid).fadeOut('fast', function() {
 				// 
 				// });
-				
+				$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
 				
 				
 				var newest = data[0];

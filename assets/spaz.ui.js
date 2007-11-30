@@ -723,7 +723,7 @@ Spaz.UI.getViewport = function() {
 Spaz.UI.hideTooltips = function() {
 	$('#tooltip').stop();
 	$('#tooltip').animate({'opacity':'0'}, 200, 'linear', function(){
-		air.trace('hiding')
+		//air.trace('hiding')
 		$('#tooltip').hide();
 	});
 }
