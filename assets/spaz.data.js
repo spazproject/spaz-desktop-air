@@ -483,12 +483,14 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 		var oldNewestId = 0;
 	}
 	
+	// air.trace('oldNewestId:'+oldNewestId);
 
-	// get newest tweet id in "old" data	
+	// get newest tweet id in "old" data when using Spry datasource
 	if (ds.data.length > 0) {
 		oldNewestId = parseInt(ds.data[0].id);
 	}
 
+	// air.trace('oldNewestId:'+oldNewestId);
 	
 	if (page) {
 		page = parseInt(page);
@@ -590,10 +592,10 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 
 				// $("#"+timelineid + ' .timeline-entry').animate( {'opacity': '1.0'}, 200, 'linear', function() {
 							
-					// air.trace('unbind')
-					$('*', '#'+timelineid).unbind();
-					// air.trace('remove')
-					$('*', '#'+timelineid).remove();		
+					// // air.trace('unbind')
+					// $('*', '#'+timelineid).unbind();
+					// // air.trace('remove')
+					// $('*', '#'+timelineid).remove();		
 					
 					for (i in data) {
 						if (data[i].sender) { var user  = data[i].sender } else { var user  = data[i].user }
@@ -604,7 +606,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 						var popupStr = (user.name+'|'+user.location+'|'+user.description).replace(/'/gi, "\\'");
 					
 						var entryHTML = '';
-						entryHTML = entryHTML + '<div class="timeline-entry '+rowclass+'" onclick="Spaz.UI.selectEntry(this)" id="'+timelineid+'-'+data[i].id+'">';
+						entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" onclick="Spaz.UI.selectEntry(this)" id="'+timelineid+'-'+data[i].id+'">';
 						entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'" onmouseover="Spaz.UI.showUserTooltip(this, \''+popupStr+'\')" onmouseout="Spaz.UI.hideTooltips()">';
 						entryHTML = entryHTML + '		<div class="user-image"><img height="48" width="48" src="'+user.profile_image_url+'" alt="'+user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+user.screen_name+'")\' /></div>';
 						entryHTML = entryHTML + '		<div class="user-screen-name"><a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'\')">'+user.screen_name+'</a></div>';
@@ -640,11 +642,18 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 						
 						thisentry.css('opacity', 0);
 						
-						$('#'+timelineid).append(thisentry);
-				
+						if (oldNewestId == 0) { // the timeline is empty
+							air.trace('timeline should be empty');
+							$('#'+timelineid).append(thisentry);
+						} else if (data[i].id > oldNewestId) { // timeline is not empty
+							$('#'+timelineid).prepend(thisentry);
+						}
 					}
-				
+					
+
 					Spaz.UI.cleanupTimeline(timelineid);
+
+					
 				
 					$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
 						//air.trace($(this).text());
@@ -663,8 +672,8 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 				
 				
 				
-				Spaz.dump(oldNewestId);
-				Spaz.dump(newest.id);
+				air.trace('Old Newest:'+oldNewestId);
+				air.trace('New Newest:'+newest.id);
 				
 				if (oldNewestId < newest.id) {
 					Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);

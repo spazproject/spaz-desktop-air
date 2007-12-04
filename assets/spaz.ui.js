@@ -27,8 +27,10 @@ Spaz.UI.restoreOnActivate		= 0;
 
 Spaz.UI.showNotificationPopups	= 1;
 
-
 Spaz.UI.showContextMenus = 1; // hard-coded - this works properly now
+
+
+Spaz.UI.tooltipHideTimeout = null;
 
 // Paths to sound files
 Spaz.UI.SOUND_UPDATE	= '/assets/sounds/TokyoTrainStation/Csnd.mp3';
@@ -614,7 +616,6 @@ Spaz.UI.showUserTooltip = function(el, userdata) {
 
 
 Spaz.UI.showTooltip = function(el, str) {
-	
 	var minwidth = 100;
 
 	var tt = $('#tooltip');
@@ -631,7 +632,10 @@ Spaz.UI.showTooltip = function(el, str) {
 	// hide any showing tooltips
 	Spaz.dump('hiding tooltip');
 
-	tt.hide();	
+	tt.hide();
+	
+	// clear any running tooltip hiding timeouts
+	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
 	str = "<div>"+str+"</div>";
 	
@@ -706,6 +710,7 @@ Spaz.UI.showTooltip = function(el, str) {
 	// air.trace(document.defaultView.getComputedStyle(tt[0], '').getPropertyValue('border'))
 	// air.trace(document.defaultView.getComputedStyle(tt[0], '').getPropertyValue('padding'))
 	
+	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, 2000);
 	
 }
 
@@ -721,6 +726,9 @@ Spaz.UI.getViewport = function() {
 
 
 Spaz.UI.hideTooltips = function() {
+	// clear existing timeouts
+	clearTimeout(Spaz.UI.tooltipClearTimeout);
+	
 	$('#tooltip').stop();
 	$('#tooltip').animate({'opacity':'0'}, 200, 'linear', function(){
 		//air.trace('hiding')
@@ -739,7 +747,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	// make it here so we don't instantiate on every loopthrough
 	var md = new Showdown.converter();
 	
-	$("div.status-text", "#"+timelineid).each(function(i){
+	$("div.needs-cleanup div.status-text", "#"+timelineid).each(function(i){
 		
 		// check for cached status
 		// var statusHTML = Spaz.Cache.getStatus(this.id);
@@ -787,13 +795,13 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	});
 	
 	// convert post times to relative
-	$("span.status-created-at", "#"+timelineid).each(function(i) {
+	$("div.needs-cleanup span.status-created-at", "#"+timelineid).each(function(i) {
 		this.innerHTML = get_relative_time(this.innerHTML);
 		Spaz.dump(this.innerHTML);
 	});
 	
 	// convert source link entries
-	$("span.status-source-label", "#"+timelineid).each(function(i) {
+	$("div.needs-cleanup span.status-source-label", "#"+timelineid).each(function(i) {
 		
 		// var sourceHTML = Spaz.Cache.getSource(this.innerHTML);
 		var sourceHTML = false;
@@ -823,7 +831,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		}
 	});
 
-	$('span.status-protected', "#"+timelineid).each(function(i) {
+	$("div.needs-cleanup span.status-protected", "#"+timelineid).each(function(i) {
 		if (this.innerHTML == 'true') {
 			this.innerHTML = '<img src="themes/'+Spaz.UI.currentTheme+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="protected-post" />';
 		} else {
@@ -831,6 +839,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		}
 	});
 	
+	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');
 	
 	if (Spaz.UI.showContextMenus) {
 		// add context menus
