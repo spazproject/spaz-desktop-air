@@ -571,10 +571,18 @@ if(typeof runtime!='undefined'){
 		Spaz.restartReloadTimer();
 	};
 	
+	Spaz.Bridge.menuClearTimeline = function() {
+		Spaz.dump('in Spaz.Bridge.menuClearTimeline');
+		Spaz.UI.clearCurrentTimeline();
+		Spaz.UI.reloadCurrentTab();
+		Spaz.restartReloadTimer();
+	};
 	
 	Spaz.Bridge.menuPrefs  = function() {
 		Spaz.dump('in Spaz.Bridge.menuPrefs');
+		Spaz.dump('Set selected tab to 7');
 		Spaz.UI.setSelectedTab(7);
+		Spaz.dump('Show panel 7');
 		Spaz.UI.tabbedPanels.showPanel(7);
 	};
 	

@@ -465,6 +465,151 @@ Spaz.Data.oldFirstStatus = 0;
 Spaz.Data.newFirstStatus = 0;
 
 
+
+
+
+
+
+Spaz.Data.loadTwitterData = function(section, page) {
+	Spaz.dump(section.url);
+	
+	var user = Spaz.Bridge.getUser();
+	var pass = Spaz.Bridge.getPass();
+	
+	// var user = Spaz.Prefs.getUser();
+	// var pass = Spaz.Prefs.getPass();
+
+	Spaz.dump('user:'+user+' pass:********');
+
+	// set page
+	if (page) {
+		page = parseInt(page);
+		if (page < 1) { page = 1; }
+	} else {
+		page = 1;
+	}
+
+	// put ms timestamp in data to create unique request
+	var now = new Date();
+	var nowms = now.getTime();
+	var data  = '&_=' + nowms;
+
+	// caching problems with "page 1" means we can't pass page=1 without missing updates
+	if (page != 1) {
+		data = data + "&page="+page;
+	}
+	Spaz.dump("Loading page "+page+" for "+section.tab);
+
+	var passed = nowms - section.lastcheck;
+	if (passed <= section.mincachetime) {
+		Spaz.dump("Cancel loading -- minimum cache time ("+section.mincachetime+" ms) has not expired ("+passed+" passed)");
+		return;
+	} else {
+		Spaz.dump("Continue loading -- minimum cache time ("+section.mincachetime+" ms) HAS expired ("+passed+" passed)");
+	}
+
+
+	Spaz.UI.statusBar("Loading " + section.url.replace(/http(s)?:\/\/(www\.)?twitter\.com\//, '') + " page " + page);
+	Spaz.UI.showLoading();
+
+	Spaz.dump('loadTwitterData: tab '+section.tab);
+
+	if (user === undefined || user === "undefined" || user==''
+			|| user == false || user == 'false'
+			|| user == null || user == 'null') {
+		Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
+		Spaz.UI.statusBar("Not yet validated - set username and password");
+		Spaz.UI.hideLoading();
+		return false;
+	}
+
+	if (section.tab) {
+		Spaz.dump('jumping to tab ' + section.tab);
+		Spaz.UI.tabbedPanels.showPanel(section.tab);
+	} else {
+		Spaz.dump('not jumping to tab');
+	}
+
+	var xhr = $.ajax({
+		complete:function(xhr, msg){
+			Spaz.UI.hideLoading();
+			section.lastcheck = new Date().getTime();
+			Spaz.dump("set section.lastcheck to "+section.lastcheck);
+			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
+				Spaz.dump(section.url + ": ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+				return;
+			}
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
+			//Spaz.dump(xhr, 'dir');
+			Spaz.dump(section.url + ": COMPLETE: " + msg);
+
+			if (xhr.status == 400) {
+				Spaz.dump("ERROR: 400 error - Probably exceeded request limit");
+				Spaz.UI.statusBar('Error: May have exceeded request limit');
+				Spaz.Bridge.notify('May have exceeded request limit', 'Error');
+				return;
+			}
+
+			data = eval(xhr.responseText);
+			var timelineid = section.tab.replace(/tab/, 'timeline');
+
+			if (!data[0]) {
+				Spaz.dump('No data returned');
+				Spaz.UI.statusBar('No data returned - Twitter may be acting up');
+			} else if (section.lastid == 0 || (section.lastid < data[0].id) ) {
+				Spaz.dump('New data returned')
+				section.prevdata = section.currdata;
+				section.currdata = data;
+				Spaz.UI.createTimeline(section);
+				
+			} else {
+				Spaz.dump('Identical data returned')
+				section.prevdata = section.currdata;
+				section.currdata = data;
+				Spaz.UI.resetStatusBar();
+			}
+
+		},
+		error:function(xhr, msg, exc) {
+			Spaz.dump("ERROR");
+			Spaz.UI.statusBar('Error loading ' + section.url.replace(/https:\/\/(www\.)?twitter\.com/, ''));
+			Spaz.UI.flashStatusBar();
+
+			if (xhr.readyState < 3) {
+				Spaz.dump(section.url + ": ERROR: Timeout");
+				Spaz.UI.statusBar("ERROR: Timeout")
+			} else if (xhr.status == 400) {
+				Spaz.dump(section.url + ": ERROR: 400 error - Probably exceeded request limit");
+				Spaz.UI.statusBar('Error: May have exceeded request limit');
+			}
+		},
+		success:function(data) {
+			Spaz.dump(section.url + ": SUCCESS");
+			Spaz.UI.setCurrentPage($('#'+section.tab)[0], page);
+		},
+		beforeSend:function(xhr){
+			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Cookie", '');
+//			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 1999 00:00:00 GMT');
+		},
+		processData:false,
+		type:"GET",
+		url:section.url,
+		data:data
+	});
+	
+	
+};
+
+
+
+
+
+
+
+
 /**
  * Loads Twitter data via XML, and optionally switches to a particular tab
  */
@@ -643,7 +788,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 						thisentry.css('opacity', 0);
 						
 						if (oldNewestId == 0) { // the timeline is empty
-							air.trace('timeline should be empty');
+							Spaz.dump('timeline should be empty');
 							$('#'+timelineid).append(thisentry);
 						} else if (data[i].id > oldNewestId) { // timeline is not empty
 							$('#'+timelineid).prepend(thisentry);
@@ -672,8 +817,8 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 				
 				
 				
-				air.trace('Old Newest:'+oldNewestId);
-				air.trace('New Newest:'+newest.id);
+				Spaz.dump('Old Newest:'+oldNewestId);
+				Spaz.dump('New Newest:'+newest.id);
 				
 				if (oldNewestId < newest.id) {
 					Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);
@@ -817,40 +962,73 @@ Spaz.Data.getDsForTab = function(tab) {
 }
 
 
+
 Spaz.Data.loadDataForTab = function(tab, auto, page) {
 	if (!page || page < 1) {
 		page = 1;
 	}
+	Spaz.dump('Loading data for tab:'+tab.id);
+	var section = Spaz.Section.getSectionFromTab(tab)
+	Spaz.dump(section);
 	Spaz.dump('load data for tab '+tab.id);
 	switch (tab.id) {
-		case 'tab-friends':
-			Spaz.Data.loadFriendsTimelineData(tab.id, page);
-			break;
-		case 'tab-replies':
-			Spaz.Data.loadRepliesTimelineData(tab.id, page);
-			break;
-		case 'tab-dms':
-			Spaz.Data.loadDMTimelineData(tab.id, page);
-			break;
-		case 'tab-user':
-			Spaz.Data.loadUserTimelineData(tab.id, page);
-			break;
-		case 'tab-public':
-			Spaz.Data.loadPublicTimelineData(tab.id, page);
-			break;
 		case 'tab-friendslist':
 			if (!auto) {
-				Spaz.Data.loadFriendsData(tab.id, page);
+				Spaz.Data.loadTwitterData(section, page);
+				// Spaz.Data.loadFriendsData(tab.id, page);
 			}
 			break;
 		case 'tab-followerslist':
 			if (!auto) {
-				Spaz.Data.loadFollowersData(tab.id, page);
+				Spaz.Data.loadTwitterData(section, page);
+				// Spaz.Data.loadFollowersData(tab.id, page);
 			}
+			break;
+		case 'tab-prefs':
+			break;
+		default:
+			Spaz.Data.loadTwitterData(section, page);
 			break;
 	}
 	return false
 };
+
+
+
+// Spaz.Data.loadDataForTab = function(tab, auto, page) {
+// 	if (!page || page < 1) {
+// 		page = 1;
+// 	}
+// 	Spaz.dump('load data for tab '+tab.id);
+// 	switch (tab.id) {
+// 		case 'tab-friends':
+// 			Spaz.Data.loadFriendsTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-replies':
+// 			Spaz.Data.loadRepliesTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-dms':
+// 			Spaz.Data.loadDMTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-user':
+// 			Spaz.Data.loadUserTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-public':
+// 			Spaz.Data.loadPublicTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-friendslist':
+// 			if (!auto) {
+// 				Spaz.Data.loadFriendsData(tab.id, page);
+// 			}
+// 			break;
+// 		case 'tab-followerslist':
+// 			if (!auto) {
+// 				Spaz.Data.loadFollowersData(tab.id, page);
+// 			}
+// 			break;
+// 	}
+// 	return false
+// };
 
 
 Spaz.Data.getRegionForDs = function(ds) {

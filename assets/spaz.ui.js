@@ -220,6 +220,7 @@ Spaz.UI.statusBar = function(txt) {
 
 Spaz.UI.resetStatusBar = function() {
 	$('#statusbar-text').html('Ready');
+	Spaz.UI.hideLoading();
 }
 
 Spaz.UI.flashStatusBar = function() {
@@ -489,14 +490,32 @@ Spaz.UI.decodeSourceLinkEntities = function(str) {
 
 
 Spaz.UI.setSelectedTab = function(tab) {
-	Spaz.UI.selectedTab = tab;
+	if (!isNaN(tab)) { // if a # is passed in, get the element of the corresponding tab
+		Spaz.dump('getting tab element for number '+tab)
+		Spaz.UI.selectedTab = Spaz.UI.tabbedPanels.getTabs()[tab]
+	} else {
+		Spaz.dump('tab element passed in '+tab)
+		Spaz.UI.selectedTab = tab;
+	}
+	
 	Spaz.dump('Spaz.UI.selectedTab: '+ Spaz.UI.selectedTab.id);
 	
+	Spaz.dump('restarting reload timer');
 	Spaz.restartReloadTimer();
 	
 	// force loading data if empty
 	var thisDs = Spaz.Data.getDsForTab(tab);
+
+	
+	if (!thisDs) {
+		Spaz.dump('No DS for tab, return-ing from function');
+		return;
+	} else {
+		Spaz.dump('Got DS for tab');
+	}
+		
 	if (!thisDs.data || thisDs.data.length < 1) {
+		Spaz.dump('getting data for this tab');
 		Spaz.Data.loadDataForTab(tab);
 	}
 }
@@ -513,6 +532,13 @@ Spaz.UI.autoReloadCurrentTab = function() {
 	Spaz.Data.loadDataForTab(Spaz.UI.selectedTab, true);
 }
 
+Spaz.UI.clearCurrentTimeline = function() {
+	Spaz.dump('clearing the current timeline');
+	var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
+	var timelineid = section.timeline;
+	$('#'+timelineid).empty();
+	Spaz.dump('cleared timeline #'+timelineid);
+}
 
 
 Spaz.UI.windowActiveHandler = function () {
@@ -739,6 +765,154 @@ Spaz.UI.hideTooltips = function() {
 
 
 
+Spaz.UI.createTimeline = function(section) {
+	// console.open()
+	//console.dir(section)
+	
+	var entries = section.currdata;
+	
+	timelineid = section.timeline
+	
+	// if (section.prevdata) {
+	// 	data = data.concat(section);
+	// } else {
+	// 	data = section.currdata;
+	// }
+	
+	entries = entries.sort( function(a,b) {
+		return a.id-b.id
+	})
+	
+	// reverse only if this is the first dataset for this timeline
+	if (!section.prevdata) {
+		var reversed = true;
+		entries = entries.reverse();
+	}
+	
+	// for (var i in entries) {
+	// 		air.trace(i+':'+entries[i].id);
+	// 	}
+	
+	// console.dir(entries)
+
+	
+	// $('#'+timelineid).empty();
+
+	var newentries = new Array();
+
+	for (i in entries) {
+		
+		var entry = entries[i];
+		
+		if ($("#"+timelineid + ' .entry-id:contains("['+entry.id+']")').length < 1) {
+			if (entry.sender) { var user  = entry.sender } else { var user  = entry.user }
+
+			if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
+
+			// need to double-slash single quotes to escape them properly below
+			var popupStr = (user.name+'|'+user.location+'|'+user.description).replace(/'/gi, "\\'");
+
+			var entryHTML = '';
+			entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" onclick="Spaz.UI.selectEntry(this)" id="'+timelineid+'-'+entry.id+'">';
+			entryHTML = entryHTML + '	<div class="entry-id" style="display:none">['+entry.id+']</div>';
+			entryHTML = entryHTML + '	<div class="entry-time" style="display:none">'+entry.created_at+'</div>'
+			entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'" onmouseover="Spaz.UI.showUserTooltip(this, \''+popupStr+'\')" onmouseout="Spaz.UI.hideTooltips()">';
+			entryHTML = entryHTML + '		<div class="user-image"><img height="48" width="48" src="'+user.profile_image_url+'" alt="'+user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+user.screen_name+'")\' /></div>';
+			entryHTML = entryHTML + '		<div class="user-screen-name"><a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'\')">'+user.screen_name+'</a></div>';
+			entryHTML = entryHTML + '	</div>';
+			entryHTML = entryHTML + '	<div class="status" id="status-'+entry.id+'">';
+			entryHTML = entryHTML + '		<div class="status-text" id="#status-text-'+entry.id+'">'+entry.text+'</div>';
+			if (timelineid != 'timeline-dms') {
+				entryHTML = entryHTML + '		<div class="status-actions">';
+				entryHTML = entryHTML + '			<a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite(\''+entry.id+'\')" id="status-'+entry.id+'-fav"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" /></a>';
+				entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+entry.id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+				entryHTML = entryHTML + '			<a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+user.screen_name+'\')" class="status-action-reply" id="status-'+entry.id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a>';
+				if (timelineid == 'timeline-user') {
+					entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' class="status-action-del" id="status-'+entry.id+'-del">del</a>';
+				}
+				entryHTML = entryHTML + '		</div>';
+				entryHTML = entryHTML + '		<div class="status-link">';
+				entryHTML = entryHTML + '			<a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'/statuses/'+entry.id+'/\')" title="View full post in browser"><span class="status-created-at">'+entry.created_at+'</span></a>';
+				entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+entry.source+'</span></span>';
+				entryHTML = entryHTML + '			<span class="status-protected">'+user.protected+'</span>';
+				entryHTML = entryHTML + '		</div>';
+			} else {
+				entryHTML = entryHTML + '		<div class="status-actions">';
+				entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+entry.id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+				// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' class="status-action-del" id="status-'+entry.id+'-del">del</a>';
+				entryHTML = entryHTML + '		</div>';					
+			}
+			entryHTML = entryHTML + '	</div>';
+			entryHTML = entryHTML + '</div>';
+
+			//Spaz.dump(entryHTML);
+
+			var jqentry = $(entryHTML);
+
+			jqentry.css('opacity', 0);
+			
+			// we prepend if entries is already in this timeline, but append if not
+			if (section.prevdata) {
+				$('#'+timelineid).prepend(jqentry);
+			} else {
+				$('#'+timelineid).append(jqentry);
+			}
+			
+			newentries.push(entry)
+			
+		}
+		
+		
+
+		
+		// if (oldNewestId == 0) { // the timeline is empty
+		// 		air.trace('timeline should be empty');
+		// 		$('#'+timelineid).append(thisentry);
+		// 	} else if (entry.id > oldNewestId) { // timeline is not empty
+		// 		$('#'+timelineid).prepend(thisentry);
+		// 	}
+	}
+
+	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
+		//air.trace($(this).text());
+		$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
+	})
+
+	Spaz.dump('scrolling to .timeline-entry:eq(0) in #'+timelineid);
+	$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
+
+
+	// Spaz.dump('old: ' + section.lastid);
+	// Spaz.dump('new: ' + entries[0].id);
+	// section.lastid = entries[0].id; // set new lastid
+	
+	if (newentries.length > 0) {
+		
+		Spaz.UI.playSoundNew();
+		Spaz.UI.statusBar('Updates found');
+		
+		// we prepend if entries is already in this timeline, but append if not
+		if (section.prevdata) {
+			var newest = newentries[newentries.length-1];
+		} else {
+			var newest = newentries[0];
+		}
+		
+		if (newest.user && newest.user.screen_name) {
+			Spaz.dump('notifying '+newest.user.profile_image_url);
+			Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);
+		} else if (newest.sender && newest.sender.screen_name) {
+			Spaz.dump('notifying '+newest.sender.profile_image_url);
+			Spaz.Bridge.notify(newest.text, newest.sender.screen_name, null, null, newest.sender.profile_image_url);
+		}
+	} else {
+		Spaz.UI.statusBar('No new messages');
+	}
+	
+	Spaz.UI.cleanupTimeline(timelineid);
+}
+
+
 
 
 // cleans up and parses stuff in timeline's tweets
@@ -747,58 +921,55 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	// make it here so we don't instantiate on every loopthrough
 	var md = new Showdown.converter();
 	
+	// convert post times to relative (these all need to be updated each time)
+	$(".timeline-entry", "#"+timelineid).each(function(i) {
+		var entrytime = $(".entry-time", this).text();
+		// air.trace(entrytime);
+		$(".status-created-at", this).html(get_relative_time( entrytime ));
+		Spaz.dump($(".timeline-entry").html());
+	});
+	
+	// clean up the .status-text
 	$("div.needs-cleanup div.status-text", "#"+timelineid).each(function(i){
+
+		Spaz.dump('Pre-conversion:'+this.innerHTML);
+		// fix extra ampersand encoding
+		this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
 		
-		// check for cached status
-		// var statusHTML = Spaz.Cache.getStatus(this.id);
-		// if (statusHTML){
-		// 	this.innerHTML = statusHTML;
-		// } else {
-			Spaz.dump('Pre-conversion:'+this.innerHTML);
-			// fix extra ampersand encoding
-			this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-			
-			// fix entity &#123; style extra encoding
-			this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
+		// fix entity &#123; style extra encoding
+		this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
+
+
+					
+		// convert inline links
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $2://$3 in a browser window" class="inline-link" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()">go&raquo;</a>');
 	
+		// email addresses
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Email $2@$3"  onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-email">$2@$3</a>');
 	
-						
-			// convert inline links
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a onclick="openInBrowser(\'$2://$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $2://$3 in a browser window" class="inline-link" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()">go&raquo;</a>');
+		// convert @username reply indicators
+		this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $2\'s profile" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-reply">@$2</a>');
+					
+		// @usernames at the beginning of lines
+		this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $1\'s profile" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-reply">@$1</a>');
+
 		
-			// email addresses
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a onclick="openInBrowser(\'mailto:$2@$3\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Email $2@$3"  onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-email">$2@$3</a>');
+		if (Spaz.UI.useMarkdown) {
+			Spaz.dump('Pre-Markdown:'+this.innerHTML);
+			// Markdown conversion with Showdown
+			this.innerHTML = md.makeHtml(this.innerHTML);
+			
+			Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
+			
+			// replace hrefs from markdown with onClick calls 
+			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $1 in a browser window" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-link"');
+		}
 		
-			// convert @username reply indicators
-			this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a onclick="openInBrowser(\'http://twitter.com/$2\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $2\'s profile" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-reply">@$2</a>');
-						
-			// @usernames at the beginning of lines
-			this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a onclick="openInBrowser(\'http://twitter.com/$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="View $1\'s profile" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-reply">@$1</a>');
-	
-			
-			if (Spaz.UI.useMarkdown) {
-				Spaz.dump('Pre-Markdown:'+this.innerHTML);
-				// Markdown conversion with Showdown
-				this.innerHTML = md.makeHtml(this.innerHTML);
-				
-				Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
-				
-				// replace hrefs from markdown with onClick calls 
-				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'onclick="openInBrowser(\'$1\')" oncontextmenu="Spaz.UI.showContextMenu(this)" title="Open $1 in a browser window" onmouseover="Spaz.UI.showTooltip(this, this.title)" onmouseout="Spaz.UI.hideTooltips()" class="inline-link"');
-			}
-			
-			Spaz.dump('Post conversion:'+this.innerHTML);
-			
-			// cache this converted status
-			// Spaz.Cache.setStatus(this.id, this.innerHTML);
-		// }
+		Spaz.dump('Post conversion:'+this.innerHTML);
+
 	});
 	
-	// convert post times to relative
-	$("div.needs-cleanup span.status-created-at", "#"+timelineid).each(function(i) {
-		this.innerHTML = get_relative_time(this.innerHTML);
-		Spaz.dump(this.innerHTML);
-	});
+
 	
 	// convert source link entries
 	$("div.needs-cleanup span.status-source-label", "#"+timelineid).each(function(i) {
@@ -840,23 +1011,6 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	});
 	
 	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');
-	
-	if (Spaz.UI.showContextMenus) {
-		// add context menus
-		//$('a', '#'+timelineid).contextMenu('linkContextMenu');
-		// $('a', '#'+timelineid).each( function(i) {
-		// 	$(this).bind('contextmenu', {el:this}, Spaz.UI.showContextMenu);
-		// });
-		// 
-		// Spaz.dump('Binding event to close #linkContextMenu to document.onclick');
-// 		$(document).bind('click', function() {
-// 			$('#linkContextMenu').hide();
-// 		});
-	}
-	
-	// $('br[clear]').hide();
-
-
 	
 }
 
