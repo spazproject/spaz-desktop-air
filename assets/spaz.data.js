@@ -5,22 +5,20 @@ Spaz.Data
 *************/
 if (!Spaz.Data) Spaz.Data = {};
 
-
-
 /*
 URLs for various thangs...
 */
 // Timeline URLs
-// Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
-// Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.json";
-// Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.json";
-// Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.json";
-// Spaz.Data.url_favorites        = "https://twitter.com/favorites.xml";
-// Spaz.Data.url_dm_timeline      = "https://twitter.com/direct_messages.xml";
-Spaz.Data.url_dm_sent          = "https://twitter.com/direct_messages/sent.xml";
+Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
+Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.json";
+Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.json";
+Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.json";
+Spaz.Data.url_favorites        = "https://twitter.com/favorites.json";
+Spaz.Data.url_dm_timeline      = "https://twitter.com/direct_messages.json";
+Spaz.Data.url_dm_sent          = "https://twitter.com/direct_messages/sent.json";
 Spaz.Data.url_friendslist      = "https://twitter.com/statuses/friends.xml";
 Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.xml";
-Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.xml";
+Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.json";
 
 // Action URLs
 Spaz.Data.url_update           = "http://twitter.com/statuses/update.xml";
@@ -37,15 +35,15 @@ Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials
 Spaz.Data.makeDataSets = function() {
 //DONE: get user over the bridge
 	// Spaz.dump('making data sets with username ' + Spaz.Bridge.getUser());
-// 	Spaz.Data.makePublicTimelineDS();
-// //	Spaz.dump('made public timeline');
-// 	Spaz.Data.makeFriendsTimelineDS();
-// //	Spaz.dump('made friends timeline');
-// 	Spaz.Data.makeRepliesTimelineDS();
-// //	Spaz.dump('made replies timeline');
-// 	Spaz.Data.makeDMTimelineDS();
-// //	Spaz.dump('made dm timeline');
-// 	Spaz.Data.makeUserTimelineDS();
+	Spaz.Data.makePublicTimelineDS();
+//	Spaz.dump('made public timeline');
+	Spaz.Data.makeFriendsTimelineDS();
+//	Spaz.dump('made friends timeline');
+	Spaz.Data.makeRepliesTimelineDS();
+//	Spaz.dump('made replies timeline');
+	Spaz.Data.makeDMTimelineDS();
+//	Spaz.dump('made dm timeline');
+	Spaz.Data.makeUserTimelineDS();
 //	Spaz.dump('made user timeline');
 	Spaz.Data.makeFriendsDS();
 //	Spaz.dump('made friends list');
@@ -54,25 +52,25 @@ Spaz.Data.makeDataSets = function() {
 	// Spry.Data.initRegions();
 	// Spaz.dump('initRegions');
 }
-// Spaz.Data.makeFriendsTimelineDS = function() {
-// 	Spaz.Data.ds_friends = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
-// 	// Spaz.Data.ds_friends = new Spry.Data.XMLDataSet();
-// 	// Spaz.Data.ds_friends.setXPath("/statuses/status");
-// }
-// Spaz.Data.makePublicTimelineDS = function() {
-// 	Spaz.Data.ds_public = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
-// 	// Spaz.Data.ds_public = new Spry.Data.XMLDataSet();
-// }
-// Spaz.Data.makeRepliesTimelineDS = function() {
-// 	Spaz.Data.ds_replies = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
-// }
-// Spaz.Data.makeUserTimelineDS = function() {
-// 	Spaz.Data.ds_user = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
-// }
-// Spaz.Data.makeDMTimelineDS = function() {
-// 	Spaz.Data.ds_dms = new Spry.Data.XMLDataSet(null, "/direct-messages/direct_message",
-// 		{ subPaths: [ "sender" ]});
-// }
+Spaz.Data.makeFriendsTimelineDS = function() {
+	Spaz.Data.ds_friends = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
+	// Spaz.Data.ds_friends = new Spry.Data.XMLDataSet();
+	// Spaz.Data.ds_friends.setXPath("/statuses/status");
+}
+Spaz.Data.makePublicTimelineDS = function() {
+	Spaz.Data.ds_public = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
+	// Spaz.Data.ds_public = new Spry.Data.XMLDataSet();
+}
+Spaz.Data.makeRepliesTimelineDS = function() {
+	Spaz.Data.ds_replies = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
+}
+Spaz.Data.makeUserTimelineDS = function() {
+	Spaz.Data.ds_user = new Spry.Data.XMLDataSet(null, "/statuses/status", { subPaths: [ "user" ]});
+}
+Spaz.Data.makeDMTimelineDS = function() {
+	Spaz.Data.ds_dms = new Spry.Data.XMLDataSet(null, "/direct-messages/direct_message",
+		{ subPaths: [ "sender" ]});
+}
 Spaz.Data.makeFriendsDS = function() {	
 	Spaz.Data.ds_friendslist = new Spry.Data.XMLDataSet(null, "/users/user", { subPaths: [ "status" ], sortOnLoad:"screen_name", sortOrderOnLoad:"ascending"});
 }
@@ -80,33 +78,33 @@ Spaz.Data.makeFollowersDS = function() {
 	Spaz.Data.ds_followerslist = new Spry.Data.XMLDataSet(null, "/users/user", { subPaths: [ "status" ], sortOnLoad:"screen_name", sortOrderOnLoad:"ascending" });
 }
 
-// Spaz.Data.loadFriendsTimelineData = function(tabid, page) {
-// 	Spaz.Data.loadTwitterData(Spaz.Data.url_friends_timeline, Spaz.Data.ds_friends, tabid, page);
-// }
-// Spaz.Data.loadPublicTimelineData = function(tabid, page) {
-// 	Spaz.Data.loadTwitterData(Spaz.Data.url_public_timeline, Spaz.Data.ds_public, tabid, page);
-// }
-// Spaz.Data.loadRepliesTimelineData = function(tabid, page) {
-// 	Spaz.Data.loadTwitterData(Spaz.Data.url_replies_timeline, Spaz.Data.ds_replies, tabid, page);
-// }
-// Spaz.Data.loadUserTimelineData = function(tabid, page) {
-// 	Spaz.Data.loadTwitterData(Spaz.Data.url_user_timeline, Spaz.Data.ds_user, tabid, page);	
-// };
-// Spaz.Data.loadDMTimelineData = function(tabid, page) {
-// 	Spaz.Data.loadTwitterData(Spaz.Data.url_dm_timeline, Spaz.Data.ds_dms, tabid, page);
-// };
+Spaz.Data.loadFriendsTimelineData = function(tabid, page) {
+	Spaz.Data.loadTwitterXML(Spaz.Data.url_friends_timeline, Spaz.Data.ds_friends, tabid, page);
+}
+Spaz.Data.loadPublicTimelineData = function(tabid, page) {
+	Spaz.Data.loadTwitterXML(Spaz.Data.url_public_timeline, Spaz.Data.ds_public, tabid, page);
+}
+Spaz.Data.loadRepliesTimelineData = function(tabid, page) {
+	Spaz.Data.loadTwitterXML(Spaz.Data.url_replies_timeline, Spaz.Data.ds_replies, tabid, page);
+}
+Spaz.Data.loadUserTimelineData = function(tabid, page) {
+	Spaz.Data.loadTwitterXML(Spaz.Data.url_user_timeline, Spaz.Data.ds_user, tabid, page);	
+};
+Spaz.Data.loadDMTimelineData = function(tabid, page) {
+	Spaz.Data.loadTwitterXML(Spaz.Data.url_dm_timeline, Spaz.Data.ds_dms, tabid, page);
+};
 Spaz.Data.loadFriendsData = function(tabid, page) {
-	Spaz.Data.loadTwitterData(Spaz.Data.url_friendslist, Spaz.Data.ds_friendslist, tabid, page);
+	Spaz.Data.loadTwitterXML(Spaz.Data.url_friendslist, Spaz.Data.ds_friendslist, tabid, page);
 }
 Spaz.Data.loadFollowersData = function(tabid, page) {
-	Spaz.Data.loadTwitterData(Spaz.Data.url_followerslist, Spaz.Data.ds_followerslist, tabid, page);
+	Spaz.Data.loadTwitterXML(Spaz.Data.url_followerslist, Spaz.Data.ds_followerslist, tabid, page);
 }
 Spaz.Data.loadAllData = function() {
-	// Spaz.Data.loadFriendsTimelineData();
-	// Spaz.Data.loadPublicTimelineData();
-	// Spaz.Data.loadRepliesTimelineData();
-	// Spaz.Data.loadUserTimelineData();
-	// Spaz.Data.loadDMTimelineData();
+	Spaz.Data.loadFriendsTimelineData();
+	Spaz.Data.loadPublicTimelineData();
+	Spaz.Data.loadRepliesTimelineData();
+	Spaz.Data.loadUserTimelineData();
+	Spaz.Data.loadDMTimelineData();
 	Spaz.Data.loadFriendsData();
 	Spaz.Data.loadFollowersData();
 	Spry.Data.initRegions();
@@ -122,7 +120,7 @@ Spaz.Data.verifyPassword = function() {
 	var user = $('#prefs-username').val();
 	var pass = $('#prefs-password').val();
 	
-	Spaz.dump('user:'+user+' pass:********');
+	Spaz.Bridge.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar("Verifying username and password");	
 	Spaz.UI.showLoading();
@@ -179,12 +177,15 @@ Spaz.Data.verifyPassword = function() {
 	
 }
 
+
+
+
 /* send a status update */
 Spaz.Data.update = function(msg, username, password) {
 	var user = username;
 	var pass = password;
 	
-	Spaz.dump('user:'+user+' pass:********');
+	Spaz.Bridge.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar("Sending update");
 	Spaz.UI.showLoading();
@@ -259,6 +260,9 @@ Spaz.Data.update = function(msg, username, password) {
 	// Spaz.dump(xhr, 'dir');
 }
 
+
+
+
 /* delete a status */
 Spaz.Data.destroyStatus = function(postid) {
 	var user = Spaz.Bridge.getUser();
@@ -287,7 +291,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		},
 		success:function(data){
 			Spaz.dump(data);
-			Spaz.loadUserTimelineData('tab-user');
+			Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
@@ -338,7 +342,7 @@ Spaz.Data.makeFavorite = function(postid) {
 		success:function(data){
 			Spaz.dump(data);
 			Spaz.UI.statusBar('Added fav: ' + postid);
-			//Spaz.loadUserTimelineData('tab-user');
+			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
@@ -353,11 +357,12 @@ Spaz.Data.makeFavorite = function(postid) {
 };
 
 
+
 Spaz.Data.followUser = function(userid) {
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
 	
-	Spaz.dump('user:'+user+' pass:********');
+	Spaz.Bridge.dump('user:'+user+' pass:********');
 		
 	Spaz.UI.statusBar('Start following: ' + userid)
 	Spaz.UI.showLoading();
@@ -409,7 +414,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
 	
-	Spaz.dump('user:'+user+' pass:********');
+	Spaz.Bridge.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar('Stop following: ' + userid)
 	Spaz.UI.showLoading();
@@ -456,11 +461,23 @@ Spaz.Data.stopFollowingUser = function(userid) {
 };
 
 
+Spaz.Data.oldFirstStatus = 0;
+Spaz.Data.newFirstStatus = 0;
+
+
+
+
+
+
+
 Spaz.Data.loadTwitterData = function(section, page) {
-	air.trace(section.url);
+	Spaz.dump(section.url);
 	
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Bridge.getUser();
+	var pass = Spaz.Bridge.getPass();
+	
+	// var user = Spaz.Prefs.getUser();
+	// var pass = Spaz.Prefs.getPass();
 
 	Spaz.dump('user:'+user+' pass:********');
 
@@ -485,10 +502,10 @@ Spaz.Data.loadTwitterData = function(section, page) {
 
 	var passed = nowms - section.lastcheck;
 	if (passed <= section.mincachetime) {
-		air.trace("Cancel loading -- minimum cache time ("+section.mincachetime+" ms) has not expired ("+passed+" passed)");
+		Spaz.dump("Cancel loading -- minimum cache time ("+section.mincachetime+" ms) has not expired ("+passed+" passed)");
 		return;
 	} else {
-		air.trace("Continue loading -- minimum cache time ("+section.mincachetime+" ms) HAS expired ("+passed+" passed)");
+		Spaz.dump("Continue loading -- minimum cache time ("+section.mincachetime+" ms) HAS expired ("+passed+" passed)");
 	}
 
 
@@ -517,7 +534,7 @@ Spaz.Data.loadTwitterData = function(section, page) {
 		complete:function(xhr, msg){
 			Spaz.UI.hideLoading();
 			section.lastcheck = new Date().getTime();
-			air.trace("set section.lastcheck to "+section.lastcheck);
+			Spaz.dump("set section.lastcheck to "+section.lastcheck);
 			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
 				Spaz.dump(section.url + ": ERROR: Timeout");
 				Spaz.UI.statusBar("ERROR: Timeout")
@@ -542,22 +559,15 @@ Spaz.Data.loadTwitterData = function(section, page) {
 				Spaz.dump('No data returned');
 				Spaz.UI.statusBar('No data returned - Twitter may be acting up');
 			} else if (section.lastid == 0 || (section.lastid < data[0].id) ) {
-				section.lastdata = data; // set new lastdata
-				Spaz.UI.createTimeline(section.timeline, section.lastdata);
-				Spaz.dump('old: ' + section.lastid);
-				Spaz.dump('new: ' + section.lastdata[0].id);
-				section.lastid = section.lastdata[0].id; // set new lastid
-				Spaz.UI.playSoundNew();
-				Spaz.UI.statusBar('Updates found');
-				var newest = section.lastdata[0];
-				if (newest.user.screen_name) {
-					air.trace('notifying '+newest.user.profile_image_url);
-					Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);
-				} else if (newest.sender.screen_name) {
-					air.trace('notifying '+newest.user.profile_image_url);
-					Spaz.Bridge.notify(newest.text, newest.sender.screen_name, null, null, newest.sender.profile_image_url);
-				}
+				Spaz.dump('New data returned')
+				section.prevdata = section.currdata;
+				section.currdata = data;
+				Spaz.UI.createTimeline(section);
+				
 			} else {
+				Spaz.dump('Identical data returned')
+				section.prevdata = section.currdata;
+				section.currdata = data;
 				Spaz.UI.resetStatusBar();
 			}
 
@@ -595,30 +605,37 @@ Spaz.Data.loadTwitterData = function(section, page) {
 
 
 
+
+
+
+
+
 /**
  * Loads Twitter data via XML, and optionally switches to a particular tab
  */
 Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
-	/**
-	XHR stuff
-	status
-	statusText
-	readyState
-	responseXML
-	responseText
-	open(), debugopen(), addEventListener(), setRequestHeader(), send(), getAllResponseHeaders(), getResponseHeader(), abort(), overrideMimeType(), removeEventListener(), dispatchEvent()
-	onreadystatechange
-	onload
-	**/
-	
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
+	Spaz.Bridge.dump('user:'+user+' pass:********');
 	
-	Spaz.dump('user:'+user+' pass:********');
+	var timelineid = tabid.replace(/tab-/, 'timeline-');
+	Spaz.dump(timelineid);
 	
-	if (ds.data.length > 0) {
-		var oldFirstStatus = ds.data[0].id;
+	var firstStatus = $('.timeline-entry .status:first', '#'+timelineid);
+	if (firstStatus.length > 0) {
+		var oldNewestId = parseInt(firstStatus[0].id.replace(/status-/, ''));
+	} else {
+		var oldNewestId = 0;
 	}
+	
+	// air.trace('oldNewestId:'+oldNewestId);
+
+	// get newest tweet id in "old" data when using Spry datasource
+	if (ds.data.length > 0) {
+		oldNewestId = parseInt(ds.data[0].id);
+	}
+
+	// air.trace('oldNewestId:'+oldNewestId);
 	
 	if (page) {
 		page = parseInt(page);
@@ -626,17 +643,20 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 	} else {
 		page = 1;
 	}
+
 	
 	// put ms timestamp in data to create unique request
-	var now = new Date();
-	var nowms = now.getTime();
-	var data  = '&_=' + nowms;
+	// var now = new Date();
+	// var nowms = now.getTime();
+	// var data  = '&_=' + nowms;
+
+	// not doing the unique request string anymore
+	var data = '';
 	
 	// caching problems with "page 1" means we can't pass page=1 without missing updates
 	if (page != 1) {
 		data = data + "&page="+page;
 	}
-	
 	
 	Spaz.dump("Loading page "+page+" for "+tabid);
 	
@@ -666,7 +686,7 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 			Spaz.UI.hideLoading();
 			if (xhr.readyState < 3) {
 				Spaz.dump(url + ": ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout")
+				Spaz.UI.statusBar("ERROR: Timeout");
 				return;
 			}
 			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
@@ -681,41 +701,151 @@ Spaz.Data.loadTwitterXML = function(url, ds, tabid, page) {
 				return;
 			}
 			
-			var thisRegion = Spaz.Data.getRegionForDs(ds);
-			
-			data = createXMLFromString(xhr.responseText);
-			Spaz.dump("XML retrieved from " + url);
-			Spaz.dump("Setting data to DS from " + url);
-			
-			thisRegion.clearContent();
-			//ds.setDataFromDoc(xhr.responseText);
-			ds.setDataFromDoc(data);
-							
-			if (!ds.data[0]) {
-				Spaz.dump('No data returned');
-				Spaz.UI.statusBar('No data returned - Twitter may be acting up');
-			} else if (!oldFirstStatus || (oldFirstStatus != ds.data[0].id) ) {
-				Spaz.dump('old: ' + oldFirstStatus);
-				Spaz.dump('new: ' + ds.data[0].id);
-				Spaz.UI.playSoundNew();
-				Spaz.UI.statusBar('Updates found');
-				// console.open();
-				// console.dir(ds.data[0]);
-				// Spaz.Bridge.notify('New updates found', 'New updates');
-				var newest = ds.data[0];
-				if (newest['user/screen_name']) {
-					Spaz.Bridge.notify(newest['text'], newest['user/screen_name'], null, null, newest['user/profile_image_url']);
-				} else if (newest['sender/screen_name']) {
-					Spaz.Bridge.notify(newest['text'], newest['sender/screen_name'], null, null, newest['sender/profile_image_url']);
-				}
-			} else {
-				Spaz.UI.resetStatusBar();
+			if (msg == "notmodified") {
+				// Spry.Data.updateRegion(thisRegion.name);
+				Spaz.UI.statusBar('Ready (no changes)');
+				return;
 			}
-			// }
-			// if (msg == "notmodified") {
-			// 	Spry.Data.updateRegion(thisRegion.name);
-			// 	Spaz.UI.statusBar('Ready (no changes)');
-			// }
+			
+			if (/.+\.json$/.test(url)) { // this is a JSON url
+
+				// if data is < 1, then there's a problem
+				if (xhr.responseText.length < 1) {
+					Spaz.dump('No data returned');
+					Spaz.UI.statusBar('No data returned - Twitter may be acting up');
+					return;
+				}
+
+				// eval json
+				var data = eval(xhr.responseText);
+
+				// if data is < 1, then there's a problem
+				if (data.length < 1) {
+					Spaz.dump('No data returned');
+					Spaz.UI.statusBar('No data returned - Twitter may be acting up');
+					return;
+				}
+
+				// Spaz.data.newFirstStatus = data[0].id;
+				// if (Spaz.data.newFirstStatus == Spaz.data.oldFirstStatus) {
+				// 	Spaz.UI.statusBar('Ready (no changes)');
+				// 	return;
+				// }
+
+				Spaz.dump("XML retrieved from " + url);
+				Spaz.dump("Setting data to DS from " + url);
+
+				// $("#"+timelineid + ' .timeline-entry').animate( {'opacity': '1.0'}, 200, 'linear', function() {
+							
+					// // air.trace('unbind')
+					// $('*', '#'+timelineid).unbind();
+					// // air.trace('remove')
+					// $('*', '#'+timelineid).remove();		
+					
+					for (i in data) {
+						if (data[i].sender) { var user  = data[i].sender } else { var user  = data[i].user }
+
+						if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
+				
+						// need to double-slash single quotes to escape them properly below
+						var popupStr = (user.name+'|'+user.location+'|'+user.description).replace(/'/gi, "\\'");
+					
+						var entryHTML = '';
+						entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" onclick="Spaz.UI.selectEntry(this)" id="'+timelineid+'-'+data[i].id+'">';
+						entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'" onmouseover="Spaz.UI.showUserTooltip(this, \''+popupStr+'\')" onmouseout="Spaz.UI.hideTooltips()">';
+						entryHTML = entryHTML + '		<div class="user-image"><img height="48" width="48" src="'+user.profile_image_url+'" alt="'+user.screen_name+'" onclick=\'openInBrowser("http://twitter.com/'+user.screen_name+'")\' /></div>';
+						entryHTML = entryHTML + '		<div class="user-screen-name"><a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'\')">'+user.screen_name+'</a></div>';
+						entryHTML = entryHTML + '	</div>';
+						entryHTML = entryHTML + '	<div class="status" id="status-'+data[i].id+'">';
+						entryHTML = entryHTML + '		<div class="status-text" id="#status-text-'+data[i].id+'">'+data[i].text+'</div>';
+						if (timelineid != 'timeline-dms') {
+							entryHTML = entryHTML + '		<div class="status-actions">';
+							entryHTML = entryHTML + '			<a title="Make this message a favorite" onclick="Spaz.Data.makeFavorite(\''+data[i].id+'\')" id="status-'+data[i].id+'-fav"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" /></a>';
+							entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+							entryHTML = entryHTML + '			<a title="Send reply to this user" onclick="Spaz.UI.prepReply(\''+user.screen_name+'\')" class="status-action-reply" id="status-'+data[i].id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a>';
+							if (timelineid == 'timeline-user') {
+								entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
+							}
+							entryHTML = entryHTML + '		</div>';
+							entryHTML = entryHTML + '		<div class="status-link">';
+							entryHTML = entryHTML + '			<a onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'/statuses/'+data[i].id+'/\')" title="View full post in browser"><span class="status-created-at">'+data[i].created_at+'</span></a>';
+							entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+data[i].source+'</span></span>';
+							entryHTML = entryHTML + '			<span class="status-protected">'+user.protected+'</span>';
+							entryHTML = entryHTML + '		</div>';
+						} else {
+							entryHTML = entryHTML + '		<div class="status-actions">';
+							entryHTML = entryHTML + '			<a title="Send direct message to this user" onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\' class="status-action-dm" id="status-'+data[i].id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+							// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+data[i].id+'")\' class="status-action-del" id="status-'+data[i].id+'-del">del</a>';
+							entryHTML = entryHTML + '		</div>';					
+						}
+						entryHTML = entryHTML + '	</div>';
+						entryHTML = entryHTML + '</div>';
+
+						//Spaz.dump(entryHTML);
+						
+						var thisentry = $(entryHTML);
+						
+						thisentry.css('opacity', 0);
+						
+						if (oldNewestId == 0) { // the timeline is empty
+							Spaz.dump('timeline should be empty');
+							$('#'+timelineid).append(thisentry);
+						} else if (data[i].id > oldNewestId) { // timeline is not empty
+							$('#'+timelineid).prepend(thisentry);
+						}
+					}
+					
+
+					Spaz.UI.cleanupTimeline(timelineid);
+
+					
+				
+					$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
+						//air.trace($(this).text());
+						$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
+					})
+				// });
+
+				// $('.timeline-entry', '#'+timelineid).fadeOut('fast', function() {
+				// 
+				// });
+				$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
+				
+				
+				var newest = data[0];
+				if (newest.sender) { newest.user  = data[0].sender }
+				
+				
+				
+				Spaz.dump('Old Newest:'+oldNewestId);
+				Spaz.dump('New Newest:'+newest.id);
+				
+				if (oldNewestId < newest.id) {
+					Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);
+					Spaz.UI.playSoundNew();
+					Spaz.UI.statusBar('Updates found');
+				} else {
+					Spaz.UI.resetStatusBar();
+				}
+
+				
+			} else if(/.+\.xml$/.test(url)) { // this is an XML url
+				
+				var xmldoc = createXMLFromString(xhr.responseText);
+				
+				var thisRegion = Spaz.Data.getRegionForDs(ds);
+ 				thisRegion.clearContent();
+ 				ds.setDataFromDoc(xmldoc);
+ 								
+ 				if (!ds.data[0]) {
+ 					Spaz.dump('No data returned');
+ 					Spaz.UI.statusBar('No data returned - Twitter may be acting up');
+ 				} else {
+ 					Spaz.UI.resetStatusBar();
+ 				}
+			} else {
+				Spaz.dump('not json or xml! ' + url);
+			}
 		},
 		error:function(xhr, msg, exc) {
 			Spaz.dump("ERROR");
@@ -832,15 +962,14 @@ Spaz.Data.getDsForTab = function(tab) {
 }
 
 
+
 Spaz.Data.loadDataForTab = function(tab, auto, page) {
 	if (!page || page < 1) {
 		page = 1;
 	}
-	air.trace('Tab:'+tab.id);
-	var sectionStr = tab.id.replace(/tab-/, '');
-	air.trace('section:'+sectionStr);
-	var section = Spaz.Section[sectionStr];
-	air.trace(section);
+	Spaz.dump('Loading data for tab:'+tab.id);
+	var section = Spaz.Section.getSectionFromTab(tab)
+	Spaz.dump(section);
 	Spaz.dump('load data for tab '+tab.id);
 	switch (tab.id) {
 		case 'tab-friendslist':
@@ -863,6 +992,43 @@ Spaz.Data.loadDataForTab = function(tab, auto, page) {
 	}
 	return false
 };
+
+
+
+// Spaz.Data.loadDataForTab = function(tab, auto, page) {
+// 	if (!page || page < 1) {
+// 		page = 1;
+// 	}
+// 	Spaz.dump('load data for tab '+tab.id);
+// 	switch (tab.id) {
+// 		case 'tab-friends':
+// 			Spaz.Data.loadFriendsTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-replies':
+// 			Spaz.Data.loadRepliesTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-dms':
+// 			Spaz.Data.loadDMTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-user':
+// 			Spaz.Data.loadUserTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-public':
+// 			Spaz.Data.loadPublicTimelineData(tab.id, page);
+// 			break;
+// 		case 'tab-friendslist':
+// 			if (!auto) {
+// 				Spaz.Data.loadFriendsData(tab.id, page);
+// 			}
+// 			break;
+// 		case 'tab-followerslist':
+// 			if (!auto) {
+// 				Spaz.Data.loadFollowersData(tab.id, page);
+// 			}
+// 			break;
+// 	}
+// 	return false
+// };
 
 
 Spaz.Data.getRegionForDs = function(ds) {
