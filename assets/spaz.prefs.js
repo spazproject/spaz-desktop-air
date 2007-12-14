@@ -18,7 +18,7 @@ Spaz.Prefs.windowOpacity   = 100;
 // Show NativeMenus -- hardcoded
 Spaz.Prefs.showNativeMenus 		= 1;
 
-// Should AIR's HTMLControl handle HTTP Auth?
+// Should AIR's htmlLoader handle HTTP Auth?
 Spaz.Prefs.handleHTTPAuth		= 0;
 
 Spaz.Prefs.load = function() {
@@ -209,7 +209,7 @@ Spaz.Prefs.windowClosingHandler = function()
 {
 	nativeWindow.removeEventListener("closing", Spaz.Prefs.windowClosingHandler);
 	Spaz.Prefs.saveData();
-	air.Shell.shell.exit();
+	air.NativeApplication.nativeApplication.exit();
 }
 /**
  * Called in the windowClosingHandler() method. Constructs XML data and saves the 
@@ -335,13 +335,13 @@ Spaz.Prefs.setHandleHTTPAuth = function(state) {
 	Spaz.dump(state);
 	if (state) {
 		Spaz.Prefs.handleHTTPAuth = 1
-		window.htmlControl.shouldAuthenticate = true;
+		window.htmlLoader.shouldAuthenticate = true;
 	} else {
 		Spaz.Prefs.handleHTTPAuth = 0;
-		window.htmlControl.shouldAuthenticate = false;
+		window.htmlLoader.shouldAuthenticate = false;
 	}
 	Spaz.dump(Spaz.Prefs.handleHTTPAuth);
-	Spaz.dump(window.htmlControl.shouldAuthenticate);
+	Spaz.dump(window.htmlLoader.shouldAuthenticate);
 }
 
 Spaz.Prefs.checkRefreshPeriod = function(val) {
@@ -375,7 +375,7 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 		val = 1;
 	}
 	
-	window.htmlControl.alpha = val;
+	window.htmlLoader.alpha = val;
 	
 	Spaz.Prefs.windowOpacity = percentage;
 	Spaz.Bridge.setPrefsFormVal('prefs-opacity-percentage', Spaz.Prefs.windowOpacity);

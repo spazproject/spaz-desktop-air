@@ -8,10 +8,16 @@ if (!Spaz.Bridge) Spaz.Bridge = {};
 
 //check if we are in root sandbox
 if(typeof runtime!='undefined'){
+	
+air.trace('parent bridge');	
+	
+	
 	Spaz.Bridge.$child = null;
 	
 	Spaz.Bridge.$init = function(iframe){
 	
+
+		
 		var bridge = {};
 		
 		//link every function from Spaz.Bridge to parentSandboxBridge
@@ -22,6 +28,7 @@ if(typeof runtime!='undefined'){
 			if(i[0]!='$')
 			{
 				bridge[i]=Spaz.Bridge[i];
+				air.trace('bridging '+i)
 			}
 		}
 		
@@ -30,6 +37,7 @@ if(typeof runtime!='undefined'){
 		Spaz.Bridge.$iframe = iframe;
 	
 	}
+
 	
 	Spaz.Bridge.triggerRemoteLoad = function(){
 		//now we know remote content is linked (or loaded)
@@ -55,12 +63,16 @@ if(typeof runtime!='undefined'){
 		
 		Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
 	}
-	
-	
-	
-	
-	Spaz.Bridge.navigateToURL = function (url){
-		window.runtime.flash.net.navigateToURL(new window.runtime.flash.net.URLRequest(url));
+
+
+	Spaz.Bridge.navigateToURL = function (url) {
+		var request = new air.URLRequest(url);
+		try {            
+		    air.navigateToURL(request);
+		}
+		catch (e) {
+		    air.trace(e.errorMsg)
+		}
 	}
 	
 	
@@ -128,7 +140,7 @@ if(typeof runtime!='undefined'){
 	
 	
 	Spaz.Bridge.getThemePaths = function() {
-		var appdir    = air.File.applicationResourceDirectory;
+		var appdir    = air.File.applicationDirectory;
 		var themesdir = appdir.resolvePath('themes');
 		
 		var list = themesdir.getDirectoryListing();
@@ -182,6 +194,9 @@ if(typeof runtime!='undefined'){
 		// 	}
 		// 	
 		// 	air.trace.apply(this, args);
+
+		// air.Introspector.Console.log(msg)
+
 		var now = new Date().toUTCString();
 		air.trace('['+now+']Spaz.Bridge.trace:'+msg);
 	}
@@ -312,7 +327,7 @@ if(typeof runtime!='undefined'){
 	}
 	Spaz.Bridge.setWindowOpacity = function(percentage) {
 		var val  = parseInt(percentage)/100;
-		window.htmlControl.alpha = val;
+		window.htmlLoader.alpha = val;
 	}
 	
 	Spaz.Bridge.supportsSystrayIcon = function() {
@@ -322,7 +337,7 @@ if(typeof runtime!='undefined'){
 	// Window behaviors
 	Spaz.Bridge.setMinimizeOnBackground = function(enable) {
 		if (enable) {
-			air.Shell.shell.addEventListener('deactivate', function() {
+			air.NativeApplication.nativeApplication.addEventListener('deactivate', function() {
 				//window.nativeWindow.minimize();
 				Spaz.Bridge.windowMinimize();
 			})
@@ -331,7 +346,7 @@ if(typeof runtime!='undefined'){
 
 	Spaz.Bridge.setRestoreOnActivate = function(enable) {
 		if (enable) {
-			air.Shell.shell.addEventListener('activate', function() {
+			air.NativeApplication.nativeApplication.addEventListener('activate', function() {
 				//window.nativeWindow.restore();
 				Spaz.Bridge.windowRestore();
 			})
@@ -386,8 +401,13 @@ if(typeof runtime!='undefined'){
  we are in child iframe
 /****************************************************/
 	
+	// air.trace('child bridge');	
+	
 	Spaz.Bridge.$init = function(callback){
 		var bridge = {};
+		
+		// console.open()
+		// console.log('child iframe Spaz.Bridge.init');
 		
 		//link every function from Spaz.Bridge to childSandboxBridge
 		//this will enable calling them from parent iframe
@@ -494,6 +514,7 @@ if(typeof runtime!='undefined'){
 	
 	
 	Spaz.Bridge.val = function(id){
+		air.trace('getting $('+id+').val()');
 		return $(id).val();
 	}
 	
@@ -579,10 +600,10 @@ if(typeof runtime!='undefined'){
 	};
 	
 	Spaz.Bridge.menuPrefs  = function() {
-		Spaz.dump('in Spaz.Bridge.menuPrefs');
-		Spaz.dump('Set selected tab to 7');
+		air.trace('in Spaz.Bridge.menuPrefs');
+		air.trace('Set selected tab to 7');
 		Spaz.UI.setSelectedTab(7);
-		Spaz.dump('Show panel 7');
+		air.trace('Show panel 7');
 		Spaz.UI.tabbedPanels.showPanel(7);
 	};
 	

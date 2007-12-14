@@ -24,72 +24,74 @@ Spaz.Notify.params = null;
 // }
 
 
-Spaz.Notify.add  = function(message, title, where, duration, icon) {
-	
-	message = message.replace(/&amp;/gi, '&');
-	message = message.replace(/&quot;/gi, '"');
-	message = message.replace(/&apos;/gi, '\'');
-	message = message.replace(/&lt;/gi, '<');
-	message = message.replace(/&gt;/gi, '>');
-	
-	Spaz.dump("init notifier");
-	Spaz.Notify.purr = new window.runtime.com.adobe.air.notification.Purr(1);
+Spaz.Notify.add  = function(message, title, where, duration, icon) {}
 
-
-	if (title == null) {
-		title = "Spaz";
-	}
-	if (message == null) {
-		message = "lorem ipsum dolor…";
-	}
-	if (duration == null) {
-		duration = 4;
-	}
-	switch (where) {
-		case 'ne' :
-			where = 'topRight'
-			break;
-		case 'nw' :
-			where = 'topLeft'
-			break;
-		case 'se' :
-			where = 'bottomRight'
-			break;
-		case 'sw' :
-			where = 'bottomLeft'
-			break;
-		default:
-			where = 'topRight'
-			break;
-	}
-	if (icon == null) {
-		icon = 'images/spaz-icon-alpha.png';
-	}
-	Spaz.Notify.params = {
-		msgWhere: where,
-		msgTitle: title,
-		msgBody: message,
-		msgDuration: duration,
-		msgIconURL: icon
-	};
-	
-	Spaz.Notify.loadIcon(icon);
-
-	
-	// if (icon != null) {
-	// 	Spaz.Notify.loadIcon(icon);
-	// 	Spaz.Notify.params = {
-	// 		msgWhere: where,
-	// 		msgTitle: title,
-	// 		msgBody: msg,
-	// 		msgDuration: duration,
-	// 		msgIconURL: icon
-	// 	};
-	// } else {
-	// 	Spaz.dump('title='+title+' message='+message+' where='+where+' duration='+duration+' icon'+icon);
-	// 	Spaz.Notify.purr.addTextNotificationByParams(title, message, where, duration, null);
-	// }
-};
+// Spaz.Notify.add  = function(message, title, where, duration, icon) {
+// 	
+// 	message = message.replace(/&amp;/gi, '&');
+// 	message = message.replace(/&quot;/gi, '"');
+// 	message = message.replace(/&apos;/gi, '\'');
+// 	message = message.replace(/&lt;/gi, '<');
+// 	message = message.replace(/&gt;/gi, '>');
+// 	
+// 	Spaz.dump("init notifier");
+// 	Spaz.Notify.purr = new window.runtime.com.adobe.air.notification.Purr(1);
+// 
+// 
+// 	if (title == null) {
+// 		title = "Spaz";
+// 	}
+// 	if (message == null) {
+// 		message = "lorem ipsum dolor…";
+// 	}
+// 	if (duration == null) {
+// 		duration = 4;
+// 	}
+// 	switch (where) {
+// 		case 'ne' :
+// 			where = 'topRight'
+// 			break;
+// 		case 'nw' :
+// 			where = 'topLeft'
+// 			break;
+// 		case 'se' :
+// 			where = 'bottomRight'
+// 			break;
+// 		case 'sw' :
+// 			where = 'bottomLeft'
+// 			break;
+// 		default:
+// 			where = 'topRight'
+// 			break;
+// 	}
+// 	if (icon == null) {
+// 		icon = 'images/spaz-icon-alpha.png';
+// 	}
+// 	Spaz.Notify.params = {
+// 		msgWhere: where,
+// 		msgTitle: title,
+// 		msgBody: message,
+// 		msgDuration: duration,
+// 		msgIconURL: icon
+// 	};
+// 	
+// 	Spaz.Notify.loadIcon(icon);
+// 
+// 	
+// 	// if (icon != null) {
+// 	// 	Spaz.Notify.loadIcon(icon);
+// 	// 	Spaz.Notify.params = {
+// 	// 		msgWhere: where,
+// 	// 		msgTitle: title,
+// 	// 		msgBody: msg,
+// 	// 		msgDuration: duration,
+// 	// 		msgIconURL: icon
+// 	// 	};
+// 	// } else {
+// 	// 	Spaz.dump('title='+title+' message='+message+' where='+where+' duration='+duration+' icon'+icon);
+// 	// 	Spaz.Notify.purr.addTextNotificationByParams(title, message, where, duration, null);
+// 	// }
+// };
 
 Spaz.Notify.$add = function() {
 	Spaz.dump('$add');

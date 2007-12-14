@@ -551,7 +551,13 @@ Spaz.Data.loadTwitterData = function(section, page) {
 				Spaz.Bridge.notify('May have exceeded request limit', 'Error');
 				return;
 			}
-
+			
+			if (xhr.responseText.length < 4) {
+				Spaz.dump("ERROR: Empty responseText");
+				Spaz.UI.statusBar('Error: Empty response from server');
+				return;
+			}
+			
 			data = eval(xhr.responseText);
 			var timelineid = section.tab.replace(/tab/, 'timeline');
 
@@ -934,32 +940,33 @@ Spaz.Data.shortenLink = function() {
 	});
 };
 
-Spaz.Data.getDsForTab = function(tab) {
-	switch (tab.id) {
-		case 'tab-friends':
-			return Spaz.Data.ds_friends;
-			break;
-		case 'tab-replies':
-			return Spaz.Data.ds_replies;
-			break;
-		case 'tab-dms':
-			return Spaz.Data.ds_dms;
-			break;
-		case 'tab-user':
-			return Spaz.Data.ds_user;
-			break;
-		case 'tab-public':
-			return Spaz.Data.ds_public;
-			break;
-		case 'tab-friendslist':
-			return Spaz.Data.ds_friendslist;
-			break;
-		case 'tab-followerslist':
-			return Spaz.Data.ds_followerslist;
-			break;
-	}	
-	return false;
-}
+// DEPRECATED
+// Spaz.Data.getDsForTab = function(tab) {
+// 	switch (tab.id) {
+// 		case 'tab-friends':
+// 			return Spaz.Data.ds_friends;
+// 			break;
+// 		case 'tab-replies':
+// 			return Spaz.Data.ds_replies;
+// 			break;
+// 		case 'tab-dms':
+// 			return Spaz.Data.ds_dms;
+// 			break;
+// 		case 'tab-user':
+// 			return Spaz.Data.ds_user;
+// 			break;
+// 		case 'tab-public':
+// 			return Spaz.Data.ds_public;
+// 			break;
+// 		case 'tab-friendslist':
+// 			return Spaz.Data.ds_friendslist;
+// 			break;
+// 		case 'tab-followerslist':
+// 			return Spaz.Data.ds_followerslist;
+// 			break;
+// 	}	
+// 	return false;
+// }
 
 
 

@@ -12,9 +12,9 @@ if (!Spaz.Menus) Spaz.Menus = {};
 Spaz.Menus.initAll = function() {
 	//For application menu (on MAC OS X)
 	Spaz.dump('Init Native Menus');
-	if(air.Shell.supportsMenu){
+	if(air.NativeApplication.supportsMenu){
 		Spaz.dump('Native Menus for OS X');
-		air.Shell.shell.menu = Spaz.Menus.createRootMenu('OSX');
+		air.NativeApplication.nativeApplication.menu = Spaz.Menus.createRootMenu('OSX');
 	} else {
 		// Spaz.dump('Native Menus in Windows not supported');
 		Spaz.dump('Creating Windows root menu');
@@ -32,22 +32,24 @@ Spaz.Menus.initAll = function() {
 	// }
 	
 	// dock/systray icon menus
-	if(air.Shell.supportsDockIcon){ // dock on OS X
+	if(air.NativeApplication.supportsDockIcon){ // dock on OS X
 		Spaz.dump('Dock Menus for OS X');
-		var iconLoader = new air.Loader();
-        iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
-                                                Spaz.Menus.iconLoadComplete);
-        iconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
-        air.Shell.shell.icon.menu = Spaz.Menus.createRootMenu();
-    } else if(air.Shell.supportsSystemTrayIcon) { // system tray on windows
+		// var iconLoader = new air.Loader();
+		//         iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
+		//                                                 Spaz.Menus.iconLoadComplete);
+		//         iconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
+        air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
+
+
+    } else if(air.NativeApplication.supportsSystemTrayIcon) { // system tray on windows
 		Spaz.dump('Making Windows system tray menu')
-	    air.Shell.shell.icon.tooltip = "Spaz loves you";
-	    air.Shell.shell.icon.menu = Spaz.Menus.createRootMenu();
+	    air.NativeApplication.nativeApplication.icon.tooltip = "Spaz loves you";
+	    air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 	    var systrayIconLoader = new runtime.flash.display.Loader();
 	    systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
 	                                                            Spaz.Menus.iconLoadComplete);
 	    systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));
-	    air.Shell.shell.icon.addEventListener('click', Spaz.Menus.onSystrayClick);
+	    air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Menus.onSystrayClick);
 	}
 	
 	Spaz.dump('Create Native context Menus');
@@ -59,14 +61,14 @@ Spaz.Menus.onSystrayClick = function(event) {
 	// TODO replace this with call to Spaz.Bridge.windowRestore()
 	Spaz.dump('clicked on systray');
 	Spaz.dump(nativeWindow.displayState);
-	Spaz.dump('id:'+air.Shell.shell.id);
+	Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
 	
 	if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
 		Spaz.dump('restoring window');
  		nativeWindow.restore();
  	}
  	Spaz.dump('activating application');
- 	air.Shell.shell.activateApplication()
+ 	air.NativeApplication.nativeApplication.activateApplication()
 	Spaz.dump('activating window');
 	nativeWindow.activate();
 	Spaz.dump('ordering-to-front window');
@@ -75,7 +77,7 @@ Spaz.Menus.onSystrayClick = function(event) {
 
 // completes the loading of the systray icon
 Spaz.Menus.iconLoadComplete = function(event) {
-	air.Shell.shell.icon.bitmaps = new runtime.Array(event.target.content.bitmapData);
+	air.NativeApplication.nativeApplication.icon.bitmaps = new runtime.Array(event.target.content.bitmapData);
 }
 
 Spaz.Menus.displayContextMenu = function(event) {
@@ -151,7 +153,7 @@ Spaz.Menus.createContextMenu = function() {
 //Creates a root-level
 Spaz.Menus.createRootMenu = function(type){
 	if (type == 'OSX'){
-		var menu = air.Shell.shell.menu;
+		var menu = air.NativeApplication.nativeApplication.menu;
 		menu.addSubmenuAt(Spaz.Menus.createFileMenu(),1,"File");
 		menu.addSubmenu(Spaz.Menus.createViewMenu(),"View");
 		menu.addSubmenu(Spaz.Menus.createHelpMenu(),"Help");
@@ -267,7 +269,11 @@ Spaz.Menus.createViewMenu = function(){
 	
 	var miPrefs = new air.NativeMenuItem("Preferences…");
 	miPrefs.name = 'prefs';
-	// miPrefs.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
+	if (air.NativeWindow.supportsMenu) {
+		Spaz.dump('adding runtime.flash.ui.Keyboard.CONTROL modifier');
+		miPrefs.keyEquivalentModifiers = new Array(air.Keyboard.CONTROL);
+	}
+	// miPrefs.keyEquivalentModifiers = new Array(air.Keyboard.COMMAND);
 	miPrefs.mnemonicIndex = 0;
 	miPrefs.keyEquivalent = ',';
 

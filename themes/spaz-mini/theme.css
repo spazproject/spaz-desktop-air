@@ -271,6 +271,9 @@ div.timeline-entry {
 	overflow: visible;
 	/*border:1px solid green;*/
 }
+div.timeline-entry.reply {
+	background-color: #FFFFCC;
+}
 
 .SpryHiddenRegion {
 	visibility:hidden;

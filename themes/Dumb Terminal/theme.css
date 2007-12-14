@@ -305,6 +305,11 @@ div.timeline-entry {
 	border-right:1px solid #00CC00;
 */	/*border:1px solid green;*/
 }
+
+div.timeline-entry.reply {
+	color: #CCCC00;
+}
+
 /*div.timeline-entry:hover {
 	background-color: #CCCC99;
 	padding: 2px;

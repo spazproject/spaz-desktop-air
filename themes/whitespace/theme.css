@@ -270,6 +270,16 @@ div.timeline-entry {
 	overflow:hidden;
 	/*border:1px solid green;*/
 }
+div.timeline-entry.reply {
+	color: #000000;
+	background-color: #FFFFDD;
+}
+div.timeline-entry.reply.ui-selected {
+	color: #000000;
+	background-color: #DDFFDD;
+}
+
+
 
 .SpryHiddenRegion {
 	visibility:hidden;
@@ -974,7 +984,7 @@ table.data td.value {
 /* selectables */
 .ui-selected
 {
-	background-color:#B7D5F6;
+	background-color:#DDDDEE;
 	background-image:none !important;
 	color:#000000;
 }

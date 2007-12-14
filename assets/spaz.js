@@ -224,22 +224,23 @@ Spaz.childFrameInit = function() {
 //	Spaz.dump('Started MemoryUsage timer');
 
 	
-	Spry.Data.Region.addObserver("public-timeline",			Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("friends-timeline",		Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("replies-timeline",		Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("user-timeline",			Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("dm-timeline",				Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("friendslist-detail",		Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("friendslist",				Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("followerslist-detail",	Spaz.UI.regionObserver);
-	Spry.Data.Region.addObserver("followerslist",			Spaz.UI.regionObserver);
-	Spaz.dump('Added region observers');
+	// Spry.Data.Region.addObserver("public-timeline",			Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("friends-timeline",		Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("replies-timeline",		Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("user-timeline",			Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("dm-timeline",				Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("friendslist-detail",		Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("friendslist",				Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("followerslist-detail",	Spaz.UI.regionObserver);
+	// Spry.Data.Region.addObserver("followerslist",			Spaz.UI.regionObserver);
+	// Spaz.dump('Added region observers');
 
 	
-	Spaz.UI.playSoundStartup(Spaz.Bridge.makeWindowVisible);
-	Spaz.dump('Added region observers');
+	Spaz.UI.playSoundStartup();
+	Spaz.dump('Played startup sound');
 	
 	Spaz.Bridge.makeWindowVisible();
+	Spaz.dump('Made window visible');
 
 	$('#about-version').text("v"+Spaz.Bridge.getVersion());
 
@@ -294,7 +295,7 @@ Spaz.childFrameInit = function() {
 	}
 
 	Spaz.UI.setSelectedTab(document.getElementById('tab-friends'));
-	Spaz.dump('set selected tab');
+	Spaz.dump('set selected tab to FRIENDS');
 
 //	$('#header').contextMenu('linkContentMenu');
 
@@ -335,53 +336,14 @@ function get_relative_time(time_value) {
 	}
 }
 
+
+
 //DONE: we should allow this call through bridge
 function openInBrowser(url) {
 	Spaz.dump('opening '+url);
 	Spaz.Bridge.navigateToURL(url);
 }
 
-
-/*TODO: UNUSED FUNCTIONS
-
-// Configure listeners for URLLoaders 
-function configureURLLoaderListeners(dispatcher)  {
-	dispatcher.addEventListener(air.Event.COMPLETE, completeHandler);
-	dispatcher.addEventListener(air.Event.OPEN, openHandler);
-	dispatcher.addEventListener(air.ProgressEvent.PROGRESS, progressHandler);
-	dispatcher.addEventListener(air.SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-	dispatcher.addEventListener(air.HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-	dispatcher.addEventListener(air.IOErrorEvent.IO_ERROR, ioErrorHandler);	
-}
-
-
-
-// Event listeners for URLLoader 
-function completeHandler(event) {
-   var loader = air.URLLoader(event.target);
-   Spaz.dump("completeHandler: " + loader.data);
-}
-
-function openHandler(event) {
-   Spaz.dump("openHandler: " + event);
-}
-
-function progressHandler(event) {
-   Spaz.dump("progressHandler loaded:" + event.bytesLoaded + " total: " + event.bytesTotal);
-}
-
-function securityErrorHandler(event) {
-   Spaz.dump("securityErrorHandler: " + event);
-}
-
-function httpStatusHandler(event) {
-   Spaz.dump("httpStatusHandler: status=" + event.status + "; " + event);
-}
-
-function ioErrorHandler(event) {
-   Spaz.dump("ioErrorHandler: " + event);
-}
-*/
 
 
 function createXMLFromString (string) {

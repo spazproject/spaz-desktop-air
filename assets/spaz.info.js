@@ -7,20 +7,24 @@ Spaz.Info
 if (!Spaz.Info) Spaz.Info = {};
 
 Spaz.Info.getVersion = function() {
-	var fs = new air.FileStream()
-	var appFile = Spaz.File.getApplicationFile();
-	if (appFile) {
-		fs.open(appFile, air.FileMode.READ);
-		var appXML = fs.readUTFBytes(fs.bytesAvailable);
-		fs.close();
+	
+	// var fs = new air.FileStream()
+	// 	var appFile = Spaz.File.getApplicationFile();
+	// 	if (appFile) {
+		// fs.open(appFile, air.FileMode.READ);
+		var appXML = air.NativeApplication.nativeApplication.applicationDescriptor
+		air.trace(appXML)
+		// fs.close();
 		
 		var domParser = new DOMParser();
 		appXML = domParser.parseFromString(appXML, "text/xml");
-		var appTag = appXML.getElementsByTagName("application")[0];
-		Spaz.dump(appTag.getAttribute("version"));
-		return appTag.getAttribute("version");
-	} else {
-		Spaz.dump('appFile DNE');
-		return false;
-	}
+		// var appTag = appXML.getElementsByTagName("application")[0];
+		var version = appXML.getElementsByTagName("version")[0].firstChild.nodeValue;
+		// air.trace(appTag.getAttribute("version"));
+		// return appTag.getAttribute("version");
+		return version;
+	// } else {
+	// 	Spaz.dump('appFile DNE');
+	// 	return false;
+	// }
 };

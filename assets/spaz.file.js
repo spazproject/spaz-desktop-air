@@ -7,11 +7,11 @@ Spaz.File
 if (!Spaz.File) Spaz.File = {};
 
 Spaz.File.getApplicationFile = function() {
-	var appFile = air.File.applicationResourceDirectory;
+	var appFile = air.File.applicationDirectory();
 	// for debugging environment
 	appFile = appFile.resolvePath("application.xml");
 	if (!appFile.exists) {
-		appFile = air.File.applicationResourceDirectory;
+		appFile = air.File.applicationDirectory;
 		// for "compiled" environment
 		appFile = appFile.resolvePath("META-INF/AIR/application.xml");
 	}

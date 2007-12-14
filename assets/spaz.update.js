@@ -192,6 +192,9 @@ if(typeof runtime!='undefined'){
 	Spaz.Update.compareVersions = function(currentVersion, siteVersion) 
 	{
 		
+		// alert('currentVersion:'+currentVersion)
+		// alert('siteVersion:'+siteVersion)
+		
 		var siteV = {};
 		var currV = {};
 		
