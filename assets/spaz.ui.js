@@ -897,7 +897,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
 					
 		// convert inline links
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)(http|https|ftp):\/\/([^\]\)\s&]+)/gi, '$1<a href="$2://$3" title="Open $2://$3 in a browser window" class="inline-link">go&raquo;</a>');
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\]\)\s&]+)([\)\]]?)/gi, '$1$2<a href="$3://$4" title="Open $3://$4 in a browser window" class="inline-link">go&raquo;</a>$5');
 	
 		// email addresses
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
