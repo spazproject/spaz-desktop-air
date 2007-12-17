@@ -32,6 +32,14 @@ Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.
 Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials";
 
 
+// urls to build main timeline
+Spaz.Data.mainUrls = [Spaz.Data.url_friends_timeline,
+						Spaz.Data.url_replies_timeline,
+						Spaz.Data.url_dm_timeline];
+
+Spaz.Data.mainTimelineData = {};
+
+
 Spaz.Data.makeDataSets = function() {
 //DONE: get user over the bridge
 	// Spaz.dump('making data sets with username ' + Spaz.Bridge.getUser());
@@ -461,8 +469,106 @@ Spaz.Data.stopFollowingUser = function(userid) {
 };
 
 
+
 Spaz.Data.oldFirstStatus = 0;
 Spaz.Data.newFirstStatus = 0;
+
+
+Spaz.Data.getDataForMainTimeline = function() {
+	
+	var thisdata;
+	var data = [];
+	for (var i = 0; i < Spaz.Data.mainUrls.length; i++) {
+		thisdata = Spaz.Data.getDataForUrl(Spaz.Data.mainUrls[i]);
+		data = data.concat(thisdata);
+	}
+	
+	var data = data.sort( function(a,b) {
+		return a.id-b.id
+	});
+	
+	return data;
+}
+
+
+
+// this retrieves data from a URL
+Spaz.Data.getDataForUrl = function(url) {
+	
+	air.trace('getting:'+url);
+
+	
+	var xhr = $.ajax({
+		complete:function(xhr, msg){			
+			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
+				// alert("ERROR: Timeout");
+				Spaz.dump("Error:timeout on "+url);
+				Spaz.Data.onAjaxComplete(url, false);
+				return;
+			}
+
+			if (xhr.status == 400) {
+				alert("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
+				Spaz.Data.onAjaxComplete(url, false);
+				return;
+			}
+
+			if (xhr.responseText.length < 4) {
+				Spaz.dump("Error:response empty from "+url);
+				Spaz.Data.onAjaxComplete(url, false);
+				return;
+			}
+
+			var data = eval(xhr.responseText);
+
+			if (!data[0]) {
+				Spaz.Data.onAjaxComplete(url, false);
+				return;
+			} else {
+				// data returned
+				Spaz.Data.onAjaxComplete(url, data);
+			}
+
+		},
+		// error:function(xhr, msg, exc) {
+		// 	// Spaz.dump("Error:response empty from "+url);
+		// },
+		// success:function(data) {
+		// 	// alert("SUCCESS");
+		// },
+		beforeSend:function(xhr){
+			var user = Spaz.Bridge.getUser();
+			var pass = Spaz.Bridge.getPass();
+			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Cookie", '');
+		},
+		processData:false,
+		type:"GET",
+		url:url
+	});
+	
+}
+
+
+
+Spaz.Data.onAjaxComplete = function(id, data) {
+	
+	if (data != false) {
+		// alert(id+':'+data);
+		Spaz.Data.mainTimelineData[id] = data;
+
+		for (var i in Spaz.Data.mainTimelineData[id]) {
+			Spaz.UI.addEntryToMainTimeline(Spaz.Data.mainTimelineData[id][i]);
+		}
+		
+		Spaz.UI.cleanupTimeline(Spaz.UI.mainTimelineId);
+		
+	} else {
+		Spaz.dump("Error: no data returned from "+url);
+		alert('no data returned from '+id)
+	}
+}
+
 
 
 
@@ -940,33 +1046,6 @@ Spaz.Data.shortenLink = function() {
 	});
 };
 
-// DEPRECATED
-// Spaz.Data.getDsForTab = function(tab) {
-// 	switch (tab.id) {
-// 		case 'tab-friends':
-// 			return Spaz.Data.ds_friends;
-// 			break;
-// 		case 'tab-replies':
-// 			return Spaz.Data.ds_replies;
-// 			break;
-// 		case 'tab-dms':
-// 			return Spaz.Data.ds_dms;
-// 			break;
-// 		case 'tab-user':
-// 			return Spaz.Data.ds_user;
-// 			break;
-// 		case 'tab-public':
-// 			return Spaz.Data.ds_public;
-// 			break;
-// 		case 'tab-friendslist':
-// 			return Spaz.Data.ds_friendslist;
-// 			break;
-// 		case 'tab-followerslist':
-// 			return Spaz.Data.ds_followerslist;
-// 			break;
-// 	}	
-// 	return false;
-// }
 
 
 
@@ -981,8 +1060,8 @@ Spaz.Data.loadDataForTab = function(tab, auto, page) {
 	switch (tab.id) {
 		case 'tab-friendslist':
 			if (!auto) {
-				Spaz.Data.loadTwitterData(section, page);
-				// Spaz.Data.loadFriendsData(tab.id, page);
+				// Spaz.Data.loadTwitterData(section, page);
+				Spaz.Data.loadFriendsData(tab.id, page);
 			}
 			break;
 		case 'tab-followerslist':
@@ -990,6 +1069,9 @@ Spaz.Data.loadDataForTab = function(tab, auto, page) {
 				Spaz.Data.loadTwitterData(section, page);
 				// Spaz.Data.loadFollowersData(tab.id, page);
 			}
+			break;
+		case 'tab-friends':
+			Spaz.Data.getDataForMainTimeline();
 			break;
 		case 'tab-prefs':
 			break;
@@ -999,43 +1081,6 @@ Spaz.Data.loadDataForTab = function(tab, auto, page) {
 	}
 	return false
 };
-
-
-
-// Spaz.Data.loadDataForTab = function(tab, auto, page) {
-// 	if (!page || page < 1) {
-// 		page = 1;
-// 	}
-// 	Spaz.dump('load data for tab '+tab.id);
-// 	switch (tab.id) {
-// 		case 'tab-friends':
-// 			Spaz.Data.loadFriendsTimelineData(tab.id, page);
-// 			break;
-// 		case 'tab-replies':
-// 			Spaz.Data.loadRepliesTimelineData(tab.id, page);
-// 			break;
-// 		case 'tab-dms':
-// 			Spaz.Data.loadDMTimelineData(tab.id, page);
-// 			break;
-// 		case 'tab-user':
-// 			Spaz.Data.loadUserTimelineData(tab.id, page);
-// 			break;
-// 		case 'tab-public':
-// 			Spaz.Data.loadPublicTimelineData(tab.id, page);
-// 			break;
-// 		case 'tab-friendslist':
-// 			if (!auto) {
-// 				Spaz.Data.loadFriendsData(tab.id, page);
-// 			}
-// 			break;
-// 		case 'tab-followerslist':
-// 			if (!auto) {
-// 				Spaz.Data.loadFollowersData(tab.id, page);
-// 			}
-// 			break;
-// 	}
-// 	return false
-// };
 
 
 Spaz.Data.getRegionForDs = function(ds) {
@@ -1049,68 +1094,3 @@ Spaz.Data.getRegionForDs = function(ds) {
 }
 
 
-
-
-/******
-Properties for datasets
-xpath: /statuses/status
-doc: [object Document]
-subPaths: user
-observers: [object Object]
-suppressNotifications: 0
-name: ""
-internalID: 5
-curRowID: 0
-data
-[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
-unfilteredData: null
-dataHash: [object Object]
-columnTypes
-[object Object]
-filterFunc: null
-filterDataFunc: null
-distinctOnLoad: false
-distinctFieldsOnLoad: null
-sortOnLoad: null
-sortOrderOnLoad: ascending
-keepSorted: false
-dataWasLoaded: true
-pendingRequest: null
-lastSortColumns
-lastSortOrder
-""
-loadIntervalID: 0
-url: null
-dataSetsForDataRefStrings
-hasDataRefStrings: false
-useCache: true
-requestInfo
-[object Object]
-FUNCTIONS:
-constructor(), getDataRefStrings(), getDocument(), getXPath(), setXPath(), convertXPathsToPathTree(), flattenSubPaths(), loadDataIntoDataSet(), xhRequestProcessor(), sessionExpiredChecker(), setRequestInfo(), recalculateDataSetDependencies(), attemptLoadData(), onCurrentRowChanged(), onPostSort(), onDataChanged(), loadData(), cancelLoadData(), getURL(), setURL(), setDataFromDoc(), setSessionExpiredChecker(), onRequestResponse(), onRequestError(), onRequestSessionExpired(), getData(), getUnfilteredData(), getLoadDataRequestIsPending(), getDataWasLoaded(), setDataFromArray(), filterAndSortData(), getRowCount(), getRowByID(), getRowByRowNumber(), getCurrentRow(), setCurrentRow(), getRowNumber(), getCurrentRowNumber(), getCurrentRowID(), setCurrentRowNumber(), findRowsWithColumnValues(), setColumnType(), getColumnType(), applyColumnTypes(), distinct(), getSortColumn(), getSortOrder(), sort(), filterData(), filter(), startLoadInterval(), stopLoadInterval(), addObserver(), removeObserver(), notifyObservers(), enableNotifications(), disableNotifications(
-
-******/
-
-
-
-
-// Spaz.Data.makeTabObjects = function() {
-// 	Spaz.TabFriends = {
-// 		url		: Spaz.Data.url_friends_timeline,
-// 		ds		: Spaz.Data.ds_friends,
-// 		region	: $('#friends_timeline'),
-// 		page	: 1,
-// 	}
-// 	
-// 	Spaz.TabReplies = {}
-// 	
-// 	Spaz.Tab
-// }
-// 
-// Spaz.Data.pageUp = function(tab) {
-// 	
-// }
-// 
-// Spaz.Data.getCurrentPage = function(tab) {
-// 	
-// }

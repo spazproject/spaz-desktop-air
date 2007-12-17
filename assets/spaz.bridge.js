@@ -317,6 +317,38 @@ air.trace('parent bridge');
 	}
 
 
+	Spaz.Bridge.minimizeWindow = function() {
+		window.nativeWindow.minimize();
+		if (Spaz.Bridge.getUIInfo().minimizeToSystray && Spaz.Bridge.supportsSystrayIcon()) {
+			window.nativeWindow.visible = false;
+		}
+		return false;
+	}
+	
+	Spaz.Bridge.restoreWindow = function() {
+		Spaz.dump('restoring window');
+		Spaz.dump('current window state:'+window.nativeWindow.displayState);
+		//Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
+
+
+		// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
+		// 	Spaz.dump('restoring window');
+		//  		nativeWindow.restore();
+		//  	}
+		Spaz.dump('restoring window');
+		window.nativeWindow.restore();
+
+		Spaz.dump('activating window');
+		window.nativeWindow.activate();
+		// Spaz.dump('ordering-to-front window');
+		// window.nativeWindow.orderToFront();
+		if (air.NativeApplication) {
+			Spaz.dump('activating application');
+			air.NativeApplication.nativeApplication.activate();
+		}
+		
+	}
+
 	Spaz.Bridge.makeWindowVisible = function(){
 		Spaz.dump("making window visible");
 		window.nativeWindow.visible = true;
@@ -331,7 +363,7 @@ air.trace('parent bridge');
 	}
 	
 	Spaz.Bridge.supportsSystrayIcon = function() {
-		return air.Shell.supportsSystemTrayIcon;
+		return air.NativeApplication.supportsSystemTrayIcon;
 	};
 
 	// Window behaviors
@@ -601,10 +633,8 @@ air.trace('parent bridge');
 	
 	Spaz.Bridge.menuPrefs  = function() {
 		air.trace('in Spaz.Bridge.menuPrefs');
-		air.trace('Set selected tab to 7');
-		Spaz.UI.setSelectedTab(7);
-		air.trace('Show panel 7');
-		Spaz.UI.tabbedPanels.showPanel(7);
+		Spaz.UI.setSelectedTab(document.getElementById('tab-prefs'));
+		Spaz.UI.tabbedPanels.showPanel('tab-prefs');
 	};
 	
 	

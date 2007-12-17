@@ -123,7 +123,7 @@ div.timeline {
 	top:75px;
 	left: 10px;
 	right: 10px;
-	bottom:101px;
+	bottom:90px;
 	background-image:url('images/dropshadow.png');
 	background-repeat:repeat-x;
 	background-position: 0px -4px;
@@ -265,10 +265,13 @@ div.timeline-entry {
 	/*border:1px solid green;*/
 }
 div.timeline-entry.reply {
-	background-color: #FFFFDD;
+	background-color: #EEEEAA;
 	background-image: none;
 }
-
+div.timeline-entry.dm {
+	background-color: #EEAAAA;
+	background-image: none;
+}
 
 .SpryHiddenRegion {
 	visibility:hidden;

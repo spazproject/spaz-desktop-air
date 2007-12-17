@@ -146,7 +146,7 @@ div.timeline {
 	top: 47px;
 	left:  5px;
 	right: 5px;
-	bottom:59px;
+	bottom:43px;
 /*	background-image:url('images/dropshadow.png');*/
 	background-repeat:repeat-x;
 	background-position: 0px -4px;
@@ -309,7 +309,9 @@ div.timeline-entry {
 div.timeline-entry.reply {
 	color: #CCCC00;
 }
-
+div.timeline-entry.dm {
+	color: #CC0000;
+}
 /*div.timeline-entry:hover {
 	background-color: #CCCC99;
 	padding: 2px;

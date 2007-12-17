@@ -32,6 +32,9 @@ Spaz.UI.showContextMenus = 1; // hard-coded - this works properly now
 
 Spaz.UI.tooltipHideTimeout = null;
 
+
+Spaz.UI.mainTimelineId = 'timeline-friends';
+
 // Paths to sound files
 Spaz.UI.SOUND_UPDATE	= '/assets/sounds/TokyoTrainStation/Csnd.mp3';
 Spaz.UI.SOUND_STARTUP	= '/assets/sounds/TokyoTrainStation/On.mp3';
@@ -553,34 +556,10 @@ Spaz.UI.windowActiveHandler = function () {
 }
 
 Spaz.UI.windowMinimize = function() {
-	window.nativeWindow.minimize();
-	if (Spaz.UI.minimizeToSystray && Spaz.Bridge.supportsSystrayIcon()) {
-		window.nativeWindow.visible = false;
-	}
-	return false;
+	Spaz.Bridge.minimizeWindow();
 };
 Spaz.UI.windowRestore = function() {
-	Spaz.dump('restoring window');
-	Spaz.dump('current window state:'+window.nativeWindow.displayState);
-	//Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
-	
-	
-	// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	// 	Spaz.dump('restoring window');
-	//  		nativeWindow.restore();
-	//  	}
-	Spaz.dump('restoring window');
-	window.nativeWindow.restore();
-
-	Spaz.dump('activating window');
-	window.nativeWindow.activate();
-	// Spaz.dump('ordering-to-front window');
-	// window.nativeWindow.orderToFront();
-	if (air.Shell) {
-		Spaz.dump('activating application');
-		air.NativeApplication.nativeApplication.activateApplication();
-	}
- 	
+	Spaz.Bridge.restoreWindow();
 };
 
 
@@ -682,7 +661,160 @@ Spaz.UI.hideTooltips = function() {
 
 
 
+Spaz.UI.addEntryToMainTimeline = function(entry) {
+	// alert('adding:'+entry.id)
+	
+	var timelineid = Spaz.UI.mainTimelineId;
+	
+	var jqTL = $('#'+Spaz.UI.mainTimelineId);
+	
+	if ( $('#'+Spaz.UI.mainTimelineId+'-'+entry.id, jqTL).length<1 ) {
+		var isDM = false;
+		var isSent = false;
+		
+		air.trace('prepending '+entry.id)
+		
+		if (entry.sender) {
+			entry.user = entry.sender
+			isDM=true;
+		}
 
+		// if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
+		
+		var rowclass = "even";
+
+		// need to double-slash single quotes to escape them properly below
+		var popupStr = (entry.user.name+' ('+entry.user.screen_name+')|'+entry.user.location+'|'+entry.user.description).replace(/'/gi, "\\'");
+
+		var timestamp = httpTimeToInt(entry.created_at)
+
+		var entryHTML = '';
+		entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" id="'+timelineid+'-'+entry.id+'" time="'+timestamp+'">';
+		entryHTML = entryHTML + '	<div class="entry-id" style="display:none">['+entry.id+']</div>';
+		entryHTML = entryHTML + '	<div class="entry-time" style="display:none">'+entry.created_at+'</div>'
+		entryHTML = entryHTML + '	<div class="user" id="user-'+entry.user.id+'">';
+		entryHTML = entryHTML + '		<div class="user-image"><a><img height="48" width="48" src="'+entry.user.profile_image_url+'" alt="'+entry.user.screen_name+'" /></a></div>';
+		entryHTML = entryHTML + '		<div class="user-screen-name"><a>'+entry.user.screen_name+'</a></div>';
+		entryHTML = entryHTML + '	</div>';
+		entryHTML = entryHTML + '	<div class="status" id="status-'+entry.id+'">';
+		entryHTML = entryHTML + '		<div class="status-text" id="status-text-'+entry.id+'">'+entry.text+'</div>';
+		if (timelineid != 'timeline-dms') {
+			entryHTML = entryHTML + '		<div class="status-actions">';
+			entryHTML = entryHTML + '			<a title="Make this message a favorite" class="status-action-fav" id="status-'+entry.id+'-fav"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" /></a>';
+			entryHTML = entryHTML + '			<a title="Send direct message to this user" class="status-action-dm" id="status-'+entry.id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+			entryHTML = entryHTML + '			<a title="Send reply to this user" class="status-action-reply" id="status-'+entry.id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a>';
+			if (timelineid == 'timeline-user') {
+				entryHTML = entryHTML + '			<a title="Delete this message" class="status-action-del" id="status-'+entry.id+'-del">del</a>';
+			}
+			entryHTML = entryHTML + '		</div>';
+			entryHTML = entryHTML + '		<div class="status-link">';
+			entryHTML = entryHTML + '			<a title="View full post in browser"><span class="status-created-at">'+entry.created_at+'</span></a>';
+			entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+entry.source+'</span></span>';
+			entryHTML = entryHTML + '			<span class="status-protected">'+entry.user.protected+'</span>';
+			entryHTML = entryHTML + '		</div>';
+		} else {
+			entryHTML = entryHTML + '		<div class="status-actions">';
+			entryHTML = entryHTML + '			<a title="Send direct message to this user" class="status-action-dm" id="status-'+entry.id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
+			// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' class="status-action-del" id="status-'+entry.id+'-del">del</a>';
+			entryHTML = entryHTML + '		</div>';					
+		}
+		entryHTML = entryHTML + '	</div>';
+		entryHTML = entryHTML + '</div>';
+
+		// Spaz.dump(entryHTML);
+
+
+		// Make the jQuery object and bind events
+		var jqentry = $(entryHTML);
+		jqentry.css('opacity', 0);
+		jqentry.bind('click', {'jqentry': jqentry }, Spaz.Handlers.selectEntry);
+		
+		if (isDM) {
+			jqentry.addClass('dm');
+		}
+		
+		//  onmouseover="Spaz.UI.showUserTooltip(this, \''+popupStr+'\')"
+		// onmouseout="Spaz.UI.hideTooltips()"
+		var jquser = jqentry.find('div.user');
+		jquser.bind('mouseover', { 'jq': jquser, 'userdata':popupStr }, Spaz.Handlers.showUserTooltip)
+			  .bind('mouseout', Spaz.UI.hideTooltips);
+
+		//onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'\')"			
+		jquser.find('a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name}, Spaz.Handlers.openInBrowser)
+						.bind('mouseover', {'jq':$(this),'str':'View profile of '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
+						.bind('mouseout', Spaz.UI.hideTooltips)
+						
+		
+		// onclick="Spaz.Data.makeFavorite(\''+entry.id+'\')" 
+		jqentry.find('a.status-action-fav')
+					.bind('click', { 'entryid':entry.id }, Spaz.Handlers.makeFavorite)
+					.bind('mouseover', {'jq':$(this),'str':'Add this status to your favorites'}, Spaz.Handlers.showTooltip)
+					.bind('mouseout', Spaz.UI.hideTooltips)
+
+		// onclick=\'Spaz.UI.prepDirectMessage("'+entry.user.screen_name+'")\'
+		jqentry.find('a.status-action-dm')
+					.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepDirectMessage)
+					.bind('mouseover', {'jq':$(this),'str':'Start a direct message to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
+					.bind('mouseout', Spaz.UI.hideTooltips)
+
+		// onclick="Spaz.UI.prepReply(\''+entry.user.screen_name+'\')"
+		jqentry.find('a.status-action-reply')
+					.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepReply)
+					.bind('mouseover', {'jq':$(this),'str':'Start a reply to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
+					.bind('mouseout', Spaz.UI.hideTooltips)
+					
+
+		//onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' 
+		jqentry.find('a.status-action-del')
+					.bind('click', { 'entryid':entry.id }, Spaz.Handlers.destroyStatus)
+					.bind('mouseover', {'jq':$(this),'str':'Delete this status'}, Spaz.Handlers.showTooltip)
+					.bind('mouseout', Spaz.UI.hideTooltips)
+					
+					
+		//onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/\')" 
+		jqentry.find('div.status-link a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/'}, Spaz.Handlers.openInBrowser)
+						.bind('mouseover', {'jq':$(this),'str':'View this entry in a browser'}, Spaz.Handlers.showTooltip)
+						.bind('mouseout', Spaz.UI.hideTooltips)
+					
+		
+		// FINALLY -- prepend the entry
+		jqTL.prepend(jqentry);
+		
+		
+	} else {
+		//air.trace('skipping '+entry.id);
+	}
+
+}
+
+
+
+Spaz.UI.sortTimeline = function(timelineid) {
+	var cells = $('#'+timelineid+' .timeline-entry');
+	
+	air.trace('cells length:'+cells.length);
+	
+	cells.sort(function(a, b) {
+		var inta = parseInt( $(a).attr('time') )
+		var intb = parseInt( $(b).attr('time') )
+		var diff = inta - intb;
+		return diff;
+	}, true).remove().appendTo('#'+timelineid);
+	
+	air.trace('done sorting');
+}
+
+
+
+Spaz.UI.reverseTimeline = function(timelineid) {
+	var cells = $('#'+timelineid+' .timeline-entry');
+	cells.reverse(true).remove().appendTo('#'+timelineid);
+}
+
+
+
+
+// DEPRECATED FOR MAIN TIMELINE
 Spaz.UI.createTimeline = function(section) {
 	// console.open()
 	//console.dir(section)
@@ -728,18 +860,18 @@ Spaz.UI.createTimeline = function(section) {
 			if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
 
 			// need to double-slash single quotes to escape them properly below
-			var popupStr = (user.name+' ('+user.screen_name+')|'+user.location+'|'+user.description).replace(/'/gi, "\\'");
+			var popupStr = (entry.user.name+' ('+entry.user.screen_name+')|'+entry.user.location+'|'+entry.user.description).replace(/'/gi, "\\'");
 
-
+			var timestamp = httpTimeToInt(entry.created_at)
 
 
 			var entryHTML = '';
-			entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" id="'+timelineid+'-'+entry.id+'">';
+			entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" id="'+timelineid+'-'+entry.id+'" time="'+timestamp+'">';
 			entryHTML = entryHTML + '	<div class="entry-id" style="display:none">['+entry.id+']</div>';
 			entryHTML = entryHTML + '	<div class="entry-time" style="display:none">'+entry.created_at+'</div>'
-			entryHTML = entryHTML + '	<div class="user" id="user-'+user.id+'">';
-			entryHTML = entryHTML + '		<div class="user-image"><a><img height="48" width="48" src="'+user.profile_image_url+'" alt="'+user.screen_name+'" /></a></div>';
-			entryHTML = entryHTML + '		<div class="user-screen-name"><a>'+user.screen_name+'</a></div>';
+			entryHTML = entryHTML + '	<div class="user" id="user-'+entry.user.id+'">';
+			entryHTML = entryHTML + '		<div class="user-image"><a><img height="48" width="48" src="'+entry.user.profile_image_url+'" alt="'+entry.user.screen_name+'" /></a></div>';
+			entryHTML = entryHTML + '		<div class="user-screen-name"><a>'+entry.user.screen_name+'</a></div>';
 			entryHTML = entryHTML + '	</div>';
 			entryHTML = entryHTML + '	<div class="status" id="status-'+entry.id+'">';
 			entryHTML = entryHTML + '		<div class="status-text" id="status-text-'+entry.id+'">'+entry.text+'</div>';
@@ -755,7 +887,7 @@ Spaz.UI.createTimeline = function(section) {
 				entryHTML = entryHTML + '		<div class="status-link">';
 				entryHTML = entryHTML + '			<a title="View full post in browser"><span class="status-created-at">'+entry.created_at+'</span></a>';
 				entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+entry.source+'</span></span>';
-				entryHTML = entryHTML + '			<span class="status-protected">'+user.protected+'</span>';
+				entryHTML = entryHTML + '			<span class="status-protected">'+entry.user.protected+'</span>';
 				entryHTML = entryHTML + '		</div>';
 			} else {
 				entryHTML = entryHTML + '		<div class="status-actions">';
@@ -780,9 +912,9 @@ Spaz.UI.createTimeline = function(section) {
 			jquser.bind('mouseover', { 'jq': jquser, 'userdata':popupStr }, Spaz.Handlers.showUserTooltip)
 				  .bind('mouseout', Spaz.UI.hideTooltips);
 
-			//onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'\')"			
-			jquser.find('a').bind('click', {'url':'http://twitter.com/'+user.screen_name}, Spaz.Handlers.openInBrowser)
-							.bind('mouseover', {'jq':$(this),'str':'View profile of '+user.screen_name}, Spaz.Handlers.showTooltip)
+			//onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'\')"			
+			jquser.find('a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name}, Spaz.Handlers.openInBrowser)
+							.bind('mouseover', {'jq':$(this),'str':'View profile of '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
 							.bind('mouseout', Spaz.UI.hideTooltips)
 							
 			
@@ -792,16 +924,16 @@ Spaz.UI.createTimeline = function(section) {
 						.bind('mouseover', {'jq':$(this),'str':'Add this status to your favorites'}, Spaz.Handlers.showTooltip)
 						.bind('mouseout', Spaz.UI.hideTooltips)
 
-			// onclick=\'Spaz.UI.prepDirectMessage("'+user.screen_name+'")\'
+			// onclick=\'Spaz.UI.prepDirectMessage("'+entry.user.screen_name+'")\'
 			jqentry.find('a.status-action-dm')
-						.bind('click', { 'username':user.screen_name }, Spaz.Handlers.prepDirectMessage)
-						.bind('mouseover', {'jq':$(this),'str':'Start a direct message to '+user.screen_name}, Spaz.Handlers.showTooltip)
+						.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepDirectMessage)
+						.bind('mouseover', {'jq':$(this),'str':'Start a direct message to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
 						.bind('mouseout', Spaz.UI.hideTooltips)
 
-			// onclick="Spaz.UI.prepReply(\''+user.screen_name+'\')"
+			// onclick="Spaz.UI.prepReply(\''+entry.user.screen_name+'\')"
 			jqentry.find('a.status-action-reply')
-						.bind('click', { 'username':user.screen_name }, Spaz.Handlers.prepReply)
-						.bind('mouseover', {'jq':$(this),'str':'Start a reply to '+user.screen_name}, Spaz.Handlers.showTooltip)
+						.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepReply)
+						.bind('mouseover', {'jq':$(this),'str':'Start a reply to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
 						.bind('mouseout', Spaz.UI.hideTooltips)
 						
 
@@ -812,8 +944,8 @@ Spaz.UI.createTimeline = function(section) {
 						.bind('mouseout', Spaz.UI.hideTooltips)
 						
 						
-			//onclick="openInBrowser(\'http://twitter.com/'+user.screen_name+'/statuses/'+entry.id+'/\')" 
-			jqentry.find('div.status-link a').bind('click', {'url':'http://twitter.com/'+user.screen_name+'/statuses/'+entry.id+'/'}, Spaz.Handlers.openInBrowser)
+			//onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/\')" 
+			jqentry.find('div.status-link a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/'}, Spaz.Handlers.openInBrowser)
 							.bind('mouseover', {'jq':$(this),'str':'View this entry in a browser'}, Spaz.Handlers.showTooltip)
 							.bind('mouseout', Spaz.UI.hideTooltips)
 
@@ -830,7 +962,7 @@ Spaz.UI.createTimeline = function(section) {
 		}
 
 	}
-
+	
 	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
 		//air.trace($(this).text());
 		$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
@@ -869,9 +1001,49 @@ Spaz.UI.createTimeline = function(section) {
 
 
 
-
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid) {
+	
+	Spaz.UI.sortTimeline(timelineid);
+	Spaz.UI.reverseTimeline(timelineid);
+
+	// remove the even and odds due to resorting
+	$("#"+timelineid + ' .timeline-entry').removeClass('even');
+	$("#"+timelineid + ' .timeline-entry').removeClass('odd');
+
+	// apply even class
+	$("#"+timelineid + ' .timeline-entry:nth-child(even)').addClass('even');
+	air.trace($("#"+timelineid + ' .timeline-entry:nth-child(even)')[0].outerHTML);
+	
+	// apply odd class
+	$("#"+timelineid + ' .timeline-entry:nth-child(odd)').addClass('odd');
+	air.trace($("#"+timelineid + ' .timeline-entry:nth-child(odd)')[0].outerHTML);
+	
+
+	// animate in new stuff
+	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
+		//air.trace($(this).text());
+		$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
+	})
+
+	// scroll to top
+	Spaz.dump('scrolling to .timeline-entry:eq(0) in #'+timelineid);
+	$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
+
+
+	// announce new items
+	if ($("div.needs-cleanup", "#"+timelineid).length > 0) {
+
+		Spaz.UI.playSoundNew();
+		Spaz.UI.statusBar('Updates found');
+
+	} else {
+
+		Spaz.UI.statusBar('No new messages');
+
+	}
+	
+	
 	
 	// make it here so we don't instantiate on every loopthrough
 	var md = new Showdown.converter();
@@ -908,6 +1080,8 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		// @usernames at the beginning of lines
 		this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a href="http://twitter.com/$1" class="inline-reply" title="View $1\'s profile">@$1</a>');
 
+		// inline non-http:// links like foo.com or bar.foo.edu
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9\.-]+\.[\a-zA-Z]{1,4})/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>');
 		
 		if (Spaz.UI.useMarkdown) {
 			// Spaz.dump('Pre-Markdown:'+this.innerHTML);
@@ -955,7 +1129,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 							.bind('contextmenu', { 'jq' : jqsourcelink, 'url':href }, Spaz.Handlers.showContextMenu)
 							.bind('mouseover', Spaz.Handlers.showTitleTooltip)
 							.bind('mouseout', Spaz.UI.hideTooltips)
-							.attr('title', 'View information about this posting method')
+							.attr('title', 'Open '+href+' in a browser window')
 							.removeAttr('href');
 			}
 
@@ -978,6 +1152,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	$("div.needs-cleanup .status-text:contains('@"+Spaz.Bridge.getUser()+"')", "#"+timelineid).parents('div.needs-cleanup').addClass('reply');
 	
 	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');
+
 	
 }
 

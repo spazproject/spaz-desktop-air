@@ -16,9 +16,9 @@ Spaz.Menus.initAll = function() {
 		Spaz.dump('Native Menus for OS X');
 		air.NativeApplication.nativeApplication.menu = Spaz.Menus.createRootMenu('OSX');
 	} else {
-		// Spaz.dump('Native Menus in Windows not supported');
-		Spaz.dump('Creating Windows root menu');
-		window.nativeWindow.menu = Spaz.Menus.createRootMenu();
+		Spaz.dump('Native Menus in Windows not supported');
+		// Spaz.dump('Creating Windows root menu');
+		// window.nativeWindow.menu = Spaz.Menus.createRootMenu();
 	}
 	
 	// if( air.NativeWindow.supportsMenu && (window.nativeWindow.systemChrome != air.NativeWindowSystemChrome.NONE) ) {
@@ -34,10 +34,10 @@ Spaz.Menus.initAll = function() {
 	// dock/systray icon menus
 	if(air.NativeApplication.supportsDockIcon){ // dock on OS X
 		Spaz.dump('Dock Menus for OS X');
-		// var iconLoader = new air.Loader();
-		//         iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
-		//                                                 Spaz.Menus.iconLoadComplete);
-		//         iconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
+		var iconLoader = new air.Loader();
+        iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
+                                                Spaz.Menus.iconLoadComplete);
+        iconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
         air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 
 
@@ -89,14 +89,7 @@ Spaz.Menus.displayContextMenu = function(event) {
 //Reports the chosen menu command
 Spaz.Menus.itemSelected = function(event){
 	Spaz.dump("Selected item: " + event.target.label);
-	//	Spaz.Debug.showProps(event.target, 'eventtarget');
 	Spaz.dump('event.target.name:' + event.target.name);
-	//	Spaz.Debug.showProps(Spaz.Menus, 'Spaz.Menus');
-	//	console.open();
-	// console.log('event.target:');
-	// console.dir(event.target);
-	
-	//eventLog.innerHTML = "Selected item: " + event.target.label + "\n";e
 	
 	if (event.target.name == "exit") {
 		Spaz.dump('Calling Spaz.Prefs.windowClosingHandler');
@@ -120,12 +113,12 @@ Spaz.Menus.itemSelected = function(event){
 	}
 	
 	else if (event.target.name == "about") {
-		Spaz.dump('Calling Spaz.Bridge.menuPrefs');
+		Spaz.dump('Calling Spaz.Bridge.menuAbout');
 		Spaz.Bridge.menuAbout();
 	}
 	
 	else if (event.target.name == "feedback") {
-		Spaz.dump('Calling Spaz.Bridge.UI.prepReply');
+		Spaz.dump('Calling Spaz.Bridge.menuFeedback');
 		Spaz.Bridge.menuFeedback('spaz');
 	}
 	else if (event.target.name == "check") {
@@ -133,7 +126,7 @@ Spaz.Menus.itemSelected = function(event){
 		Spaz.Update.updater.checkForUpdate();
 	}
 	else if (event.target.name == "help") {
-		Spaz.dump('Calling Spaz.Bridge.menuPrefs');
+		Spaz.dump('Calling Spaz.Bridge.menuHelp');
 		Spaz.Bridge.menuHelp();
 	}
 	
@@ -332,7 +325,7 @@ Spaz.Menus.createHelpMenu = function(){
 
 
 Spaz.Menus.setSystrayTooltip = function(msg){
-	if (air.Shell.supportsSystemTrayIcon) {
-		SystemItrayIcon(Shell.shell.icon).tooltip = msg;
+	if (air.NativeApplication.supportsSystemTrayIcon) {
+		SystemItrayIcon(air.NativeApplication.nativeApplication.icon).tooltip = msg;
 	}
 }

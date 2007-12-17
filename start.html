@@ -41,7 +41,7 @@ function startApp() {
 	options.transparent = true;
 	
 	// we use a lightweight window to have the app not show in the taskbar
-	if (prefs.minimizeToSystray && air.Shell.supportsSystemTrayIcon) {
+	if (prefs.minimizeToSystray && air.NativeApplication.supportsSystemTrayIcon) {
 		options.type = "utility";
 	}
 	

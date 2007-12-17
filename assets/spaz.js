@@ -337,6 +337,14 @@ function get_relative_time(time_value) {
 }
 
 
+function httpTimeToInt(entryDate) {
+	var parsedDate = new Date;
+	parsedDate.setTime(Date.parse(entryDate));
+	return parsedDate.getTime();
+	// var now = new Date;
+}
+
+
 
 //DONE: we should allow this call through bridge
 function openInBrowser(url) {
