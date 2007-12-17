@@ -672,7 +672,7 @@ Spaz.UI.addEntryToMainTimeline = function(entry) {
 		var isDM = false;
 		var isSent = false;
 		
-		air.trace('prepending '+entry.id)
+		// air.trace('prepending '+entry.id)
 		
 		if (entry.sender) {
 			entry.user = entry.sender
@@ -792,7 +792,7 @@ Spaz.UI.addEntryToMainTimeline = function(entry) {
 Spaz.UI.sortTimeline = function(timelineid) {
 	var cells = $('#'+timelineid+' .timeline-entry');
 	
-	air.trace('cells length:'+cells.length);
+	// air.trace('cells length:'+cells.length);
 	
 	cells.sort(function(a, b) {
 		var inta = parseInt( $(a).attr('time') )
@@ -801,7 +801,7 @@ Spaz.UI.sortTimeline = function(timelineid) {
 		return diff;
 	}, true).remove().appendTo('#'+timelineid);
 	
-	air.trace('done sorting');
+	// air.trace('done sorting');
 }
 
 
@@ -1013,11 +1013,11 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 	// apply even class
 	$("#"+timelineid + ' .timeline-entry:nth-child(even)').addClass('even');
-	air.trace($("#"+timelineid + ' .timeline-entry:nth-child(even)')[0].outerHTML);
+	// air.trace($("#"+timelineid + ' .timeline-entry:nth-child(even)')[0].outerHTML);
 	
 	// apply odd class
 	$("#"+timelineid + ' .timeline-entry:nth-child(odd)').addClass('odd');
-	air.trace($("#"+timelineid + ' .timeline-entry:nth-child(odd)')[0].outerHTML);
+	// air.trace($("#"+timelineid + ' .timeline-entry:nth-child(odd)')[0].outerHTML);
 	
 
 	// animate in new stuff
@@ -1068,6 +1068,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		// fix entity &#123; style extra encoding
 		this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
 					
+
 		// convert inline links
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\]\)\s&]+)([\)\]]?)/gi, '$1$2<a href="$3://$4" title="Open $3://$4 in a browser window" class="inline-link">go&raquo;</a>$5');
 	
@@ -1080,9 +1081,6 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		// @usernames at the beginning of lines
 		this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a href="http://twitter.com/$1" class="inline-reply" title="View $1\'s profile">@$1</a>');
 
-		// inline non-http:// links like foo.com or bar.foo.edu
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9\.-]+\.[\a-zA-Z]{1,4})/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>');
-		
 		if (Spaz.UI.useMarkdown) {
 			// Spaz.dump('Pre-Markdown:'+this.innerHTML);
 			
@@ -1094,6 +1092,15 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 			// replace hrefs from markdown with onClick calls 
 			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'href="$1" title="Open $1 in a browser window" class="inline-link"');
 		}
+
+		// inline non-http:// links like foo.com or bar.foo.edu
+		var before = this.innerHTML;
+		this.innerHTML = this.innerHTML.replace(/(^|\s)([a-zA-Z0-9-]{2,}+\.[a-zA-Z]{2,4})([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$3');
+		if (before != this.innerHTML) {
+			air.trace("BEFORE:\n"+before);
+			air.trace("AFTER:\n"+this.innerHTML);
+		}
+
 		
 		// Spaz.dump('Post conversion:'+this.innerHTML);
 
