@@ -6,11 +6,9 @@ Spaz.Handlers
 if (!Spaz.Handlers) Spaz.Handlers = {};
 
 Spaz.Handlers.selectEntry = function(event) {
+
 	var jqentry = event.data.jqentry;
 
-	air.trace(event.target.tagName);
-	
-	air.trace('unselecting tweets');
 	Spaz.dump('unselected tweets');
 	$('div.timeline-entry').removeClass('ui-selected');
 	
@@ -121,4 +119,60 @@ Spaz.Handlers.showContextMenu = function(event) {
 		Spaz.dump('no http link found');
 	}
 	
+}
+
+
+
+Spaz.Handlers.keyboardMove = function(dir) {
+	
+	var timelineid = 'timeline-friends';
+
+	if (!dir) { dir = 'down' }
+	
+	if (dir == 'down') {
+		var movefunc = 'next';
+		var wrapselc = 'first';
+	} else if (dir == 'up') {
+		dir = 'up'
+		var movefunc = 'prev';
+		var wrapselc = 'last';
+	} else {
+		return false;
+	}
+	
+	// get current selected
+	var jqsel = $('#'+timelineid+' div.ui-selected');
+	// alert('selected:'+selected.length);
+	//alert('moving:'+movefunc+'/'+wrapselc+"\n"+'selected:'+selected.length + "\n"+'current:'+selected.html());
+	
+	// if none selected, or there is no 'next', select first
+	if (jqsel.length == 0 ) {
+		air.trace('nothing is selected')
+		Spaz.Handlers.keyboardMoveSelect($('#'+timelineid+' div.timeline-entry:'+wrapselc), timelineid)
+		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected');
+	} else if (jqsel[movefunc]('div.timeline-entry').length == 0) {
+		air.trace('we are at the beginning or end')
+		Spaz.Handlers.keyboardMoveSelect($('#'+timelineid+' div.timeline-entry:'+wrapselc), timelineid)
+		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected');				
+	} else {
+		air.trace('something is now selected')
+		Spaz.Handlers.keyboardMoveSelect(jqsel[movefunc]('div.timeline-entry'), timelineid);
+	}
+	// if selected is at bottom, go to top
+}
+
+
+
+Spaz.Handlers.keyboardMoveSelect = function(jqelement, timelineid) {	
+	// unselect everything
+	$('#'+timelineid+' div.timeline-entry').removeClass('ui-selected');
+	
+	// select passed
+	jqelement.toggleClass('ui-selected');
+	$('#'+timelineid+'').scrollTo(jqelement, {
+							offset:-25,
+							speed:90,
+							easing:'swing'
+							}
+	);
 }

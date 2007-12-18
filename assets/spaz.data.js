@@ -564,8 +564,7 @@ Spaz.Data.onAjaxComplete = function(id, data) {
 		Spaz.UI.cleanupTimeline(Spaz.UI.mainTimelineId);
 		
 	} else {
-		Spaz.dump("Error: no data returned from "+url);
-		alert('no data returned from '+id)
+		Spaz.dump("Error: no data returned from "+id);
 	}
 }
 

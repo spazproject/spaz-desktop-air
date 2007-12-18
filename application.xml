@@ -6,10 +6,10 @@
 	http://www.adobe.com/go/air_1.0_application_descriptor. -->
 	<id>Spaz.AIR</id>
 	<name>Spaz</name>
-	<version>0.3.5.20071216212612</version>
+	<version>0.3.5.20071217214134</version>
 	<filename>Spaz</filename>
 	<description>A Twitter client</description>
-	<copyright>(c) Funkatron Productions</copyright>
+	<copyright>Copyright Funkatron Productions</copyright>
 	<initialWindow>
 		<content>root.html</content>
 		<title>Spaz</title>
