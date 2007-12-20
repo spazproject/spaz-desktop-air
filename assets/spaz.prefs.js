@@ -12,7 +12,7 @@ Spaz.Prefs.user = '';
 Spaz.Prefs.pass = '';
 
 // Prefs for window look
-Spaz.Prefs.refreshInterval = 120000; // 2 minutes in msecs
+Spaz.Prefs.refreshInterval = 180000; // 3 minutes in msecs
 Spaz.Prefs.windowOpacity   = 100;
 
 // Show NativeMenus -- hardcoded
@@ -147,8 +147,8 @@ Spaz.Prefs.processXMLData = function()
 			Spaz.dump('Spaz.Prefs.handleHTTPAuth found:'+Spaz.Prefs.handleHTTPAuth);
 		}
 	}
-	if (isNaN(Spaz.Prefs.refreshInterval)) {Spaz.Prefs.refreshInterval = 120000;}
-	if (Spaz.Prefs.refreshInterval < 60000) { Spaz.Prefs.refreshInterval = 60000 } // minimum 1 minute
+	if (isNaN(Spaz.Prefs.refreshInterval)) {Spaz.Prefs.refreshInterval = 180000;}
+	if (Spaz.Prefs.refreshInterval < 180000) { Spaz.Prefs.refreshInterval = 180000 } // minimum 1 minute
 	Spaz.dump('Spaz.Prefs.refreshInterval:'+Spaz.Prefs.refreshInterval);
 	Spaz.dump('Spaz.Prefs.handleHTTPAuth:'+Spaz.Prefs.handleHTTPAuth);
 }

@@ -12,7 +12,7 @@ body {
 	height:100%;
 	display:block;
 }
-a, a:link {
+a, a:link, .clickable {
 	color:#333399;
 	text-decoration:none;
 	cursor:pointer;
@@ -291,7 +291,7 @@ div.user {
 	/*border:1px solid red;*/
 }
 
-div.user-image img {
+img.user-image {
 	/*-webkit-box-shadow:0px -1px 5px #333;*/
 	display:inline;
 	width:12px;
@@ -453,8 +453,8 @@ div.user-list  div.user-screen-name {
 	position:absolute;
 	background-image: url('images/user-detail-bg.png');
 }
-#friendslist-detail div.user-image img,
-#followerslist-detail div.user-image img {
+#friendslist-detail img.user-image,
+#followerslist-detail img.user-image {
 	height:48px;
 	width:48px;
 }

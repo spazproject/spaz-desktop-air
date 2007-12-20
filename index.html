@@ -41,11 +41,12 @@ TODO:
 
 
 	<!-- jQuery libs -->
-	<script src="assets/jquery-1.2.1.js" type="text/javascript"></script>
+	<script src="assets/jquery-nightly.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery.dimensions.js" type="text/javascript"></script>
 	<script src="assets/jquery.moreSelectors.js" type="text/javascript"></script>
 	<script src="assets/jquery.scrollTo.js" type="text/javascript"></script>
 	<script src="assets/jquery.array.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.intercept.1.0.2.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!-- jQuery.UI libs -->
 	<script src="assets/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
@@ -168,6 +169,10 @@ TODO:
 				<!-- FRIENDS AND YOU TIMELINE -->
 				<div class="TabbedPanelsContent" id="panel-friends">
 					<div spry:region="Spaz.Data.ds_friends" id="timeline-friends" class="timeline">
+						<!-- onmouseover="Spaz.UI.focusHandler()"
+						onmouseout="Spaz.UI.blurHandler()"
+						onclick="Spaz.UI.clickHandler()" -->
+
 				
 					</div>
 					<!-- <div class="timeline-pager">
@@ -601,7 +606,7 @@ TODO:
 		Keyboard shortcut definitions
 		**/
 		document.onkeydown = Spaz.UI.keyboardHandler
-	
+			
 		// document.onclick   = function(ev) {
 		// 	alert(event.target.id + ':' + event.target.tagName);
 		// };
@@ -633,7 +638,68 @@ TODO:
 			Spaz.Bridge.startResize();
 		}
 	
-
+		
+		// stuff to load when this doc loads
+		$(document).ready( function() {
+			
+			$('body').intercept('mouseover', {
+					'a[title]':function() {
+						Spaz.UI.showTooltip(this, $(this).attr('title'));
+						air.trace(this.outerHTML);
+					},
+					'.user-screen-name[title]':function() {
+						Spaz.UI.showUserTooltip(this, $(this).attr('title'));
+					},
+					'.user-image[title]':function() {
+						Spaz.UI.showUserTooltip(this, $(this).attr('title'));
+					},
+				})
+				.intercept('mouseout', {
+					'[title]':function() {
+						Spaz.UI.hideTooltips();
+					}
+				})
+				.intercept('click', {
+					'a[href]':function() {
+						var url = $(this).attr('href');
+						air.trace(url);
+						openInBrowser(url);
+						return false;
+					},
+					'.user-screen-name':function() {
+						var url = 'http://twitter.com/'+$(this).attr('user-screen_name');
+						openInBrowser(url);
+					},
+					'.user-image':function() {
+						var url = 'http://twitter.com/'+$(this).attr('user-screen_name');
+						openInBrowser(url);
+					},
+					'.status-action-fav':function() {
+						Spaz.Data.makeFavorite($(this).attr('entry-id'))
+					},
+					'.status-action-dm':function() {
+						Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
+					},
+					'.status-action-reply':function() {
+						Spaz.UI.prepReply($(this).attr('user-screen_name'));
+					},
+					'.status-action-del':function() {
+						Spaz.Data.destroyStatus($(this).attr('entry-id'))
+					},
+					'.timeline-entry':function() {
+						$('div.timeline-entry').removeClass('ui-selected');
+						$(this).addClass('ui-selected');
+					},
+					'.timeline-entry *':function() { // this one needs to be last so the more specific ones above take precedence
+						$('div.timeline-entry').removeClass('ui-selected');
+						var entry = $(this).parents('.timeline-entry');
+						entry.addClass('ui-selected');
+					},
+				})
+			 // end intercept
+		
+		}) // end $(document).ready function
+		
 
 	</script>
 

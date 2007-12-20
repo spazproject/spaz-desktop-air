@@ -14,7 +14,7 @@ body {
 	color:#009900;
 /*	background-color:#000000;*/
 }
-a, a:link {
+a, a:link, .clickable {
 	color:#00CC00 !important;
 	border-bottom:1px solid #00CC00 !important;
 	text-decoration:none;
@@ -344,7 +344,7 @@ div.user {
 	margin:0;
 }
 
-div.user-image img {
+img.user-image {
 	/*-webkit-box-shadow:0px -1px 5px #333;*/
 	display:inline;
 	border:1px solid #009900;
@@ -497,8 +497,8 @@ div.directory {
 	height:48px;
 	width:48px;
 }
-#friendslist-detail div.user-image img,
-#followerslist-detail div.user-image img {
+#friendslist-detail img.user-image,
+#followerslist-detail img.user-image {
 	height:48px;
 	width:48px;
 }

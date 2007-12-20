@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 
-a, a:link {
+a, a:link, .clickable {
 	color:#8888BB;
 	text-decoration:none;
 	cursor:pointer;
@@ -302,7 +302,7 @@ div.user {
 	/*border:1px solid red;*/
 }
 
-div.user-image img {
+img.user-image {
 	/*border:3px double #999999;*/
 	/*margin-bottom:2px;*/
 	/*background-color:#FFFFFF;*/

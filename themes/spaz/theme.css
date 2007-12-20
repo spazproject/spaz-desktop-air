@@ -254,7 +254,7 @@ span.statusbar-username {
 
 div.timeline-entry {
 	background-color: #CCCC99;
-	padding: 10px;
+	padding: 10px 5px;
 	border-top-width: medium;
 	border-top-style: solid;
 	border-top-color: #999966;
@@ -279,15 +279,15 @@ div.timeline-entry.dm {
 
 div.user {
 	float:left;
-	width:75px;
+	width:60px;
 	text-align:center;
 	overflow:visible;
-	margin-right:10px;
+	margin-right:5px;
 	position:relative;
 	/*border:1px solid red;*/
 }
 
-div.user-image img {
+img.user-image {
 	border:3px double #999999;
 	margin-bottom:2px;
 	background-color:#FFFFFF;
@@ -309,7 +309,7 @@ div.user-screen-name {
 
 div.status {
 	font-size:13px;
-	margin:0 0 0 85px;
+	margin:0 0 0 70px;
 	padding:0;
 	/*position:relative;*/
 	/*border:1px solid blue;*/
@@ -369,7 +369,7 @@ div.even {
 	background-repeat: repeat-x;
 }
 
-a, a:link {
+a, a:link, .clickable {
 	color:#333399;
 	text-decoration:none;
 	cursor:pointer;
