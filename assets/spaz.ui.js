@@ -583,7 +583,19 @@ Spaz.UI.showUserTooltip = function(el, str) {
 
 
 
-Spaz.UI.showTooltip = function(el, str) {
+Spaz.UI.showReplyTooltip = function(el, str) {
+	
+	var username = $(this).text().replace(/@/, '');
+	
+	var url = 'http://twitter.com/statuses/user_timeline.json'
+	var data = {
+		'id':username,
+		'count':1
+	}
+	$.getJSON(url, data, function(data){
+		air.trace('returned JSON:'+data.length);
+	})
+	
 	var minwidth = 100;
 
 	var tt = $('#tooltip');
@@ -600,6 +612,7 @@ Spaz.UI.showTooltip = function(el, str) {
 	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
 	str = "<div>"+str+"</div>";
+
 	
 	// show the link context menu
 	Spaz.dump('opening context menu');
@@ -613,15 +626,6 @@ Spaz.UI.showTooltip = function(el, str) {
 	// I kinda stole this from the excellent jquery.tooltip, which caused mem leakage (unfortunately)
 	var vp  = Spaz.UI.getViewport();
 	var off = tt.offset();
-
-	// Spaz.dump('vp.x:'+vp.x)
-	// Spaz.dump('vp.x:'+vp.y)
-	// Spaz.dump('vp.cx:'+vp.cx)
-	// Spaz.dump('vp.cy:'+vp.cy)
-	// Spaz.dump('off.top:'+off.top)
-	// Spaz.dump('off.left:'+off.left)
-	// Spaz.dump('tt.width():'+tt.width())
-	// Spaz.dump('tt.height():'+tt.height())
 	
 	// check horizontal position
 	if (vp.x + vp.cx < off.left + tt.width()) {
@@ -642,7 +646,139 @@ Spaz.UI.showTooltip = function(el, str) {
 		}
 	}
 	
-	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, 2000);
+	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, 8000);
+	
+}
+
+
+
+
+Spaz.UI.showTooltip = function(el, str, previewurl) {
+	
+	air.trace('previewurl:'+previewurl);
+	
+	var minwidth = 100;
+
+	var tt = $('#tooltip');
+	tt.stop();
+	tt.css('width', '');
+	tt.css('height', '');
+	
+	// hide any showing tooltips
+	Spaz.dump('hiding tooltip');
+
+	tt.hide();
+	
+	// clear any running tooltip hiding timeouts
+	clearTimeout(Spaz.UI.tooltipHideTimeout);
+	
+	str = "<div>"+str+"</div>";
+
+	
+	// show the link context menu
+	Spaz.dump('opening context menu');
+	tt.css('left', event.pageX+10)
+		.css('top',  event.pageY+20)
+		.html(str)
+		.show()
+		.css('opacity', 0)
+		.animate({'opacity':'0.85'}, 200);
+	
+	if (/^@[a-zA-Z0-9_-]+$/.test($(el).text())) {
+		var username = $(el).text().replace(/@/, '');
+		
+		var previewid = "preview-username-"+username;
+		
+		$("#tooltip").append("<div class='preview' id='"+previewid+"' style='display:none; position:relative; overflow:hidden; margin-top:.7em'></div>");
+		
+		
+		air.trace('username is '+username)
+		
+		var url = 'http://twitter.com/statuses/user_timeline.json'
+		var data = {
+			'id':username,
+			'count':1
+		}
+		$.get(url, data, function(data, textStatus) {
+			air.trace('textStatus:'+textStatus);
+			air.trace('DATA:'+data);
+			try {
+				var tweets = eval(data);
+				if (tweets[0].text) {
+					$("#"+previewid).append("<img style='float:right' src='"+tweets[0].user.profile_image_url+"' />");
+					$("#"+previewid).append("<div><strong>"+tweets[0].user.name+" ("+tweets[0].user.screen_name+")</strong></div>");
+					$("#"+previewid).append("<div><em>"+tweets[0].user.location+"</em></div>");
+					$("#"+previewid).append("<div>"+tweets[0].user.description+"</div>");
+					$("#"+previewid).append('<div class="latest"><strong>Latest:</strong> '+tweets[0].text+'</div>');
+				} else if (tweets.error) {
+					$("#"+previewid).html('<strong>Error:</strong> '+tweets.error);
+				}
+				$("#"+previewid).fadeIn(500);
+				
+			} catch(e) {
+				Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name 
+				+ ". Error message: " + e.message)
+			}
+		})
+		
+	} else if (previewurl) {
+		
+		var previewid = "preview-link-"+getTimeAsInt();
+		
+		$("#tooltip").append("<div class='preview' id='"+previewid+"' style='display:none; position:relative; overflow:hidden; margin-top:.7em'></div>");
+		
+		
+		
+		// $("#tooltip .preview").load(previewurl+' h1', function(rtext, status, xhr) {
+		// 	$(this).fadeIn(500);
+		// });
+		
+		// $("#tooltip").append("<iframe src='"+previewurl+"' class='preview' style='display:none; position:relative; height:200px; width:200px; overflow:hidden'></iframe>");
+		// // $("#tooltip .preview").attr('src', previewurl);
+		// $("#tooltip .preview").fadeIn(500);
+		
+		$.get(previewurl, function(rtext, status, xhr) {
+			// var jqpreview = $(rtext);
+			air.trace('rtext:'+rtext);
+			var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
+			
+			// alert(rtext_matches);
+			
+			if (rtext_matches && rtext_matches[1]) {			
+				var title = rtext_matches[1];
+				// air.trace('jqpreview.innerText:'+jqpreview[0].innerText);
+				$("#"+previewid).html('<strong>Title:</strong> '+title);
+				$("#"+previewid).fadeIn(500);
+			}
+		});
+		
+		// $("#tooltip .preview")
+	}
+	
+	// I kinda stole this from the excellent jquery.tooltip, which caused mem leakage (unfortunately)
+	var vp  = Spaz.UI.getViewport();
+	var off = tt.offset();
+	
+	// check horizontal position
+	if (vp.x + vp.cx < off.left + tt.width()) {
+		Spaz.dump('horz over')
+		tt.css('left', parseInt(tt.css('left')) - (tt.width() + 20));
+		if (tt.offset().left < 5) {
+			tt.css('left', 5);
+		}
+	}
+	
+	
+	// check vertical position
+	if(vp.y + vp.cy < off.top + tt.height()) {
+		Spaz.dump('vert over');
+		tt.css('top', parseInt(tt.css('top')) - (tt.height() + 20));
+		if (tt.offset().top < 5) {
+			tt.css('top', 5);
+		}
+	}
+	
+	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, 8000);
 	
 }
 
@@ -733,7 +869,7 @@ Spaz.UI.addEntryToMainTimeline = function(entry) {
 		entryHTML = entryHTML + '	</div>';
 		entryHTML = entryHTML + '</div>';
 
-		air.trace("\n\n"+entryHTML);
+		// air.trace("\n\n"+entryHTML);
 
 
 		// Make the jQuery object and bind events
@@ -919,16 +1055,22 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 					
 
 		// convert inline links
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\]\)\s&]+)([\)\]]?)/gi, '$1$2<a href="$3://$4" title="Open $3://$4 in a browser window" class="inline-link">go&raquo;</a>$5');
-	
+		var before = this.innerHTML;
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\/]+)([^\]\)\s]+)(\s|$)/gi, '$1$2<a href="$3://$4$5" title="Open $4$5 in a browser window" class="inline-link">$4&raquo;</a>$6');
+		if (before != this.innerHTML) {
+			air.trace('BEFORE inline-links change: '+before);
+			air.trace('AFTER inline-links change: '+this.innerHTML);
+		}
+		
+		
 		// email addresses
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
 	
 		// convert @username reply indicators
-		this.innerHTML = this.innerHTML.replace(/(\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile">@$2</a>');
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile">@$2</a>');
 					
 		// @usernames at the beginning of lines
-		this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a href="http://twitter.com/$1" class="inline-reply" title="View $1\'s profile">@$1</a>');
+		// this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a href="http://twitter.com/$1" class="inline-reply" title="View $1\'s profile">@$1</a>');
 
 		if (Spaz.UI.useMarkdown) {
 			// Spaz.dump('Pre-Markdown:'+this.innerHTML);
@@ -944,10 +1086,10 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 		// inline non-http:// links like foo.com or bar.foo.edu
 		var before = this.innerHTML;
-		this.innerHTML = this.innerHTML.replace(/(^|\s)([a-zA-Z0-9-]{2,}+\.[a-zA-Z]{2,4})([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$3');
+		this.innerHTML = this.innerHTML.replace(/(^|\s)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+[a-zA-Z]{2,6}\.?)([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$4');
 		if (before != this.innerHTML) {
-			air.trace("BEFORE:\n"+before);
-			air.trace("AFTER:\n"+this.innerHTML);
+			// air.trace("BEFORE:\n"+before);
+			// air.trace("AFTER:\n"+this.innerHTML);
 		}
 
 		
@@ -955,10 +1097,10 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 	});
 	
-	// convert all <a href> to <a onclick...>
+	// add contentmenu calls
 	$("div.needs-cleanup div.status-text", "#"+timelineid).find('a[href]').each(function(i) {
 		var jqthis = $(this);
-		air.trace(this.outerHTML);
+		// air.trace(this.outerHTML);
 		var url = jqthis.attr('href');
 		jqthis.bind('contextmenu', { 'jq':jqthis, 'url':url }, Spaz.Handlers.showContextMenu)
 				// .removeAttr('href');
@@ -1011,7 +1153,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	})
 	
 	$("div.needs-cleanup").each(function() {
-		air.trace(this.outerHTML);
+		// air.trace(this.outerHTML);
 	})
 	
 	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');

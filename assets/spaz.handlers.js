@@ -52,7 +52,7 @@ Spaz.Handlers.prepReply = function(event) {
 
 
 Spaz.Handlers.showUserTooltip = function(event) {
-	air.trace('Event.data:'+event.data);
+	// air.trace('Event.data:'+event.data);
 	var el = event.data.jq[0];
 	var userdata = event.data.userdata;
 	var data = userdata.split('|')

@@ -23,7 +23,6 @@ $.ajaxSetup(
 	{
 		timeout:1000*20, // 20 second timeout
 		async:true,
-		cache:false
 	}
 );
 
@@ -344,6 +343,11 @@ function httpTimeToInt(entryDate) {
 	// var now = new Date;
 }
 
+
+function getTimeAsInt() {
+	var now = new Date;
+	return now.getTime();
+}
 
 
 //DONE: we should allow this call through bridge

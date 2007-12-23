@@ -13,7 +13,7 @@ Spaz.Info.getVersion = function() {
 	// 	if (appFile) {
 		// fs.open(appFile, air.FileMode.READ);
 		var appXML = air.NativeApplication.nativeApplication.applicationDescriptor
-		air.trace(appXML)
+		// air.trace(appXML)
 		// fs.close();
 		
 		var domParser = new DOMParser();

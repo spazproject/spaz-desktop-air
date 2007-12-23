@@ -643,16 +643,17 @@ TODO:
 		$(document).ready( function() {
 			
 			$('body').intercept('mouseover', {
-					'a[title]':function() {
-						Spaz.UI.showTooltip(this, $(this).attr('title'));
-						air.trace(this.outerHTML);
-					},
 					'.user-screen-name[title]':function() {
 						Spaz.UI.showUserTooltip(this, $(this).attr('title'));
 					},
 					'.user-image[title]':function() {
 						Spaz.UI.showUserTooltip(this, $(this).attr('title'));
 					},
+					'a[title]':function() {
+						Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
+						// air.trace(this.outerHTML);
+					},
+
 				})
 				.intercept('mouseout', {
 					'[title]':function() {
@@ -662,7 +663,7 @@ TODO:
 				.intercept('click', {
 					'a[href]':function() {
 						var url = $(this).attr('href');
-						air.trace(url);
+						// air.trace(url);
 						openInBrowser(url);
 						return false;
 					},

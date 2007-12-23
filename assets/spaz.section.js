@@ -1,45 +1,20 @@
 if (!Spaz.Section) Spaz.Section = {};
 
+
 Spaz.Section.friends = {
 	panel:    'panel-friends',
 	timeline: 'timeline-friends', 
 	tab:      'tab-friends',
 	tabIndex: 0,
-	url:      'https://twitter.com/statuses/friends_timeline.json',
+	url: new Array(Spaz.Data.url_friends_timeline,Spaz.Data.url_replies_timeline,Spaz.Data.url_dm_timeline),
 	lastid:   0,
 	lastcheck:0,
 	currdata: null,
  	prevdata: null,
 	autoload: true,
-	mincachetime:1
+	mincachetime:60000*15
 }
-Spaz.Section.replies = {
-	panel:    'panel-replies',
-	timeline: 'timeline-replies', 
-	tab:      'tab-replies',
-	tabIndex: 1,
-	url:      'https://twitter.com/statuses/replies.json',
-	lastid:   0,
-	lastcheck:0,
-	currdata: null,
- 	prevdata: null,
-	autoload: true,
-	mincachetime:1
-}
-Spaz.Section.dms = {
-	panel:    'panel-dms',
-	timeline: 'timeline-dms', 
-	tab:      'tab-dms',
-	tabIndex: 2,
-	url:      'https://twitter.com/direct_messages.json',
-	lastid:   0,
-	lastcheck:0,
-	currdata: null,
- 	prevdata: null,
-	autoload: true,
-	mincachetime:1
-	
-}
+
 Spaz.Section.user = {
 	panel:    'panel-user',
 	timeline: 'timeline-user', 
@@ -52,8 +27,8 @@ Spaz.Section.user = {
  	prevdata: null,
 	autoload: false,
 	mincachetime:1
-	
 }
+
 Spaz.Section.public = {
 	panel:    'panel-public',
 	timeline: 'timeline-public', 

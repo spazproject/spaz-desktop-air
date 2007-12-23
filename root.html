@@ -43,11 +43,11 @@ function rootInit() {
 	window.htmlLoader.manageCookies = false;
 	window.htmlLoader.paintsDefaultBackground = false;
 	window.htmlLoader.cacheResponse = false;
-	window.htmlLoader.useCache = false;
+	// window.htmlLoader.useCache = false;
 	
 	air.URLRequestDefaults.manageCookies = false;
 	air.URLRequestDefaults.cacheResponse = false;
-	air.URLRequestDefaults.useCache = false;
+	// air.URLRequestDefaults.useCache = false;
 	
 	if (Spaz.Prefs.handleHTTPAuth) {
 		air.trace('Turning ON HTTPAuth handling')

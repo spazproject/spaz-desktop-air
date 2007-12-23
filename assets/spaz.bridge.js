@@ -28,7 +28,7 @@ air.trace('parent bridge');
 			if(i[0]!='$')
 			{
 				bridge[i]=Spaz.Bridge[i];
-				air.trace('bridging '+i)
+				// air.trace('bridging '+i)
 			}
 		}
 		
