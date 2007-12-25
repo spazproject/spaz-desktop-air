@@ -62,8 +62,10 @@ function rootInit() {
 	air.trace('Applying Flash Filter Dropshadow');
 	window.htmlLoader.filters = window.runtime.Array(
 		new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
+		// new window.runtime.flash.filters.ColorMatrixFilter([0.3086, 0.6094, 0.0820, 0, 0, 0.3086, 0.6094, 0.0820, 0, 0, 0.3086, 0.6094, 0.0820, 0, 0, 0, 0, 0, 1, 0]),
+		// new window.runtime.flash.filters.GradientBevelFilter(4.0, 45, [0xFF0000, 0xCC0000, 0x000000], [1, 0, 1], [0, 128, 255], 4.0, 4.0, 1, 1, "inner", false)
 	);
-
+		//new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
 
 	if (Spaz.Prefs.showNativeMenus) {
 		air.trace('Initializing NativeMenus')

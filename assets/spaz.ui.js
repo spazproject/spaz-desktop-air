@@ -40,6 +40,7 @@ Spaz.UI.SOUND_UPDATE	= '/assets/sounds/TokyoTrainStation/Csnd.mp3';
 Spaz.UI.SOUND_STARTUP	= '/assets/sounds/TokyoTrainStation/On.mp3';
 Spaz.UI.SOUND_SHUTDOWN	= '/assets/sounds/TokyoTrainStation/Off.mp3';
 Spaz.UI.SOUND_NEW		= '/assets/sounds/TokyoTrainStation/New.mp3';
+Spaz.UI.WILHELM			= '/assets/sounds/wilhelm.mp3';
 
 Spaz.UI.playSound = function(url, callback) {
 	if (!Spaz.UI.playSounds) {
@@ -63,6 +64,10 @@ Spaz.UI.playSoundShutdown = function(callback) {
 
 Spaz.UI.playSoundNew = function() {
 	Spaz.UI.playSound(Spaz.UI.SOUND_NEW);
+}
+
+Spaz.UI.playSoundWilhelm = function() {
+	Spaz.UI.playSound(Spaz.UI.WILHELM);
 }
 
 
@@ -246,6 +251,28 @@ Spaz.UI.hideLoading = function() {
 	// $('#loading').DropOutLeft(500);
 	$('#loading').fadeOut(500);
 }
+
+
+
+// Spaz.UI.animateWilhelm = function() {
+// 	$('#container').prepend('<h2 id="wilhelm" style="display:block; opacity:.1; font-size:.1em; position:absolute; z-index:1000">WILHELM</h2>');
+// 	$('#wilhelm').css('top', $('#container').height()/2);
+// 	// var left = '-'+$('#wilhelm').width()+'px';
+// 	// air.trace('LEFT:'+left);
+// 	// 
+// 	// $('#wilhelm').css('left', left);
+// 	$('#wilhelm').animate(
+// 		{
+// 			opacity:'.9',
+// 			'font-size':'20em',
+// 			// left:$('#container').width()+100,
+// 			
+// 		}, 1000, function() {
+// 		$(this).remove();
+// 	});
+// }
+
+
 
 /**
 * Styleswitch stylesheet switcher built on jQuery
@@ -477,6 +504,9 @@ Spaz.UI.prepReply = function(username) {
 Spaz.UI.sendUpdate = function() {
 	var entrybox = $('#entrybox');
 	if (entrybox.val() != '' && entrybox.val() != entryBoxHint) {
+		
+		air.trace('length:'+entrybox.val().length)
+		
 		Spaz.Data.update(entrybox.val(), Spaz.Bridge.getUser(), Spaz.Bridge.getPass());
 		// entrybox.val('');
 	}
@@ -808,12 +838,14 @@ Spaz.UI.hideTooltips = function() {
 
 
 
-Spaz.UI.addEntryToMainTimeline = function(entry) {
+Spaz.UI.addEntryToTimeline = function(entry, section) {
 	// alert('adding:'+entry.id)
 	
-	var timelineid = Spaz.UI.mainTimelineId;
+	var timelineid = section.timeline;
 	
-	if ( $('#'+Spaz.UI.mainTimelineId+'-'+entry.id, jqTL).length<1 ) {
+	
+	
+	if ( $('#'+timelineid+'-'+entry.id, jqTL).length<1 ) {
 		var isDM = false;
 		var isSent = false;
 		
@@ -822,6 +854,10 @@ Spaz.UI.addEntryToMainTimeline = function(entry) {
 		if (entry.sender) {
 			entry.user = entry.sender
 			isDM=true;
+		}
+		
+		if (timelineid == 'timeline-user') {
+			isSent = true;
 		}
 
 		// if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
@@ -846,12 +882,12 @@ Spaz.UI.addEntryToMainTimeline = function(entry) {
 		entryHTML = entryHTML + '	</div>';
 		entryHTML = entryHTML + '	<div class="status" id="status-'+entry.id+'">';
 		entryHTML = entryHTML + '		<div class="status-text" id="status-text-'+entry.id+'">'+entry.text+'</div>';
-		if (timelineid != 'timeline-dms') {
+		if (!isDM) {
 			entryHTML = entryHTML + '		<div class="status-actions">';
 			entryHTML = entryHTML + '			<img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" title="Make this message a favorite" class="status-action-fav clickable" id="status-'+entry.id+'-fav" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" />';
 			entryHTML = entryHTML + '			<img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" title="Send direct message to this user" class="status-action-dm clickable" id="status-'+entry.id+'-dm" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" />';
 			entryHTML = entryHTML + '			<img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" title="Send reply to this user" class="status-action-reply clickable" id="status-'+entry.id+'-reply" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" />';
-			if (timelineid == 'timeline-user') {
+			if (isSent) {
 				entryHTML = entryHTML + '			<a title="Delete this message" class="status-action-del clickable" id="status-'+entry.id+'-del" entry-id="'+entry.id+'">del</a>';
 			}
 			entryHTML = entryHTML + '		</div>';
@@ -863,6 +899,9 @@ Spaz.UI.addEntryToMainTimeline = function(entry) {
 		} else {
 			entryHTML = entryHTML + '		<div class="status-actions">';
 			entryHTML = entryHTML + '			<img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" title="Send direct message to this user" class="status-action-dm clickable" id="status-'+entry.id+'-dm" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" /></a>';
+			if (isSent) {
+				entryHTML = entryHTML + '			<a title="Delete this message" class="status-action-del clickable" id="status-'+entry.id+'-del" entry-id="'+entry.id+'">del</a>';
+			}
 			// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' class="status-action-del" id="status-'+entry.id+'-del">del</a>';
 			entryHTML = entryHTML + '		</div>';
 		}
@@ -930,7 +969,7 @@ Spaz.UI.addEntryToMainTimeline = function(entry) {
 		
 		// FINALLY -- prepend the entry
 
-		var jqTL = $('#'+Spaz.UI.mainTimelineId);
+		var jqTL = $('#'+timelineid);
 		jqentry.prependTo(jqTL);
 		
 		// // bind onclick on load
@@ -1011,10 +1050,11 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
 	})
 
-	// scroll to top
-	Spaz.dump('scrolling to .timeline-entry:eq(0) in #'+timelineid);
-	$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
-
+	if ($("#"+timelineid + ' .timeline-entry:eq(0)').length > 0) {
+		// scroll to top
+		Spaz.dump('scrolling to .timeline-entry:eq(0) in #'+timelineid);
+		$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
+	}
 
 	// announce new items
 	if ($("div.needs-cleanup", "#"+timelineid).length > 0) {

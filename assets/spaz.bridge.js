@@ -86,7 +86,7 @@ air.trace('parent bridge');
 		if (callback) {
 			s.addEventListener(air.Event.SOUND_COMPLETE, callback);
 		} else {
-			//s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Bridge.$onSoundPlaybackComplete);
+			s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Bridge.$onSoundPlaybackComplete);
 		}
 		s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Bridge.makeWindowVisible);
 		
