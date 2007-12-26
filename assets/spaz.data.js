@@ -164,11 +164,12 @@ Spaz.Data.update = function(msg, username, password) {
 			Spaz.dump('reset #updateButton label');
 			if (msg.length == 140) {
 				Spaz.UI.playSoundWilhelm();
-				// Spaz.UI.animateWilhelm();
+				Spaz.UI.statusBar("Wilhelm!");
 			} else {
 				Spaz.UI.playSoundUpdate();
+				Spaz.UI.statusBar("Update succeeded");
 			}
-			Spaz.UI.statusBar("Update succeeded");
+			
 			
 			Spaz.UI.entryBox.reset();
 			Spaz.dump('reset entryBox (Spry)');
@@ -418,8 +419,8 @@ Spaz.Data.getDataForUrl = function(url, section) {
 		complete:function(xhr, msg){			
 			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
 				// alert("ERROR: Timeout");
-				Spaz.dump("Error:timeout on "+url);
-				Spaz.Data.onAjaxComplete(url, false);
+				Spaz.dump("Error: timeout on "+url);
+				// Spaz.Data.onAjaxComplete(url, false);
 				return;
 			}
 
@@ -462,7 +463,7 @@ Spaz.Data.getDataForUrl = function(url, section) {
 		},
 		error:function(xhr, msg, exc) {
 			Spaz.dump("Error:"+xhr.responseText+" from "+url);
-			alert("Error:"+xhr.responseText+" from "+url);
+			// alert("Error:"+xhr.responseText+" from "+url);
 		},
 		// success:function(data) {
 		// 	// alert("SUCCESS");

@@ -1096,7 +1096,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 		// convert inline links
 		var before = this.innerHTML;
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\/]+)([^\]\)\s]+)(\s|$)/gi, '$1$2<a href="$3://$4$5" title="Open $4$5 in a browser window" class="inline-link">$4&raquo;</a>$6');
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\/\s]+)([^\]\)\s]+)(\s|$)/gi, '$1$2<a href="$3://$4$5" title="Open $4$5 in a browser window" class="inline-link">$4&raquo;</a>$6');
 		if (before != this.innerHTML) {
 			air.trace('BEFORE inline-links change: '+before);
 			air.trace('AFTER inline-links change: '+this.innerHTML);
@@ -1217,6 +1217,12 @@ Spaz.UI.keyboardHandler = function(event) {
 		return true;
 	}
 
+	// CMD+T or CTRL+T
+	if (e.which == 84 && (e.metaKey || e.ctrlKey) ) {
+		$('#entrybox').focus();
+		return false;
+	}
+
 	// 'ENTER' if (e.which == 13 && e.shiftKey == true && e.srcElement.id == 'entrybox') {
 	if (e.which == 13 && e.srcElement.id == 'entrybox') {
 		Spaz.UI.sendUpdate();
@@ -1224,20 +1230,20 @@ Spaz.UI.keyboardHandler = function(event) {
 	}
 	
 	// 'r' reload the current tab
-	if (e.which == 82 && e.srcElement.id == 'home') {
+	if (e.which == 82 && e.srcElement.id != 'entrybox') {
 		Spaz.UI.reloadCurrentTab();
 		Spaz.restartReloadTimer();
 		return false;
 	}
 
 	// 'l' show shorten link dialog
-	if (e.which == 76 && e.srcElement.id == 'home') {
+	if (e.which == 76 && e.srcElement.id != 'entrybox') {
 		Spaz.UI.showShortLink();
 		return false;
 	}
 	
 	// '@' reply to selected user
-	if (e.which == 50 && e.shiftKey && e.srcElement.id == 'home') {
+	if (e.which == 50 && e.shiftKey && e.srcElement.id != 'entrybox') {
 		// get the current selection username
 		// Spaz.dump('getting current selection');
 		Spaz.dump('getting screenname from current selection');
@@ -1250,21 +1256,37 @@ Spaz.UI.keyboardHandler = function(event) {
 	}
 
 	// '1-9' Numbers for tabs
-	if ( (e.which >= 49 && e.which <= 56) && !e.shiftKey && e.srcElement.id == 'home') {
+	if ( ((e.which >= 49 && e.which <= 56) && !e.shiftKey && e.srcElement.id != 'entrybox')
+		|| ((e.which >= 49 && e.which <= 56) && !e.shiftKey && e.metaKey) ) {
 		var panelId = e.which-49;
 		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[panelId]);
 		Spaz.UI.tabbedPanels.showPanel(panelId);
 		return false;
 	}
 
-	if (e.which == 74 && e.srcElement.id == 'home') { // j
+	// ****************************************
+	// Keys to navigate timeline
+	// ****************************************
+	if (e.which == 74 && (e.metaKey || e.ctrlKey) ) { // CMD+j
 		Spaz.Handlers.keyboardMove('down');
+		return false;
 	}
 	
-	if (e.which == 75 && e.srcElement.id == 'home') { // k
+	if (e.which == 75 && (e.metaKey || e.ctrlKey) ) { // CMD+k
 		Spaz.Handlers.keyboardMove('up');
+		return false;
+	}
+
+	if (e.which == 74 && e.srcElement.id != 'entrybox') { // j
+		Spaz.Handlers.keyboardMove('down');
+		return false;
 	}
 	
+	if (e.which == 75 && e.srcElement.id != 'entrybox') { // k
+		Spaz.Handlers.keyboardMove('up');
+		return false;
+	}
+
 	
 	if (e.srcElement.id == 'home') {
 		Spaz.dump('keyboard Event =================');
@@ -1288,7 +1310,7 @@ Spaz.UI.focusHandler = function(event) {
 	e = event || window.event;
 	el = e.srcElement || e.target;
 	
-	Spaz.Bridge.trace('HOVER name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
+	Spaz.Bridge.trace('FOCUS name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
 };
 
 Spaz.UI.blurHandler = function(event) {
@@ -1304,193 +1326,6 @@ Spaz.UI.clickHandler = function(event) {
 	
 	Spaz.Bridge.trace('BLUR  name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
 };
-
-
-
-// DEPRECATED FOR MAIN TIMELINE
-Spaz.UI.createTimeline = function(section) {
-	// console.open()
-	//console.dir(section)
-	
-	var entries = section.currdata;
-	
-	timelineid = section.timeline
-	
-	// if (section.prevdata) {
-	// 	data = data.concat(section);
-	// } else {
-	// 	data = section.currdata;
-	// }
-	
-	entries = entries.sort( function(a,b) {
-		return a.id-b.id
-	})
-	
-	// reverse only if this is the first dataset for this timeline
-	if (!section.prevdata) {
-		var reversed = true;
-		entries = entries.reverse();
-	}
-	
-	// for (var i in entries) {
-	// 		air.trace(i+':'+entries[i].id);
-	// 	}
-	
-	// console.dir(entries)
-
-	
-	// $('#'+timelineid).empty();
-
-	var newentries = new Array();
-
-	for (i in entries) {
-		
-		var entry = entries[i];
-		
-		if ($("#"+timelineid + ' .entry-id:contains("['+entry.id+']")').length < 1) {
-			if (entry.sender) { var user  = entry.sender } else { var user  = entry.user }
-
-			if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
-
-			// need to double-slash single quotes to escape them properly below
-			var popupStr = (entry.user.name+' ('+entry.user.screen_name+')|'+entry.user.location+'|'+entry.user.description).replace(/'/gi, "\\'");
-
-			var timestamp = httpTimeToInt(entry.created_at)
-
-
-			var entryHTML = '';
-			entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" id="'+timelineid+'-'+entry.id+'" time="'+timestamp+'">';
-			entryHTML = entryHTML + '	<div class="entry-id" style="display:none">['+entry.id+']</div>';
-			entryHTML = entryHTML + '	<div class="entry-time" style="display:none">'+entry.created_at+'</div>'
-			entryHTML = entryHTML + '	<div class="user" id="user-'+entry.user.id+'">';
-			entryHTML = entryHTML + '		<div class="user-image"><a><img height="48" width="48" src="'+entry.user.profile_image_url+'" alt="'+entry.user.screen_name+'" /></a></div>';
-			entryHTML = entryHTML + '		<div class="user-screen-name"><a>'+entry.user.screen_name+'</a></div>';
-			entryHTML = entryHTML + '	</div>';
-			entryHTML = entryHTML + '	<div class="status" id="status-'+entry.id+'">';
-			entryHTML = entryHTML + '		<div class="status-text" id="status-text-'+entry.id+'">'+entry.text+'</div>';
-			if (timelineid != 'timeline-dms') {
-				entryHTML = entryHTML + '		<div class="status-actions">';
-				entryHTML = entryHTML + '			<a title="Make this message a favorite" class="status-action-fav" id="status-'+entry.id+'-fav"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-fav-off.png" /></a>';
-				entryHTML = entryHTML + '			<a title="Send direct message to this user" class="status-action-dm" id="status-'+entry.id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
-				entryHTML = entryHTML + '			<a title="Send reply to this user" class="status-action-reply" id="status-'+entry.id+'-reply"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-reply.png" /></a>';
-				if (timelineid == 'timeline-user') {
-					entryHTML = entryHTML + '			<a title="Delete this message" class="status-action-del" id="status-'+entry.id+'-del">del</a>';
-				}
-				entryHTML = entryHTML + '		</div>';
-				entryHTML = entryHTML + '		<div class="status-link">';
-				entryHTML = entryHTML + '			<a title="View full post in browser"><span class="status-created-at">'+entry.created_at+'</span></a>';
-				entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+entry.source+'</span></span>';
-				entryHTML = entryHTML + '			<span class="status-protected">'+entry.user.protected+'</span>';
-				entryHTML = entryHTML + '		</div>';
-			} else {
-				entryHTML = entryHTML + '		<div class="status-actions">';
-				entryHTML = entryHTML + '			<a title="Send direct message to this user" class="status-action-dm" id="status-'+entry.id+'-dm"><img src="themes/'+Spaz.UI.currentTheme+'/images/status-dm.png" /></a>';
-				// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' class="status-action-del" id="status-'+entry.id+'-del">del</a>';
-				entryHTML = entryHTML + '		</div>';					
-			}
-			entryHTML = entryHTML + '	</div>';
-			entryHTML = entryHTML + '</div>';
-
-			// Spaz.dump(entryHTML);
-
-
-			// Make the jQuery object and bind events
-			var jqentry = $(entryHTML);
-			jqentry.css('opacity', 0);
-			jqentry.bind('click', {'jqentry': jqentry }, Spaz.Handlers.selectEntry);
-			
-			//  onmouseover="Spaz.UI.showUserTooltip(this, \''+popupStr+'\')"
-			// onmouseout="Spaz.UI.hideTooltips()"
-			var jquser = jqentry.find('div.user');
-			jquser.bind('mouseover', { 'jq': jquser, 'userdata':popupStr }, Spaz.Handlers.showUserTooltip)
-				  .bind('mouseout', Spaz.UI.hideTooltips);
-
-			//onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'\')"			
-			jquser.find('a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name}, Spaz.Handlers.openInBrowser)
-							.bind('mouseover', {'jq':$(this),'str':'View profile of '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
-							.bind('mouseout', Spaz.UI.hideTooltips)
-							
-			
-			// onclick="Spaz.Data.makeFavorite(\''+entry.id+'\')" 
-			jqentry.find('a.status-action-fav')
-						.bind('click', { 'entryid':entry.id }, Spaz.Handlers.makeFavorite)
-						.bind('mouseover', {'jq':$(this),'str':'Add this status to your favorites'}, Spaz.Handlers.showTooltip)
-						.bind('mouseout', Spaz.UI.hideTooltips)
-
-			// onclick=\'Spaz.UI.prepDirectMessage("'+entry.user.screen_name+'")\'
-			jqentry.find('a.status-action-dm')
-						.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepDirectMessage)
-						.bind('mouseover', {'jq':$(this),'str':'Start a direct message to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
-						.bind('mouseout', Spaz.UI.hideTooltips)
-
-			// onclick="Spaz.UI.prepReply(\''+entry.user.screen_name+'\')"
-			jqentry.find('a.status-action-reply')
-						.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepReply)
-						.bind('mouseover', {'jq':$(this),'str':'Start a reply to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
-						.bind('mouseout', Spaz.UI.hideTooltips)
-						
-
-			//onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' 
-			jqentry.find('a.status-action-del')
-						.bind('click', { 'entryid':entry.id }, Spaz.Handlers.destroyStatus)
-						.bind('mouseover', {'jq':$(this),'str':'Delete this status'}, Spaz.Handlers.showTooltip)
-						.bind('mouseout', Spaz.UI.hideTooltips)
-						
-						
-			//onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/\')" 
-			jqentry.find('div.status-link a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/'}, Spaz.Handlers.openInBrowser)
-							.bind('mouseover', {'jq':$(this),'str':'View this entry in a browser'}, Spaz.Handlers.showTooltip)
-							.bind('mouseout', Spaz.UI.hideTooltips)
-
-			
-			// we prepend if entries is already in this timeline, but append if not
-			if (section.prevdata) {
-				$('#'+timelineid).prepend(jqentry);
-			} else {
-				$('#'+timelineid).append(jqentry);
-			}
-			
-			newentries.push(entry)
-			
-		}
-
-	}
-	
-	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
-		//air.trace($(this).text());
-		$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
-	})
-
-	Spaz.dump('scrolling to .timeline-entry:eq(0) in #'+timelineid);
-	$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
-
-
-	
-	if (newentries.length > 0) {
-		
-		Spaz.UI.playSoundNew();
-		Spaz.UI.statusBar('Updates found');
-		
-		// we prepend if entries is already in this timeline, but append if not
-		if (section.prevdata) {
-			var newest = newentries[newentries.length-1];
-		} else {
-			var newest = newentries[0];
-		}
-		
-		if (newest.user && newest.user.screen_name) {
-			Spaz.dump('notifying '+newest.user.profile_image_url);
-			Spaz.Bridge.notify(newest.text, newest.user.screen_name, null, null, newest.user.profile_image_url);
-		} else if (newest.sender && newest.sender.screen_name) {
-			Spaz.dump('notifying '+newest.sender.profile_image_url);
-			Spaz.Bridge.notify(newest.text, newest.sender.screen_name, null, null, newest.sender.profile_image_url);
-		}
-	} else {
-		Spaz.UI.statusBar('No new messages');
-	}
-	
-	Spaz.UI.cleanupTimeline(timelineid);
-}
 
 
 

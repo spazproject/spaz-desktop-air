@@ -432,9 +432,9 @@ TODO:
 
 		<!-- ENTRYFORM -->
 		<form id="entryform" onSubmit="return false;">
-			<textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar()' tabindex="0"></textarea>
+			<textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea>
 			<div id="entrystats"><span id="chars-left"></span> chars left</div>
-			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" />
+			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" tabindex="0" />
 		</form>
 
 		<!-- STATUSBAR -->
@@ -618,6 +618,8 @@ TODO:
 			Spaz.Bridge.$init(Spaz.childFrameInit);
 		
 		}
+		
+		window.onfocus = Spaz.UI.focusHandler;
 
 
 		/**
