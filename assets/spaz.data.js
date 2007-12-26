@@ -444,7 +444,7 @@ Spaz.Data.getDataForUrl = function(url, section) {
 			}
 			
 
-			if (!data[0]) {
+			if (!data || !data[0]) {
 				Spaz.dump("Error: no data returned from "+id);
 				return;
 			} else {
