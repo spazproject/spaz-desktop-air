@@ -5,6 +5,13 @@ Spaz.Data
 *************/
 if (!Spaz.Data) Spaz.Data = {};
 
+$.ajaxSetup(
+	{
+		timeout:1000*20, // 20 second timeout
+		async:true
+	}
+);
+
 /*
 URLs for various thangs...
 */
@@ -21,10 +28,10 @@ Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.xml";
 Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.json";
 
 // Action URLs
-Spaz.Data.url_update           = "http://twitter.com/statuses/update.xml";
-Spaz.Data.url_destroy_status   = "https://twitter.com/statuses/destroy/{{ID}}.xml";
-Spaz.Data.url_follow           = "https://twitter.com/friendships/create/{{ID}}.xml";
-Spaz.Data.url_stop_follow      = "https://twitter.com/friendships/destroy/{{ID}}.xml";
+Spaz.Data.url_update           = "http://twitter.com/statuses/update.json";
+Spaz.Data.url_destroy_status   = "https://twitter.com/statuses/destroy/{{ID}}.json";
+Spaz.Data.url_follow           = "https://twitter.com/friendships/create/{{ID}}.json";
+Spaz.Data.url_stop_follow      = "https://twitter.com/friendships/destroy/{{ID}}.json";
 Spaz.Data.url_start_notifications = "https://twitter.com/notifications/follow/{{ID}}.json";
 Spaz.Data.url_stop_notifications  = "https://twitter.com/notifications/remove/{{ID}}.json";
 Spaz.Data.url_favorites_create = "https://twitter.com/favourings/create/{{ID}}.json";
@@ -169,6 +176,15 @@ Spaz.Data.update = function(msg, username, password) {
 				Spaz.UI.playSoundUpdate();
 				Spaz.UI.statusBar("Update succeeded");
 			}
+			try {
+				var entry = eval('['+data+']');
+				Spaz.UI.addEntryToTimeline(entry, Spaz.Section.friends);
+				Spaz.UI.cleanupTimeline(Spaz.Section.friends);
+				
+			} catch(e) {
+				Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name 
+				+ ". Error message: " + e.message)
+			}
 			
 			
 			Spaz.UI.entryBox.reset();
@@ -224,7 +240,8 @@ Spaz.Data.destroyStatus = function(postid) {
 		},
 		success:function(data){
 			Spaz.dump(data);
-			Spaz.Data.loadUserTimelineData('tab-user');
+			Spaz.UI.statusBar("Status deleted");
+			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
@@ -397,11 +414,23 @@ Spaz.Data.stopFollowingUser = function(userid) {
 
 
 
-Spaz.Data.getDataForTimeline = function(section) {
-	for (var i = 0; i < section.urls.length; i++) {
-		air.trace('section.urls['+i+']: '+ section.urls[i])
-		Spaz.Data.getDataForUrl(section.urls[i], section);
-		// data = data.concat(thisdata);
+Spaz.Data.getDataForTimeline = function(section, force) {
+	
+	air.trace('now:'+getTimeAsInt());
+	air.trace('then:'+section.lastcheck);
+	air.trace('difference:'+(getTimeAsInt() - section.lastcheck));
+	air.trace('section.mincachetime:'+section.mincachetime);
+	
+	if (force || (getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
+		section.lastcheck = getTimeAsInt();
+		
+		for (var i = 0; i < section.urls.length; i++) {
+			air.trace('section.urls['+i+']: '+ section.urls[i])
+			Spaz.Data.getDataForUrl(section.urls[i], section);
+			// data = data.concat(thisdata);
+		}
+	} else {
+		air.trace('Not loading data - section.mincachetime has not expired');
 	}
 
 }
@@ -415,8 +444,14 @@ Spaz.Data.getDataForUrl = function(url, section) {
 
 	air.trace('section.timeline:'+section.timeline);
 	
+	Spaz.UI.statusBar("Checking for new data…");
+	Spaz.UI.showLoading();
+	
 	var xhr = $.ajax({
-		complete:function(xhr, msg){			
+		complete:function(xhr, msg){
+			
+			Spaz.UI.hideLoading();
+			
 			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
 				// alert("ERROR: Timeout");
 				Spaz.dump("Error: timeout on "+url);
@@ -424,11 +459,23 @@ Spaz.Data.getDataForUrl = function(url, section) {
 				return;
 			}
 
+			air.trace("HEADERS:\n"+xhr.getAllResponseHeaders());
+			air.trace("STATUS:\n"+xhr.status);
+			air.trace("DATA:\n"+xhr.responseText);
+			air.trace("COMPLETE: " + msg);
+
 			if (xhr.status == 400) {
 				alert("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
 				// Spaz.Data.onAjaxComplete(url, false);
 				return;
 			}
+
+			if (xhr.status == 401) {
+				alert("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
+				// Spaz.Data.onAjaxComplete(url, false);
+				return;
+			}
+
 
 			if (xhr.responseText.length < 4) {
 				Spaz.dump("Error:response empty from "+url);
@@ -463,7 +510,7 @@ Spaz.Data.getDataForUrl = function(url, section) {
 		},
 		error:function(xhr, msg, exc) {
 			Spaz.dump("Error:"+xhr.responseText+" from "+url);
-			// alert("Error:"+xhr.responseText+" from "+url);
+			alert("Error:"+xhr.responseText+" from "+url);
 		},
 		// success:function(data) {
 		// 	// alert("SUCCESS");

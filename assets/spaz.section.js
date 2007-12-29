@@ -12,7 +12,8 @@ Spaz.Section.friends = {
 	currdata: null,
  	prevdata: null,
 	autoload: true,
-	mincachetime:60000*15
+	canclear: true,
+	mincachetime:0//60000*3
 }
 
 Spaz.Section.user = {
@@ -26,7 +27,8 @@ Spaz.Section.user = {
 	currdata: null,
  	prevdata: null,
 	autoload: false,
-	mincachetime:1
+	canclear: true,
+	mincachetime:60000*2
 }
 
 Spaz.Section.public = {
@@ -54,6 +56,7 @@ Spaz.Section.friendslist = {
 	currdata: null,
  	prevdata: null,
 	autoload: false,
+	canclear: false,
 	mincachetime:60000*15
 	
 }
@@ -68,6 +71,7 @@ Spaz.Section.followerslist = {
 	currdata: null,
  	prevdata: null,
 	autoload: false,
+	canclear: false,
 	mincachetime:60000*15	
 }
 Spaz.Section.prefs = {
@@ -76,6 +80,7 @@ Spaz.Section.prefs = {
 	tab:      'tab-prefs',
 	tabIndex: 3,
 	autoload: false,
+	canclear: false
 	// url:      'https://twitter.com/statuses/followers.json',
 	// lastid:   0
 }

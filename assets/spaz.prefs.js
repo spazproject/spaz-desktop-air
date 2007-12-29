@@ -77,6 +77,7 @@ Spaz.Prefs.processXMLData = function()
 	// 	Spaz.Prefs.pass = userData.getAttribute("password");
 	Spaz.Prefs.user = Spaz.Prefs.loadUsername();
 	Spaz.Prefs.pass = Spaz.Prefs.loadPassword();
+	air.trace('loaded user:'+Spaz.Prefs.user);
 	
 	// load theme data
 	var themeData = Spaz.Prefs.XML.getElementsByTagName("theme")[0];
@@ -286,12 +287,14 @@ Spaz.Prefs.writeXMLData = function()
 
 
 Spaz.Prefs.saveUsername = function() {
+	Spaz.dump('saving username: '+Spaz.Prefs.user);
 	var bytes = new air.ByteArray();
 	bytes.writeUTFBytes(Spaz.Prefs.user);
 	air.EncryptedLocalStore.setItem('twitter_username_1', bytes);
 };
 
 Spaz.Prefs.loadUsername = function() {
+	Spaz.dump('loading username');
 	var storedValue = air.EncryptedLocalStore.getItem('twitter_username_1');
 	if (storedValue) {
 		return storedValue.readUTFBytes(storedValue.length);
@@ -301,12 +304,14 @@ Spaz.Prefs.loadUsername = function() {
 };
 
 Spaz.Prefs.savePassword = function() {
+	Spaz.dump('saving password: ********');
 	var bytes = new air.ByteArray();
 	bytes.writeUTFBytes(Spaz.Prefs.pass);
 	air.EncryptedLocalStore.setItem('twitter_password_1', bytes);
 };
 
 Spaz.Prefs.loadPassword = function() {
+	Spaz.dump('loading password');
 	var storedValue = air.EncryptedLocalStore.getItem('twitter_password_1');
 	if (storedValue) {
 		return storedValue.readUTFBytes(storedValue.length);

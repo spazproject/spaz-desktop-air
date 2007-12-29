@@ -68,7 +68,7 @@ Spaz.Menus.onSystrayClick = function(event) {
  		nativeWindow.restore();
  	}
  	Spaz.dump('activating application');
- 	air.NativeApplication.nativeApplication.activateApplication()
+ 	air.NativeApplication.nativeApplication.activate() // bug fix by Mako
 	Spaz.dump('activating window');
 	nativeWindow.activate();
 	Spaz.dump('ordering-to-front window');

@@ -106,16 +106,7 @@ TODO:
 					id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)">
 					<img class="tab-icon" src="{theme-dir}/images/tab-icon-timeline.png" />
 				</li>
-				<!-- REPLIES -->
-				<!-- <li class="TabbedPanelsTab" tabindex="0" title="Replies directed at you"
-					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
-					onmouseout="Spaz.UI.hideTooltips()"
-					id="tab-replies" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-replies.png" /></li> -->
-				<!-- DMs -->
-				<!-- <li class="TabbedPanelsTab" tabindex="0"  title="Direct messages you've received"
-					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
-					onmouseout="Spaz.UI.hideTooltips()"
-					id="tab-dms" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-dms.png" /></li> -->
+
 				<!-- SENT STATUSES -->
 				<li class="TabbedPanelsTab" tabindex="0" title="Tweets you've sent" 
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
@@ -131,17 +122,6 @@ TODO:
 					id="tab-public" onclick="Spaz.UI.setSelectedTab(this)">
 					<img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" />
 				</li>
-
-				<!-- FOLLOWING LIST -->
-				<!-- <li class="TabbedPanelsTab" tabindex="0" title="Users you are following"
-					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
-					onmouseout="Spaz.UI.hideTooltips()"
-					id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-following.png" /></li>	 -->	
-				<!-- FOLLOWERS LIST -->
-				<!-- <li class="TabbedPanelsTab" tabindex="0" title="Users following you" 
-					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
-					onmouseout="Spaz.UI.hideTooltips()"
-					id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)"><img class="tab-icon" src="{theme-dir}/images/tab-icon-followers.png" /></li> -->
 		
 				<!-- PREFS -->
 				<li class="TabbedPanelsTab" tabindex="0" id="tab-prefs" title="Preferences"
@@ -487,6 +467,9 @@ TODO:
 			<h2>Help</h2>
 
 			<h3>Keyboard shortcuts</h3>
+			
+			<p><em>Note: Windows users should use CTRL instead of CMD</em></p>
+			
 			<table id="help-shortcuts" class="data">
 				<tbody>
 					<tr>
@@ -494,29 +477,38 @@ TODO:
 						<th>command</th>
 					</tr>
 					<tr>
-						<td class="label">r</td>
+						<td class="label">CMD+R</td>
 						<td class="value">reload current view</td>
 					</tr>
 					<tr>
-						<td class="label">l</td>
+						<td class="label">CMD+L</td>
+						<td class="value">clear and reload current view</td>
+					</tr>
+					<tr>
+						<td class="label">L</td>
 						<td class="value">open shorten link dialog</td>
 					</tr>
 					<tr>
-						<td class="label">j</td>
+						<td class="label">K or CMD+J</td>
 						<td class="value">select next message</td>
 					</tr>
 					<tr>
-						<td class="label">k</td>
+						<td class="label">K or CMD+K</td>
 						<td class="value">select previous message</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+T</td>
+						<td class="value">jump to message entry box</td>
 					</tr>
 					<tr>
 						<td class="label">@ (SHIFT+2)</td>
 						<td class="value">respond to sender of currently selected message</td>
 					</tr>
 					<tr>
-						<td class="label">1-8</td>
-						<td class="value">Switch to tab 1-8</td>
+						<td class="label">1-4</td>
+						<td class="value">Switch to tab 1-4</td>
 					</tr>
+					
 				</tbody>
 			</table>	
 		</div>
@@ -604,7 +596,7 @@ TODO:
 		// };
 		// document.onmouseover = Spaz.UI.focusHandler
 		// document.onmouseout  = Spaz.UI.blurHandler
-
+		// window.onfocus = Spaz.UI.focusHandler;
 
 		/* This is stuff we do right after the document is ready */
 		// $(document).ready( function() {
@@ -619,7 +611,7 @@ TODO:
 		
 		}
 		
-		window.onfocus = Spaz.UI.focusHandler;
+		
 
 
 		/**
@@ -636,6 +628,10 @@ TODO:
 		// stuff to load when this doc loads
 		$(document).ready( function() {
 			
+			
+			// ***************************************************************
+			// Event delegation handling
+			// ***************************************************************
 			$('body').intercept('mouseover', {
 					'.user-screen-name[title]':function() {
 						Spaz.UI.showUserTooltip(this, $(this).attr('title'));

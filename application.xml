@@ -6,7 +6,7 @@
 	http://www.adobe.com/go/air_1.0_application_descriptor. -->
 	<id>Spaz.AIR</id>
 	<name>Spaz</name>
-	<version>0.3.5.20071226145105</version>
+	<version>0.3.5.20071227191753</version>
 	<filename>Spaz</filename>
 	<description>A Twitter client</description>
 	<copyright>Copyright Funkatron Productions</copyright>
@@ -52,33 +52,3 @@
 		</fileType>
 	</fileTypes> -->
 </application>
-
-
-
-<!-- <?xml version="1.0" encoding="utf-8" ?>
-<application xmlns="http://ns.adobe.com/air/application/1.0.M5" appId="Spaz.AIR" version="0.3.5.20071208213307">
-	<name>Spaz</name>
-	
-	  <initialWindow>
-		<title>Spaz</title>
-	
-		<content>root.html</content>
-		<systemChrome>none</systemChrome>
-		<transparent>true</transparent>
-		<visible>false</visible>
-		
-		<width>400</width> 
-		<height>580</height>
-		<x>50</x>
-		<y>50</y>
-	  </initialWindow>
-	
-	<icon>
-		<image128x128>images/spaz-icon-alpha.png</image128x128>
-		<image48x48>images/spaz-icon-alpha_48.png</image48x48>
-		<image32x32>images/spaz-icon-alpha_32.png</image32x32>
-		<image16x16>images/spaz-icon-alpha_16.png</image16x16>
-	</icon>
-</application> -->
-
-

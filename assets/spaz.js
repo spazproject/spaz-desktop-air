@@ -16,16 +16,10 @@ Spaz.ME_TL = 'user_timeline';
 Spaz.FRIEND_LS = 'friend_list';
 Spaz.FOLLOWER_LS = 'follower_list';
 
+
 /*
 Spaz
 */
-$.ajaxSetup(
-	{
-		timeout:1000*20, // 20 second timeout
-		async:true,
-	}
-);
-
 
 
 Spaz.loadMainPage = function() {

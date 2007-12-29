@@ -476,13 +476,18 @@ air.trace('parent bridge');
 			
 			air = { trace: Spaz.Bridge.trace };
 
-			//everything is ready - let root know about it
-			bridge.triggerRemoteLoad();
-			
-			var callback = Spaz.Bridge.$callback;
-			Spaz.Bridge.$callback = null;
-			if(callback)
-				callback();
+			try {
+				//everything is ready - let root know about it
+				Spaz.Bridge.triggerRemoteLoad();
+
+				var callback = Spaz.Bridge.$callback;
+				Spaz.Bridge.$callback = null;
+				if(callback)
+					callback();
+			} catch(e) {
+				//air.trace('there was an error calling Spaz.Bridge.triggerRemoteLoad. Setting timeout again');
+				setTimeout(Spaz.Bridge.$checkParent, 1);
+			}
 		}
 	}
 	

@@ -26,11 +26,14 @@ Spaz.UI.minimizeOnBackground	= 0;
 Spaz.UI.restoreOnActivate		= 0;
 
 Spaz.UI.showNotificationPopups	= 1;
+Spaz.UI.notificationPosition	= 'topRight';
+Spaz.UI.notificationHideDelay	= 6; // in seconds
 
 Spaz.UI.showContextMenus = 1; // hard-coded - this works properly now
 
 
-Spaz.UI.tooltipHideTimeout = null;
+Spaz.UI.tooltipHideTimeout	= null; // holder for the timeoutObject
+Spaz.UI.tooltipHideDelay	= 8000; // in mseconds
 
 
 Spaz.UI.mainTimelineId = 'timeline-friends';
@@ -572,9 +575,14 @@ Spaz.UI.autoReloadCurrentTab = function() {
 Spaz.UI.clearCurrentTimeline = function() {
 	Spaz.dump('clearing the current timeline');
 	var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
-	var timelineid = section.timeline;
-	$('#'+timelineid).empty();
-	Spaz.dump('cleared timeline #'+timelineid);
+	
+	if (section.canclear) {
+		var timelineid = section.timeline;
+		$('#'+timelineid).empty();
+		Spaz.dump('cleared timeline #'+timelineid);
+	} else {
+		Spaz.dump('timeline not clearable');
+	}
 }
 
 
@@ -613,75 +621,6 @@ Spaz.UI.showUserTooltip = function(el, str) {
 
 
 
-Spaz.UI.showReplyTooltip = function(el, str) {
-	
-	var username = $(this).text().replace(/@/, '');
-	
-	var url = 'http://twitter.com/statuses/user_timeline.json'
-	var data = {
-		'id':username,
-		'count':1
-	}
-	$.getJSON(url, data, function(data){
-		air.trace('returned JSON:'+data.length);
-	})
-	
-	var minwidth = 100;
-
-	var tt = $('#tooltip');
-	tt.stop();
-	tt.css('width', '');
-	tt.css('height', '');
-	
-	// hide any showing tooltips
-	Spaz.dump('hiding tooltip');
-
-	tt.hide();
-	
-	// clear any running tooltip hiding timeouts
-	clearTimeout(Spaz.UI.tooltipHideTimeout);
-	
-	str = "<div>"+str+"</div>";
-
-	
-	// show the link context menu
-	Spaz.dump('opening context menu');
-	tt.css('left', event.pageX+10)
-		.css('top',  event.pageY+20)
-		.html(str)
-		.show()
-		.css('opacity', 0)
-		.animate({'opacity':'0.85'}, 200);
-	
-	// I kinda stole this from the excellent jquery.tooltip, which caused mem leakage (unfortunately)
-	var vp  = Spaz.UI.getViewport();
-	var off = tt.offset();
-	
-	// check horizontal position
-	if (vp.x + vp.cx < off.left + tt.width()) {
-		Spaz.dump('horz over')
-		tt.css('left', parseInt(tt.css('left')) - (tt.width() + 20));
-		if (tt.offset().left < 5) {
-			tt.css('left', 5);
-		}
-	}
-	
-	
-	// check vertical position
-	if(vp.y + vp.cy < off.top + tt.height()) {
-		Spaz.dump('vert over');
-		tt.css('top', parseInt(tt.css('top')) - (tt.height() + 20));
-		if (tt.offset().top < 5) {
-			tt.css('top', 5);
-		}
-	}
-	
-	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, 8000);
-	
-}
-
-
-
 
 Spaz.UI.showTooltip = function(el, str, previewurl) {
 	
@@ -695,11 +634,12 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 	tt.css('height', '');
 	
 	// hide any showing tooltips
-	Spaz.dump('hiding tooltip');
+	Spaz.dump('hiding tooltips');
 
 	tt.hide();
 	
 	// clear any running tooltip hiding timeouts
+	air.trace('clearTimeout(Spaz.UI.tooltipHideTimeout);');
 	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
 	str = "<div>"+str+"</div>";
@@ -730,8 +670,8 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 			'count':1
 		}
 		$.get(url, data, function(data, textStatus) {
-			air.trace('textStatus:'+textStatus);
-			air.trace('DATA:'+data);
+			//air.trace('textStatus:'+textStatus);
+			//air.trace('DATA:'+data);
 			try {
 				var tweets = eval(data);
 				if (tweets[0].text) {
@@ -769,7 +709,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		
 		$.get(previewurl, function(rtext, status, xhr) {
 			// var jqpreview = $(rtext);
-			air.trace('rtext:'+rtext);
+			//air.trace('rtext:'+rtext);
 			var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
 			
 			// alert(rtext_matches);
@@ -808,7 +748,8 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		}
 	}
 	
-	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, 8000);
+	air.trace('Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.UI.tooltipHideDelay);');
+	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.UI.tooltipHideDelay);
 	
 }
 
@@ -827,11 +768,12 @@ Spaz.UI.getViewport = function() {
 
 Spaz.UI.hideTooltips = function() {
 	// clear existing timeouts
-	clearTimeout(Spaz.UI.tooltipClearTimeout);
+	air.trace('clearTimeout(Spaz.UI.tooltipHideTimeout);');
+	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
 	$('#tooltip').stop();
 	$('#tooltip').animate({'opacity':'0'}, 200, 'linear', function(){
-		//air.trace('hiding')
+		air.trace('hiding tooltips');
 		$('#tooltip').hide();
 	});
 }
@@ -849,8 +791,6 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 		var isDM = false;
 		var isSent = false;
 		
-		// air.trace('prepending '+entry.id)
-		
 		if (entry.sender) {
 			entry.user = entry.sender
 			isDM=true;
@@ -859,8 +799,6 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 		if (timelineid == 'timeline-user') {
 			isSent = true;
 		}
-
-		// if (i%2>0) { var rowclass = 'odd' } else { var rowclass = 'even' }
 		
 		var rowclass = "even";
 
@@ -870,12 +808,14 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 		var timestamp = httpTimeToInt(entry.created_at)
 
 		var entryHTML = '';
-		entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup '+rowclass+'" id="'+timelineid+'-'+entry.id+'">';
+		entryHTML = entryHTML + '<div class="timeline-entry needs-cleanup new '+rowclass+'" id="'+timelineid+'-'+entry.id+'">';
 		entryHTML = entryHTML + '	<div class="entry-timestamp" style="display:none">'+timestamp+'</div>';
 		entryHTML = entryHTML + '	<div class="entry-id" style="display:none">['+entry.id+']</div>';
 		entryHTML = entryHTML + '	<div class="entry-time" style="display:none">'+entry.created_at+'</div>'
 		entryHTML = entryHTML + '	<div class="entry-user-id" style="display:none">'+entry.user.id+'</div>'
 		entryHTML = entryHTML + '	<div class="entry-user-screenname" style="display:none">'+entry.user.screen_name+'</div>'
+		entryHTML = entryHTML + '	<div class="entry-user-img" style="display:none">'+entry.user.profile_image_url+'</div>'
+		entryHTML = entryHTML + '	<div class="entry-text" style="display:none">'+entry.text+'</div>'
 		entryHTML = entryHTML + '	<div class="user" id="user-'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'">';
 		entryHTML = entryHTML + '		<img class="user-image clickable" height="48" width="48" src="'+entry.user.profile_image_url+'" alt="'+entry.user.screen_name+'" title="'+popupStr+'" user-id="'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'" />';
 		entryHTML = entryHTML + '		<div class="user-screen-name clickable" title="'+popupStr+'" user-id="'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'">'+entry.user.screen_name+'</div>';
@@ -921,49 +861,7 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 			jqentry.addClass('dm');
 		}
 		
-		// //  onmouseover="Spaz.UI.showUserTooltip(this, \''+popupStr+'\')"
-		// // onmouseout="Spaz.UI.hideTooltips()"
-		// var jquser = jqentry.find('div.user');
-		// jquser.bind('mouseover', { 'jq': jquser, 'userdata':popupStr }, Spaz.Handlers.showUserTooltip)
-		// 	  .bind('mouseout', Spaz.UI.hideTooltips);
-		// 
-		// 
-		// //onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'\')"			
-		// jquser.find('a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name}, Spaz.Handlers.openInBrowser)
-		// 				.bind('mouseover', {'el':$(this),'str':'View profile of '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
-		// 				.bind('mouseout', Spaz.UI.hideTooltips)
-		// 				
-		// 
-		// // onclick="Spaz.Data.makeFavorite(\''+entry.id+'\')" 
-		// jqentry.find('a.status-action-fav')
-		// 			.bind('click', { 'entryid':entry.id }, Spaz.Handlers.makeFavorite)
-		// 			.bind('mouseover', {'jq':$(this),'str':'Add this status to your favorites'}, Spaz.Handlers.showTooltip)
-		// 			.bind('mouseout', Spaz.UI.hideTooltips)
-		// 
-		// // onclick=\'Spaz.UI.prepDirectMessage("'+entry.user.screen_name+'")\'
-		// jqentry.find('a.status-action-dm')
-		// 			.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepDirectMessage)
-		// 			.bind('mouseover', {'jq':$(this),'str':'Start a direct message to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
-		// 			.bind('mouseout', Spaz.UI.hideTooltips)
-		// 
-		// // onclick="Spaz.UI.prepReply(\''+entry.user.screen_name+'\')"
-		// jqentry.find('a.status-action-reply')
-		// 			.bind('click', { 'username':entry.user.screen_name }, Spaz.Handlers.prepReply)
-		// 			.bind('mouseover', {'jq':$(this),'str':'Start a reply to '+entry.user.screen_name}, Spaz.Handlers.showTooltip)
-		// 			.bind('mouseout', Spaz.UI.hideTooltips)
-		// 			
-		// 
-		// //onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' 
-		// jqentry.find('a.status-action-del')
-		// 			.bind('click', { 'entryid':entry.id }, Spaz.Handlers.destroyStatus)
-		// 			.bind('mouseover', {'jq':$(this),'str':'Delete this status'}, Spaz.Handlers.showTooltip)
-		// 			.bind('mouseout', Spaz.UI.hideTooltips)
-		// 			
-		// 			
-		// //onclick="openInBrowser(\'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/\')" 
-		// jqentry.find('div.status-link a').bind('click', {'url':'http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/'}, Spaz.Handlers.openInBrowser)
-		// 				.bind('mouseover', {'jq':$(this),'str':'View this entry in a browser'}, Spaz.Handlers.showTooltip)
-		// 				.bind('mouseout', Spaz.UI.hideTooltips);
+
 		
 		
 		
@@ -972,24 +870,12 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 		var jqTL = $('#'+timelineid);
 		jqentry.prependTo(jqTL);
 		
-		// // bind onclick on load
-		// jqentry.load( function(i) {
-		// 	$(this).bind('click', {'jqentry': jqentry }, Spaz.Handlers.selectEntry);
-		// });
-			
-			
-		// jqentry.bind('click', {'jqentry': jqentry }, Spaz.Handlers.selectEntry);
-		
-		
-		// FUCK ME WHY WON'T THIS WORK????
-		// alert($(document).find('#'+Spaz.UI.mainTimelineId + ' div.timeline-entry').length);
-		// $(document).find('#'+Spaz.UI.mainTimelineId + ' div.timeline-entry').bind('mouseover', Spaz.Handlers.selectEntry);
-		
-		// air.trace(jqentry[0].innerHTML);
-		
-		// air.trace($('[@$events]').length);
+		return true;
+
 	} else {
-		//air.trace('skipping '+entry.id);
+		Spaz.dump('skipping '+entry.id);
+		
+		return false;
 	}
 
 }
@@ -1019,6 +905,63 @@ Spaz.UI.reverseTimeline = function(timelineid) {
 }
 
 
+Spaz.UI.notifyOfNewEntries = function() {
+	
+	var timelineid = Spaz.Section.friends.timeline;
+	
+	air.trace('notifyOfNewEntries');
+	if ($("#"+timelineid + ' .new').length>0) {
+		
+		air.trace('NewEntries found!');
+		
+		// get newest of the new
+		// we use this roundabout way of getting things to avoid a problem where
+		// you could get text from one tweet and a userimg from another
+		var newestHTML = $("#"+timelineid + ' .new')[0].innerHTML;
+		air.trace(newestHTML);
+		var jqnewest = $(newestHTML);
+		
+		
+		
+		
+		air.trace('Sending notification');
+		var resp = "";
+		
+		var text;
+		var img;
+		var screen_name;
+		
+		jqnewest.each( function(i) {
+			switch($(this).attr('class')) {
+				case 'entry-user-screenname':
+					screen_name = $(this).text();
+					air.trace(screen_name)
+					break;
+				case 'entry-text':
+					text = $(this).text();
+					air.trace('TEXT:'+text);
+					break;
+				case 'entry-user-img':
+					img = $(this).text();
+					break;
+			}
+			// resp += $(this).attr('class')+":"+$(this).text()+"\n";
+		})
+		// alert(resp);
+		// air.trace(screen_name);
+		// 		air.trace(img);
+		// 		air.trace(text);
+		// 		
+		Spaz.Bridge.notify(text, screen_name, Spaz.UI.notificationPosition, Spaz.UI.notificationHideDelay, img);
+
+		// remove "new" indicators
+		$("#"+timelineid + ' .new').removeClass('new');
+	} else {
+		air.trace('NewEntries NOT found!');
+	}
+	
+}
+
 
 
 // cleans up and parses stuff in timeline's tweets
@@ -1030,6 +973,11 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	// remove the even and odds due to resorting
 	$("#"+timelineid + ' .timeline-entry').removeClass('even');
 	$("#"+timelineid + ' .timeline-entry').removeClass('odd');
+	
+	// we delay on notification of new entries because stuff gets 
+	// really confused and wonky if you fire it off right away
+	air.trace('Set timeout for notifications')
+	setTimeout(Spaz.UI.notifyOfNewEntries, 3000);
 	
 	// $("#"+timelineid + ' .timeline-entry').each( function(i) {
 	// 	$(this).bind('click', {'jqentry':$(this)}, Spaz.Handlers.selectEntry);
@@ -1053,7 +1001,13 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	if ($("#"+timelineid + ' .timeline-entry:eq(0)').length > 0) {
 		// scroll to top
 		Spaz.dump('scrolling to .timeline-entry:eq(0) in #'+timelineid);
-		$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
+
+		try {
+			$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
+		} catch (e) {
+			Spaz.dump('Error doing scrollTo first entry - probably switched tabs in the middle of loading. No sweat!');
+		}
+		
 	}
 
 	// announce new items
