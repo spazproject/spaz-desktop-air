@@ -280,7 +280,7 @@ Spaz.childFrameInit = function() {
 
 
 	$('.TabbedPanelsTab').each( function(i) {
-		this.title = this.title + '<br />Shortcut: <strong>'+(parseInt(i)+1)+'</strong>';
+		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL'+(parseInt(i)+1)+'</strong>';
 	});
 	Spaz.dump('Set shortcut info in tab titles');
 
