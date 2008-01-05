@@ -651,6 +651,7 @@ var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 }
 
 
+// headers have been disabled
 var _DoHeaders = function(text) {
 
 	// Setext-style headers:
@@ -660,11 +661,11 @@ var _DoHeaders = function(text) {
 	//	Header 2
 	//	--------
 	//
-	text = text.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm,
-		function(wholeMatch,m1){return hashBlock("<h1>" + _RunSpanGamut(m1) + "</h1>");});
-
-	text = text.replace(/^(.+)[ \t]*\n-+[ \t]*\n+/gm,
-		function(matchFound,m1){return hashBlock("<h2>" + _RunSpanGamut(m1) + "</h2>");});
+	// text = text.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm,
+	// 	function(wholeMatch,m1){return hashBlock("<h1>" + _RunSpanGamut(m1) + "</h1>");});
+	// 
+	// text = text.replace(/^(.+)[ \t]*\n-+[ \t]*\n+/gm,
+	// 	function(matchFound,m1){return hashBlock("<h2>" + _RunSpanGamut(m1) + "</h2>");});
 
 	// atx-style headers:
 	//  # Header 1
@@ -685,11 +686,11 @@ var _DoHeaders = function(text) {
 		/gm, function() {...});
 	*/
 
-	text = text.replace(/^(\#{1,6})[ \t]*(.+?)[ \t]*\#*\n+/gm,
-		function(wholeMatch,m1,m2) {
-			var h_level = m1.length;
-			return hashBlock("<h" + h_level + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">");
-		});
+	// text = text.replace(/^(\#{1,6})[ \t]*(.+?)[ \t]*\#*\n+/gm,
+	// 	function(wholeMatch,m1,m2) {
+	// 		var h_level = m1.length;
+	// 		return hashBlock("<h" + h_level + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">");
+	// 	});
 
 	return text;
 }

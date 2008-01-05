@@ -42,6 +42,7 @@ Spaz.Section.public = {
 	currdata: null,
  	prevdata: null,
 	autoload: true,
+	canclear: true,
 	mincachetime:1
 	
 }

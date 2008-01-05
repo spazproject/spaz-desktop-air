@@ -11,15 +11,15 @@ if (!Spaz.Menus) Spaz.Menus = {};
 
 Spaz.Menus.initAll = function() {
 	//For application menu (on MAC OS X)
-	Spaz.dump('Init Native Menus');
-	if(air.NativeApplication.supportsMenu){
-		Spaz.dump('Native Menus for OS X');
-		air.NativeApplication.nativeApplication.menu = Spaz.Menus.createRootMenu('OSX');
-	} else {
-		Spaz.dump('Native Menus in Windows not supported');
-		// Spaz.dump('Creating Windows root menu');
-		// window.nativeWindow.menu = Spaz.Menus.createRootMenu();
-	}
+	// Spaz.dump('Init Native Menus');
+	// if(air.NativeApplication.supportsMenu){
+	// 	Spaz.dump('Native Menus for OS X');
+	// 	air.NativeApplication.nativeApplication.menu = Spaz.Menus.createRootMenu('OSX');
+	// } else {
+	// 	Spaz.dump('Native Menus in Windows not supported');
+	// 	// Spaz.dump('Creating Windows root menu');
+	// 	// window.nativeWindow.menu = Spaz.Menus.createRootMenu();
+	// }
 	
 	// if( air.NativeWindow.supportsMenu && (window.nativeWindow.systemChrome != air.NativeWindowSystemChrome.NONE) ) {
 	// 	window.nativeWindow.menu = new air.NativeMenu();
@@ -204,7 +204,7 @@ Spaz.Menus.createFileMenu = function(){
 	miExit.name = 'exit';
 	// miExit.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.COMMAND);
 	miExit.mnemonicIndex = 0;
-	miExit.keyEquivalent = 'q';
+	// miExit.keyEquivalent = 'q';
 	menu.addItem(miExit);
 	
 	for(var i = 0; i < menu.items.length; i++){
@@ -246,29 +246,29 @@ Spaz.Menus.createViewMenu = function(){
 	miReload.name = 'reload';
 	if (air.NativeWindow.supportsMenu) {
 		Spaz.dump('adding runtime.flash.ui.Keyboard.CONTROL modifier');
-		miReload.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.CONTROL);
+		// miReload.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.CONTROL);
 	}
 	miReload.mnemonicIndex = 0;
-	miReload.keyEquivalent = 'r';
+	// miReload.keyEquivalent = 'r';
 
 	var miClear = new air.NativeMenuItem("Clear current timeline");
 	miClear.name = 'clear';
 	if (air.NativeWindow.supportsMenu) {
 		Spaz.dump('adding runtime.flash.ui.Keyboard.CONTROL modifier');
-		miClear.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.CONTROL);
+		// miClear.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.CONTROL);
 	}
 	miClear.mnemonicIndex = 0;
-	miClear.keyEquivalent = 'l';
+	// miClear.keyEquivalent = 'l';
 	
 	var miPrefs = new air.NativeMenuItem("Preferences…");
 	miPrefs.name = 'prefs';
 	if (air.NativeWindow.supportsMenu) {
 		Spaz.dump('adding runtime.flash.ui.Keyboard.CONTROL modifier');
-		miPrefs.keyEquivalentModifiers = new Array(air.Keyboard.CONTROL);
+		// miPrefs.keyEquivalentModifiers = new Array(air.Keyboard.CONTROL);
 	}
 	// miPrefs.keyEquivalentModifiers = new Array(air.Keyboard.COMMAND);
 	miPrefs.mnemonicIndex = 0;
-	miPrefs.keyEquivalent = ',';
+	// miPrefs.keyEquivalent = ',';
 
 	
 	var menu = new air.NativeMenu();

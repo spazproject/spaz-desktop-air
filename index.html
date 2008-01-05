@@ -38,15 +38,21 @@ TODO:
 	<!-- base64 encoding lib -->
 	<script src="assets/webtoolkit.base64.js" type="text/javascript"></script>
 
+	<!-- Keyboard shortcuts handling http://www.openjs.com/scripts/events/keyboard_shortcuts/ -->
+	<script src="assets/shortcut.js" type="text/javascript" charset="utf-8"></script>
 
+	<!-- Mootools -->
+	<!-- <script src="assets/mootools-release-1.11.js" type="text/javascript" charset="utf-8"></script>
+ -->
 
 	<!-- jQuery libs -->
-	<script src="assets/jquery-nightly.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery-1.2.1.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery.dimensions.js" type="text/javascript"></script>
 	<script src="assets/jquery.moreSelectors.js" type="text/javascript"></script>
 	<script src="assets/jquery.scrollTo.js" type="text/javascript"></script>
 	<script src="assets/jquery.array.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery.intercept.1.0.2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.ajaxQueue.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!-- jQuery.UI libs -->
 	<script src="assets/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
@@ -63,6 +69,7 @@ TODO:
 	<script src="assets/spaz.notify.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz.section.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz.handlers.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz.keyboard.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!-- <script src="lib/library.swf" type="application/x-shockwave-flash"></script> -->
 
@@ -293,6 +300,7 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
 										<label for="user-stylesheet">User CSS</label>
+										<a href="html/css_edit.html">Edit</a>
 										<input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" />
 										<input type="button" name="user-stylesheet-button" value="…" id="prefs-user-stylesheet-button" onclick="Spaz.UI.browseForUserCss()" />
 										<input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.UI.clearUserStyleSheet()" />
@@ -387,7 +395,7 @@ TODO:
 									</div>
 									<div class="formrow">
 										<input type="button" id="prefs-console-button" name="open-console" value="Open Firebug console &bull;" onclick="console.open()" />
-										<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
+										<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Bridge.dumpHTML()" />
 									</div>
 								</div>
 							</div>
@@ -477,6 +485,38 @@ TODO:
 						<th>command</th>
 					</tr>
 					<tr>
+						<td class="label">UP or J or CMD+J</td>
+						<td class="value">select next message</td>
+					</tr>
+					<tr>
+						<td class="label">DOWN or K or CMD+K</td>
+						<td class="value">select previous message</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+DOWN</td>
+						<td class="value">select next dm</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+UP</td>
+						<td class="value">select previous dm</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+SHIFT+DOWN</td>
+						<td class="value">select next reply</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+SHIFT+UP</td>
+						<td class="value">select previous reply</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+END</td>
+						<td class="value">select last message</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+HOME</td>
+						<td class="value">select first message</td>
+					</tr>
+					<tr>
 						<td class="label">CMD+R</td>
 						<td class="value">reload current view</td>
 					</tr>
@@ -485,16 +525,8 @@ TODO:
 						<td class="value">clear and reload current view</td>
 					</tr>
 					<tr>
-						<td class="label">L</td>
-						<td class="value">open shorten link dialog</td>
-					</tr>
-					<tr>
-						<td class="label">K or CMD+J</td>
-						<td class="value">select next message</td>
-					</tr>
-					<tr>
-						<td class="label">K or CMD+K</td>
-						<td class="value">select previous message</td>
+						<td class="label">CMD+SHIFT+A</td>
+						<td class="value">open shorten link window</td>
 					</tr>
 					<tr>
 						<td class="label">CMD+T</td>
@@ -505,9 +537,14 @@ TODO:
 						<td class="value">respond to sender of currently selected message</td>
 					</tr>
 					<tr>
-						<td class="label">1-4</td>
+						<td class="label">CMD+,</td>
+						<td class="value">View Preferences</td>
+					</tr>
+					<tr>
+						<td class="label">CMD+1-4</td>
 						<td class="value">Switch to tab 1-4</td>
 					</tr>
+
 					
 				</tbody>
 			</table>	
@@ -565,6 +602,9 @@ TODO:
 
 	<script type="text/javascript">
 
+		// because MooTools is a prick, we change the standard
+		// jQuery shortcut to $j
+		// var $j = jQuery.noConflict();
 
 
 		/**
@@ -606,7 +646,7 @@ TODO:
 
 
 		window.onload = function(){
-
+						
 			Spaz.Bridge.$init(Spaz.childFrameInit);
 		
 		}
@@ -688,6 +728,9 @@ TODO:
 					},
 				})
 			 // end intercept
+		
+
+		
 		
 		}) // end $(document).ready function
 		

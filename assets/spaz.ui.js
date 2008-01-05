@@ -977,7 +977,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	// we delay on notification of new entries because stuff gets 
 	// really confused and wonky if you fire it off right away
 	air.trace('Set timeout for notifications')
-	setTimeout(Spaz.UI.notifyOfNewEntries, 3000);
+	setTimeout(Spaz.UI.notifyOfNewEntries, 1000);
 	
 	// $("#"+timelineid + ' .timeline-entry').each( function(i) {
 	// 	$(this).bind('click', {'jqentry':$(this)}, Spaz.Handlers.selectEntry);
@@ -1012,14 +1012,14 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 	// announce new items
 	if ($("div.needs-cleanup", "#"+timelineid).length > 0) {
-
+	
 		Spaz.UI.playSoundNew();
 		Spaz.UI.statusBar('Updates found');
-
+	
 	} else {
-
+	
 		Spaz.UI.statusBar('No new messages');
-
+	
 	}
 	
 	
@@ -1171,75 +1171,75 @@ Spaz.UI.keyboardHandler = function(event) {
 		return true;
 	}
 
-	// CMD+T or CTRL+T
-	if (e.which == 84 && (e.metaKey || e.ctrlKey) ) {
-		$('#entrybox').focus();
-		return false;
-	}
-
+// 	// CMD+T or CTRL+T
+// 	if (e.which == 84 && (e.metaKey || e.ctrlKey) ) {
+// 		$('#entrybox').focus();
+// 		return false;
+// 	}
+// 
 	// 'ENTER' if (e.which == 13 && e.shiftKey == true && e.srcElement.id == 'entrybox') {
 	if (e.which == 13 && e.srcElement.id == 'entrybox') {
 		Spaz.UI.sendUpdate();
 		return false;
 	}
-	
-	// 'r' reload the current tab
-	if (e.which == 82 && e.srcElement.id != 'entrybox') {
-		Spaz.UI.reloadCurrentTab();
-		Spaz.restartReloadTimer();
-		return false;
-	}
-
-	// 'l' show shorten link dialog
-	if (e.which == 76 && e.srcElement.id != 'entrybox') {
-		Spaz.UI.showShortLink();
-		return false;
-	}
-	
-	// '@' reply to selected user
-	if (e.which == 50 && e.shiftKey && e.srcElement.id != 'entrybox') {
-		// get the current selection username
-		// Spaz.dump('getting current selection');
-		Spaz.dump('getting screenname from current selection');
-		var screenname = $('div.ui-selected .user-screen-name').text();
-		
-		Spaz.dump('username for reply is:'+screenname);
-//		var username = '';
-		Spaz.UI.prepReply(screenname);
-		return false;
-	}
-
-	// '1-9' Numbers for tabs
-	if ( ((e.which >= 49 && e.which <= 56) && !e.shiftKey && e.srcElement.id != 'entrybox')
-		|| ((e.which >= 49 && e.which <= 56) && !e.shiftKey && e.metaKey) ) {
-		var panelId = e.which-49;
-		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[panelId]);
-		Spaz.UI.tabbedPanels.showPanel(panelId);
-		return false;
-	}
-
-	// ****************************************
-	// Keys to navigate timeline
-	// ****************************************
-	if (e.which == 74 && (e.metaKey || e.ctrlKey) ) { // CMD+j
-		Spaz.Handlers.keyboardMove('down');
-		return false;
-	}
-	
-	if (e.which == 75 && (e.metaKey || e.ctrlKey) ) { // CMD+k
-		Spaz.Handlers.keyboardMove('up');
-		return false;
-	}
-
-	if (e.which == 74 && e.srcElement.id != 'entrybox') { // j
-		Spaz.Handlers.keyboardMove('down');
-		return false;
-	}
-	
-	if (e.which == 75 && e.srcElement.id != 'entrybox') { // k
-		Spaz.Handlers.keyboardMove('up');
-		return false;
-	}
+// 	
+// 	// 'r' reload the current tab
+// 	if (e.which == 82 && e.srcElement.id != 'entrybox') {
+// 		Spaz.UI.reloadCurrentTab();
+// 		Spaz.restartReloadTimer();
+// 		return false;
+// 	}
+// 
+// 	// 'l' show shorten link dialog
+// 	if (e.which == 76 && e.srcElement.id != 'entrybox') {
+// 		Spaz.UI.showShortLink();
+// 		return false;
+// 	}
+// 	
+// 	// '@' reply to selected user
+// 	if (e.which == 50 && e.shiftKey && e.srcElement.id != 'entrybox') {
+// 		// get the current selection username
+// 		// Spaz.dump('getting current selection');
+// 		Spaz.dump('getting screenname from current selection');
+// 		var screenname = $('div.ui-selected .user-screen-name').text();
+// 		
+// 		Spaz.dump('username for reply is:'+screenname);
+// //		var username = '';
+// 		Spaz.UI.prepReply(screenname);
+// 		return false;
+// 	}
+// 
+// 	// '1-9' Numbers for tabs
+// 	if ( ((e.which >= 49 && e.which <= 56) && !e.shiftKey && e.srcElement.id != 'entrybox')
+// 		|| ((e.which >= 49 && e.which <= 56) && !e.shiftKey && e.metaKey) ) {
+// 		var panelId = e.which-49;
+// 		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[panelId]);
+// 		Spaz.UI.tabbedPanels.showPanel(panelId);
+// 		return false;
+// 	}
+// 
+// 	// ****************************************
+// 	// Keys to navigate timeline
+// 	// ****************************************
+// 	if (e.which == 74 && (e.metaKey || e.ctrlKey) ) { // CMD+j
+// 		Spaz.Handlers.keyboardMove('down');
+// 		return false;
+// 	}
+// 	
+// 	if (e.which == 75 && (e.metaKey || e.ctrlKey) ) { // CMD+k
+// 		Spaz.Handlers.keyboardMove('up');
+// 		return false;
+// 	}
+// 
+// 	if (e.which == 74 && e.srcElement.id != 'entrybox') { // j
+// 		Spaz.Handlers.keyboardMove('down');
+// 		return false;
+// 	}
+// 	
+// 	if (e.which == 75 && e.srcElement.id != 'entrybox') { // k
+// 		Spaz.Handlers.keyboardMove('up');
+// 		return false;
+// 	}
 
 	
 	if (e.srcElement.id == 'home') {

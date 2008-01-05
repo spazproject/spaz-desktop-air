@@ -131,7 +131,7 @@ if(typeof runtime!='undefined'){
 				Spaz.Bridge.updaterHandleNoUpgrade();
 				break;
 		}
-		Spaz.Bridge.hideLoading();
+		// Spaz.Bridge.hideLoading();
 	};
 	
 	
@@ -300,7 +300,7 @@ if(typeof runtime!='undefined'){
 		var uiDiv;
 		var ret = {};
 		
-		if (this.uiDiv) uiDiv = $Spaz(this.uiDiv);
+		if (this.uiDiv) uiDiv = eSpaz(this.uiDiv);
 		if (!uiDiv) {
 				uiDiv = document.createElement("div");
 				uiDiv.style.overflow = "auto";
@@ -316,8 +316,8 @@ if(typeof runtime!='undefined'){
 		// else
 		//    uiDiv.innerHTML = "Checking for updates...";
 	
-		Spaz.UI.statusBar('Checking for new version');
-		Spaz.UI.showLoading();
+		// Spaz.UI.statusBar('Checking for new version');
+		// Spaz.UI.showLoading();
 	
 		// uiDiv.style.width = document.body.clientWidth + "px";
 		// uiDiv.style.height = document.body.clientHeight + "px";
@@ -358,12 +358,12 @@ if(typeof runtime!='undefined'){
 	   }
 	   else 
 	   {
-		   this.uiDiv.style.display = "none";    
+		   this.uiDiv.style.display = "none";
 	   }
 	};
 	
 	
-		Spaz.Update.prototype.handleDowngrade = function()
+	Spaz.Update.prototype.handleDowngrade = function()
 	{
 	   this.cancelBtnClick(); 
 	   Spaz.UI.statusBar('The online version is older than your version');
@@ -401,15 +401,15 @@ if(typeof runtime!='undefined'){
 // Utility functions
 //////////////////////////////////////////////////////////////////////
 
-var $Spaz;
-if (!$Spaz)
+var eSpaz;
+if (!eSpaz)
 {
-	$Spaz = function(element)
+	eSpaz = function(element)
 	{
 		if (arguments.length > 1)
 		{
 			for (var i = 0, elements = [], length = arguments.length; i < length; i++)
-				elements.push($Spaz(arguments[i]));
+				elements.push(eSpaz(arguments[i]));
 			return elements;
 		}
 		if (typeof element == 'string')
@@ -425,7 +425,7 @@ Spaz.Utils.addEventListener = function(element, eventType, handler, capture)
 {
 	try
 	{
-		element = $Spaz(element);
+		element = eSpaz(element);
 		if (element.addEventListener)
 			element.addEventListener(eventType, handler, capture);
 		else if (element.attachEvent)
@@ -438,7 +438,7 @@ Spaz.Utils.removeEventListener = function(element, eventType, handler, capture)
 {
 	try
 	{
-		element = $Spaz(element);
+		element = eSpaz(element);
 		if (element.removeEventListener)
 			element.removeEventListener(eventType, handler, capture);
 		else if (element.detachEvent)

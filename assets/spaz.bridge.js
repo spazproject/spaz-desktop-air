@@ -15,9 +15,7 @@ air.trace('parent bridge');
 	Spaz.Bridge.$child = null;
 	
 	Spaz.Bridge.$init = function(iframe){
-	
 
-		
 		var bridge = {};
 		
 		//link every function from Spaz.Bridge to parentSandboxBridge
@@ -27,8 +25,8 @@ air.trace('parent bridge');
 		for(var i in Spaz.Bridge){
 			if(i[0]!='$')
 			{
+				air.trace('Mapping Parent Bridge Func '+i);
 				bridge[i]=Spaz.Bridge[i];
-				// air.trace('bridging '+i)
 			}
 		}
 		
@@ -37,7 +35,7 @@ air.trace('parent bridge');
 		Spaz.Bridge.$iframe = iframe;
 	
 	}
-
+	
 	
 	Spaz.Bridge.triggerRemoteLoad = function(){
 		//now we know remote content is linked (or loaded)
@@ -46,8 +44,10 @@ air.trace('parent bridge');
 		var bridge = Spaz.Bridge.$iframe.contentWindow.childSandboxBridge;
 		
 		for(var i in bridge){
+			air.trace('Mapping Child Bridge Func '+i);
 			Spaz.Bridge[i]=bridge[i];
 		}
+
 	
 		//add some events
 		
@@ -62,6 +62,13 @@ air.trace('parent bridge');
 		Spaz.Prefs.load();
 		
 		Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
+		
+		
+	}
+
+
+	Spaz.Bridge.getCapabilities = function(key) {
+		return air.Capabilities[key];
 	}
 
 
@@ -391,6 +398,33 @@ air.trace('parent bridge');
 	
 	
 
+	Spaz.Bridge.dumpHTML = function() {
+		var docsDir = air.File.documentsDirectory;
+		try {
+			docsDir.browseForSave("Save HTML As");
+			docsDir.addEventListener(air.Event.SELECT, Spaz.Bridge.dumpHTMLSelectListener);
+		} catch (error) {
+			Spaz.dump("Failed:"+error.message, 'error');
+		}
+	};
+	
+	Spaz.Bridge.dumpHTMLSelectListener = function(event) {
+		var newFile = event.target;
+		alert('got newFile '+newFile.url);
+		var str = Spaz.Bridge.getChildFrameHTML();
+		alert('got string '.str);
+
+		var stream = new air.FileStream();
+		alert('made stream ');
+		stream.open(newFile, air.FileMode.UPDATE);
+		alert('opened stream '+newFile.url);
+		stream.writeUTFBytes(str);
+		alert('write utfbytes '+str);
+		stream.close();
+		alert('close stream')
+
+	}
+
 
 	Spaz.Bridge.getClipboardText = function() {
 		if(air.Clipboard.generalClipboard.hasFormat("text/plain")){
@@ -450,7 +484,7 @@ air.trace('parent bridge');
 				bridge[i]=Spaz.Bridge[i];
 			}
 		}
-		
+				
 		childSandboxBridge = bridge;
 		
 		Spaz.Bridge.$callback = callback;
@@ -473,6 +507,9 @@ air.trace('parent bridge');
 			for(var i in bridge){
 				Spaz.Bridge[i]=bridge[i];
 			}
+			
+			
+
 			
 			air = { trace: Spaz.Bridge.trace };
 
@@ -655,6 +692,12 @@ air.trace('parent bridge');
 		Spaz.UI.prepReply('spaz');
 	}
 	
+	Spaz.Bridge.getChildFrameHTML= function() {
+		var html = $('html')[0].outerHTML;
+		html = html.replace(/app:\/\//, '');
+		html = html.replace(/onclick="Spaz\.UI\.setSelectedTab\(this\)"/, '');
+		return html;
+	};
 	// END NATIVEMENU HOOKS
 	
 	// Spaz.Bridge.menuCheckForUpdates = function() {

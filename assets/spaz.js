@@ -77,6 +77,11 @@ Spaz.childFrameInit = function() {
 	// START ME UP
 	//*************************
 
+			
+	// ***************************************************************
+	// Keyboard shortcut handling
+	// ***************************************************************
+	Spaz.Keyboard.setShortcuts();
 
 
 	// insert theme CSS links

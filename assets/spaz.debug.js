@@ -70,26 +70,12 @@ if(typeof runtime!='undefined'){
 	}
 	
 	
-	Spaz.Debug.dumpHTML = function(){
-		var docsDir = air.File.documentsDirectory;
-		try {
-			docsDir.browseForSave("Save HTML As");
-			docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
-		} catch (error) {
-			Spaz.dump("Failed:"+error.message, 'error');
-		}
+	Spaz.Debug.dumpHTML = function() {
+		Spaz.Bridge.dumpHTML();
 	}
 	
 	Spaz.Debug.dumpHTMLSelectListener = function(event) {
-		var newFile = event.target ;
-		var str = $('html')[0].outerHTML;
-		if (!newFile.exists)
-		{
-			var stream = new air.FileStream();
-			stream.open(newFile, air.FileMode.UPDATE);
-			stream.writeUTFBytes(str);
-			stream.close();
-		}
+		Spaz.Bridge.dumpHTMLSelectListener(event);
 	}
 	
 	Spaz.Debug.enabled = Spaz.Debug.markerExists();
@@ -143,18 +129,18 @@ if(typeof runtime!='undefined'){
 	}
 
 	
-	Spaz.Debug.dumpHTML = function(){
-	//TODO:
-	/*	var docsDir = air.File.documentsDirectory;
-		try {
-			docsDir.browseForSave("Save HTML As");
-			docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
-		} catch (error) {
-			Spaz.dump("Failed:"+error.message, 'error');
-		}
-	*/	
-	alert($('html')[0].outerHTML);
-	}
+	// Spaz.Debug.dumpHTML = function(){
+	// //TODO:
+	// /*	var docsDir = air.File.documentsDirectory;
+	// 	try {
+	// 		docsDir.browseForSave("Save HTML As");
+	// 		docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
+	// 	} catch (error) {
+	// 		Spaz.dump("Failed:"+error.message, 'error');
+	// 	}
+	// */	
+	// alert($('html')[0].outerHTML);
+	// }
 	
 }
 

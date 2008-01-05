@@ -296,6 +296,7 @@ img.user-image {
 
 div.user-screen-name {
 	font-size:10px;
+	overflow:hidden;
 }
 
 /*.user-details {
@@ -320,13 +321,6 @@ div.status-text {
 	margin-bottom:4px;
 }
 
-div.status-text img {
-	display:inline;
-	float:left;
-	border:3px solid red;
-	width:150px;
-	height:150px;
-}
 
 /*div.status-text h1, div.status-text h2, div.status-text h3, div.status-text h4, div.status-text h5 {
 	position:relative;
@@ -824,9 +818,18 @@ table.data td.value {
 /* selectables */
 .ui-selected
 {
-	background-color:#D3D7FA !important;
+	background-color:#717598 !important;
 	background-image: url('images/entry-selected-bg.png') !important;
-	color:#000000;
+	color:#FFFFFF;
+}
+.ui-selected div.status-link {
+	font-size:10px;
+	color:#CCCCCC;
+}
+.ui-selected a, .ui-selected a:link, .ui-selected .clickable {
+	color:#CCCC66;
+	text-decoration:none;
+	cursor:pointer;
 }
 .ui-selecting
 {

@@ -16,16 +16,16 @@ $.ajaxSetup(
 URLs for various thangs...
 */
 // Timeline URLs
-Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
-Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.json";
-Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.json";
-Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.json";
-Spaz.Data.url_favorites        = "https://twitter.com/favorites.json";
-Spaz.Data.url_dm_timeline      = "https://twitter.com/direct_messages.json";
-Spaz.Data.url_dm_sent          = "https://twitter.com/direct_messages/sent.json";
-Spaz.Data.url_friendslist      = "https://twitter.com/statuses/friends.xml";
-Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.xml";
-Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.json";
+Spaz.Data.url_public_timeline  = "http://twitter.com/statuses/public_timeline.json";
+Spaz.Data.url_friends_timeline = "http://twitter.com/statuses/friends_timeline.json";
+Spaz.Data.url_user_timeline    = "http://twitter.com/statuses/user_timeline.json";
+Spaz.Data.url_replies_timeline = "http://twitter.com/statuses/replies.json";
+Spaz.Data.url_favorites        = "http://twitter.com/favorites.json";
+Spaz.Data.url_dm_timeline      = "http://twitter.com/direct_messages.json";
+Spaz.Data.url_dm_sent          = "http://twitter.com/direct_messages/sent.json";
+Spaz.Data.url_friendslist      = "http://twitter.com/statuses/friends.xml";
+Spaz.Data.url_followerslist    = "http://twitter.com/statuses/followers.xml";
+Spaz.Data.url_featuredlist     = "http://twitter.com/statuses/featured.json";
 
 // Action URLs
 Spaz.Data.url_update           = "http://twitter.com/statuses/update.json";
@@ -39,13 +39,11 @@ Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.
 Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials";
 
 
-// urls to build main timeline
-Spaz.Data.mainUrls = [Spaz.Data.url_friends_timeline,
-						Spaz.Data.url_replies_timeline,
-						Spaz.Data.url_dm_timeline];
+// temp storage for a section's ajax queries
+Spaz.Data.$ajaxQueueStorage = [];
 
-Spaz.Data.mainTimelineData = {};
-
+// counter for # of finished ajax queries in a section
+Spaz.Data.$ajaxQueueFinished = 0;
 
 
 /**
@@ -430,9 +428,87 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 			// data = data.concat(thisdata);
 		}
 	} else {
-		air.trace('Not loading data - section.mincachetime has not expired');
+		Spaz.dump('Not loading data - section.mincachetime has not expired');
 	}
 
+}
+
+
+Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
+
+	Spaz.Data.$ajaxQueueFinished++;
+
+	if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
+
+		// alert("ERROR: Timeout");
+		Spaz.dump("Error:Timeout on "+url);
+		// Spaz.Data.onAjaxComplete(url, false);
+		
+	} else {
+
+		air.trace("HEADERS:\n"+xhr.getAllResponseHeaders());
+		air.trace("STATUS:\n"+xhr.status);
+		air.trace("DATA:\n"+xhr.responseText);
+		air.trace("COMPLETE: " + msg);
+
+		if (xhr.status == 400) {
+			alert("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
+			// Spaz.Data.onAjaxComplete(url, false);
+			// return;
+		}
+
+		else if (xhr.status == 401) {
+			alert("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
+			// Spaz.Data.onAjaxComplete(url, false);
+			// return;
+		}
+
+
+		else if (xhr.responseText.length < 4) {
+			Spaz.dump("Error:response empty from "+url);
+			// Spaz.Data.onAjaxComplete(url, false);
+			// return;
+		}
+
+		try {
+			var data = eval(xhr.responseText);
+			if (!data || !data[0]) {
+				Spaz.dump("Error: no data returned from "+url);
+				// return;
+			} else {
+				Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
+			}
+
+		} catch(e) {
+			Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name 
+			+ ". Error message: " + e.message)
+		}
+	
+		Spaz.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
+		Spaz.dump('section.urls.length:'+section.urls.length);
+		Spaz.dump('Spaz.Data.$ajaxQueueStorage.length:'+Spaz.Data.$ajaxQueueStorage.length);
+	
+	}
+	
+	if (Spaz.Data.$ajaxQueueFinished >= section.urls.length) {
+	
+		Spaz.dump('setting $finished to 0');
+		Spaz.Data.$ajaxQueueFinished = 0;
+
+		Spaz.dump('adding entries');
+		for (var i in Spaz.Data.$ajaxQueueStorage) {
+			Spaz.UI.addEntryToTimeline(Spaz.Data.$ajaxQueueStorage[i], section);
+		}
+
+		Spaz.dump('cleaning up timeline');
+		Spaz.UI.cleanupTimeline(section.timeline);
+
+		Spaz.dump('hiding loading');
+		Spaz.UI.hideLoading();
+	
+		Spaz.dump('emptying storage');
+		Spaz.Data.$ajaxQueueStorage = [];
+	}
 }
 
 
@@ -440,77 +516,31 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 // this retrieves data from a URL
 Spaz.Data.getDataForUrl = function(url, section) {
 	
-	air.trace('getting:'+url);
+	Spaz.dump('getting:'+url);
 
-	air.trace('section.timeline:'+section.timeline);
+	Spaz.dump('section.timeline:'+section.timeline);
 	
 	Spaz.UI.statusBar("Checking for new data…");
 	Spaz.UI.showLoading();
 	
+	// var xhr = $.ajax(
+		
+		
 	var xhr = $.ajax({
+		mode:'queue',
+		
+		
 		complete:function(xhr, msg){
-			
-			Spaz.UI.hideLoading();
-			
-			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
-				// alert("ERROR: Timeout");
-				Spaz.dump("Error: timeout on "+url);
-				// Spaz.Data.onAjaxComplete(url, false);
-				return;
-			}
-
-			air.trace("HEADERS:\n"+xhr.getAllResponseHeaders());
-			air.trace("STATUS:\n"+xhr.status);
-			air.trace("DATA:\n"+xhr.responseText);
-			air.trace("COMPLETE: " + msg);
-
-			if (xhr.status == 400) {
-				alert("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
-				// Spaz.Data.onAjaxComplete(url, false);
-				return;
-			}
-
-			if (xhr.status == 401) {
-				alert("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
-				// Spaz.Data.onAjaxComplete(url, false);
-				return;
-			}
-
-
-			if (xhr.responseText.length < 4) {
-				Spaz.dump("Error:response empty from "+url);
-				// Spaz.Data.onAjaxComplete(url, false);
-				return;
-			}
-			
-			try {
-				var data = eval(xhr.responseText);
-			} catch(e) {
-				Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name 
-				+ ". Error message: " + e.message)
-			}
-			
-
-			if (!data || !data[0]) {
-				Spaz.dump("Error: no data returned from "+id);
-				return;
-			} else {
-				// Spaz.Data.mainTimelineData[id] = data;
-				// 
-				// for (var i in Spaz.Data.mainTimelineData[id]) {
-				// 	Spaz.UI.addEntryToMainTimeline(Spaz.Data.mainTimelineData[id][i]);
-				// }
-				for (var i in data) {
-					Spaz.UI.addEntryToTimeline(data[i], section);
-				}
-
-				Spaz.UI.cleanupTimeline(section.timeline);
-			}
-
+			Spaz.Data.onAjaxComplete(section,url,xhr,msg);
 		},
 		error:function(xhr, msg, exc) {
-			Spaz.dump("Error:"+xhr.responseText+" from "+url);
-			alert("Error:"+xhr.responseText+" from "+url);
+			if (xhr && xhr.responseText) {
+				Spaz.dump("Error:"+xhr.responseText+" from "+url);
+			} else {
+				Spaz.dump("Error:Unknown from "+url);
+			}
+			
+			// Spaz.UI.
 		},
 		// success:function(data) {
 		// 	// alert("SUCCESS");
@@ -596,21 +626,6 @@ Spaz.Data.loadDataForTab = function(tab, auto, page) {
 	Spaz.dump('SECTION:'+section);
 	Spaz.dump('load data for tab '+tab.id);
 	switch (tab.id) {
-		// case 'tab-friendslist':
-		// 	if (!auto) {
-		// 		// Spaz.Data.loadTwitterData(section, page);
-		// 		Spaz.Data.loadFriendsData(tab.id, page);
-		// 	}
-		// 	break;
-		// case 'tab-followerslist':
-		// 	if (!auto) {
-		// 		Spaz.Data.loadTwitterData(section, page);
-		// 		// Spaz.Data.loadFollowersData(tab.id, page);
-		// 	}
-		// 	break;
-		// case 'tab-friends':
-		// 	Spaz.Data.getDataForTimeline(section);
-		// 	break;
 		case 'tab-prefs':
 			break;
 		default:
