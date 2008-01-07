@@ -515,6 +515,7 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
 			alert(errors);
 			Spaz.dump(errors);
+			Spaz.Data.$ajaxQueueErrors = [];
 		}
 	
 		Spaz.dump('emptying storage');
