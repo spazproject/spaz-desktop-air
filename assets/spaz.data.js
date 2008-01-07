@@ -42,8 +42,13 @@ Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials
 // temp storage for a section's ajax queries
 Spaz.Data.$ajaxQueueStorage = [];
 
+// Errors recorded during ajax queries
+Spaz.Data.$ajaxQueueErrors = [];
+
 // counter for # of finished ajax queries in a section
 Spaz.Data.$ajaxQueueFinished = 0;
+
+
 
 
 /**
@@ -452,13 +457,13 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 		air.trace("COMPLETE: " + msg);
 
 		if (xhr.status == 400) {
-			alert("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
+			Spaz.Data.$ajaxQueueErrors.push("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
 
 		else if (xhr.status == 401) {
-			alert("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
+			Spaz.Data.$ajaxQueueErrors.push("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
@@ -505,6 +510,12 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 
 		Spaz.dump('hiding loading');
 		Spaz.UI.hideLoading();
+	
+		if (Spaz.Data.$ajaxQueueErrors.length > 0) {
+			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
+			alert(errors);
+			Spaz.dump(errors);
+		}
 	
 		Spaz.dump('emptying storage');
 		Spaz.Data.$ajaxQueueStorage = [];

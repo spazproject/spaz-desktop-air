@@ -26,12 +26,13 @@ Spaz.Keyboard.setShortcuts = function() {
 		$('#entrybox').focus();
 	})
 
-	shortcut.add(Modkey+'+R', function() {
+	shortcut.add('F5', function() {
 		Spaz.UI.reloadCurrentTab();
 		Spaz.restartReloadTimer();
 	})
 
-	shortcut.add(Modkey+'+L', function() {	
+	// shortcut.add(Modkey+'+L', function() {	
+	shortcut.add('Shift+F5', function() {
 		Spaz.UI.clearCurrentTimeline();
 		Spaz.UI.reloadCurrentTab();
 		Spaz.restartReloadTimer();
@@ -92,19 +93,28 @@ Spaz.Keyboard.setShortcuts = function() {
 	// shortcut.add(Modkey+'+Shift+]', function() {
 	// 	Spaz.Handlers.keyboardMove('up', '.dm');
 	// });
-	shortcut.add(Modkey+'+Shift+Down', function() {
-		Spaz.Handlers.keyboardMove('down', '.reply');
+	// shortcut.add(Modkey+'+Shift+Down', function() {
+	shortcut.add('[', function() {
+			Spaz.Handlers.keyboardMove('down', '.reply');
+		}, {
+			keycode:123
 	});
-	shortcut.add(Modkey+'+Shift+Up', function() {
-		Spaz.Handlers.keyboardMove('up', '.reply');
+	shortcut.add(']', function() {
+			Spaz.Handlers.keyboardMove('up', '.reply');
+		}, {
+			keycode:125
 	});
 	
 
-	shortcut.add(Modkey+'+Down', function() {
-		Spaz.Handlers.keyboardMove('down', '.dm');
+	shortcut.add('{', function() {
+			Spaz.Handlers.keyboardMove('down', '.dm');
+		}, {
+			keycode:91
 	});
-	shortcut.add(Modkey+'+Up', function() {
-		Spaz.Handlers.keyboardMove('up', '.dm');
+	shortcut.add('}', function() {
+			Spaz.Handlers.keyboardMove('up', '.dm');
+		}, {
+			keycode:93
 	});
 
 
@@ -142,6 +152,31 @@ Spaz.Keyboard.setShortcuts = function() {
 			Spaz.Handlers.keyboardMove('up');
 		}, {
 			'disable_in_input':true
+	});
+	
+	
+	
+	// editor shortcuts
+	shortcut.add(Modkey+'+B', function() {
+			Spaz.Editor.bold();
+		}, {
+			target:$('entrybox')[0],
+			type:'keypress',
+			propagate:false
+	});
+	shortcut.add(Modkey+'+I', function() {
+			Spaz.Editor.italics();
+		}, {
+			target:$('entrybox')[0],
+			type:'keypress',
+			propagate:false
+	});
+	shortcut.add(Modkey+'+L', function() {
+			Spaz.Editor.link();
+		}, {
+			target:$('entrybox')[0],
+			type:'keypress',
+			propagate:false
 	});
 
 }
