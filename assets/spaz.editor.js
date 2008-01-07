@@ -16,6 +16,9 @@ Spaz.Editor.italics = function() {
 	Spaz.Editor.$wrap('*', '*');
 }
 
+Spaz.Editor.code = function() {
+	Spaz.Editor.$wrap('`', '`');
+}
 
 Spaz.Editor.link = function() {
 	Spaz.Editor.$wrap('[', '](http://)', -8, -1);
@@ -44,12 +47,9 @@ Spaz.Editor.$wrap = function(open, close, selstart, selend) {
 	var s1 = editor.val().substring(0,start);
     var s2 = editor.val().substring(start, end)
     var s3 = editor.val().substring(end, len);
-
 		
 	editor.val(s1 + open + s2 + close + s3)
 
-	
-	
 	if (s2.length == 0) {
 		editor[0].setSelectionRange((s1 + open).length, (s1 + open).length);
 	} else {

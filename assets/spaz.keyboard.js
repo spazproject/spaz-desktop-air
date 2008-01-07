@@ -31,7 +31,6 @@ Spaz.Keyboard.setShortcuts = function() {
 		Spaz.restartReloadTimer();
 	})
 
-	// shortcut.add(Modkey+'+L', function() {	
 	shortcut.add('Shift+F5', function() {
 		Spaz.UI.clearCurrentTimeline();
 		Spaz.UI.reloadCurrentTab();
@@ -56,7 +55,9 @@ Spaz.Keyboard.setShortcuts = function() {
 	});
 	
 	
+	// ****************************************
 	// tabs shortcuts
+	// ****************************************
 	shortcut.add(Modkey+'+1', function() {
 		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[0]);
 		Spaz.UI.tabbedPanels.showPanel(0);
@@ -81,52 +82,24 @@ Spaz.Keyboard.setShortcuts = function() {
 	// ****************************************
 	// Keys to navigate timeline
 	// ****************************************
-	// shortcut.add(Modkey+'+[', function() {
-	// 	Spaz.Handlers.keyboardMove('down', '.reply');
-	// });
-	// shortcut.add(Modkey+'+]', function() {
-	// 	Spaz.Handlers.keyboardMove('up', '.reply');
-	// });
-	// shortcut.add(Modkey+'+Shift+[', function() {
-	// 	Spaz.Handlers.keyboardMove('down', '.dm');
-	// });
-	// shortcut.add(Modkey+'+Shift+]', function() {
-	// 	Spaz.Handlers.keyboardMove('up', '.dm');
-	// });
-	// shortcut.add(Modkey+'+Shift+Down', function() {
-	shortcut.add('[', function() {
-			Spaz.Handlers.keyboardMove('down', '.reply');
-		}, {
-			keycode:123
+	shortcut.add(Modkey+'+down', function() {
+		Spaz.Handlers.keyboardMove('down', '.reply');
 	});
-	shortcut.add(']', function() {
-			Spaz.Handlers.keyboardMove('up', '.reply');
-		}, {
-			keycode:125
+	shortcut.add(Modkey+'+up', function() {
+		Spaz.Handlers.keyboardMove('up', '.reply');
 	});
-	
-
-	shortcut.add('{', function() {
-			Spaz.Handlers.keyboardMove('down', '.dm');
-		}, {
-			keycode:91
+	shortcut.add(Modkey+'+Shift+down', function() {
+		Spaz.Handlers.keyboardMove('down', '.dm');
 	});
-	shortcut.add('}', function() {
-			Spaz.Handlers.keyboardMove('up', '.dm');
-		}, {
-			keycode:93
+	shortcut.add(Modkey+'+Shift+up', function() {
+		Spaz.Handlers.keyboardMove('up', '.dm');
 	});
-
-
 	shortcut.add(Modkey+'+End', function() {
 		Spaz.Handlers.keyboardMove('down', ':last');
 	});
 	shortcut.add(Modkey+'+Home', function() {
 		Spaz.Handlers.keyboardMove('up', ':first');
-	});
-
-	
-	
+	});	
 	shortcut.add('Down', function() {
 			Spaz.Handlers.keyboardMove('down');
 		}, {
@@ -155,8 +128,9 @@ Spaz.Keyboard.setShortcuts = function() {
 	});
 	
 	
-	
+	// ****************************************
 	// editor shortcuts
+	// ****************************************
 	shortcut.add(Modkey+'+B', function() {
 			Spaz.Editor.bold();
 		}, {
@@ -171,12 +145,18 @@ Spaz.Keyboard.setShortcuts = function() {
 			type:'keypress',
 			propagate:false
 	});
-	shortcut.add(Modkey+'+L', function() {
+	shortcut.add(Modkey+'+R', function() {
+			Spaz.Editor.code();
+		}, {
+			target:$('entrybox')[0],
+			type:'keypress',
+			propagate:false
+	});
+	shortcut.add(Modkey+'+U', function() {
 			Spaz.Editor.link();
 		}, {
 			target:$('entrybox')[0],
 			type:'keypress',
 			propagate:false
 	});
-
 }
