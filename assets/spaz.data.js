@@ -68,20 +68,20 @@ Spaz.Data.verifyPassword = function() {
 		complete:function(xhr, rstr){
 			Spaz.UI.hideLoading();
 			if (xhr.readyState < 3) {
-				air.trace("ERROR: Timeout");
+				Spaz.dump("ERROR: Timeout");
 				Spaz.UI.statusBar("ERROR: Timeout")
 				return;
 			}
-			air.trace("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
-			air.trace("DATA:\n"+xhr.responseText);
-			air.trace("COMPLETE: " + rstr);
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("DATA:\n"+xhr.responseText);
+			Spaz.dump("COMPLETE: " + rstr);
 		},
 		error:function(xhr, rstr){
-			air.trace("ERROR: " + rstr);
+			Spaz.dump("ERROR: " + rstr);
 			Spaz.UI.statusBar('Error verifying password');
 			Spaz.UI.flashStatusBar();
 			if (xhr.readyState < 3) {
-				air.trace("ERROR: Timeout");
+				Spaz.dump("ERROR: Timeout");
 				Spaz.UI.statusBar("ERROR: Timeout")
 			}
 			
@@ -89,13 +89,13 @@ Spaz.Data.verifyPassword = function() {
 		success:function(data){
 			if (data == 'Authorized') {
 				Spaz.verified = true;
-				air.trace('verified; setting current user');
+				Spaz.dump('verified; setting current user');
 				Spaz.Bridge.setCurrentUser();
 				Spaz.UI.statusBar("Verification succeeded");
 				Spaz.UI.flashStatusBar();
 			} else {
 				Spaz.verified = false;
-				air.trace('verification failed');
+				Spaz.dump('verification failed');
 				Spaz.UI.statusBar("Verification failed");
 				Spaz.UI.flashStatusBar();
 			}
@@ -419,16 +419,16 @@ Spaz.Data.stopFollowingUser = function(userid) {
 
 Spaz.Data.getDataForTimeline = function(section, force) {
 	
-	air.trace('now:'+getTimeAsInt());
-	air.trace('then:'+section.lastcheck);
-	air.trace('difference:'+(getTimeAsInt() - section.lastcheck));
-	air.trace('section.mincachetime:'+section.mincachetime);
+	Spaz.dump('now:'+getTimeAsInt());
+	Spaz.dump('then:'+section.lastcheck);
+	Spaz.dump('difference:'+(getTimeAsInt() - section.lastcheck));
+	Spaz.dump('section.mincachetime:'+section.mincachetime);
 	
 	if (force || (getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
 		section.lastcheck = getTimeAsInt();
 		
 		for (var i = 0; i < section.urls.length; i++) {
-			air.trace('section.urls['+i+']: '+ section.urls[i])
+			Spaz.dump('section.urls['+i+']: '+ section.urls[i])
 			Spaz.Data.getDataForUrl(section.urls[i], section);
 			// data = data.concat(thisdata);
 		}
@@ -451,10 +451,10 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 		
 	} else {
 
-		air.trace("HEADERS:\n"+xhr.getAllResponseHeaders());
-		air.trace("STATUS:\n"+xhr.status);
-		air.trace("DATA:\n"+xhr.responseText);
-		air.trace("COMPLETE: " + msg);
+		Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
+		Spaz.dump("STATUS:\n"+xhr.status);
+		Spaz.dump("DATA:\n"+xhr.responseText);
+		Spaz.dump("COMPLETE: " + msg);
 
 		if (xhr.status == 400) {
 			Spaz.Data.$ajaxQueueErrors.push("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);

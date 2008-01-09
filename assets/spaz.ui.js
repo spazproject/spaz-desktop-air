@@ -261,7 +261,7 @@ Spaz.UI.hideLoading = function() {
 // 	$('#container').prepend('<h2 id="wilhelm" style="display:block; opacity:.1; font-size:.1em; position:absolute; z-index:1000">WILHELM</h2>');
 // 	$('#wilhelm').css('top', $('#container').height()/2);
 // 	// var left = '-'+$('#wilhelm').width()+'px';
-// 	// air.trace('LEFT:'+left);
+// 	// Spaz.dump('LEFT:'+left);
 // 	// 
 // 	// $('#wilhelm').css('left', left);
 // 	$('#wilhelm').animate(
@@ -508,7 +508,7 @@ Spaz.UI.sendUpdate = function() {
 	var entrybox = $('#entrybox');
 	if (entrybox.val() != '' && entrybox.val() != entryBoxHint) {
 		
-		air.trace('length:'+entrybox.val().length)
+		Spaz.dump('length:'+entrybox.val().length)
 		
 		Spaz.Data.update(entrybox.val(), Spaz.Bridge.getUser(), Spaz.Bridge.getPass());
 		// entrybox.val('');
@@ -603,6 +603,16 @@ Spaz.UI.windowRestore = function() {
 
 
 
+Spaz.UI.toggleTimelineFilter = function() {
+	Spaz.dump('toggling class dm-replies on #'+Spaz.Section.friends.timeline)
+	if ($('#'+Spaz.Section.friends.timeline).is('.dm-replies')) {
+		$('#'+Spaz.Section.friends.timeline).removeClass('dm-replies');
+		Spaz.UI.statusBar('Showing all tweets');
+	} else {
+		$('#'+Spaz.Section.friends.timeline).addClass('dm-replies');
+		Spaz.UI.statusBar('Hiding tweets not directed at you');
+	}
+};
 
 
 
@@ -624,7 +634,7 @@ Spaz.UI.showUserTooltip = function(el, str) {
 
 Spaz.UI.showTooltip = function(el, str, previewurl) {
 	
-	air.trace('previewurl:'+previewurl);
+	Spaz.dump('previewurl:'+previewurl);
 	
 	var minwidth = 100;
 
@@ -639,7 +649,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 	tt.hide();
 	
 	// clear any running tooltip hiding timeouts
-	air.trace('clearTimeout(Spaz.UI.tooltipHideTimeout);');
+	Spaz.dump('clearTimeout(Spaz.UI.tooltipHideTimeout);');
 	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
 	str = "<div>"+str+"</div>";
@@ -662,7 +672,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		$("#tooltip").append("<div class='preview' id='"+previewid+"' style='display:none; position:relative; overflow:hidden; margin-top:.7em'></div>");
 		
 		
-		air.trace('username is '+username)
+		Spaz.dump('username is '+username)
 		
 		var url = 'http://twitter.com/statuses/user_timeline.json'
 		var data = {
@@ -670,8 +680,8 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 			'count':1
 		}
 		$.get(url, data, function(data, textStatus) {
-			//air.trace('textStatus:'+textStatus);
-			//air.trace('DATA:'+data);
+			//Spaz.dump('textStatus:'+textStatus);
+			//Spaz.dump('DATA:'+data);
 			try {
 				var tweets = eval(data);
 				if (tweets[0].text) {
@@ -707,20 +717,23 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		// // $("#tooltip .preview").attr('src', previewurl);
 		// $("#tooltip .preview").fadeIn(500);
 		
-		$.get(previewurl, function(rtext, status, xhr) {
-			// var jqpreview = $(rtext);
-			//air.trace('rtext:'+rtext);
-			var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
+		if (previewurl.search(/^http:\/\//i) > -1) {
+		
+			$.get(previewurl, function(rtext, status, xhr) {
+				// var jqpreview = $(rtext);
+				//Spaz.dump('rtext:'+rtext);
+				var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
 			
-			// alert(rtext_matches);
+				// alert(rtext_matches);
 			
-			if (rtext_matches && rtext_matches[1]) {			
-				var title = rtext_matches[1];
-				// air.trace('jqpreview.innerText:'+jqpreview[0].innerText);
-				$("#"+previewid).html('<strong>Title:</strong> '+title);
-				$("#"+previewid).fadeIn(500);
-			}
-		});
+				if (rtext_matches && rtext_matches[1]) {			
+					var title = rtext_matches[1];
+					// Spaz.dump('jqpreview.innerText:'+jqpreview[0].innerText);
+					$("#"+previewid).html('<strong>Title:</strong> '+title);
+					$("#"+previewid).fadeIn(500);
+				}
+			});
+		}
 		
 		// $("#tooltip .preview")
 	}
@@ -748,7 +761,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		}
 	}
 	
-	air.trace('Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.UI.tooltipHideDelay);');
+	Spaz.dump('Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.UI.tooltipHideDelay);');
 	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.UI.tooltipHideDelay);
 	
 }
@@ -768,12 +781,12 @@ Spaz.UI.getViewport = function() {
 
 Spaz.UI.hideTooltips = function() {
 	// clear existing timeouts
-	air.trace('clearTimeout(Spaz.UI.tooltipHideTimeout);');
+	Spaz.dump('clearTimeout(Spaz.UI.tooltipHideTimeout);');
 	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
 	$('#tooltip').stop();
 	$('#tooltip').animate({'opacity':'0'}, 200, 'linear', function(){
-		air.trace('hiding tooltips');
+		Spaz.dump('hiding tooltips');
 		$('#tooltip').hide();
 	});
 }
@@ -848,12 +861,12 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 		entryHTML = entryHTML + '	</div>';
 		entryHTML = entryHTML + '</div>';
 
-		// air.trace("\n\n"+entryHTML);
+		// Spaz.dump("\n\n"+entryHTML);
 
 
 		// Make the jQuery object and bind events
 		var jqentry = $(entryHTML);
-		jqentry.css('opacity', 0);
+		jqentry.css('opacity', .5);
 		
 		
 		
@@ -885,17 +898,21 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 Spaz.UI.sortTimeline = function(timelineid) {
 	var cells = $('#'+timelineid+' .timeline-entry');
 	
-	// air.trace('cells length:'+cells.length);
+	// Spaz.dump('cells length:'+cells.length);
 	
-	cells.sort(function(a, b) {
-		var inta = parseInt( $(a).find('.entry-timestamp').text() )
-		var intb = parseInt( $(b).find('.entry-timestamp').text() )
-		var diff = inta - intb;
-		return diff;
-	}, true).remove().appendTo('#'+timelineid);
+	cells.sort(Spaz.UI.sortTweetElements, true).remove().appendTo('#'+timelineid);
 	
-	// air.trace('done sorting');
+	// Spaz.dump('done sorting');
 }
+
+
+
+Spaz.UI.sortTweetElements = function(a, b) {
+	var inta = parseInt( $(a).find('.entry-timestamp').text() )
+	var intb = parseInt( $(b).find('.entry-timestamp').text() )
+	var diff = inta - intb;
+	return diff;
+};
 
 
 
@@ -905,26 +922,37 @@ Spaz.UI.reverseTimeline = function(timelineid) {
 }
 
 
+
 Spaz.UI.notifyOfNewEntries = function() {
 	
 	var timelineid = Spaz.Section.friends.timeline;
 	
-	air.trace('notifyOfNewEntries');
-	if ($("#"+timelineid + ' .new').length>0) {
+	// we change the selector so that messages not showing do not trigger notifications
+	if ($('#'+timelineid).is('.dm-replies')) {
+		var selector = '#'+timelineid + ' .new.dm, #'+timelineid + ' .new.reply'
+	} else {
+		var selector = '#'+timelineid + ' .new'
+	}
+	
+	Spaz.dump('notifyOfNewEntries');
+	if ($(selector).length>0) {
 		
-		air.trace('NewEntries found!');
+		Spaz.dump('NewEntries found!');
+		
+		
+		var newtweets = $(selector).get().sort(Spaz.UI.sortTweetElements).reverse();
 		
 		// get newest of the new
 		// we use this roundabout way of getting things to avoid a problem where
 		// you could get text from one tweet and a userimg from another
-		var newestHTML = $("#"+timelineid + ' .new')[0].innerHTML;
-		air.trace(newestHTML);
+		var newestHTML = newtweets[0].innerHTML;
+		Spaz.dump(newestHTML);
 		var jqnewest = $(newestHTML);
 		
 		
 		
 		
-		air.trace('Sending notification');
+		Spaz.dump('Sending notification');
 		var resp = "";
 		
 		var text;
@@ -935,11 +963,11 @@ Spaz.UI.notifyOfNewEntries = function() {
 			switch($(this).attr('class')) {
 				case 'entry-user-screenname':
 					screen_name = $(this).text();
-					air.trace(screen_name)
+					Spaz.dump(screen_name)
 					break;
 				case 'entry-text':
 					text = $(this).text();
-					air.trace('TEXT:'+text);
+					Spaz.dump('TEXT:'+text);
 					break;
 				case 'entry-user-img':
 					img = $(this).text();
@@ -948,16 +976,19 @@ Spaz.UI.notifyOfNewEntries = function() {
 			// resp += $(this).attr('class')+":"+$(this).text()+"\n";
 		})
 		// alert(resp);
-		// air.trace(screen_name);
-		// 		air.trace(img);
-		// 		air.trace(text);
+		// Spaz.dump(screen_name);
+		// 		Spaz.dump(img);
+		// 		Spaz.dump(text);
 		// 		
 		Spaz.Bridge.notify(text, screen_name, Spaz.UI.notificationPosition, Spaz.UI.notificationHideDelay, img);
+		Spaz.UI.playSoundNew();
+		Spaz.UI.statusBar('Updates found');
 
 		// remove "new" indicators
 		$("#"+timelineid + ' .new').removeClass('new');
 	} else {
-		air.trace('NewEntries NOT found!');
+		Spaz.dump('NewEntries NOT found!');
+		Spaz.UI.statusBar('No new messages');
 	}
 	
 }
@@ -976,7 +1007,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	
 	// we delay on notification of new entries because stuff gets 
 	// really confused and wonky if you fire it off right away
-	air.trace('Set timeout for notifications')
+	Spaz.dump('Set timeout for notifications')
 	setTimeout(Spaz.UI.notifyOfNewEntries, 1000);
 	
 	// $("#"+timelineid + ' .timeline-entry').each( function(i) {
@@ -985,17 +1016,17 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 	// apply even class
 	$("#"+timelineid + ' .timeline-entry:nth-child(even)').addClass('even');
-	// air.trace($("#"+timelineid + ' .timeline-entry:nth-child(even)')[0].outerHTML);
+	// Spaz.dump($("#"+timelineid + ' .timeline-entry:nth-child(even)')[0].outerHTML);
 	
 	// apply odd class
 	$("#"+timelineid + ' .timeline-entry:nth-child(odd)').addClass('odd');
-	// air.trace($("#"+timelineid + ' .timeline-entry:nth-child(odd)')[0].outerHTML);
+	// Spaz.dump($("#"+timelineid + ' .timeline-entry:nth-child(odd)')[0].outerHTML);
 	
 
 	// animate in new stuff
-	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 150, 'linear', function() {
-		//air.trace($(this).text());
-		$(this).next().animate({'opacity': '1.0'}, 150, 'linear', arguments.callee);
+	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 25, 'linear', function() {
+		//Spaz.dump($(this).text());
+		$(this).next().animate({'opacity': '1.0'}, 25, 'linear', arguments.callee);
 	})
 
 	if ($("#"+timelineid + ' .timeline-entry:eq(0)').length > 0) {
@@ -1009,18 +1040,6 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		}
 		
 	}
-
-	// announce new items
-	if ($("div.needs-cleanup", "#"+timelineid).length > 0) {
-	
-		Spaz.UI.playSoundNew();
-		Spaz.UI.statusBar('Updates found');
-	
-	} else {
-	
-		Spaz.UI.statusBar('No new messages');
-	
-	}
 	
 	
 	
@@ -1030,7 +1049,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	// convert post times to relative (these all need to be updated each time)
 	$(".timeline-entry", "#"+timelineid).each(function(i) {
 		var entrytime = $(".entry-time", this).text();
-		// air.trace(entrytime);
+		// Spaz.dump(entrytime);
 		$(".status-created-at", this).html(get_relative_time( entrytime ));
 		// Spaz.dump($(".timeline-entry").html());
 	});
@@ -1052,8 +1071,8 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		var before = this.innerHTML;
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\/\s]+)([^\]\)\s]+)(\s|$)/gi, '$1$2<a href="$3://$4$5" title="Open $4$5 in a browser window" class="inline-link">$4&raquo;</a>$6');
 		if (before != this.innerHTML) {
-			air.trace('BEFORE inline-links change: '+before);
-			air.trace('AFTER inline-links change: '+this.innerHTML);
+			Spaz.dump('BEFORE inline-links change: '+before);
+			Spaz.dump('AFTER inline-links change: '+this.innerHTML);
 		}
 		
 		
@@ -1082,8 +1101,8 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		var before = this.innerHTML;
 		this.innerHTML = this.innerHTML.replace(/(^|\s)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+[a-zA-Z]{2,6}\.?)([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$4');
 		if (before != this.innerHTML) {
-			// air.trace("BEFORE:\n"+before);
-			// air.trace("AFTER:\n"+this.innerHTML);
+			// Spaz.dump("BEFORE:\n"+before);
+			// Spaz.dump("AFTER:\n"+this.innerHTML);
 		}
 
 		
@@ -1094,7 +1113,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	// add contentmenu calls
 	$("div.needs-cleanup div.status-text", "#"+timelineid).find('a[href]').each(function(i) {
 		var jqthis = $(this);
-		// air.trace(this.outerHTML);
+		// Spaz.dump(this.outerHTML);
 		var url = jqthis.attr('href');
 		jqthis.bind('contextmenu', { 'jq':jqthis, 'url':url }, Spaz.Handlers.showContextMenu)
 				// .removeAttr('href');
@@ -1141,13 +1160,13 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	$("div.needs-cleanup .status-text", "#"+timelineid).each( function(i) {
 		var re = new RegExp('@'+Spaz.Bridge.getUser(), 'i');
 		if (re.test($(this).html())) {
-			// air.trace("found reply in "+$(this).text());
+			// Spaz.dump("found reply in "+$(this).text());
 			$(this).parents('div.needs-cleanup').addClass('reply');
 		}
 	})
 	
 	$("div.needs-cleanup").each(function() {
-		// air.trace(this.outerHTML);
+		// Spaz.dump(this.outerHTML);
 	})
 	
 	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');

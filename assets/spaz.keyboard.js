@@ -127,6 +127,14 @@ Spaz.Keyboard.setShortcuts = function() {
 			'disable_in_input':true
 	});
 	
+	shortcut.add(Modkey+'+F', function() {
+			Spaz.UI.toggleTimelineFilter();
+			return false;
+		}, {
+			type:'keypress',
+			propagate:false
+	});
+	
 	
 	// ****************************************
 	// editor shortcuts

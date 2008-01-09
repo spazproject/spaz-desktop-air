@@ -30,3 +30,12 @@ div.status-text img {
 	max-width:150px;
 	max-height:150px;
 }
+
+/* this hides tweets other than dms and replies when enabled */
+div.timeline.dm-replies div.timeline-entry {
+	display:none;
+}
+
+div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
+	display:block;
+}
