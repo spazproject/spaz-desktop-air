@@ -1069,7 +1069,15 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 		// convert inline links
 		var before = this.innerHTML;
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)([\(\[]?)(http|https|ftp):\/\/([^\/\s]+)([^\]\)\s]+)(\s|$)/gi, '$1$2<a href="$3://$4$5" title="Open $4$5 in a browser window" class="inline-link">$4&raquo;</a>$6');
+		
+		/*
+			this is the regex we use to match inline 
+			.ht (Haiti) gets left out because of problems with matching something like
+			...let's go.http://...
+		*/
+		var inlineRE = /(?:(\s|^|\.|\:))(?:http:\/\/)?((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia\biz|cat|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|pro|tel|travel|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bl|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mf|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|st|su|sv|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw))((?:\/[\w\.\/\?=%&]*)*)/g;
+		
+		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open $2$5 in a browser window" class="inline-link">$2&raquo;</a>');
 		if (before != this.innerHTML) {
 			Spaz.dump('BEFORE inline-links change: '+before);
 			Spaz.dump('AFTER inline-links change: '+this.innerHTML);
@@ -1081,29 +1089,24 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	
 		// convert @username reply indicators
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile">@$2</a>');
-					
-		// @usernames at the beginning of lines
-		// this.innerHTML = this.innerHTML.replace(/^@([a-zA-Z0-9_-]+)/gi, '<a href="http://twitter.com/$1" class="inline-reply" title="View $1\'s profile">@$1</a>');
 
 		if (Spaz.UI.useMarkdown) {
-			// Spaz.dump('Pre-Markdown:'+this.innerHTML);
-			
 			// Markdown conversion with Showdown
 			this.innerHTML = md.makeHtml(this.innerHTML);
 			
 			// Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
 			
-			// replace hrefs from markdown with onClick calls 
+			// put title attr in converted Markdown link
 			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'href="$1" title="Open $1 in a browser window" class="inline-link"');
 		}
 
-		// inline non-http:// links like foo.com or bar.foo.edu
-		var before = this.innerHTML;
-		this.innerHTML = this.innerHTML.replace(/(^|\s)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+[a-zA-Z]{2,6}\.?)([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$4');
-		if (before != this.innerHTML) {
-			// Spaz.dump("BEFORE:\n"+before);
-			// Spaz.dump("AFTER:\n"+this.innerHTML);
-		}
+		// // inline non-http:// links like foo.com or bar.foo.edu
+		// var before = this.innerHTML;
+		// this.innerHTML = this.innerHTML.replace(/(^|\s)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+[a-zA-Z]{2,6}\.?)([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$4');
+		// if (before != this.innerHTML) {
+		// 	// Spaz.dump("BEFORE:\n"+before);
+		// 	// Spaz.dump("AFTER:\n"+this.innerHTML);
+		// }
 
 		
 		// Spaz.dump('Post conversion:'+this.innerHTML);

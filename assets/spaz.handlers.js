@@ -52,7 +52,7 @@ Spaz.Handlers.prepReply = function(event) {
 
 
 Spaz.Handlers.showUserTooltip = function(event) {
-	// air.trace('Event.data:'+event.data);
+	// Spaz.dump('Event.data:'+event.data);
 	var el = event.data.jq[0];
 	var userdata = event.data.userdata;
 	var data = userdata.split('|')
@@ -129,7 +129,7 @@ Spaz.Handlers.keyboardMove = function(dir, selector) {
 		selector = '';
 	}
 	
-	air.trace("selector is '" + selector+"'")
+	Spaz.dump("selector is '" + selector+"'")
 	
 	var timelineid = 'timeline-friends';
 
@@ -153,18 +153,18 @@ Spaz.Handlers.keyboardMove = function(dir, selector) {
 	
 	// if none selected, or there is no 'next', select first
 	if (selector == ":first" || selector == ":last") {
-		air.trace('first in timeline')
+		Spaz.dump('first in timeline')
 		Spaz.Handlers.keyboardMoveSelect($('#'+timelineid+' div.timeline-entry'+selector), timelineid)
 	} else if (jqsel.length == 0 ) {
-		air.trace('nothing is selected')
+		Spaz.dump('nothing is selected')
 		Spaz.Handlers.keyboardMoveSelect($('#'+timelineid+' div.timeline-entry'+selector+':'+wrapselc), timelineid)
 		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);
 	} else if (jqsel[movefunc]('div.timeline-entry'+selector).eq(0).length == 0) {
-		air.trace('we are at the beginning or end')
+		Spaz.dump('we are at the beginning or end')
 		Spaz.Handlers.keyboardMoveSelect($('#'+timelineid+' div.timeline-entry'+selector+':'+wrapselc), timelineid)
 		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);				
 	} else {
-		air.trace('something is now selected');
+		Spaz.dump('something is now selected');
 		Spaz.Handlers.keyboardMoveSelect(jqsel[movefunc]('div.timeline-entry'+selector).eq(0), timelineid);
 	}
 	// if selected is at bottom, go to top
@@ -174,9 +174,9 @@ Spaz.Handlers.keyboardMove = function(dir, selector) {
 
 Spaz.Handlers.keyboardMoveSelect = function(jqelement, timelineid) {	
 	
-	air.trace('Moving to new selected item');
+	Spaz.dump('Moving to new selected item');
 	
-	air.trace('jqelement.length:'+jqelement.length);
+	Spaz.dump('jqelement.length:'+jqelement.length);
 	
 	// unselect everything
 	$('#'+timelineid+' div.timeline-entry').removeClass('ui-selected');

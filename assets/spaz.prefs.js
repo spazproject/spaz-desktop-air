@@ -77,7 +77,7 @@ Spaz.Prefs.processXMLData = function()
 	// 	Spaz.Prefs.pass = userData.getAttribute("password");
 	Spaz.Prefs.user = Spaz.Prefs.loadUsername();
 	Spaz.Prefs.pass = Spaz.Prefs.loadPassword();
-	air.trace('loaded user:'+Spaz.Prefs.user);
+	Spaz.dump('loaded user:'+Spaz.Prefs.user);
 	
 	// load theme data
 	var themeData = Spaz.Prefs.XML.getElementsByTagName("theme")[0];

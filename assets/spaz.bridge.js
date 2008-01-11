@@ -9,11 +9,10 @@ if (!Spaz.Bridge) Spaz.Bridge = {};
 //check if we are in root sandbox
 if(typeof runtime!='undefined'){
 	
-air.trace('parent bridge');	
-	
-	
-	Spaz.Bridge.$child = null;
-	
+	Spaz.dump('parent bridge');	
+	Spaz.Bridge.$child = null;	
+
+
 	Spaz.Bridge.$init = function(iframe){
 
 		var bridge = {};
@@ -25,13 +24,12 @@ air.trace('parent bridge');
 		for(var i in Spaz.Bridge){
 			if(i[0]!='$')
 			{
-				air.trace('Mapping Parent Bridge Func '+i);
+				Spaz.dump('Mapping Parent Bridge Func '+i);
 				bridge[i]=Spaz.Bridge[i];
 			}
 		}
 		
 		iframe.contentWindow.parentSandboxBridge = bridge;
-		
 		Spaz.Bridge.$iframe = iframe;
 	
 	}
@@ -44,7 +42,7 @@ air.trace('parent bridge');
 		var bridge = Spaz.Bridge.$iframe.contentWindow.childSandboxBridge;
 		
 		for(var i in bridge){
-			air.trace('Mapping Child Bridge Func '+i);
+			Spaz.dump('Mapping Child Bridge Func '+i);
 			Spaz.Bridge[i]=bridge[i];
 		}
 
@@ -78,7 +76,7 @@ air.trace('parent bridge');
 		    air.navigateToURL(request);
 		}
 		catch (e) {
-		    air.trace(e.errorMsg)
+		    Spaz.dump(e.errorMsg)
 		}
 	}
 	
@@ -200,7 +198,7 @@ air.trace('parent bridge');
 		// 		args.push(arguments[i]);
 		// 	}
 		// 	
-		// 	air.trace.apply(this, args);
+		// 	Spaz.dump.apply(this, args);
 
 		// air.Introspector.Console.log(msg)
 
@@ -467,7 +465,7 @@ air.trace('parent bridge');
  we are in child iframe
 /****************************************************/
 	
-	// air.trace('child bridge');	
+	// Spaz.dump('child bridge');	
 	
 	Spaz.Bridge.$init = function(callback){
 		var bridge = {};
@@ -522,7 +520,7 @@ air.trace('parent bridge');
 				if(callback)
 					callback();
 			} catch(e) {
-				//air.trace('there was an error calling Spaz.Bridge.triggerRemoteLoad. Setting timeout again');
+				//Spaz.dump('there was an error calling Spaz.Bridge.triggerRemoteLoad. Setting timeout again');
 				setTimeout(Spaz.Bridge.$checkParent, 1);
 			}
 		}
@@ -588,7 +586,7 @@ air.trace('parent bridge');
 	
 	
 	Spaz.Bridge.val = function(id){
-		air.trace('getting $('+id+').val()');
+		Spaz.dump('getting $('+id+').val()');
 		return $(id).val();
 	}
 	
@@ -674,7 +672,7 @@ air.trace('parent bridge');
 	};
 	
 	Spaz.Bridge.menuPrefs  = function() {
-		air.trace('in Spaz.Bridge.menuPrefs');
+		Spaz.dump('in Spaz.Bridge.menuPrefs');
 		Spaz.UI.setSelectedTab(document.getElementById('tab-prefs'));
 		Spaz.UI.tabbedPanels.showPanel('tab-prefs');
 	};

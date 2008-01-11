@@ -13,14 +13,14 @@ Spaz.Info.getVersion = function() {
 	// 	if (appFile) {
 		// fs.open(appFile, air.FileMode.READ);
 		var appXML = air.NativeApplication.nativeApplication.applicationDescriptor
-		// air.trace(appXML)
+		// Spaz.dump(appXML)
 		// fs.close();
 		
 		var domParser = new DOMParser();
 		appXML = domParser.parseFromString(appXML, "text/xml");
 		// var appTag = appXML.getElementsByTagName("application")[0];
 		var version = appXML.getElementsByTagName("version")[0].firstChild.nodeValue;
-		// air.trace(appTag.getAttribute("version"));
+		// Spaz.dump(appTag.getAttribute("version"));
 		// return appTag.getAttribute("version");
 		return version;
 	// } else {
