@@ -75,8 +75,8 @@ Spaz.Keyboard.setShortcuts = function() {
 		Spaz.UI.tabbedPanels.showPanel(3);
 	})
 	shortcut.add(Modkey+'+,', function() {
-		Spaz.UI.setSelectedTab(document.getElementById('tab-prefs'));
-		Spaz.UI.tabbedPanels.showPanel('tab-prefs');
+		Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
+		Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
 	})
 	
 	// ****************************************

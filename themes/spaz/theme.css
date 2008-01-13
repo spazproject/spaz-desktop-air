@@ -243,7 +243,7 @@ span.statusbar-username {
 
 #loading {
 	float:right;
-	display:block;
+	display:none;
 }
 #loading img {
 	height:10px;
@@ -501,17 +501,21 @@ div.user-menu a+a:before {
 div.formrow {
 	white-space: nowrap;
 	clear:both;
+	margin-bottom:5px;
 }
 
 #prefs-form label {
 	min-width:80px;
-	text-align:right;
-	margin-right:5px;
+	text-align:left;
 	font-weight:bold;
-	/*letter-spacing:-1px;*/
 	display:block;
-	float:left;
-	padding:5px;
+/*	margin-right:5px;*/
+
+	/*letter-spacing:-1px;*/
+
+/*	float:left;*/
+/*	padding:5px;*/
+
 }
 
 #prefs-form input[type='password'],
@@ -525,7 +529,7 @@ div.formrow {
 #prefs-form label.checkbox {
 	float: none;
 	padding:0;
-	margin:0 0 0 5px;
+	margin:0 0 0 1px;
 	display:inline;
 }
 input[type='checkbox'] {

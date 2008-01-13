@@ -266,8 +266,6 @@ Spaz.Data.makeFavorite = function(postid) {
 	var user = Spaz.Bridge.getUser();
 	var pass = Spaz.Bridge.getPass();
 	
-	Spaz.UI.showLoading();
-	
 	Spaz.UI.statusBar('Adding fav: ' + postid);
 	Spaz.UI.showLoading();
 	
@@ -344,7 +342,7 @@ Spaz.Data.followUser = function(userid) {
 		},
 		success:function(data){
 			Spaz.dump(data);
-			Spaz.UI.setSelectedTab(document.getElementById('tab-friendslist'));
+			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
 			Spaz.UI.reloadCurrentTab();
 			Spaz.UI.statusBar("Now following " + userid);
 		},
@@ -396,7 +394,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 		},
 		success:function(data){
 			Spaz.dump(data);
-			Spaz.UI.setSelectedTab(document.getElementById('tab-friendslist'));
+			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
 			Spaz.UI.reloadCurrentTab();
 			Spaz.UI.statusBar("Stop following " + userid);
 		},
@@ -419,6 +417,22 @@ Spaz.Data.stopFollowingUser = function(userid) {
 
 
 Spaz.Data.getDataForTimeline = function(section, force) {
+	
+	var username = Spaz.Bridge.getUser();
+	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
+		if (confirm('Username not set. Enter this in Preferences?')) {
+			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
+			Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
+			Spaz.UI.prefsCPG.openPanel(0);
+			Spaz.dump('set selected tab to PREFS');
+		} else {
+			Spaz.dump('user chose not to enter username')
+		}
+		Spaz.dump('hiding loading');
+		Spaz.UI.hideLoading();
+		return;
+	}
+	
 	
 	Spaz.dump('now:'+getTimeAsInt());
 	Spaz.dump('then:'+section.lastcheck);

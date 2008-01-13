@@ -213,14 +213,14 @@ if(typeof runtime!='undefined'){
 	}
 	
 	Spaz.Bridge.getUser = function(){
-		if (Spaz.Prefs.user == false) {
+		if (Spaz.Prefs.user == 'false') {
 			return '';
 		}
 		return Spaz.Prefs.user;
 	}
 	
 	Spaz.Bridge.getPass = function(){
-		if (Spaz.Prefs.pass == false) {
+		if (Spaz.Prefs.pass == 'false') {
 			return '';
 		}
 		return Spaz.Prefs.pass;

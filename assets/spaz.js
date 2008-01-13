@@ -292,8 +292,12 @@ Spaz.childFrameInit = function() {
 		Spaz.dump('debug console opened');
 	}
 
-	Spaz.UI.setSelectedTab(document.getElementById('tab-friends'));
-	Spaz.dump('set selected tab to FRIENDS');
+	Spaz.dump('Setting 1500ms timeout for initial loading of data')
+	setTimeout(function() {
+		Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
+		Spaz.dump('set selected tab to FRIENDS');
+	}, 1500);
+	
 
 //	$('#header').contextMenu('linkContentMenu');
 
