@@ -8,7 +8,8 @@ if (!Spaz.Data) Spaz.Data = {};
 $.ajaxSetup(
 	{
 		timeout:1000*20, // 20 second timeout
-		async:true
+		async:true,
+		cache:false
 	}
 );
 
