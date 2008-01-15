@@ -1,6 +1,0 @@
-/*This CSS file is only loaded on the Windows platform, to turn off some 
-non-working CSS stuff*/
-
-* {
-	-khtml-border-radius:0px !important;
-}
