@@ -1,0 +1,41 @@
+/* The main thing this does is to hide the <body> element,
+which will be re-shown when a theme kicks in. This, of course,
+means themes must use display:block on the <body> element */
+
+body {
+	display:none;
+/*	-khtml-user-select:none;*/
+}
+
+input[type=text], textarea, div.status-text {
+/*	-khtml-user-select:text;*/
+}
+
+#SpryDebugWindow {
+	display:fixed;
+	bottom:	20px !important;
+	left:	20px !important;
+	height:100px !important;
+	overflow: auto;
+}
+
+.restart-required {
+	font-weight:bold;
+	color:#990000;
+}
+
+div.status-text img {
+	display:block;
+	border:1px solid black;
+	max-width:150px;
+	max-height:150px;
+}
+
+/* this hides tweets other than dms and replies when enabled */
+div.timeline.dm-replies div.timeline-entry {
+	display:none;
+}
+
+div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
+	display:block;
+}
