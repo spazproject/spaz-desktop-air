@@ -1,29 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UpdateDescriptor>
-	<version>0.3.6</version>
+	<version>0.3.7</version>
 	<filename>SpazAIR.air</filename>
 	<description>
 		<![CDATA[
 			<strong>These are the changes in the new version:</strong>
 			<ul>
-				<li>New mailing list for support and discussion: <a href="http://groups.google.com/group/spaz-users">Spaz-Users</a></li>
-				<li>Spaz now requires AIR Beta 3</li>
-				<li>Replies, direct messages, and standard timelines now combined into one. Keyboard shortcut to filter tweets (see help)</li>
-				<li>Timelines now prepend new messages to top instead of wiping and reloading everything</li>
-				<li>Highlighting of replies and direct messages in your timeline</li>
-				<li>Tooltips will preview title of external link if possible</li>
-				<li>Tooltips will show Twitter user info if user is not protected</li>
-				<li>Wilhelm!</li>
-				<li>Sent timeline now includes direct messages</li>
-				<li>Network refresh minimum is now 3 minutes; default is 4 minutes. Can still force refreshes with keystroke or clicking/switching tabs</li>
-				<li>Followers and Following sections removed until a more effective, useful implementation can be designed (was much less useful if exceeded 100 users)</li>
-				<li>Lots of new keyboard commands, including keyboard shortcuts for Markdown formatting. See Help section (<strong>?</strong>) for full details</li>
-				<li>Rewritten inline link parsing</li>
-				<li>Tooltips now hide automatically after 8 seconds</li>
-				<li>Markdown parser modified to remove support for headers (#)</li>
-				<li>Markdown parser modified so underlines (_) no longer translate to &lt;em&gt; (interfered with posting code snippets)</li>
-				<li>Root menu dropped from OS X (for now)</li>
-				<li>Major code rewrites to data retrieval, timeline creation, and event handling</li>
+				<li>AIR v1.0 compatibility - AIR v1.0 is REQUIRED for this version!</li>
+				<li>Update to jQuery 1.2.3</li>
 			</ul>
 		 ]]>
 	</description>

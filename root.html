@@ -27,16 +27,17 @@
 
 <body onload="rootInit()">
 	<!-- <iframe style="width:100%;height:100%;top:0px;left:0px;position:absolute;border:none;"
-		src="index.html" sandboxRoot="https://fakedomain.air/" documentRoot="app-resource:/"
-		onload="Spaz.Bridge.$init(this)"></iframe> -->
+			src="index.html" sandboxRoot="file://" documentRoot="app-resource:/"
+			onload="Spaz.Bridge.$init(this)"></iframe> -->
 	<iframe style="width:100%;height:100%;top:0px;left:0px;position:absolute;border:none;"
-		src="index.html" onload="Spaz.Bridge.$init(this)"></iframe>
+				src="index.html" onload="Spaz.Bridge.$init(this)"></iframe>
 </body>
 </html>
 <script>
 
 function rootInit() {
 	
+	air.trace()
 	
 	window.htmlLoader.manageCookies = false;
 	window.htmlLoader.paintsDefaultBackground = false;

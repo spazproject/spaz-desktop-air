@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <application 
-	xmlns="http://ns.adobe.com/air/application/1.0.M6"
-	minimumPatchLevel="4">
+	xmlns="http://ns.adobe.com/air/application/1.0">
 <!-- AIR Application Descriptor File. See
 	http://www.adobe.com/go/air_1.0_application_descriptor. -->
 	<id>Spaz.AIR</id>
 	<name>Spaz</name>
-	<version>0.3.6</version>
+	<version>0.3.7</version>
 	<filename>Spaz</filename>
 	<description>A Twitter client</description>
 	<copyright>Copyright Funkatron Productions</copyright>
