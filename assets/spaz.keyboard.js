@@ -8,14 +8,14 @@ if (!Spaz.Keyboard) Spaz.Keyboard = {};
 
 Spaz.Keyboard.setShortcuts = function() {
 	Spaz.dump("Setting Shortcuts=================================================")
-    Spaz.dump("os: " + Spaz.Bridge.getCapabilities('os'));
+    Spaz.dump("os: " + air.Capabilities['os']);
 	
 	var Modkey = 'Meta';
 	
-	if (Spaz.Bridge.getCapabilities('os').search(/Windows/i) != -1) {
+	if (air.Capabilities['os'].search(/Windows/i) != -1) {
 		Spaz.dump('THIS IS WINDOWS');
 		Modkey = 'Ctrl';
-	} else if (Spaz.Bridge.getCapabilities('os').search(/Mac/i) != -1) {
+	} else if (air.Capabilities['os'].search(/Mac/i) != -1) {
 		Spaz.dump('THIS IS MACOS');
 		Modkey = 'Meta';
 	}

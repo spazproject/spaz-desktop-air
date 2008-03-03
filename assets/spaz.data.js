@@ -60,7 +60,7 @@ Spaz.Data.verifyPassword = function() {
 	var user = $('#prefs-username').val();
 	var pass = $('#prefs-password').val();
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar("Verifying username and password");	
 	Spaz.UI.showLoading();
@@ -91,7 +91,7 @@ Spaz.Data.verifyPassword = function() {
 			if (data == 'Authorized') {
 				Spaz.verified = true;
 				Spaz.dump('verified; setting current user');
-				Spaz.Bridge.setCurrentUser();
+				Spaz.Prefs.setCurrentUser();
 				Spaz.UI.statusBar("Verification succeeded");
 				Spaz.UI.flashStatusBar();
 			} else {
@@ -123,7 +123,7 @@ Spaz.Data.update = function(msg, username, password) {
 	var user = username;
 	var pass = password;
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar("Sending update");
 	Spaz.UI.showLoading();
@@ -218,8 +218,8 @@ Spaz.Data.update = function(msg, username, password) {
 
 /* delete a status */
 Spaz.Data.destroyStatus = function(postid) {
-	var user = Spaz.Bridge.getUser();
-	var pass = Spaz.Bridge.getPass();
+	var user = Spaz.Prefs.getUser();
+	var pass = Spaz.Prefs.getPass();
 	
 	Spaz.UI.showLoading();
 	
@@ -263,8 +263,8 @@ Spaz.Data.destroyStatus = function(postid) {
 
 
 Spaz.Data.makeFavorite = function(postid) {
-	var user = Spaz.Bridge.getUser();
-	var pass = Spaz.Bridge.getPass();
+	var user = Spaz.Prefs.getUser();
+	var pass = Spaz.Prefs.getPass();
 	
 	Spaz.UI.statusBar('Adding fav: ' + postid);
 	Spaz.UI.showLoading();
@@ -311,10 +311,10 @@ Spaz.Data.makeFavorite = function(postid) {
 
 
 Spaz.Data.followUser = function(userid) {
-	var user = Spaz.Bridge.getUser();
-	var pass = Spaz.Bridge.getPass();
+	var user = Spaz.Prefs.getUser();
+	var pass = Spaz.Prefs.getPass();
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 		
 	Spaz.UI.statusBar('Start following: ' + userid)
 	Spaz.UI.showLoading();
@@ -363,10 +363,10 @@ Spaz.Data.followUser = function(userid) {
 
 Spaz.Data.stopFollowingUser = function(userid) {
 	
-	var user = Spaz.Bridge.getUser();
-	var pass = Spaz.Bridge.getPass();
+	var user = Spaz.Prefs.getUser();
+	var pass = Spaz.Prefs.getPass();
 	
-	Spaz.Bridge.dump('user:'+user+' pass:********');
+	Spaz.dump('user:'+user+' pass:********');
 	
 	Spaz.UI.statusBar('Stop following: ' + userid)
 	Spaz.UI.showLoading();
@@ -418,7 +418,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 
 Spaz.Data.getDataForTimeline = function(section, force) {
 	
-	var username = Spaz.Bridge.getUser();
+	var username = Spaz.Prefs.getUser();
 	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
 		if (confirm('Username not set. Enter this in Preferences?')) {
 			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
@@ -573,8 +573,8 @@ Spaz.Data.getDataForUrl = function(url, section) {
 		// 	// alert("SUCCESS");
 		// },
 		beforeSend:function(xhr){
-			var user = Spaz.Bridge.getUser();
-			var pass = Spaz.Bridge.getPass();
+			var user = Spaz.Prefs.getUser();
+			var pass = Spaz.Prefs.getPass();
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
 			xhr.setRequestHeader("Cookie", '');
 		},

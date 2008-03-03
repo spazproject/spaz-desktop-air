@@ -10,7 +10,7 @@
 	<description>A Twitter client</description>
 	<copyright>Copyright Funkatron Productions</copyright>
 	<initialWindow>
-		<content>root.html</content>
+		<content>index.html</content>
 		<title>Spaz</title>
 		<systemChrome>none</systemChrome>
 		<transparent>true</transparent>

@@ -82,33 +82,33 @@ Spaz.Prefs.processXMLData = function()
 	// load theme data
 	var themeData = Spaz.Prefs.XML.getElementsByTagName("theme")[0];
 	if (themeData) {
-		Spaz.Bridge.setUI('currentTheme', themeData.getAttribute("basetheme"));
-		Spaz.Bridge.setUI('userStyleSheet', themeData.getAttribute("userstylesheet"));
+		Spaz.UI.setUI('currentTheme', themeData.getAttribute("basetheme"));
+		Spaz.UI.setUI('userStyleSheet', themeData.getAttribute("userstylesheet"));
 		if (themeData.getAttribute("usemarkdown")) {
-			Spaz.Bridge.setUI('useMarkdown', parseInt(themeData.getAttribute("usemarkdown")));
+			Spaz.UI.setUI('useMarkdown', parseInt(themeData.getAttribute("usemarkdown")));
 		}
 		if (themeData.getAttribute("hideafterdelay")) {
-			Spaz.Bridge.setUI('hideAfterDelay', parseInt(themeData.getAttribute("hideafterdelay")));
+			Spaz.UI.setUI('hideAfterDelay', parseInt(themeData.getAttribute("hideafterdelay")));
 		}
 		if (themeData.getAttribute("restoreonupdates")) {
-			Spaz.Bridge.setUI('restoreOnUpdates', parseInt(themeData.getAttribute("restoreonupdates")));
+			Spaz.UI.setUI('restoreOnUpdates', parseInt(themeData.getAttribute("restoreonupdates")));
 		}
 		if (themeData.getAttribute("minimizetosystray")) {
-			Spaz.Bridge.setUI('minimizeToSystray', parseInt(themeData.getAttribute("minimizetosystray")));
+			Spaz.UI.setUI('minimizeToSystray', parseInt(themeData.getAttribute("minimizetosystray")));
 		}
 		if (themeData.getAttribute("minimizeonbackground")) {
-			Spaz.Bridge.setUI('minimizeOnBackground', parseInt(themeData.getAttribute("minimizeonbackground")));
+			Spaz.UI.setUI('minimizeOnBackground', parseInt(themeData.getAttribute("minimizeonbackground")));
 		}
 		if (themeData.getAttribute("restoreonactivate")) {
-			Spaz.Bridge.setUI('restoreOnActivate', parseInt(themeData.getAttribute("restoreonactivate")));
+			Spaz.UI.setUI('restoreOnActivate', parseInt(themeData.getAttribute("restoreonactivate")));
 		}
 		if (themeData.getAttribute("shownotificationpopups")) {
-			Spaz.Bridge.setUI('showNotificationPopups', parseInt(themeData.getAttribute("shownotificationpopups")));
+			Spaz.UI.setUI('showNotificationPopups', parseInt(themeData.getAttribute("shownotificationpopups")));
 		}
 
 		
 		
-		var info = Spaz.Bridge.getUIInfo();
+		var info = Spaz.UI.getUIInfo();
 		Spaz.dump("Spaz.UI.currentTheme:"+info.currentTheme);
 		Spaz.dump("Spaz.UI.userStyleSheet:"+info.userStyleSheet);
 		Spaz.dump("Spaz.UI.useMarkdown:"+info.useMarkdown);
@@ -124,8 +124,8 @@ Spaz.Prefs.processXMLData = function()
 	
 	var soundData = Spaz.Prefs.XML.getElementsByTagName("sound")[0];
 	if (soundData) {
-		Spaz.Bridge.setUI('playSounds', parseInt(soundData.getAttribute('enabled')));
-		var info = Spaz.Bridge.getUIInfo();
+		Spaz.UI.setUI('playSounds', parseInt(soundData.getAttribute('enabled')));
+		var info = Spaz.UI.getUIInfo();
 		Spaz.dump('Spaz.UI.playSounds: ' + info.playSounds)
 	}
 
@@ -229,7 +229,7 @@ Spaz.Prefs.saveData = function()
 */
 Spaz.Prefs.createXMLData = function()
 {
-	var info = Spaz.Bridge.getUIInfo();
+	var info = Spaz.UI.getUIInfo();
 	var cr = air.File.lineEnding;
 	Spaz.Prefs.XML  = "<?xml version='1.0' encoding='utf-8'?>" + cr
 					+ "<preferences>" + cr 
@@ -321,7 +321,7 @@ Spaz.Prefs.loadPassword = function() {
 };
 
 Spaz.Prefs.setPrefs = function() {
-	Spaz.Bridge.verifyPassword();
+	Spaz.Data.verifyPassword();
 }
 
 Spaz.Prefs.setCurrentUser = function() {
@@ -349,6 +349,11 @@ Spaz.Prefs.setHandleHTTPAuth = function(state) {
 	Spaz.dump(window.htmlLoader.shouldAuthenticate);
 }
 
+Spaz.Prefs.setDebugEnable = function(state){
+	Spaz.Debug.setEnable(state);
+}
+
+
 Spaz.Prefs.checkRefreshPeriod = function(val) {
 	val = parseInt(val);
 	if (val < 1) {
@@ -359,7 +364,7 @@ Spaz.Prefs.checkRefreshPeriod = function(val) {
 	
 	// convert msecs to minutes
 	Spaz.Prefs.refreshInterval = val*60000;
-	Spaz.Bridge.setPrefsFormVal('prefs-refresh-interval', val);
+	Spaz.UI.setPrefsFormVal('prefs-refresh-interval', val);
 }
 
 Spaz.Prefs.checkWindowOpacity = function(percentage) {
@@ -383,5 +388,36 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 	window.htmlLoader.alpha = val;
 	
 	Spaz.Prefs.windowOpacity = percentage;
-	Spaz.Bridge.setPrefsFormVal('prefs-opacity-percentage', Spaz.Prefs.windowOpacity);
+	Spaz.UI.setPrefsFormVal('prefs-opacity-percentage', Spaz.Prefs.windowOpacity);
+}
+
+
+
+
+
+
+
+
+
+Spaz.Prefs.getUser = function(){
+	if (Spaz.Prefs.user == 'false') {
+		return '';
+	}
+	return Spaz.Prefs.user;
+}
+
+Spaz.Prefs.getPass = function(){
+	if (Spaz.Prefs.pass == 'false') {
+		return '';
+	}
+	return Spaz.Prefs.pass;
+}
+
+Spaz.Prefs.getRefreshInterval = function(){
+	return Spaz.Prefs.refreshInterval;
+	// return 1000*5;
+}
+
+Spaz.Prefs.getHandleHTTPAuth = function() {
+	return Spaz.Prefs.handleHTTPAuth;
 }

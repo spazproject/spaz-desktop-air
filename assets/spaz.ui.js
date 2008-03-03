@@ -52,8 +52,25 @@ Spaz.UI.playSound = function(url, callback) {
 		Spaz.dump('Not playing sound '+url+'- disabled');
 		return;
 	}
-	Spaz.Bridge.playSound(url, callback);
+	Spaz.dump('Spaz.UI.playSound callback:'+callback);
+	Spaz.dump("loading " + url);
+	var req = new air.URLRequest(url);
+	var s = new air.Sound(req);
+	s.play();
+	Spaz.dump("playing " + url);
+	if (callback) {
+		s.addEventListener(air.Event.SOUND_COMPLETE, callback);
+	} else {
+		s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.UI.onSoundPlaybackComplete);
+	}
+	s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.UI.makeWindowVisible);
 }
+
+
+Spaz.UI.onSoundPlaybackComplete = function(event) {
+	Spaz.dump("The sound has finished playing.");
+}
+
 
 Spaz.UI.playSoundUpdate = function() {
 	Spaz.UI.playSound(Spaz.UI.SOUND_UPDATE);
@@ -145,10 +162,18 @@ Spaz.UI.setMinimizeOnBackground = function(state) {
 Spaz.UI.minimizeOnBackgroundOn = function() {
 	Spaz.dump("minimizeOnBackground ON");
 	Spaz.UI.minimizeOnBackground = 1;
+	air.NativeApplication.nativeApplication.addEventListener('deactivate', function() {
+		//window.nativeWindow.minimize();
+		Spaz.UI.windowMinimize();
+	})
 }
 Spaz.UI.minimizeOnBackgroundOff = function() {
 	Spaz.dump("minimizeOnBackground OFF");
 	Spaz.UI.minimizeOnBackground = 0;
+	// air.NativeApplication.nativeApplication.addEventListener('deactivate', function() {
+	// 	//window.nativeWindow.minimize();
+	// 	Spaz.UI.windowMinimize();
+	// })
 }
 
 
@@ -164,6 +189,10 @@ Spaz.UI.setRestoreOnActivate = function(state) {
 Spaz.UI.restoreOnActivateOn = function() {
 	Spaz.dump("restoreOnActivate ON");
 	Spaz.UI.restoreOnActivate = 1;
+	air.NativeApplication.nativeApplication.addEventListener('activate', function() {
+		//window.nativeWindow.restore();
+		Spaz.UI.windowRestore();
+	})
 }
 Spaz.UI.restoreOnActivateOff = function() {
 	Spaz.dump("restoreOnActivate OFF");
@@ -307,7 +336,7 @@ Spaz.UI.setCurrentTheme = function() {
 
 Spaz.UI.browseForUserCss = function() {
 	Spaz.dump('Spaz.UI.browseForUserCss');
-	Spaz.Bridge.browseForUserCss();	
+	Spaz.Themes.browseForUserCss();	
 }
 
 
@@ -350,12 +379,12 @@ Spaz.UI.hideUpdateCheck = function() {
 }
 Spaz.UI.showAbout = function() {
 	Spaz.UI.showPopup('aboutWindow');
-	var info = Spaz.Bridge.getRuntimeInfo();
+	var info = Spaz.Info.getRuntimeInfo();
 	$('#sysinfo-os').text(info.os);
 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
 }
 Spaz.UI.updateMemoryUsage = function() {
-	var info = Spaz.Bridge.getRuntimeInfo();
+	var info = Spaz.Info.getRuntimeInfo();
 	//Spaz.dump('NEW Memory Usage: ' + info.totalMemory);
 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
 }
@@ -403,7 +432,7 @@ Spaz.UI.setCurrentPage =function(tabEl, newpage) {
 	$('#'+panel+' .timeline-pager-number').html(newpage);
 };
 Spaz.UI.showEntryboxTip =function() {
-	Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Bridge.getUser() + '</span>. Type your message and press ENTER to send');
+	Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUser() + '</span>. Type your message and press ENTER to send');
 	// $('#entrybox').attr('title', 'Logged in as' + Spaz.Prefs.user).Tooltip({
 	// 	track: true, 
 	// 	delay: 100, 
@@ -512,7 +541,7 @@ Spaz.UI.sendUpdate = function() {
 		
 		Spaz.dump('length:'+entrybox.val().length)
 		
-		Spaz.Data.update(entrybox.val(), Spaz.Bridge.getUser(), Spaz.Bridge.getPass());
+		Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
 		// entrybox.val('');
 	}
 }
@@ -596,13 +625,54 @@ Spaz.UI.windowActiveHandler = function () {
 }
 
 Spaz.UI.windowMinimize = function() {
-	Spaz.Bridge.minimizeWindow();
+	window.nativeWindow.minimize();
+	if (Spaz.UI.getUIInfo().minimizeToSystray && air.NativeApplication.supportsSystemTrayIcon) {
+		window.nativeWindow.visible = false;
+	}
+	return false;
 };
+
 Spaz.UI.windowRestore = function() {
-	Spaz.Bridge.restoreWindow();
+	Spaz.dump('restoring window');
+	Spaz.dump('current window state:'+window.nativeWindow.displayState);
+	//Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
+
+
+	// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
+	// 	Spaz.dump('restoring window');
+	//  		nativeWindow.restore();
+	//  	}
+	Spaz.dump('restoring window');
+	window.nativeWindow.restore();
+
+	Spaz.dump('activating window');
+	window.nativeWindow.activate();
+	// Spaz.dump('ordering-to-front window');
+	// window.nativeWindow.orderToFront();
+	if (air.NativeApplication) {
+		Spaz.dump('activating application');
+		air.NativeApplication.nativeApplication.activate();
+	}
 };
 
-
+Spaz.UI.makeWindowVisible = function(){
+	Spaz.dump("making window visible");
+	window.nativeWindow.visible = true;
+}
+Spaz.UI.makeWindowHidden = function(){
+	Spaz.dump("making window hidden");
+	window.nativeWindow.visible = false;
+}
+Spaz.UI.setWindowOpacity = function(percentage) {
+	var val  = parseInt(percentage)/100;
+	window.htmlLoader.alpha = val;
+}
+Spaz.UI.onNativeMove = function(){
+	nativeWindow.startMove();
+}
+Spaz.UI.onResize = function(){
+	nativeWindow.startResize(air.NativeWindowResize.BOTTOM_RIGHT);
+}
 
 
 Spaz.UI.toggleTimelineFilter = function() {
@@ -982,7 +1052,7 @@ Spaz.UI.notifyOfNewEntries = function() {
 		// 		Spaz.dump(img);
 		// 		Spaz.dump(text);
 		// 		
-		Spaz.Bridge.notify(text, screen_name, Spaz.UI.notificationPosition, Spaz.UI.notificationHideDelay, img);
+		Spaz.UI.notify(text, screen_name, Spaz.UI.notificationPosition, Spaz.UI.notificationHideDelay, img);
 		Spaz.UI.playSoundNew();
 		Spaz.UI.statusBar('Updates found');
 
@@ -993,6 +1063,16 @@ Spaz.UI.notifyOfNewEntries = function() {
 		Spaz.UI.statusBar('No new messages');
 	}
 	
+}
+
+
+
+Spaz.UI.notify = function(message, title, where, duration, icon) {		
+	if (Spaz.UI.getUIInfo().showNotificationPopups) {
+		Spaz.Notify.add(message, title, where, duration, icon);
+	} else {
+		Spaz.dump('not showing notification popup - Spaz.UI.showNotificationPopups disabled');
+	}
 }
 
 
@@ -1074,10 +1154,10 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		
 		/*
 			this is the regex we use to match inline 
-			.ht (Haiti) gets left out because of problems with matching something like
-			...let's go.http://...
+			lots of uncommon but valid top-level domains aren't used
+			because they cause more problems than solved
 		*/
-		var inlineRE = /(?:(\s|^|\.|\:|\(|\[))(?:http:\/\/)?((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia\biz|cat|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|pro|tel|travel|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bl|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mf|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|st|su|sv|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw))((?:\/[\w\.\/\?=%&_-]*)*)/g;
+		var inlineRE = /(?:(\s|^|\.|\:|\(|\[))(?:http:\/\/)?((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
 		
 		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open $2$5 in a browser window" class="inline-link">$2&raquo;</a>');
 		if (before != this.innerHTML) {
@@ -1163,7 +1243,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 	// highlight messages that mention @currentusername
 	$("div.needs-cleanup .status-text", "#"+timelineid).each( function(i) {
-		var re = new RegExp('@'+Spaz.Bridge.getUser(), 'i');
+		var re = new RegExp('@'+Spaz.Prefs.getUser(), 'i');
 		if (re.test($(this).html())) {
 			// Spaz.dump("found reply in "+$(this).text());
 			$(this).parents('div.needs-cleanup').addClass('reply');
@@ -1288,23 +1368,52 @@ Spaz.UI.focusHandler = function(event) {
 	e = event || window.event;
 	el = e.srcElement || e.target;
 	
-	Spaz.Bridge.trace('FOCUS name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
+	Spaz.dump('FOCUS name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
 };
 
 Spaz.UI.blurHandler = function(event) {
 	e = event || window.event;
 	el = e.srcElement || e.target;
 	
-	Spaz.Bridge.trace('BLUR  name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
+	Spaz.dump('BLUR  name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
 };
 
 Spaz.UI.clickHandler = function(event) {
 	e = event || window.event;
 	el = e.srcElement || e.target;
 	
-	Spaz.Bridge.trace('BLUR  name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
+	Spaz.dump('BLUR  name:'+e.name+' tagname:'+el.tagName+' id:'+el.id);
 };
 
+
+
+
+Spaz.UI.getUIInfo = function(){
+	return {
+		userStyleSheet:		Spaz.UI.userStyleSheet,
+		currentTheme:		Spaz.UI.currentTheme,
+		playSounds:			Spaz.UI.playSounds,
+		useMarkdown:		Spaz.UI.useMarkdown,
+		hideAfterDelay:		Spaz.UI.hideAfterDelay,
+		restoreOnUpdates:	Spaz.UI.restoreOnUpdates,
+		minimizeToSystray:	Spaz.UI.minimizeToSystray,
+		minimizeOnBackground:Spaz.UI.minimizeOnBackground,
+		restoreOnActivate: 	Spaz.UI.restoreOnActivate,
+		showNotificationPopups:Spaz.UI.showNotificationPopups,
+	};
+}
+
+Spaz.UI.setUI = function(id, value){
+	if("currentTheme, userStyleSheet, playSounds, useMarkdown, hideAfterDelay, restoreOnUpdates, minimizeToSystray, minimizeOnBackground, restoreOnActivate, showNotificationPopups".indexOf(id)>-1){
+		Spaz.UI[id]=value;
+		Spaz.dump('setUI: Spaz.UI['+id+']='+value);
+	}
+}
+
+
+Spaz.UI.setPrefsFormVal = function(id, val) {
+	$('#'+id).val(val);
+}
 
 
 

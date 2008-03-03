@@ -28,3 +28,13 @@ Spaz.Info.getVersion = function() {
 	// 	return false;
 	// }
 };
+
+
+Spaz.Info.getRuntimeInfo = function(){
+	return ret ={
+		os : air.Capabilities.os,
+		version: air.Capabilities.version, 
+		manufacturer: air.Capabilities.manufacturer,
+		totalMemory: air.System.totalMemory
+	};
+}

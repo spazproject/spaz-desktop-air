@@ -4,91 +4,52 @@ var Spaz; if (!Spaz) Spaz = {};
 Spaz.Debug
 ************/
 if (!Spaz.Debug) Spaz.Debug = {};
-//check if we are in root sandbox
-if(typeof runtime!='undefined'){
-	Spaz.Debug.markerExists = function() {
-		//Not allowed to write in app resource - use app storage
+
+Spaz.Debug.markerExists = function() {
+	//Not allowed to write in app resource - use app storage
+	var debugMarker = air.File.applicationStorageDirectory;
+	debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
+	return debugMarker.exists;
+}
+
+
+Spaz.Debug.enable = function() {
+	//Not allowed to write in app resource - use app storage
+	var debugMarker = air.File.applicationStorageDirectory;
+	// for debugging environment
+	debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
+	if (!debugMarker.exists) {
+		var markerStream = new air.FileStream();
+		markerStream.open(debugMarker, air.FileMode.WRITE);
+		markerStream.writeUTFBytes('debug');
+		markerStream.close();
+	}
+};
+
+Spaz.Debug.disable = function() {
+	if (Spaz.Debug.markerExists() ) {
 		var debugMarker = air.File.applicationStorageDirectory;
 		debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-		return debugMarker.exists;
+		debugMarker.deleteFile();
 	}
-	
-	
-	Spaz.Debug.enable = function() {
-		//Not allowed to write in app resource - use app storage
-		var debugMarker = air.File.applicationStorageDirectory;
-		// for debugging environment
-		debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-		if (!debugMarker.exists) {
-			var markerStream = new air.FileStream();
-			markerStream.open(debugMarker, air.FileMode.WRITE);
-			markerStream.writeUTFBytes('debug');
-			markerStream.close();
-		}
-	};
-	
-	Spaz.Debug.disable = function() {
-		if (Spaz.Debug.markerExists() ) {
-			var debugMarker = air.File.applicationStorageDirectory;
-			debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-			debugMarker.deleteFile();
-		}
-	};
-	
-	Spaz.Debug.setEnable = function(state) {
-		if (state) {
-			Spaz.Debug.enable();
-		} else {
-			Spaz.Debug.disable();
-		}
-	};
-	
-	Spaz.Debug.dump = function(msg, type) {
-		//Spaz.dump('debug:'+debug);
-		if (!type) {
-			type = 'info';
-		}
-	
-		if ( Spaz.Debug.enabled ) {
-			if (Spaz.Bridge && Spaz.Bridge.consoleDump) {
-				Spaz.Bridge.consoleDump(msg, type);
-			}
-			Spaz.Debug.logToFile(msg);
-		}
+};
+
+Spaz.Debug.setEnable = function(state) {
+	if (state) {
+		Spaz.Debug.enable();
+	} else {
+		Spaz.Debug.disable();
 	}
-	
-	
-	Spaz.Debug.logToFile = function(msg) {
-		var cr = air.File.lineEnding;
-		var file   = air.File.documentsDirectory;
-		file       = file.resolvePath("spaz-debug.log");
-		var stream = new air.FileStream();
-		stream.open(file, air.FileMode.APPEND);
-		now = new Date();
-		stream.writeUTFBytes(now.toString() + ' : ' + msg + cr);
-		stream.close();
+};
+
+Spaz.Debug.dump = function(msg, type) {
+	//Spaz.dump('debug:'+debug);
+	if (!type) {
+		type = 'info';
 	}
-	
-	
-	Spaz.Debug.dumpHTML = function() {
-		Spaz.Bridge.dumpHTML();
-	}
-	
-	Spaz.Debug.dumpHTMLSelectListener = function(event) {
-		Spaz.Bridge.dumpHTMLSelectListener(event);
-	}
-	
-	Spaz.Debug.enabled = Spaz.Debug.markerExists();
-	
-}else{
-	//define links to actual spaz.debug in root
-	
-	Spaz.Debug.dump = function(msg, type) {
-		Spaz.Bridge.dump(msg, type);
-	}
-	
-	Spaz.Debug.$dump = function(msg, type) {
-		//Spaz.dump('debug:'+debug);
+
+	if ( Spaz.Debug.enabled ) {
+		
 		if (!type) {
 			type = 'info';
 		}
@@ -126,23 +87,32 @@ if(typeof runtime!='undefined'){
 		} else {
 			air.trace(msg);
 		}
+	
+		Spaz.Debug.logToFile(msg);
 	}
-
-	
-	// Spaz.Debug.dumpHTML = function(){
-	// //TODO:
-	// /*	var docsDir = air.File.documentsDirectory;
-	// 	try {
-	// 		docsDir.browseForSave("Save HTML As");
-	// 		docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
-	// 	} catch (error) {
-	// 		Spaz.dump("Failed:"+error.message, 'error');
-	// 	}
-	// */	
-	// alert($('html')[0].outerHTML);
-	// }
-	
 }
+
+
+Spaz.Debug.logToFile = function(msg) {
+	var cr = air.File.lineEnding;
+	var file   = air.File.documentsDirectory;
+	file       = file.resolvePath("spaz-debug.log");
+	var stream = new air.FileStream();
+	stream.open(file, air.FileMode.APPEND);
+	now = new Date();
+	stream.writeUTFBytes(now.toString() + ' : ' + msg + cr);
+	stream.close();
+}
+
+
+Spaz.Debug.enabled = Spaz.Debug.markerExists();
+
+
+
+// Spaz.Debug.dump = function(msg, type) {
+// 
+// }
+
 
 // alias
 Spaz.dump = function(msg) {
@@ -157,4 +127,37 @@ Spaz.Debug.showProps = function(obj, objName) {
 	   result += objName + "." + i + " = " + obj[i] + "\n";
 	}
 	air.trace(result);
+}
+
+
+
+Spaz.Debug.dumpHTML = function() {
+	var docsDir = air.File.documentsDirectory;
+	try {
+		docsDir.browseForSave("Save HTML As");
+		docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
+	} catch (error) {
+		Spaz.dump("Failed:"+error.message, 'error');
+	}
+};
+
+Spaz.Debug.dumpHTMLSelectListener = function(event) {
+	var newFile = event.target;
+	alert('got newFile '+newFile.url);
+	
+	var html = $('html')[0].outerHTML;
+	html = html.replace(/app:\/\//, '');
+	html = html.replace(/onclick="Spaz\.UI\.setSelectedTab\(this\)"/, '');
+	
+	alert('got html '.html);
+
+	var stream = new air.FileStream();
+	alert('made stream ');
+	stream.open(newFile, air.FileMode.UPDATE);
+	alert('opened stream '+newFile.url);
+	stream.writeUTFBytes(html);
+	alert('write utfbytes '+html);
+	stream.close();
+	alert('close stream')
+
 }

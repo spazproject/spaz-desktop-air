@@ -3,8 +3,8 @@ if (!Spaz.Menus) Spaz.Menus = {};
 
 
 // Spaz.Menus.methods = new object{
-// 	'Preferences…':			Spaz.Bridge.Menus.prefs,
-// 	'Reload current timeline': 	Spaz.Bridge.Menus.reload, 
+// 	'Preferences…':			Spaz.Menu.menus.prefs,
+// 	'Reload current timeline': 	Spaz.Menu.menus.reload, 
 // }
 
 
@@ -58,7 +58,7 @@ Spaz.Menus.initAll = function() {
 
 
 Spaz.Menus.onSystrayClick = function(event) {
-	// TODO replace this with call to Spaz.Bridge.windowRestore()
+	// TODO replace this with call to Spaz.UI.windowRestore()
 	Spaz.dump('clicked on systray');
 	Spaz.dump(nativeWindow.displayState);
 	Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
@@ -98,36 +98,36 @@ Spaz.Menus.itemSelected = function(event){
 	
 	
 	else if (event.target.name == "reload") {
-		Spaz.dump('Calling Spaz.Bridge.menuReload');
-		Spaz.Bridge.menuReload();
+		Spaz.dump('Calling Spaz.Menu.menuReload');
+		Spaz.Menu.menuReload();
 	}
 
 	else if (event.target.name == "clear") {
-		Spaz.dump('Calling Spaz.Bridge.menuClearTimeline');
-		Spaz.Bridge.menuClearTimeline();
+		Spaz.dump('Calling Spaz.Menu.menuClearTimeline');
+		Spaz.Menu.menuClearTimeline();
 	}
 
 	else if (event.target.name == "prefs") {
-		Spaz.dump('Calling Spaz.Bridge.menuPrefs');
-		Spaz.Bridge.menuPrefs();
+		Spaz.dump('Calling Spaz.Menu.menuPrefs');
+		Spaz.Menu.menuPrefs();
 	}
 	
 	else if (event.target.name == "about") {
-		Spaz.dump('Calling Spaz.Bridge.menuAbout');
-		Spaz.Bridge.menuAbout();
+		Spaz.dump('Calling Spaz.Menu.menuAbout');
+		Spaz.Menu.menuAbout();
 	}
 	
 	else if (event.target.name == "feedback") {
-		Spaz.dump('Calling Spaz.Bridge.menuFeedback');
-		Spaz.Bridge.menuFeedback('spaz');
+		Spaz.dump('Calling Spaz.Menu.menuFeedback');
+		Spaz.Menu.menuFeedback('spaz');
 	}
 	else if (event.target.name == "check") {
 		Spaz.dump('Calling Spaz.Update.updater.checkForUpdate');
 		Spaz.Update.updater.checkForUpdate();
 	}
 	else if (event.target.name == "help") {
-		Spaz.dump('Calling Spaz.Bridge.menuHelp');
-		Spaz.Bridge.menuHelp();
+		Spaz.dump('Calling Spaz.Menu.menuHelp');
+		Spaz.Menu.menuHelp();
 	}
 	
   	else {
@@ -328,4 +328,41 @@ Spaz.Menus.setSystrayTooltip = function(msg){
 	if (air.NativeApplication.supportsSystemTrayIcon) {
 		SystemItrayIcon(air.NativeApplication.nativeApplication.icon).tooltip = msg;
 	}
+}
+
+
+
+
+
+// Handlers
+Spaz.Menus.menuReload = function() {
+	Spaz.dump('in Spaz.Menu.menuReload');
+	Spaz.UI.reloadCurrentTab();
+	Spaz.restartReloadTimer();
+};
+
+Spaz.Menus.menuClearTimeline = function() {
+	Spaz.dump('in Spaz.Menu.menuClearTimeline');
+	Spaz.UI.clearCurrentTimeline();
+	Spaz.UI.reloadCurrentTab();
+	Spaz.restartReloadTimer();
+};
+
+Spaz.Menus.menuPrefs  = function() {
+	Spaz.dump('in Spaz.Menu.menuPrefs');
+	Spaz.UI.setSelectedTab(document.getElementById('tab-prefs'));
+	Spaz.UI.tabbedPanels.showPanel('tab-prefs');
+};
+
+
+Spaz.Menus.menuAbout = function() {
+	Spaz.UI.showAbout();
+}
+
+Spaz.Menus.menuHelp = function() {
+	Spaz.UI.showHelp();
+}
+
+Spaz.Menus.menuFeedback = function() {
+	Spaz.UI.prepReply('spaz');
 }

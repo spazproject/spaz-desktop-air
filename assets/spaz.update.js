@@ -11,14 +11,15 @@ var Spaz; if (!Spaz) Spaz = {};
 // This handles the update of the application.
 //
 //////////////////////////////////////////////////////////////////////
-if(typeof runtime!='undefined'){
+// if(typeof runtime!='undefined'){
 	Spaz.Update = function(currentVersion, updateXMLFileURL, uiDiv)
 	{
 		this.currentVersion = currentVersion;
 		this.updateXMLFileURL = updateXMLFileURL;
 		this.uiDiv = uiDiv;
-		
-		Spaz.Bridge.updaterSetupUIDiv(uiDiv);
+
+		// this.setupUIDiv(uiDiv);
+
 		
 		this.updateApplicationURL = null;
 		
@@ -40,7 +41,7 @@ if(typeof runtime!='undefined'){
 	{
 		// starts the update procedure
 		
-		var ret = Spaz.Bridge.updaterSetupUI();
+		var ret = this.SetupUI();
 	
 		var self = this;
 		
@@ -68,13 +69,14 @@ if(typeof runtime!='undefined'){
 	
 	Spaz.Update.prototype.errorGettingUpdateXMLFile = function(req)
 	{
-		 Spaz.Bridge.updaterHideUI(this.uiDiv);
+		 // Spaz.Bridge.updaterHideUI(this.uiDiv);
+		this.uiDiv.style.display = "none";
 		
-		 var errorStr = "Error getting remote XML descriptor '" + this.updateXMLFileURL + "':\n" + 
-			"status: " + req.xhRequest.status + "/" + req.xhRequest.statusText;
-			
-		 Spaz.Bridge.statusBar(errorStr);
-		 Spaz.Utils.reportError(errorStr);
+		var errorStr = "Error getting remote XML descriptor '" + this.updateXMLFileURL + "':\n" + 
+		"status: " + req.xhRequest.status + "/" + req.xhRequest.statusText;
+
+		Spaz.UI.statusBar(errorStr);
+		Spaz.Utils.reportError(errorStr);
 	}
 	
 	
@@ -83,10 +85,10 @@ if(typeof runtime!='undefined'){
 		var doc = Spaz.Utils.getXMLObject(req.xhRequest);
 		if (doc == null) 
 		{
-		 //  this.uiDiv.style.display = "none";
-  		   Spaz.Bridge.updaterHideUI();
+		   this.uiDiv.style.display = "none";
+
 		   var errorStr  = "Error parsing remote XML descriptor '" + this.updateXMLFileURL + "'";
-		   Spaz.Bridge.statusBar(errorStr);
+		   Spaz.UI.statusBar(errorStr);
 		   Spaz.Utils.reportError(errorStr);
 		   return;
 		}
@@ -117,18 +119,18 @@ if(typeof runtime!='undefined'){
 			case 1:
 				Spaz.dump('upgrade');
 				var str = Spaz.Utils.prepareTemplate(this.ui['upgrade'], this.updateXMLLoadedProperties);
-				Spaz.Bridge.updaterHandleUpgrade(str);
+				this.handleUpgrade(str);
 				
 				break;
 				
 			case -1:
 				Spaz.dump('downgrade');
-				Spaz.Bridge.updaterHandleDowngrade();
+				this.handleDowngrade();
 				break;
 			
 			case 0:
 				Spaz.dump('same');
-				Spaz.Bridge.updaterHandleNoUpgrade();
+				this.handleNoUpgrade();
 				break;
 		}
 		// Spaz.Bridge.hideLoading();
@@ -284,16 +286,16 @@ if(typeof runtime!='undefined'){
 	
 	
 
-}else{
+// }else{
 
-	Spaz.Update = function(){};
+	// Spaz.Update = function(){};
 	
 	Spaz.Update.setCheckUpdateState = function (state){
-		Spaz.Bridge.setCheckUpdateState(state);
+		Spaz.Update.setCheckUpdateState(state);
 	}
 	
 	Spaz.Update.checkUpdate = function(){
-		return Spaz.Bridge.getCheckUpdate();
+		return Spaz.Update.checkUpdate==1;
 	}
 	
 	Spaz.Update.prototype.setupUI = function(){
@@ -347,7 +349,7 @@ if(typeof runtime!='undefined'){
 		// @TODO: check EULA
 		Spaz.dump('updateBtnClick()');
 		this.uiDiv.innerHTML = 'Downloading upgrade...';
-		Spaz.Bridge.startDownloadNewVersion();
+		this.startDownloadNewVersion();
 	};
 	
 	Spaz.Update.prototype.cancelBtnClick = function() 
@@ -390,7 +392,7 @@ if(typeof runtime!='undefined'){
 	};
 
 	Spaz.Update.updater = new Spaz.Update();
-}
+// }
 
 
 

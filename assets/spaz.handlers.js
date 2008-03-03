@@ -106,8 +106,8 @@ Spaz.Handlers.showContextMenu = function(event) {
 		Spaz.dump('url from element:'+elurl);
 	
 		$('#menu-copyLink').one('click', {url:elurl}, function(event) {
-			Spaz.Bridge.setClipboardText(event.data.url);
-			Spaz.dump('Current Clipboard:'+Spaz.Bridge.getClipboardText());
+			Spaz.Sys.setClipboardText(event.data.url);
+			Spaz.dump('Current Clipboard:'+Spaz.Sys.getClipboardText());
 		});
 		Spaz.dump('Set one-time click event on #menu-copyLink');
 	
