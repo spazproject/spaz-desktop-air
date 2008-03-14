@@ -8,8 +8,8 @@ if (!Spaz.Data) Spaz.Data = {};
 $.ajaxSetup(
 	{
 		timeout:1000*20, // 20 second timeout
-		async:true,
-		cache:false
+		async:true
+		// cache:false
 	}
 );
 
@@ -17,19 +17,19 @@ $.ajaxSetup(
 URLs for various thangs...
 */
 // Timeline URLs
-Spaz.Data.url_public_timeline  = "http://twitter.com/statuses/public_timeline.json";
-Spaz.Data.url_friends_timeline = "http://twitter.com/statuses/friends_timeline.json";
-Spaz.Data.url_user_timeline    = "http://twitter.com/statuses/user_timeline.json";
-Spaz.Data.url_replies_timeline = "http://twitter.com/statuses/replies.json";
-Spaz.Data.url_favorites        = "http://twitter.com/favorites.json";
-Spaz.Data.url_dm_timeline      = "http://twitter.com/direct_messages.json";
-Spaz.Data.url_dm_sent          = "http://twitter.com/direct_messages/sent.json";
-Spaz.Data.url_friendslist      = "http://twitter.com/statuses/friends.xml";
-Spaz.Data.url_followerslist    = "http://twitter.com/statuses/followers.xml";
-Spaz.Data.url_featuredlist     = "http://twitter.com/statuses/featured.json";
+Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
+Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.json";
+Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.json";
+Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.json";
+Spaz.Data.url_favorites        = "https://twitter.com/favorites.json";
+Spaz.Data.url_dm_timeline      = "https://twitter.com/direct_messages.json";
+Spaz.Data.url_dm_sent          = "https://twitter.com/direct_messages/sent.json";
+Spaz.Data.url_friendslist      = "https://twitter.com/statuses/friends.xml";
+Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.xml";
+Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.json";
 
 // Action URLs
-Spaz.Data.url_update           = "http://twitter.com/statuses/update.json";
+Spaz.Data.url_update           = "https://twitter.com/statuses/update.json";
 Spaz.Data.url_destroy_status   = "https://twitter.com/statuses/destroy/{{ID}}.json";
 Spaz.Data.url_follow           = "https://twitter.com/friendships/create/{{ID}}.json";
 Spaz.Data.url_stop_follow      = "https://twitter.com/friendships/destroy/{{ID}}.json";
