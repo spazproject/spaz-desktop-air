@@ -143,21 +143,21 @@ Spaz.Debug.dumpHTML = function() {
 
 Spaz.Debug.dumpHTMLSelectListener = function(event) {
 	var newFile = event.target;
-	alert('got newFile '+newFile.url);
+	Spaz.dump('got newFile '+newFile.url);
 	
 	var html = $('html')[0].outerHTML;
 	html = html.replace(/app:\/\//, '');
 	html = html.replace(/onclick="Spaz\.UI\.setSelectedTab\(this\)"/, '');
 	
-	alert('got html '.html);
+	Spaz.dump('got html '.html);
 
 	var stream = new air.FileStream();
-	alert('made stream ');
+	Spaz.dump('made stream ');
 	stream.open(newFile, air.FileMode.UPDATE);
-	alert('opened stream '+newFile.url);
+	Spaz.dump('opened stream '+newFile.url);
 	stream.writeUTFBytes(html);
-	alert('write utfbytes '+html);
+	Spaz.dump('write utfbytes '+html);
 	stream.close();
-	alert('close stream')
+	Spaz.dump('close stream')
 
 }

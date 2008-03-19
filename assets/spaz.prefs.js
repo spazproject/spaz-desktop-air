@@ -134,6 +134,7 @@ Spaz.Prefs.processXMLData = function()
 	if (checkupdateData) {
 		//TODO: enable spaz.update
 		Spaz.Update.checkUpdate = parseInt(checkupdateData.getAttribute('enabled'));
+		if (isNaN(Spaz.Update.checkUpdate)) { Spaz.Update.CheckUpdate = 1 }
 		Spaz.dump('Spaz.Update.checkUpdate: ' + Spaz.Update.checkUpdate)
 	}
 
@@ -298,6 +299,7 @@ Spaz.Prefs.loadUsername = function() {
 	var storedValue = air.EncryptedLocalStore.getItem('twitter_username_1');
 	if (storedValue) {
 		return storedValue.readUTFBytes(storedValue.length);
+		
 	} else {
 		return false;
 	}

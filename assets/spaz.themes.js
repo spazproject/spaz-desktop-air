@@ -44,7 +44,7 @@ Spaz.Themes.loadUserStylesFromURL = function(fileurl) {
 		return stylestr;
 		//Spaz.Bridge.setUserStyleSheet(stylestr);
 	} else {
-		alert('chosen file '+ event.target/url +'does not exist')
+		Spaz.UI.alert('chosen file '+ event.target/url +'does not exist')
 		return false;
 	}
 }

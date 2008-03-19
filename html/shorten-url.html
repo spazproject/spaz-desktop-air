@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Shorten Link</title>
+	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="../assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="../assets/spaz.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../assets/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../assets/spaz.info.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../assets/spaz.shortlink.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			Spaz.dump("val:"+$('#shorten-original-link').val());
+			$('#shorten-original-link').focus();
+			$('#shorten-original-link').val('http://');
+			Spaz.dump(air.Clipboard.generalClipboard.formats);
+			if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
+			    var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
+				if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
+					$('#shorten-original-link').val(cliptext);
+					Spaz.Shortlink.snurl(cliptext);
+				}
+			}
+			$('#shorten-original-link').select();	
+		})
+	</script>
+	
+	
+</head>
+
+<body id="shortLinkWindow">
+
+<h1>Shorten Link</h1>
+
+<div id="content">
+	<form id="shortenLink-form" onsubmit="Spaz.Shortlink.snurl($('#shorten-original-link').val()); return false;">
+		<div class="formrow">
+			<label for="original-link">Link</label>
+			<input type="text" name="original-link" id="shorten-original-link" value="http://" />
+		</div>
+		<div class="formrow">
+			<label for="short-link">Short</label>
+			<input type="text" name="short-link" id="shorten-short-link" value="" />
+		</div>
+		<div class="formrow" style="text-align:right; margin-top:15px">
+			<input type="button" id="prefs-update-button" name="update" value="Shorten &bull;"
+				onclick="Spaz.Shortlink.snurl($('#shorten-original-link').val())" /> 
+		</div>
+		<div id="verification-result" align="center">&nbsp;</div>
+	</form>
+</div>
+</div>
+
+</body>
+</html>

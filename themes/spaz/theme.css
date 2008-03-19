@@ -725,30 +725,6 @@ div.popupWindowBar .window-button:hover {
 	padding:2px;
 	text-align:left;
 }
-#shortLinkWindow {
-	height:190px;
-}
-#shortenLink-form {
-	width:100%;
-}
-#shortenLink-form label {
-	min-width:19%;
-	text-align:right;
-	margin-right:5px;
-	font-weight:bold;
-	/*letter-spacing:-1px;*/
-	display:block;
-	float:left;
-	padding:5px;
-}
-#shortenLink-form input[type='password'],
-#shortenLink-form input[type='text'],
-#shortenLink-form select {
-	border:1px solid #666;
-	padding:4px;
-	width:75%;
-	/*-khtml-border-radius:5px;*/
-}
 
 
 

@@ -24,8 +24,8 @@ Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.json";
 Spaz.Data.url_favorites        = "https://twitter.com/favorites.json";
 Spaz.Data.url_dm_timeline      = "https://twitter.com/direct_messages.json";
 Spaz.Data.url_dm_sent          = "https://twitter.com/direct_messages/sent.json";
-Spaz.Data.url_friendslist      = "https://twitter.com/statuses/friends.xml";
-Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.xml";
+Spaz.Data.url_friendslist      = "https://twitter.com/statuses/friends.json";
+Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.json";
 Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.json";
 
 // Action URLs
@@ -472,13 +472,15 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 		Spaz.dump("COMPLETE: " + msg);
 
 		if (xhr.status == 400) {
-			Spaz.Data.$ajaxQueueErrors.push("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
+			Spaz.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
+			Spaz.Data.$ajaxQueueErrors.push("Exceeded request limit. Only 70 API reqs are allowed per hour");
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
 
 		else if (xhr.status == 401) {
-			Spaz.Data.$ajaxQueueErrors.push("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
+			Spaz.dump("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
+			Spaz.Data.$ajaxQueueErrors.push("401 error - Not Authenticated. Check your username and password.");
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
@@ -486,6 +488,7 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 
 		else if (xhr.responseText.length < 4) {
 			Spaz.dump("Error:response empty from "+url);
+			Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
@@ -494,6 +497,7 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 			var data = eval(xhr.responseText);
 			if (!data || !data[0]) {
 				Spaz.dump("Error: no data returned from "+url);
+				Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
 				// return;
 			} else {
 				Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
@@ -502,6 +506,7 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 		} catch(e) {
 			Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name 
 			+ ". Error message: " + e.message)
+			//Spaz.Data.$ajaxQueueErrors.push("An exception occurred when eval'ing the returned data");
 		}
 	
 		Spaz.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
@@ -528,7 +533,7 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 	
 		if (Spaz.Data.$ajaxQueueErrors.length > 0) {
 			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
-			alert(errors);
+			Spaz.UI.alert(errors, "Error");
 			Spaz.dump(errors);
 			Spaz.Data.$ajaxQueueErrors = [];
 		}
@@ -592,54 +597,54 @@ Spaz.Data.getDataForUrl = function(url, section) {
 
 
 
-Spaz.Data.shortenLink = function() {
-	var origlink = encodeURI($('#shorten-original-link').val());
-	
-	Spaz.dump('OrigLink:'+origlink);
-	
-	Spaz.UI.statusBar('Shortening URL: ' + origlink);
-	Spaz.UI.showLoading();
-	
-	var xhr = $.ajax({
-		complete:function(xhr, rstr){
-			Spaz.UI.hideLoading();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout")
-				return;
-			}
-			Spaz.dump('Response-headers:');
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
-			Spaz.dump('XHR Object:');
-			Spaz.dump(xhr, 'dir');
-			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.dump(xhr.responseText);
-			Spaz.UI.statusBar("Shortened URL:"+xhr.responseText);
-			$('#shorten-short-link').val(xhr.responseText);
-			$('#shorten-short-link').focus();
-			$('#shorten-short-link').select();
-		},
-		error:function(xhr, rstr){
-			Spaz.dump("ERROR: " + rstr);
-			Spaz.UI.statusBar('Error trying to shorten link');
-			Spaz.UI.flashStatusBar();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-			}
-			
-		},
-		success:function(data){
-			// Spaz.dump(data);
-			// Spaz.UI.statusBar("Shortened URL");
-			// $('#shorten-short-link').val(data);
-		},
-		beforeSend:function(xhr){},
-		processData:false,
-		type:"GET",
-		url:'http://urltea.com/api/text/',
-		data:"&url="+origlink
-	});
-};
+// Spaz.Data.shortenLink = function() {
+// 	var origlink = encodeURI($('#shorten-original-link').val());
+// 	
+// 	Spaz.dump('OrigLink:'+origlink);
+// 	
+// 	Spaz.UI.statusBar('Shortening URL: ' + origlink);
+// 	Spaz.UI.showLoading();
+// 	
+// 	var xhr = $.ajax({
+// 		complete:function(xhr, rstr){
+// 			Spaz.UI.hideLoading();
+// 			if (xhr.readyState < 3) {
+// 				Spaz.dump("ERROR: Timeout");
+// 				Spaz.UI.statusBar("ERROR: Timeout")
+// 				return;
+// 			}
+// 			Spaz.dump('Response-headers:');
+// 			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
+// 			Spaz.dump('XHR Object:');
+// 			Spaz.dump(xhr, 'dir');
+// 			Spaz.dump("COMPLETE: " + rstr);
+// 			Spaz.dump(xhr.responseText);
+// 			Spaz.UI.statusBar("Shortened URL:"+xhr.responseText);
+// 			$('#shorten-short-link').val(xhr.responseText);
+// 			$('#shorten-short-link').focus();
+// 			$('#shorten-short-link').select();
+// 		},
+// 		error:function(xhr, rstr){
+// 			Spaz.dump("ERROR: " + rstr);
+// 			Spaz.UI.statusBar('Error trying to shorten link');
+// 			Spaz.UI.flashStatusBar();
+// 			if (xhr.readyState < 3) {
+// 				Spaz.dump("ERROR: Timeout");
+// 			}
+// 			
+// 		},
+// 		success:function(data){
+// 			// Spaz.dump(data);
+// 			// Spaz.UI.statusBar("Shortened URL");
+// 			// $('#shorten-short-link').val(data);
+// 		},
+// 		beforeSend:function(xhr){},
+// 		processData:false,
+// 		type:"GET",
+// 		url:'http://urltea.com/api/text/',
+// 		data:"&url="+origlink
+// 	});
+// };
 
 
 

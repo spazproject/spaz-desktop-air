@@ -377,36 +377,39 @@ Spaz.UI.showUpdateCheck = function() {
 Spaz.UI.hideUpdateCheck = function() {
 	Spaz.UI.hidePopup('updateCheckWindow');
 }
+
+
 Spaz.UI.showAbout = function() {
-	Spaz.UI.showPopup('aboutWindow');
-	var info = Spaz.Info.getRuntimeInfo();
-	$('#sysinfo-os').text(info.os);
-	$('#sysinfo-totalMemory').text(info.totalMemory+"");
-}
-Spaz.UI.updateMemoryUsage = function() {
-	var info = Spaz.Info.getRuntimeInfo();
-	//Spaz.dump('NEW Memory Usage: ' + info.totalMemory);
-	$('#sysinfo-totalMemory').text(info.totalMemory+"");
-}
-Spaz.UI.hideAbout = function() {
-	Spaz.UI.hidePopup('aboutWindow');
+	this.instance = window.open('app:/html/about.html', 'aboutWin', 'height=400,width=350,scrollbars=yes');
 }
 Spaz.UI.showHelp = function() {
-	Spaz.UI.showPopup('helpWindow');
-}
-Spaz.UI.hideHelp = function() {
-	Spaz.UI.hidePopup('helpWindow');
+	this.instance = window.open('app:/html/help.html', 'helpWin', 'height=400,width=350,scrollbars=yes');
 }
 Spaz.UI.showShortLink = function() {
-	Spaz.UI.showPopup('shortLinkWindow');
-	Spaz.dump("val:"+$('#shorten-original-link').val());
-	$('#shorten-original-link').focus();
-	$('#shorten-original-link').val('http://');
-	$('#shorten-original-link').select();
+	this.instance = window.open('app:/html/shorten-url.html', 'shortenWin', 'height=250,width=300');
 }
-Spaz.UI.hideShortLink = function() {
-	Spaz.UI.hidePopup('shortLinkWindow');
-}
+
+// Spaz.UI.showAbout = function() {
+// 	Spaz.UI.showPopup('aboutWindow');
+// 	var info = Spaz.Info.getRuntimeInfo();
+// 	$('#sysinfo-os').text(info.os);
+// 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
+// }
+// Spaz.UI.updateMemoryUsage = function() {
+// 	var info = Spaz.Info.getRuntimeInfo();
+// 	//Spaz.dump('NEW Memory Usage: ' + info.totalMemory);
+// 	$('#sysinfo-totalMemory').text(info.totalMemory+"");
+// }
+// Spaz.UI.hideAbout = function() {
+// 	Spaz.UI.hidePopup('aboutWindow');
+// }
+// Spaz.UI.showHelp = function() {
+// 	Spaz.UI.showPopup('helpWindow');
+// }
+// Spaz.UI.hideHelp = function() {
+// 	Spaz.UI.hidePopup('helpWindow');
+// }
+
 
 Spaz.UI.pageLeft = function(tabEl) {
 	Spaz.UI.page(tabEl, -1);
@@ -1066,13 +1069,31 @@ Spaz.UI.notifyOfNewEntries = function() {
 }
 
 
+Spaz.UI.alert = function(message, title) {
+	if (!title) {title="Alert"}
+	Spaz.UI.notify(message, title, null, 5, 'app:/images/spaz-icon-alpha_48.png');
+}
 
-Spaz.UI.notify = function(message, title, where, duration, icon) {		
-	if (Spaz.UI.getUIInfo().showNotificationPopups) {
+
+Spaz.UI.notify = function(message, title, where, duration, icon, force) {
+	if (Spaz.UI.getUIInfo().showNotificationPopups || force) {
 		Spaz.Notify.add(message, title, where, duration, icon);
 	} else {
 		Spaz.dump('not showing notification popup - Spaz.UI.showNotificationPopups disabled');
 	}
+}
+
+
+Spaz.UI.openHTMLUtilityWindow = function(url) {
+	
+	var options = new air.NativeWindowInitOptions();
+	options.systemChrome = air.NativeWindowSystemChrome.STANDARD;
+	options.type = air.NativeWindowType.UTILITY;
+
+	var windowBounds = new air.Rectangle(200,250,300,400);
+	var newWindow = air.HTMLLoader.createRootWindow(true, options, true, windowBounds);
+	newWindow.load(new runtime.flash.net.URLRequest(url));
+	
 }
 
 
@@ -1157,7 +1178,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 			lots of uncommon but valid top-level domains aren't used
 			because they cause more problems than solved
 		*/
-		var inlineRE = /(?:(\s|^|\.|\:|\(|\[))(?:http:\/\/)?((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
+		var inlineRE = /(?:(\s|^|\.|\:|\(|\[))(?:http:\/\/)?((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
 		
 		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open $2$5 in a browser window" class="inline-link">$2&raquo;</a>');
 		if (before != this.innerHTML) {

@@ -291,7 +291,7 @@ var Spaz; if (!Spaz) Spaz = {};
 	// Spaz.Update = function(){};
 	
 	Spaz.Update.setCheckUpdateState = function (state){
-		Spaz.Update.setCheckUpdateState(state);
+		Spaz.Update.checkUpdate = state;
 	}
 	
 	Spaz.Update.checkUpdate = function(){

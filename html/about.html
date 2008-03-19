@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>About Spaz</title>
+	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.info.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {$('#about-version').text("v"+Spaz.Info.getVersion())});
+	</script>
+	
+</head>
+
+<body id="aboutWindow">
+
+		<!-- <div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideAbout()" title="Close">&times;</span></div> -->
+		<h1>Spaz</h1>
+		<div id="content">
+			<h2>A Twitter client for the Adobe Integrated Runtime</h2>
+			<p><a href="http://funkatron.com/apps/spaz/AIR/whatsnew.html" target="_blank"><span id="about-version"></span> – What's new</a></p>
+
+			<p>Created by <a onclick="openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
+
+			<ul>
+				<li><a onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
+				<li><a onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
+				<li><a onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
+			</ul>
+
+
+			<div id="about-thanks">Special thanks to Alexandru Chiculita and the AIR engineering team</div>
+
+
+			<h3>Libraries used</h3>
+			<ul>
+				<li><a onclick="openInBrowser('http://www.jquery.com/');">jQuery</a></li>
+				<li><a onclick="openInBrowser('http://labs.adobe.com/technologies/spry/');">Spry</a></li>
+				<li><a onclick="openInBrowser('http://www.getfirebug.com/lite.html');">Firebug Lite</a></li>
+				<li><a onclick="openInBrowser('http://www.webtoolkit.info/javascript-md5.html');">Webtoolkit Base64</a></li>
+				<li><a onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html');">Showdown</a></li>
+				<li><a onclick="openInBrowser('http://code.google.com/p/as3notificationlib/')l">as3notificationlib</a></li>
+			</ul>
+		</div>
+
+</body>
+</html>

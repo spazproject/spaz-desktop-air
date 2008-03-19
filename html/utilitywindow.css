@@ -1,0 +1,149 @@
+/*
+	This stuff is used across all windows
+*/
+body {
+	padding:0px;
+	margin:0px;
+	font-family:Tahoma, Arial, Helvetica, sans-serif;
+	background-color: #FFFFFF;
+	background-image: url('img/body-bg.png');
+	background-repeat: repeat-x;
+	background-position: 0% 100%;
+	font-size:.8em;
+	color:#444444;
+}
+
+h1 {
+	background-color:#222222;
+	color:#FFFFFF;
+	padding:10px;
+	margin:0px;
+	-webkit-box-shadow:0px 0px 6px #333333;
+	font-size:1.5em;
+	position: fixed;
+	width:100%;
+	top:0px;
+	height:25px;
+	background-image: url('img/spaz-icon-alpha.png');
+	background-repeat: no-repeat;
+	background-position: 90% 40%;
+}
+
+h2 {
+	margin:0px;
+	font-size:1.2em;
+}
+
+#content {
+	margin-top:50px;
+	padding:10px 20px;
+}
+
+div.formrow {
+	white-space: nowrap;
+	clear:both;
+	margin-bottom:5px;
+}
+
+
+/*
+	for keyboard shortcut table
+*/
+table.data {
+/*	border-collapse:collapse;*/
+/*	border:2px solid #666699;*/
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	padding:5px;
+	border-top:3px solid #333333;
+	border-bottom:1px solid #333333;
+	border-collapse:collapse;
+	width:100%;
+}
+table.data th {
+	background-color:#cccccc;
+	color:#333333;
+	font-size:12px;
+	font-weight:bold;
+}
+table.data tr {
+}
+table.data td {
+	font-size:12px;
+	padding:4px;
+}
+table.data td.label {
+	font-weight:bold;
+	text-align:right;
+	border-right:1px solid #999999;
+}
+table.data td.label:after { /*content:":";*/ }
+table.data td.value {
+	padding:2px;
+	text-align:left;
+}
+
+
+
+/*
+	For About info
+*/
+#about-version {
+	font-weight:strong;
+}
+
+#about-thanks {
+	font-weight:strong;
+	border:1px solid #999999;
+	padding:5px;
+	background-color:#FFFFFF;
+}
+#sysinfo {
+/*	border-collapse:collapse;*/
+/*	border:2px solid #666699;*/
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	background-color: #EEEEFF;
+	background-image: url('images/entry-even-bg.png');
+	-khtml-border-radius:.5em;
+	padding:5px;
+}
+
+#sysinfo td {
+	font-size:12px;
+	padding:2px;
+}
+#sysinfo td.label {
+	font-weight:bold;
+	text-align:right;
+}
+#sysinfo td.label:after { content:":"; }
+#sysinfo .value {
+	padding:2px;
+	text-align:left;
+}
+
+
+/*
+	For Shorten URL
+*/
+#shortenLink-form label {
+	min-width:19%;
+	text-align:right;
+	margin-right:5px;
+	font-weight:bold;
+	/*letter-spacing:-1px;*/
+	display:block;
+	float:left;
+	padding:5px;
+}
+#shortenLink-form input[type='password'],
+#shortenLink-form input[type='text'],
+#shortenLink-form select {
+	border:1px solid #666;
+	padding:4px;
+	width:75%;
+	/*-khtml-border-radius:5px;*/
+}

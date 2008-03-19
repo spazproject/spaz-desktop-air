@@ -32,7 +32,9 @@ TODO:
 	<script src="assets/jquery.ajaxQueue.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- jQuery.UI libs -->
-	<script src="assets/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.ui/ui.mouse.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="assets/jquery.ui/ui.draggable.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery.ui/ui.draggable.ext.js" type="text/javascript" charset="utf-8"></script>
 
 
 	<!-- Notification popups libs -->
@@ -87,8 +89,6 @@ TODO:
 	<script type="text/javascript" charset="utf-8" id="themejs"></script>
 	<script type="text/javascript" charset="utf-8" id="themeinfo"></script>
 
-	<!-- Firebug lite -->
-	<script language="javascript" type="text/javascript" src="assets/firebug/firebug.js"></script>
 
 	<!-- Showdown, the Markdown parser -->
 	<script src="assets/showdown.js" type="text/javascript" charset="utf-8"></script>
@@ -444,158 +444,6 @@ TODO:
 		</div>
 
 
-
-		<!-- ABOUT -->
-		<div id="aboutWindow" class="popupWindow" style="display:none">
-			<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideAbout()" title="Close">&times;</span></div>
-			<a onclick="openInBrowser('http://twitter.com/spaz/')"><img src="images/spaz-icon-alpha.png" width="64" height="64" id="spazIcon" /></a>
-			<h2>Spaz</h2>
-			<h3>A Twitter client for the Adobe Integrated Runtime</h3>
-			<p><a href="http://funkatron.com/apps/spaz/AIR/whatsnew.html" target="_blank"><span id="about-version"></span> – What's new</a></p>
-
-			<p>Created by <a onclick="openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
-
-			<ul>
-				<li><a onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
-				<li><a onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
-				<li><a onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
-			</ul>
-
-	
-			<div id="about-thanks">Special thanks to Alexandru Chiculita and the AIR engineering team</div>
-
-
-			<h3>Libraries used</h3>
-			<ul>
-				<li><a onclick="openInBrowser('http://www.jquery.com/');">jQuery</a></li>
-				<li><a onclick="openInBrowser('http://labs.adobe.com/technologies/spry/');">Spry</a></li>
-				<li><a onclick="openInBrowser('http://www.getfirebug.com/lite.html');">Firebug Lite</a></li>
-				<li><a onclick="openInBrowser('http://www.webtoolkit.info/javascript-md5.html');">Webtoolkit Base64</a></li>
-				<li><a onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html');">Showdown</a></li>
-				<li><a onclick="openInBrowser('http://code.google.com/p/as3notificationlib/')l">as3notificationlib</a></li>
-			</ul>
-	
-		</div>
-
-		<div id="helpWindow" class="popupWindow" style="display:none">
-			<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideHelp()" title="Close">&times;</span></div>
-			<h2>Help</h2>
-
-			<h3>Keyboard shortcuts</h3>
-			
-			<p><em>Note: Windows users should use CTRL instead of CMD</em></p>
-			
-			<table id="help-shortcuts" class="data">
-				<tbody>
-					<tr>
-						<th>key</th>
-						<th>command</th>
-					</tr>
-					<tr>
-						<td class="label">CMD+B</td>
-						<td class="value">Markdown: <strong>bold</strong></td>
-					</tr>
-					<tr>
-						<td class="label">CMD+I</td>
-						<td class="value">Markdown: <em>italic</em></td>
-					</tr>
-					<tr>
-						<td class="label">CMD+U</td>
-						<td class="value">Markdown: <a>link&raquo;</a></td>
-					</tr>
-					<tr>
-						<td class="label">CMD+R</td>
-						<td class="value">Markdown: <code>code</code></td>
-					</tr>
-					<tr>
-						<td class="label">CMD+F</td>
-						<td class="value"><strong>toggle</strong> between showing all tweets and only replies &amp; direct messages</td>
-					</tr>
-					<tr>
-						<td class="label">UP or J or CMD+J</td>
-						<td class="value">select next message</td>
-					</tr>
-					<tr>
-						<td class="label">DOWN or K or CMD+K</td>
-						<td class="value">select previous message</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+DOWN</td>
-						<td class="value">select next dm</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+UP</td>
-						<td class="value">select previous dm</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+SHIFT+DOWN</td>
-						<td class="value">select next reply</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+SHIFT+UP</td>
-						<td class="value">select previous reply</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+END</td>
-						<td class="value">select last message</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+HOME</td>
-						<td class="value">select first message</td>
-					</tr>
-					<tr>
-						<td class="label">F5</td>
-						<td class="value">reload current view</td>
-					</tr>
-					<tr>
-						<td class="label">SHIFT+F5</td>
-						<td class="value">clear and reload current view</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+SHIFT+A</td>
-						<td class="value">open shorten link window</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+T</td>
-						<td class="value">jump to message entry box</td>
-					</tr>
-					<tr>
-						<td class="label">(CMD+SHIFT+2)</td>
-						<td class="value">respond to sender of currently selected message</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+,</td>
-						<td class="value">View Preferences</td>
-					</tr>
-					<tr>
-						<td class="label">CMD+1-4</td>
-						<td class="value">Switch to tab 1-4</td>
-					</tr>
-
-					
-				</tbody>
-			</table>	
-		</div>
-
-		<div id="shortLinkWindow" class="popupWindow" style="display:none">
-			<div class="popupWindowBar"><span class="window-button" onclick="Spaz.UI.hideShortLink()" title="Close">&times;</span></div>
-			<h2>Shorten Link</h2>
-			<form id="shortenLink-form" onsubmit="Spaz.Data.shortenLink(); return false;">
-				<div class="formrow">
-					<label for="original-link">Link</label>
-					<input type="text" name="original-link" id="shorten-original-link" value="http://" />
-				</div>
-				<div class="formrow">
-					<label for="short-link">Short</label>
-					<input type="text" name="short-link" id="shorten-short-link" value="" />
-				</div>
-				<div class="formrow" style="text-align:right; margin-top:15px">
-					<span id="verification-result">&nbsp;</span>
-					<input type="button" id="prefs-update-button" name="update" value="Shorten &bull;"
-						onclick="Spaz.Data.shortenLink()" /> 
-				</div>
-			</form>
-		</div>
 
 
 		<div id="updateCheckWindow" class="popupWindow" style="display:none;"> 

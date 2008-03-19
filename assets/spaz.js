@@ -75,6 +75,9 @@ Spaz.initialize = function() {
 	
 	air.trace('root init begin');
 
+	// load prefs!!!
+	air.trace('loading prefs');
+	Spaz.Prefs.load();
 
 
 	/**
@@ -166,6 +169,7 @@ Spaz.initialize = function() {
 		/*************************** 
 		 * Apply prefs 
 		 **************************/	 
+		Spaz.dump('APPLYING PREFS==============================');
 		$('#prefs-username').val(Spaz.Prefs.getUser());
 		$('#prefs-password').val(Spaz.Prefs.getPass());
 		$('#prefs-refresh-interval').val(Spaz.Prefs.getRefreshInterval()/60000);
@@ -239,7 +243,7 @@ Spaz.initialize = function() {
 
 
 		//DONE: Check for Update
-		if (Spaz.Update.checkUpdate()) {
+		if (Spaz.Update.checkUpdate) {
 		//	Spaz.Update.setCheckUpdateState(true);
 			$('#prefs-checkupdate-enabled').attr('checked', 'checked');
 			Spaz.dump('Starting check for update');
@@ -272,7 +276,7 @@ Spaz.initialize = function() {
 		Spaz.UI.makeWindowVisible();
 		Spaz.dump('Made window visible');
 
-		$('#about-version').text("v"+Spaz.Info.getVersion());
+		// $('#about-version').text("v"+Spaz.Info.getVersion());
 
 
 		Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
@@ -326,8 +330,8 @@ Spaz.initialize = function() {
 
 		Spaz.dump('Setting 1500ms timeout for initial loading of data')
 		setTimeout(function() {
-			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
-			Spaz.dump('set selected tab to FRIENDS');
+			// Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
+			// 			Spaz.dump('set selected tab to FRIENDS');
 		}, 1500);
 
 
@@ -342,8 +346,6 @@ Spaz.initialize = function() {
 	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Prefs.windowClosingHandler); 
 	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.UI.windowActiveHandler);
 
-	// load prefs!!!
-	Spaz.Prefs.load();
 
 
 	Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
