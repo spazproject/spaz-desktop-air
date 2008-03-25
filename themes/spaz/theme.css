@@ -272,6 +272,12 @@ div.timeline-entry.dm {
 	background-color: #EEAAAA;
 	background-image: none;
 }
+div.timeline-entry.read .status-text {
+	color:#666666;
+}
+div.timeline-entry.read img.user-image {
+	opacity:.8;
+}
 
 .SpryHiddenRegion {
 	visibility:hidden;

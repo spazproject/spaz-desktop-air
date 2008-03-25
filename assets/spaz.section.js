@@ -13,7 +13,7 @@ Spaz.Section.friends = {
  	prevdata: null,
 	autoload: true,
 	canclear: true,
-	mincachetime:0//60000*3
+	mincachetime:60000*3
 }
 
 Spaz.Section.user = {

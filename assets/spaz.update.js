@@ -191,6 +191,103 @@ var Spaz; if (!Spaz) Spaz = {};
 		
 	};
 	
+	
+	Spaz.Update.prototype.setupUI = function(){
+		var uiDiv;
+		var ret = {};
+		
+		if (this.uiDiv) uiDiv = eSpaz(this.uiDiv);
+		if (!uiDiv) {
+				uiDiv = document.createElement("div");
+				uiDiv.style.overflow = "auto";
+				uiDiv.style.backgroundColor = "white";
+				uiDiv.style.top = "0px";
+				uiDiv.style.left = "0px";           
+				uiDiv.setAttribute("id", "SpazUpdate_container");
+				document.body.appendChild(uiDiv);
+				this.uiDivAppended = true;
+		}
+		// if (uiDiv.getElementsByTagName("div")[0]) 
+		//     uiDiv.getElementsByTagName("div")[0].innerHTML = "Checking for updates...";
+		// else
+		//    uiDiv.innerHTML = "Checking for updates...";
+	
+		// Spaz.UI.statusBar('Checking for new version');
+		// Spaz.UI.showLoading();
+	
+		// uiDiv.style.width = document.body.clientWidth + "px";
+		// uiDiv.style.height = document.body.clientHeight + "px";
+		// uiDiv.style.position = "absolute";    
+		//     uiDiv.style.backgroundColor = "white";
+		//uiDiv.style.display = "block";
+		this.uiDiv=uiDiv;
+	}
+	
+	
+	
+	Spaz.Update.prototype.handleUpgrade = function(str)
+	{
+	   this.uiDiv.innerHTML = str; //Spaz.Utils.prepareTemplate(this.ui['upgrade'], this.updateXMLLoadedProperties);
+	   
+	   Spaz.UI.centerPopup(this.uiDiv.id);
+	   this.uiDiv.style.display = "block";
+	   var self = this;
+	
+	   Spaz.Utils.addEventListener("SpazUpdate_update", "click", function() { self.updateBtnClick(); });
+	   Spaz.Utils.addEventListener("SpazUpdate_cancel", "click", function() { self.cancelBtnClick(); });
+	   Spaz.UI.statusBar('A new version of Spaz is now available');
+	};
+	
+	Spaz.Update.prototype.updateBtnClick = function() 
+	{
+		// @TODO: check EULA
+		Spaz.dump('updateBtnClick()');
+		this.uiDiv.innerHTML = 'Downloading upgrade...';
+		this.startDownloadNewVersion();
+	};
+	
+	Spaz.Update.prototype.cancelBtnClick = function() 
+	{
+	   if (this.uiDivAppended) 
+	   {
+		   this.uiDiv.parent.remove(this.uiDiv);    
+	   }
+	   else 
+	   {
+		   this.uiDiv.style.display = "none";
+	   }
+	};
+	
+	
+	Spaz.Update.prototype.handleDowngrade = function()
+	{
+	   this.cancelBtnClick(); 
+	   Spaz.UI.statusBar('The online version is older than your version');
+	};
+	
+	Spaz.Update.prototype.handleNoUpgrade = function()
+	{
+	   this.cancelBtnClick(); 
+	   Spaz.UI.statusBar('You have the newest version');
+	};
+
+	
+	Spaz.Update.prototype.downloadFailed = function(urlString) 
+	{
+		Spaz.UI.statusBar("IO Error. The updated application file '" + urlString + "' cannot be downloaded!"); 
+		this.cancelBtnClick();
+	};
+	
+	
+	Spaz.Update.prototype.loadedFailed = function() 
+	{
+		Spaz.UI.statusBar("Downloading '" + this.updateXMLLoadedProperties["filename"] + "' has failed!");
+		this.cancelBtnClick();
+	};
+	
+	
+	
+	
 	Spaz.Update.compareVersions = function(currentVersion, siteVersion) 
 	{
 		
@@ -298,98 +395,6 @@ var Spaz; if (!Spaz) Spaz = {};
 		return Spaz.Update.checkUpdate==1;
 	}
 	
-	Spaz.Update.prototype.setupUI = function(){
-		var uiDiv;
-		var ret = {};
-		
-		if (this.uiDiv) uiDiv = eSpaz(this.uiDiv);
-		if (!uiDiv) {
-				uiDiv = document.createElement("div");
-				uiDiv.style.overflow = "auto";
-				uiDiv.style.backgroundColor = "white";
-				uiDiv.style.top = "0px";
-				uiDiv.style.left = "0px";           
-				uiDiv.setAttribute("id", "SpazUpdate_container");
-				document.body.appendChild(uiDiv);
-				this.uiDivAppended = true;
-		}
-		// if (uiDiv.getElementsByTagName("div")[0]) 
-		//     uiDiv.getElementsByTagName("div")[0].innerHTML = "Checking for updates...";
-		// else
-		//    uiDiv.innerHTML = "Checking for updates...";
-	
-		// Spaz.UI.statusBar('Checking for new version');
-		// Spaz.UI.showLoading();
-	
-		// uiDiv.style.width = document.body.clientWidth + "px";
-		// uiDiv.style.height = document.body.clientHeight + "px";
-		// uiDiv.style.position = "absolute";    
-		//     uiDiv.style.backgroundColor = "white";
-		//uiDiv.style.display = "block";
-		this.uiDiv=uiDiv;
-	}
-	
-	
-	
-	Spaz.Update.prototype.handleUpgrade = function(str)
-	{
-	   this.uiDiv.innerHTML = str; //Spaz.Utils.prepareTemplate(this.ui['upgrade'], this.updateXMLLoadedProperties);
-	   
-	   Spaz.UI.centerPopup(this.uiDiv.id);
-	   this.uiDiv.style.display = "block";
-	   var self = this;
-	
-	   Spaz.Utils.addEventListener("SpazUpdate_update", "click", function() { self.updateBtnClick(); });
-	   Spaz.Utils.addEventListener("SpazUpdate_cancel", "click", function() { self.cancelBtnClick(); });
-	   Spaz.UI.statusBar('A new version of Spaz is now available');
-	};
-	
-	Spaz.Update.prototype.updateBtnClick = function() 
-	{
-		// @TODO: check EULA
-		Spaz.dump('updateBtnClick()');
-		this.uiDiv.innerHTML = 'Downloading upgrade...';
-		this.startDownloadNewVersion();
-	};
-	
-	Spaz.Update.prototype.cancelBtnClick = function() 
-	{
-	   if (this.uiDivAppended) 
-	   {
-		   this.uiDiv.parent.remove(this.uiDiv);    
-	   }
-	   else 
-	   {
-		   this.uiDiv.style.display = "none";
-	   }
-	};
-	
-	
-	Spaz.Update.prototype.handleDowngrade = function()
-	{
-	   this.cancelBtnClick(); 
-	   Spaz.UI.statusBar('The online version is older than your version');
-	};
-	
-	Spaz.Update.prototype.handleNoUpgrade = function()
-	{
-	   this.cancelBtnClick(); 
-	   Spaz.UI.statusBar('You have the newest version');
-	};
-
-	
-	Spaz.Update.prototype.downloadFailed = function(urlString) 
-	{
-		Spaz.UI.statusBar("IO Error. The updated application file '" + urlString + "' cannot be downloaded!"); 
-		this.cancelBtnClick();
-	};
-	
-	
-	Spaz.Update.prototype.loadedFailed = function() 
-	{
-		Spaz.UI.statusBar("Downloading '" + this.updateXMLLoadedProperties["filename"] + "' has failed!");
-		this.cancelBtnClick();
-	};
 
 	Spaz.Update.updater = new Spaz.Update();
 // }

@@ -27,13 +27,13 @@ Spaz.Keyboard.setShortcuts = function() {
 	})
 
 	shortcut.add('F5', function() {
-		Spaz.UI.reloadCurrentTab();
+		Spaz.UI.reloadCurrentTab(true);
 		Spaz.restartReloadTimer();
 	})
 
 	shortcut.add('Shift+F5', function() {
 		Spaz.UI.clearCurrentTimeline();
-		Spaz.UI.reloadCurrentTab();
+		Spaz.UI.reloadCurrentTab(true);
 		Spaz.restartReloadTimer();
 	})
 	
@@ -83,46 +83,46 @@ Spaz.Keyboard.setShortcuts = function() {
 	// Keys to navigate timeline
 	// ****************************************
 	shortcut.add(Modkey+'+down', function() {
-		Spaz.Handlers.keyboardMove('down', '.reply');
+		Spaz.Keyboard.move('down', '.reply');
 	});
 	shortcut.add(Modkey+'+up', function() {
-		Spaz.Handlers.keyboardMove('up', '.reply');
+		Spaz.Keyboard.move('up', '.reply');
 	});
 	shortcut.add(Modkey+'+Shift+down', function() {
-		Spaz.Handlers.keyboardMove('down', '.dm');
+		Spaz.Keyboard.move('down', '.dm');
 	});
 	shortcut.add(Modkey+'+Shift+up', function() {
-		Spaz.Handlers.keyboardMove('up', '.dm');
+		Spaz.Keyboard.move('up', '.dm');
 	});
 	shortcut.add(Modkey+'+End', function() {
-		Spaz.Handlers.keyboardMove('down', ':last');
+		Spaz.Keyboard.move('down', ':last');
 	});
 	shortcut.add(Modkey+'+Home', function() {
-		Spaz.Handlers.keyboardMove('up', ':first');
+		Spaz.Keyboard.move('up', ':first');
 	});	
 	shortcut.add('Down', function() {
-			Spaz.Handlers.keyboardMove('down');
+			Spaz.Keyboard.move('down');
 		}, {
 			'disable_in_input':true
 	});
 	shortcut.add('Up', function() {
-			Spaz.Handlers.keyboardMove('up');
+			Spaz.Keyboard.move('up');
 		}, {
 			'disable_in_input':true
 	});
 	shortcut.add(Modkey+'+J', function() {
-		Spaz.Handlers.keyboardMove('down');
+		Spaz.Keyboard.move('down');
 	});
 	shortcut.add(Modkey+'+K', function() {
-		Spaz.Handlers.keyboardMove('up');
+		Spaz.Keyboard.move('up');
 	});
 	shortcut.add('J', function() {
-			Spaz.Handlers.keyboardMove('down');
+			Spaz.Keyboard.move('down');
 		}, {
 			'disable_in_input':true
 	});
 	shortcut.add('K', function() {
-			Spaz.Handlers.keyboardMove('up');
+			Spaz.Keyboard.move('up');
 		}, {
 			'disable_in_input':true
 	});
@@ -167,4 +167,122 @@ Spaz.Keyboard.setShortcuts = function() {
 			type:'keypress',
 			propagate:false
 	});
+}
+
+
+
+
+
+
+
+
+Spaz.Keyboard.move = function(dir, selector) {
+	
+	if (!selector) {
+		selector = '';
+	}
+	
+	Spaz.dump("selector is '" + selector+"'")
+	
+	var timelineid = 'timeline-friends';
+
+	if (!dir) { dir = 'down' }
+	
+	if (dir == 'down') {
+		var movefunc = 'nextAll';
+		var wrapselc = 'first';
+	} else if (dir == 'up') {
+		dir = 'up'
+		var movefunc = 'prevAll';
+		var wrapselc = 'last';
+	} else {
+		return false;
+	}
+	
+	// get current selected
+	var jqsel = $('#'+timelineid+' div.ui-selected');
+	// alert('selected:'+selected.length);
+	//alert('moving:'+movefunc+'/'+wrapselc+"\n"+'selected:'+selected.length + "\n"+'current:'+selected.html());
+	
+	// if none selected, or there is no 'next', select first
+	if (selector == ":first" || selector == ":last") {
+		Spaz.dump('first in timeline')
+		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry'+selector), timelineid)
+	} else if (jqsel.length == 0 ) {
+		Spaz.dump('nothing is selected')
+		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry'+selector+':'+wrapselc), timelineid)
+		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);
+	} else if (jqsel[movefunc]('div.timeline-entry'+selector).eq(0).length == 0) {
+		Spaz.dump('we are at the beginning or end')
+		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry'+selector+':'+wrapselc), timelineid)
+		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);				
+	} else {
+		Spaz.dump('something is now selected');
+		Spaz.Keyboard.moveSelect(jqsel[movefunc]('div.timeline-entry'+selector).eq(0), timelineid);
+	}
+	// if selected is at bottom, go to top
+}
+
+
+
+Spaz.Keyboard.moveSelect = function(jqelement, timelineid) {	
+	
+	Spaz.dump('Moving to new selected item');
+	
+	Spaz.dump('jqelement.length:'+jqelement.length);
+	
+	// unselect everything
+	$('#'+timelineid+' div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
+	
+	// select passed
+	if (jqelement.length > 0) {
+		jqelement.toggleClass('ui-selected');
+		$('#'+timelineid+'').scrollTo(jqelement, {
+								offset:-25,
+								speed:90,
+								easing:'swing'
+								}
+		);
+	} else {
+		Spaz.dump("Problem - jqelement passed length = 0 - can't scroll to anything");
+	}
+}
+
+
+
+
+
+/******************************
+ * Keyboard 
+ ******************************/
+Spaz.Keyboard.keyboardHandler = function(event) {
+	e = event || window.event;
+	el = e.srcElement || e.target;
+	
+	if (el.name) {
+		return true;
+	}
+
+
+	if (e.which == 13 && e.srcElement.id == 'entrybox') {
+		Spaz.UI.sendUpdate();
+		return false;
+	}
+
+	// debugging
+	if (e.srcElement.id == 'home') {
+		Spaz.dump('keyboard Event =================');
+		Spaz.dump("keyIdentifier:"+ e.keyIdentifier);
+		Spaz.dump("KeyCode:" + e.keyCode);
+		Spaz.dump("which:"+ e.which);
+		Spaz.dump("type:"+ e.type);
+		Spaz.dump("shift:"+ e.shiftKey);
+		Spaz.dump("ctrl:"+ e.ctrlKey);
+		Spaz.dump("alt:"+ e.altKey);
+		Spaz.dump("meta:"+ e.metaKey);
+		Spaz.dump("src:"+ e.srcElement.id);
+	}
+
+
+	return true;
 }

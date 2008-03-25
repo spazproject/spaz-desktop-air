@@ -161,3 +161,8 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 	Spaz.dump('close stream')
 
 }
+
+
+Spaz.Debug.insertDebugScripts = function() {
+	
+};

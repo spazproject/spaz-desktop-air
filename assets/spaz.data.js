@@ -37,7 +37,7 @@ Spaz.Data.url_start_notifications = "https://twitter.com/notifications/follow/{{
 Spaz.Data.url_stop_notifications  = "https://twitter.com/notifications/remove/{{ID}}.json";
 Spaz.Data.url_favorites_create = "https://twitter.com/favourings/create/{{ID}}.json";
 Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.json";
-Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials";
+Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials.json";
 
 
 // temp storage for a section's ajax queries
@@ -57,8 +57,8 @@ Spaz.Data.$ajaxQueueFinished = 0;
  */
 Spaz.Data.verifyPassword = function() {
 	
-	var user = $('#prefs-username').val();
-	var pass = $('#prefs-password').val();
+	var user = $('#username').val();
+	var pass = $('#password').val();
 	
 	Spaz.dump('user:'+user+' pass:********');
 	
@@ -88,9 +88,10 @@ Spaz.Data.verifyPassword = function() {
 			
 		},
 		success:function(data){
-			if (data == 'Authorized') {
+			var json = JSON.parse(data);
+			if (json.authorized) {
 				Spaz.verified = true;
-				Spaz.dump('verified; setting current user');
+				air.trace('verified; setting current user');
 				Spaz.Prefs.setCurrentUser();
 				Spaz.UI.statusBar("Verification succeeded");
 				Spaz.UI.flashStatusBar();
@@ -597,59 +598,7 @@ Spaz.Data.getDataForUrl = function(url, section) {
 
 
 
-// Spaz.Data.shortenLink = function() {
-// 	var origlink = encodeURI($('#shorten-original-link').val());
-// 	
-// 	Spaz.dump('OrigLink:'+origlink);
-// 	
-// 	Spaz.UI.statusBar('Shortening URL: ' + origlink);
-// 	Spaz.UI.showLoading();
-// 	
-// 	var xhr = $.ajax({
-// 		complete:function(xhr, rstr){
-// 			Spaz.UI.hideLoading();
-// 			if (xhr.readyState < 3) {
-// 				Spaz.dump("ERROR: Timeout");
-// 				Spaz.UI.statusBar("ERROR: Timeout")
-// 				return;
-// 			}
-// 			Spaz.dump('Response-headers:');
-// 			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
-// 			Spaz.dump('XHR Object:');
-// 			Spaz.dump(xhr, 'dir');
-// 			Spaz.dump("COMPLETE: " + rstr);
-// 			Spaz.dump(xhr.responseText);
-// 			Spaz.UI.statusBar("Shortened URL:"+xhr.responseText);
-// 			$('#shorten-short-link').val(xhr.responseText);
-// 			$('#shorten-short-link').focus();
-// 			$('#shorten-short-link').select();
-// 		},
-// 		error:function(xhr, rstr){
-// 			Spaz.dump("ERROR: " + rstr);
-// 			Spaz.UI.statusBar('Error trying to shorten link');
-// 			Spaz.UI.flashStatusBar();
-// 			if (xhr.readyState < 3) {
-// 				Spaz.dump("ERROR: Timeout");
-// 			}
-// 			
-// 		},
-// 		success:function(data){
-// 			// Spaz.dump(data);
-// 			// Spaz.UI.statusBar("Shortened URL");
-// 			// $('#shorten-short-link').val(data);
-// 		},
-// 		beforeSend:function(xhr){},
-// 		processData:false,
-// 		type:"GET",
-// 		url:'http://urltea.com/api/text/',
-// 		data:"&url="+origlink
-// 	});
-// };
-
-
-
-
-Spaz.Data.loadDataForTab = function(tab, auto, page) {
+Spaz.Data.loadDataForTab = function(tab, force, page) {
 	if (!page || page < 1) {
 		page = 1;
 	}
@@ -661,7 +610,7 @@ Spaz.Data.loadDataForTab = function(tab, auto, page) {
 		case 'tab-prefs':
 			break;
 		default:
-			Spaz.Data.getDataForTimeline(section);
+			Spaz.Data.getDataForTimeline(section, force);
 			break;
 	}
 	return false
