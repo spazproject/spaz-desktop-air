@@ -6,12 +6,16 @@ Spaz.Prefs
 if (!Spaz.Windows) Spaz.Windows = {};
 
 
-Spaz.Windows.onWindowActive = function () {
+Spaz.Windows.onWindowActive = function (event) {
 	Spaz.dump('Window ACTIVE');
 	if ($('body').focus()) {
 	}
 	
 }
+
+Spaz.Windows.onWindowDeactivate = function(event) {
+	Spaz.UI.hideTooltips();
+};
 
 Spaz.Windows.windowMinimize = function() {
 	window.nativeWindow.minimize();

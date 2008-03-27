@@ -262,8 +262,8 @@ Spaz.Prefs.loadPrefs = function() {
 	}
 	fs.close()
 	
-	air.trace(Spaz.Prefs.loadUsername());
-	air.trace(Spaz.Prefs.loadPassword());
+	Spaz.Prefs.loadUsername();
+	Spaz.Prefs.loadPassword();
 		
 };
 
@@ -373,7 +373,6 @@ Spaz.Prefs.setPrefs = function() {
 }
 
 Spaz.Prefs.setCurrentUser = function() {
-	air.trace($('#username').val() + ':' + $('#password').val())
 	Spaz.Prefs.user = $('#username').val();
 	Spaz.Prefs.pass = $('#password').val();
 	

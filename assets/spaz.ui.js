@@ -605,7 +605,7 @@ Spaz.UI.addEntryToTimeline = function(entry, section) {
 
 		// Make the jQuery object and bind events
 		var jqentry = $(entryHTML);
-		jqentry.css('opacity', .5);
+		jqentry.css('opacity', .1);
 		
 		
 		
@@ -794,7 +794,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	// apply odd class
 	$("#"+timelineid + ' .timeline-entry:nth-child(odd)').addClass('odd');
 	// Spaz.dump($("#"+timelineid + ' .timeline-entry:nth-child(odd)')[0].outerHTML);
-	
+
 
 	// animate in new stuff
 	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 25, 'linear', function() {
@@ -839,30 +839,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		// fix entity &#123; style extra encoding
 		this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
 					
-
-		// convert inline links
-		var before = this.innerHTML;
-		
-		/*
-			this is the regex we use to match inline 
-			lots of uncommon but valid top-level domains aren't used
-			because they cause more problems than solved
-		*/
-		var inlineRE = /(?:(\s|^|\.|\:|\(|\[))(?:http:\/\/)?((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
-		
-		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open $2$5 in a browser window" class="inline-link">$2&raquo;</a>');
-		if (before != this.innerHTML) {
-			Spaz.dump('BEFORE inline-links change: '+before);
-			Spaz.dump('AFTER inline-links change: '+this.innerHTML);
-		}
-		
-		
-		// email addresses
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
-	
-		// convert @username reply indicators
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile">@$2</a>');
-
+		air.trace(this.innerHTML);
 		if (Spaz.Prefs.get('usemarkdown')) {
 			// Markdown conversion with Showdown
 			this.innerHTML = md.makeHtml(this.innerHTML);
@@ -870,8 +847,45 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 			// Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
 			
 			// put title attr in converted Markdown link
-			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'href="$1" title="Open $1 in a browser window" class="inline-link"');
+			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
 		}
+		air.trace(this.innerHTML);
+
+		// convert inline links
+		var before = this.innerHTML;
+
+		/*
+			Inline links that start with http://
+		*/
+		var inlineRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/g;		
+		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
+		if (before != this.innerHTML) {
+			air.trace('BEFORE inline-links change HTTP ONLY: '+before);
+			air.trace('AFTER inline-links change: '+this.innerHTML);
+		}
+
+		before = this.innerHTML;
+		/*
+			this is the regex we use to match inline 
+			lots of uncommon but valid top-level domains aren't used
+			because they cause more problems than solved
+		*/
+		var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
+		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
+		if (before != this.innerHTML) {
+			air.trace('BEFORE inline-links change NO HTTP: '+before);
+			air.trace('AFTER inline-links change: '+this.innerHTML);
+		}
+		
+		
+		// email addresses
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
+		air.trace('now emails:'+this.innerHTML);
+	
+		// convert @username reply indicators
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile">@$2</a>');
+		air.trace('now usernames:'+this.innerHTML)
+
 
 		// // inline non-http:// links like foo.com or bar.foo.edu
 		// var before = this.innerHTML;

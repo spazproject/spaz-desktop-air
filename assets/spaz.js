@@ -7,14 +7,14 @@ Spaz.sourceStr = "spaz";
 /*
 short vars for referring to particular tabs
 */
-Spaz.PUBLIC_TL = 'public_timeline';
-Spaz.FRIENDS_TL = 'friends_timeline';
-Spaz.REPLIES_TL = 'replies_timeline';
-Spaz.USER_TL = 'user_timeline';
-Spaz.DM_TL = 'dm_timeline';
-Spaz.ME_TL = 'user_timeline';
-Spaz.FRIEND_LS = 'friend_list';
-Spaz.FOLLOWER_LS = 'follower_list';
+// Spaz.PUBLIC_TL = 'public_timeline';
+// Spaz.FRIENDS_TL = 'friends_timeline';
+// Spaz.REPLIES_TL = 'replies_timeline';
+// Spaz.USER_TL = 'user_timeline';
+// Spaz.DM_TL = 'dm_timeline';
+// Spaz.ME_TL = 'user_timeline';
+// Spaz.FRIEND_LS = 'friend_list';
+// Spaz.FOLLOWER_LS = 'follower_list';
 
 
 /*
@@ -22,28 +22,28 @@ Spaz
 */
 
 
-Spaz.loadMainPage = function() {
-	window.location.href='index.html';
-};
-
-
-
-
-Spaz.getUrlForTab = function(tab) {
-	
-}
-
-Spaz.getPathForTab = function(tab) {
-	
-}
-
-Spaz.getSubpathForTab = function(tab) {
-	
-}
-
-Spaz.getRegionForTab = function(tab) {
-	
-}
+// Spaz.loadMainPage = function() {
+// 	window.location.href='index.html';
+// };
+// 
+// 
+// 
+// 
+// Spaz.getUrlForTab = function(tab) {
+// 	
+// }
+// 
+// Spaz.getPathForTab = function(tab) {
+// 	
+// }
+// 
+// Spaz.getSubpathForTab = function(tab) {
+// 	
+// }
+// 
+// Spaz.getRegionForTab = function(tab) {
+// 	
+// }
 
 
 
@@ -116,16 +116,6 @@ Spaz.initialize = function() {
 	air.URLRequestDefaults.useCache = false;
 	
 	
-	
-	// if (Spaz.Prefs.get('network-airhandlehttpauth')) {
-	// 	air.trace('Turning ON HTTPAuth handling')
-	// 	window.htmlLoader.authenticate = true;
-	// } else {
-	// 	air.trace('Turning OFF HTTPAuth handling')
-	// 	window.htmlLoader.authenticate = false;
-	// }
-	
-	
 	// apply dropshadow to window
 	air.trace('Applying Flash Filter Dropshadow');
 	window.htmlLoader.filters = window.runtime.Array(
@@ -133,23 +123,6 @@ Spaz.initialize = function() {
 	);
 	new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
 	
-	
-
-	
-	
-	
-	//*************************
-	// START ME UP
-	//*************************
-
-
-
-
-
-
-
-
-
 
 	// ***************************************************************
 	// Keyboard shortcut handling
@@ -172,53 +145,6 @@ Spaz.initialize = function() {
 	$('#username').val(Spaz.Prefs.getUser());
 	$('#password').val(Spaz.Prefs.getPass());
 	
-
-	// Markdown
-	// if (Spaz.Prefs.get('usemarkdown')) {
-	// 	Spaz.UI.markdownOn();
-	// 	$('#markdown-enabled').attr('checked', 'checked');
-	// } else {
-	// 	Spaz.UI.markdownOff();
-	// 	$('#markdown-enabled').attr('checked', '');
-	// }
-
-	// Minimize to Systray
-	// if (Spaz.UI.minimizeToSystray) {
-	// 	Spaz.UI.minimizeToSystrayOn();
-	// 	$('#minimize-systray').attr('checked', 'checked');
-	// } else {
-	// 	Spaz.UI.minimizeToSystrayOff();
-	// 	$('#minimize-systray').attr('checked', '');
-	// }
-
-	// Minimize on BG
-	// if (Spaz.UI.minimizeOnBackground) {
-	// 	Spaz.UI.minimizeOnBackgroundOn();
-	// 	$('#minimize-background').attr('checked', 'checked');
-	// } else {
-	// 	Spaz.UI.minimizeOnBackgroundOff();
-	// 	$('#minimize-background').attr('checked', '');
-	// }
-
-	// Restore on Activate
-	// if (Spaz.UI.restoreOnActivate) {
-	// 	Spaz.UI.restoreOnActivateOn();
-	// 	$('#maximize-foreground').attr('checked', 'checked');
-	// } else {
-	// 	Spaz.UI.restoreOnActivateOff();
-	// 	$('#maximize-foreground').attr('checked', '');
-	// }
-
-	// Show notification popups
-
-	// Sounds
-	// if (Spaz.Prefs.get('sounds-enabled')) {
-	// 	Spaz.UI.soundOn();
-	// 	$('#sound-enabled').attr('checked', 'checked');
-	// } else {
-	// 	Spaz.UI.soundOff();
-	// 	$('#sound-enabled').attr('checked', '');
-	// }
 
 
 	//DONE: Check for Update
@@ -259,8 +185,6 @@ Spaz.initialize = function() {
 	
 	$('#container').fadeIn(500);
 
-	// $('#about-version').text("v"+Spaz.Info.getVersion());
-
 
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
 
@@ -289,15 +213,6 @@ Spaz.initialize = function() {
 
 
 
-	// make tweets selectable
-	// $('div.timeline-entry').bind('click', function(event){
-	// 	$('#'+event.target.id).toggleClass('ui-selected');
-	// });	
-	// $('#friends-timeline').selectable({
-	// 	filter:'div.timeline-entry'
-	// });
-
-
 	$('.TabbedPanelsTab').each( function(i) {
 		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL'+(parseInt(i)+1)+'</strong>';
 	});
@@ -318,17 +233,13 @@ Spaz.initialize = function() {
 	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
 	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);
 	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.MOVE, Spaz.Windows.onWindowMove);
+	
+	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate);
 
 
 	Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
 
 
-
-	/**
-	 * Window manip funcs
-	 */
-
-	
 	
 	// ***************************************************************
 	// Event delegation handling
@@ -339,6 +250,9 @@ Spaz.initialize = function() {
 			},
 			'.user-image[title]':function() {
 				Spaz.UI.showUserTooltip(this, $(this).attr('title'));
+			},
+			'a.inline-link':function() {
+				Spaz.UI.showTooltip(this, "Open "+$(this).attr('href')+" in a browser window", $(this).attr('href'));
 			},
 			'a[title]':function() {
 				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
