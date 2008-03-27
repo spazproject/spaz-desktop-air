@@ -6,7 +6,7 @@ Spaz.Prefs
 if (!Spaz.Windows) Spaz.Windows = {};
 
 
-Spaz.Windows.windowActiveHandler = function () {
+Spaz.Windows.onWindowActive = function () {
 	Spaz.dump('Window ACTIVE');
 	if ($('body').focus()) {
 	}
@@ -44,6 +44,44 @@ Spaz.Windows.windowRestore = function() {
 	}
 };
 
+/**
+* Called when the user closes the window.
+*/
+Spaz.Windows.onAppExit = function(event) 
+{
+	Spaz.dump("i'm exiting the app!");
+
+	event.preventDefault();
+
+	$('#container').fadeOut(500);
+	Spaz.Prefs.savePrefs();
+	Spaz.UI.playSoundShutdown(function() {
+		// alert('from the shutdown callback!')
+		// window.NativeWindow.close();
+		air.NativeApplication.nativeApplication.exit();
+	});
+}
+
+Spaz.Windows.onWindowClose = function(event) {
+	Spaz.dump("i'm closing a window!");
+};
+
+Spaz.Windows.windowClose = function() {
+	Spaz.dump('calling windowClose');
+	var exitingEvent = new air.Event(air.Event.EXITING,true,true);
+	air.NativeApplication.nativeApplication.dispatchEvent(exitingEvent);
+	
+	// if (force) {
+	// 	air.trace('forcing window close');
+	// 	window.nativeWindow.close();
+	// } else {
+	// 	var closingEvent = new air.Event(air.Event.CLOSING,true,true);
+	// 	air.trace('dispatching closingEvent');
+	// 	window.nativeWindow.dispatchEvent(closingEvent);		
+	// }
+};
+
+
 
 Spaz.Windows.openHTMLUtilityWindow = function(url) {
 	
@@ -69,9 +107,19 @@ Spaz.Windows.setWindowOpacity = function(percentage) {
 	var val  = parseInt(percentage)/100;
 	window.htmlLoader.alpha = val;
 }
-Spaz.Windows.onNativeMove = function(){
+Spaz.Windows.windowMove = function(){
 	nativeWindow.startMove();
 }
-Spaz.Windows.onResize = function(){
+Spaz.Windows.windowResize = function(){
 	nativeWindow.startResize(air.NativeWindowResize.BOTTOM_RIGHT);
 }
+
+
+Spaz.Windows.onWindowResize = function() {
+	Spaz.Prefs.set('window-width', nativeWindow.width);
+	Spaz.Prefs.set('window-height', nativeWindow.height);
+};
+Spaz.Windows.onWindowMove = function() {
+	Spaz.Prefs.set('window-x', nativeWindow.x);
+	Spaz.Prefs.set('window-y', nativeWindow.y);	
+};

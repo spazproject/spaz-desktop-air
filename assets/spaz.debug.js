@@ -7,31 +7,34 @@ if (!Spaz.Debug) Spaz.Debug = {};
 
 Spaz.Debug.markerExists = function() {
 	//Not allowed to write in app resource - use app storage
-	var debugMarker = air.File.applicationStorageDirectory;
-	debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-	return debugMarker.exists;
+	// var debugMarker = air.File.applicationStorageDirectory;
+	// debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
+	// return debugMarker.exists;
+	return Spaz.Prefs.get('debug-enabled');
 }
 
 
 Spaz.Debug.enable = function() {
 	//Not allowed to write in app resource - use app storage
-	var debugMarker = air.File.applicationStorageDirectory;
-	// for debugging environment
-	debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-	if (!debugMarker.exists) {
-		var markerStream = new air.FileStream();
-		markerStream.open(debugMarker, air.FileMode.WRITE);
-		markerStream.writeUTFBytes('debug');
-		markerStream.close();
-	}
+	// var debugMarker = air.File.applicationStorageDirectory;
+	// // for debugging environment
+	// debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
+	// if (!debugMarker.exists) {
+	// 	var markerStream = new air.FileStream();
+	// 	markerStream.open(debugMarker, air.FileMode.WRITE);
+	// 	markerStream.writeUTFBytes('debug');
+	// 	markerStream.close();
+	// }
+	Spaz.Prefs.set('debug-enabled', true);
 };
 
 Spaz.Debug.disable = function() {
-	if (Spaz.Debug.markerExists() ) {
-		var debugMarker = air.File.applicationStorageDirectory;
-		debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-		debugMarker.deleteFile();
-	}
+	// if (Spaz.Debug.markerExists() ) {
+	// 	var debugMarker = air.File.applicationStorageDirectory;
+	// 	debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
+	// 	debugMarker.deleteFile();
+	// }
+	Spaz.Prefs.set('debug-enabled', false);
 };
 
 Spaz.Debug.setEnable = function(state) {
@@ -43,47 +46,13 @@ Spaz.Debug.setEnable = function(state) {
 };
 
 Spaz.Debug.dump = function(msg, type) {
-	//Spaz.dump('debug:'+debug);
-	if (!type) {
-		type = 'info';
-	}
-
-	if ( Spaz.Debug.enabled ) {
+	if ( Spaz.Prefs.get('debug-enabled') ) {
 		
 		if (!type) {
 			type = 'info';
 		}
-
-		if (typeof debug!='undefined' && debug.log) {
-			if (isString(msg)) {
-				switch (type) {
-					case 'info':
-						console.info(msg);
-						break;
-					case 'debug':
-						console.debug(msg);
-						break;
-					case 'warn':
-						console.warn(msg);
-						break;
-					case 'error':
-						console.error(msg);
-						break;
-					case 'trace':
-						console.trace(msg);
-						break;
-					case 'dir':
-						console.dir(msg);
-						break;
-					case 'dirxml':
-						console.dirxml(msg);
-						break;
-				}	
-				air.trace('(string):'+msg);
-			} else {
-				console.dir(msg);
-				air.trace('(obj):'+msg);
-			}
+		if (air.Introspector && air.Introspector.Console) {
+			air.Introspector.Console[type](msg);
 		} else {
 			air.trace(msg);
 		}
@@ -105,18 +74,14 @@ Spaz.Debug.logToFile = function(msg) {
 }
 
 
-Spaz.Debug.enabled = Spaz.Debug.markerExists();
-
-
-
 // Spaz.Debug.dump = function(msg, type) {
 // 
 // }
 
 
 // alias
-Spaz.dump = function(msg) {
-	Spaz.Debug.dump(msg);
+Spaz.dump = function(msg, type) {
+	Spaz.Debug.dump(msg, type);
 }
 
 

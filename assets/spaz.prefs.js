@@ -21,7 +21,7 @@ Spaz.Prefs.defaultPreferences = {
 	'window-restoreonactivate':true,
 	
 	'window-notificationposition':'topRight',
-	'window-notificationhidedelay':6000,
+	'window-notificationhidedelay':6,
 	
 	'window-showcontextmenus':true,
 	'window-tooltiphidedelay':8000,
@@ -207,7 +207,7 @@ Spaz.Prefs.changeMethods = {
 			$('#network-refreshinterval').val(parseInt(value)/60000);
 		},
 		change: function(value) {
-
+			
 		}
 	},
 	'network-airhandlehttpauth': {
@@ -324,17 +324,6 @@ Spaz.Prefs.set = function(key, value) {
 	Spaz.Prefs.preferences[key] = value;
 };
 
-
-
-/**
-* Called when the user closes the window.
-*/
-Spaz.Prefs.windowClosingHandler = function() 
-{
-	nativeWindow.removeEventListener("closing", Spaz.Prefs.windowClosingHandler);
-	Spaz.Prefs.savePrefs();
-	air.NativeApplication.nativeApplication.exit();
-}
 
 
 Spaz.Prefs.saveUsername = function() {

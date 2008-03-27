@@ -43,13 +43,13 @@ TODO:
 
 
 	<!-- Spry Widgets -->
-	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/tabbedpanels/SpryTabbedPanels.js"></script>
-	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/textareavalidation/SpryValidationTextarea.js" ></script>
-	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/textfieldvalidation/SpryValidationTextField.js"></script>
-	<script language="JavaScript" type="text/javascript" src="SpryAssets/widgets/collapsiblepanel/SpryCollapsiblePanel.js"></script>
-	<link rel="stylesheet" type="text/css" href="SpryAssets/widgets/tabbedpanels/SpryTabbedPanels.css" />
-	<link rel="stylesheet" type="text/css" href="SpryAssets/widgets/textareavalidation/SpryValidationTextarea.css" />
-	<link rel="stylesheet" type="text/css" href="SpryAssets/widgets/textareavalidation/SpryValidationTextField.css" />
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.js"></script>
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/textareavalidation/SpryValidationTextarea.js" ></script>
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/textfieldvalidation/SpryValidationTextField.js"></script>
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/collapsiblepanel/SpryCollapsiblePanel.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.css" />
+	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/textareavalidation/SpryValidationTextarea.css" />
+	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/textfieldvalidation/SpryValidationTextField.css" />
 
 
 	<!-- base64 encoding lib -->
@@ -64,6 +64,8 @@ TODO:
 	<script src="assets/spaz.info.js"   type="text/javascript"></script>
 	<script src="assets/spaz.prefs.js"  type="text/javascript"></script>
 	<script src="assets/spaz.update.js" type="text/javascript"></script>
+	<script src="assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script src="assets/spaz.menus.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz.windows.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz.data.js"   type="text/javascript"></script>
@@ -132,12 +134,12 @@ TODO:
 
 	<div id="container">
 
-		<h1 id="header" onmousedown="Spaz.Windows.onNativeMove();">
+		<h1 id="header" onmousedown="Spaz.Windows.windowMove();">
 			<div id="window-buttons">
 				<span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
 				<span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span>
 				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
-				<span id="close" class="window-button" onclick="Spaz.Prefs.windowClosingHandler()" title="Close">&times;</span>
+				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
 			</div>
 			<span id="header-label">Spaz</span>
 		</h1>
@@ -433,14 +435,14 @@ TODO:
 		</form>
 
 		<!-- STATUSBAR -->
-		<div id="statusbar" onmousedown="Spaz.Windows.onNativeMove();">
+		<div id="statusbar" onmousedown="Spaz.Windows.windowMove();">
 			<!-- LOADING -->
 			<span id='loading'><img src='{theme-dir}/images/loading.gif' /></span>
 			<span id='statusbar-text'>Ready</span>
 		</div>
 
 
-		<div id="resize-sw" onmousedown="Spaz.Windows.onResize()">
+		<div id="resize-sw" onmousedown="Spaz.Windows.windowResize()">
 		</div>
 
 

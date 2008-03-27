@@ -275,6 +275,10 @@ div.timeline-entry.dm {
 div.timeline-entry.read .status-text {
 	color:#666666;
 }
+div.timeline-entry.read.ui-selected .status-text {
+	color:#CCCCCC;
+}
+
 div.timeline-entry.read img.user-image {
 	opacity:.8;
 }

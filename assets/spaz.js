@@ -88,13 +88,17 @@ Spaz.createUserDirs = function() {
 Spaz.initialize = function() {
 	
 	air.trace('root init begin');
-
+	air.NativeApplication.nativeApplication.autoExit = true;
 
 
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
 
-
+	/*************************** 
+	 * Load prefs 
+	 **************************/
+	air.trace('init prefs');
+	Spaz.Prefs.init();
 
 	/**
 	Keyboard shortcut definitions
@@ -110,6 +114,8 @@ Spaz.initialize = function() {
 	air.URLRequestDefaults.manageCookies = false;
 	air.URLRequestDefaults.cacheResponse = false;
 	air.URLRequestDefaults.useCache = false;
+	
+	
 	
 	// if (Spaz.Prefs.get('network-airhandlehttpauth')) {
 	// 	air.trace('Turning ON HTTPAuth handling')
@@ -142,11 +148,7 @@ Spaz.initialize = function() {
 
 
 
-	/*************************** 
-	 * Load prefs 
-	 **************************/
-	air.trace('init prefs');
-	Spaz.Prefs.init();
+
 
 
 	// ***************************************************************
@@ -254,6 +256,8 @@ Spaz.initialize = function() {
 
 	Spaz.Windows.makeWindowVisible();
 	Spaz.dump('Made window visible');
+	
+	$('#container').fadeIn(500);
 
 	// $('#about-version').text("v"+Spaz.Info.getVersion());
 
@@ -303,13 +307,17 @@ Spaz.initialize = function() {
 
 	Spaz.dump('ended document.ready()');
 	
-	if(Spaz.Debug.enabled){
+	if(Spaz.Prefs.get('debug-enabled')){
 		// Spaz.Debug.insertDebugScripts();
 	}
+	
+	// set-up window and app events
+	air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
 
-	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Prefs.windowClosingHandler); 
-	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.windowActiveHandler);
-
+	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose); 
+	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
+	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);
+	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.MOVE, Spaz.Windows.onWindowMove);
 
 
 	Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');

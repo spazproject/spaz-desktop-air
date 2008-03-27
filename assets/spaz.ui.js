@@ -21,7 +21,7 @@ Spaz.UI.mainTimelineId = 'timeline-friends';
 
 
 Spaz.UI.playSound = function(url, callback) {
-	if (!Spaz.Prefs.get('sounds-enabled')) {
+	if (!Spaz.Prefs.get('sound-enabled')) {
 		Spaz.dump('Not playing sound '+url+'- disabled');
 		return;
 	}
@@ -29,24 +29,26 @@ Spaz.UI.playSound = function(url, callback) {
 	Spaz.dump("loading " + url);
 	var req = new air.URLRequest(url);
 	var s = new air.Sound(req);
-	s.play();
+	//s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Windows.makeWindowVisible);
+
+	var sc = s.play();
 	Spaz.dump("playing " + url);
 	if (callback) {
-		s.addEventListener(air.Event.SOUND_COMPLETE, callback);
-	} else {
-		s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.UI.onSoundPlaybackComplete);
+		sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
 	}
-	s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Windows.makeWindowVisible);
+
+
+
 }
 
 
 Spaz.UI.onSoundPlaybackComplete = function(event) {
-	Spaz.dump("The sound has finished playing.");
+	air.trace("The sound has finished playing.");
 }
 
 
-Spaz.UI.playSoundUpdate = function() {
-	Spaz.UI.playSound(Spaz.Prefs.get('sound-update'));
+Spaz.UI.playSoundUpdate = function(callback) {
+	Spaz.UI.playSound(Spaz.Prefs.get('sound-update'), callback);
 }
 
 Spaz.UI.playSoundStartup = function(callback) {
@@ -57,12 +59,12 @@ Spaz.UI.playSoundShutdown = function(callback) {
 	Spaz.UI.playSound(Spaz.Prefs.get('sound-shutdown'), callback);
 }
 
-Spaz.UI.playSoundNew = function() {
-	Spaz.UI.playSound(Spaz.Prefs.get('sound-new'));
+Spaz.UI.playSoundNew = function(callback) {
+	Spaz.UI.playSound(Spaz.Prefs.get('sound-new'), callback);
 }
 
-Spaz.UI.playSoundWilhelm = function() {
-	Spaz.UI.playSound(Spaz.Prefs.get('sound-wilhelm'));
+Spaz.UI.playSoundWilhelm = function(callback) {
+	Spaz.UI.playSound(Spaz.Prefs.get('sound-wilhelm'), callback);
 }
 
 
@@ -85,16 +87,10 @@ Spaz.UI.flashStatusBar = function() {
 }
 
 Spaz.UI.showLoading = function() {
-	//$('#loading').show();
 	$('#loading').fadeIn(500);
-	// $('#loading').animate({left:currentLeft-100},500);
-	//$('#loading').DropInLeft(500);
-	
 }
 
 Spaz.UI.hideLoading = function() {
-	//$('#loading').hide();
-	// $('#loading').DropOutLeft(500);
 	$('#loading').fadeOut(500);
 }
 
@@ -312,24 +308,7 @@ Spaz.UI.setSelectedTab = function(tab) {
 	Spaz.restartReloadTimer();
 	
 	Spaz.Data.loadDataForTab(tab);
-	
-	// force loading data if empty
-	// var thisDs = Spaz.Data.getDsForTab(tab);
-	// 
-	// 
-	// if (!thisDs) {
-	// 	Spaz.dump('No DS for tab, return-ing from function');
-	// 	return;
-	// } else {
-	// 	Spaz.dump('Got DS for tab');
-	// }
-	// 	
-	// if (!thisDs.data || thisDs.data.length < 1) {
-	// 	Spaz.dump('getting data for this tab');
-	// 	Spaz.Data.loadDataForTab(tab);
-	// } else {
-	// 	Spaz.dump('data already exists');
-	// }
+
 }
 
 
@@ -755,6 +734,7 @@ Spaz.UI.notifyOfNewEntries = function() {
 		// 		Spaz.dump(img);
 		// 		Spaz.dump(text);
 		// 		
+
 		Spaz.UI.notify(text, screen_name, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
 		Spaz.UI.playSoundNew();
 		Spaz.UI.statusBar('Updates found');

@@ -92,8 +92,8 @@ Spaz.Menus.itemSelected = function(event){
 	Spaz.dump('event.target.name:' + event.target.name);
 	
 	if (event.target.name == "exit") {
-		Spaz.dump('Calling Spaz.Prefs.windowClosingHandler');
-		Spaz.Prefs.windowClosingHandler();
+		Spaz.dump('Calling Spaz.Windows.onWindowClose');
+		Spaz.Windows.onWindowClose();
 	}
 	
 	

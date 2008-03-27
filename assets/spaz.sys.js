@@ -19,8 +19,6 @@ Spaz.Sys.setClipboardText = function(text) {
 
 
 
-
-
 /***********
 Spaz.Bridge
 ************/
