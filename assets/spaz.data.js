@@ -183,7 +183,7 @@ Spaz.Data.update = function(msg, username, password) {
 			}
 			try {
 				var entry = eval('['+data+']');
-				Spaz.UI.addEntryToTimeline(entry, Spaz.Section.friends);
+				Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends);
 				Spaz.UI.cleanupTimeline(Spaz.Section.friends);
 				
 			} catch(e) {
@@ -523,11 +523,11 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 
 		Spaz.dump('adding entries');
 		for (var i in Spaz.Data.$ajaxQueueStorage) {
-			Spaz.UI.addEntryToTimeline(Spaz.Data.$ajaxQueueStorage[i], section);
+			section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
 		}
 
 		Spaz.dump('cleaning up timeline');
-		Spaz.UI.cleanupTimeline(section.timeline);
+		section.cleanup();
 
 		Spaz.dump('hiding loading');
 		Spaz.UI.hideLoading();
@@ -564,7 +564,7 @@ Spaz.Data.getDataForUrl = function(url, section) {
 		
 		
 		complete:function(xhr, msg){
-			Spaz.Data.onAjaxComplete(section,url,xhr,msg);
+			section.onAjaxComplete(url,xhr,msg);
 		},
 		error:function(xhr, msg, exc) {
 			if (xhr && xhr.responseText) {
@@ -610,7 +610,7 @@ Spaz.Data.loadDataForTab = function(tab, force, page) {
 		case 'tab-prefs':
 			break;
 		default:
-			Spaz.Data.getDataForTimeline(section, force);
+			section.build(force);
 			break;
 	}
 	return false

@@ -530,7 +530,7 @@ Spaz.UI.hideTooltips = function() {
 
 
 
-Spaz.UI.addEntryToTimeline = function(entry, section) {
+Spaz.UI.addItemToTimeline = function(entry, section) {
 	// alert('adding:'+entry.id)
 	
 	var timelineid = section.timeline;

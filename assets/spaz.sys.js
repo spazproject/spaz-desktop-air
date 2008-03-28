@@ -18,6 +18,19 @@ Spaz.Sys.setClipboardText = function(text) {
 }
 
 
+Spaz.Sys.getFileContents = function(path) {
+	var f = new air.File(path);
+	if (f.exists) {
+		var fs = new air.FileStream();
+		fs.open(f, air.FileMode.READ);
+		var str = fs.readMultiByte(f.size, air.File.systemCharset);
+		fs.close();
+		return str;
+	} else {
+		return false;
+	}
+
+};
 
 /***********
 Spaz.Bridge

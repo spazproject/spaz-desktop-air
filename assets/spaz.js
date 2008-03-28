@@ -88,7 +88,7 @@ Spaz.createUserDirs = function() {
 Spaz.initialize = function() {
 	
 	air.trace('root init begin');
-	air.NativeApplication.nativeApplication.autoExit = true;
+
 
 
 	// create user themes and plugins dirs if necessary
@@ -99,6 +99,13 @@ Spaz.initialize = function() {
 	 **************************/
 	air.trace('init prefs');
 	Spaz.Prefs.init();
+	
+	// turn on debugging
+	if (Spaz.Prefs.get('debug-enabled')) {
+		Spaz.Debug.insertDebugScripts();
+	}
+
+	air.NativeApplication.nativeApplication.autoExit = true;
 
 	/**
 	Keyboard shortcut definitions

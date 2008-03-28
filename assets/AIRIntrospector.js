@@ -39,8 +39,6 @@ else
     air.Introspector.isAppSandbox = false;
 
 
-
-
 air.Introspector.Console = {
 	
  log: function(){
