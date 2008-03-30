@@ -1,36 +1,6 @@
 if (!Spaz.Section) Spaz.Section = {};
 
 
-
-// Spaz.Section.section = function() {
-// 		this.panel =		'panel-friends',
-// 		this.timeline =	'timeline-friends', 
-// 		this.tab =		'tab-friends',
-// 		this.tabIndex =	0,
-// 		this.urls =		new Array(),
-// 		this.lastid = 	0,
-// 		this.lastcheck =	0,
-// 		this.currdata =	null,
-// 		this.prevdata =	null,
-// 		this.autoload =	true,
-// 		this.canclear =	true,
-// 		this.mincachetime =1,
-// 		this.build= function(force){
-// 			Spaz.Data.getDataForTimeline(this, force)
-// 		},
-// 		onAjaxComplete= function(url,xhr,msg){
-// 			Spaz.Data.onAjaxComplete(this,url,xhr,msg);
-// 		},
-// 		addItem= function(item) {
-// 			Spaz.UI.addItemToTimeline(item, this)
-// 		},
-// 		cleanup=1 function(attribute){
-// 			Spaz.UI.cleanupTimeline(this.timeline);
-// 		}
-// };
-
-
-
 Spaz.Section.friends = {
 	panel:    'panel-friends',
 	timeline: 'timeline-friends', 
@@ -113,6 +83,7 @@ Spaz.Section.public = {
 	},
 	
 }
+
 Spaz.Section.friendslist = {
 	panel:    'panel-friendslist',
 	timeline: 'timeline-friendslist', 
@@ -139,12 +110,15 @@ Spaz.Section.friendslist = {
 		$('#tbody-friendslist').append(tpl, item);
 	},
 	cleanup: function(){
-		$("#table-friendslist").addClass('tablesorter');
-		$("#table-friendslist").tablesorter();
+		$("#table-friendslist tr:even").addClass('even');
+		$("#table-friendslist tr:odd").addClass('odd');
+		// $("#table-friendslist").addClass('tablesorter');
+		// $("#table-friendslist").tablesorter();
 		// Spaz.UI.cleanupTimeline(this.timeline);
 	},
 	
 }
+
 Spaz.Section.followerslist = {
 	panel:    'panel-followerslist',
 	timeline: 'timeline-followerslist', 
@@ -171,11 +145,14 @@ Spaz.Section.followerslist = {
 		$('#tbody-followerslist').append(tpl, item);
 	},
 	cleanup: function(){
-		$("#table-followerslist").addClass('tablesorter');
-		$("#table-followerslist").tablesorter();
+		$("#table-followerslist tr:even").addClass('even');
+		$("#table-followerslist tr:odd").addClass('odd');
+		// $("#table-followerslist").addClass('tablesorter');
+		// $("#table-followerslist").tablesorter();
 		// Spaz.UI.cleanupTimeline(this.timeline);
 	},
 }
+
 Spaz.Section.prefs = {
 	panel:    'panel-prefs',
 	timeline: 'timeline-prefs', 

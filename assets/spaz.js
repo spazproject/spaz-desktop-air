@@ -190,7 +190,7 @@ Spaz.initialize = function() {
 	Spaz.Windows.makeWindowVisible();
 	Spaz.dump('Made window visible');
 	
-	$('#container').fadeIn(500);
+	$('#container').fadeIn(1000);
 
 
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
