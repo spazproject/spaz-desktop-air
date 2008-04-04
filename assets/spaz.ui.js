@@ -44,7 +44,7 @@ Spaz.UI.playSound = function(url, callback) {
 
 
 Spaz.UI.onSoundPlaybackComplete = function(event) {
-	air.trace("The sound has finished playing.");
+	// air.trace("The sound has finished playing.");
 }
 
 
@@ -770,19 +770,31 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 
 
 // cleans up and parses stuff in timeline's tweets
-Spaz.UI.cleanupTimeline = function(timelineid) {
+Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify) {
 	
+
+	
+
+	
+	Spaz.dump('Sorting timeline');
 	Spaz.UI.sortTimeline(timelineid);
+	
+	Spaz.dump('Reversing timeline');
 	Spaz.UI.reverseTimeline(timelineid);
 
 	// remove the even and odds due to resorting
-	$("#"+timelineid + ' .timeline-entry').removeClass('even');
-	$("#"+timelineid + ' .timeline-entry').removeClass('odd');
+	$("#"+timelineid + ' .timeline-entry').removeClass('even').removeClass('odd');
+	
+	Spaz.dump("# of Timeline-entries = " +$("#"+timelineid + ' .timeline-entry').length)
+	
+	Spaz.dump($("#"+timelineid).html());
 	
 	// we delay on notification of new entries because stuff gets 
 	// really confused and wonky if you fire it off right away
-	Spaz.dump('Set timeout for notifications')
-	setTimeout(Spaz.UI.notifyOfNewEntries, 1000);
+	if (!suppressNotify) {
+		Spaz.dump('Set timeout for notifications')
+		setTimeout(Spaz.UI.notifyOfNewEntries, 1000);
+	}
 	
 	// $("#"+timelineid + ' .timeline-entry').each( function(i) {
 	// 	$(this).bind('click', {'jqentry':$(this)}, Spaz.UI.selectEntry);
@@ -799,7 +811,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 
 	// animate in new stuff
 	$("#"+timelineid + ' .timeline-entry:eq(0)').animate({'opacity': '1.0'}, 25, 'linear', function() {
-		//Spaz.dump($(this).text());
+		Spaz.dump($(this).text());
 		$(this).next().animate({'opacity': '1.0'}, 25, 'linear', arguments.callee);
 	})
 
@@ -840,7 +852,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		// fix entity &#123; style extra encoding
 		this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
 					
-		air.trace(this.innerHTML);
+		// air.trace(this.innerHTML);
 		if (Spaz.Prefs.get('usemarkdown')) {
 			// Markdown conversion with Showdown
 			this.innerHTML = md.makeHtml(this.innerHTML);
@@ -850,7 +862,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 			// put title attr in converted Markdown link
 			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
 		}
-		air.trace(this.innerHTML);
+		// air.trace(this.innerHTML);
 
 		// convert inline links
 		var before = this.innerHTML;
@@ -861,8 +873,8 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		var inlineRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/g;		
 		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
 		if (before != this.innerHTML) {
-			air.trace('BEFORE inline-links change HTTP ONLY: '+before);
-			air.trace('AFTER inline-links change: '+this.innerHTML);
+			// air.trace('BEFORE inline-links change HTTP ONLY: '+before);
+			// air.trace('AFTER inline-links change: '+this.innerHTML);
 		}
 
 		before = this.innerHTML;
@@ -874,18 +886,18 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 		var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
 		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
 		if (before != this.innerHTML) {
-			air.trace('BEFORE inline-links change NO HTTP: '+before);
-			air.trace('AFTER inline-links change: '+this.innerHTML);
+			// air.trace('BEFORE inline-links change NO HTTP: '+before);
+			// air.trace('AFTER inline-links change: '+this.innerHTML);
 		}
 		
 		
 		// email addresses
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
-		air.trace('now emails:'+this.innerHTML);
+		// air.trace('now emails:'+this.innerHTML);
 	
 		// convert @username reply indicators
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile">@$2</a>');
-		air.trace('now usernames:'+this.innerHTML)
+		// air.trace('now usernames:'+this.innerHTML)
 
 
 		// // inline non-http:// links like foo.com or bar.foo.edu

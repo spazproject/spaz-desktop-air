@@ -181,17 +181,13 @@ Spaz.Data.update = function(msg, username, password) {
 				Spaz.UI.playSoundUpdate();
 				Spaz.UI.statusBar("Update succeeded");
 			}
-			try {
-				var entry = eval('['+data+']');
-				Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends);
-				Spaz.UI.cleanupTimeline(Spaz.Section.friends);
-				
-			} catch(e) {
-				Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name 
-				+ ". Error message: " + e.message)
-			}
+			var entry = JSON.parse(data);
 			
+			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends);
 			
+			// cleanup, but suppress the notifications by passing "true" as 2nd param
+			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true);
+		
 			Spaz.UI.entryBox.reset();
 			Spaz.dump('reset entryBox (Spry)');
 			$('#entrybox')[0].blur();

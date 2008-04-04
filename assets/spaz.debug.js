@@ -5,35 +5,11 @@ Spaz.Debug
 ************/
 if (!Spaz.Debug) Spaz.Debug = {};
 
-Spaz.Debug.markerExists = function() {
-	//Not allowed to write in app resource - use app storage
-	// var debugMarker = air.File.applicationStorageDirectory;
-	// debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-	// return debugMarker.exists;
-	return Spaz.Prefs.get('debug-enabled');
-}
-
-
 Spaz.Debug.enable = function() {
-	//Not allowed to write in app resource - use app storage
-	// var debugMarker = air.File.applicationStorageDirectory;
-	// // for debugging environment
-	// debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-	// if (!debugMarker.exists) {
-	// 	var markerStream = new air.FileStream();
-	// 	markerStream.open(debugMarker, air.FileMode.WRITE);
-	// 	markerStream.writeUTFBytes('debug');
-	// 	markerStream.close();
-	// }
 	Spaz.Prefs.set('debug-enabled', true);
 };
 
 Spaz.Debug.disable = function() {
-	// if (Spaz.Debug.markerExists() ) {
-	// 	var debugMarker = air.File.applicationStorageDirectory;
-	// 	debugMarker = debugMarker.resolvePath("DEBUG_SPAZ");
-	// 	debugMarker.deleteFile();
-	// }
 	Spaz.Prefs.set('debug-enabled', false);
 };
 

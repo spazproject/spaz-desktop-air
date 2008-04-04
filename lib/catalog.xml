@@ -2,7 +2,7 @@
 <swc xmlns="http://www.adobe.com/flash/swccatalog/9">
   <versions>
     <swc version="1.2" />
-    <flex version="3.0" build="189825" />
+    <flex version="3.0.0" build="477" />
   </versions>
   <features>
     <feature-script-deps />
@@ -45,7 +45,7 @@
         <dep id="flash.desktop:SystemTrayIcon" type="e" /> 
         <dep id="flash.events:Event" type="e" /> 
       </script>
-      <script name="com/adobe/air/notification/AbstractNotification" mod="1198724326000" signatureChecksum="3167039005" >
+      <script name="com/adobe/air/notification/AbstractNotification" mod="1207273465000" signatureChecksum="3167039005" >
         <def id="com.adobe.air.notification:AbstractNotification" /> 
         <dep id="flash.display:NativeWindow" type="i" /> 
         <dep id="AS3" type="n" /> 
@@ -114,7 +114,7 @@
         <dep id="AS3" type="n" /> 
       </script>
       <digests>
-        <digest type="SHA-256" signed="false" value="cfc617c1ed7dcd9050f9b690c3b37bb214da79ecb9885bdad42b4690b7111b99"   />
+        <digest type="SHA-256" signed="false" value="d13bad13fe945af6abeca780c16ac83aaf3f86dad4c69b3c42ee6dc1abc54e8c"   />
       </digests>
     </library>
   </libraries>
