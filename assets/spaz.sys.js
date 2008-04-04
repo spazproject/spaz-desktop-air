@@ -14,7 +14,8 @@ Spaz.Sys.getClipboardText = function() {
 
 Spaz.Sys.setClipboardText = function(text) {
 	Spaz.dump('Copying "' + text + '" to clipboard');
-	air.System.setClipboard(text);
+	air.Clipboard.generalClipboard.clear();
+	air.Clipboard.generalClipboard.setData(air.ClipboardFormats.TEXT_FORMAT,text,false);
 }
 
 

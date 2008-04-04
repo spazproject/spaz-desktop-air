@@ -34,9 +34,9 @@ Spaz.Shortlink.urltea = function(url) {
 			// air.trace("COMPLETE: " + rstr);
 			// air.trace(xhr.responseText);
 			var shorturl = trim(xhr.responseText);
-			alert(shorturl);
+			// alert(shorturl);
 			air.Clipboard.generalClipboard.clear();
-			air.Clipboard.generalClipboard.setData(shorturl,air.ClipboardFormats.TEXT_FORMAT,false);
+			air.Clipboard.generalClipboard.setData(air.ClipboardFormats.TEXT_FORMAT,shorturl,false);
 			$('#verification-result').text("URL shortened and copied to clipboard");
 			$('#shorten-short-link').val(shorturl);
 			$('#shorten-short-link').focus();

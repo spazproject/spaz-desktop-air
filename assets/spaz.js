@@ -308,6 +308,12 @@ Spaz.initialize = function() {
 				entry.addClass('ui-selected');
 			},
 		})
+		.intercept('contextmenu', {
+			'a[href]':function() {
+				var url = $(this).attr('href');
+				Spaz.UI.showContextMenu($(this), url);
+			}
+		})
 	// end intercept
 
 

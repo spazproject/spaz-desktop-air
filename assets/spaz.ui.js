@@ -505,6 +505,42 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 }
 
 
+Spaz.UI.showContextMenu = function(jq, url) {
+	var el = jq[0];
+
+	// hide any showing tooltips
+	air.trace('hiding tooltip');	
+	$('#tooltip').hide();
+	
+	// show the link context menu
+	air.trace('opening context menu');
+	$('#linkContextMenu').css('left', event.pageX)
+		.css('top',  event.pageY)
+		.show();
+
+	air.trace('outerHTML:'+el.outerHTML);
+	var urlarray = /http:\/\/([^'"]+)/i.exec(url);
+	if (urlarray && urlarray.length > 0) {
+		var elurl = urlarray[0];
+	
+		air.trace('url from element:'+elurl);
+	
+		$('#linkContextMenu-copyLink').one('click', {url:elurl}, function(event) {
+			Spaz.Sys.setClipboardText(url);
+			air.trace('Current Clipboard:'+Spaz.Sys.getClipboardText());
+		});
+		air.trace('Set one-time click event on #menu-copyLink');
+	
+		$(document).one('click', function() {
+			$('#linkContextMenu').hide();
+		});
+		air.trace('set one-time link context menu close event for click on document');
+	} else {
+		air.trace('no http link found');
+	}
+};
+
+
 
 Spaz.UI.getViewport = function() {
 	return {
@@ -918,7 +954,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify) {
 		var jqthis = $(this);
 		// Spaz.dump(this.outerHTML);
 		var url = jqthis.attr('href');
-		jqthis.bind('contextmenu', { 'jq':jqthis, 'url':url }, Spaz.Handlers.showContextMenu)
+		// jqthis.bind('contextmenu', { 'jq':jqthis, 'url':url }, Spaz.Handlers.showContextMenu)
 				// .removeAttr('href');
 				// .bind('click', {'url':url}, Spaz.Sys.openInBrowser)
 	});
