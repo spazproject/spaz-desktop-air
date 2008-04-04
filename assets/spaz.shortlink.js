@@ -16,40 +16,42 @@ $.ajaxSetup(
 Spaz.Shortlink.urltea = function(url) {
 	var origlink = encodeURI(url);
 	
-	Spaz.dump('OrigLink:'+origlink);
+	// air.trace('OrigLink:'+origlink);
 	
 	$('#verification-result').text('Shortening URL...');
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
 			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
+				// air.trace("ERROR: Timeout");
 				$('#verification-result').text('ERROR: Timeout');
 				return;
 			}
-			Spaz.dump('Response-headers:');
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
-			Spaz.dump('XHR Object:');
-			Spaz.dump(xhr, 'dir');
-			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.dump(xhr.responseText);
+			// air.trace('Response-headers:');
+			// air.trace(xhr.getAllResponseHeaders());
+			// air.trace('XHR Object:');
+			// air.trace(xhr);
+			// air.trace("COMPLETE: " + rstr);
+			// air.trace(xhr.responseText);
+			var shorturl = trim(xhr.responseText);
+			alert(shorturl);
 			air.Clipboard.generalClipboard.clear();
-			air.Clipboard.generalClipboard.setData(xhr.responseText,air.ClipboardFormats.TEXT_FORMAT,false);
+			air.Clipboard.generalClipboard.setData(shorturl,air.ClipboardFormats.TEXT_FORMAT,false);
 			$('#verification-result').text("URL shortened and copied to clipboard");
-			$('#shorten-short-link').val(xhr.responseText);
+			$('#shorten-short-link').val(shorturl);
 			$('#shorten-short-link').focus();
 			$('#shorten-short-link').select();
 		},
 		error:function(xhr, rstr){
-			Spaz.dump("ERROR: " + rstr);
+			// air.trace("ERROR: " + rstr);
 			$('#verification-result').text('Error trying to shorten link');
 			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
+				// air.trace("ERROR: Timeout");
 			}
 			
 		},
 		success:function(data){
-			// Spaz.dump(data);
+			// air.trace(data);
 			// Spaz.UI.statusBar("Shortened URL");
 			// $('#shorten-short-link').val(data);
 		},
@@ -66,46 +68,44 @@ Spaz.Shortlink.urltea = function(url) {
 Spaz.Shortlink.snurl = function(url) {
 	var origlink = encodeURI(url);
 	
-	Spaz.dump('OrigLink:'+origlink);
+	// air.trace('OrigLink:'+origlink);
 	
 	$('#verification-result').text('Shortening URL...');
 	
 	var xhr = $.ajax({
 		complete:function(xhr, rstr){
 			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
+				// air.trace("ERROR: Timeout");
 				$('#verification-result').text('ERROR: Timeout');
 				return;
 			}
-			Spaz.dump('Response-headers:');
-			Spaz.dump(xhr.getAllResponseHeaders(), 'dir');
-			Spaz.dump('XHR Object:');
-			Spaz.dump(xhr, 'dir');
-			Spaz.dump("COMPLETE: " + rstr);
-			Spaz.dump(xhr.responseText);
+			// air.trace('Response-headers:');
+			// air.trace(xhr.getAllResponseHeaders());
+			// air.trace('XHR Object:');
+			// air.trace(xhr);
+			// air.trace("COMPLETE: " + rstr);
+			// air.trace(xhr.responseText);
+			
+			var shorturl = trim(xhr.responseText);
+			
 			air.Clipboard.generalClipboard.clear();
-			var cliprs = air.Clipboard.generalClipboard.setData(air.ClipboardFormats.TEXT_FORMAT,xhr.responseText);
-			
-			Spaz.dump(xhr.responseText + ' cliprs is '+cliprs);
-			
-			Spaz.dump("formats: " + air.Clipboard.generalClipboard.formats);
-			Spaz.dump("getting data : " + air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT));
-			
+			air.Clipboard.generalClipboard.setData(shorturl,air.ClipboardFormats.TEXT_FORMAT,false);
 			$('#verification-result').text("URL shortened and copied to clipboard");
-			$('#shorten-short-link').val(xhr.responseText);
+			$('#shorten-short-link').val(shorturl);
 			$('#shorten-short-link').focus();
 			$('#shorten-short-link').select();
+			
 		},
 		error:function(xhr, rstr){
-			Spaz.dump("ERROR: " + rstr);
+			// air.trace("ERROR: " + rstr);
 			$('#verification-result').text('Error trying to shorten link');
 			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
+				// air.trace("ERROR: Timeout");
 			}
 			
 		},
 		success:function(data){
-			// Spaz.dump(data);
+			// air.trace(data);
 			// Spaz.UI.statusBar("Shortened URL");
 			// $('#shorten-short-link').val(data);
 		},

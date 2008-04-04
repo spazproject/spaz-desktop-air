@@ -51,7 +51,8 @@ Spaz.Debug.dump = function(msg, type) {
 		if (!type) {
 			type = 'info';
 		}
-		if (air.Introspector && air.Introspector.Console) {
+
+		if (air.Introspector && air.Introspector.Console && air.Introspector.Console[type]) {
 			air.Introspector.Console[type](msg);
 		} else {
 			air.trace(msg);

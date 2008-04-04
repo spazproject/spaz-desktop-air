@@ -33,6 +33,8 @@ TODO:
 	<script src="assets/jquery/jquery.template.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" href="assets/jquery/tablesorter-blue/style.css" type="text/css" charset="utf-8">
+	
+	<script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- jQuery.UI libs -->
 	<script src="assets/jquery/ui/ui.mouse.js" type="text/javascript" charset="utf-8"></script>	
@@ -59,9 +61,10 @@ TODO:
 	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/textfieldvalidation/SpryValidationTextField.css" />
 
 
-	<!-- base64 encoding lib -->
+	<!-- misc fun! -->
 	<script src="assets/webtoolkit.base64.js" type="text/javascript"></script>
-
+	<script src="assets/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
+	
 	<!-- Keyboard shortcuts handling http://www.openjs.com/scripts/events/keyboard_shortcuts/ -->
 	<script src="assets/shortcut.js" type="text/javascript" charset="utf-8"></script>
 
@@ -322,42 +325,38 @@ TODO:
 									</div>
 									<div class="formrow">
 										<label for="base-theme">Theme</label>
-										<select id="theme-basetheme" name="base-theme" onChange="Spaz.Themes.setCurrentTheme()">
+										<select id="theme-basetheme" name="base-theme" onChange="">
 											<!-- stuff goes here -->
 										</select> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<label for="base-theme">Opacity</label>
-										<input type="text" onchange="Spaz.Prefs.checkWindowOpacity(this.value)"
+										<input type="text"
 											name="opacity-percentage" id="window-alpha"
 											value="100" maxlength="3" size="3" />%
 									</div>
 									<div class="formrow">
-										<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" onclick="Spaz.UI.setMarkdownState(this.checked)" />
+										<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
 										<label for="markdown-enabled" class="checkbox">Parse Markdown in messages</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="minimize-systray" value="1"
-											id="window-minimizetosystray"
-											onclick="Spaz.UI.setMinimizeToSystray(this.checked)" />
+											id="window-minimizetosystray" />
 										<label for="minimize-systray" class="checkbox">Minimize to Systray</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="minimize-background" value="1"
-											id="window-minimizeonbackground"
-											onclick="Spaz.UI.setMinimizeOnBackground(this.checked)" />
+											id="window-minimizeonbackground" />
 										<label for="minimize-background" class="checkbox">Minimize when in background</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="maximize-foreground" value="1"
-											id="window-restoreonactivate"
-											onclick="Spaz.UI.setRestoreOnActivate(this.checked)" />
+											id="window-restoreonactivate" />
 										<label for="maximize-foreground" class="checkbox">Restore when in foreground</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="notification-popups" value="1"
-											id="window-shownotificationpopups"
-											onclick="Spaz.UI.setShowNotificationPopups(this.checked)" />
+											id="window-shownotificationpopups" />
 										<label for="notification-popups" class="checkbox">Show notification popups (alpha)</label> <!-- <span class="restart-required">*</span> -->
 									</div>
 								</div>
@@ -368,7 +367,7 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
 										<label for="sound-enabled">Play sounds</label>
-										<input type="checkbox" name="sound-enabled" value="1" id="sound-enabled" onclick="Spaz.UI.setSoundState(this.checked)" />
+										<input type="checkbox" name="sound-enabled" value="1" id="sound-enabled" />
 									</div>
 								</div>
 							</div>
@@ -378,8 +377,10 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
 										<label for="sound-enabled">Check on startup</label>
-										<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" onclick="Spaz.Update.setCheckUpdateState(this.checked)" />
-										<input type="button" name="user-stylesheet-button" value="Check Now &bull;" id="prefs-checkupdate-button" onclick="Spaz.Update.updater.checkForUpdate()" /> <span class="restart-required">*</span>
+										<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
+										<input type="button" name="user-stylesheet-button" value="Check Now &bull;"
+											id="prefs-checkupdate-button" onclick="Spaz.Update.updater.checkForUpdate()" />
+										<span class="restart-required">*</span>
 									</div>
 								</div>
 							</div>
@@ -389,13 +390,13 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
 										<label for="refresh-interval">Refresh interval</label>
-										<input type="text" onchange="Spaz.Prefs.checkRefreshPeriod(this.value)" name="refresh-interval" id="network-refreshinterval" value="2" maxlength="2" size="2" /> minutes
+										<input type="text" name="refresh-interval" id="network-refreshinterval"
+											value="5" maxlength="2" size="2" /> minutes
 
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="handle-http-auth" value="1"
-											id="network-airhandlehttpauth"
-											onclick="Spaz.Prefs.setHandleHTTPAuth(this.checked)" />
+											id="network-airhandlehttpauth" />
 										<label for="handle-http-auth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
 									</div>
 								</div>
@@ -406,7 +407,7 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
 										<label for="debugging-enabled">Enabled</label>
-										<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" onclick="Spaz.Prefs.setDebugEnable(this.checked)" /> <span class="restart-required">*</span>
+										<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" /> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
@@ -419,7 +420,7 @@ TODO:
 						<div class="formrow" style="text-align:right; margin-top:15px">
 							<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
 							<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
-								onclick="Spaz.Data.verifyPassword()" /> 
+								onclick="Spaz.Prefs.setPrefs()" /> 
 						</div>
 
 						</form>
@@ -458,16 +459,17 @@ TODO:
 		</div>
 
 
-
+		<!-- the context menu container -->
 		<div id="linkContextMenu" class="context-menu">
 			<ul>
-				<li id="menu-copyLink">Copy Link Address</li>
+				<li id="link-context-menu-copylink">Copy Link Address</li>
 			</ul>
 		</div>
 
 
+		<!-- The tooltip container -->
 		<div id="tooltip" class="context-menu">
-	
+			
 		</div>
 
 

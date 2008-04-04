@@ -36,13 +36,11 @@ Spaz.Prefs.defaultPreferences = {
 	
 	'debug-enabled':false,
 	
-	
 	'sound-update'	: '/assets/sounds/TokyoTrainStation/Csnd.mp3',
 	'sound-startup'	: '/assets/sounds/TokyoTrainStation/On.mp3',
 	'sound-shutdown': '/assets/sounds/TokyoTrainStation/Off.mp3',
 	'sound-new'		: '/assets/sounds/TokyoTrainStation/New.mp3',
 	'sound-wilhelm'	: '/assets/sounds/wilhelm.mp3',
-	
 	
 	
 	'checkupdate':true,
@@ -55,51 +53,51 @@ Spaz.Prefs.defaultPreferences = {
 
 // this maps methods to pref keys that should be
 // called when they are changed
+
+/*
+	the methods:
+	setUI: sets the exposed prefs UI for this preference
+	onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
+	check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
+	setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
+*/
 Spaz.Prefs.changeMethods = {
 	'usemarkdown':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-			$('#usemarkdown').attr('checked', value);
+		setUI: function(value){	$('#usemarkdown').attr('checked', value);
 		},
-		change: function(value) {
-
+		onChange: function(value) {
+		},
+		check: function(value) {
+			Spaz.Prefs.set('usemarkdown', Boolean(Spaz.Prefs.get('usemarkdown'))) 
 		}
+		
 	},
 
 	'window-x':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-		},
-		change: function(value) {
-		}
+		setUI: function(value){},
+		onChange: function(value) {},
+		check: function() {}
 	},
 	'window-y':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-
-		},
-		change: function(value) {
-
-		}
+		setUI: function(value){},
+		onChange: function(value) {},
+		check: function() {}
 	},
 	'window-width':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-
-		},
-		change: function(value) {
-
-		}
+		setUI: function(value){},
+		onChange: function(value) {},
+		check: function() {}
 	},
 	'window-height':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-
-		},
-		change: function(value) {
-
-		}
+		setUI: function(value){},
+		onChange: function(value) {},
+		check: function() {}
 	},
 	'window-alpha':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){	
 			$('#window-alpha').val(parseInt(value));
 		},
-		change: function(value) {
+		onChange: function(value) {
 			//alert(percentage+"%");
 			percentage = parseInt(value);
 			if (isNaN(percentage)) {
@@ -118,115 +116,158 @@ Spaz.Prefs.changeMethods = {
 			}
 
 			window.htmlLoader.alpha = val;
-		}
+		},
+		check: function(){
+			var val = Spaz.Prefs.get('window-alpha');
+			if (val >100) {
+				Spaz.Prefs.set('window-alpha', 100); 
+			} else if (val < 10) {
+				Spaz.Prefs.set('window-alpha', 10); 
+			}
+		},
 	},
 	'window-hideafterdelay':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-		},
-		change: function(value) {
+		setUI: function(value) {},
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('window-hideafterdelay', Boolean(Spaz.Prefs.get('window-hideafterdelay'))) 
 		}
 	},
 	'window-restoreonupdates':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-		},
-		change: function(value) {
+		setUI: function(value){},
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('window-restoreonupdates', Boolean(Spaz.Prefs.get('window-restoreonupdates'))) 
 		}
 	},
 	'window-shownotificationpopups':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#window-shownotificationpopups').attr('checked', value);
 		},
-		change: function(value) {
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('window-shownotificationpopups', Boolean(Spaz.Prefs.get('window-shownotificationpopups'))) 
 		}
 	},
 	'window-minimizetosystray':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#window-minimizetosystray').attr('checked', value);
 		},
-		change: function(value) {
-
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('window-minimizetosystray', Boolean(Spaz.Prefs.get('window-minimizetosystray'))) 
 		}
 	},
 	'window-minimizeonbackground':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#window-minimizeonbackground').attr('checked', value);
 		},
-		change: function(value) {
+		onChange: function(value) {
 			if (value) {
 				air.NativeApplication.nativeApplication.addEventListener('deactivate', function() {
 					//window.nativeWindow.minimize();
 					Spaz.Windows.windowMinimize();
 				})
 			}
+		},
+		check: function(value) {
+			Spaz.Prefs.set('window-minimizeonbackground', Boolean(Spaz.Prefs.get('window-minimizeonbackground'))) 
 		}
 	},
 	'window-restoreonactivate':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#window-restoreonactivate').attr('checked', value);
 		},
-		change: function(value) {
+		onChange: function(value) {
 			if (value) {
 				air.NativeApplication.nativeApplication.addEventListener('activate', function() {
 					//window.nativeWindow.restore();
 					Spaz.Windows.windowRestore();
 				})
 			}
+		},
+		check: function(value) {
+			Spaz.Prefs.set('window-restoreonactivate', Boolean(Spaz.Prefs.get('window-restoreonactivate'))) 
 		}
 	},
 
 
 	'theme-userstylesheet':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#theme-userstylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
 		},
-		change: function(value) {
+		onChange: function(value) {
 			if (value) {
 				$('#UserCSSOverride').text(Spaz.Themes.loadUserStylesFromURL(value));
 			}
 		}
 	},
 	'theme-basetheme':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
-
+		setUI: function(value){
+			$('#theme-basetheme').val(value);
 		},
-		change: function(value) {
-
+		onChange: function(value) {
+			Spaz.Themes.setCurrentTheme()
 		}
 	},
 
 	'sound-enabled':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#sound-enabled').attr('checked', value);
 		},
-		change: function(value) {
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('sound-enabled', Boolean(Spaz.Prefs.get('sound-enabled'))) 
 		}
 	},
 
 	'network-refreshinterval'  : {
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#network-refreshinterval').val(parseInt(value)/60000);
 		},
-		change: function(value) {
-			
+		onChange: function(value) {},
+		check: function(value) {
+			var val = parseInt(Spaz.Prefs.get('network-refreshinterval'));
+			if (val < 3*60000) {
+				Spaz.Prefs.set('network-refreshinterval', 3*60000); 
+			}
+		},
+		setFromUI: function(value) {
+			return value*60000;
 		}
 	},
 	'network-airhandlehttpauth': {
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#network-airhandlehttpauth').attr('checked', value);
 		},
-		change: function(value) {
-			air.trace('Setting HTTPAuth handling to '+value)
+		onChange: function(value) {
+			Spaz.dump('Setting HTTPAuth handling to '+value)
 			window.htmlLoader.authenticate = value;
+		},
+		check: function(value) {
+			Spaz.Prefs.set('network-airhandlehttpauth', Boolean(Spaz.Prefs.get('network-airhandlehttpauth'))) 
 		}
 	},
 
 
 	'checkupdate':{
-		setUI: function(value){  // this is called when the prefs are first loaded to set the UI properly
+		setUI: function(value){
 			$('#checkupdate').attr('checked', value);
 		},
-		change: function(value) {
-
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('checkupdate', Boolean(Spaz.Prefs.get('checkupdate'))) 
+		}
+	},
+	
+	
+	'debug-enabled':{
+		setUI: function(value){
+			$('#debug-enabled').attr('checked', value);
+		},
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('debug-enabled', Boolean(Spaz.Prefs.get('debug-enabled'))) 
 		}
 	}
 }
@@ -236,9 +277,9 @@ Spaz.Prefs.changeMethods = {
 
 
 
-
 Spaz.Prefs.init = function() {
 	Spaz.Prefs.preferences = Spaz.Prefs.defaultPreferences;
+	Spaz.dump("defaultPreferences:"+Spaz.Prefs.defaultPreferences);
 	Spaz.Prefs.loadPrefs();
 	Spaz.Prefs.initUI();
 }
@@ -253,8 +294,21 @@ Spaz.Prefs.loadPrefs = function() {
 	if (prefsFile.exists) {
 		fs.open(prefsFile, air.FileMode.READ);
 		var prefsJSON = fs.readUTFBytes(prefsFile.size);
-		air.trace(prefsJSON)
-		Spaz.Prefs.preferences = JSON.parse(prefsJSON);
+		Spaz.dump(prefsJSON)
+		var loadedpreferences = JSON.parse(prefsJSON);
+
+		Spaz.dump(Spaz.Prefs.defaultPreferences);
+		Spaz.dump(loadedpreferences);
+		
+		for (key in Spaz.Prefs.defaultPreferences) {
+			Spaz.dump('Copying "'+key+'" from loaded prefs to current prefs');
+			Spaz.Prefs.preferences[key] = loadedpreferences[key];
+			air.trace('"'+key+'":"'+Spaz.Prefs.preferences[key]+'"');
+			if (Spaz.Prefs.changeMethods[key] && Spaz.Prefs.changeMethods[key].check) {
+				air.trace("Calling check on "+key);
+				Spaz.Prefs.changeMethods[key].check();
+			}
+		}
 	} else {
 		fs.open(prefsFile, air.FileMode.WRITE);
 		fs.writeUTFBytes(JSON.stringify(Spaz.Prefs.defaultPreferences));
@@ -264,6 +318,8 @@ Spaz.Prefs.loadPrefs = function() {
 	
 	Spaz.Prefs.loadUsername();
 	Spaz.Prefs.loadPassword();
+	
+	//air.NativeApplication.nativeApplication.spazPrefs = Spaz.Prefs
 		
 };
 
@@ -271,21 +327,77 @@ Spaz.Prefs.loadPrefs = function() {
 
 Spaz.Prefs.initUI = function() {
 	for(pkey in Spaz.Prefs.preferences) {
-		//air.trace(pkey);
+		//Spaz.dump(pkey);
 		if (Spaz.Prefs.changeMethods[pkey]) {
 			if (Spaz.Prefs.changeMethods[pkey].setUI) {
 				Spaz.Prefs.changeMethods[pkey].setUI(Spaz.Prefs.get(pkey));
 			}
-			if (Spaz.Prefs.changeMethods[pkey].change) {
-				Spaz.Prefs.changeMethods[pkey].change(Spaz.Prefs.get(pkey));
+			if (Spaz.Prefs.changeMethods[pkey].onChange) {
+				Spaz.Prefs.changeMethods[pkey].onChange(Spaz.Prefs.get(pkey));
 			}
 		}
 		$('#username').val(Spaz.Prefs.getUser());
-		//air.trace('set #username val to'+$('#username').val());
+		//Spaz.dump('set #username val to'+$('#username').val());
 		$('#password').val(Spaz.Prefs.getPass());
 	}
+	$('#window-alpha').bind('change', Spaz.Prefs.setFromUI);
+	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
+	$('#window-minimizetosystray').bind('change', Spaz.Prefs.setFromUI);
+	$('#window-minimizeonbackground').bind('change', Spaz.Prefs.setFromUI);
+	$('#window-restoreonactivate').bind('change', Spaz.Prefs.setFromUI);
+	$('#window-shownotificationpopups').bind('change', Spaz.Prefs.setFromUI);
+	$('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
+	$('#sound-enabled').bind('change', Spaz.Prefs.setFromUI);
+	$('#checkupdate').bind('change', Spaz.Prefs.setFromUI);
+	$('#network-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
+	$('#network-airhandlehttpauth').bind('change', Spaz.Prefs.setFromUI);
+	$('#debug-enabled').bind('change', Spaz.Prefs.setFromUI);
+	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
+	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
+	
 };
 
+
+Spaz.Prefs.setFromUI = function(event) {
+	Spaz.dump(event);
+	
+	var id = event.srcElement.id
+	
+	Spaz.dump("setFromUI - "+id)
+	
+	if (event.srcElement.tagName == "INPUT" && event.srcElement.type == "checkbox") {
+		if ($('#'+id).attr('checked')) {
+			var val = true;
+		} else {
+			var val = false;
+		}
+	} else {
+		var val = $('#'+id).val();
+	}
+	
+	// rewrite the incoming value if needed
+	if (Spaz.Prefs.changeMethods[id] && Spaz.Prefs.changeMethods[id].setFromUI) {
+		val = Spaz.Prefs.changeMethods[id].setFromUI(val);
+	}
+	
+	// set the preference
+	Spaz.Prefs.set(id, val);
+	
+	if (Spaz.Prefs.changeMethods[id]){
+		if (Spaz.Prefs.changeMethods[id].check) {
+			Spaz.dump("Calling check on "+id + " -- current val is "+ Spaz.Prefs.get(id));
+			Spaz.Prefs.changeMethods[id].check();
+		}
+		if (Spaz.Prefs.changeMethods[id].setUI) {
+			Spaz.dump("Calling setUI on "+id + " -- current val is "+ Spaz.Prefs.get(id));
+			Spaz.Prefs.changeMethods[id].setUI(Spaz.Prefs.get(id));
+		}
+		if (Spaz.Prefs.changeMethods[id].onChange) {
+			Spaz.dump("Calling onChange on "+id + " -- current val is "+ Spaz.Prefs.get(id));
+			Spaz.Prefs.changeMethods[id].onChange(Spaz.Prefs.get(id));
+		}
+	}
+};
 
 
 Spaz.Prefs.savePrefs = function() {
@@ -313,22 +425,25 @@ Spaz.Prefs.resetPrefs = function() {
 
 
 Spaz.Prefs.get = function(key) {
-	// air.trace("Getting pref key '"+key+"'");
-	// air.trace("Value is "+Spaz.Prefs.preferences[key]);
+	// Spaz.dump("Getting pref key '"+key+"'");
+	// Spaz.dump("Value is "+Spaz.Prefs.preferences[key]);
 	return Spaz.Prefs.preferences[key];
 };
 
 
 Spaz.Prefs.set = function(key, value) {
-	//air.trace("Setting pref key '"+key+"'="+value);
+	//Spaz.dump("Setting pref key '"+key+"'="+value);
 	Spaz.Prefs.preferences[key] = value;
 };
 
 
 
+
+
+
 Spaz.Prefs.saveUsername = function() {
 	if (Spaz.Prefs.user) {
-		air.trace('saving username: '+Spaz.Prefs.user);
+		Spaz.dump('saving username: '+Spaz.Prefs.user);
 		var bytes = new air.ByteArray();
 		bytes.writeUTFBytes(Spaz.Prefs.user);
 		air.EncryptedLocalStore.setItem('twitter_username_1', bytes);
@@ -342,14 +457,14 @@ Spaz.Prefs.loadUsername = function() {
 		Spaz.Prefs.user = storedValue.readUTFBytes(storedValue.length);
 		return Spaz.Prefs.user;
 	} else {
-		air.trace('Username COULD NOT BE LOADED');
+		Spaz.dump('Username COULD NOT BE LOADED');
 		return false;
 	}
 };
 
 Spaz.Prefs.savePassword = function() {
 	if (Spaz.Prefs.pass) {
-		air.trace('saving password: ********');
+		Spaz.dump('saving password: ********');
 		var bytes = new air.ByteArray();
 		bytes.writeUTFBytes(Spaz.Prefs.pass);
 		air.EncryptedLocalStore.setItem('twitter_password_1', bytes);
@@ -363,13 +478,16 @@ Spaz.Prefs.loadPassword = function() {
 		Spaz.Prefs.pass = storedValue.readUTFBytes(storedValue.length);
 		return Spaz.Prefs.pass;
 	} else {
-		air.trace('Password COULD NOT BE LOADED');
+		Spaz.dump('Password COULD NOT BE LOADED');
 		return false;
 	}
 };
 
 Spaz.Prefs.setPrefs = function() {
+	air.trace('Verifying password');
 	Spaz.Data.verifyPassword();
+	air.trace('saving Prefs');
+	Spaz.Prefs.savePrefs();
 }
 
 Spaz.Prefs.setCurrentUser = function() {

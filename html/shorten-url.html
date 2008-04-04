@@ -6,20 +6,24 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>Shorten Link</title>
-	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
-	<script src="../assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	
-	<script src="../assets/spaz.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../assets/jquery.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../assets/spaz.info.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../assets/spaz.shortlink.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="app:/assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.info.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.shortlink.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		// map spaz stuff from remote window to local
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+	
 		$(document).ready(function() {
-			Spaz.dump("val:"+$('#shorten-original-link').val());
+			// Spaz.dump("val:"+$('#shorten-original-link').val());
 			$('#shorten-original-link').focus();
 			$('#shorten-original-link').val('http://');
-			Spaz.dump(air.Clipboard.generalClipboard.formats);
+			// Spaz.dump(air.Clipboard.generalClipboard.formats);
 			if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
 			    var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
 				if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
@@ -27,7 +31,9 @@
 					Spaz.Shortlink.snurl(cliptext);
 				}
 			}
-			$('#shorten-original-link').select();	
+			$('#shorten-original-link').select();
+			
+			air.trace(air.NativeApplication.nativeApplication.spazPrefs);
 		})
 	</script>
 	

@@ -73,7 +73,7 @@ Spaz.Data.verifyPassword = function() {
 				Spaz.UI.statusBar("ERROR: Timeout")
 				return;
 			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 		},
@@ -112,7 +112,7 @@ Spaz.Data.verifyPassword = function() {
 		url:Spaz.Data.url_verify_password,
 	})
 	
-	// Spaz.dump(xhr, 'dir');
+	// Spaz.dump(xhr);
 	
 }
 
@@ -142,7 +142,7 @@ Spaz.Data.update = function(msg, username, password) {
 				Spaz.UI.statusBar("Update ERROR: Timeout")
 				return;
 			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 		},
@@ -211,7 +211,7 @@ Spaz.Data.update = function(msg, username, password) {
 //		data:"&status="+encodeURIComponent(msg),
 	});
 	
-	// Spaz.dump(xhr, 'dir');
+	// Spaz.dump(xhr);
 }
 
 
@@ -232,7 +232,7 @@ Spaz.Data.destroyStatus = function(postid) {
 				Spaz.UI.statusBar("ERROR: Timeout");
 				return;
 			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 		},
@@ -259,7 +259,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		url:Spaz.Data.url_destroy_status.replace(/{{ID}}/, postid),
 	});
 	
-	// Spaz.dump(xhr, 'dir');
+	// Spaz.dump(xhr);
 }
 
 
@@ -278,7 +278,7 @@ Spaz.Data.makeFavorite = function(postid) {
 				Spaz.UI.statusBar("ERROR: Timeout")
 				return;
 			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 		},
@@ -328,7 +328,7 @@ Spaz.Data.followUser = function(userid) {
 				Spaz.UI.statusBar("ERROR: Timeout")
 				return;
 			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 		},
@@ -358,7 +358,7 @@ Spaz.Data.followUser = function(userid) {
 		url:Spaz.Data.url_follow.replace(/{{ID}}/, userid),
 	});
 	
-	// Spaz.dump(xhr, 'dir');
+	// Spaz.dump(xhr);
 };
 
 
@@ -380,7 +380,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 				Spaz.UI.statusBar("ERROR: Timeout")
 				return;
 			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders(), 'dir');
+			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
 			Spaz.dump("DATA:\n"+xhr.responseText);
 			Spaz.dump("COMPLETE: " + rstr);
 		},
@@ -410,7 +410,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 		url:Spaz.Data.url_stop_follow.replace(/{{ID}}/, userid),
 	});
 	
-	// Spaz.dump(xhr, 'dir');
+	// Spaz.dump(xhr);
 };
 
 

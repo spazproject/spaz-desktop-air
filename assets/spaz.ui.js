@@ -23,6 +23,7 @@ Spaz.UI.mainTimelineId = 'timeline-friends';
 Spaz.UI.playSound = function(url, callback) {
 	if (!Spaz.Prefs.get('sound-enabled')) {
 		Spaz.dump('Not playing sound '+url+'- disabled');
+		if (callback) { callback() }
 		return;
 	}
 	Spaz.dump('Spaz.UI.playSound callback:'+callback);
@@ -30,7 +31,7 @@ Spaz.UI.playSound = function(url, callback) {
 	var req = new air.URLRequest(url);
 	var s = new air.Sound(req);
 	//s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Windows.makeWindowVisible);
-
+	
 	var sc = s.play();
 	Spaz.dump("playing " + url);
 	if (callback) {
@@ -393,7 +394,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 
 	
 	// show the link context menu
-	Spaz.dump('opening context menu');
+	Spaz.dump('opening tooltip menu');
 	tt.css('left', event.pageX+10)
 		.css('top',  event.pageY+20)
 		.html(str)
@@ -961,7 +962,7 @@ Spaz.UI.cleanupTimeline = function(timelineid) {
 	
 	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');
 
-
+	
 
 	
 }
