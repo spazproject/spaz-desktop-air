@@ -33,6 +33,18 @@ Spaz.Sys.getFileContents = function(path) {
 
 };
 
+
+Spaz.Sys.openInBrowser = function(url) {
+	Spaz.dump('opening '+url);
+	var request = new air.URLRequest(url);
+	try {            
+	    air.navigateToURL(request);
+	}
+	catch (e) {
+	    Spaz.dump(e.errorMsg)
+	}
+};
+
 /***********
 Spaz.Bridge
 ************/

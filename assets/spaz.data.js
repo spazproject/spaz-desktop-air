@@ -186,7 +186,8 @@ Spaz.Data.update = function(msg, username, password) {
 			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends);
 			
 			// cleanup, but suppress the notifications by passing "true" as 2nd param
-			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true);
+			// surpress scrollTo with 3rd param
+			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true, true);
 		
 			Spaz.UI.entryBox.reset();
 			Spaz.dump('reset entryBox (Spry)');

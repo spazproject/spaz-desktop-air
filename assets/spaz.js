@@ -228,10 +228,7 @@ Spaz.initialize = function() {
 
 
 	Spaz.dump('ended document.ready()');
-	
-	if(Spaz.Prefs.get('debug-enabled')){
-		// Spaz.Debug.insertDebugScripts();
-	}
+
 	
 	// set-up window and app events
 	air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
@@ -311,7 +308,11 @@ Spaz.initialize = function() {
 		.intercept('contextmenu', {
 			'a[href]':function() {
 				var url = $(this).attr('href');
-				Spaz.UI.showContextMenu($(this), url);
+				Spaz.UI.showLinkContextMenu($(this), url);
+			},
+			'.user *':function() {
+				var screen_name = $(this).attr('user-screen_name');
+				Spaz.UI.showUserContextMenu($(this), screen_name);
 			}
 		})
 	// end intercept
@@ -369,14 +370,7 @@ function getTimeAsInt() {
 
 
 function openInBrowser(url) {
-	Spaz.dump('opening '+url);
-	var request = new air.URLRequest(url);
-	try {            
-	    air.navigateToURL(request);
-	}
-	catch (e) {
-	    Spaz.dump(e.errorMsg)
-	}
+	Spaz.Sys.openInBrowser(url);
 }
 
 

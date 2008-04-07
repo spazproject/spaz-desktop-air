@@ -33,7 +33,7 @@ TODO:
 	<script src="assets/jquery/jquery.template.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" href="assets/jquery/tablesorter-blue/style.css" type="text/css" charset="utf-8">
-	
+	<script src="assets/jquery/jquery.fxqueues.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- jQuery.UI libs -->
@@ -43,9 +43,21 @@ TODO:
 
 	<!-- jQuery Enchant libs -->
 	<script src="assets/jquery/enchant/fx.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.blind.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.bounce.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.clip.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/enchant/fx.drop.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.explode.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.fade.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.fold.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.highlight.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.magnifier.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.pulsate.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/enchant/fx.scale.js" type="text/javascript" charset="utf-8"></script>
-	
+	<script src="assets/jquery/enchant/fx.shadow.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.shake.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.slide.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/enchant/fx.transfer.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Notification popups libs -->
 	<script src="lib/library.swf" type="application/x-shockwave-flash"></script>
@@ -462,10 +474,22 @@ TODO:
 		<!-- the context menu container -->
 		<div id="linkContextMenu" class="context-menu">
 			<ul>
-				<li id="linkContextMenu-copyLink">Copy Link Address</li>
+				<li id="linkContextMenu-copyLink" class="clickable">Copy Link Address</li>
 			</ul>
 		</div>
-
+		
+		<!-- User context menu -->
+		<div id="userContextMenu" class="context-menu">
+			<ul>
+				
+				<li id="userContextMenu-sendReply" class="clickable">Send @Reply</li>
+				<li id="userContextMenu-sendDM" class="clickable">Send Direct Message</li>
+				<li id="userContextMenu-viewProfile" class="clickable">View Profile</li>
+				<li id="userContextMenu-follow" class="clickable">Follow</li>
+				<li id="userContextMenu-unfollow" class="clickable">Stop Following</li>
+				<!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
+			</ul>
+		</div>
 
 		<!-- The tooltip container -->
 		<div id="tooltip" class="context-menu">

@@ -74,6 +74,14 @@ Spaz.Keyboard.setShortcuts = function() {
 		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[3]);
 		Spaz.UI.tabbedPanels.showPanel(3);
 	})
+	shortcut.add(Modkey+'+5', function() {
+		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[4]);
+		Spaz.UI.tabbedPanels.showPanel(4);
+	})
+	shortcut.add(Modkey+'+6', function() {
+		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[5]);
+		Spaz.UI.tabbedPanels.showPanel(5);
+	})
 	shortcut.add(Modkey+'+,', function() {
 		Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
 		Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
