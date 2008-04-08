@@ -1,0 +1,100 @@
+div.outerbox
+{
+	font-size:12px;
+	font-weight: normal;
+	overflow: auto;
+	background-color: #222222;
+	background-repeat: repeat-x;
+	color:#EEEEEE;
+	-webkit-box-shadow:0px 0px 6px #333333;
+/*	display:none;*/
+	padding:5px;
+	opacity:0.9;
+	-khtml-border-radius:5px;
+}
+div.outerbox div.shadowbox1
+{
+	position: absolute;
+	right: 0;
+	bottom: 5px;
+	width: 5px;
+	height: 100%;
+}
+div.outerbox div.shadowbox2
+{
+	position: absolute;
+	bottom: 0;
+	right: 5px;
+	height: 5px;
+	width: 100%;
+}
+div.outerbox div.shadowbox3
+{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: 5px;
+	width: 5px;
+}
+.innerbox
+{
+	margin: 0;
+	display: inherit;
+}
+
+#root-menu-div ul {
+/*	border: 1px solid #000;*/
+
+}
+#root-menu-div li{
+/*	white-space:nowrap;*/
+}
+ul.menu,
+#root-menu-div ul {
+/*	background-color: #fff;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	*/
+	padding:0;
+	margin:0;
+	list-style: none;
+}
+#root-menu-div li {
+	list-style: none;
+	padding:4px;
+	min-width:125px;
+}
+
+li.menu-separator.active{
+	background-color: transparent;
+}
+li.active {
+	background-color:#eeeeee;
+	color:#222222;
+	cursor: pointer;
+	-khtml-border-radius:5px;
+}
+.activetarget{
+	/*background-color: white;*/
+}
+
+li.menumain {
+	float: left;
+	padding: 0 10px;
+}
+div.menu-item {
+	padding: 1px 10px 1px 4px;
+}
+img.menu-item-arrow{
+	position: absolute;
+	right: 4px;
+	top: 8px;
+}
+li.menu-separator{
+	border-bottom: 1px solid #000;
+	font-size: 0; /* for ie */
+	height: 0;
+	line-height: 0; /* for ie */
+	margin: 2px 0;
+}

@@ -29,13 +29,20 @@ TODO:
 	<script src="assets/jquery/jquery.scrollTo.js" type="text/javascript"></script>
 	<script src="assets/jquery/jquery.array.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.intercept.1.0.2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.positionBy.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script src="assets/jquery/jquery.ajaxQueue.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.template.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
-	<link rel="stylesheet" href="assets/jquery/tablesorter-blue/style.css" type="text/css" charset="utf-8">
+	<link rel="stylesheet" href="assets/jquery/tablesorter-blue/style.css" type="text/css" charset="utf-8" />
 	<script src="assets/jquery/jquery.fxqueues.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
-
+	
+	<script src="assets/jquery/jquery.menu.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="assets/jquery/menu/style.css" type="text/css" media="screen" charset="utf-8" />
+	
+	
+	
 	<!-- jQuery.UI libs -->
 	<script src="assets/jquery/ui/ui.mouse.js" type="text/javascript" charset="utf-8"></script>	
 	<script src="assets/jquery/ui/ui.draggable.js" type="text/javascript" charset="utf-8"></script>
@@ -163,7 +170,8 @@ TODO:
 				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
 				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
 			</div>
-			<span id="header-label">Spaz</span>
+			<!-- <span id="header-label" onclick="Spaz.UI.showMainMenu($(this))">Spaz &raquo;</span> -->
+			<span id="header-label" style="cursor:pointer">Spaz</span>
 		</h1>
 
 
@@ -230,6 +238,22 @@ TODO:
 						<!-- onmouseover="Spaz.UI.focusHandler()"
 						onmouseout="Spaz.UI.blurHandler()"
 						onclick="Spaz.UI.clickHandler()" -->
+						<!-- <ul id="classicMenu" class="jd_menu_vertical jd_menu_slate">
+							<li>Spaz &raquo;
+								<ul>
+									<li id="mainMenu-file">File</li>
+									<li id="mainMenu-view">View
+										<ul>
+											<li id="mainMenu-file-reloadCurrentView">Reload current view</li>
+											<li id="mainMenu-file-clearReloadCurrentView">Clear and reload current view</li>
+											<li id="mainMenu-file-toggle">Toggle tweets directed at you</li>
+										</ul>	
+									</li>
+									<li id="mainMenu-help">Help</li>
+									<li id="mainMenu-about">About</li>
+								</ul>
+							</li>
+						</ul> -->
 
 				
 					</div>
@@ -471,6 +495,19 @@ TODO:
 		</div>
 
 
+		
+		<!-- <ul id="mainMenu">
+			<li>Item one
+				<ul>
+					<li>Subitem one</li>
+					<li>Subitem two</li>
+				</ul>
+			</li>
+			<li>Item two</li>
+		</ul> -->
+
+
+
 		<!-- the context menu container -->
 		<div id="linkContextMenu" class="context-menu">
 			<ul>
@@ -490,6 +527,24 @@ TODO:
 				<!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
 			</ul>
 		</div>
+
+		
+		<!-- the main menu container -->
+		<div id="mainMenu">
+			<ul id="mainMenuRoot" style="display:none;">
+				<li id="mainMenu-file">File</li>
+				<li id="mainMenu-view">View&nbsp;&raquo;
+					<ul>
+						<li id="mainMenu-file-reloadCurrentView">Reload current view</li>
+						<li id="mainMenu-file-clearReloadCurrentView">Clear and reload current view</li>
+						<li id="mainMenu-file-toggle">Toggle tweets directed at you</li>
+					</ul>	
+				</li>
+				<li id="mainMenu-help">Help</li>
+				<li id="mainMenu-about">About</li>
+			</ul>
+		</div>
+
 
 		<!-- The tooltip container -->
 		<div id="tooltip" class="context-menu">

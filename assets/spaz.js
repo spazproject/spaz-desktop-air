@@ -210,13 +210,16 @@ Spaz.initialize = function() {
 	// var AccountPanel = Spaz.UI.prefsCPG.openPanel(0);
 
 	// Make Draggables
-	$('div.popupWindow').each(function(i){
-		$('#'+this.id).draggable({
-			handle: 	$('#'+this.id+' popupWindowBar')[0],
-			containment:'#container',
-			opacity: 	0.7,
-		});
-	});
+	// $('div.popupWindow').each(function(i){
+	// 	$('#'+this.id).draggable({
+	// 		handle: 	$('#'+this.id+' popupWindowBar')[0],
+	// 		containment:'#container',
+	// 		opacity: 	0.7,
+	// 	});
+	// });
+
+
+	$('#header-label').menu( { }, '#mainMenuRoot');
 
 
 
@@ -262,7 +265,6 @@ Spaz.initialize = function() {
 				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
 				// air.trace(this.outerHTML);
 			},
-
 		})
 		.intercept('mouseout', {
 			'[title]':function() {
@@ -304,16 +306,24 @@ Spaz.initialize = function() {
 				var entry = $(this).parents('.timeline-entry');
 				entry.addClass('ui-selected');
 			},
+			// '#header-label':function() {
+			// 	Spaz.UI.showMainMenu($(this));
+			// },
 		})
 		.intercept('contextmenu', {
 			'a[href]':function() {
 				var url = $(this).attr('href');
 				Spaz.UI.showLinkContextMenu($(this), url);
 			},
-			'.user *':function() {
+
+
+			// 'div.timeline-entry .user, div.timeline-entry .user-image, div.timeline-entry .user-screen-name':function() {
+			'.user,.user-image,.user-screen-name':function() {
+				air.trace(this.outerHTML);
 				var screen_name = $(this).attr('user-screen_name');
 				Spaz.UI.showUserContextMenu($(this), screen_name);
-			}
+			},
+			
 		})
 	// end intercept
 

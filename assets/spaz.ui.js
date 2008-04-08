@@ -559,6 +559,7 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 
 
 Spaz.UI.showUserContextMenu = function(jq, screen_name) {
+	if (!screen_name) {return false;}
 	var el = jq[0];
 	
 	Spaz.dump(el);
@@ -600,6 +601,24 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 	
 	air.trace('set one-time link context menu close event for click on document');
 };
+
+
+
+// Spaz.UI.showMainMenu = function(jq) {
+// 	var el = jq[0];
+// 	
+// 	Spaz.dump(el);
+// 	
+// 	// hide any showing tooltips
+// 	air.trace('hiding tooltips');
+// 	$('#tooltip').hide();
+// 	
+// 	// show the link context menu
+// 	air.trace('opening mainmenu');
+// 	$('#mainMenu').css('left', event.pageX)
+// 		.css('top',  event.pageY)
+// 		.show();
+// }
 
 
 
