@@ -311,19 +311,16 @@ Spaz.initialize = function() {
 			// },
 		})
 		.intercept('contextmenu', {
-			'a[href]':function() {
-				var url = $(this).attr('href');
-				Spaz.UI.showLinkContextMenu($(this), url);
-			},
-
-
 			// 'div.timeline-entry .user, div.timeline-entry .user-image, div.timeline-entry .user-screen-name':function() {
-			'.user,.user-image,.user-screen-name':function() {
+			'.user,.user-image,.user-screen-name,a[user-screen_name]':function() {
 				air.trace(this.outerHTML);
 				var screen_name = $(this).attr('user-screen_name');
 				Spaz.UI.showUserContextMenu($(this), screen_name);
 			},
-			
+			'a[href]':function() {
+				var url = $(this).attr('href');
+				Spaz.UI.showLinkContextMenu($(this), url);
+			},
 		})
 	// end intercept
 

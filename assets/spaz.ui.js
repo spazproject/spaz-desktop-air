@@ -1022,7 +1022,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		// air.trace('now emails:'+this.innerHTML);
 	
 		// convert @username reply indicators
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile">@$2</a>');
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" user-screen_name="$2">@$2</a>');
 		// air.trace('now usernames:'+this.innerHTML)
 
 
@@ -1039,17 +1039,6 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 
 	});
 	
-	// add contentmenu calls
-	$("div.needs-cleanup div.status-text", "#"+timelineid).find('a[href]').each(function(i) {
-		var jqthis = $(this);
-		// Spaz.dump(this.outerHTML);
-		var url = jqthis.attr('href');
-		// jqthis.bind('contextmenu', { 'jq':jqthis, 'url':url }, Spaz.Handlers.showContextMenu)
-				// .removeAttr('href');
-				// .bind('click', {'url':url}, Spaz.Sys.openInBrowser)
-	});
-	
-
 	
 	// convert source link entries
 	$("div.needs-cleanup span.status-source-label", "#"+timelineid).each(function(i) {
@@ -1075,6 +1064,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		}
 	});
 
+
+	// add protected post indicators
 	$("div.needs-cleanup span.status-protected", "#"+timelineid).each(function(i) {
 		var jqprtct = $(this);
 		if (jqprtct.html() == 'true') {
