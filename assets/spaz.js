@@ -265,6 +265,9 @@ Spaz.initialize = function() {
 				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
 				// air.trace(this.outerHTML);
 			},
+			'a[user-screen_name]':function() {
+				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
+			}
 		})
 		.intercept('mouseout', {
 			'[title]':function() {

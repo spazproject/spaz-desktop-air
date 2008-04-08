@@ -419,8 +419,10 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		.css('opacity', 0)
 		.animate({'opacity':'0.85'}, {speed:200, queue:false});
 	
-	if (/^@[a-zA-Z0-9_-]+$/.test($(el).text())) {
-		var username = $(el).text().replace(/@/, '');
+	//if (/^@[a-zA-Z0-9_-]+$/.test($(el).text())) {
+	if ($(el).attr('user-screen_name')) {
+		//var username = $(el).text().replace(/@/, '');
+		var username = $(el).attr('user-screen_name');
 		
 		var previewid = "preview-username-"+username;
 		
@@ -442,8 +444,12 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 				if (tweets[0].text) {
 					$("#"+previewid).append("<img style='float:right' src='"+tweets[0].user.profile_image_url+"' />");
 					$("#"+previewid).append("<div><strong>"+tweets[0].user.name+" ("+tweets[0].user.screen_name+")</strong></div>");
-					$("#"+previewid).append("<div><em>"+tweets[0].user.location+"</em></div>");
-					$("#"+previewid).append("<div>"+tweets[0].user.description+"</div>");
+					if (tweets[0].user.location) {
+						$("#"+previewid).append("<div><em>"+tweets[0].user.location+"</em></div>");
+					}
+					if (tweets[0].user.description) {
+						$("#"+previewid).append("<div>"+tweets[0].user.description+"</div>");
+					}
 					$("#"+previewid).append('<div class="latest"><strong>Latest:</strong> '+tweets[0].text+'</div>');
 				} else if (tweets.error) {
 					$("#"+previewid).html('<strong>Error:</strong> '+tweets.error);
@@ -1022,7 +1028,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		// air.trace('now emails:'+this.innerHTML);
 	
 		// convert @username reply indicators
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" user-screen_name="$2">@$2</a>');
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
 		// air.trace('now usernames:'+this.innerHTML)
 
 
