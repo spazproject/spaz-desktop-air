@@ -668,8 +668,8 @@ div.timeline-entry {
 
 			/* the icon that indicates this is a protected post */
 			span.status-protected img {
-				position:absolute;
 				opacity:0.8;
+				vertical-align:-20%;
 			}
 
 

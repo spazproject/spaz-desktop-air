@@ -175,7 +175,8 @@ Spaz.Data.update = function(msg, username, password) {
 			$('#updateButton').val(oldButtonLabel);
 			Spaz.dump('reset #updateButton label');
 			if (msg.length == 140) {
-				Spaz.UI.playSoundWilhelm();
+				Spaz.UI.playSoundWilhelm(Spaz.UI.endWilhelm);
+				Spaz.UI.doWilhelm();
 				Spaz.UI.statusBar("Wilhelm!");
 			} else {
 				Spaz.UI.playSoundUpdate();

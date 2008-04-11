@@ -408,8 +408,6 @@ div.status-text:after {
 	font-weight:normal;
 }
 div.status-link {
-/*	font-size:9px;
-	color:#666666;*/
 	display:none;
 }
 
@@ -422,8 +420,10 @@ div.status-actions a, div.status-link a {
 	color: #9999CC;
 }
 div.status-actions img, span.status-protected img {
-	vertical-align:-20%;
 	display:inline !important;
+}
+span.status-protected img {
+	vertical-align:-20%;
 }
 div.status-actions a {
 	border:none !important;

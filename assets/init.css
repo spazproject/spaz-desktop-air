@@ -11,14 +11,6 @@ input[type=text], textarea, div.status-text {
 /*	-khtml-user-select:text;*/
 }
 
-#SpryDebugWindow {
-	display:fixed;
-	bottom:	20px !important;
-	left:	20px !important;
-	height:100px !important;
-	overflow: auto;
-}
-
 .restart-required {
 	font-weight:bold;
 	color:#990000;
@@ -38,5 +30,20 @@ div.timeline.dm-replies div.timeline-entry {
 
 div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	display:block;
+}
+
+#wilhelm {
+	font-size:3em;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: #111111 0px 2px 5px;
+	color: #990000;
+	margin:.2em;
+	opacity:.7;
+	-khtml-border-radius:10px;
+	-webkit-box-shadow:0px 0px 10px #333333;
+	background-color: #FFFFFF;
+	display:none;
+	position:absolute;
 }
 

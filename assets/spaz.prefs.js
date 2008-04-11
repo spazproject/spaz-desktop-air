@@ -43,6 +43,8 @@ Spaz.Prefs.defaultPreferences = {
 	'sound-wilhelm'	: '/assets/sounds/wilhelm.mp3',
 	
 	
+	'timeline-maxentries':200,
+	
 	'checkupdate':true,
 }
 
@@ -250,6 +252,22 @@ Spaz.Prefs.changeMethods = {
 	},
 
 
+	'timeline-maxentries':{
+		setUI: function(value){
+			//$('#checkupdate').attr('checked', value);
+		},
+		onChange: function(value) {},
+		check: function(value) {
+			if (parseInt(Spaz.Prefs.get('timeline-maxentries')) < 100) {
+				Spaz.Prefs.set('timeline-maxentries', 100);
+			}
+			if (parseInt(Spaz.Prefs.get('timeline-maxentries')) > 400) {
+				Spaz.Prefs.set('timeline-maxentries', 400);
+			}
+			// Spaz.Prefs.set('checkupdate', Boolean(Spaz.Prefs.get('checkupdate'))) 
+		}
+	},
+
 	'checkupdate':{
 		setUI: function(value){
 			$('#checkupdate').attr('checked', value);
@@ -301,12 +319,14 @@ Spaz.Prefs.loadPrefs = function() {
 		Spaz.dump(loadedpreferences);
 		
 		for (key in Spaz.Prefs.defaultPreferences) {
-			Spaz.dump('Copying "'+key+'" from loaded prefs to current prefs');
-			Spaz.Prefs.preferences[key] = loadedpreferences[key];
-			air.trace('"'+key+'":"'+Spaz.Prefs.preferences[key]+'"');
-			if (Spaz.Prefs.changeMethods[key] && Spaz.Prefs.changeMethods[key].check) {
-				air.trace("Calling check on "+key);
-				Spaz.Prefs.changeMethods[key].check();
+			if (loadedpreferences[key]) {
+				Spaz.dump('Copying "'+key+'" from loaded prefs to current prefs');
+				Spaz.Prefs.preferences[key] = loadedpreferences[key];
+				air.trace('"'+key+'":"'+Spaz.Prefs.preferences[key]+'"');
+				if (Spaz.Prefs.changeMethods[key] && Spaz.Prefs.changeMethods[key].check) {
+					air.trace("Calling check on "+key);
+					Spaz.Prefs.changeMethods[key].check();
+				}
 			}
 		}
 	} else {

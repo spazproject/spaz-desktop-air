@@ -128,7 +128,7 @@ Spaz.initialize = function() {
 	window.htmlLoader.filters = window.runtime.Array(
 		new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
 	);
-	new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+	// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
 	
 
 	// ***************************************************************
@@ -191,7 +191,8 @@ Spaz.initialize = function() {
 	Spaz.dump('Made window visible');
 	
 	$('#container').fadeIn(1000);
-
+	
+	
 
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
 
@@ -230,8 +231,6 @@ Spaz.initialize = function() {
 
 
 
-	Spaz.dump('ended document.ready()');
-
 	
 	// set-up window and app events
 	air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
@@ -253,10 +252,10 @@ Spaz.initialize = function() {
 	// ***************************************************************
 	$('body').intercept('mouseover', {
 			'.user-screen-name[title]':function() {
-				Spaz.UI.showUserTooltip(this, $(this).attr('title'));
+				Spaz.UI.showTooltip(this, $(this).attr('title'));
 			},
 			'.user-image[title]':function() {
-				Spaz.UI.showUserTooltip(this, $(this).attr('title'));
+				Spaz.UI.showTooltip(this, $(this).attr('title'));
 			},
 			'a.inline-link':function() {
 				Spaz.UI.showTooltip(this, "Open "+$(this).attr('href')+" in a browser window", $(this).attr('href'));
@@ -328,7 +327,7 @@ Spaz.initialize = function() {
 	// end intercept
 
 
-	
+	Spaz.dump('ended document.ready()');
 }
 
 

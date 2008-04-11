@@ -41,12 +41,13 @@ TODO:
 	<script src="assets/jquery/jquery.menu.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" href="assets/jquery/menu/style.css" type="text/css" media="screen" charset="utf-8" />
 	
-	
+	<script src="assets/jquery/jquery.center.js" type="text/javascript" charset="utf-8"></script>	
 	
 	<!-- jQuery.UI libs -->
 	<script src="assets/jquery/ui/ui.mouse.js" type="text/javascript" charset="utf-8"></script>	
 	<script src="assets/jquery/ui/ui.draggable.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/ui/ui.draggable.ext.js" type="text/javascript" charset="utf-8"></script>
+
 
 	<!-- jQuery Enchant libs -->
 	<script src="assets/jquery/enchant/fx.js" type="text/javascript" charset="utf-8"></script>
@@ -152,8 +153,13 @@ TODO:
 		
 		// stuff to load when this doc loads
 		$(document).ready( function() {
-			Spaz.initialize();		
+			Spaz.initialize();
 		})
+
+		$(document).load( function() {
+			// hi
+		})
+
 	</script>
 	
 	
@@ -548,11 +554,18 @@ TODO:
 
 		<!-- The tooltip container -->
 		<div id="tooltip" class="context-menu">
-			
+			<div class="tooltip-msg"></div>
+			<div class="preview" style='display:none; overflow:hidden; margin-top:.7em'></div>
 		</div>
 
 
+
+
 	</div> <!-- End #container -->
+
+	<span id="wilhelm">
+		WILHELM!!!
+	</span>
 
 </body>
 </html>

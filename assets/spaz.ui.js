@@ -66,8 +66,28 @@ Spaz.UI.playSoundNew = function(callback) {
 
 Spaz.UI.playSoundWilhelm = function(callback) {
 	Spaz.UI.playSound(Spaz.Prefs.get('sound-wilhelm'), callback);
+
 }
 
+
+
+Spaz.UI.doWilhelm = function() {
+	Spaz.dump('Applying Flash Filter Dropshadow and Negative');
+	window.htmlLoader.filters = window.runtime.Array(
+		new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6),
+		new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+	);
+	$('#wilhelm').center();
+	$('#wilhelm').show(300);
+};
+
+Spaz.UI.endWilhelm = function() {
+	Spaz.dump('Applying Flash Filter Dropshadow');
+	window.htmlLoader.filters = window.runtime.Array(
+		new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
+	);
+	$('#wilhelm').hide();
+};
 
 
 
@@ -353,13 +373,14 @@ Spaz.UI.toggleTimelineFilter = function() {
 	if ($('#'+Spaz.Section.friends.timeline).is('.dm-replies')) {
 		$('#'+Spaz.Section.friends.timeline).removeClass('dm-replies');
 		Spaz.UI.statusBar('Showing all tweets');
+		
 		$('#'+Spaz.Section.friends.timeline + ' div.timeline-entry').not('.dm, .reply')
-			.slideDown({'duration':400, 'queue':'toggleStatuses'});
+			.fadeIn({'duration':300, 'queue':'toggleStatuses'});
 	} else {
 		$('#'+Spaz.Section.friends.timeline).addClass('dm-replies');
 		Spaz.UI.statusBar('Hiding tweets not directed at you');
 		$('#'+Spaz.Section.friends.timeline + ' div.timeline-entry').not('.dm, .reply')
-			.slideUp({'duration':400, 'queue':'toggleStatuses'});
+			.fadeOut({'duration':300, 'queue':'toggleStatuses'});
 	}
 
 
@@ -389,45 +410,57 @@ Spaz.UI.showUserTooltip = function(el, str) {
 
 Spaz.UI.showTooltip = function(el, str, previewurl) {
 	
-	Spaz.dump('previewurl:'+previewurl);
+	Spaz.dump(el);
+	
+	Spaz.dump("message: "+str);
+	
+	if (previewurl) {
+		Spaz.dump('previewurl:'+previewurl);
+	}
+	
 	
 	var minwidth = 100;
 
 	var tt = $('#tooltip');
+
 	tt.stop();
+	tt.hide();
 	tt.css('width', '');
 	tt.css('height', '');
 	
 	// hide any showing tooltips
-	Spaz.dump('hiding tooltips');
-
+	Spaz.dump('hiding existing tooltops tooltips');
 	tt.hide();
 	
 	// clear any running tooltip hiding timeouts
 	Spaz.dump('clearTimeout(Spaz.UI.tooltipHideTimeout);');
 	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
-	str = "<div>"+str+"</div>";
+	
+	
 
 	
 	// show the link context menu
 	Spaz.dump('opening tooltip menu');
 	tt.css('left', event.pageX+10)
 		.css('top',  event.pageY+20)
-		.html(str)
 		.show()
 		.css('opacity', 0)
 		.animate({'opacity':'0.85'}, {speed:200, queue:false});
+
+	tt.children('.tooltip-msg').html(str);
+
+	tt.children('.preview').empty();
+
+	Spaz.dump(tt[0].outerHTML);
+
 	
 	//if (/^@[a-zA-Z0-9_-]+$/.test($(el).text())) {
 	if ($(el).attr('user-screen_name')) {
 		//var username = $(el).text().replace(/@/, '');
 		var username = $(el).attr('user-screen_name');
 		
-		var previewid = "preview-username-"+username;
-		
-		$("#tooltip").append("<div class='preview' id='"+previewid+"' style='display:none; position:relative; overflow:hidden; margin-top:.7em'></div>");
-		
+
 		
 		Spaz.dump('username is '+username)
 		
@@ -436,37 +469,65 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 			'id':username,
 			'count':1
 		}
+
+
+		var previewid = "preview-username-"+username;
+		
+		tt.children('.preview').attr('id', previewid)
+		
+
+		
 		$.get(url, data, function(data, textStatus) {
-			//Spaz.dump('textStatus:'+textStatus);
-			//Spaz.dump('DATA:'+data);
+			Spaz.dump('textStatus:'+textStatus);
+			Spaz.dump('DATA:'+data);
 			try {
-				var tweets = eval(data);
-				if (tweets[0].text) {
-					$("#"+previewid).append("<img style='float:right' src='"+tweets[0].user.profile_image_url+"' />");
-					$("#"+previewid).append("<div><strong>"+tweets[0].user.name+" ("+tweets[0].user.screen_name+")</strong></div>");
-					if (tweets[0].user.location) {
-						$("#"+previewid).append("<div><em>"+tweets[0].user.location+"</em></div>");
+				var tweets = JSON.parse(data);
+			
+				Spaz.dump(tweets);
+			
+				if (tweets.error) {
+					Spaz.dump('Error when getting preview data for tooltip');
+					tt.children('.preview').empty();
+					tt.children('.preview').append("<div class='error-description'>Could not retrieve user. Probably protected.</div>");
+					tt.children('.preview').append("<div class='error-message'>Error message from Twitter:\""+tweets.error+"\"</div>");
+					Spaz.dump(tt[0].outerHTML);
+				} else {
+
+					Spaz.dump('No errors when getting preview data for tooltip');
+					if (tweets[0].text) {
+						tt.children('.preview').empty();
+						tt.children('.preview').append("<img style='float:right' src='"+tweets[0].user.profile_image_url+"' />");
+						tt.children('.preview').append("<div><strong>"+tweets[0].user.name+" ("+tweets[0].user.screen_name+")</strong></div>");
+						if (tweets[0].user.location) {
+							tt.children('.preview').append("<div><em>"+tweets[0].user.location+"</em></div>");
+						}
+						if (tweets[0].user.followers_count) {
+							tt.children('.preview').append("<div><strong>"+tweets[0].user.followers_count+"</strong> followers</div>");
+						}
+						if (tweets[0].user.description) {
+							tt.children('.preview').append("<div>"+tweets[0].user.description+"</div>");
+						}
+						tt.children('.preview').append('<div class="latest"><strong>Latest:</strong> '+tweets[0].text+'</div>');
+						Spaz.dump(tt[0].outerHTML);
 					}
-					if (tweets[0].user.description) {
-						$("#"+previewid).append("<div>"+tweets[0].user.description+"</div>");
-					}
-					$("#"+previewid).append('<div class="latest"><strong>Latest:</strong> '+tweets[0].text+'</div>');
-				} else if (tweets.error) {
-					$("#"+previewid).html('<strong>Error:</strong> '+tweets.error);
-				}
-				$("#"+previewid).fadeIn(500);
+					
+					tt.children('.preview').fadeIn(500);
+					Spaz.UI.resetTooltipPosition(tt);
 				
+				}
+				Spaz.dump(tt[0].outerHTML);
 			} catch(e) {
 				Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name 
 				+ ". Error message: " + e.message)
 			}
 		})
+
 		
 	} else if (previewurl) {
 		
 		var previewid = "preview-link-"+getTimeAsInt();
 		
-		$("#tooltip").append("<div class='preview' id='"+previewid+"' style='display:none; position:relative; overflow:hidden; margin-top:.7em'></div>");
+		tt.children('.preview').attr('id', previewid)
 		
 		
 		
@@ -490,8 +551,10 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 				if (rtext_matches && rtext_matches[1]) {			
 					var title = rtext_matches[1];
 					// Spaz.dump('jqpreview.innerText:'+jqpreview[0].innerText);
-					$("#"+previewid).html('<strong>Title:</strong> '+title);
-					$("#"+previewid).fadeIn(500);
+					tt.children('.preview').empty();
+					tt.children('.preview').html('<strong>Title:</strong> '+title);
+					tt.children('.preview').fadeIn(500);
+					Spaz.UI.resetTooltipPosition(tt);
 				}
 			});
 		}
@@ -499,9 +562,12 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		// $("#tooltip .preview")
 	}
 	
-	// I kinda stole this from the excellent jquery.tooltip, which caused mem leakage (unfortunately)
+
 	var vp  = Spaz.UI.getViewport();
 	var off = tt.offset();
+	
+	Spaz.dump(vp);
+	Spaz.dump(off);
 	
 	// check horizontal position
 	if (vp.x + vp.cx < off.left + tt.width()) {
@@ -526,6 +592,61 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.Prefs.get('window-tooltiphidedelay'));
 	
 }
+
+
+
+Spaz.UI.hideTooltips = function() {
+	// clear existing timeouts
+	var tt = $('#tooltip');
+	
+	Spaz.dump('clearTimeout(Spaz.UI.tooltipHideTimeout);');
+	clearTimeout(Spaz.UI.tooltipHideTimeout);
+	tt.stop();
+	$('#tooltip .preview').hide();
+	tt.hide();
+	// tt.fadeOut(200);
+	// tt.animate({'opacity':.1, queue:false}, 200, 'linear', function() {
+	// 	Spaz.dump('hiding tooltips');
+	// 	tt.hide();
+	// 	// tt.height(0)
+	// 	// tt.width(0)
+	// 	// tt.top(0)
+	// 	// tt.left(0)
+	// 	Spaz.dump('tooltips hidden');
+	// 	// tt.css('width', 0);
+	// 	// tt.css('height', 0);
+	// });
+	
+}
+
+
+Spaz.UI.getViewport = function() {
+	return {
+		x: $('#container').scrollLeft(),
+		y: $('#container').scrollTop(),
+		cx: $('#container').width(),
+		cy: $('#container').height()
+	};
+}
+
+
+Spaz.UI.resetTooltipPosition = function(tt) {
+	// I kinda stole this from the excellent jquery.tooltip, which caused mem leakage (unfortunately)
+	var vp  = Spaz.UI.getViewport();
+	var off = tt.offset();
+	
+	Spaz.dump(vp);
+	Spaz.dump(off);
+	
+	Spaz.dump('reset width');
+	Spaz.dump("old width: "+tt.width());
+	
+	var newWidth = vp.cx - off.left - 10;
+	tt.width( newWidth );
+	
+	Spaz.dump("old width: "+newWidth);
+};
+
 
 
 Spaz.UI.showLinkContextMenu = function(jq, url) {
@@ -628,28 +749,9 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 
 
 
-Spaz.UI.getViewport = function() {
-	return {
-		x: $(window).scrollLeft(),
-		y: $(window).scrollTop(),
-		cx: $(window).width(),
-		cy: $(window).height()
-	};
-}
 
 
 
-Spaz.UI.hideTooltips = function() {
-	// clear existing timeouts
-	Spaz.dump('clearTimeout(Spaz.UI.tooltipHideTimeout);');
-	clearTimeout(Spaz.UI.tooltipHideTimeout);
-	
-	$('#tooltip').stop();
-	$('#tooltip').animate({'opacity':'0'}, {queue:false}, 200, 'linear', function(){
-		Spaz.dump('hiding tooltips');
-		$('#tooltip').hide();
-	});
-}
 
 
 
@@ -682,13 +784,13 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 			entry.user.name = entry.user.screen_name
 		}
 
-		var popupStr = (entry.user.name+' ('+entry.user.screen_name+')|')
-		if (entry.user.location) { popupStr = popupStr + entry.user.location+'|'; }
-			else { popupStr = popupStr + '|'; }
-
-		if (entry.user.description) { popupStr = popupStr + entry.user.description; }
-
-		popupStr = popupStr.replace(/'/gi, "\'");
+		// var popupStr = (entry.user.name+' ('+entry.user.screen_name+')|')
+		// if (entry.user.location) { popupStr = popupStr + entry.user.location+'|'; }
+		// 	else { popupStr = popupStr + '|'; }
+		// 
+		// if (entry.user.description) { popupStr = popupStr + entry.user.description; }
+		// 
+		// popupStr = popupStr.replace(/'/gi, "\'");
 
 		var timestamp = httpTimeToInt(entry.created_at)
 
@@ -702,8 +804,8 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 		entryHTML = entryHTML + '	<div class="entry-user-img" style="display:none">'+entry.user.profile_image_url+'</div>'
 		entryHTML = entryHTML + '	<div class="entry-text" style="display:none">'+entry.text+'</div>'
 		entryHTML = entryHTML + '	<div class="user" id="user-'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'">';
-		entryHTML = entryHTML + '		<img class="user-image clickable" height="48" width="48" src="'+entry.user.profile_image_url+'" alt="'+entry.user.screen_name+'" title="'+popupStr+'" user-id="'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'" />';
-		entryHTML = entryHTML + '		<div class="user-screen-name clickable" title="'+popupStr+'" user-id="'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'">'+entry.user.screen_name+'</div>';
+		entryHTML = entryHTML + '		<img class="user-image clickable" height="48" width="48" src="'+entry.user.profile_image_url+'" alt="'+entry.user.screen_name+'" title="View user\'s profile" user-id="'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'" />';
+		entryHTML = entryHTML + '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+entry.user.id+'" user-screen_name="'+entry.user.screen_name+'">'+entry.user.screen_name+'</div>';
 		entryHTML = entryHTML + '	</div>';
 		entryHTML = entryHTML + '	<div class="status" id="status-'+entry.id+'">';
 		entryHTML = entryHTML + '		<div class="status-text" id="status-text-'+entry.id+'">'+entry.text+'</div>';
@@ -755,6 +857,13 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 
 		var jqTL = $('#'+timelineid);
 		jqentry.prependTo(jqTL);
+		
+		var numEntries = $("#"+timelineid + ' .timeline-entry').length
+		
+		if (numEntries > Spaz.Prefs.get('timeline-maxentries')) {
+			Spaz.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('timeline-maxentries') + "; removing last entry");
+			$('#'+timelineid+' div.timeline-entry:last').remove();
+		}
 		
 		return true;
 
@@ -920,7 +1029,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	
 	Spaz.dump("# of Timeline-entries = " +$("#"+timelineid + ' .timeline-entry').length)
 	
-	Spaz.dump($("#"+timelineid).html());
+	//Spaz.dump($("#"+timelineid).html());
 	
 	// we delay on notification of new entries because stuff gets 
 	// really confused and wonky if you fire it off right away

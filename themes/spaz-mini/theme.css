@@ -360,6 +360,7 @@ div.user-follow {
 }
 
 span.status-protected img {
+	vertical-align:-20%;
 }
 
 div.odd div.user {
