@@ -299,6 +299,12 @@ Spaz.initialize = function() {
 			'.status-action-del':function() {
 				Spaz.Data.destroyStatus($(this).attr('entry-id'))
 			},
+			'.directory-action-follow': function(){
+				Spaz.Data.followUser($(this).attr('user-screen_name'));
+			},
+			'.directory-action-unfollow': function(){
+				Spaz.Data.stopFollowingUser($(this).attr('user-screen_name'));
+			},
 			'.timeline-entry':function() {
 				$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
 				$(this).addClass('ui-selected');
@@ -308,6 +314,9 @@ Spaz.initialize = function() {
 				var entry = $(this).parents('.timeline-entry');
 				entry.addClass('ui-selected');
 			},
+			'a':function() {
+				Spaz.dump(this.outerHTML);
+			}
 			// '#header-label':function() {
 			// 	Spaz.UI.showMainMenu($(this));
 			// },

@@ -495,23 +495,24 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 
 					Spaz.dump('No errors when getting preview data for tooltip');
 					if (tweets[0].text) {
-						tt.children('.preview').empty();
-						tt.children('.preview').append("<img style='float:right' src='"+tweets[0].user.profile_image_url+"' />");
-						tt.children('.preview').append("<div><strong>"+tweets[0].user.name+" ("+tweets[0].user.screen_name+")</strong></div>");
+						
+						$('#'+previewid).empty();
+						$('#'+previewid).append("<img style='float:right' src='"+tweets[0].user.profile_image_url+"' />");
+						$('#'+previewid).append("<div><strong>"+tweets[0].user.name+" ("+tweets[0].user.screen_name+")</strong></div>");
 						if (tweets[0].user.location) {
-							tt.children('.preview').append("<div><em>"+tweets[0].user.location+"</em></div>");
+							$('#'+previewid).append("<div><em>"+tweets[0].user.location+"</em></div>");
 						}
 						if (tweets[0].user.followers_count) {
-							tt.children('.preview').append("<div><strong>"+tweets[0].user.followers_count+"</strong> followers</div>");
+							$('#'+previewid).append("<div><strong>"+tweets[0].user.followers_count+"</strong> followers</div>");
 						}
 						if (tweets[0].user.description) {
-							tt.children('.preview').append("<div>"+tweets[0].user.description+"</div>");
+							$('#'+previewid).append("<div>"+tweets[0].user.description+"</div>");
 						}
-						tt.children('.preview').append('<div class="latest"><strong>Latest:</strong> '+tweets[0].text+'</div>');
+						$('#'+previewid).append('<div class="latest"><strong>Latest:</strong> '+tweets[0].text+'</div>');
 						Spaz.dump(tt[0].outerHTML);
 					}
 					
-					tt.children('.preview').fadeIn(500);
+					$('#'+previewid).fadeIn(500);
 					Spaz.UI.resetTooltipPosition(tt);
 				
 				}
@@ -552,8 +553,8 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 					var title = rtext_matches[1];
 					// Spaz.dump('jqpreview.innerText:'+jqpreview[0].innerText);
 					tt.children('.preview').empty();
-					tt.children('.preview').html('<strong>Title:</strong> '+title);
-					tt.children('.preview').fadeIn(500);
+					$('#'+previewid).html('<strong>Title:</strong> '+title);
+					$('#'+previewid).fadeIn(500);
 					Spaz.UI.resetTooltipPosition(tt);
 				}
 			});
@@ -857,14 +858,7 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 
 		var jqTL = $('#'+timelineid);
 		jqentry.prependTo(jqTL);
-		
-		var numEntries = $("#"+timelineid + ' .timeline-entry').length
-		
-		if (numEntries > Spaz.Prefs.get('timeline-maxentries')) {
-			Spaz.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('timeline-maxentries') + "; removing last entry");
-			$('#'+timelineid+' div.timeline-entry:last').remove();
-		}
-		
+				
 		return true;
 
 	} else {
@@ -1141,6 +1135,10 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		// air.trace('now usernames:'+this.innerHTML)
 
 
+
+
+
+
 		// // inline non-http:// links like foo.com or bar.foo.edu
 		// var before = this.innerHTML;
 		// this.innerHTML = this.innerHTML.replace(/(^|\s)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+[a-zA-Z]{2,6}\.?)([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$4');
@@ -1212,6 +1210,18 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	
 	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');
 
+
+	/*
+		remove entries that are not dms or replies 
+	*/
+	var nondirectedTweets = $('#'+timelineid + ' div.timeline-entry').not('.dm, .reply');
+	
+	var numEntries = nondirectedTweets.length		
+	if (numEntries > Spaz.Prefs.get('timeline-maxentries')) {
+		var diff = numEntries - Spaz.Prefs.get('timeline-maxentries');
+		Spaz.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('timeline-maxentries') + "; removing last "+diff+" entries");
+		nondirectedTweets.slice(diff*-1).remove();
+	}
 	
 
 	
