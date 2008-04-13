@@ -1134,9 +1134,11 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
 		// air.trace('now usernames:'+this.innerHTML)
 
-
-
-
+		air.trace('converting emoticons');
+		Spaz.dump(Emoticons.SimpleSmileys);
+		air.trace('BEFORE this.innerHTML = '+this.innerHTML);
+		this.innerHTML = Emoticons.SimpleSmileys.convertEmoticons(this.innerHTML)
+		air.trace('AFTER this.innerHTML = '+this.innerHTML);
 
 
 		// // inline non-http:// links like foo.com or bar.foo.edu

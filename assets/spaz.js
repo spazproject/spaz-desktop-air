@@ -78,9 +78,14 @@ Spaz.createUserDirs = function() {
 	
 	var userPluginsDir = appStore.resolvePath("userplugins/");
 	userPluginsDir.createDirectory()
+
+	var userSmileysDir = appStore.resolvePath("usersmileys/");
+	userSmileysDir.createDirectory()
+
 	
 	air.trace(userThemesDir.nativePath);
 	air.trace(userPluginsDir.nativePath);
+	air.trace(userSmileysDir.nativePath);
 };
 
 

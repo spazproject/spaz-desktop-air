@@ -16,12 +16,16 @@ input[type=text], textarea, div.status-text {
 	color:#990000;
 }
 
-div.status-text img {
+div.status-text img.inline {
 	display:block;
-	border:1px solid black;
 	max-width:150px;
 	max-height:150px;
 }
+
+div.status-text img.emoticon {
+	vertical-align: -20%;
+}
+
 
 /* this hides tweets other than dms and replies when enabled */
 div.timeline.dm-replies div.timeline-entry {
