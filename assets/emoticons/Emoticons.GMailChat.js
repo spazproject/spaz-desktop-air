@@ -11,7 +11,7 @@ Emoticons.GMailChat.className = "gmail-chat";
 Emoticons.GMailChat.imgPath   = "http://mail.google.com/mail/help/images/screenshots/chat/";
 
 Emoticons.GMailChat.mappings = {
-    "<3"   : Emoticons.GMailChat.imgPath + "heart.gif",
+    "&lt;3"   : Emoticons.GMailChat.imgPath + "heart.gif",
     ":(|)" : Emoticons.GMailChat.imgPath + "monkey.gif",
     "\\m/" : Emoticons.GMailChat.imgPath + "rockout.gif",
     ":-o"  : Emoticons.GMailChat.imgPath + "shocked.gif",

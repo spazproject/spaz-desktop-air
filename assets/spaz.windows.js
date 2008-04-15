@@ -5,6 +5,8 @@ Spaz.Prefs
 ************/
 if (!Spaz.Windows) Spaz.Windows = {};
 
+Spaz.Windows.exitCalled = false;
+
 
 Spaz.Windows.onWindowActive = function (event) {
 	Spaz.dump('Window ACTIVE');
@@ -53,11 +55,17 @@ Spaz.Windows.windowRestore = function() {
 */
 Spaz.Windows.onAppExit = function(event) 
 {
-	Spaz.dump("i'm exiting the app!");
+	if (event) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+	}
+	window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
+	air.NativeApplication.nativeApplication.removeEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
+	air.trace("i'm exiting the app!");
 
-	event.preventDefault();
+	// alert('onAppExit');
 
-	$('#container').fadeOut(500);
+	$('body').fadeOut(500);
 	Spaz.Prefs.savePrefs();
 	Spaz.UI.playSoundShutdown(function() {
 		// alert('from the shutdown callback!')
@@ -67,13 +75,20 @@ Spaz.Windows.onAppExit = function(event)
 }
 
 Spaz.Windows.onWindowClose = function(event) {
-	Spaz.dump("i'm closing a window!");
+	air.trace("i'm closing a window!");
+	// alert('onWindowClose')
 };
 
 Spaz.Windows.windowClose = function() {
-	Spaz.dump('calling windowClose');
-	var exitingEvent = new air.Event(air.Event.EXITING,true,true);
-	air.NativeApplication.nativeApplication.dispatchEvent(exitingEvent);
+	// if (!Spaz.Windows.exitCalled) {
+		air.trace('calling windowClose');
+		// var exitingEvent = new air.Event(air.Event.EXITING,true,true);
+		// air.NativeApplication.nativeApplication.dispatchEvent(exitingEvent);
+		Spaz.Windows.onAppExit();
+		Spaz.Windows.exitCalled = true;
+		// alert('windowClose');
+	// }
+	
 	
 	// if (force) {
 	// 	air.trace('forcing window close');
@@ -85,6 +100,38 @@ Spaz.Windows.windowClose = function() {
 	// }
 };
 
+
+Spaz.Windows.makeSystrayIcon = function() {
+	if(air.NativeApplication.supportsSystemTrayIcon) { // system tray on windows
+		Spaz.dump('Making Windows system tray menu')
+		air.NativeApplication.nativeApplication.icon.tooltip = "Spaz loves you";
+		// air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
+		var systrayIconLoader = new air.Loader();
+		systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
+		                                                       Spaz.Menus.iconLoadComplete);
+		systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));
+		air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Windows.onSystrayClick);
+	}
+};
+
+
+Spaz.Windows.onSystrayClick = function(event) {
+	// TODO replace this with call to Spaz.Windows.windowRestore()
+	Spaz.dump('clicked on systray');
+	Spaz.dump(nativeWindow.displayState);
+	Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
+	
+	if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
+		Spaz.dump('restoring window');
+ 		nativeWindow.restore();
+ 	}
+ 	Spaz.dump('activating application');
+ 	air.NativeApplication.nativeApplication.activate() // bug fix by Mako
+	Spaz.dump('activating window');
+	nativeWindow.activate();
+	Spaz.dump('ordering-to-front window');
+	nativeWindow.orderToFront();
+}
 
 
 Spaz.Windows.openHTMLUtilityWindow = function(url) {

@@ -308,7 +308,6 @@ Spaz.Data.makeFavorite = function(postid) {
 };
 
 
-
 Spaz.Data.followUser = function(userid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
@@ -485,9 +484,9 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 		}
 
 
-		else if (xhr.responseText.length < 4) {
+		else if (xhr.responseText.length < 0) {
 			Spaz.dump("Error:response empty from "+url);
-			Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
+			// Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}

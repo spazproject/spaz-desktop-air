@@ -206,9 +206,11 @@ Spaz.UI.showEntryboxTip =function() {
 }
 
 Spaz.UI.showLocationOnMap = function(location) {
-	var url = 'http://maps.yahoo.com/maps_result.php?q1='+encodeURIComponent(location);
-	Spaz.dump("Loading "+url);
-	openInBrowser(url);
+	if (location.length > 0) {
+		var url = 'http://maps.yahoo.com/maps_result.php?q1='+encodeURIComponent(location);
+		Spaz.dump("Loading "+url);
+		openInBrowser(url);	
+	}
 };
 
 // Spaz.UI.showPopup = function(contentid) {
@@ -369,18 +371,34 @@ Spaz.UI.toggleTimelineFilter = function() {
 	// 		// $(this).slideToggle({'duration':25, 'queue':'toggleStatuses'});
 	// 		$(this).slideToggle({'duration':25, 'queue':'toggleStatuses'});
 	// });
+
+	// $('#'+Spaz.Section.friends.timeline).show('pulsate', {times:1});
 	
 	if ($('#'+Spaz.Section.friends.timeline).is('.dm-replies')) {
 		$('#'+Spaz.Section.friends.timeline).removeClass('dm-replies');
 		Spaz.UI.statusBar('Showing all tweets');
-		
-		$('#'+Spaz.Section.friends.timeline + ' div.timeline-entry').not('.dm, .reply')
-			.fadeIn({'duration':300, 'queue':'toggleStatuses'});
+					
+		// $('#'+Spaz.Section.friends.timeline).fadeOut({'duration':300}, {queue:false}, function() {
+		// 	$('#'+Spaz.Section.friends.timeline).removeClass('dm-replies');
+		// 	air.trace('removed class dm-replies');
+		// 	// $('#'+Spaz.Section.friends.timeline + ' div.timeline-entry')
+		// 	// 	.not('.dm, .reply')
+		// 	// 	.show();
+		// 	$('#'+Spaz.Section.friends.timeline).fadeIn({'duration':300});
+		// 	air.trace('fading in');
+		// })
 	} else {
 		$('#'+Spaz.Section.friends.timeline).addClass('dm-replies');
 		Spaz.UI.statusBar('Hiding tweets not directed at you');
-		$('#'+Spaz.Section.friends.timeline + ' div.timeline-entry').not('.dm, .reply')
-			.fadeOut({'duration':300, 'queue':'toggleStatuses'});
+		// $('#'+Spaz.Section.friends.timeline).fadeOut({'duration':300}, {queue:false}, function() {
+		// 	$('#'+Spaz.Section.friends.timeline).addClass('dm-replies');
+		// 	air.trace('added class dm-replies');
+		// 	// $('#'+Spaz.Section.friends.timeline + ' div.timeline-entry')
+		// 	// 	.not('.dm, .reply')
+		// 	// 	.hide();
+		// 	$('#'+Spaz.Section.friends.timeline).fadeIn({'duration':300});
+		// 	air.trace('fading in');
+		// })
 	}
 
 
@@ -440,7 +458,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 	
 
 	
-	// show the link context menu
+	// show the tooltip menu
 	Spaz.dump('opening tooltip menu');
 	tt.css('left', event.pageX+10)
 		.css('top',  event.pageY+20)
@@ -661,7 +679,11 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 	air.trace('opening context menu');
 	$('#linkContextMenu').css('left', event.pageX)
 		.css('top',  event.pageY)
+		.unbind()
 		.show();
+
+
+	$('#userContextMenu .menuitem').unbind();
 
 	air.trace('outerHTML:'+el.outerHTML);
 	var urlarray = /http:\/\/([^'"]+)/i.exec(url);
@@ -701,6 +723,9 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 	$('#userContextMenu').css('left', event.pageX)
 		.css('top',  event.pageY)
 		.show();
+	
+	
+	$('#userContextMenu .menuitem').unbind();
 
 
 	$('#userContextMenu-viewProfile').one('click', {screenName:screen_name}, function(event) {
@@ -729,28 +754,6 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 	
 	air.trace('set one-time link context menu close event for click on document');
 };
-
-
-
-// Spaz.UI.showMainMenu = function(jq) {
-// 	var el = jq[0];
-// 	
-// 	Spaz.dump(el);
-// 	
-// 	// hide any showing tooltips
-// 	air.trace('hiding tooltips');
-// 	$('#tooltip').hide();
-// 	
-// 	// show the link context menu
-// 	air.trace('opening mainmenu');
-// 	$('#mainMenu').css('left', event.pageX)
-// 		.css('top',  event.pageY)
-// 		.show();
-// }
-
-
-
-
 
 
 
@@ -842,7 +845,7 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 		// Make the jQuery object and bind events
 		var jqentry = $(entryHTML);
 		// jqentry.css('opacity', .1);
-		jqentry.css('display', 'none');
+		// jqentry.css('display', 'none');
 		
 		
 		
@@ -1134,11 +1137,11 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
 		// air.trace('now usernames:'+this.innerHTML)
 
-		air.trace('converting emoticons');
+		// air.trace('converting emoticons');
 		Spaz.dump(Emoticons.SimpleSmileys);
-		air.trace('BEFORE this.innerHTML = '+this.innerHTML);
+		// air.trace('BEFORE this.innerHTML = '+this.innerHTML);
 		this.innerHTML = Emoticons.SimpleSmileys.convertEmoticons(this.innerHTML)
-		air.trace('AFTER this.innerHTML = '+this.innerHTML);
+		// air.trace('AFTER this.innerHTML = '+this.innerHTML);
 
 
 		// // inline non-http:// links like foo.com or bar.foo.edu
@@ -1201,16 +1204,17 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	})
 	
 	
-	// animate in new stuff
-	if ($("#"+timelineid + ' .timeline-entry.needs-cleanup').length > 0 ) {
-		$("#"+timelineid + ' .timeline-entry.needs-cleanup').each( function() {
-			$(this).slideDown({'duration':100, 'queue':'slideDownNewStatuses'});
-		})
-		$.fxqueue('slideDownNewStatuses').start();
+	// animate in new stuff	
+	if (!$('#'+timelineid).is('.dm-replies')) {	
+		if ($("#"+timelineid + ' .timeline-entry.needs-cleanup').length > 0 ) {
+			$("#"+timelineid + ' .timeline-entry.needs-cleanup').each( function() {
+				$(this).slideDown({'duration':100, 'queue':'slideDownNewStatuses'});
+			}).css('display', '');
+			$.fxqueue('slideDownNewStatuses').start();
+		}
 	}
 	
-	
-	$("div.needs-cleanup", "#"+timelineid).removeClass('needs-cleanup');
+	$("div.needs-cleanup", "#"+timelineid).css('display', '').removeClass('needs-cleanup');
 
 
 	/*

@@ -135,6 +135,9 @@ Spaz.initialize = function() {
 	);
 	// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
 	
+	// make the systray icon if on Windows
+	Spaz.Windows.makeSystrayIcon()
+
 
 	// ***************************************************************
 	// Keyboard shortcut handling
@@ -174,13 +177,6 @@ Spaz.initialize = function() {
 	}
 	Spaz.dump('Prefs Apply: check for update')
 
-	// if ($('html').attr('debug') == 'true') {
-	// 	$('#debugging-enabled').attr('checked', 'checked');
-	// }else{
-	// 	$('#debugging-enabled').attr('checked', '');
-	// }
-	Spaz.dump('Prefs Apply: debugging');
-
 
 
 	/************************
@@ -195,7 +191,7 @@ Spaz.initialize = function() {
 	Spaz.Windows.makeWindowVisible();
 	Spaz.dump('Made window visible');
 	
-	$('#container').fadeIn(1000);
+	$('body').fadeIn(1000);
 	
 	
 
@@ -225,12 +221,12 @@ Spaz.initialize = function() {
 	// });
 
 
-	$('#header-label').menu( { }, '#mainMenuRoot');
+	$('#header-label').menu( { copyClassAttr:true, addExpando:true, onClick:this.closeAll }, '#mainMenuRoot');
 
 
 
 	$('.TabbedPanelsTab').each( function(i) {
-		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL'+(parseInt(i)+1)+'</strong>';
+		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL+'+(parseInt(i)+1)+'</strong>';
 	});
 	Spaz.dump('Set shortcut info in tab titles');
 
@@ -239,7 +235,7 @@ Spaz.initialize = function() {
 	
 	// set-up window and app events
 	air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
-
+	
 	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose); 
 	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
 	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);
@@ -279,6 +275,24 @@ Spaz.initialize = function() {
 			}
 		})
 		.intercept('click', {
+			'#mainMenu-help':function() {
+				Spaz.UI.showHelp();
+			},
+			'#mainMenu-about':function() {
+				Spaz.UI.showAbout();
+			},
+			'#mainMenu-file-toggle': function(){
+				Spaz.UI.toggleTimelineFilter();
+			},
+			'#mainMenu-file-reloadCurrentView': function(){
+				Spaz.UI.reloadCurrentTab(true);
+				Spaz.restartReloadTimer();
+			},
+			'#mainMenu-file-clearReloadCurrentView': function(){
+				Spaz.UI.clearCurrentTimeline();
+				Spaz.UI.reloadCurrentTab(true);
+				Spaz.restartReloadTimer();
+			},
 			'a[href]':function() {
 				var url = $(this).attr('href');
 				openInBrowser(url);
@@ -309,6 +323,9 @@ Spaz.initialize = function() {
 			},
 			'.directory-action-unfollow': function(){
 				Spaz.Data.stopFollowingUser($(this).attr('user-screen_name'));
+			},
+			'.directory-user-location': function() {
+				Spaz.UI.showLocationOnMap($(this).text());
 			},
 			'.timeline-entry':function() {
 				$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');

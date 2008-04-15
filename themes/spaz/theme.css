@@ -85,7 +85,7 @@ a, a:link, .clickable {
 			cursor: move;
 		}
 			/*
-				These are the info, help, minimize and close buttons for the main window
+				These are the minimize and close buttons for the main window
 			*/
 			#window-buttons {
 				position:absolute;
@@ -109,9 +109,29 @@ a, a:link, .clickable {
 					background-color:#666666;
 				}
 			
+			/*
+				These mimic the window-button styles
+			*/
 			#header-label {
-				/* this is the app name shown in the header */
+				padding:0px 6px 2px;
+				font-size:14px;
+				color:#FFFFFF;
+				background-color:#202020;
+				-khtml-border-radius:5px;
+				cursor:pointer;
+				margin:0;
 			}
+				/*
+					This puts a &raquo; after "Spaz"
+				*/
+				#header-label:after {
+					content:' \00BB';	
+				}
+
+				#header-label:hover {
+					color:#FFFFFF;
+					background-color:#666666;
+				}
 
 		
 		/*

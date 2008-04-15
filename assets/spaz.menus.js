@@ -45,7 +45,7 @@ Spaz.Menus.initAll = function() {
 		Spaz.dump('Making Windows system tray menu')
 	    air.NativeApplication.nativeApplication.icon.tooltip = "Spaz loves you";
 	    air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
-	    var systrayIconLoader = new runtime.flash.display.Loader();
+	    var systrayIconLoader = new air.Loader();
 	    systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
 	                                                            Spaz.Menus.iconLoadComplete);
 	    systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));

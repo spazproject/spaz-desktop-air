@@ -10,7 +10,37 @@
 	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/jquery.js" type="text/javascript" charset="utf-8"></script>
-		
+	<script src="app:/assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+	</script>
+	
+	<style type="text/css" media="screen">
+		#resources {
+			padding-left: 0;
+			margin-left:  0;
+		}
+		#resources li {
+			list-style-type: none;
+		}
+		#resources li a {
+			padding:6px;
+			margin:6px;
+			color:#FFFFFF;
+			background-color:#660000;
+			-khtml-border-radius:10px;
+			text-decoration: none;
+			display: block;
+			font-size: 1.4em;
+			opacity: .8;
+		}
+		#resources li a:hover {
+			background-color:#220000;
+		}
+	</style>
 </head>
 
 <body id="helpWindow">
@@ -19,16 +49,26 @@
 		<h1>Help</h1>
 		
 		<div id="content">
-			<h3>Keyboard shortcuts</h3>
+			<h2>Online resources</h2>
+			<ul id="resources">
+				<li><a href="http://funkatron.com/spaziki" onClick="Spaz.Sys.openInBrowser($(this).attr('href'));return false;">Spaziki – The Spaz Wiki and FAQ</a></li>
+				<li><a href="http://groups.google.com/group/spaz-users/" onClick="Spaz.Sys.openInBrowser($(this).attr('href'));return false;">Spaz-Users @ Google Groups</a></li>
+				<li><a href="http://code.google.com/p/spaz/" onClick="Spaz.Sys.openInBrowser($(this).attr('href'));return false;">Spaz Source Code SVN Repository</a></li>
+			</ul>
+			
+			
+			<h2>Keyboard shortcuts</h2>
 		
 			<p><em>Note: Windows users should use CTRL instead of CMD</em></p>
 		
 			<table id="help-shortcuts" class="data">
-				<tbody>
+				<thead>
 					<tr>
-						<th>key</th>
+						<th>keystroke</th>
 						<th>command</th>
 					</tr>
+				</thead>
+				<tbody>
 					<tr>
 						<td class="label">CMD+B</td>
 						<td class="value">Markdown: <strong>bold</strong></td>
@@ -50,27 +90,27 @@
 						<td class="value"><strong>toggle</strong> between showing all tweets and only replies &amp; direct messages</td>
 					</tr>
 					<tr>
-						<td class="label">UP or J or CMD+J</td>
+						<td class="label">&#x2191; <em>or</em> J <em>or</em> CMD+J</td>
 						<td class="value">select next message</td>
 					</tr>
 					<tr>
-						<td class="label">DOWN or K or CMD+K</td>
+						<td class="label">&#x2193; <em>or</em> K <em>or</em> CMD+K</td>
 						<td class="value">select previous message</td>
 					</tr>
 					<tr>
-						<td class="label">CMD+DOWN</td>
+						<td class="label">CMD+&#x2193;</td>
 						<td class="value">select next dm</td>
 					</tr>
 					<tr>
-						<td class="label">CMD+UP</td>
+						<td class="label">CMD+&#x2191;</td>
 						<td class="value">select previous dm</td>
 					</tr>
 					<tr>
-						<td class="label">CMD+SHIFT+DOWN</td>
+						<td class="label">CMD+SHIFT+&#x2193;</td>
 						<td class="value">select next reply</td>
 					</tr>
 					<tr>
-						<td class="label">CMD+SHIFT+UP</td>
+						<td class="label">CMD+SHIFT+&#x2191;</td>
 						<td class="value">select previous reply</td>
 					</tr>
 					<tr>
@@ -98,7 +138,7 @@
 						<td class="value">jump to message entry box</td>
 					</tr>
 					<tr>
-						<td class="label">(CMD+SHIFT+2)</td>
+						<td class="label">CMD+SHIFT+2</td>
 						<td class="value">respond to sender of currently selected message</td>
 					</tr>
 					<tr>
@@ -106,8 +146,8 @@
 						<td class="value">View Preferences</td>
 					</tr>
 					<tr>
-						<td class="label">CMD+1-4</td>
-						<td class="value">Switch to tab 1-4</td>
+						<td class="label">CMD+{1-6}</td>
+						<td class="value">Switch to tab 1-6</td>
 					</tr>
 
 				

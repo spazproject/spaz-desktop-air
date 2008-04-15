@@ -91,10 +91,33 @@ img.menu-item-arrow{
 	right: 4px;
 	top: 8px;
 }
-li.menu-separator{
-	border-bottom: 1px solid #000;
-	font-size: 0; /* for ie */
-	height: 0;
-	line-height: 0; /* for ie */
-	margin: 2px 0;
+
+/*
+	This is for separators
+*/
+#root-menu-div hr {
+	border-bottom: 1px solid #999999;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	border-top-width: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	width: 80%;
 }
+
+div.menu-item a {
+	color:inherit !important;
+	display:block;
+}
+
+/*
+	This isn't used because we can't make them small enough
+*/
+/*li.menu-separator{
+	border-bottom: 1px solid #CCCCCC;
+	width:60%;
+	height: 0px;
+	margin:4px 10px;
+}
+*/

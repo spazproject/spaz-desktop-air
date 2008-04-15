@@ -172,8 +172,8 @@ TODO:
 
 		<h1 id="header" onmousedown="Spaz.Windows.windowMove();">
 			<div id="window-buttons">
-				<span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
-				<span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span>
+				<!-- <span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
+				<span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span> -->
 				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
 				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
 			</div>
@@ -518,7 +518,7 @@ TODO:
 		<!-- the context menu container -->
 		<div id="linkContextMenu" class="context-menu">
 			<ul>
-				<li id="linkContextMenu-copyLink" class="clickable">Copy Link Address</li>
+				<li id="linkContextMenu-copyLink" class="clickable menuitem">Copy Link Address</li>
 			</ul>
 		</div>
 		
@@ -526,11 +526,11 @@ TODO:
 		<div id="userContextMenu" class="context-menu">
 			<ul>
 				
-				<li id="userContextMenu-sendReply" class="clickable">Send @Reply</li>
-				<li id="userContextMenu-sendDM" class="clickable">Send Direct Message</li>
-				<li id="userContextMenu-viewProfile" class="clickable">View Profile</li>
-				<li id="userContextMenu-follow" class="clickable">Follow</li>
-				<li id="userContextMenu-unfollow" class="clickable">Stop Following</li>
+				<li id="userContextMenu-sendReply" class="clickable menuitem">Send @Reply</li>
+				<li id="userContextMenu-sendDM" class="clickable menuitem">Send Direct Message</li>
+				<li id="userContextMenu-viewProfile" class="clickable menuitem">View Profile</li>
+				<li id="userContextMenu-follow" class="clickable menuitem">Follow</li>
+				<li id="userContextMenu-unfollow" class="clickable menuitem">Stop Following</li>
 				<!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
 			</ul>
 		</div>
@@ -539,16 +539,17 @@ TODO:
 		<!-- the main menu container -->
 		<div id="mainMenu">
 			<ul id="mainMenuRoot" style="display:none;">
-				<li id="mainMenu-file">File</li>
-				<li id="mainMenu-view">View&nbsp;&raquo;
+				<li class="mainMenu-message">Message</li>
+				<li class="mainMenu-view">View&nbsp;&raquo;
 					<ul>
-						<li id="mainMenu-file-reloadCurrentView">Reload current view</li>
-						<li id="mainMenu-file-clearReloadCurrentView">Clear and reload current view</li>
-						<li id="mainMenu-file-toggle">Toggle tweets directed at you</li>
+						<li class="mainMenu-file-reloadCurrentView"><a id="mainMenu-file-reloadCurrentView">Reload current view</a></li>
+						<li class="mainMenu-file-clearReloadCurrentView"><a id="mainMenu-file-clearReloadCurrentView">Clear &amp; reload current view</a></li>
+						<li class="mainMenu-file-toggle"><a id="mainMenu-file-toggle">Toggle tweets directed at you</a></li>
 					</ul>	
 				</li>
-				<li id="mainMenu-help">Help</li>
-				<li id="mainMenu-about">About</li>
+				<li class="menu-separator"><hr /></li>
+				<li class="mainMenu-help"><a id="mainMenu-help">Help</a></li>
+				<li class="mainMenu-about"><a id="mainMenu-about">About</a></li>
 			</ul>
 		</div>
 
