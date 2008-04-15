@@ -221,7 +221,7 @@ Spaz.initialize = function() {
 	// });
 
 
-	$('#header-label').menu( { copyClassAttr:true, addExpando:true, onClick:this.closeAll }, '#mainMenuRoot');
+	$('#header-label').menu( { copyClassAttr:true, addExpando:true, onClick:$.Menu.closeAll }, '#mainMenuRoot');
 
 
 
