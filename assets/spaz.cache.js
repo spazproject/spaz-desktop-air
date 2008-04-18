@@ -7,6 +7,44 @@ if (!Spaz.Cache) Spaz.Cache = {};
 
 Spaz.Cache.sources  = {};
 Spaz.Cache.statuses = {};
+Spaz.Cache.screenNames = [];
+
+
+
+Spaz.Cache.buildScreenNameCache = function() {
+	$('[user-screen_name]').each( function() {
+		Spaz.Cache.addScreenName($(this).attr('user-screen_name'))
+	})
+};
+
+Spaz.Cache.addScreenName = function(name) {
+	if (Spaz.Cache.screenNames.indexOf(name) == -1) {
+		Spaz.Cache.screenNames.push(name)
+	}
+};
+
+Spaz.Cache.delScreenName = function(name) {
+	if (Spaz.Cache.screenNames.indexOf(name)) {
+		air.trace('Spaz.Cache.delScreenName not yet implemented');
+	}
+};
+
+Spaz.Cache.getScreenNames = function() {
+	return Spaz.Cache.screenNames;
+}
+
+Spaz.Cache.getScreenNamesAsTags = function() {
+	var tagnames = [];
+	var names = Spaz.Cache.getScreenNames();
+	for (key in names) {
+		tagnames.push('@'+names[key]);
+	}
+	Spaz.dump(tagnames);
+	return tagnames;
+};
+
+
+
 
 /**
  * sources cache

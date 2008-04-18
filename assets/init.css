@@ -51,3 +51,32 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	position:absolute;
 }
 
+
+#suggestions {
+	background-color: #000000;
+	color: #FFFFCC;
+	opacity:.8;
+	padding:0px;
+	margin:0px;
+	-khtml-border-radius:5px;
+	list-style: none;
+/*	max-height:15px;*/
+	position:absolute;
+/*	overflow:none;*/
+/*	z-index: 1000;*/
+
+}
+
+#suggestions li {
+    padding: 5px;
+    cursor: pointer;
+	margin-right:5px;
+	font-size:10px;
+}
+
+#suggestions li:first-child {
+	font-weight: bold;
+	text-decoration: underline;
+	color:white;
+}
+

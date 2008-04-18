@@ -117,6 +117,9 @@ Spaz.initialize = function() {
 	**/
 	document.onkeydown = Spaz.Keyboard.keyboardHandler
 
+	// document.onclick = function(ev) {
+	// 	Spaz.dump(ev);
+	// };
 	
 	window.htmlLoader.manageCookies = false;
 	window.htmlLoader.paintsDefaultBackground = false;
@@ -246,6 +249,8 @@ Spaz.initialize = function() {
 
 	Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
 
+
+	
 
 	
 	// ***************************************************************

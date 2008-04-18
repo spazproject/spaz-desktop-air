@@ -25,6 +25,7 @@ Spaz.Section.friends = {
 	},
 	cleanup: function(attribute){
 		Spaz.UI.cleanupTimeline(this.timeline);
+		Spaz.Cache.buildScreenNameCache();
 	},
 }
 
@@ -52,6 +53,8 @@ Spaz.Section.user = {
 	},
 	cleanup: function(attribute){
 		Spaz.UI.cleanupTimeline(this.timeline);
+		Spaz.Cache.buildScreenNameCache();
+		Spaz.Editor.initSuggestions();
 	},
 
 }
@@ -112,6 +115,8 @@ Spaz.Section.friendslist = {
 	cleanup: function(){
 		$("#table-friendslist tr:even").addClass('even');
 		$("#table-friendslist tr:odd").addClass('odd');
+		Spaz.Cache.buildScreenNameCache();
+		Spaz.Editor.initSuggestions();
 		// $("#table-friendslist").addClass('tablesorter');
 		// $("#table-friendslist").tablesorter();
 		// Spaz.UI.cleanupTimeline(this.timeline);
@@ -147,6 +152,8 @@ Spaz.Section.followerslist = {
 	cleanup: function(){
 		$("#table-followerslist tr:even").addClass('even');
 		$("#table-followerslist tr:odd").addClass('odd');
+		Spaz.Cache.buildScreenNameCache();
+		Spaz.Editor.initSuggestions();
 		// $("#table-followerslist").addClass('tablesorter');
 		// $("#table-followerslist").tablesorter();
 		// Spaz.UI.cleanupTimeline(this.timeline);

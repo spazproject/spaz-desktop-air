@@ -43,6 +43,8 @@ TODO:
 	
 	<script src="assets/jquery/jquery.center.js" type="text/javascript" charset="utf-8"></script>	
 	
+	<script src="assets/jquery/tag.js" type="text/javascript" charset="utf-8"></script>
+	
 	<!-- jQuery.UI libs -->
 	<script src="assets/jquery/ui/ui.mouse.js" type="text/javascript" charset="utf-8"></script>	
 	<script src="assets/jquery/ui/ui.draggable.js" type="text/javascript" charset="utf-8"></script>
@@ -475,7 +477,6 @@ TODO:
 		</div>
 
 
-
 		<!-- ENTRYFORM -->
 		<form id="entryform" onSubmit="return false;">
 			<textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea>
@@ -513,7 +514,12 @@ TODO:
 			<li>Item two</li>
 		</ul> -->
 
-
+		<!-- suggestions popup -->
+		
+		<ul id="suggestions" style="display:none; left:15px;">
+			
+		</ul>
+		
 
 		<!-- the context menu container -->
 		<div id="linkContextMenu" class="context-menu">

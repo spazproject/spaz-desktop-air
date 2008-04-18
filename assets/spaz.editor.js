@@ -57,3 +57,15 @@ Spaz.Editor.$wrap = function(open, close, selstart, selend) {
 	}
 	// preview()
 }
+
+
+
+
+Spaz.Editor.initSuggestions = function() {
+	$('#entrybox').tagSuggest({
+		'tags':Spaz.Cache.getScreenNamesAsTags(),
+		'tagContainerId':'suggestions',
+		'tagWrap':'li',
+		delay:300,
+	});
+};
