@@ -26,6 +26,7 @@ Spaz.Section.friends = {
 	cleanup: function(attribute){
 		Spaz.UI.cleanupTimeline(this.timeline);
 		Spaz.Cache.buildScreenNameCache();
+		Spaz.Editor.initSuggestions();
 	},
 }
 
