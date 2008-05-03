@@ -18,7 +18,7 @@ Spaz.Section.friends = {
 		Spaz.Data.getDataForTimeline(this, force)
 	},
 	onAjaxComplete: function(url,xhr,msg){
-		Spaz.Data.onAjaxComplete(this,url,xhr,msg);
+		Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 	},
 	addItem: function(item) {
 		Spaz.UI.addItemToTimeline(item, this)
@@ -47,7 +47,7 @@ Spaz.Section.user = {
 		Spaz.Data.getDataForTimeline(this, force)
 	},
 	onAjaxComplete: function(url,xhr,msg){
-		Spaz.Data.onAjaxComplete(this,url,xhr,msg);
+		Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 	},
 	addItem: function(item) {
 		Spaz.UI.addItemToTimeline(item, this)
@@ -77,7 +77,7 @@ Spaz.Section.public = {
 		Spaz.Data.getDataForTimeline(this, force)
 	},
 	onAjaxComplete: function(url,xhr,msg){
-		Spaz.Data.onAjaxComplete(this,url,xhr,msg);
+		Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 	},
 	addItem: function(item) {
 		Spaz.UI.addItemToTimeline(item, this)
@@ -106,7 +106,7 @@ Spaz.Section.friendslist = {
 	},
 	onAjaxComplete: function(url,xhr,msg){
 		$('#tbody-friendslist').empty()
-		Spaz.Data.onAjaxComplete(this,url,xhr,msg);
+		Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 	},
 	addItem: function(item) {
 		item.timeline = this.timeline;
@@ -143,7 +143,7 @@ Spaz.Section.followerslist = {
 	},
 	onAjaxComplete: function(url,xhr,msg){
 		$('#tbody-followerslist').empty()
-		Spaz.Data.onAjaxComplete(this,url,xhr,msg);
+		Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 	},
 	addItem: function(item) {		
 		item.timeline = this.timeline;

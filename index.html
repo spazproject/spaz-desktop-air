@@ -93,7 +93,7 @@ TODO:
 	<script src="assets/spaz.info.js"   type="text/javascript"></script>
 	<script src="assets/spaz.prefs.js"  type="text/javascript"></script>
 	<script src="assets/spaz.update.js" type="text/javascript"></script>
-	<script src="assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz.info.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script src="assets/spaz.menus.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz.windows.js" type="text/javascript" charset="utf-8"></script>
@@ -545,17 +545,25 @@ TODO:
 		<!-- the main menu container -->
 		<div id="mainMenu">
 			<ul id="mainMenuRoot" style="display:none;">
-				<li class="mainMenu-message">Message</li>
-				<li class="mainMenu-view">View&nbsp;&raquo;
+				<li class="mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
+				<li class="mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
+				<li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
 					<ul>
+						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
+						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
+					</ul>
+				<li class="mainMenu-view">View…&nbsp;&raquo;
+					<ul>
+						<li class="mainMenu-file-toggle"><a id="mainMenu-file-toggle">Toggle tweets directed at you</a></li>
 						<li class="mainMenu-file-reloadCurrentView"><a id="mainMenu-file-reloadCurrentView">Reload current view</a></li>
 						<li class="mainMenu-file-clearReloadCurrentView"><a id="mainMenu-file-clearReloadCurrentView">Clear &amp; reload current view</a></li>
-						<li class="mainMenu-file-toggle"><a id="mainMenu-file-toggle">Toggle tweets directed at you</a></li>
 					</ul>	
 				</li>
 				<li class="menu-separator"><hr /></li>
 				<li class="mainMenu-help"><a id="mainMenu-help">Help</a></li>
-				<li class="mainMenu-about"><a id="mainMenu-about">About</a></li>
+				<li class="mainMenu-about"><a id="mainMenu-about">About Spaz</a></li>
+				<li class="mainMenu-followSpaz"><a id="mainMenu-followSpaz">Follow @spaz</a></li>
+				
 			</ul>
 		</div>
 

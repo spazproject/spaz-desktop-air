@@ -277,20 +277,37 @@ Spaz.UI.prepMessage = function() {
 Spaz.UI.prepDirectMessage = function(username) {
 	var eb = $('#entrybox');
 	eb.focus();
-	eb.val('d '+username+' ...');
-	eb[0].setSelectionRange(eb.val().length-3, eb.val().length)
+	if (username) {
+		eb.val('d '+username+' ...');
+		eb[0].setSelectionRange(eb.val().length-3, eb.val().length)
+	} else {
+		eb.val('d username');
+		eb[0].setSelectionRange(2, eb.val().length)
+	}
 };
 
 Spaz.UI.prepReply = function(username) {
 	var eb = $('#entrybox');
-	var newText = '@'+username+' ';
 	eb.focus();
-	if (eb.val() != '') {
-		eb.val(newText + eb.val());
-		eb[0].setSelectionRange(eb.val().length, eb.val().length);
+	
+	if (username) {
+		var newText = '@'+username+' ';
+
+		if (eb.val() != '') {
+			eb.val(newText + eb.val());
+			eb[0].setSelectionRange(eb.val().length, eb.val().length);
+		} else {
+			eb.val('@'+username+' ...');
+			eb[0].setSelectionRange(eb.val().length-3, eb.val().length);
+		}
 	} else {
-		eb.val('@'+username+' ...');
-		eb[0].setSelectionRange(eb.val().length-3, eb.val().length);
+		var newText = '@';
+		if (eb.val() != '') {
+			eb.val(newText + ' ' + eb.val());
+		} else {
+			eb.val('@');
+		}
+		eb[0].setSelectionRange(newText.length, newText.length);
 	}
 };
 

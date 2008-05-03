@@ -15,6 +15,9 @@ Spaz.Keyboard.setShortcuts = function() {
 	if (air.Capabilities['os'].search(/Windows/i) != -1) {
 		Spaz.dump('THIS IS WINDOWS');
 		Modkey = 'Ctrl';
+	} else if (air.Capabilities['os'].search(/Linux/i) != -1) { // thx agolna
+		Spaz.dump('THIS IS LINUX');
+		Modkey = 'Ctrl';
 	} else if (air.Capabilities['os'].search(/Mac/i) != -1) {
 		Spaz.dump('THIS IS MACOS');
 		Modkey = 'Meta';

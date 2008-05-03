@@ -40,20 +40,27 @@ Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.
 Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials.json";
 
 
-// temp storage for a section's ajax queries
+/**
+temp storage for a section's ajax queries
+ */
 Spaz.Data.$ajaxQueueStorage = [];
 
-// Errors recorded during ajax queries
+/**
+Errors recorded during ajax queries
+ */
 Spaz.Data.$ajaxQueueErrors = [];
 
-// counter for # of finished ajax queries in a section
+/**
+counter for # of finished ajax queries in a section
+ */
 Spaz.Data.$ajaxQueueFinished = 0;
 
 
 
 
 /**
- * Uses jQuery ajax to verify password
+ * Verifies the username and password in the prefs fields against the Twitter API
+ * @returns void
  */
 Spaz.Data.verifyPassword = function() {
 	
@@ -66,27 +73,8 @@ Spaz.Data.verifyPassword = function() {
 	Spaz.UI.showLoading();
 	
 	var xhr = $.ajax({
-		complete:function(xhr, rstr){
-			Spaz.UI.hideLoading();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout")
-				return;
-			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-			Spaz.dump("DATA:\n"+xhr.responseText);
-			Spaz.dump("COMPLETE: " + rstr);
-		},
-		error:function(xhr, rstr){
-			Spaz.dump("ERROR: " + rstr);
-			Spaz.UI.statusBar('Error verifying password');
-			Spaz.UI.flashStatusBar();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout")
-			}
-			
-		},
+		complete:Spaz.Data.onAjaxComplete,
+		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			var json = JSON.parse(data);
 			if (json.authorized) {
@@ -119,7 +107,13 @@ Spaz.Data.verifyPassword = function() {
 
 
 
-/* send a status update */
+/**
+ * send a status update to Twitter
+ * @param {String} msg the message to be posted
+ * @param {String} username the username
+ * @param {String} password the password
+ * @returns void
+ */
 Spaz.Data.update = function(msg, username, password) {
 	var user = username;
 	var pass = password;
@@ -135,17 +129,7 @@ Spaz.Data.update = function(msg, username, password) {
 	$('#updateButton').val('Sending...');
 	
 	var xhr = $.ajax({
-		complete:function(xhr, rstr){
-			Spaz.UI.hideLoading();
-			if (xhr.readyState < 3) {
-				Spaz.dump("Update ERROR: Timeout");
-				Spaz.UI.statusBar("Update ERROR: Timeout")
-				return;
-			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-			Spaz.dump("DATA:\n"+xhr.responseText);
-			Spaz.dump("COMPLETE: " + rstr);
-		},
+		complete:Spaz.Data.onAjaxComplete,
 		error:function(xhr, rstr){
 			Spaz.dump("ERROR");
 			$('#entrybox').attr('disabled', false);
@@ -215,7 +199,11 @@ Spaz.Data.update = function(msg, username, password) {
 
 
 
-/* delete a status */
+/**
+ * Deletes the given status
+ * @param {Number} postid the id of the post to delete
+ * @returns void
+ */
 Spaz.Data.destroyStatus = function(postid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
@@ -223,24 +211,8 @@ Spaz.Data.destroyStatus = function(postid) {
 	Spaz.UI.showLoading();
 	
 	var xhr = $.ajax({
-		complete:function(xhr, rstr){
-			Spaz.UI.hideLoading();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout");
-				return;
-			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-			Spaz.dump("DATA:\n"+xhr.responseText);
-			Spaz.dump("COMPLETE: " + rstr);
-		},
-		error:function(xhr, rstr){
-			Spaz.dump("Error destroying status");
-			Spaz.UI.flashStatusBar();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-			}
-		},
+		complete:Spaz.Data.onAjaxComplete,
+		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			Spaz.dump(data);
 			Spaz.UI.statusBar("Status deleted");
@@ -261,6 +233,12 @@ Spaz.Data.destroyStatus = function(postid) {
 }
 
 
+
+/**
+ * Marks the given post as a "favorite" of the current user
+ * @param {Number} postid the id of the post to favorite
+ * @returns void
+ */
 Spaz.Data.makeFavorite = function(postid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
@@ -269,27 +247,8 @@ Spaz.Data.makeFavorite = function(postid) {
 	Spaz.UI.showLoading();
 	
 	var xhr = $.ajax({
-		complete:function(xhr, rstr){
-			Spaz.UI.hideLoading();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout")
-				return;
-			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-			Spaz.dump("DATA:\n"+xhr.responseText);
-			Spaz.dump("COMPLETE: " + rstr);
-		},
-		error:function(xhr, rstr){
-			Spaz.dump("Error adding favorite " + postid);
-			Spaz.dump(Spaz.Data.url_favorites_create.replace(/{{ID}}/, postid));
-			Spaz.UI.statusBar('Error adding fav: ' + postid);
-			Spaz.UI.flashStatusBar();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-			}
-			
-		},
+		complete:Spaz.Data.onAjaxComplete,
+		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			Spaz.dump(data);
 			Spaz.UI.statusBar('Added fav: ' + postid);
@@ -308,6 +267,11 @@ Spaz.Data.makeFavorite = function(postid) {
 };
 
 
+/**
+ * Follows the passed userid
+ * @param {String} userid the userid to follow
+ * @returns void
+ */
 Spaz.Data.followUser = function(userid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
@@ -318,26 +282,8 @@ Spaz.Data.followUser = function(userid) {
 	Spaz.UI.showLoading();
 	
 	var xhr = $.ajax({
-		complete:function(xhr, rstr){
-			Spaz.UI.hideLoading();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout")
-				return;
-			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-			Spaz.dump("DATA:\n"+xhr.responseText);
-			Spaz.dump("COMPLETE: " + rstr);
-		},
-		error:function(xhr, rstr){
-			Spaz.dump("ERROR: " + rstr);
-			Spaz.UI.statusBar('Error following ' + userid + ": " + xhr.responseText);
-			Spaz.UI.flashStatusBar();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-			}
-			
-		},
+		complete:Spaz.Data.onAjaxComplete,
+		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			Spaz.dump(data);
 			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
@@ -359,6 +305,11 @@ Spaz.Data.followUser = function(userid) {
 };
 
 
+/**
+ * Stop following the passed userid
+ * @param {String} userid the userid to stop following
+ * @returns void
+ */
 Spaz.Data.stopFollowingUser = function(userid) {
 	
 	var user = Spaz.Prefs.getUser();
@@ -370,26 +321,8 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	Spaz.UI.showLoading();
 	
 	var xhr = $.ajax({
-		complete:function(xhr, rstr){
-			Spaz.UI.hideLoading();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-				Spaz.UI.statusBar("ERROR: Timeout")
-				return;
-			}
-			Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-			Spaz.dump("DATA:\n"+xhr.responseText);
-			Spaz.dump("COMPLETE: " + rstr);
-		},
-		error:function(xhr, rstr){
-			Spaz.dump("ERROR: " + rstr);
-			Spaz.UI.statusBar('Error while ending follow of ' + userid + ": " + xhr.responseText);
-			Spaz.UI.flashStatusBar();
-			if (xhr.readyState < 3) {
-				Spaz.dump("ERROR: Timeout");
-			}
-			
-		},
+		complete:Spaz.Data.onAjaxComplete,
+		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			Spaz.dump(data);
 			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
@@ -411,9 +344,61 @@ Spaz.Data.stopFollowingUser = function(userid) {
 };
 
 
+/**
+ * Called by most of the Twitter ajax methods when complete
+ * @param {Object} xhr the xhr object
+ * @param {rstr} xhr a "response" string that indicates if the request was successful or not
+ * @returns void
+ */
+Spaz.Data.onAjaxComplete = function(xhr, rstr) {
+	Spaz.UI.hideLoading();
+	if (xhr.readyState < 3) {
+		Spaz.dump("ERROR: Timeout");
+		Spaz.UI.statusBar("ERROR: Timeout")
+		return;
+	}
+	Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
+	Spaz.dump("DATA:\n"+xhr.responseText);
+	Spaz.dump("COMPLETE: " + rstr);
+};
+
+
+/**
+ * Called by most of the Twitter ajax methods on error
+ * @param {Object} xhr the xhr object
+ * @param {rstr} xhr a "response" string that indicates if the request was successful or not
+ * @returns void
+ */
+Spaz.Data.onAjaxError = function(xhr,rstr) {
+	Spaz.dump("ERROR: " + rstr);
+	if (xhr.readyState < 3) {
+		Spaz.dump("ERROR: Timeout");
+	}
+	if (xhr.responseText) {
+		try {
+			var errorInfo = JSON.parse(xhr.responseText)
+			if (errorInfo.error) {
+				Spaz.UI.statusBar('Error: "' + errorInfo.error+'"');
+			} else {
+				Spaz.UI.statusBar('Unknown error');
+			}
+		} catch(e) {
+			Spaz.dump('Error parsing for JSON in error response');
+			Spaz.UI.statusBar('Unknown error');
+		}
+	}
+	// Spaz.UI.statusBar('Error : ' + xhr.responseText);
+	Spaz.UI.flashStatusBar();
+};
 
 
 
+/**
+ * Starts the process of data retrieval for a section
+ * @param {object} section the Spaz.Section object
+ * @param {boolean} force if true, forces a reload of the section even if mincachetime has not passed
+ * @returns void
+ */
 Spaz.Data.getDataForTimeline = function(section, force) {
 	
 	var username = Spaz.Prefs.getUser();
@@ -452,7 +437,10 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 }
 
 
-Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
+
+
+
+Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 
 	Spaz.Data.$ajaxQueueFinished++;
 
@@ -543,7 +531,12 @@ Spaz.Data.onAjaxComplete = function(section, url, xhr, msg) {
 
 
 
-// this retrieves data from a URL
+/**
+ * Retrieves data for the given URL, as part of a queue. Used by Spaz.Data.getDataForTimeline
+ * @param {String} url The URL to request data from
+ * @param {Object} section The Spaz.Section that is this request is getting data for
+ * @returns void
+ */
 Spaz.Data.getDataForUrl = function(url, section) {
 	
 	Spaz.dump('getting:'+url);
@@ -594,6 +587,15 @@ Spaz.Data.getDataForUrl = function(url, section) {
 
 
 
+/**
+ * loads data for a particular tab (tabs are usually connected to a single Spaz.Section)
+ * @param {Object} tab the DOM Element of the tab
+ * @param {Boolean} tab if true, force a reload even if mincachetime of this tab's section has not expired
+ * @param {Number} page the page # to request; not used ATM because paging is disabled
+ * @returns false
+ * @type Boolean
+ * @see Spaz.Section.getSectionFromTab
+ */
 
 Spaz.Data.loadDataForTab = function(tab, force, page) {
 	if (!page || page < 1) {

@@ -3,6 +3,27 @@ var Spaz; if (!Spaz) Spaz = {};
 
 if (!Spaz.Sys) Spaz.Sys = {};
 
+
+Spaz.Sys.getVersion = function() {
+		var appXML = air.NativeApplication.nativeApplication.applicationDescriptor
+		var domParser = new DOMParser();
+		appXML = domParser.parseFromString(appXML, "text/xml");
+		var version = appXML.getElementsByTagName("version")[0].firstChild.nodeValue;
+		return version;
+};
+
+
+Spaz.Sys.getRuntimeInfo = function(){
+	return ret ={
+		os : air.Capabilities.os,
+		version: air.Capabilities.version, 
+		manufacturer: air.Capabilities.manufacturer,
+		totalMemory: air.System.totalMemory
+	};
+}
+
+
+
 Spaz.Sys.getClipboardText = function() {
 	if(air.Clipboard.generalClipboard.hasFormat("text/plain")){
 	    var text = air.Clipboard.generalClipboard.getData("text/plain");

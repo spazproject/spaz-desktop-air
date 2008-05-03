@@ -23,26 +23,26 @@ Spaz
 
 
 // Spaz.loadMainPage = function() {
-// 	window.location.href='index.html';
+//	window.location.href='index.html';
 // };
 // 
 // 
 // 
 // 
 // Spaz.getUrlForTab = function(tab) {
-// 	
+//	
 // }
 // 
 // Spaz.getPathForTab = function(tab) {
-// 	
+//	
 // }
 // 
 // Spaz.getSubpathForTab = function(tab) {
-// 	
+//	
 // }
 // 
 // Spaz.getRegionForTab = function(tab) {
-// 	
+//	
 // }
 
 
@@ -118,7 +118,7 @@ Spaz.initialize = function() {
 	document.onkeydown = Spaz.Keyboard.keyboardHandler
 
 	// document.onclick = function(ev) {
-	// 	Spaz.dump(ev);
+	//	Spaz.dump(ev);
 	// };
 	
 	window.htmlLoader.manageCookies = false;
@@ -216,11 +216,11 @@ Spaz.initialize = function() {
 
 	// Make Draggables
 	// $('div.popupWindow').each(function(i){
-	// 	$('#'+this.id).draggable({
-	// 		handle: 	$('#'+this.id+' popupWindowBar')[0],
-	// 		containment:'#container',
-	// 		opacity: 	0.7,
-	// 	});
+	//	$('#'+this.id).draggable({
+	//		handle:		$('#'+this.id+' popupWindowBar')[0],
+	//		containment:'#container',
+	//		opacity:	0.7,
+	//	});
 	// });
 
 
@@ -247,7 +247,7 @@ Spaz.initialize = function() {
 	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate);
 
 
-	Spaz.Update.updater = new Spaz.Update(Spaz.Info.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
+	Spaz.Update.updater = new Spaz.Update(Spaz.Sys.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
 
 
 	
@@ -298,6 +298,15 @@ Spaz.initialize = function() {
 				Spaz.UI.reloadCurrentTab(true);
 				Spaz.restartReloadTimer();
 			},
+			'#mainMenu-sendDM': function() {
+				Spaz.UI.prepDirectMessage('');
+			},
+			'#mainMenu-sendReply': function() {
+				Spaz.UI.prepReply('');
+			},
+			'#mainMenu-followSpaz': function(attribute){
+				Spaz.Data.followUser('spaz');
+			},
 			'a[href]':function() {
 				var url = $(this).attr('href');
 				openInBrowser(url);
@@ -345,7 +354,7 @@ Spaz.initialize = function() {
 				Spaz.dump(this.outerHTML);
 			}
 			// '#header-label':function() {
-			// 	Spaz.UI.showMainMenu($(this));
+			//	Spaz.UI.showMainMenu($(this));
 			// },
 		})
 		.intercept('contextmenu', {
@@ -423,13 +432,13 @@ function openInBrowser(url) {
 function createXMLFromString (string) {
   var xmlParser, xmlDocument;
   try {
-    xmlParser = new DOMParser();
-    xmlDocument = xmlParser.parseFromString(string, 'text/xml');
-    return xmlDocument;
+	xmlParser = new DOMParser();
+	xmlDocument = xmlParser.parseFromString(string, 'text/xml');
+	return xmlDocument;
   }
   catch (e) {
-    output("Can't create XML document.");
-    return null;
+	output("Can't create XML document.");
+	return null;
   }
 }
 
@@ -449,7 +458,7 @@ function isString() {
 // http://www.breakingpar.com/bkp/home.nsf/0/87256B280015193F87256C720080D723
 function isArray(obj) {
    if (obj.constructor.toString().indexOf("Array") == -1)
-      return false;
+	  return false;
    else
-      return true;
+	  return true;
 }
