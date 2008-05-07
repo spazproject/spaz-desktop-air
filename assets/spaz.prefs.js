@@ -294,7 +294,9 @@ Spaz.Prefs.changeMethods = {
 
 
 
-
+/**
+ * Initializes the preferences: sets prefs from Spaz.Prefs.defaultPreferences, loads prefs file, and sets up the prefs UI
+ */
 Spaz.Prefs.init = function() {
 	Spaz.Prefs.preferences = Spaz.Prefs.defaultPreferences;
 	Spaz.dump("defaultPreferences:"+Spaz.Prefs.defaultPreferences);
@@ -303,6 +305,10 @@ Spaz.Prefs.init = function() {
 }
 
 
+
+/**
+ * Loads the preferences.json file. If this file does not exist, it creates a new file based on Spaz.Prefs.defaultPreferences
+ */
 Spaz.Prefs.loadPrefs = function() {
 	var prefsFile = air.File.applicationStorageDirectory;
 	prefsFile = prefsFile.resolvePath("preferences.json");
@@ -318,15 +324,14 @@ Spaz.Prefs.loadPrefs = function() {
 		Spaz.dump(Spaz.Prefs.defaultPreferences);
 		Spaz.dump(loadedpreferences);
 		
-		for (key in Spaz.Prefs.defaultPreferences) {
-			if (loadedpreferences[key]) {
-				Spaz.dump('Copying "'+key+'" from loaded prefs to current prefs');
-				Spaz.Prefs.preferences[key] = loadedpreferences[key];
-				air.trace('"'+key+'":"'+Spaz.Prefs.preferences[key]+'"');
-				if (Spaz.Prefs.changeMethods[key] && Spaz.Prefs.changeMethods[key].check) {
-					air.trace("Calling check on "+key);
-					Spaz.Prefs.changeMethods[key].check();
-				}
+		for (key in loadedpreferences) {
+			air.trace('Copying "'+key+'" from loaded prefs to current prefs');
+			Spaz.Prefs.preferences[key] = loadedpreferences[key];
+			air.trace('"'+key+'":"'+Spaz.Prefs.preferences[key]+'" ('+typeof(Spaz.Prefs.preferences[key])+')');
+			
+			if (Spaz.Prefs.changeMethods[key] && Spaz.Prefs.changeMethods[key].check) {
+				air.trace("Calling check on "+key);
+				Spaz.Prefs.changeMethods[key].check();
 			}
 		}
 	} else {
@@ -338,10 +343,10 @@ Spaz.Prefs.loadPrefs = function() {
 	
 	Spaz.Prefs.loadUsername();
 	Spaz.Prefs.loadPassword();
-	
-	//air.NativeApplication.nativeApplication.spazPrefs = Spaz.Prefs
-		
+			
 };
+
+
 
 
 

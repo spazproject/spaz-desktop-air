@@ -26,6 +26,7 @@ Spaz.UI.playSound = function(url, callback) {
 		if (callback) { callback() }
 		return;
 	}
+	
 	Spaz.dump('Spaz.UI.playSound callback:'+callback);
 	Spaz.dump("loading " + url);
 	var req = new air.URLRequest(url);

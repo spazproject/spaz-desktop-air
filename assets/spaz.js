@@ -246,8 +246,10 @@ Spaz.initialize = function() {
 	
 	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate);
 
-
-	Spaz.Update.updater = new Spaz.Update(Spaz.Sys.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
+	/*
+		Don't do anything with updater until it's re-implemented
+	*/
+	// Spaz.Update.updater = new Spaz.Update(Spaz.Sys.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
 
 
 	

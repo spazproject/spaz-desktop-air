@@ -5,7 +5,7 @@ Spaz.Prefs
 ************/
 if (!Spaz.Windows) Spaz.Windows = {};
 
-Spaz.Windows.exitCalled = false;
+Spaz.Windows.windowExitCalled = false;
 
 
 Spaz.Windows.onWindowActive = function (event) {
@@ -50,16 +50,13 @@ Spaz.Windows.windowRestore = function() {
 	}
 };
 
-/**
-* Called when the user closes the window.
-*/
 Spaz.Windows.onAppExit = function(event) 
 {
 	if (event) {
-		event.preventDefault();
-		event.stopImmediatePropagation();
+		air.trace('onAppExit triggered by event')
 	}
-	window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
+	
+	// window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
 	air.NativeApplication.nativeApplication.removeEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
 	air.trace("i'm exiting the app!");
 
@@ -67,37 +64,33 @@ Spaz.Windows.onAppExit = function(event)
 
 	$('body').fadeOut(500);
 	Spaz.Prefs.savePrefs();
-	Spaz.UI.playSoundShutdown(function() {
-		// alert('from the shutdown callback!')
-		// window.NativeWindow.close();
+	
+	
+	if (Spaz.Prefs.get('sound-enabled')) {
+		Spaz.UI.playSoundShutdown(function() {
+			// alert('from the shutdown callback!')
+			// window.NativeWindow.close();
+			air.NativeApplication.nativeApplication.exit();
+		});
+	} else {
+		air.trace('sound not playing');
 		air.NativeApplication.nativeApplication.exit();
-	});
+	}
+	
 }
+
 
 Spaz.Windows.onWindowClose = function(event) {
 	air.trace("i'm closing a window!");
-	// alert('onWindowClose')
 };
 
+/**
+* Called when the user closes the window.
+*/
 Spaz.Windows.windowClose = function() {
-	// if (!Spaz.Windows.exitCalled) {
 		air.trace('calling windowClose');
-		// var exitingEvent = new air.Event(air.Event.EXITING,true,true);
-		// air.NativeApplication.nativeApplication.dispatchEvent(exitingEvent);
+		Spaz.Windows.windowExitCalled = true;
 		Spaz.Windows.onAppExit();
-		Spaz.Windows.exitCalled = true;
-		// alert('windowClose');
-	// }
-	
-	
-	// if (force) {
-	// 	air.trace('forcing window close');
-	// 	window.nativeWindow.close();
-	// } else {
-	// 	var closingEvent = new air.Event(air.Event.CLOSING,true,true);
-	// 	air.trace('dispatching closingEvent');
-	// 	window.nativeWindow.dispatchEvent(closingEvent);		
-	// }
 };
 
 
