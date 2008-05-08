@@ -78,13 +78,13 @@ Spaz.Data.verifyPassword = function() {
 		success:function(data){
 			var json = JSON.parse(data);
 			if (json.authorized) {
-				Spaz.verified = true;
+				// Spaz.verified = true;
 				air.trace('verified; setting current user');
 				Spaz.Prefs.setCurrentUser();
 				Spaz.UI.statusBar("Verification succeeded");
 				Spaz.UI.flashStatusBar();
 			} else {
-				Spaz.verified = false;
+				// Spaz.verified = false;
 				Spaz.dump('verification failed');
 				Spaz.UI.statusBar("Verification failed");
 				Spaz.UI.flashStatusBar();
@@ -159,9 +159,13 @@ Spaz.Data.update = function(msg, username, password) {
 			$('#updateButton').val(oldButtonLabel);
 			Spaz.dump('reset #updateButton label');
 			if (msg.length == 140) {
-				Spaz.UI.playSoundWilhelm(Spaz.UI.endWilhelm);
-				Spaz.UI.doWilhelm();
-				Spaz.UI.statusBar("Wilhelm!");
+				if (Spaz.Prefs.get('sound-enabled')) {
+					Spaz.UI.doWilhelm();
+					Spaz.UI.statusBar("Wilhelm!");
+					Spaz.UI.playSoundWilhelm(Spaz.UI.endWilhelm);
+				} else {
+					Spaz.dump('not doing Wilhelm because sound disabled');
+				}
 			} else {
 				Spaz.UI.playSoundUpdate();
 				Spaz.UI.statusBar("Update succeeded");
@@ -189,7 +193,7 @@ Spaz.Data.update = function(msg, username, password) {
 		processData:false,
 		type:"POST",
 		url:Spaz.Data.url_update,
-		data:"&source="+Spaz.sourceStr+"&status="+encodeURIComponent(msg),
+		data:"&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg),
 //		data:"&status="+encodeURIComponent(msg),
 	});
 	

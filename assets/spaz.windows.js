@@ -15,9 +15,11 @@ Spaz.Windows.onWindowActive = function (event) {
 	
 }
 
+
 Spaz.Windows.onWindowDeactivate = function(event) {
 	Spaz.UI.hideTooltips();
 };
+
 
 Spaz.Windows.windowMinimize = function() {
 	window.nativeWindow.minimize();
@@ -26,6 +28,7 @@ Spaz.Windows.windowMinimize = function() {
 	}
 	return false;
 };
+
 
 Spaz.Windows.windowRestore = function() {
 	Spaz.dump('restoring window');
@@ -50,22 +53,35 @@ Spaz.Windows.windowRestore = function() {
 	}
 };
 
+
 Spaz.Windows.onAppExit = function(event) 
 {
-	if (event) {
-		air.trace('onAppExit triggered by event')
-	}
-	
-	// window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
-	air.NativeApplication.nativeApplication.removeEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
-	air.trace("i'm exiting the app!");
-
-	// alert('onAppExit');
+	air.trace('Spaz.Windows.windowExitCalled is '+Spaz.Windows.windowExitCalled);
+	// 
+	// if (Spaz.Windows.windowExitCalled == false) {
+	// 	air.trace('windowClose was not called');
+	// 	Spaz.Windows.windowClose();
+	// 	return;
+	// }
 
 	$('body').fadeOut(500);
 	Spaz.Prefs.savePrefs();
 	
+	if (event) {
+		air.trace('onAppExit triggered by event')
+		// event.preventDefault();
+		// event.stopImmediatePropagation();
+	}
 	
+	window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
+	window.nativeWindow.removeEventListener(air.Event.EXITING, Spaz.Windows.windowClose);
+	// air.NativeApplication.nativeApplication.removeEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
+	air.trace("i'm exiting the app!");
+
+	// alert('onAppExit');
+
+	
+
 	if (Spaz.Prefs.get('sound-enabled')) {
 		Spaz.UI.playSoundShutdown(function() {
 			// alert('from the shutdown callback!')
@@ -84,8 +100,9 @@ Spaz.Windows.onWindowClose = function(event) {
 	air.trace("i'm closing a window!");
 };
 
+
 /**
-* Called when the user closes the window.
+* Called when the user closes the main window.
 */
 Spaz.Windows.windowClose = function() {
 		air.trace('calling windowClose');

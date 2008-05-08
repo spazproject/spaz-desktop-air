@@ -178,6 +178,13 @@ Spaz.Keyboard.setShortcuts = function() {
 			type:'keypress',
 			propagate:false
 	});
+	shortcut.add('Enter', function() {
+			Spaz.UI.sendUpdate();
+		}, {
+			target:$('entrybox')[0],
+			type:'keypress',
+			propagate:false
+	});
 }
 
 

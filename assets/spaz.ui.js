@@ -23,17 +23,23 @@ Spaz.UI.mainTimelineId = 'timeline-friends';
 Spaz.UI.playSound = function(url, callback) {
 	if (!Spaz.Prefs.get('sound-enabled')) {
 		Spaz.dump('Not playing sound '+url+'- disabled');
-		if (callback) { callback() }
+		if (callback) {
+			Spaz.dump('calling callback manually');
+			callback();
+			Spaz.dump('ending callback');
+		} else {
+			Spaz.dump('no callback, returning');
+		}
 		return;
 	}
 	
 	Spaz.dump('Spaz.UI.playSound callback:'+callback);
 	Spaz.dump("loading " + url);
+
 	var req = new air.URLRequest(url);
 	var s = new air.Sound(req);
-	//s.addEventListener(air.Event.SOUND_COMPLETE, Spaz.Windows.makeWindowVisible);
-	
 	var sc = s.play();
+
 	Spaz.dump("playing " + url);
 	if (callback) {
 		sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
@@ -45,7 +51,7 @@ Spaz.UI.playSound = function(url, callback) {
 
 
 Spaz.UI.onSoundPlaybackComplete = function(event) {
-	// air.trace("The sound has finished playing.");
+	air.trace("The sound has finished playing.");
 }
 
 
@@ -446,6 +452,11 @@ Spaz.UI.showUserTooltip = function(el, str) {
 
 Spaz.UI.showTooltip = function(el, str, previewurl) {
 	
+	if (!event) {
+		Spaz.dump('No event found in Spaz.UI.showTooltip; returning');
+		return;
+	}
+	
 	Spaz.dump(el);
 	
 	Spaz.dump("message: "+str);
@@ -472,7 +483,16 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 	Spaz.dump('clearTimeout(Spaz.UI.tooltipHideTimeout);');
 	clearTimeout(Spaz.UI.tooltipHideTimeout);
 	
-	
+	Spaz.dump('EVENT')
+	Spaz.dump(event)
+	Spaz.dump('EL')
+	Spaz.dump(el)
+	Spaz.dump('STR')
+	Spaz.dump(str)
+	Spaz.dump('PREVIEWURL')
+	Spaz.dump(previewurl)
+	Spaz.dump('ARGUMENTS')
+	Spaz.dump(arguments)
 	
 
 	

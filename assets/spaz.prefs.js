@@ -46,6 +46,8 @@ Spaz.Prefs.defaultPreferences = {
 	'timeline-maxentries':200,
 	
 	'checkupdate':true,
+	
+	'twitter-source':'spaz',
 }
 
 

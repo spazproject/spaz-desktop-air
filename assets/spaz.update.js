@@ -1,5 +1,3 @@
-/* this is based on code taken from the Adobe AIR prelease forums, used with permission */
-
 /*
 	1. Get current app version
 	2. Go online and get newest app version
@@ -191,7 +189,7 @@ Spaz.Update.downloadNewest = function(url) {
 		Spaz.Update.applyUpdate();
 	}
 	
-	return false;
+	return;
 };
 
 
@@ -201,5 +199,5 @@ Spaz.Update.applyUpdate = function() {
 	
 	airUpdater.update(Spaz.Update.info.airfile, Spaz.Update.info.newestVersion);
 	
-	return false;
+	return;
 }

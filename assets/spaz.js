@@ -1,51 +1,6 @@
 var Spaz; if (!Spaz) Spaz = {};
 
-Spaz.verified = false;
-
-Spaz.sourceStr = "spaz";
-
-/*
-short vars for referring to particular tabs
-*/
-// Spaz.PUBLIC_TL = 'public_timeline';
-// Spaz.FRIENDS_TL = 'friends_timeline';
-// Spaz.REPLIES_TL = 'replies_timeline';
-// Spaz.USER_TL = 'user_timeline';
-// Spaz.DM_TL = 'dm_timeline';
-// Spaz.ME_TL = 'user_timeline';
-// Spaz.FRIEND_LS = 'friend_list';
-// Spaz.FOLLOWER_LS = 'follower_list';
-
-
-/*
-Spaz
-*/
-
-
-// Spaz.loadMainPage = function() {
-//	window.location.href='index.html';
-// };
-// 
-// 
-// 
-// 
-// Spaz.getUrlForTab = function(tab) {
-//	
-// }
-// 
-// Spaz.getPathForTab = function(tab) {
-//	
-// }
-// 
-// Spaz.getSubpathForTab = function(tab) {
-//	
-// }
-// 
-// Spaz.getRegionForTab = function(tab) {
-//	
-// }
-
-
+// Spaz.verified = false;
 
 Spaz.startReloadTimer = function() {
 	var refreshInterval = Spaz.Prefs.getRefreshInterval();
@@ -89,7 +44,9 @@ Spaz.createUserDirs = function() {
 };
 
 
-
+/**
+ * Bootstraps the app
+ */
 Spaz.initialize = function() {
 	
 	air.trace('root init begin');
@@ -112,15 +69,6 @@ Spaz.initialize = function() {
 
 	air.NativeApplication.nativeApplication.autoExit = true;
 
-	/**
-	Keyboard shortcut definitions
-	**/
-	document.onkeydown = Spaz.Keyboard.keyboardHandler
-
-	// document.onclick = function(ev) {
-	//	Spaz.dump(ev);
-	// };
-	
 	window.htmlLoader.manageCookies = false;
 	window.htmlLoader.paintsDefaultBackground = false;
 	window.htmlLoader.cacheResponse = false;
@@ -137,6 +85,7 @@ Spaz.initialize = function() {
 		new window.runtime.flash.filters.DropShadowFilter(3,90,0,.8,6,6)
 	);
 	// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+
 	
 	// make the systray icon if on Windows
 	Spaz.Windows.makeSystrayIcon()
@@ -156,38 +105,22 @@ Spaz.initialize = function() {
 	 **************************/
 	window.moveTo(Spaz.Prefs.get('window-x'), Spaz.Prefs.get('window-y'));
 	window.resizeTo(Spaz.Prefs.get('window-width'), Spaz.Prefs.get('window-height'));
-	
-	
-		 
-	Spaz.dump('APPLYING PREFS==============================');
 	$('#username').val(Spaz.Prefs.getUser());
 	$('#password').val(Spaz.Prefs.getPass());
 	
-
-
 	//DONE: Check for Update
 	air.trace("CHECKING FOR UPDATES IS TURNED OFF DURING PREFS REWRITE")
-	
 	if (Spaz.Prefs.get('checkupdate')) {
-	//	Spaz.Update.setCheckUpdateState(true);
-		// $('#checkupdate-enabled').attr('checked', 'checked');
 		Spaz.dump('Starting check for update');
 		// Spaz.Update.updater.checkForUpdate();
 		Spaz.dump('Ending check for update');
-	} else {
-	//	Spaz.Update.setCheckUpdateState(false);
-		// $('#checkupdate-enabled').attr('checked', '');
 	}
-	Spaz.dump('Prefs Apply: check for update')
 
 
 
 	/************************
 	 * Other stuff to do when document is ready
 	 ***********************/
-
-
-
 	Spaz.UI.playSoundStartup();
 	Spaz.dump('Played startup sound');
 
@@ -212,16 +145,6 @@ Spaz.initialize = function() {
 	Spaz.UI.prefsCPG = new Spry.Widget.CollapsiblePanelGroup("prefsCPG",
 		{ contentIsOpen:false, duration:200 }
 	);
-	// var AccountPanel = Spaz.UI.prefsCPG.openPanel(0);
-
-	// Make Draggables
-	// $('div.popupWindow').each(function(i){
-	//	$('#'+this.id).draggable({
-	//		handle:		$('#'+this.id+' popupWindowBar')[0],
-	//		containment:'#container',
-	//		opacity:	0.7,
-	//	});
-	// });
 
 
 	$('#header-label').menu( { copyClassAttr:true, addExpando:true, onClick:$.Menu.closeAll }, '#mainMenuRoot');
@@ -237,8 +160,9 @@ Spaz.initialize = function() {
 
 	
 	// set-up window and app events
-	air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
+	// air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
 	
+	window.nativeWindow.addEventListener(air.Event.EXITING, Spaz.Windows.onWindowClose); 
 	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose); 
 	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
 	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);

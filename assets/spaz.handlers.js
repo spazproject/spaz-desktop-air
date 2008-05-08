@@ -8,8 +8,9 @@ if (!Spaz.Handlers) Spaz.Handlers = {};
 
 
 
-
-
+/*
+	This isn't used atm
+*/
 Spaz.Handlers.showContextMenu = function(event) {
 	
 	var el = event.data.jq[0];
