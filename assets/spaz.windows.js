@@ -105,9 +105,10 @@ Spaz.Windows.onWindowClose = function(event) {
 * Called when the user closes the main window.
 */
 Spaz.Windows.windowClose = function() {
-		air.trace('calling windowClose');
-		Spaz.Windows.windowExitCalled = true;
-		Spaz.Windows.onAppExit();
+	Spaz.Prefs.savePrefs();
+	air.trace('calling windowClose');
+	Spaz.Windows.windowExitCalled = true;
+	Spaz.Windows.onAppExit();
 };
 
 

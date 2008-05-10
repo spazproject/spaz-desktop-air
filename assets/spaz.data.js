@@ -605,6 +605,9 @@ Spaz.Data.loadDataForTab = function(tab, force, page) {
 	if (!page || page < 1) {
 		page = 1;
 	}
+	if (!force) {
+		force=false;
+	}
 	Spaz.dump('Loading data for tab:'+tab.id);
 	var section = Spaz.Section.getSectionFromTab(tab)
 	Spaz.dump('SECTION:'+section);

@@ -174,10 +174,7 @@ Spaz.initialize = function() {
 		Don't do anything with updater until it's re-implemented
 	*/
 	// Spaz.Update.updater = new Spaz.Update(Spaz.Sys.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
-
-
-	
-
+	Spaz.Update.go();
 	
 	// ***************************************************************
 	// Event delegation handling
@@ -297,7 +294,8 @@ Spaz.initialize = function() {
 		})
 	// end intercept
 
-
+	Spaz.UI.setSelectedTab($('#tab-friends')[0]);
+	
 	Spaz.dump('ended document.ready()');
 }
 
