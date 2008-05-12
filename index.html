@@ -209,6 +209,14 @@ TODO:
 					id="tab-public" onclick="Spaz.UI.setSelectedTab(this)">
 					<img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" />
 				</li>
+				
+				<!-- SEARCH -->
+				<!-- <li class="TabbedPanelsTab" tabindex="0" title="Search timeline" 
+					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-search" onclick="Spaz.UI.setSelectedTab(this)">
+					<img class="tab-icon" src="{theme-dir}/images/tab-icon-search.png" />
+				</li> -->
 
 				<!-- Friendslist -->
 				<li class="TabbedPanelsTab" tabindex="0" title="Friends" 
@@ -274,9 +282,6 @@ TODO:
 				</div>
 
 
-
-
-		
 				<!-- YOUR SENT MESSAGES -->
 				<div class="TabbedPanelsContent" id="panel-user">
 					<div spry:region="Spaz.Data.ds_user" id="timeline-user" class="timeline">				
@@ -287,12 +292,25 @@ TODO:
 		
 				<!-- PUBLIC TIMELINE -->
 				<div class="TabbedPanelsContent" id="panel-public">
-					<div spry:region="Spaz.Data.ds_public" id="timeline-public" class="timeline">
+					<div id="timeline-public" class="timeline">
 
 					</div>
 				</div>
 		
-		
+				<!-- SEARCH TIMELINE -->
+				<!-- <div class="TabbedPanelsContent" id="panel-search">
+
+									<div id="timeline-search" class="timeline">
+										<div class="search-menu">
+											<form>
+												<input type="text" name="search-for" value="" id="search-for" />
+												<input type="button" name="search-go" value="go!" id="search-go" />
+											</form>
+											<div id="search-results"></div>
+										</div>
+									</div>
+								</div> -->
+
 		
 				<!-- LIST OF PEOPLE YOU ARE FOLLOWING -->
 				<div class="TabbedPanelsContent" id="panel-friendslist">
@@ -402,8 +420,14 @@ TODO:
 									<div class="formrow">
 										<input type="checkbox" name="notification-popups" value="1"
 											id="window-shownotificationpopups" />
-										<label for="notification-popups" class="checkbox">Show notification popups (alpha)</label> <!-- <span class="restart-required">*</span> -->
+										<label for="notification-popups" class="checkbox">Show notification popups</label> <!-- <span class="restart-required">*</span> -->
 									</div>
+									<div class="formrow">
+										<input type="checkbox" name="timeline-scrollonupdate" value="1"
+											id="timeline-scrollonupdate" />
+										<label for="timeline-scrollonupdate" class="checkbox">Scroll to top when updates received</label> <!-- <span class="restart-required">*</span> -->
+									</div>
+									
 								</div>
 							</div>
 
@@ -411,8 +435,8 @@ TODO:
 								<h2 class="CollapsiblePanelTab" tabindex="0">Sound</h2>
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
-										<label for="sound-enabled">Play sounds</label>
 										<input type="checkbox" name="sound-enabled" value="1" id="sound-enabled" />
+										<label for="sound-enabled" class="checkbox">Play sounds</label>
 									</div>
 								</div>
 							</div>
@@ -421,11 +445,18 @@ TODO:
 								<h2 class="CollapsiblePanelTab" tabindex="0">Upgrades</h2>
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
-										<label for="sound-enabled">Check on startup</label>
 										<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
-										<input type="button" name="user-stylesheet-button" value="Check Now &bull;"
-											id="prefs-checkupdate-button" onclick="Spaz.Update.updater.checkForUpdate()" />
+										<label for="checkupdate-enabled" class="checkbox">Check on startup</label>
 										<span class="restart-required">*</span>
+									</div>
+									<div class="formrow">
+										<input type="checkbox" name="checkupdate-testversions-enabled" value="1" id="checkupdate-testversions" />
+										<label for="checkupdate-testversions" class="checkbox">Check for test versions</label>
+									</div>
+									<div class="formrow">
+										<input type="button" name="user-stylesheet-button" value="Check Now &bull;"
+											id="prefs-checkupdate-button" onclick="Spaz.Update.go()" />
+
 									</div>
 								</div>
 							</div>
@@ -451,8 +482,9 @@ TODO:
 								<h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
-										<label for="debugging-enabled">Enabled</label>
-										<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" /> <span class="restart-required">*</span>
+										<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
+										<label class="checkbox" for="debugging-enabled">Enabled</label>
+										<span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
@@ -547,11 +579,11 @@ TODO:
 			<ul id="mainMenuRoot" style="display:none;">
 				<li class="mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
 				<li class="mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
-				<li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
+				<!-- <li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
 					<ul>
 						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
 						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
-					</ul>
+					</ul> -->
 				<li class="mainMenu-view">View…&nbsp;&raquo;
 					<ul>
 						<li class="mainMenu-file-toggle"><a id="mainMenu-file-toggle">Toggle tweets directed at you</a></li>

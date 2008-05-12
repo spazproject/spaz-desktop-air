@@ -8,9 +8,14 @@
 	<title>About Spaz</title>
 	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+	</script>
 	
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(
@@ -27,30 +32,53 @@
 		<h1>Spaz</h1>
 		<div id="content">
 			<h2>A Twitter client for the Adobe Integrated Runtime</h2>
-			<p><a href="http://funkatron.com/apps/spaz/AIR/whatsnew.html" target="_blank"><span id="about-version"></span> – What's new</a></p>
+			<p><a class="clickable" onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/whatsnew.html')"><span id="about-version"></span> – What's new</a></p>
 
-			<p>Created by <a onclick="openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
+			<p>Created by <a class="clickable" onclick="openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
 
 			<ul>
-				<li><a onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
-				<li><a onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
-				<li><a onclick="openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users group</a></li>
-				<li><a onclick="openInBrowser('http://funkatron.com/spaziki/')">Spaz Wiki and FAQ</a></li>
-				<li><a onclick="openInBrowser('http://code.google.com/p/spaz')">Spaz SVN Repository</a></li>
-				<li><a onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users group</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://funkatron.com/spaziki/')">Spaz Wiki and FAQ</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://code.google.com/p/spaz')">Spaz SVN Repository</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
 			</ul>
-
-
-			<div id="about-thanks">Special thanks to Alexandru Chiculita and the AIR engineering team</div>
-
+			
+			<h3>Contributors</h3>
+			<ul>
+				<li>Ed Finkler</li>
+				<li>Graeme Dunlop</li>
+				<li>Alexandru Chiculita and the AIR engineering team</li>
+				
+			</ul>
+			
+			<h3>Donors</h3>
+			<ul>
+				<li>Bare Feet Studios</li>
+				<li>Erica Baker</li>
+				<li>Fred Leo</li>
+				<li>Geoffrey T. Cheshire</li>
+				<li>Graeme Dunlop</li>
+				<li>Konstantin Klein</li>
+				<li>Lionel Lenoir</li>
+				<li>Philippe Bradley</li>
+				<li>Rob Stead</li>
+				<li>Robert Rebholz</li>
+				<li>S Kayser</li>
+				<li>Sarah Adamec</li>
+				<li>Tracy Whitt</li>
+				<li>Vincent Koser</li>
+			</ul>
 
 			<h3>Libraries used</h3>
 			<ul>
-				<li><a onclick="openInBrowser('http://www.jquery.com/');">jQuery</a></li>
-				<li><a onclick="openInBrowser('http://labs.adobe.com/technologies/spry/');">Spry</a></li>
-				<li><a onclick="openInBrowser('http://www.webtoolkit.info/javascript-md5.html');">Webtoolkit Base64</a></li>
-				<li><a onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html');">Showdown</a></li>
-				<li><a onclick="openInBrowser('http://code.google.com/p/as3notificationlib/')l">as3notificationlib</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://www.jquery.com/')">jQuery</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://labs.adobe.com/technologies/spry/')">Spry</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://www.JSON.org/js.html')">JSON2.js</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://www.webtoolkit.info/javascript-md5.html')">Webtoolkit Base64</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html')">Showdown</a></li>
+				<li><a class="clickable" onclick="openInBrowser('http://code.google.com/p/as3notificationlib/')">as3notificationlib</a></li>
 			</ul>
 		</div>
 

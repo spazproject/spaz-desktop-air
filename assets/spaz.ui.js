@@ -1093,11 +1093,13 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		if ($("#"+timelineid + ' .timeline-entry:eq(0)').length > 0) {
 			// scroll to top
 			Spaz.dump('scrolling to .timeline-entry:eq(0) in #'+timelineid);
-
-			try {
-				$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
-			} catch (e) {
-				Spaz.dump('Error doing scrollTo first entry - probably switched tabs in the middle of loading. No sweat!');
+			
+			if (Spaz.Prefs.get('timeline-scrollonupdate')) {
+				try {
+					$("#"+timelineid).scrollTo('.timeline-entry:eq(0)', {speed:800, easing:'swing'})
+				} catch (e) {
+					Spaz.dump('Error doing scrollTo first entry - probably switched tabs in the middle of loading. No sweat!');
+				}
 			}
 		
 		}

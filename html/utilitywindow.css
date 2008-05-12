@@ -13,6 +13,11 @@ body {
 	color:#444444;
 }
 
+a:link, .clickable {
+    color:#000099;
+    cursor:pointer;
+}
+
 h1 {
 	background-color:#222222;
 	color:#FFFFFF;

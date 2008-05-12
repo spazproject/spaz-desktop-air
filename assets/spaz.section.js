@@ -88,6 +88,58 @@ Spaz.Section.public = {
 	
 }
 
+
+Spaz.Section.search = {
+	panel:    'panel-search',
+	timeline: 'timeline-search', 
+	tab:      'tab-search',
+	tabIndex: 2,
+	urls:      new Array('http://summize.com/search.json?q={{query}}'),
+	lastid:   0,
+	lastcheck:0,
+	currdata: null,
+ 	prevdata: null,
+	autoload: true,
+	canclear: true,
+	mincachetime:1,
+	build: function(force){
+		if ($('#search-for').val().length>0) {
+			var url = 'http://summize.com/search.json?rpp=50&q='+encodeURIComponent($('#search-for').val());
+			$.get(url, {}, this.onAjaxComplete)
+		}
+		
+
+	},
+	onAjaxComplete: function(data,msg){
+		
+		var data = JSON.parse(data);
+		Spaz.dump(data)
+		if (data && data.results) {
+			
+			$('#search-results').empty();
+			
+			for(var x =0; x<data.results.length; x++) {
+				Spaz.Section.search.addItem(data.results[x])
+			}
+		}
+		
+	},
+	addItem: function(item) {
+		
+		Spaz.dump(item)
+		
+		Spaz.dump($('#'+this.panel)[0])
+		
+		$('#search-results').append('<div class="timeline-entry searchresult">from:'+item.from_user+' message:'+item.text+'</data>');
+		
+		// Spaz.UI.addItemToTimeline(item, this)
+	},
+	cleanup: function(attribute){
+		Spaz.UI.cleanupTimeline(this.timeline);
+	},
+	
+}
+
 Spaz.Section.friendslist = {
 	panel:    'panel-friendslist',
 	timeline: 'timeline-friendslist', 

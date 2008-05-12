@@ -484,12 +484,16 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 		}
 
 		try {
-			var data = eval(xhr.responseText);
-			if (!data || !data[0]) {
+			var data = JSON.parse(xhr.responseText);
+			if (!data || (!data[0] && !data.results)) {
 				Spaz.dump("Error: no data returned from "+url);
 				Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
 				// return;
 			} else {
+				if (data.results) {
+					data = data.results;
+				}
+				Spaz.dump(data);
 				Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
 			}
 
@@ -587,6 +591,50 @@ Spaz.Data.getDataForUrl = function(url, section) {
 }
 
 
+
+
+
+/**
+ * Retrieves data for the given URL, as part of a queue. Used by Spaz.Data.getDataForTimeline
+ * @param {String} url The URL to request data from
+ * @param {Object} section The Spaz.Section that is this request is getting data for
+ * @returns void
+ */
+Spaz.Data.searchSummize = function(query) {
+	
+	var section = Spaz.Section.search;
+	var url = Spaz.Section.search[0].replace(/\{\{query\}\}/, query)
+	
+	Spaz.dump('getting:'+url);
+
+	Spaz.dump('section.timeline:'+section.timeline);
+	
+	Spaz.UI.statusBar("Searching for 'query'…");
+	Spaz.UI.showLoading();
+	
+	// var xhr = $.ajax(
+		
+		
+	var xhr = $.ajax({
+		mode:'queue',
+		
+		complete:function(xhr, msg){
+			section.onAjaxComplete(url,xhr,msg);
+		},
+		error:function(xhr, msg, exc) {
+			if (xhr && xhr.responseText) {
+				Spaz.dump("Error:"+xhr.responseText+" from "+url);
+			} else {
+				Spaz.dump("Error:Unknown from "+url);
+			}
+		},
+		processData:false,
+		type:"GET",
+		url:url,
+		data:null
+	});
+	
+}
 
 
 

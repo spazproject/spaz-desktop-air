@@ -42,10 +42,12 @@ Spaz.Prefs.defaultPreferences = {
 	'sound-new'		: '/assets/sounds/TokyoTrainStation/New.mp3',
 	'sound-wilhelm'	: '/assets/sounds/wilhelm.mp3',
 	
+	'timeline-scrollonupdate':true,
 	
 	'timeline-maxentries':200,
 	
 	'checkupdate':true,
+	'checkupdate-testversions':false,
 	
 	'twitter-source':'spaz',
 }
@@ -266,7 +268,15 @@ Spaz.Prefs.changeMethods = {
 			if (parseInt(Spaz.Prefs.get('timeline-maxentries')) > 400) {
 				Spaz.Prefs.set('timeline-maxentries', 400);
 			}
-			// Spaz.Prefs.set('checkupdate', Boolean(Spaz.Prefs.get('checkupdate'))) 
+		}
+	},
+	'timeline-scrollonupdate':{
+		setUI: function(value){
+			$('#timeline-scrollonupdate').attr('checked', value);
+		},
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('timeline-scrollonupdate', Boolean(Spaz.Prefs.get('timeline-scrollonupdate'))) 
 		}
 	},
 
@@ -277,6 +287,15 @@ Spaz.Prefs.changeMethods = {
 		onChange: function(value) {},
 		check: function(value) {
 			Spaz.Prefs.set('checkupdate', Boolean(Spaz.Prefs.get('checkupdate'))) 
+		}
+	},
+	'checkupdate-testversions':{
+		setUI: function(value){
+			$('#checkupdate-testversions').attr('checked', value);
+		},
+		onChange: function(value) {},
+		check: function(value) {
+			Spaz.Prefs.set('checkupdate-testversions', Boolean(Spaz.Prefs.get('checkupdate-testversions'))) 
 		}
 	},
 	
@@ -376,11 +395,12 @@ Spaz.Prefs.initUI = function() {
 	$('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
 	$('#sound-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#checkupdate').bind('change', Spaz.Prefs.setFromUI);
+	$('#checkupdate-testversions').bind('change', Spaz.Prefs.setFromUI);
 	$('#network-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
 	$('#network-airhandlehttpauth').bind('change', Spaz.Prefs.setFromUI);
 	$('#debug-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
-	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
+	$('#timeline-scrollonupdate').bind('change', Spaz.Prefs.setFromUI);
 	
 };
 

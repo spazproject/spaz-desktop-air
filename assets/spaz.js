@@ -159,10 +159,11 @@ Spaz.initialize = function() {
 
 
 	
-	// set-up window and app events
-	// air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
-	
+	/*
+		set-up window and app events
+	*/
 	window.nativeWindow.addEventListener(air.Event.EXITING, Spaz.Windows.onWindowClose); 
+	// air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
 	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose); 
 	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
 	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);
@@ -170,11 +171,14 @@ Spaz.initialize = function() {
 	
 	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate);
 
+
 	/*
-		Don't do anything with updater until it's re-implemented
+		Start check for updates process
 	*/
-	// Spaz.Update.updater = new Spaz.Update(Spaz.Sys.getVersion(), Spaz.Update.descriptorURL, 'updateCheckWindow');
-	Spaz.Update.go();
+	if (Spaz.Prefs.get('checkupdate')) {
+		Spaz.Update.go();
+	}
+	
 	
 	// ***************************************************************
 	// Event delegation handling
@@ -203,6 +207,14 @@ Spaz.initialize = function() {
 			}
 		})
 		.intercept('click', {
+			'#friendslist-showfriends':function() {
+				$('#timeline-followers').fadeOut();
+				$('#timeline-friendslist').fadeIn();
+			},
+			'#friendslist-showfollowers':function() {
+				$('#timeline-friendslist').fadeOut();
+				$('#timeline-followers').fadeIn();
+			},
 			'#mainMenu-help':function() {
 				Spaz.UI.showHelp();
 			},
