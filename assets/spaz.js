@@ -287,6 +287,11 @@ Spaz.initialize = function() {
 			},
 			'a':function() {
 				Spaz.dump(this.outerHTML);
+				if ($(this).attr('href')) {
+					openInBrowser($(this).attr('href'));
+				}
+				return false;
+				
 			}
 			// '#header-label':function() {
 			//	Spaz.UI.showMainMenu($(this));
