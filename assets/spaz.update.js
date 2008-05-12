@@ -162,14 +162,14 @@ Spaz.Update.compareVersions = function(current, newest) {
 
 
 Spaz.Update.downloadNewest = function(url) {
-	
+
 	var urlReq = new air.URLRequest(url);
 	var urlStream = new air.URLStream();
 	var fileData = new air.ByteArray();
 	urlStream.addEventListener(air.Event.COMPLETE, loaded);
 	urlStream.addEventListener(air.ProgressEvent.PROGRESS, progress);
-	Spaz.dump("Downloading...");
 	Spaz.UI.statusBar('Downloading new version…')
+	Spaz.dump("Downloading from "+url);
 	urlStream.load(urlReq);
 	
 	function loaded(event) {

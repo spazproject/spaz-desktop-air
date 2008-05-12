@@ -39,6 +39,7 @@
 			<li>Twitter sometimes seems to not release accounts that are temporarily blocked from API access b/c of exceeding request limits. <strong><a href="http://funkatron.com/spaziki/FAQ">READ THE FAQ</a></strong> to get info on workarounds. <strong>THIS PROBLEM IS NOT SPECIFIC TO SPAZ.</strong></li>
 			<li>Auto-completion of @usernames a little funky sometimes</li>
 			<li>tooltips sometimes get wonky if 2-3 links/users are hovered in succession</li>
+			<li>When debugging enabled, doing app quit (CMD+Q on OS X) will throw an error and require force-quit to exit</li>
 		</ul>
 	</div>
 
@@ -54,6 +55,8 @@
 		<li>FEATURE: Debug mode now utilizes AIRIntrospector system; allows for much more powerful examination of DOM and AJAX calls</li>
 		<li>FEATURE: Tweets are now marked as "read" when they are unselected (themes will need to be updated to support "read" CSS class)</li>
 		<li>FEATURE: Proper user theme support; place themes in user storage directory's "userthemes"</li>
+		<li>FEATURE: added pref for scroll-to-top on refresh</li>
+		<li>FEATURE: added pref for checking for "test" versions when looking for updates</li>
 		<li>FEATURE: Just-posted tweets are now added to timeline immediately</li>
 		<li>FEATURE: Visual wilhelm excitement</li>
 		<li>FEATURE: added "hidden" pref (no UI, must manually edit prefs file) to change source string sent to Twitter.</li>
@@ -68,6 +71,7 @@
 		<li>CHANGE: Popups now open in separate windows</li>
 		<li>CHANGE: upgrade to jQuery 1.2.3</li>
 		<li>CHANGE: jquery.enchant alpha added</li>
+		<li>CHANGE: jquery.ui alpha added</li>
 		<li>CHANGE: Debug mode now a proper pref, not triggered by presence of marker file</li>
 		<li>CHANGE: Completely rewritten Preference system – <strong>you will need to reset your prefs (sorry!)</strong></li>
 		<li>CHANGE: Completely rewritten Auto-updating system</li>
