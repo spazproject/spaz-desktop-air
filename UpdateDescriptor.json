@@ -1,0 +1,8 @@
+{
+    
+ newestversion:'1.1.0',
+ description:"This is the <strong>description!</strong>",
+ newesturl:"http://funkatron.com/getspaz",
+ isTest:true
+
+}

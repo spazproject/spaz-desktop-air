@@ -346,12 +346,12 @@ Spaz.Prefs.loadPrefs = function() {
 		Spaz.dump(loadedpreferences);
 		
 		for (key in loadedpreferences) {
-			air.trace('Copying "'+key+'" from loaded prefs to current prefs');
+			// air.trace('Copying "'+key+'" from loaded prefs to current prefs');
 			Spaz.Prefs.preferences[key] = loadedpreferences[key];
-			air.trace('"'+key+'":"'+Spaz.Prefs.preferences[key]+'" ('+typeof(Spaz.Prefs.preferences[key])+')');
+			// air.trace('"'+key+'":"'+Spaz.Prefs.preferences[key]+'" ('+typeof(Spaz.Prefs.preferences[key])+')');
 			
 			if (Spaz.Prefs.changeMethods[key] && Spaz.Prefs.changeMethods[key].check) {
-				air.trace("Calling check on "+key);
+				// air.trace("Calling check on "+key);
 				Spaz.Prefs.changeMethods[key].check();
 			}
 		}
@@ -531,9 +531,9 @@ Spaz.Prefs.loadPassword = function() {
 };
 
 Spaz.Prefs.setPrefs = function() {
-	air.trace('Verifying password');
+	// air.trace('Verifying password');
 	Spaz.Data.verifyPassword();
-	air.trace('saving Prefs');
+	// air.trace('saving Prefs');
 	Spaz.Prefs.savePrefs();
 }
 

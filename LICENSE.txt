@@ -1,4 +1,4 @@
-Copyright (c) 2007, Edward Finkler
+Copyright (c) 2007-2008, Edward Finkler
 
 All rights reserved.
 

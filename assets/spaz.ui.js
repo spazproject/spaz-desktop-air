@@ -710,11 +710,11 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 	var el = jq[0];
 
 	// hide any showing tooltips
-	air.trace('hiding tooltip');	
+	// air.trace('hiding tooltip');	
 	$('#tooltip').hide();
 	
 	// show the link context menu
-	air.trace('opening context menu');
+	// air.trace('opening context menu');
 	$('#linkContextMenu').css('left', event.pageX)
 		.css('top',  event.pageY)
 		.unbind()
@@ -723,25 +723,25 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 
 	$('#userContextMenu .menuitem').unbind();
 
-	air.trace('outerHTML:'+el.outerHTML);
+	// air.trace('outerHTML:'+el.outerHTML);
 	var urlarray = /http:\/\/([^'"]+)/i.exec(url);
 	if (urlarray && urlarray.length > 0) {
 		var elurl = urlarray[0];
 	
-		air.trace('url from element:'+elurl);
+		// air.trace('url from element:'+elurl);
 	
 		$('#linkContextMenu-copyLink').one('click', {url:elurl}, function(event) {
 			Spaz.Sys.setClipboardText(event.data.url);
-			air.trace('Current Clipboard:'+Spaz.Sys.getClipboardText());
+			// air.trace('Current Clipboard:'+Spaz.Sys.getClipboardText());
 		});
-		air.trace('Set one-time click event on #menu-copyLink');
+		// air.trace('Set one-time click event on #menu-copyLink');
 	
 		$(document).one('click', function() {
 			$('#linkContextMenu').hide();
 		});
-		air.trace('set one-time link context menu close event for click on document');
+		// air.trace('set one-time link context menu close event for click on document');
 	} else {
-		air.trace('no http link found');
+		// air.trace('no http link found');
 	}
 };
 
@@ -753,11 +753,11 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 	Spaz.dump(el);
 	
 	// hide any showing tooltips
-	air.trace('hiding tooltip');
+	// air.trace('hiding tooltip');
 	$('#tooltip').hide();
 	
 	// show the link context menu
-	air.trace('opening context menu for user '+screen_name);
+	// air.trace('opening context menu for user '+screen_name);
 	$('#userContextMenu').css('left', event.pageX)
 		.css('top',  event.pageY)
 		.show();
@@ -785,12 +785,12 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 	// 	Spaz.Data.blockUser(user);
 	// });
 	
-	air.trace('Set one-time click event on #userContextMenu');
+	// air.trace('Set one-time click event on #userContextMenu');
 	$(document).one('click', function() {
 		$('#userContextMenu').hide();
 	});
 	
-	air.trace('set one-time link context menu close event for click on document');
+	// air.trace('set one-time link context menu close event for click on document');
 };
 
 

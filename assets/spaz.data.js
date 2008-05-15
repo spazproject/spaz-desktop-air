@@ -129,6 +129,7 @@ Spaz.Data.update = function(msg, username, password) {
 	$('#updateButton').val('Sending...');
 	
 	var xhr = $.ajax({
+		timeout:1000*40, // updates can take longer, so we double the standard timeout 
 		complete:Spaz.Data.onAjaxComplete,
 		error:function(xhr, rstr){
 			Spaz.dump("ERROR");

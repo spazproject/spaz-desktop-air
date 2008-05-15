@@ -12,7 +12,7 @@ if (!Spaz.Update) Spaz.Update = {};
 
 Spaz.Update.descriptorUrl = 'http://funkatron.com/apps/spaz/AIR/UpdateDescriptor.json';
 
-Spaz.Update.descriptorUrlTests = 'http://funkatron.com/apps/spaz/AIR/UpdateDescriptorTests.json';
+Spaz.Update.descriptorUrlTests = 'http://funkatron.com/apps/spaz/AIR/testbuilds/UpdateDescriptor.json';
 
 Spaz.Update.info = {};
 
@@ -52,8 +52,14 @@ Spaz.Update.getCurrentVersion = function() {
  */
 Spaz.Update.getNewestVersion = function() {
 	
+	if (Spaz.Prefs.get('checkupdate-testversions')) {
+		var url = Spaz.Update.descriptorUrlTests
+	} else {
+		var url = Spaz.Update.descriptorUrl
+	}
+	
 	$.ajax({
-		url: Spaz.Update.descriptorUrl,
+		'url': url,
 		type: "GET",
 		dataType: "json",
 	
@@ -175,7 +181,7 @@ Spaz.Update.downloadNewest = function(url) {
 	function loaded(event) {
 		Spaz.dump("Loaded...");
 		Spaz.dump(event);
-		air.trace(urlStream.bytesAvailable);
+		// air.trace(urlStream.bytesAvailable);
 		urlStream.readBytes(fileData, 0, urlStream.bytesAvailable);
 		writeAirFile();
 	}
