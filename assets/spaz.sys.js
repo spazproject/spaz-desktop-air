@@ -13,6 +13,38 @@ Spaz.Sys.getVersion = function() {
 };
 
 
+
+Spaz.Sys.initUserAgentString = function() {
+	window.htmlLoader.userAgent = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Spaz/' + Spaz.Sys.getVersion();
+	// air.URLRequestDefaults.userAgent = air.HTMLLoader.userAgent
+	air.trace(window.htmlLoader.userAgent)
+	return window.htmlLoader.userAgent
+};
+Spaz.Sys.getUserAgent = function() {
+	return window.htmlLoader.userAgent
+};
+Spaz.Sys.setUserAgent = function(uastring) {
+	window.htmlLoader.userAgent = uastring
+	// air.URLRequestDefaults.userAgent = uastring
+	return window.htmlLoader.userAgent
+};
+
+
+
+Spaz.Sys.initNetworkConnectivityCheck = function() {
+	var monitor;
+	monitor = new air.URLMonitor(new air.URLRequest('http://twitter.com/statuses/user_timeline.json?id=spaztest&count=1'));
+	monitor.addEventListener(air.StatusEvent.STATUS, announceStatus);
+	monitor.pollInterval = 15*1000;
+	monitor.start();
+	
+	function announceStatus(e) {
+		Spaz.dump("Network status change. Current status: " + monitor.available);
+	}
+	
+};
+
+
 Spaz.Sys.getRuntimeInfo = function(){
 	return ret ={
 		os : air.Capabilities.os,
@@ -21,6 +53,9 @@ Spaz.Sys.getRuntimeInfo = function(){
 		totalMemory: air.System.totalMemory
 	};
 }
+
+
+
 
 
 

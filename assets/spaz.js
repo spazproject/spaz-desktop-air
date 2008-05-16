@@ -51,8 +51,6 @@ Spaz.initialize = function() {
 	
 	air.trace('root init begin');
 
-
-
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
 
@@ -73,11 +71,11 @@ Spaz.initialize = function() {
 	window.htmlLoader.paintsDefaultBackground = false;
 	window.htmlLoader.cacheResponse = false;
 	window.htmlLoader.useCache = false;
+	Spaz.Sys.initUserAgentString();
 	
 	air.URLRequestDefaults.manageCookies = false;
 	air.URLRequestDefaults.cacheResponse = false;
 	air.URLRequestDefaults.useCache = false;
-	
 	
 	// apply dropshadow to window
 	air.trace('Applying Flash Filter Dropshadow');
@@ -86,6 +84,10 @@ Spaz.initialize = function() {
 	);
 	// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
 
+	
+	// service monitor
+	Spaz.Sys.initNetworkConnectivityCheck()
+	
 	
 	// make the systray icon if on Windows
 	Spaz.Windows.makeSystrayIcon()

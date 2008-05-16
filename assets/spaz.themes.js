@@ -32,12 +32,9 @@ Spaz.Themes.init = function() {
 
 
 Spaz.Themes.browseForUserCss = function() {
-	Spaz.dump('Spaz.Themes.browseForUserCss');
-	// var cssFilter = new air.FileFilter("StyleSheets", "~~.css;");
-	// var imagesFilter = new air.FileFilter("Images", "~~.jpg;~~.gif;~~.png");
-	// var docFilter = new air.FileFilter("Documents", "~~.pdf;~~.doc;~~.txt");
+	var cssFilter = new air.FileFilter("StyleSheets", "*.css;");
 	var userFile = new air.File();
-	userFile.browseForOpen("Choose User CSS File");
+	userFile.browseForOpen("Choose a CSS file", [cssFilter]);
 	userFile.addEventListener(air.Event.SELECT, Spaz.Themes.userCSSSelected);
 }
 
@@ -50,8 +47,9 @@ Spaz.Themes.userCSSSelected = function(event) {
 }
 
 
+
 Spaz.Themes.setUserStyleSheet = function(stylestr, url) {
-	Spaz.Prefs.get('theme-userstylesheet') = url;
+	Spaz.Prefs.set('theme-userstylesheet', url);
 	$('#UserCSSOverride').text(stylestr);
 	$('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
 }
@@ -71,12 +69,16 @@ Spaz.Themes.loadUserStylesFromURL = function(fileurl) {
 		Spaz.dump(stylestr)
 		return stylestr;
 	} else {
-		Spaz.UI.alert('chosen file '+ event.target/url +'does not exist')
+		Spaz.dump('chosen file '+ fileurl +'does not exist')
 		return false;
 	}
 }
 
-
+Spaz.Themes.clearUserStyleSheet = function() {
+	Spaz.Prefs.set('theme-userstylesheet', '');
+	$('#UserCSSOverride').text('');
+	$('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
+}
 
 /**
 * Styleswitch stylesheet switcher built on jQuery

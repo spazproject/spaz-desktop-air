@@ -47,6 +47,9 @@ TODO:
 
 	<!-- Notification popups libs -->
 	<script src="lib/library.swf" type="application/x-shockwave-flash"></script>
+	
+	<!-- Network service monitor -->
+	<script src="assets/servicemonitor.swf" type="application/x-shockwave-flash"></script>
 
 	<!-- Spry Widgets -->
 	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.js"></script>
@@ -361,7 +364,8 @@ TODO:
 										<label for="user-stylesheet">User CSS</label>
 										<input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" />
 										<input type="button" name="user-stylesheet-button" value="…" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
-										<input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.UI.clearUserStyleSheet()" />
+										<input type="button" name="user-stylesheet-edit" value="&there4;" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
+										<input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" />
 									</div>
 									<div class="formrow">
 										<label for="base-theme">Theme</label>

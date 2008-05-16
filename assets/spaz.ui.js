@@ -125,14 +125,6 @@ Spaz.UI.hideLoading = function() {
 
 
 
-Spaz.UI.clearUserStyleSheet = function() {
-	Spaz.Prefs.get('theme-userstylesheet') = '';
-	$('#UserCSSOverride').text('');
-	$('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
-}
-
-
-
 
 Spaz.UI.showPopup = function(panelid) {
 	Spaz.dump('showing '+panelid+'...');
@@ -173,7 +165,9 @@ Spaz.UI.showHelp = function() {
 Spaz.UI.showShortLink = function() {
 	this.instance = window.open('app:/html/shorten-url.html', 'shortenWin', 'height=250,width=300');
 }
-
+Spaz.UI.showCSSEdit = function() {
+	this.instance = window.open('app:/html/css_edit.html', 'cssEditWin', 'height=350,width=400');
+}
 
 
 

@@ -98,6 +98,7 @@ Spaz.Windows.onAppExit = function(event)
 
 Spaz.Windows.onWindowClose = function(event) {
 	air.trace("i'm closing a window!");
+	Spaz.Prefs.savePrefs();
 };
 
 
