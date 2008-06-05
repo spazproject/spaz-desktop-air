@@ -75,7 +75,7 @@ a, a:link, .clickable {
 			margin-top:0;
 			padding:5px 10px 10px 10px;
 			text-align:left;
-			height:50px;
+			height:42px;
 			position:absolute;
 			top:   10px;
 			left:  10px;
@@ -156,7 +156,6 @@ a, a:link, .clickable {
 			padding: 0px;
 			float: left;
 			clear: none;
-			width: 100%; /* IE Hack to force proper layout when preceded by a paragraph. (hasLayout Bug)*/
 		}
 		
 			/*
@@ -195,7 +194,7 @@ a, a:link, .clickable {
 					position: relative;
 					top: -5px;
 					float: left;
-					padding: 3px 8px;
+					padding: 2px 6px;
 					margin: 0px 1px 0px 0px;
 					font-size: 11px;
 					background-color: #222200;
@@ -260,8 +259,8 @@ a, a:link, .clickable {
 					/* The image in the tab itself */
 					img.tab-icon {
 						margin-bottom:-1px;
-						width:24px;
-						height:24px;
+						width:18px;
+						height:18px;
 					}
 
 			/*
@@ -307,7 +306,7 @@ a, a:link, .clickable {
 						border-bottom:4px solid #333300;
 						background-color:#FFFFFF;
 						position:absolute;
-						top:75px;
+						top:67px;
 						left: 10px;
 						right: 10px;
 						bottom:90px;
@@ -568,7 +567,7 @@ a, a:link, .clickable {
 	Timeline entries are... entries in the timelines
 */
 div.timeline-entry {
-	background-color: #CCCC99;
+/*  background-color: #CCCC99;*/
 	padding: 10px 5px;
 	border-top-width: medium;
 	border-top-style: solid;

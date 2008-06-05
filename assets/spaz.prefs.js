@@ -448,7 +448,7 @@ Spaz.Prefs.setFromUI = function(event) {
 
 
 Spaz.Prefs.savePrefs = function() {
-	var jsonPrefs = JSON.stringify(Spaz.Prefs.preferences);
+	var jsonPrefs = JSON.stringify(Spaz.Prefs.preferences, null, 4);
 	air.trace(jsonPrefs);
 
 	var prefsFile = air.File.applicationStorageDirectory;

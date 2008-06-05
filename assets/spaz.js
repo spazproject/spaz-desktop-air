@@ -202,11 +202,13 @@ Spaz.initialize = function() {
 				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
 			}
 		})
+		
 		.intercept('mouseout', {
 			'[title]':function() {
 				Spaz.UI.hideTooltips();
 			}
 		})
+		
 		.intercept('click', {
 			'#friendslist-showfriends':function() {
 				$('#timeline-followers').fadeOut();
@@ -216,20 +218,29 @@ Spaz.initialize = function() {
 				$('#timeline-friendslist').fadeOut();
 				$('#timeline-followers').fadeIn();
 			},
+			'#search-go':function() {
+				Spaz.Section.search.build();
+			},
 			'#mainMenu-help':function() {
 				Spaz.UI.showHelp();
+			},
+			'#mainMenu-prefs':function() {
+				Spaz.UI.showPrefs();
 			},
 			'#mainMenu-about':function() {
 				Spaz.UI.showAbout();
 			},
-			'#mainMenu-file-toggle': function(){
+			'#mainMenu-view-toggle': function(){
 				Spaz.UI.toggleTimelineFilter();
 			},
-			'#mainMenu-file-reloadCurrentView': function(){
+			'#mainMenu-view-reloadCurrentView': function(){
 				Spaz.UI.reloadCurrentTab(true);
 				Spaz.restartReloadTimer();
 			},
-			'#mainMenu-file-clearReloadCurrentView': function(){
+			'#mainMenu-view-markAsReadCurrentView': function(){
+				Spaz.UI.markCurrentTimelineAsRead();
+			},
+			'#mainMenu-view-clearReloadCurrentView': function(){
 				Spaz.UI.clearCurrentTimeline();
 				Spaz.UI.reloadCurrentTab(true);
 				Spaz.restartReloadTimer();
@@ -278,13 +289,13 @@ Spaz.initialize = function() {
 				Spaz.UI.showLocationOnMap($(this).text());
 			},
 			'.timeline-entry':function() {
-				$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
-				$(this).addClass('ui-selected');
+				Spaz.UI.selectEntry(this);
 			},
 			'.timeline-entry *':function() { // this one needs to be last so the more specific ones above take precedence
-				$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
+				// $('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
 				var entry = $(this).parents('.timeline-entry');
-				entry.addClass('ui-selected');
+				Spaz.UI.selectEntry(entry);
+				// entry.addClass('ui-selected');
 			},
 			'a':function() {
 				Spaz.dump(this.outerHTML);

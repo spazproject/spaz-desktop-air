@@ -409,9 +409,8 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 	var username = Spaz.Prefs.getUser();
 	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
 		if (confirm('Username not set. Enter this in Preferences?')) {
-			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
-			Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
-			Spaz.UI.prefsCPG.openPanel(0);
+			Spaz.UI.showPrefs();
+			setTimeout(Spaz.UI.openLoginPanel, 500);
 			Spaz.dump('set selected tab to PREFS');
 		} else {
 			Spaz.dump('user chose not to enter username')
@@ -464,7 +463,7 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 
 		if (xhr.status == 400) {
 			Spaz.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
-			Spaz.Data.$ajaxQueueErrors.push("Exceeded request limit. Only 70 API reqs are allowed per hour");
+			Spaz.Data.$ajaxQueueErrors.push("Exceeded request limit. See Spaz FAQ");
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
@@ -486,15 +485,30 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 
 		try {
 			var data = JSON.parse(xhr.responseText);
-			if (!data || (!data[0] && !data.results)) {
+			
+			Spaz.dump(data)
+			Spaz.dump(typeof(data))
+			
+			// if (!data || (!data[0] && !data.results)) {
+			if (!data) {
 				Spaz.dump("Error: no data returned from "+url);
-				Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
+				// Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
 				// return;
 			} else {
 				if (data.results) {
 					data = data.results;
 				}
 				Spaz.dump(data);
+				
+				if (data[0].error) {
+					Spaz.dump("ERROR: "+data[0].error+" ["+data[0].request+"]");
+					Spaz.Data.$ajaxQueueErrors.push("ERROR:"+data[0].error);
+				}
+				
+				// Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
+				// Spaz.Data.onAjaxComplete(url, false);
+				// return;
+				
 				Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
 			}
 
@@ -610,10 +624,8 @@ Spaz.Data.searchSummize = function(query) {
 
 	Spaz.dump('section.timeline:'+section.timeline);
 	
-	Spaz.UI.statusBar("Searching for 'query'…");
+	Spaz.UI.statusBar("Searching for '"+query+"'…");
 	Spaz.UI.showLoading();
-	
-	// var xhr = $.ajax(
 		
 		
 	var xhr = $.ajax({

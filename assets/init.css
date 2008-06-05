@@ -52,6 +52,35 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 }
 
 
+/*
+    These things aren't retrieved properly via Summize search
+*/
+#timeline-search .status-source,
+#timeline-search .status-protected {
+    display:none;
+}
+
+div.search-menu {
+    text-align:center;
+    background:#202020;
+    color:#FFFFCC;
+    padding:3px 0 3px 0;
+}
+
+div.search-menu form {
+    padding:0px;
+    margin:0px;
+}
+
+.highlight {
+    background:#EEEEAA;
+    color:#000000;
+    border-bottom:1px dotted #333333;
+}
+
+
+
+
 #suggestions {
 	background-color: #000000;
 	color: #FFFFCC;

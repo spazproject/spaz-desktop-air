@@ -44,6 +44,17 @@ Spaz.Keyboard.setShortcuts = function() {
 		Spaz.UI.showShortLink();
 	})
 	
+	shortcut.add(Modkey+'+Shift+M', function() {
+		Spaz.UI.markCurrentTimelineAsRead();
+	})
+
+
+
+
+	shortcut.add('F1', function() {
+		Spaz.UI.showHelp();
+	})
+	
 	shortcut.add(Modkey+'+Shift+@', function() {
 			Spaz.dump('getting screenname from current selection');
 			var screenname = $('div.ui-selected .user-screen-name').text();
@@ -58,36 +69,31 @@ Spaz.Keyboard.setShortcuts = function() {
 	});
 	
 	
+	
+	
 	// ****************************************
 	// tabs shortcuts
 	// ****************************************
 	shortcut.add(Modkey+'+1', function() {
-		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[0]);
-		Spaz.UI.tabbedPanels.showPanel(0);
+		Spaz.UI.showTab(0);
 	})
 	shortcut.add(Modkey+'+2', function() {
-		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[1]);
-		Spaz.UI.tabbedPanels.showPanel(1);
+		Spaz.UI.showTab(1);
 	})
 	shortcut.add(Modkey+'+3', function() {
-		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[2]);
-		Spaz.UI.tabbedPanels.showPanel(2);
+		Spaz.UI.showTab(2);
 	})
 	shortcut.add(Modkey+'+4', function() {
-		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[3]);
-		Spaz.UI.tabbedPanels.showPanel(3);
+		Spaz.UI.showTab(3);
 	})
 	shortcut.add(Modkey+'+5', function() {
-		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[4]);
-		Spaz.UI.tabbedPanels.showPanel(4);
+		Spaz.UI.showTab(4);
 	})
 	shortcut.add(Modkey+'+6', function() {
-		Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[5]);
-		Spaz.UI.tabbedPanels.showPanel(5);
+		Spaz.UI.showTab(5);
 	})
 	shortcut.add(Modkey+'+,', function() {
-		Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
-		Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
+		Spaz.UI.showPrefs()
 	})
 	
 	// ****************************************

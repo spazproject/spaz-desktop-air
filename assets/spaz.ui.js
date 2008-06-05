@@ -15,6 +15,7 @@ Spaz.UI.prefsCPG = {};
 
 // holder
 Spaz.UI.tooltipHideTimeout	= null; // holder for the timeoutObject
+Spaz.UI.tooltipShowTimeout	= null; // holder for the timeoutObject
 
 // kind of a const
 Spaz.UI.mainTimelineId = 'timeline-friends';
@@ -196,14 +197,6 @@ Spaz.UI.setCurrentPage =function(tabEl, newpage) {
 };
 Spaz.UI.showEntryboxTip =function() {
 	Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUser() + '</span>. Type your message and press ENTER to send');
-	// $('#entrybox').attr('title', 'Logged in as' + Spaz.Prefs.user).Tooltip({
-	// 	track: true, 
-	// 	delay: 100, 
-	// 	showURL: false, 
-	// 	showBody: false,
-	// 	extraClass: "tab-tooltip",
-	// 	opacity: 0.8,
-	// });
 }
 
 Spaz.UI.showLocationOnMap = function(location) {
@@ -370,7 +363,7 @@ Spaz.UI.clearCurrentTimeline = function() {
 	
 	if (section.canclear) {
 		var timelineid = section.timeline;
-		$('#'+timelineid).empty();
+		$('#'+timelineid+' .timeline-entry').remove();
 		Spaz.dump('cleared timeline #'+timelineid);
 	} else {
 		Spaz.dump('timeline not clearable');
@@ -378,7 +371,16 @@ Spaz.UI.clearCurrentTimeline = function() {
 }
 
 
+Spaz.UI.markCurrentTimelineAsRead = function() {
+	Spaz.dump('clearing the current timeline');
+	var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
 
+	var timelineid = section.timeline;
+	$('#'+timelineid + " div.timeline-entry").each( function() {
+		Spaz.UI.markEntryAsRead(this);
+	} )
+	
+};
 
 
 Spaz.UI.toggleTimelineFilter = function() {
@@ -455,15 +457,10 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 	
 	Spaz.dump("message: "+str);
 	
-	if (previewurl) {
-		Spaz.dump('previewurl:'+previewurl);
-	}
-	
 	
 	var minwidth = 100;
 
 	var tt = $('#tooltip');
-
 	tt.stop();
 	tt.hide();
 	tt.css('width', '');
@@ -490,27 +487,33 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 	
 
 	
-	// show the tooltip menu
-	Spaz.dump('opening tooltip menu');
+	// show the tooltip
+	Spaz.dump('showing tooltip');
 	tt.css('left', event.pageX+10)
 		.css('top',  event.pageY+20)
 		.show()
 		.css('opacity', 0)
-		.animate({'opacity':'0.85'}, {speed:200, queue:false});
+		.animate({'opacity':'0.85'}, {speed:'fast'});
+		// .animate({'opacity':'0.85'}, {speed:200, queue:false});
 
 	tt.children('.tooltip-msg').html(str);
-
 	tt.children('.preview').empty();
 
 	Spaz.dump(tt[0].outerHTML);
 
+
+	// Reset the .preview div ID so we don't display the wrong preview
+	tt.children('.preview').attr('id', '')
 	
-	//if (/^@[a-zA-Z0-9_-]+$/.test($(el).text())) {
+	
 	if ($(el).attr('user-screen_name')) {
+		
+		Spaz.dump('This is a user profile tooltip')
+		
 		//var username = $(el).text().replace(/@/, '');
 		var username = $(el).attr('user-screen_name');
 		
-
+	
 		
 		Spaz.dump('username is '+username)
 		
@@ -519,13 +522,15 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 			'id':username,
 			'count':1
 		}
-
-
+	
+	
 		var previewid = "preview-username-"+username;
+		
+		Spaz.dump('previewid = '+previewid);
 		
 		tt.children('.preview').attr('id', previewid)
 		
-
+	
 		
 		$.get(url, data, function(data, textStatus) {
 			Spaz.dump('textStatus:'+textStatus);
@@ -542,7 +547,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 					tt.children('.preview').append("<div class='error-message'>Error message from Twitter:\""+tweets.error+"\"</div>");
 					Spaz.dump(tt[0].outerHTML);
 				} else {
-
+	
 					Spaz.dump('No errors when getting preview data for tooltip');
 					if (tweets[0].text) {
 						
@@ -572,29 +577,22 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 				+ ". Error message: " + e.message)
 			}
 		})
-
+	
 		
 	} else if (previewurl) {
 		
+		Spaz.dump('This is an URL preview tooltip')
+		
 		var previewid = "preview-link-"+getTimeAsInt();
 		
+		Spaz.dump('previewid = '+previewid);
+		
 		tt.children('.preview').attr('id', previewid)
-		
-		
-		
-		// $("#tooltip .preview").load(previewurl+' h1', function(rtext, status, xhr) {
-		// 	$(this).fadeIn(500);
-		// });
-		
-		// $("#tooltip").append("<iframe src='"+previewurl+"' class='preview' style='display:none; position:relative; height:200px; width:200px; overflow:hidden'></iframe>");
-		// // $("#tooltip .preview").attr('src', previewurl);
-		// $("#tooltip .preview").fadeIn(500);
 		
 		if (previewurl.search(/^http:\/\//i) > -1) {
 		
 			$.get(previewurl, function(rtext, status, xhr) {
-				// var jqpreview = $(rtext);
-				//Spaz.dump('rtext:'+rtext);
+				Spaz.dump('rtext:'+rtext);
 				var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
 			
 				// alert(rtext_matches);
@@ -610,14 +608,16 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 			});
 		}
 		
-		// $("#tooltip .preview")
+	
 	}
 	
 
 	var vp  = Spaz.UI.getViewport();
 	var off = tt.offset();
 	
+	Spaz.dump('Viewport:')
 	Spaz.dump(vp);
+	Spaz.dump('Offset:')
 	Spaz.dump(off);
 	
 	// check horizontal position
@@ -639,7 +639,10 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 		}
 	}
 	
-	Spaz.dump('setting tooltip timeout');
+	Spaz.dump('setting tooltip hide timeout');
+	
+	Spaz.dump('Tooltip hide delay:'+Spaz.Prefs.get('window-tooltiphidedelay'));
+	
 	Spaz.UI.tooltipHideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.Prefs.get('window-tooltiphidedelay'));
 	
 }
@@ -794,6 +797,11 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 Spaz.UI.addItemToTimeline = function(entry, section) {
 	// alert('adding:'+entry.id)
 	
+	if (entry.error) {
+		Spaz.dump('There was an error in the entry:' + entry.error)
+		
+	}
+	
 	var timelineid = section.timeline;
 	
 	// air.trace(JSON.stringify(entry));
@@ -816,6 +824,9 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 		var rowclass = "even";
 
 		// need to double-slash single quotes to escape them properly below
+		
+		Spaz.dump(entry);
+		
 		if (!entry.user.name) {
 			entry.user.name = entry.user.screen_name
 		}
@@ -892,7 +903,7 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 		// FINALLY -- prepend the entry
 
 		var jqTL = $('#'+timelineid);
-		jqentry.prependTo(jqTL);
+		jqentry.appendTo(jqTL);
 				
 		return true;
 
@@ -905,20 +916,27 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 }
 
 
-Spaz.UI.selectEntry = function(event) {
-
-	var jqentry = event.data.jqentry;
+Spaz.UI.selectEntry = function(el) {
 
 	Spaz.dump('unselected tweets');
-	$('div.timeline-entry.ui-selected').removeClass('ui-selected');
-	
+	$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
+
 	Spaz.dump('selecting tweet');
-	jqentry.addClass('ui-selected');
-
-
-	var el = jqentry[0];	
+	$(el).addClass('ui-selected');
+	
+	var el;	
 	Spaz.dump('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
 }
+
+
+
+Spaz.UI.markEntryAsRead = function(el) {
+	
+	$(el).addClass('read');
+	
+}
+
+
 
 
 Spaz.UI.sortTimeline = function(timelineid) {
@@ -974,10 +992,7 @@ Spaz.UI.notifyOfNewEntries = function() {
 		var newestHTML = newtweets[0].innerHTML;
 		Spaz.dump(newestHTML);
 		var jqnewest = $(newestHTML);
-		
-		
-		
-		
+
 		Spaz.dump('Sending notification');
 		var resp = "";
 		
@@ -1042,10 +1057,6 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
-	
-
-	
-
 	
 	Spaz.dump('Sorting timeline');
 	Spaz.UI.sortTimeline(timelineid);
@@ -1242,9 +1253,10 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	if (!$('#'+timelineid).is('.dm-replies')) {	
 		if ($("#"+timelineid + ' .timeline-entry.needs-cleanup').length > 0 ) {
 			$("#"+timelineid + ' .timeline-entry.needs-cleanup').each( function() {
-				$(this).slideDown({'duration':100, 'queue':'slideDownNewStatuses'});
+				// $(this).slideDown({'duration':100, 'queue':'slideDownNewStatuses'});
+				$(this).slideDown({'duration':100});
 			}).css('display', '');
-			$.fxqueue('slideDownNewStatuses').start();
+			// $.fxqueue('slideDownNewStatuses').start();
 		}
 	}
 	
@@ -1270,6 +1282,19 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 
 
 
+Spaz.UI.showTab = function(index) {
+	Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[index]);
+	Spaz.UI.tabbedPanels.showPanel(index);
+}
+
+Spaz.UI.showPrefs = function() {
+	Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
+	Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
+}
+
+Spaz.UI.openLoginPanel = function() {
+	Spaz.UI.prefsCPG.openPanel(0);
+};
 
 
 

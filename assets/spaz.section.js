@@ -103,7 +103,16 @@ Spaz.Section.search = {
 	canclear: true,
 	mincachetime:1,
 	build: function(force){
+		
+		
+		
 		if ($('#search-for').val().length>0) {
+			
+			$('#'+Spaz.Section.search.timeline+' .timeline-entry').remove();
+			
+			Spaz.UI.statusBar("Searching for '"+$('#search-for').val()+"'…");
+			Spaz.UI.showLoading();
+			
 			var url = 'http://summize.com/search.json?rpp=50&q='+encodeURIComponent($('#search-for').val());
 			$.get(url, {}, this.onAjaxComplete)
 		}
@@ -113,29 +122,57 @@ Spaz.Section.search = {
 	onAjaxComplete: function(data,msg){
 		
 		var data = JSON.parse(data);
-		Spaz.dump(data)
+		Spaz.dump(data);
+		
+		var term = data.query;
+		
 		if (data && data.results) {
 			
-			$('#search-results').empty();
+			// $('#search-results').empty();
+			
+			function summizeToTweet(result) {
+				var tweet = {
+					"text"					: result.text,
+					"created_at"			: result.created_at,
+					"id"					: result.id,
+					"in_reply_to_user_id"	: result.to_user_id,
+				    "favorited"				: false,
+				    "source"				: "web",
+				    "truncated"				: false,
+					"user" : {
+						"id"				: result.from_user_id,
+						"screen_name"		: result.from_user,
+						"profile_image_url"	: result.profile_image_url,
+						"protected"			: false,
+					}
+				}
+				
+				// air.trace(JSON.stringify(tweet));
+				
+				return tweet
+			}
+			
+			Spaz.UI.statusBar("Found "+data.results.length+" results for '"+$('#search-for').val()+"'");
+			Spaz.UI.hideLoading();
 			
 			for(var x =0; x<data.results.length; x++) {
-				Spaz.Section.search.addItem(data.results[x])
+				Spaz.Section.search.addItem( summizeToTweet(data.results[x]) )
 			}
+			Spaz.dump('cleaning up timeline');
+			Spaz.Section.search.cleanup();
+			
+			// add search term highlighting
+			$('#'+Spaz.Section.search.timeline + " div.timeline-entry").each( function() {
+				$.highlight(this, term.toUpperCase());
+			});
 		}
 		
 	},
 	addItem: function(item) {
-		
-		Spaz.dump(item)
-		
-		Spaz.dump($('#'+this.panel)[0])
-		
-		$('#search-results').append('<div class="timeline-entry searchresult">from:'+item.from_user+' message:'+item.text+'</data>');
-		
-		// Spaz.UI.addItemToTimeline(item, this)
+		Spaz.UI.addItemToTimeline(item, this)
 	},
 	cleanup: function(attribute){
-		Spaz.UI.cleanupTimeline(this.timeline);
+		Spaz.UI.cleanupTimeline(this.timeline, true, true);
 	},
 	
 }
@@ -162,8 +199,14 @@ Spaz.Section.friendslist = {
 	},
 	addItem: function(item) {
 		item.timeline = this.timeline;
-		var tpl = $.template(Spaz.Sys.getFileContents('app:/templates/directory-entry.tpl'));
-		$('#tbody-friendslist').append(tpl, item);
+		
+		Spaz.dump(item);
+		var jqitem = $('<div></div>');
+		Spaz.dump(jqitem);
+		Spaz.dump(Spaz.Sys.getFileContents('app:/templates/friendslist-row.tpl'));
+		jqitem.setTemplate( Spaz.Sys.getFileContents('app:/templates/friendslist-row.tpl'), null, {filter_data: false} );
+		jqitem.processTemplate(item);
+		$('#tbody-friendslist').append(jqitem);
 	},
 	cleanup: function(){
 		$("#table-friendslist tr:even").addClass('even');
@@ -198,9 +241,18 @@ Spaz.Section.followerslist = {
 		Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 	},
 	addItem: function(item) {		
+		// item.timeline = this.timeline;
+		// var tpl = $.template(Spaz.Sys.getFileContents('app:/templates/directory-entry.tpl'));
+		// $('#tbody-followerslist').append(tpl, item);
 		item.timeline = this.timeline;
-		var tpl = $.template(Spaz.Sys.getFileContents('app:/templates/directory-entry.tpl'));
-		$('#tbody-followerslist').append(tpl, item);
+		
+		Spaz.dump(item);
+		var jqitem = $('#tbody-followerslist');
+		Spaz.dump(jqitem);
+		Spaz.dump(Spaz.Sys.getFileContents('app:/templates/friendslist-row.tpl'));
+		jqitem.setTemplate( Spaz.Sys.getFileContents('app:/templates/friendslist-row.tpl'), null, {filter_data: false} );
+		jqitem.processTemplate(item);
+		$('#tbody-friendslist').append(jqitem);
 	},
 	cleanup: function(){
 		$("#table-followerslist tr:even").addClass('even');
