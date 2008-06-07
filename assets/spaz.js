@@ -325,6 +325,7 @@ Spaz.initialize = function() {
 	Spaz.UI.setSelectedTab($('#tab-friends')[0]);
 	
 	Spaz.dump('ended document.ready()');
+		
 }
 
 

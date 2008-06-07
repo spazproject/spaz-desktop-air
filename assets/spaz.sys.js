@@ -101,6 +101,16 @@ Spaz.Sys.openInBrowser = function(url) {
 	}
 };
 
+
+
+Spaz.Sys.loadChildInterface = function() {
+	Spaz.Sys.ClassicSB = $("#classicSB")[0].contentWindow.childSandboxBridge;
+	// Spaz.dump(classicSB)
+	// eval = Spaz.Sys.ClassicSB.eval;
+	
+	// eval('alert("Funky!")');
+};
+
 /***********
 Spaz.Bridge
 ************/

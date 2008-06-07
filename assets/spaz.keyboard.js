@@ -92,6 +92,9 @@ Spaz.Keyboard.setShortcuts = function() {
 	shortcut.add(Modkey+'+6', function() {
 		Spaz.UI.showTab(5);
 	})
+	shortcut.add(Modkey+'+7', function() {
+		Spaz.UI.showTab(6);
+	})
 	shortcut.add(Modkey+'+,', function() {
 		Spaz.UI.showPrefs()
 	})

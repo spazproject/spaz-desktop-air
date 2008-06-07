@@ -38,7 +38,7 @@
 		
 		function setUserCSS() {
 			// alert($('#css')[0].outerHTML);
-			alert('hi! '+$('#css').val())
+			// alert('hi! '+$('#css').val())
 			
 			
 			$(window.opener.document.getElementById('UserCSSOverride')).text( $('#css').val() )
@@ -92,108 +92,3 @@
 </body>
 </html>
 
-
-
-
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-	<title>CSS Editor</title>
-	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
-
-	<style type="text/css" media="screen">
-
-		#content {
-			position:relative;
-		}
-
-		#buttons {
-
-		}
-
-		#css {
-			-khtml-border-radius:10px;
-			padding:10px;
-			border:2px solid #AAA;
-		}
-
-	</style>
-
-	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../assets/jquery/jquery.dimensions.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
-	
-
-	
-	<script type="text/javascript" charset="utf-8">
-		Spaz.Prefs = window.opener.Spaz.Prefs;
-	</script>
-	
-	<script type="text/javascript" charset="utf-8">
-
-		function resizeTextarea() {
-			$('#css').height($(window).height()-$("#css").offset().top-35);
-			$('#css').width($('#content').width()-15);
-		}
-		
-		
-		function getUserCSS() {
-			$('#css').text($(window.opener.document.getElementById('UserCSSOverride')).text())
-			// alert(window.opener.document.getElementById('UserCSSOverride').innerText)
-		}
-		
-		function setUserCSS() {
-			alert($('#css')[0].outerHTML);
-			$(window.opener.document.getElementById('UserCSSOverride')).text($('#css').html())
-			getUserCSS()
-			// alert(window.opener.document.getElementById('UserCSSOverride').innerText)
-		}
-		
-		$(window).resize(
-			function() {
-				resizeTextarea()
-			}
-		)
-		
-		$(document).ready(
-			function() {
-				resizeTextarea();
-				getUserCSS();
-			}
-
-
-		)
-
-		// $('#save').click(
-		// 	function() {
-		// 		$('#css').val()
-		// 	}
-		// );
-		// $('#reset').click(getUserCSS);
-		// $('#css').change(setUserCSS);
-
-
-	</script>
-
-</head>
-
-<body id="cssEditorWindow">
-	<h1>CSS Editor</h1>
-	<div id="content">
-		<form action="poop" method="get">
-		<div id="buttons">
-			<input type="submit" name="save" value="Save" id="save"    onclick="setUserCSS()" />
-			<input type="button" name="reset" value="Reset" id="reset" onclick="getUserCSS()" />
-		</div>
-		<textarea name="csscode" id="css">hi</textarea>
-		</form>
-	</div>
-</body>
-</html> -->
