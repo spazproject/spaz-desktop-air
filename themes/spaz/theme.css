@@ -708,7 +708,7 @@ div.timeline-entry {
 #prefs-form {
 	font-size:11px;
 	margin:0px 10px;
-	padding:20px;
+	padding:10px;
 }
 
 	/*
@@ -752,6 +752,7 @@ div.timeline-entry {
 				border-bottom: 2px solid #D0D0D0;
 				clear:both;
 				background-color: #F0F0F0;
+				overflow: hidden;
 			}
 
 
@@ -819,12 +820,12 @@ div.timeline-entry {
 						A few specific pref "widgets" need special formatting
 					*/
 					input[type='text']#prefs-user-stylesheet {
-						width:100px;
+						width:80px;
 					}
-					input[type='text']#prefs-refresh-interval {
+					input[type='text']#network-refreshinterval {
 						width:20px;
 					}
-					input[type='text']#prefs-opacity-percentage {
+					input[type='text']#window-alpha {
 						width:30px;
 						text-align:right;
 					}

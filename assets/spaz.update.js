@@ -166,8 +166,19 @@ Spaz.Update.compareVersions = function(current, newest) {
 };
 
 
+Spaz.Update.deleteExisting = function() {
+	var existingFile = air.File.applicationStorageDirectory.resolvePath("Spaz-Newest.air");
+	if (existingFile.exists) {
+		air.trace('Existing file; will now delete')
+		existingFile.deleteFile();
+	}
+};
+
+
 
 Spaz.Update.downloadNewest = function(url) {
+
+	// Spaz.Update.deleteExisting();
 
 	var urlReq = new air.URLRequest(url);
 	var urlStream = new air.URLStream();
@@ -198,6 +209,7 @@ Spaz.Update.downloadNewest = function(url) {
 		
 		
 		var file = air.File.applicationStorageDirectory.resolvePath("Spaz-Newest.air");
+		
 		var fileStream = new air.FileStream();
 		fileStream.open(file, air.FileMode.WRITE);
 		fileStream.writeBytes(fileData, 0, fileData.length);

@@ -230,6 +230,12 @@ Spaz.Prefs.changeMethods = {
 	'network-refreshinterval'  : {
 		setUI: function(value){
 			$('#network-refreshinterval').val(parseInt(value)/60000);
+			
+			var minutes = parseInt(value)/60000;
+			var refperhour = 60/minutes;
+			var numreqs = Math.ceil(refperhour * 3);
+			
+			$('#refreshRateInfoValue').text(numreqs.toString())
 		},
 		onChange: function(value) {},
 		check: function(value) {

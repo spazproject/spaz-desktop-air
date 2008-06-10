@@ -7,7 +7,7 @@ TODO:
 * Feature: option to NOT save password
 * auto-completing usernames when typing "@" or "d "
 * Feature: block users
-* snap-to-edge of screen	
+* snap-to-edge of screen
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:spry="http://ns.adobe.com/spry">
@@ -27,11 +27,11 @@ TODO:
 	<script src="assets/jquery/jquery.moreSelectors.js" type="text/javascript"></script>
 	<script src="assets/jquery/jquery.scrollTo.js" type="text/javascript"></script>
 	<script src="assets/jquery/jquery.array.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/jquery/jquery.intercept.1.0.2.js" type="text/javascript" charset="utf-8"></script>
+	<!-- // <script src="assets/jquery/jquery.intercept.1.0.2.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="assets/jquery/jquery.intercept.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.positionBy.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.ajaxQueue.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.highlight-2.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/jquery/Template.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script src="assets/jquery/jquery.menu.js" type="text/javascript" charset="utf-8"></script>
@@ -71,6 +71,8 @@ TODO:
 	<script src="assets/spaz.prefs.js"  type="text/javascript"></script>
 	<script src="assets/spaz.update.js" type="text/javascript"></script>
 	<script src="assets/spaz.info.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="assets/spaz.intercept.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script src="assets/spaz.menus.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz.windows.js" type="text/javascript" charset="utf-8"></script>
@@ -378,32 +380,32 @@ TODO:
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
-										<label for="markdown-enabled" class="checkbox">Parse Markdown in messages</label> <span class="restart-required">*</span>
+										<label for="markdown-enabled" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="minimize-systray" value="1"
 											id="window-minimizetosystray" />
-										<label for="minimize-systray" class="checkbox">Minimize to Systray</label> <span class="restart-required">*</span>
+										<label for="minimize-systray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="minimize-background" value="1"
 											id="window-minimizeonbackground" />
-										<label for="minimize-background" class="checkbox">Minimize when in background</label> <span class="restart-required">*</span>
+										<label for="minimize-background" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="maximize-foreground" value="1"
 											id="window-restoreonactivate" />
-										<label for="maximize-foreground" class="checkbox">Restore when in foreground</label> <span class="restart-required">*</span>
+										<label for="maximize-foreground" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="notification-popups" value="1"
 											id="window-shownotificationpopups" />
-										<label for="notification-popups" class="checkbox">Show notification popups</label> <!-- <span class="restart-required">*</span> -->
+										<label for="notification-popups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="timeline-scrollonupdate" value="1"
 											id="timeline-scrollonupdate" />
-										<label for="timeline-scrollonupdate" class="checkbox">Scroll to top when updates received</label> <!-- <span class="restart-required">*</span> -->
+										<label for="timeline-scrollonupdate" class="checkbox">Scroll to top on refresh</label> <!-- <span class="restart-required">*</span> -->
 									</div>
 									
 								</div>
@@ -446,7 +448,10 @@ TODO:
 										<label for="refresh-interval">Refresh interval</label>
 										<input type="text" name="refresh-interval" id="network-refreshinterval"
 											value="5" maxlength="2" size="2" /> minutes
-
+											<span id="refreshRateInfo">
+												– <span id="refreshRateInfoValue">##</span> API reqs/hour
+											</span>
+										
 									</div>
 									<div class="formrow">
 										<input type="checkbox" name="handle-http-auth" value="1"

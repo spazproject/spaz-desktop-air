@@ -99,8 +99,8 @@ Spaz.Section.search = {
 	lastcheck:0,
 	currdata: null,
  	prevdata: null,
-	autoload: true,
-	canclear: true,
+	autoload: false,
+	canclear: false,
 	mincachetime:1,
 	
 	lastquery:null,
@@ -109,31 +109,35 @@ Spaz.Section.search = {
 
 		if ($('#search-for').val().length>0) {
 
+			// clear the existing results if this is a new query
 			if ( this.lastquery !=  $('#search-for').val() ) {			
 
 				$('#'+Spaz.Section.search.timeline+' .timeline-entry').remove();
-			
-				Spaz.UI.statusBar("Searching for '"+$('#search-for').val()+"'…");
-				Spaz.UI.showLoading();
-			
-				var url = 'http://summize.com/search.json';
-				var data =	{
-								"rpp"	:50,
-								"q"		:encodeURI($('#search-for').val()),
-							};
-				$.get(url, data, this.onAjaxComplete)
-
+				
 			}
+			
+			Spaz.UI.statusBar("Searching for '"+$('#search-for').val()+"'…");
+			Spaz.UI.showLoading();
+		
+			var url = 'http://summize.com/search.json';
+			var data =	{
+							"rpp"	:50,
+							"q"		:encodeURI($('#search-for').val()),
+						};
+			$.get(url, data, this.onAjaxComplete)
 
 		}
 		
 	},
 	onAjaxComplete: function(data,msg){
 		
+		Spaz.Section.search.lastquery
+		
 		var data = JSON.parse(data);
 		Spaz.dump(data);
 		
 		var term = data.query;
+		Spaz.Section.search.lastquery = term;
 		
 		if (data && data.results) {
 			

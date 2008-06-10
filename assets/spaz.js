@@ -169,9 +169,13 @@ Spaz.initialize = function() {
 	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
 	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);
 	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.MOVE, Spaz.Windows.onWindowMove);
-	
 	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate);
 
+
+	/*
+		Set up event delegation stuff
+	*/
+	Spaz.Intercept.init();
 
 	/*
 		Start check for updates process
@@ -180,147 +184,6 @@ Spaz.initialize = function() {
 		Spaz.Update.go();
 	}
 	
-	
-	// ***************************************************************
-	// Event delegation handling
-	// ***************************************************************
-	$('body').intercept('mouseover', {
-			'.user-screen-name[title]':function() {
-				Spaz.UI.showTooltip(this, $(this).attr('title'));
-			},
-			'.user-image[title]':function() {
-				Spaz.UI.showTooltip(this, $(this).attr('title'));
-			},
-			'a.inline-link':function() {
-				Spaz.UI.showTooltip(this, "Open "+$(this).attr('href')+" in a browser window", $(this).attr('href'));
-			},
-			'a[title]':function() {
-				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
-				// air.trace(this.outerHTML);
-			},
-			'a[user-screen_name]':function() {
-				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
-			}
-		})
-		
-		.intercept('mouseout', {
-			'[title]':function() {
-				Spaz.UI.hideTooltips();
-			}
-		})
-		
-		.intercept('click', {
-			'#friendslist-showfriends':function() {
-				$('#timeline-followers').fadeOut();
-				$('#timeline-friendslist').fadeIn();
-			},
-			'#friendslist-showfollowers':function() {
-				$('#timeline-friendslist').fadeOut();
-				$('#timeline-followers').fadeIn();
-			},
-			'#search-go':function() {
-				Spaz.Section.search.build();
-			},
-			'#mainMenu-help':function() {
-				Spaz.UI.showHelp();
-			},
-			'#mainMenu-prefs':function() {
-				Spaz.UI.showPrefs();
-			},
-			'#mainMenu-about':function() {
-				Spaz.UI.showAbout();
-			},
-			'#mainMenu-view-toggle': function(){
-				Spaz.UI.toggleTimelineFilter();
-			},
-			'#mainMenu-view-reloadCurrentView': function(){
-				Spaz.UI.reloadCurrentTab(true);
-				Spaz.restartReloadTimer();
-			},
-			'#mainMenu-view-markAsReadCurrentView': function(){
-				Spaz.UI.markCurrentTimelineAsRead();
-			},
-			'#mainMenu-view-clearReloadCurrentView': function(){
-				Spaz.UI.clearCurrentTimeline();
-				Spaz.UI.reloadCurrentTab(true);
-				Spaz.restartReloadTimer();
-			},
-			'#mainMenu-sendDM': function() {
-				Spaz.UI.prepDirectMessage('');
-			},
-			'#mainMenu-sendReply': function() {
-				Spaz.UI.prepReply('');
-			},
-			'#mainMenu-followSpaz': function(attribute){
-				Spaz.Data.followUser('spaz');
-			},
-			'a[href]':function() {
-				var url = $(this).attr('href');
-				openInBrowser(url);
-				return false;
-			},
-			'.user-screen-name':function() {
-				var url = 'http://twitter.com/'+$(this).attr('user-screen_name');
-				openInBrowser(url);
-			},
-			'.user-image':function() {
-				var url = 'http://twitter.com/'+$(this).attr('user-screen_name');
-				openInBrowser(url);
-			},
-			'.status-action-fav':function() {
-				Spaz.Data.makeFavorite($(this).attr('entry-id'))
-			},
-			'.status-action-dm':function() {
-				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
-			},
-			'.status-action-reply':function() {
-				Spaz.UI.prepReply($(this).attr('user-screen_name'));
-			},
-			'.status-action-del':function() {
-				Spaz.Data.destroyStatus($(this).attr('entry-id'))
-			},
-			'.directory-action-follow': function(){
-				Spaz.Data.followUser($(this).attr('user-screen_name'));
-			},
-			'.directory-action-unfollow': function(){
-				Spaz.Data.stopFollowingUser($(this).attr('user-screen_name'));
-			},
-			'.directory-user-location': function() {
-				Spaz.UI.showLocationOnMap($(this).text());
-			},
-			'.timeline-entry':function() {
-				Spaz.UI.selectEntry(this);
-			},
-			'.timeline-entry *':function() { // this one needs to be last so the more specific ones above take precedence
-				// $('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
-				var entry = $(this).parents('.timeline-entry');
-				Spaz.UI.selectEntry(entry);
-				// entry.addClass('ui-selected');
-			},
-			'a':function() {
-				Spaz.dump(this.outerHTML);
-				if ($(this).attr('href')) {
-					openInBrowser($(this).attr('href'));
-				}
-				return false;
-			}
-			// '#header-label':function() {
-			//	Spaz.UI.showMainMenu($(this));
-			// },
-		})
-		.intercept('contextmenu', {
-			// 'div.timeline-entry .user, div.timeline-entry .user-image, div.timeline-entry .user-screen-name':function() {
-			'.user,.user-image,.user-screen-name,a[user-screen_name]':function() {
-				// air.trace(this.outerHTML);
-				var screen_name = $(this).attr('user-screen_name');
-				Spaz.UI.showUserContextMenu($(this), screen_name);
-			},
-			'a[href]':function() {
-				var url = $(this).attr('href');
-				Spaz.UI.showLinkContextMenu($(this), url);
-			},
-		})
-	// end intercept
 
 	Spaz.UI.setSelectedTab($('#tab-friends')[0]);
 	
