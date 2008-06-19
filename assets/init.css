@@ -60,18 +60,6 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
     display:none;
 }
 
-div.search-menu {
-    text-align:center;
-    background:#202020;
-    color:#FFFFCC;
-    padding:3px 0 3px 0;
-}
-
-div.search-menu form {
-    padding:0px;
-    margin:0px;
-}
-
 .highlight {
     background:#EEEEAA;
     color:#000000;

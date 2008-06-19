@@ -540,21 +540,22 @@ Prefs form
 div.formrow {
 	white-space: nowrap;
 	clear:both;
+    margin-bottom:5px;
 }
 
 #prefs-form label {
-	min-width:60px;
-	text-align:right;
-	margin-right:5px;
-	font-weight:bold;
+/*  min-width:60px;
+    text-align:right;
+    margin-right:5px;
+*/	font-weight:bold;
 	display:block;
-	float:left;
-	padding:5px;
+/*  float:left;*/
+/*    padding:5px;*/
 }
 
-#prefs-form input[type='password'],
-#prefs-form input[type='text'],
-#prefs-form select {
+input[type='password'],
+input[type='text'],
+select {
 	border:1px solid #666;
 	padding:2px;
 	background-color:#ffffcc;
@@ -603,6 +604,7 @@ input[type='text']#prefs-opacity-percentage {
 	width:30px;
 	text-align:right;
 }
+
 #prefs-update-button {
 	font-size:12px;
 }
@@ -1097,3 +1099,19 @@ div.context-menu li:hover {
 	height: 20em;
 }
 
+
+
+/*
+  This is special formatting for the search menu
+*/
+div.search-menu {
+    text-align:center;
+    background:#202020;
+    color:#FFFFCC;
+    padding:1px 0 1px 0;
+}
+
+div.search-menu form {
+    padding:0px;
+    margin:0px;
+}

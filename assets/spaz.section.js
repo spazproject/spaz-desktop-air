@@ -112,7 +112,7 @@ Spaz.Section.search = {
 			// clear the existing results if this is a new query
 			if ( this.lastquery !=  $('#search-for').val() ) {			
 
-				$('#'+Spaz.Section.search.timeline+' .timeline-entry').remove();
+				$('#'+this.timeline+' .timeline-entry').remove();
 				
 			}
 			
@@ -122,7 +122,7 @@ Spaz.Section.search = {
 			var url = 'http://summize.com/search.json';
 			var data =	{
 							"rpp"	:50,
-							"q"		:encodeURI($('#search-for').val()),
+							"q"		:$('#search-for').val(),
 						};
 			$.get(url, data, this.onAjaxComplete)
 

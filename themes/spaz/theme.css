@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import "jquery-ui/jquery-ui.css";
 
 /*
 	Setting up some basics here
@@ -358,6 +359,21 @@ a, a:link, .clickable {
 							top:  -4px;
 							font-size:16px;
 						}
+						
+						/*
+						  This is special formatting for the search menu
+						*/
+						div.search-menu {
+                            text-align:center;
+                            background:#202020;
+                            color:#FFFFCC;
+                            padding:3px 0 3px 0;
+                        }
+
+                        div.search-menu form {
+                            padding:0px;
+                            margin:0px;
+                        }
 
 
 		/*
@@ -784,9 +800,9 @@ div.timeline-entry {
 					/*
 						Buncha junk for various form fields, really only used in the Preferences section
 					*/
-					#prefs-form input[type='password'],
-					#prefs-form input[type='text'],
-					#prefs-form select {
+					input[type='password'],
+					input[type='text'],
+					select {
 						border:1px solid #666;
 						padding:4px;
 						width:125px;

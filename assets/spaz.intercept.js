@@ -54,6 +54,9 @@ Spaz.Intercept.init = function() {
 			'#search-go':function(e) {
 				Spaz.Section.search.build();
 			},
+			'#search-help':function(e) {
+				openInBrowser('http://summize.com/operators');
+			},
 			'#mainMenu-help':function(e) {
 				Spaz.UI.showHelp();
 			},
@@ -87,6 +90,26 @@ Spaz.Intercept.init = function() {
 			'#mainMenu-followSpaz':function(e) {
 				Spaz.Data.followUser('spaz');
 			},
+			
+			
+			// user context menu handlers
+			'#userContextMenu-viewProfile':function(e) {
+				Spaz.Sys.openInBrowser('http://twitter.com/'+$(this).attr('user-screen_name'))
+			},
+			'#userContextMenu-follow':function(e) {
+				Spaz.Data.followUser($(this).attr('user-screen_name'));
+			},
+			'#userContextMenu-unfollow':function(e) {
+				Spaz.Data.stopFollowingUser($(this).attr('user-screen_name'));
+			},
+			'#userContextMenu-sendReply':function(e) {
+				Spaz.UI.prepReply($(this).attr('user-screen_name'));
+			},
+			'#userContextMenu-sendDM':function(e) {
+				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
+			},
+			
+			
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
 				openInBrowser(url);
@@ -142,7 +165,12 @@ Spaz.Intercept.init = function() {
 					openInBrowser($(this).attr('href'));
 				}
 				return false;
-			}
+			},
+			
+			'document':function(e){
+				$('#userContextMenu').hide();
+			},
+			
 			// '#header-label':function(e) {
 			//	Spaz.UI.showMainMenu($(this));
 			// },

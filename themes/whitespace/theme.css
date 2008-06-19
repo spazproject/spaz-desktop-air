@@ -510,16 +510,17 @@ legend {
 div.formrow {
 	white-space: nowrap;
 	clear:both;
+	margin-bottom:5px;
 }
 
 #prefs-form label {
-	min-width:75px;
-	text-align:right;
-	margin-right:5px;
+/*  min-width:75px;*/
+/*  text-align:right;*/
+/*  margin-right:5px;*/
 	font-weight:bold;
 	display:block;
-	float:left;
-	padding:5px;
+/*  float:left;*/
+/*    padding:5px;*/
 	color:#999999;
 }
 #prefs-form label.checkbox {
@@ -535,9 +536,9 @@ option {
 	font-family:sans-serif;
 	size:.9em;
 }
-#prefs-form input[type='password'],
-#prefs-form input[type='text'],
-#prefs-form select {
+input[type='password'],
+input[type='text'],
+select {
 	border:1px solid #CCCCCC;
 	color: #999999;
 	background-color:#FFFFEE;
@@ -576,6 +577,26 @@ input[type='button']:hover, input[type='submit']:hover {
 	background-color:#999999;
 	border-color:#999999;
 	color:#000000;
+}
+
+/*
+	A few specific pref "widgets" need special formatting
+*/
+input[type='text']#prefs-user-stylesheet {
+	width:80px;
+}
+input[type='text']#network-refreshinterval {
+	width:20px;
+}
+input[type='text']#window-alpha {
+	width:30px;
+	text-align:right;
+}
+
+#prefs-user-stylesheet-button, #prefs-user-stylesheet-clear {
+	padding:2px;
+	font-size:10px;
+	margin:0px;
 }
 
 #prefs-update-button {
@@ -1036,4 +1057,18 @@ div.context-menu li:hover {
 	color:#ffffff;
 	cursor: pointer;
 	-khtml-border-radius:5px;
+}
+
+
+/*
+  This is special formatting for the search menu
+*/
+div.search-menu {
+    text-align:center;
+    padding:3px 0 3px 0;
+}
+
+div.search-menu form {
+    padding:0px;
+    margin:0px;
 }

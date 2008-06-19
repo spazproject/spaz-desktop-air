@@ -745,6 +745,9 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 
 Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 	if (!screen_name) {return false;}
+	
+	air.trace(screen_name)
+	
 	var el = jq[0];
 	
 	Spaz.dump(el);
@@ -758,36 +761,15 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 	$('#userContextMenu').css('left', event.pageX)
 		.css('top',  event.pageY)
 		.show();
-	
-	
-	$('#userContextMenu .menuitem').unbind();
+		
+	$('#userContextMenu .menuitem').attr('user-screen_name', screen_name);
 
-
-	$('#userContextMenu-viewProfile').one('click', {screenName:screen_name}, function(event) {
-		Spaz.Sys.openInBrowser('http://twitter.com/'+event.data.screenName)
-	});
-	$('#userContextMenu-follow').one('click', {screenName:screen_name}, function(event) {
-		Spaz.Data.followUser(event.data.screenName);
-	});
-	$('#userContextMenu-unfollow').one('click', {screenName:screen_name}, function(event) {
-		Spaz.Data.stopFollowingUser(event.data.screenName);
-	});
-	$('#userContextMenu-sendReply').one('click', {screenName:screen_name}, function(event) {
-		Spaz.UI.prepReply(event.data.screenName);
-	});
-	$('#userContextMenu-sendDM').one('click', {screenName:screen_name}, function(event) {
-		Spaz.UI.prepDirectMessage(event.data.screenName);
-	});
-	// $('#userContextMenu-block').one('click', {user:screen_name}, function(event) {
-	// 	Spaz.Data.blockUser(user);
-	// });
 	
 	// air.trace('Set one-time click event on #userContextMenu');
 	$(document).one('click', function() {
 		$('#userContextMenu').hide();
 	});
 	
-	// air.trace('set one-time link context menu close event for click on document');
 };
 
 
