@@ -9,17 +9,35 @@ Spaz.Cache.sources  = {};
 Spaz.Cache.statuses = {};
 Spaz.Cache.screenNames = [];
 
+// 'username':{ 'count':0 }
+// this isn't used yet, but it really should be
+Spaz.Cache.screenNamesAccesses = {};
 
+Spaz.Cache.maxScreenNames = 300;
 
 Spaz.Cache.buildScreenNameCache = function() {
 	$('[user-screen_name]').each( function() {
 		Spaz.Cache.addScreenName($(this).attr('user-screen_name'))
 	})
+	
+	var numEntries = Spaz.Cache.screenNames.length		
+	if (numEntries > Spaz.Prefs.get('screennames-cache-max')) {
+	// if (numEntries > Spaz.Cache.maxScreenNames) {
+		var diff = numEntries - Spaz.Prefs.get('screennames-cache-max');
+		// var diff = numEntries - Spaz.Cache.maxScreenNames;
+		Spaz.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
+		// air.trace("numEntries is "+ numEntries + " > " + Spaz.Cache.maxScreenNames + "; removing last "+diff+" entries");
+		Spaz.Cache.screenNames.splice(0, diff);
+	}
+	
+	
+	Spaz.dump('Spaz.Cache.screenNames = '+Spaz.Cache.screenNames.toString() + ' ['+Spaz.Cache.getScreenNamesCount()+']');
 };
 
 Spaz.Cache.addScreenName = function(name) {
 	if (Spaz.Cache.screenNames.indexOf(name) == -1) {
 		Spaz.Cache.screenNames.push(name)
+		Spaz.dump('Added "'+name+'". Number of screen names is '+Spaz.Cache.getScreenNamesCount());
 	}
 };
 
@@ -27,11 +45,17 @@ Spaz.Cache.delScreenName = function(name) {
 	if (Spaz.Cache.screenNames.indexOf(name)) {
 		air.trace('Spaz.Cache.delScreenName not yet implemented');
 	}
+	
 };
 
 Spaz.Cache.getScreenNames = function() {
 	return Spaz.Cache.screenNames;
 }
+
+Spaz.Cache.getScreenNamesCount = function() {
+	return Spaz.Cache.screenNames.length;
+}
+
 
 Spaz.Cache.getScreenNamesAsTags = function() {
 	var tagnames = [];
@@ -42,7 +66,6 @@ Spaz.Cache.getScreenNamesAsTags = function() {
 	Spaz.dump(tagnames);
 	return tagnames;
 };
-
 
 
 

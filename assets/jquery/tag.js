@@ -206,6 +206,8 @@
 				tagsElm.val(workingTags.join(settings.separator));
 				tagsElm.blur().focus();
 				setSelection();
+				
+				
 			}
 
 			function handleKeys(ev) {

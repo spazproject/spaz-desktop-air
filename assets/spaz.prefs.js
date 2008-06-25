@@ -45,6 +45,8 @@ Spaz.Prefs.defaultPreferences = {
 	'timeline-scrollonupdate':true,
 	
 	'timeline-maxentries':200,
+
+	'screennames-cache-max':300,
 	
 	'checkupdate':true,
 	'checkupdate-testversions':false,
