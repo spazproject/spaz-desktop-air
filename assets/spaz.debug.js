@@ -22,7 +22,7 @@ Spaz.Debug.setEnable = function(state) {
 };
 
 Spaz.Debug.dump = function(msg, type) {
-	if ( Spaz.Prefs.get('debug-enabled') ) {
+	if ( Spaz.Prefs && Spaz.Prefs.get('debug-enabled') ) {
 		
 		if (!type) {
 			type = 'info';

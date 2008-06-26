@@ -26,7 +26,7 @@ Spaz.Prefs.defaultPreferences = {
 	'window-showcontextmenus':true,
 	'window-tooltiphidedelay':8000,
 	
-	'theme-userstylesheet':null,
+	// 'theme-userstylesheet':null,
 	'theme-basetheme':'spaz',
 
 	'sound-enabled':true,
@@ -200,16 +200,16 @@ Spaz.Prefs.changeMethods = {
 	},
 
 
-	'theme-userstylesheet':{
-		setUI: function(value){
-			$('#theme-userstylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
-		},
-		onChange: function(value) {
-			if (value) {
-				$('#UserCSSOverride').text(Spaz.Themes.loadUserStylesFromURL(value));
-			}
-		}
-	},
+	// 'theme-userstylesheet':{
+	// 	setUI: function(value){
+	// 		$('#theme-userstylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
+	// 	},
+	// 	onChange: function(value) {
+	// 		if (value) {
+	// 			$('#UserCSSOverride').text(Spaz.Themes.loadUserStylesFromURL(value));
+	// 		}
+	// 	}
+	// },
 	'theme-basetheme':{
 		setUI: function(value){
 			$('#theme-basetheme').val(value);

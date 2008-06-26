@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title>CSS Editor</title>
+	<title>User CSS Editor</title>
 	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
 	<style type="text/css" media="screen">
@@ -15,13 +15,19 @@
 			padding:5px;
 		}
 	</style>
-
+	
 	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/jquery/jquery.dimensions.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.themes.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/json2.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript" charset="utf-8">
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+	</script>
 
 	<script type="text/javascript" charset="utf-8">
 
@@ -41,7 +47,12 @@
 			// alert('hi! '+$('#css').val())
 			
 			
-			$(window.opener.document.getElementById('UserCSSOverride')).text( $('#css').val() )
+			$(window.opener.document.getElementById('UserCSSOverride')).text( $('#css').val() );
+			// save the userstylesheet to the user's css file
+			
+			var csspath = Spaz.Themes.getUserCSSFile().url;
+			Spaz.Sys.setFileContents(csspath, $('#css').val() );
+			
 			// getUserCSS()
 			// alert(window.opener.document.getElementById('UserCSSOverride').innerText)
 		}
@@ -76,14 +87,14 @@
 </head>
 
 <body id="cssEditorWindow">
-	<h1>CSS Editor</h1>
+	<h1>User CSS Editor</h1>
 	<div id="content">
 		<form action="poop" method="get">
 		<div id="buttons">
 			<input type="button" name="save" value="Save" id="save"		onclick="setUserCSS()" />
 			<input type="button" name="reset" value="Reset" id="reset"	onclick="getUserCSS()" />
-			
-			<span style="color:red">CSS Does Not Get Saved Yet</span>
+			<a class="clickable" onClick="openInBrowser('http://funkatron.com/spaziki/User-CSS-Hacks/')" title="Load the Spaziki CSS hacks page">Get &amp; share CSS hacks</a>
+			<!-- <span style="color:red">CSS Does Not Get Saved Yet</span> -->
 		</div>
 		<!-- <input type="text" name="csscode" value="" id="css" /> -->
 		<textarea name="csscode" id="css">hi</textarea>

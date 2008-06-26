@@ -27,6 +27,9 @@ Spaz.Themes.init = function() {
 
 	$('#theme-basetheme').val(Spaz.Prefs.get('theme-basetheme'));
 	Spaz.Themes.setCurrentTheme();
+	
+	// load the user.css file
+	Spaz.Themes.loadUserCSS();
 };
 
 
@@ -51,34 +54,44 @@ Spaz.Themes.userCSSSelected = function(event) {
 Spaz.Themes.setUserStyleSheet = function(stylestr, url) {
 	Spaz.Prefs.set('theme-userstylesheet', url);
 	$('#UserCSSOverride').text(stylestr);
-	$('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
+	// $('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
+	
+	// save the userstylesheet to the user's css file
+	var csspath = Spaz.Themes.getUserCSSFile().url;
+	Spaz.Sys.setFileContents(csspath, stylestr);
 }
 
+
+Spaz.Themes.loadUserCSS = function() {
+	
+	var usercssfile = Spaz.Themes.getUserCSSFile();
+	
+	if (usercssfile.exists) {
+		$('#UserCSSOverride').text(Spaz.Themes.loadUserStylesFromURL(usercssfile.url));
+	}
+	
+};
+
+
+Spaz.Themes.getUserCSSFile = function() {
+	return air.File.applicationStorageDirectory.resolvePath('user.css')
+};
 
 
 Spaz.Themes.loadUserStylesFromURL = function(fileurl) {
-	var usercssfile = new air.File(fileurl);
-	Spaz.dump('NativePath:' + usercssfile.nativePath);
-	
-	var stream = new air.FileStream();
-	if (usercssfile.exists) {
-		Spaz.dump('opening stream')
-		stream.open(usercssfile, air.FileMode.READ);
-		Spaz.dump('readUTFBytes')
-		stylestr = stream.readUTFBytes(stream.bytesAvailable);
-		Spaz.dump(stylestr)
-		return stylestr;
-	} else {
-		Spaz.dump('chosen file '+ fileurl +'does not exist')
-		return false;
-	}
+	return Spaz.Sys.getFileContents(fileurl);
 }
+
+
 
 Spaz.Themes.clearUserStyleSheet = function() {
 	Spaz.Prefs.set('theme-userstylesheet', '');
 	$('#UserCSSOverride').text('');
-	$('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
+	// $('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
 }
+
+
+
 
 /**
 * Styleswitch stylesheet switcher built on jQuery

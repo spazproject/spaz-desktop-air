@@ -1181,7 +1181,46 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 
 		
 		// Spaz.dump('Post conversion:'+this.innerHTML);
+		
+		// ******************************
+		// Support for tiny URL rewriting
+		// ******************************
 
+		// We save this as it will be used in the response status callback
+		var divElt = this;
+
+		// We save the text as it could change in the loop due to async callbacks
+		var txt = divElt.innerHTML;
+
+		// Iterate over tiny URL pattern
+		var tinyURLRE = /http:\/\/tinyurl.com([\w\/]*)/g;
+		var matchArray = null;
+		while (matchArray = tinyURLRE.exec(txt)) {
+			air.trace("Getting content of URL " + matchArray[1]);
+
+			// Get the tiny URL
+			var tinyURL = matchArray[0];
+
+			// Now we make a request to obtain the response URL
+			var stream = new air.URLStream();
+			stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, function(event) {
+				if (event.status == 200) {
+				    // Here we get the value to rewrite
+				    var targetURL = event.responseURL;
+				    var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
+				    var targetDomain = targetURL.replace(slicerRE, "$2");
+				    air.trace("Got a response status event for tiny url " + tinyURL);
+				    $(divElt).find("a[href*=" + tinyURL + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
+				}
+			});
+
+			// Perform load
+			stream.load(new air.URLRequest(tinyURL));
+			air.trace("Decoding tiny URL " + tinyURL);
+		}
+		
+		
+		
 	});
 	
 	

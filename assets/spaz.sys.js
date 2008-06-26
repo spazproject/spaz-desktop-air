@@ -90,6 +90,26 @@ Spaz.Sys.getFileContents = function(path) {
 };
 
 
+/*
+	@TODO: should really wrap the business end of this in a try/catch
+*/
+Spaz.Sys.setFileContents = function(path, content, serialize) {
+	
+	if (serialize) {
+		content = JSON.stringify(content);
+	}
+	
+	Spaz.dump('setFileContents for '+path+ ' to "' +content+ '"');
+	
+	var f = new air.File(path);
+	var fs = new air.FileStream();
+	fs.open(f, air.FileMode.WRITE);
+	fs.writeUTFBytes(content);
+	fs.close();
+};
+
+
+
 Spaz.Sys.openInBrowser = function(url) {
 	Spaz.dump('opening '+url);
 	var request = new air.URLRequest(url);

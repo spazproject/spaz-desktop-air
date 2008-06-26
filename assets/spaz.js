@@ -101,6 +101,7 @@ Spaz.initialize = function() {
 
 	// insert theme CSS links
 	Spaz.Themes.init();
+	
 
 	/*************************** 
 	 * Apply prefs 

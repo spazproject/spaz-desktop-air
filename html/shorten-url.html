@@ -15,10 +15,12 @@
 	<script src="app:/assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz.shortlink.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" charset="utf-8">
-		// map spaz stuff from remote window to local
-		Spaz.Prefs = window.opener.Spaz.Prefs;
 	
+	<script type="text/javascript" charset="utf-8">
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+	</script>
+	
+	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 			// Spaz.dump("val:"+$('#shorten-original-link').val());
 			$('#shorten-original-link').focus();
