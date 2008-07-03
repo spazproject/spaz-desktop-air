@@ -84,6 +84,9 @@ Spaz.Intercept.init = function() {
 			'#mainMenu-sendDM':function(e) {
 				Spaz.UI.prepDirectMessage('');
 			},
+			'#mainMenu-shortenLink':function(e) {
+				Spaz.UI.showShortLink();
+			},
 			'#mainMenu-sendReply':function(e) {
 				Spaz.UI.prepReply('');
 			},
