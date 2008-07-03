@@ -318,8 +318,6 @@ Spaz.UI.sendUpdate = function() {
 }
 
 
-
-
 Spaz.UI.decodeSourceLinkEntities = function(str) {
 	str = str.replace(/&gt;/gi, '>');
 	str = str.replace(/&lt;/gi, '<');
@@ -1059,18 +1057,12 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		Spaz.dump('Set timeout for notifications')
 		setTimeout(Spaz.UI.notifyOfNewEntries, 1000);
 	}
-	
-	// $("#"+timelineid + ' .timeline-entry').each( function(i) {
-	// 	$(this).bind('click', {'jqentry':$(this)}, Spaz.UI.selectEntry);
-	// })
 
 	// apply even class
 	$("#"+timelineid + ' .timeline-entry:nth-child(even)').addClass('even');
-	// Spaz.dump($("#"+timelineid + ' .timeline-entry:nth-child(even)')[0].outerHTML);
 	
 	// apply odd class
 	$("#"+timelineid + ' .timeline-entry:nth-child(odd)').addClass('odd');
-	// Spaz.dump($("#"+timelineid + ' .timeline-entry:nth-child(odd)')[0].outerHTML);
 
 	
 	
@@ -1100,17 +1092,12 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	// convert post times to relative (these all need to be updated each time)
 	$(".timeline-entry", "#"+timelineid).each(function(i) {
 		var entrytime = $(".entry-time", this).text();
-		// Spaz.dump(entrytime);
 		$(".status-created-at", this).html(get_relative_time( entrytime ));
-		// Spaz.dump($(".timeline-entry").html());
 	});
 	
 	// clean up the .status-text
 	$("div.needs-cleanup div.status-text", "#"+timelineid).each(function(i){
 
-		// Spaz.dump('Pre-conversion:'+this.innerHTML);
-		
-		
 		// fix extra ampersand encoding
 		this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
 		
@@ -1122,12 +1109,9 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 			// Markdown conversion with Showdown
 			this.innerHTML = md.makeHtml(this.innerHTML);
 			
-			// Spaz.dump('Pre-onclick conversion:'+this.innerHTML);
-			
 			// put title attr in converted Markdown link
 			this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
 		}
-		// air.trace(this.innerHTML);
 
 		// convert inline links
 		var before = this.innerHTML;
@@ -1150,40 +1134,21 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		*/
 		var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
 		this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
-		if (before != this.innerHTML) {
-			// air.trace('BEFORE inline-links change NO HTTP: '+before);
-			// air.trace('AFTER inline-links change: '+this.innerHTML);
-		}
 		
 		
 		// email addresses
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
-		// air.trace('now emails:'+this.innerHTML);
 	
 		// convert @username reply indicators
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
-		// air.trace('now usernames:'+this.innerHTML)
 
 		// air.trace('converting emoticons');
 		Spaz.dump(Emoticons.SimpleSmileys);
-		// air.trace('BEFORE this.innerHTML = '+this.innerHTML);
 		this.innerHTML = Emoticons.SimpleSmileys.convertEmoticons(this.innerHTML)
-		// air.trace('AFTER this.innerHTML = '+this.innerHTML);
 
-
-		// // inline non-http:// links like foo.com or bar.foo.edu
-		// var before = this.innerHTML;
-		// this.innerHTML = this.innerHTML.replace(/(^|\s)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+[a-zA-Z]{2,6}\.?)([^a-zA-Z]|$)/gi, '$1<a href="http://$2" class="inline-link" title="Open http://$2 in a browser window">$2</a>$4');
-		// if (before != this.innerHTML) {
-		// 	// Spaz.dump("BEFORE:\n"+before);
-		// 	// Spaz.dump("AFTER:\n"+this.innerHTML);
-		// }
-
-		
-		// Spaz.dump('Post conversion:'+this.innerHTML);
 		
 		// ******************************
-		// Support for tiny URL rewriting
+		// Support for shortened URL rewriting
 		// ******************************
 
 		// We save this as it will be used in the response status callback
@@ -1192,35 +1157,41 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		// We save the text as it could change in the loop due to async callbacks
 		var txt = divElt.innerHTML;
 
-		// Iterate over tiny URL pattern
-		var tinyURLRE = /http:\/\/tinyurl.com([\w\/]*)/g;
-		var matchArray = null;
-		while (matchArray = tinyURLRE.exec(txt)) {
-			air.trace("Getting content of URL " + matchArray[1]);
+		var domains = ["tinyurl.com","is.gd","snipr.com","snurl.com","moourl.com","url.ie","snipurl.com"];
 
-			// Get the tiny URL
-			var tinyURL = matchArray[0];
+		for (var i in domains)
+		{
+			// Get domain
+			var domain = domains[i];
 
-			// Now we make a request to obtain the response URL
-			var stream = new air.URLStream();
-			stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, function(event) {
-				if (event.status == 200) {
-				    // Here we get the value to rewrite
-				    var targetURL = event.responseURL;
-				    var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
-				    var targetDomain = targetURL.replace(slicerRE, "$2");
-				    air.trace("Got a response status event for tiny url " + tinyURL);
-				    $(divElt).find("a[href*=" + tinyURL + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
-				}
-			});
+			// Iterate over URL pattern
+			var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\/]*)", "g");
+			var matchArray = null;
+			while (matchArray = urlRE.exec(txt)) {
+				air.trace("Getting content of URL " + matchArray[1]);
 
-			// Perform load
-			stream.load(new air.URLRequest(tinyURL));
-			air.trace("Decoding tiny URL " + tinyURL);
+				// Get the URL
+				var url = matchArray[0];
+
+				// Now we make a request to obtain the response URL
+				var stream = new air.URLStream();
+				stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, function(event) {
+					if (event.status == 200) {
+						// Here we get the value to rewrite
+						var targetURL = event.responseURL;
+						var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
+						var targetDomain = targetURL.replace(slicerRE, "$2");
+						air.trace("Got a response status event for url " + url + ": "+targetURL);
+						$(divElt).find("a[href*=" + url + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
+					}
+				});
+
+				// Perform load
+				stream.load(new air.URLRequest(url));
+				Spaz.dump("Decoding " + domain + " URL " + url);
+			}
+		
 		}
-		
-		
-		
 	});
 	
 	
@@ -1238,9 +1209,6 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 			var href;
 			if (href = jqsourcelink.attr('href')) {
 				jqsourcelink.attr('title', 'Open '+href+' in a browser window')
-							// .bind('click',       { 'url': href },     Spaz.Sys.openInBrowser)	
-							// .removeAttr('href');
-							// .bind('contextmenu', { 'jq' : jqsourcelink, 'url':href }, Spaz.Handlers.showContextMenu)
 			}
 
 		} else {
@@ -1274,10 +1242,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	if (!$('#'+timelineid).is('.dm-replies')) {	
 		if ($("#"+timelineid + ' .timeline-entry.needs-cleanup').length > 0 ) {
 			$("#"+timelineid + ' .timeline-entry.needs-cleanup').each( function() {
-				// $(this).slideDown({'duration':100, 'queue':'slideDownNewStatuses'});
 				$(this).slideDown({'duration':100});
 			}).css('display', '');
-			// $.fxqueue('slideDownNewStatuses').start();
 		}
 	}
 	
