@@ -51,6 +51,8 @@ Spaz.Prefs.defaultPreferences = {
 	'checkupdate':true,
 	'checkupdate-testversions':false,
 	
+	'url-shortener':'isgd',
+	
 	'twitter-source':'spaz',
 }
 
@@ -308,6 +310,16 @@ Spaz.Prefs.changeMethods = {
 	},
 	
 	
+	// 'url-shortener': {
+	// 	setUI: function(value){
+	// 		$('#url-shortener').attr('checked', value);
+	// 	},
+	// 	onChange: function(value) {},
+	// 	check: function(value) {
+	// 		Spaz.Prefs.set('url-shortener', Boolean(Spaz.Prefs.get('url-shortener'))) 
+	// 	}
+	// },
+	
 	'debug-enabled':{
 		setUI: function(value){
 			$('#debug-enabled').attr('checked', value);
@@ -394,6 +406,11 @@ Spaz.Prefs.initUI = function() {
 		//Spaz.dump('set #username val to'+$('#username').val());
 		$('#password').val(Spaz.Prefs.getPass());
 	}
+	
+	
+	
+	
+	
 	$('#window-alpha').bind('change', Spaz.Prefs.setFromUI);
 	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
 	$('#window-minimizetosystray').bind('change', Spaz.Prefs.setFromUI);
