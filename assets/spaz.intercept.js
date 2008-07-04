@@ -12,27 +12,74 @@ Spaz.Intercept.init = function() {
 
 	$('body').intercept('mouseover', {
 			'.user-screen-name[title]':function(e) {
-				Spaz.UI.showTooltip(this, $(this).attr('title'));
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'el'	:this,
+					'str'	:$(this).attr('title'),
+					// 'previewurl':href,
+				});
+				tt.show();
+
+				// Spaz.UI.showTooltip(this, $(this).attr('title'));
 			},
 			'.user-image[title]':function(e) {
-				Spaz.UI.showTooltip(this, $(this).attr('title'));
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'el'	:this,
+					'str'	:$(this).attr('title'),
+					// 'previewurl':href,
+				});
+				tt.show();
+
+
+				// Spaz.UI.showTooltip(this, $(this).attr('title'));
 			},
 			'a.inline-link':function(e) {
 				var href = $(this).attr('href');
-				Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
+				// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'el'	:this,
+					'str'	:"Open "+href+" in a browser window",
+					'previewurl':href,
+				});
+				tt.show();
+				
+				// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
 			},
 			'a .highlight':function(e) {
 				if ($(this).parents('a').attr('href')) {
 					var href = $(this).parents('a').attr('href');
-					Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
+					var tt = new Spaz_Tooltip({
+						'e'		:e,
+						'el'	:this,
+						'str'	:"Open "+href+" in a browser window",
+						'previewurl':href,
+					});
+					tt.show();
+					// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
 				}
 			},
 			'a[title]':function(e) {
-				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
-				// air.trace(this.outerHTML);
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'el'	:this,
+					'str'	:$(this).attr('title'),
+					'previewurl':$(this).attr('href'),
+				});
+				tt.show();
+				
+				// Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
+
 			},
 			'a[user-screen_name]':function(e) {
-				Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'el'	:this,
+					'str'	:$(this).attr('title'),
+					'previewurl':$(this).attr('href'),
+				});
+				tt.show();
 			},
 		})
 	

@@ -186,7 +186,12 @@ Spaz.initialize = function() {
 	}
 	
 
-	Spaz.UI.setSelectedTab($('#tab-friends')[0]);
+	if (Spaz.Prefs.get('timeline-loadonstartup')) {
+		$('#tab-friends').trigger('click');
+	}
+
+	// Spaz.UI.setSelectedTab([0]);
+	// 
 	
 	Spaz.dump('ended document.ready()');
 		

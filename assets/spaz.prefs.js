@@ -25,6 +25,7 @@ Spaz.Prefs.defaultPreferences = {
 	
 	'window-showcontextmenus':true,
 	'window-tooltiphidedelay':8000,
+	'window-tooltipdelay':500,
 	
 	// 'theme-userstylesheet':null,
 	'theme-basetheme':'spaz',
@@ -45,6 +46,8 @@ Spaz.Prefs.defaultPreferences = {
 	'timeline-scrollonupdate':true,
 	
 	'timeline-maxentries':200,
+	
+	'timeline-loadonstartup':true,
 
 	'screennames-cache-max':300,
 	
@@ -52,6 +55,8 @@ Spaz.Prefs.defaultPreferences = {
 	'checkupdate-testversions':false,
 	
 	'url-shortener':'isgd',
+	
+	
 	
 	'twitter-source':'spaz',
 }
