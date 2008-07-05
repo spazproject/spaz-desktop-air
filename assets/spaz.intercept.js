@@ -142,6 +142,12 @@ Spaz.Intercept.init = function() {
 			},
 			
 			
+			// prefs buttons handlers
+			'#prefs-autosetrefresh-button':function(e) {
+				Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
+			},
+			
+			
 			// user context menu handlers
 			'#userContextMenu-viewProfile':function(e) {
 				Spaz.Sys.openInBrowser('http://twitter.com/'+$(this).attr('user-screen_name'))

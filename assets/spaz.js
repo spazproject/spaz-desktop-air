@@ -185,6 +185,11 @@ Spaz.initialize = function() {
 		Spaz.Update.go();
 	}
 	
+	
+	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+		Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
+	}
+	
 
 	if (Spaz.Prefs.get('timeline-loadonstartup')) {
 		$('#tab-friends').trigger('click');

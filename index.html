@@ -437,7 +437,7 @@ TODO:
 										<label for="checkupdate-testversions" class="checkbox">Check for test versions</label>
 									</div>
 									<div class="formrow">
-										<input type="button" name="user-stylesheet-button" value="Check Now &bull;"
+										<input type="button" name="checkupdate-button" value="Check Now &bull;"
 											id="prefs-checkupdate-button" onclick="Spaz.Update.go()" />
 
 									</div>
@@ -454,8 +454,18 @@ TODO:
 											<span id="refreshRateInfo">
 												– <span id="refreshRateInfoValue">##</span> API reqs/hour
 											</span>
-										
 									</div>
+									<div class="formrow">
+										<input type="button" name="autosetrefresh-button" value="Get rate from Twitter &bull;"
+											id="prefs-autosetrefresh-button" />
+
+									</div>									
+									<div class="formrow">
+										<input type="checkbox" name="autoadjust-refresh-interval" value="1"
+											id="network-autoadjustrefreshinterval" />
+										<label for="autoadjust-refresh-interval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
+									</div>
+
 									<div class="formrow">
 										<input type="checkbox" name="handle-http-auth" value="1"
 											id="network-airhandlehttpauth" />

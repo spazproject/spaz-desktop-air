@@ -33,6 +33,7 @@ Spaz.Prefs.defaultPreferences = {
 	'sound-enabled':true,
 	
 	'network-refreshinterval'  : 300000,
+	'network-autoadjustrefreshinterval' : true,
 	'network-airhandlehttpauth': false,
 	
 	'debug-enabled':false,
@@ -44,9 +45,7 @@ Spaz.Prefs.defaultPreferences = {
 	'sound-wilhelm'	: '/assets/sounds/wilhelm.mp3',
 	
 	'timeline-scrollonupdate':true,
-	
 	'timeline-maxentries':200,
-	
 	'timeline-loadonstartup':true,
 
 	'screennames-cache-max':300,
@@ -257,6 +256,18 @@ Spaz.Prefs.changeMethods = {
 			return value*60000;
 		}
 	},
+	'network-autoadjustrefreshinterval': {
+		setUI: function(value){
+			$('#network-autoadjustrefreshinterval').attr('checked', value);
+		},
+		onChange: function(value) {
+			Spaz.dump('Setting Auto Adjust Refresh Interval to '+value)
+			window.htmlLoader.authenticate = value;
+		},
+		check: function(value) {
+			Spaz.Prefs.set('network-autoadjustrefreshinterval', Boolean(Spaz.Prefs.get('network-autoadjustrefreshinterval'))) 
+		}
+	},
 	'network-airhandlehttpauth': {
 		setUI: function(value){
 			$('#network-airhandlehttpauth').attr('checked', value);
@@ -428,6 +439,7 @@ Spaz.Prefs.initUI = function() {
 	$('#checkupdate-testversions').bind('change', Spaz.Prefs.setFromUI);
 	$('#network-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
 	$('#network-airhandlehttpauth').bind('change', Spaz.Prefs.setFromUI);
+	$('#network-autoadjustrefreshinterval').bind('change', Spaz.Prefs.setFromUI);
 	$('#debug-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
 	$('#timeline-scrollonupdate').bind('change', Spaz.Prefs.setFromUI);
@@ -436,7 +448,9 @@ Spaz.Prefs.initUI = function() {
 
 
 Spaz.Prefs.setFromUI = function(event) {
-	Spaz.dump(event);
+	// air.trace(JSON.stringify(event));
+	
+	// air.trace('event.srcElement.id='+event.srcElement);
 	
 	var id = event.srcElement.id
 	
@@ -639,7 +653,23 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 
 
 
-
+Spaz.Prefs.setRateLimit = function( rateinfo, data ) {
+	air.trace(JSON.stringify(rateinfo));
+	
+	var limit   = rateinfo.hourly_limit;
+	var per_min = ( 60 / (limit/3) );
+	var per_ms  = per_min*60000;
+	
+	air.trace("per_min = "+per_min );
+	air.trace("per_ms  = "+per_ms );
+	
+	Spaz.UI.statusBar('Twitter says limit is '+limit+'/hour. Set refresh rate to '+per_min+'/min');
+	
+	Spaz.Prefs.changeMethods['network-refreshinterval'].setUI(per_ms);
+	
+	Spaz.Prefs.set('network-refreshinterval', per_ms);
+	
+}
 
 
 

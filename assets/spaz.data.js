@@ -38,6 +38,7 @@ Spaz.Data.url_stop_notifications  = "https://twitter.com/notifications/remove/{{
 Spaz.Data.url_favorites_create = "https://twitter.com/favourings/create/{{ID}}.json";
 Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.json";
 Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials.json";
+Spaz.Data.url_ratelimit_status   = "https://twitter.com/account/rate_limit_status.json";
 
 
 /**
@@ -138,14 +139,14 @@ Spaz.Data.update = function(msg, username, password) {
 			$('#updateButton').val(oldButtonLabel);
 			
 			if (xhr.readyState < 3) {
-				Spaz.dump("Update ERROR: Timeout");
-				Spaz.UI.statusBar("Update ERROR: Timeout")
+				Spaz.dump("Update ERROR: Server did not confirm update");
+				Spaz.UI.statusBar("ERROR: Server did not confirm update")
 				return;
 			}
 			
 			if (xhr.status != 200) { // sanity check
 	 			Spaz.dump("ERROR: " + rstr);
-				Spaz.UI.statusBar("Update failed");
+				Spaz.UI.statusBar("ERROR: Server could not post update");
 				Spaz.UI.flashStatusBar();				
 			} else {
 				
@@ -332,7 +333,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 			Spaz.dump(data);
 			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
 			Spaz.UI.reloadCurrentTab();
-			Spaz.UI.statusBar("Stop following " + userid);
+			Spaz.UI.statusBar("No longer following " + userid);
 		},
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
@@ -358,8 +359,8 @@ Spaz.Data.stopFollowingUser = function(userid) {
 Spaz.Data.onAjaxComplete = function(xhr, rstr) {
 	Spaz.UI.hideLoading();
 	if (xhr.readyState < 3) {
-		Spaz.dump("ERROR: Timeout");
-		Spaz.UI.statusBar("ERROR: Timeout")
+		Spaz.dump("ERROR: Server did not respond");
+		Spaz.UI.statusBar("ERROR: Server did not respond")
 		return;
 	}
 	Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
@@ -377,19 +378,19 @@ Spaz.Data.onAjaxComplete = function(xhr, rstr) {
 Spaz.Data.onAjaxError = function(xhr,rstr) {
 	Spaz.dump("ERROR: " + rstr);
 	if (xhr.readyState < 3) {
-		Spaz.dump("ERROR: Timeout");
+		Spaz.dump("ERROR: Server did not respond.");
 	}
 	if (xhr.responseText) {
 		try {
 			var errorInfo = JSON.parse(xhr.responseText)
 			if (errorInfo.error) {
-				Spaz.UI.statusBar('Error: "' + errorInfo.error+'"');
+				Spaz.UI.statusBar('ERROR: "' + errorInfo.error+'"');
 			} else {
-				Spaz.UI.statusBar('Unknown error');
+				Spaz.UI.statusBar('ERROR: Server returned invalid data');
 			}
 		} catch(e) {
 			Spaz.dump('Error parsing for JSON in error response');
-			Spaz.UI.statusBar('Unknown error');
+			Spaz.UI.statusBar('ERROR: Server returned invalid data');
 		}
 	}
 	// Spaz.UI.statusBar('Error : ' + xhr.responseText);
@@ -463,14 +464,14 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 
 		if (xhr.status == 400) {
 			Spaz.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
-			Spaz.Data.$ajaxQueueErrors.push("Exceeded request limit. See Spaz FAQ");
+			// Spaz.Data.$ajaxQueueErrors.push("Exceeded request limit. See Spaz FAQ");
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
 
 		else if (xhr.status == 401) {
 			Spaz.dump("ERROR: 401 error - Not Authenticated. Check your username and password.  Response from Twitter:\n"+xhr.responseText);
-			Spaz.Data.$ajaxQueueErrors.push("401 error - Not Authenticated. Check your username and password.");
+			Spaz.Data.$ajaxQueueErrors.push("Not Authenticated. Check your username and password.");
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
@@ -478,12 +479,15 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 
 		else if (xhr.responseText.length < 0) {
 			Spaz.dump("Error:response empty from "+url);
-			// Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
+			Spaz.Data.$ajaxQueueErrors.push("Empty response from server for "+url)
 			// Spaz.Data.onAjaxComplete(url, false);
 			// return;
 		}
 
 		try {
+			
+			// air.trace(xhr.responseText);
+			
 			var data = JSON.parse(xhr.responseText);
 			
 			Spaz.dump(data)
@@ -495,21 +499,27 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 				// Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
 				// return;
 			} else {
+				/* This is a little hack for summize data */
 				if (data.results) {
 					data = data.results;
 				}
-				Spaz.dump(data);
 				
-				if (data[0].error) {
-					Spaz.dump("ERROR: "+data[0].error+" ["+data[0].request+"]");
-					Spaz.Data.$ajaxQueueErrors.push("ERROR:"+data[0].error);
+				// air.trace('DATA->'+JSON.stringify(data));
+				Spaz.dump(data);
+				// air.trace('ERROR->'+data.error)
+				
+				// if (data[0].error) {
+				// 	air.trace("ERROR: "+data[0].error+" ["+data[0].request+"]");
+				// 	Spaz.Data.$ajaxQueueErrors.push("ERROR:"+data[0].error);
+				// } else if (data.error) {
+				if (data.error) {
+					Spaz.dump("ERROR: "+data.error+" ["+data.request+"]");
+					Spaz.Data.$ajaxQueueErrors.push("Twitter says: \""+data.error+"\"");
+				} else {
+					Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
 				}
 				
-				// Spaz.Data.$ajaxQueueErrors.push("Empty response "+url)
-				// Spaz.Data.onAjaxComplete(url, false);
-				// return;
 				
-				Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
 			}
 
 		} catch(e) {
@@ -521,17 +531,21 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 		Spaz.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
 		Spaz.dump('section.urls.length:'+section.urls.length);
 		Spaz.dump('Spaz.Data.$ajaxQueueStorage.length:'+Spaz.Data.$ajaxQueueStorage.length);
+		Spaz.dump('Spaz.Data.$ajaxQueueErrors.length:'+Spaz.Data.$ajaxQueueErrors.length);
 	
 	}
 	
 	if (Spaz.Data.$ajaxQueueFinished >= section.urls.length) {
 	
-		Spaz.dump('setting $finished to 0');
+		// air.trace('setting $finished to 0');
 		Spaz.Data.$ajaxQueueFinished = 0;
 
-		Spaz.dump('adding entries');
-		for (var i in Spaz.Data.$ajaxQueueStorage) {
-			section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
+		// air.trace('adding entries');
+
+		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
+			for (var i in Spaz.Data.$ajaxQueueStorage) {
+				section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
+			}		
 		}
 
 		Spaz.dump('cleaning up timeline');
@@ -539,7 +553,9 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 
 		Spaz.dump('hiding loading');
 		Spaz.UI.hideLoading();
-	
+		
+		// air.trace(JSON.stringify(Spaz.Data.$ajaxQueueErrors))
+		
 		if (Spaz.Data.$ajaxQueueErrors.length > 0) {
 			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
 			Spaz.UI.alert(errors, "Error");
@@ -648,6 +664,40 @@ Spaz.Data.searchSummize = function(query) {
 	});
 	
 }
+
+
+
+Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
+	var user = Spaz.Prefs.getUser();
+	var pass = Spaz.Prefs.getPass();
+	
+	Spaz.UI.showLoading();
+	Spaz.UI.statusBar('Asking Twitter for rate limit info…');
+	
+	var xhr = $.ajax({
+		complete:Spaz.Data.onAjaxComplete,
+		error:Spaz.Data.onAjaxError,
+		success:function(data){
+			air.trace(data);
+			
+			json = JSON.parse(data);
+			
+			
+			if (callback) {
+				callback(json, cbdata);
+			}
+		},
+		beforeSend:function(xhr){
+			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Cookie", "");
+			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
+		},
+		processData:false,
+		type:"GET",
+		url:Spaz.Data.url_ratelimit_status,
+	});
+}
+
 
 
 

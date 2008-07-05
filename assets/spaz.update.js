@@ -24,6 +24,13 @@ Spaz.Update.go = function() {
 	
 	Spaz.Update.getNewestVersion();
 	
+	/*
+		if (checktestversion) {
+			
+		}
+	*/
+	
+	
 };
 
 
@@ -50,7 +57,7 @@ Spaz.Update.getCurrentVersion = function() {
  * @type String
  * @see Spaz.Update.descriptorUrl
  */
-Spaz.Update.getNewestVersion = function() {
+Spaz.Update.getNewestVersion = function(url) {
 	
 	if (Spaz.Prefs.get('checkupdate-testversions')) {
 		var url = Spaz.Update.descriptorUrlTests
