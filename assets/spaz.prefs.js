@@ -668,6 +668,7 @@ Spaz.Prefs.setRateLimit = function( rateinfo, data ) {
 	Spaz.Prefs.changeMethods['network-refreshinterval'].setUI(per_ms);
 	
 	Spaz.Prefs.set('network-refreshinterval', per_ms);
+	Spaz.Section.friends.mincachetime = per_ms;
 	
 }
 
