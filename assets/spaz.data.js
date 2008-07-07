@@ -84,6 +84,11 @@ Spaz.Data.verifyPassword = function() {
 				Spaz.Prefs.setCurrentUser();
 				Spaz.UI.statusBar("Verification succeeded");
 				Spaz.UI.flashStatusBar();
+				
+				if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+					Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
+				}
+								
 			} else {
 				// Spaz.verified = false;
 				Spaz.dump('verification failed');
@@ -670,6 +675,11 @@ Spaz.Data.searchSummize = function(query) {
 Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
+	
+	if (!user || !pass) {
+		air.trace('Dropping out of getRateLimitInfo because user or pass is not set');
+		return false;
+	}
 	
 	Spaz.UI.showLoading();
 	Spaz.UI.statusBar('Asking Twitter for rate limit info…');

@@ -1163,7 +1163,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		// We save the text as it could change in the loop due to async callbacks
 		var txt = divElt.innerHTML;
 
-		var domains = ["tinyurl.com","is.gd","snipr.com","snurl.com","moourl.com","url.ie","snipurl.com"];
+		var domains = ["tinyurl.com","is.gd","snipr.com","snurl.com","moourl.com","url.ie","snipurl.com","xrl.us"];
 
 		for (var i in domains)
 		{
