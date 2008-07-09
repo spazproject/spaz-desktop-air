@@ -40,6 +40,8 @@ Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.
 Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials.json";
 Spaz.Data.url_ratelimit_status   = "https://twitter.com/account/rate_limit_status.json";
 
+// Ping.fm API key for Spaz
+Spaz.Data.apikey_pingfm = '';
 
 /**
 temp storage for a section's ajax queries

@@ -243,13 +243,18 @@ span.statusbar-username {
 	font-weight:bold;
 }
 
+/*
+	The wrapper for the little loading animation
+*/
 #loading {
 	float:right;
 	display:none;
-}
-#loading img {
+	overflow: visible;
 	height:10px;
-	width:10px;
+	width: 10px;
+	background:url('images/loading.gif');
+	background-repeat: no-repeat;
+	
 }
 
 
@@ -344,6 +349,17 @@ div.status-actions {
 	font-size:9px;
 	display:inline;
 }
+.status-action {
+    width: 12px;
+    height:10px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+    .status-action-fav { background:url('images/status-fav-off.png'); }
+    .status-action-dm { background:url('images/status-dm.png'); }
+    .status-action-reply { background:url('images/status-reply.png'); }
+    
 div.status-actions a, div.status-link a {
 	color: #9999CC;
 }
@@ -770,7 +786,15 @@ img.tab-icon {
 	margin-bottom:-1px;
 	width: 12px;
 	height:12px;
+	display:block;
 }
+#tab-friends .tab-icon { background:url('images/tab-icon-timeline.png'); }
+#tab-user .tab-icon { background:url('images/tab-icon-user.png'); }
+#tab-public .tab-icon { background:url('images/tab-icon-public.png'); }
+#tab-search .tab-icon { background:url('images/tab-icon-search.png'); }
+#tab-friendslist .tab-icon { background:url('images/tab-icon-following.png'); }
+#tab-followerslist .tab-icon { background:url('images/tab-icon-followers.png'); }
+#tab-prefs .tab-icon { background:url('images/tab-icon-prefs.png'); }
 
 #tooltip {
 	background-color:#000000;

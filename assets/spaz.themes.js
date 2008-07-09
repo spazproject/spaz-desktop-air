@@ -109,8 +109,12 @@ Spaz.Themes.setCurrentTheme = function() {
 		}
 	});
 
+	// change the paths for embedded imgs
 	$('img.tab-icon, #loading img, .status-actions img').each(function(i) {
-		this.src = this.src.replace(/\{theme-dir\}/, 'themes/'+Spaz.Prefs.get('theme-basetheme'));
+		// air.trace('SETTING EMBEDDED IMG PATHS');
+		// 		var themePath = Spaz.Themes.getPathByName( Spaz.Prefs.get('theme-basetheme') );
+		
+		this.src = this.src.replace(/\{theme-dir\}/, Spaz.Prefs.get('theme-basetheme'));
 	});
 
 }
@@ -157,12 +161,17 @@ Spaz.Themes.getThemePaths = function() {
 
 
 Spaz.Themes.getPathByName = function(themename) {
+	// air.trace('Looking for:'+themename);
+	
+	
 	for (i = 0; i < Spaz.Themes.themes.length; i++) {
+		// air.trace(JSON.stringify(Spaz.Themes.themes[i]))
 		if (Spaz.Themes.themes[i].themename == themename) {
+			// air.trace('same');
 			return Spaz.Themes.themes[i].themedir;
 		}
 	}
-	return null;
+	return false;
 }
 
 

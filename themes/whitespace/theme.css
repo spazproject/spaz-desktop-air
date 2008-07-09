@@ -245,13 +245,18 @@ span.statusbar-username {
 	font-weight:bold;
 }
 
+/*
+	The wrapper for the little loading animation
+*/
 #loading {
 	float:right;
 	display:none;
-}
-#loading img {
+	overflow: visible;
 	height:10px;
-	width:10px;
+	width: 10px;
+	background:url('images/loading.gif');
+	background-repeat: no-repeat;
+	
 }
 
 
@@ -338,7 +343,17 @@ div.status-actions {
 	font-size:10px;
 	float:right;
 }
+.status-action {
+    width:15px;
+    height:12px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
 
+    .status-action-fav { background:url('images/status-fav-off.png'); }
+    .status-action-dm { background:url('images/status-dm.png'); }
+    .status-action-reply { background:url('images/status-reply.png'); }
+    
 div.user-follow {
 	font-size:10px;
 	float:left;
@@ -783,7 +798,9 @@ img.tab-icon {
 	margin-bottom:-1px;
 	width:12px;
 	height:12px;
+	display:block;
 }
+
 
 #tooltip {
 	background-color:#e0e0e0;

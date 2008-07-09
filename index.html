@@ -172,7 +172,7 @@ TODO:
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)">
-					<img class="tab-icon" src="{theme-dir}/images/tab-icon-timeline.png" />
+					<span class="tab-icon"></span>
 				</li>
 
 				<!-- SENT STATUSES -->
@@ -180,7 +180,7 @@ TODO:
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-user" onclick="Spaz.UI.setSelectedTab(this)">
-					<img class="tab-icon" src="{theme-dir}/images/tab-icon-user.png" />
+					<span class="tab-icon"></span>
 				</li>
 				
 				<!-- PUBLIC -->
@@ -188,7 +188,7 @@ TODO:
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-public" onclick="Spaz.UI.setSelectedTab(this)">
-					<img class="tab-icon" src="{theme-dir}/images/tab-icon-public.png" />
+					<span class="tab-icon"></span>
 				</li>
 				
 				<!-- SEARCH -->
@@ -196,7 +196,7 @@ TODO:
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-search" onclick="Spaz.UI.setSelectedTab(this)">
-					<img class="tab-icon" src="{theme-dir}/images/tab-icon-search.png" />
+					<span class="tab-icon"></span>
 				</li>
 
 				<!-- Friendslist -->
@@ -204,7 +204,7 @@ TODO:
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)">
-					<img class="tab-icon" src="{theme-dir}/images/tab-icon-following.png" />
+					<span class="tab-icon"></span>
 				</li>
 				
 				<!-- Followerslist -->
@@ -212,15 +212,15 @@ TODO:
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)">
-					<img class="tab-icon" src="{theme-dir}/images/tab-icon-followers.png" />
+					<span class="tab-icon"></span>
 				</li>
 		
 				<!-- PREFS -->
-				<li class="TabbedPanelsTab" tabindex="0" id="tab-prefs" title="Preferences"
+				<li class="TabbedPanelsTab" tabindex="0" title="Preferences"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)" 
 					onmouseout="Spaz.UI.hideTooltips()"
-					onclick="Spaz.UI.setSelectedTab(this)">
-					<img class="tab-icon" src="{theme-dir}/images/tab-icon-prefs.png" />
+					id="tab-prefs" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
 				</li>
 			</ul>
 	
@@ -233,27 +233,6 @@ TODO:
 				<!-- FRIENDS AND YOU TIMELINE -->
 				<div class="TabbedPanelsContent" id="panel-friends">
 					<div spry:region="Spaz.Data.ds_friends" id="timeline-friends" class="timeline">
-						<!-- onmouseover="Spaz.UI.focusHandler()"
-						onmouseout="Spaz.UI.blurHandler()"
-						onclick="Spaz.UI.clickHandler()" -->
-						<!-- <ul id="classicMenu" class="jd_menu_vertical jd_menu_slate">
-							<li>Spaz &raquo;
-								<ul>
-									<li id="mainMenu-view">File</li>
-									<li id="mainMenu-view">View
-										<ul>
-											<li id="mainMenu-view-reloadCurrentView">Reload current view</li>
-											<li id="mainMenu-view-clearReloadCurrentView">Clear and reload current view</li>
-											<li id="mainMenu-view-toggle">Toggle tweets directed at you</li>
-										</ul>	
-									</li>
-									<li id="mainMenu-help">Help</li>
-									<li id="mainMenu-about">About</li>
-								</ul>
-							</li>
-						</ul> -->
-
-				
 					</div>
 					<!-- <div class="timeline-pager">
 						<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>				
@@ -515,7 +494,7 @@ TODO:
 		<!-- STATUSBAR -->
 		<div id="statusbar" onmousedown="Spaz.Windows.windowMove();">
 			<!-- LOADING -->
-			<span id='loading'><img src='{theme-dir}/images/loading.gif' /></span>
+			<span id='loading'><!-- <img src='{theme-dir}/images/loading.gif' /> --></span>
 			<span id='statusbar-text'>Ready</span>
 		</div>
 
@@ -532,18 +511,8 @@ TODO:
 
 
 		
-		<!-- <ul id="mainMenu">
-			<li>Item one
-				<ul>
-					<li>Subitem one</li>
-					<li>Subitem two</li>
-				</ul>
-			</li>
-			<li>Item two</li>
-		</ul> -->
 
 		<!-- suggestions popup -->
-		
 		<ul id="suggestions" style="display:none; left:15px;">
 			
 		</ul>
@@ -617,7 +586,7 @@ TODO:
 	</span>
 	
 	
-	
+	<!-- hidden iframe for classic sandbox bridging -->
 	<iframe style="display:none" src="tpl.html" 
 	    sandboxRoot="http://funkatron.com/local/" 
 	    documentRoot="app:/sandbox/"

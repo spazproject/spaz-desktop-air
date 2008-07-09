@@ -844,9 +844,9 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 		entryHTML = entryHTML + '		<div class="status-text" id="status-text-'+entry.id+'">'+entry.text+'</div>';
 		if (!isDM) {
 			entryHTML = entryHTML + '		<div class="status-actions">';
-			entryHTML = entryHTML + '			<img src="'+themeDir+'/images/status-fav-off.png" title="Make this message a favorite" class="status-action-fav clickable" id="status-'+entry.id+'-fav" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" />';
-			entryHTML = entryHTML + '			<img src="'+themeDir+'/images/status-dm.png" title="Send direct message to this user" class="status-action-dm clickable" id="status-'+entry.id+'-dm" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" />';
-			entryHTML = entryHTML + '			<img src="'+themeDir+'/images/status-reply.png" title="Send reply to this user" class="status-action-reply clickable" id="status-'+entry.id+'-reply" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" />';
+			entryHTML = entryHTML + '			<span title="Make this message a favorite" class="status-action status-action-fav clickable" id="status-'+entry.id+'-fav" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" ></span>';
+			entryHTML = entryHTML + '			<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+entry.id+'-dm" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" ></span>';
+			entryHTML = entryHTML + '			<span title="Send reply to this user" class="status-action status-action-reply clickable" id="status-'+entry.id+'-reply" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" ></span>';
 			if (isSent) {
 				entryHTML = entryHTML + '			<a title="Delete this message" class="status-action-del clickable" id="status-'+entry.id+'-del" entry-id="'+entry.id+'">del</a>';
 			}
@@ -858,7 +858,7 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 			entryHTML = entryHTML + '		</div>';
 		} else {
 			entryHTML = entryHTML + '		<div class="status-actions">';
-			entryHTML = entryHTML + '			<img src="'+themeDir+'/images/status-dm.png" title="Send direct message to this user" class="status-action-dm clickable" id="status-'+entry.id+'-dm" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" /></a>';
+			entryHTML = entryHTML + '			<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+entry.id+'-dm" entry-id="'+entry.id+'" user-screen_name="'+entry.user.screen_name+'" ></span>';
 			if (isSent) {
 				entryHTML = entryHTML + '			<a title="Delete this message" class="status-action-del clickable" id="status-'+entry.id+'-del" entry-id="'+entry.id+'">del</a>';
 			}
@@ -1163,7 +1163,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		// We save the text as it could change in the loop due to async callbacks
 		var txt = divElt.innerHTML;
 
-		var domains = ["tinyurl.com","is.gd","snipr.com","snurl.com","moourl.com","url.ie","snipurl.com","xrl.us"];
+		var domains = ["tinyurl.com","is.gd","snipr.com","snurl.com","moourl.com","url.ie","snipurl.com","xrl.us","bit.ly"];
 
 		for (var i in domains)
 		{

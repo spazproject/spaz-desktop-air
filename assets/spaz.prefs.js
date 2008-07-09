@@ -55,7 +55,9 @@ Spaz.Prefs.defaultPreferences = {
 	
 	'url-shortener':'isgd',
 	
+	'twitpic-noprompt':false,
 	
+	'services-pingfm-userappkey':'USERAPPKEYHERE',
 	
 	'twitter-source':'spaz',
 }
@@ -654,16 +656,16 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 
 
 Spaz.Prefs.setRateLimit = function( rateinfo, data ) {
-	air.trace(JSON.stringify(rateinfo));
+	Spaz.dump(JSON.stringify(rateinfo));
 	
 	var limit   = rateinfo.hourly_limit;
-	var per_min = ( 60 / (limit/3) );
+	var per_min = Math.ceil( ( 60 / (limit/3) ) );
 	var per_ms  = per_min*60000;
 	
 	air.trace("per_min = "+per_min );
 	air.trace("per_ms  = "+per_ms );
 	
-	Spaz.UI.statusBar('Twitter says limit is '+limit+'/hour. Set refresh rate to '+per_min+'/min');
+	Spaz.UI.statusBar('Twitter says limit is '+limit+'/hour. Will refresh every '+per_min+' min');
 	
 	Spaz.Prefs.changeMethods['network-refreshinterval'].setUI(per_ms);
 	

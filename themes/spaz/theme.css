@@ -258,11 +258,20 @@ a, a:link, .clickable {
 					margin-left:5px;
 				}
 					/* The image in the tab itself */
-					img.tab-icon {
+					.tab-icon {
 						margin-bottom:-1px;
 						width:18px;
 						height:18px;
+						display:block;
+						background-repeat: no-repeat;
 					}
+				    #tab-friends .tab-icon { background:url('images/tab-icon-timeline.png'); }
+				    #tab-user .tab-icon { background:url('images/tab-icon-user.png'); }
+				    #tab-public .tab-icon { background:url('images/tab-icon-public.png'); }
+				    #tab-search .tab-icon { background:url('images/tab-icon-search.png'); }
+				    #tab-friendslist .tab-icon { background:url('images/tab-icon-following.png'); }
+				    #tab-followerslist .tab-icon { background:url('images/tab-icon-followers.png'); }
+				    #tab-prefs .tab-icon { background:url('images/tab-icon-prefs.png'); }
 
 			/*
 				These are the content panels, wrapped inside a single container div
@@ -470,14 +479,12 @@ a, a:link, .clickable {
 			#loading {
 				float:right;
 				display:none;
+				height:10px;
+				width: 10px;
+				background:url('images/loading.gif');
+				background-repeat: no-repeat;
+				
 			}
-				/*
-					the loading image itself.
-				*/
-				#loading img {
-					height:10px;
-					width:10px;
-				}
 
 			#statusbar-text {}
 
@@ -690,6 +697,16 @@ div.timeline-entry {
 			font-size:10px;
 			float:right;
 		}
+		    .status-action {
+		        width:15px;
+		        height:12px;
+		        background-repeat: no-repeat;
+		        display: inline-block;
+		    }
+
+    		    .status-action-fav { background:url('images/status-fav-off.png'); }
+    		    .status-action-dm { background:url('images/status-dm.png'); }
+    		    .status-action-reply { background:url('images/status-reply.png'); }
 
 		/* the container for the "permalink" to the post */
 		div.status-link {
