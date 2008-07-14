@@ -5,6 +5,8 @@ Spaz.Prefs
 ************/
 if (!Spaz.Prefs) Spaz.Prefs = {};
 
+
+
 Spaz.Prefs.defaultPreferences = {
 	'usemarkdown':true,
 
@@ -47,17 +49,24 @@ Spaz.Prefs.defaultPreferences = {
 	'timeline-scrollonupdate':true,
 	'timeline-maxentries':200,
 	'timeline-loadonstartup':true,
+	'timeline-friends-getcount':40,
+	'timeline-replies-getcount':20,
+	'timeline-dm-getcount':10,
 
-	'screennames-cache-max':300,
+	'screennames-cache-max':150,
 	
 	'checkupdate':true,
 	'checkupdate-testversions':false,
 	
 	'url-shortener':'isgd',
+	'file-uploader':'twitpic',
 	
-	'twitpic-noprompt':false,
+	'services-twitpic-sharepassword':false,
 	
 	'services-pingfm-userappkey':'USERAPPKEYHERE',
+	'services-pingfm-enabled':true,
+	'services-pingfm-updatetype':'default',
+	
 	
 	'twitter-source':'spaz',
 }
@@ -518,9 +527,14 @@ Spaz.Prefs.resetPrefs = function() {
 
 
 Spaz.Prefs.get = function(key) {
-	// Spaz.dump("Getting pref key '"+key+"'");
-	// Spaz.dump("Value is "+Spaz.Prefs.preferences[key]);
-	return Spaz.Prefs.preferences[key];
+	// air.trace("Getting pref key '"+key+"'");
+	// air.trace("Value is "+Spaz.Prefs.preferences[key]);
+	if (Spaz.Prefs.preferences[key]) {
+		return Spaz.Prefs.preferences[key];
+	} else {
+		return false;
+	}
+	
 };
 
 
@@ -699,3 +713,4 @@ Spaz.Prefs.getRefreshInterval = function(){
 Spaz.Prefs.getHandleHTTPAuth = function() {
 	return Spaz.Prefs.get('network-airhandlehttpauth');
 }
+

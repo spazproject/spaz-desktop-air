@@ -280,6 +280,19 @@ Spaz.UI.prepDirectMessage = function(username) {
 	}
 };
 
+Spaz.UI.prepPhotoPost = function(url) {
+	var eb = $('#entrybox');
+	eb.focus();
+	if (url) {
+		eb.val(url+' desc');
+		eb[0].setSelectionRange(eb.val().length-4, eb.val().length);
+		return true;
+	} else {
+		return false;
+	}
+	
+}
+
 Spaz.UI.prepReply = function(username) {
 	var eb = $('#entrybox');
 	eb.focus();
@@ -358,6 +371,9 @@ Spaz.UI.autoReloadCurrentTab = function() {
 Spaz.UI.clearCurrentTimeline = function() {
 	Spaz.dump('clearing the current timeline');
 	var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
+
+	// reset the lastcheck b/c some timelines will use "since" parameters
+	section.lastcheck = 0;
 	
 	if (section.canclear) {
 		var timelineid = section.timeline;
@@ -1174,7 +1190,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 			var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\/]*)", "g");
 			var matchArray = null;
 			while (matchArray = urlRE.exec(txt)) {
-				air.trace("Getting content of URL " + matchArray[1]);
+				Spaz.dump("Getting content of URL " + matchArray[1]);
 
 				// Get the URL
 				var url = matchArray[0];
@@ -1187,10 +1203,15 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 						var targetURL = event.responseURL;
 						var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
 						var targetDomain = targetURL.replace(slicerRE, "$2");
-						air.trace("Got a response status event for url " + url + ": "+targetURL);
+						Spaz.dump("Got a response status event for url " + url + ": "+targetURL);
 						$(divElt).find("a[href*=" + url + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
 					}
 				});
+				stream.addEventListener(air.IOErrorEvent.IO_ERROR, function(event) {
+					var targetURL = event.responseURL;
+					air.trace('Request to '+event.responseURL+' returned an IRErrorEvent');
+					Spaz.dump(event);
+				})
 
 				// Perform load
 				stream.load(new air.URLRequest(url));

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>modal</title>
+	
+	<script type="text/javascript" charset="utf-8">
+		// see http://www.netlobo.com/url_query_string_javascript.html
+		function gup( name )
+		{
+			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			var regexS = "[\\?&]"+name+"=([^&#]*)";
+			var regex = new RegExp( regexS );
+			var results = regex.exec( window.location.href );
+			if( results == null )
+			  return "";
+			else
+			  return results[1];
+		}
+		
+		$().ready( function() {
+			var title = decodeURI(gup('title'));
+			var msg   = decodeURI(gup('msg'));
+            // var img   = decodeURI(gup('img'));
+			
+			$('#title').html(title)
+			$('#content').html(content);
+            // $('#icon').html(img);
+		});
+	</script>
+	
+	
+	<style type="text/css" media="screen">
+		html {
+			width: 100%;
+			height:100%;
+		}
+
+		body {
+			font-family:Tahoma, Arial, Helvetica, sans-serif;
+			margin:0px;
+			padding:0px;
+			width: 100%;
+			height:100%;
+			display:block;
+		}
+		
+		#container {
+			font-size:10pt;
+			border:10px solid #000;
+			color:#fff;
+			background-color: #000;
+			opacity: 0.8;
+			overflow:hidden;
+			-khtml-border-radius:15px; /* this is webkit-specific and gives us rounded corners*/
+			top:	0px; /* This has an effective 8px padding to show us the app dropshadow */
+			left:	0px; /* using all-four-sides positioning lets it expand properly on resizing */
+			bottom:	0px;
+			right:	0px;
+			position: fixed;
+		}
+		
+		#title {
+		    background-color: #333;
+		    font-size:24px;
+/*          border:5px solid #333;*/
+		    padding:5px 10px;
+		    -khtml-border-radius:15px;
+		    top:5px;
+		    left:5px;
+		    right:5px;
+		}
+		
+		#content {
+		    padding:5px 10px;
+		    
+		}
+	</style>
+	
+</head>
+
+<body>
+    <div id="container">
+        <div id="title">This is the title</div>
+        
+        <div id="content">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus nisl dolor, pulvinar id, pharetra a, egestas nec, ante. Duis scelerisque eleifend metus. Sed non odio id odio varius rutrum. Pellentesque congue commodo lacus. In semper pede lacinia felis. Morbi mollis molestie lorem. Morbi suscipit libero. Quisque ut erat sit amet elit aliquam nonummy. Donec tortor. Aliquam gravida ullamcorper pede. Praesent eros. Sed fringilla ligula sed odio pharetra imperdiet. Integer aliquet quam vitae nibh. Nam pretium, neque non congue vulputate, odio odio vehicula augue, sit amet gravida pede massa ac lectus. Curabitur a libero vitae dui sagittis aliquet. Ut suscipit. Curabitur accumsan sem a urna. Ut elit pede, vulputate sed, feugiat quis, congue sed, lacus.
+        </div>
+        
+    </div>
+
+</body>
+</html>

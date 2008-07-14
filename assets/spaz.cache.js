@@ -13,25 +13,24 @@ Spaz.Cache.screenNames = [];
 // this isn't used yet, but it really should be
 Spaz.Cache.screenNamesAccesses = {};
 
-Spaz.Cache.maxScreenNames = 300;
+// Spaz.Cache.maxScreenNames = 300;
 
 Spaz.Cache.buildScreenNameCache = function() {
 	$('[user-screen_name]').each( function() {
-		Spaz.Cache.addScreenName($(this).attr('user-screen_name'))
-	})
+		Spaz.Cache.addScreenName($(this).attr('user-screen_name'));
+	});
 	
-	var numEntries = Spaz.Cache.screenNames.length		
+	var numEntries = Spaz.Cache.screenNames.length;
+
 	if (numEntries > Spaz.Prefs.get('screennames-cache-max')) {
-	// if (numEntries > Spaz.Cache.maxScreenNames) {
 		var diff = numEntries - Spaz.Prefs.get('screennames-cache-max');
-		// var diff = numEntries - Spaz.Cache.maxScreenNames;
-		Spaz.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
-		// air.trace("numEntries is "+ numEntries + " > " + Spaz.Cache.maxScreenNames + "; removing last "+diff+" entries");
+		air.trace("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
+
 		Spaz.Cache.screenNames.splice(0, diff);
 	}
 	
 	
-	Spaz.dump('Spaz.Cache.screenNames = '+Spaz.Cache.screenNames.toString() + ' ['+Spaz.Cache.getScreenNamesCount()+']');
+	air.trace('Spaz.Cache.screenNames = '+Spaz.Cache.screenNames.toString() + ' ['+Spaz.Cache.getScreenNamesCount()+']');
 };
 
 Spaz.Cache.addScreenName = function(name) {

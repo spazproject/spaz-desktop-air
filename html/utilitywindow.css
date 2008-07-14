@@ -138,7 +138,7 @@ table.data td.value {
 /*
 	For Shorten URL
 */
-#shortenLink-form label {
+form label {
 	min-width:19%;
 	text-align:right;
 	margin-right:5px;
@@ -148,9 +148,13 @@ table.data td.value {
 	float:left;
 	padding:5px;
 }
-#shortenLink-form input[type='password'],
-#shortenLink-form input[type='text'],
-#shortenLink-form select {
+form label.checkbox {
+	float: none;
+	display:inline;
+}
+form input[type='password'],
+form input[type='text'],
+form select {
 	border:1px solid #666;
 	padding:4px;
 	width:75%;

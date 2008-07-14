@@ -53,12 +53,15 @@ Spaz.initialize = function() {
 
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
-
+	
 	/*************************** 
 	 * Load prefs 
 	 **************************/
 	air.trace('init prefs');
 	Spaz.Prefs.init();
+	
+	air.trace('init Sections');
+	Spaz.Section.init();
 	
 	// turn on debugging
 	if (Spaz.Prefs.get('debug-enabled')) {

@@ -41,7 +41,7 @@ Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials
 Spaz.Data.url_ratelimit_status   = "https://twitter.com/account/rate_limit_status.json";
 
 // Ping.fm API key for Spaz
-Spaz.Data.apikey_pingfm = '';
+Spaz.Data.apikey_pingfm = '4f6e7a44cf584f15193e1f4c04704465';
 
 /**
 temp storage for a section's ajax queries
@@ -594,6 +594,9 @@ Spaz.Data.getDataForUrl = function(url, section) {
 	
 	// var xhr = $.ajax(
 		
+	// if (url == Spaz.Data.url_friends_timeline) {
+	// 	data = {}
+	// }
 		
 	var xhr = $.ajax({
 		mode:'queue',

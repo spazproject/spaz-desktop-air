@@ -33,15 +33,14 @@ Spaz.Sys.setUserAgent = function(uastring) {
 
 Spaz.Sys.initNetworkConnectivityCheck = function() {
 	var monitor;
-	monitor = new air.URLMonitor(new air.URLRequest('http://twitter.com/statuses/user_timeline.json?id=spaztest&count=1'));
+	monitor = new air.URLMonitor(new air.URLRequest('http://twitter.com/help/test.json'));
 	monitor.addEventListener(air.StatusEvent.STATUS, announceStatus);
-	monitor.pollInterval = 15*1000;
+	monitor.pollInterval = 60*1000;
 	monitor.start();
 	
 	function announceStatus(e) {
 		Spaz.dump("Network status change. Current status: " + monitor.available);
 	}
-	
 };
 
 

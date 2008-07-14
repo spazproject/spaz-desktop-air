@@ -18,12 +18,15 @@ TODO:
 	<link rel="stylesheet" href="assets/init.css" type="text/css" media="screen" charset="utf-8" />
 
 	<script src="assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
-	
-
 	<script src="assets/json2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/date.format.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- jQuery libs -->
 	<script src="assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+
+	
+	
+	
 	<script src="assets/jquery/jquery.moreSelectors.js" type="text/javascript"></script>
 	<script src="assets/jquery/jquery.scrollTo.js" type="text/javascript"></script>
 	<script src="assets/jquery/jquery.array.js" type="text/javascript" charset="utf-8"></script>
@@ -34,11 +37,15 @@ TODO:
 	<script src="assets/jquery/jquery.highlight-2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
 	
+	<script src="assets/jquery/jquery-ui-personalized-1.5.2.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script src="assets/jquery/jquery.menu.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" href="assets/jquery/menu/style.css" type="text/css" media="screen" charset="utf-8" />
 	
 	<script src="assets/jquery/jquery.center.js" type="text/javascript" charset="utf-8"></script>	
 	<script src="assets/jquery/tag.js" type="text/javascript" charset="utf-8"></script>
+    
+    <script src="assets/jquery/jqXMLUtils.js" type="text/javascript" charset="utf-8"></script>
 
 
 	<!-- Notification popups libs -->
@@ -276,20 +283,6 @@ TODO:
 				<!-- LIST OF PEOPLE YOU ARE FOLLOWING -->
 				<div class="TabbedPanelsContent" id="panel-friendslist">
 					<div id="timeline-friendslist" class="timeline directory">
-						<table id="table-friendslist" class="data"> 
-						<thead> 
-						<tr> 
-						    <th>Name</th> 
-						    <th>URL</th> 
-							<!-- <th>&nbsp;</th>
-							<th>&nbsp;</th> -->
-						</tr> 
-						</thead> 
-						<tbody id="tbody-friendslist">
-
-
-						</tbody> 
-						</table>
 					</div>
 				</div>
 		
@@ -298,20 +291,6 @@ TODO:
 				<!-- LIST OF FOLLOWERS -->
 				<div class="TabbedPanelsContent" id="panel-followerslist">
 					<div id="timeline-followerslist" class="timeline directory">
-						<table id="table-followerslist" class="data"> 
-						<thead> 
-						<tr> 
-						    <th>Name</th> 
-						    <th>URL</th> 
-							<!-- <th>&nbsp;</th>
-							<th>&nbsp;</th> -->
-						</tr> 
-						</thead> 
-						<tbody id="tbody-followerslist">
-
-
-						</tbody> 
-						</table>
 					</div>
 				</div>
 				
@@ -584,6 +563,8 @@ TODO:
 	<span id="wilhelm">
 		WILHELM!!!
 	</span>
+	
+	<div id="spaz-dialog"></div>
 	
 	
 	<!-- hidden iframe for classic sandbox bridging -->

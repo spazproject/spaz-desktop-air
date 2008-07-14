@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Upload Image</title>
+	
+	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="app:/assets/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz.upload.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+	</script>
+	
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+
+			// get the pref
+			var service = Spaz.Prefs.get('file-uploader');
+			air.trace("service is "+ service);
+
+			var sharepass = Spaz.Prefs.get('services-twitpic-sharepassword');
+			air.trace("sharepass is "+ sharepass);
+			
+			// populate the dropdown
+			for (method in Spaz.Upload) {
+				if (method[0] != '$') {
+					if (method == service) {
+						$('#file-uploader').append('<option value="'+method+'" selected="selected">'+method+'</option>');
+						$('#extra-'+service).show();
+					} else {
+						$('#file-uploader').append('<option value="'+method+'">'+method+'</option>');
+						$('#extra-'+service).hide();
+					}
+				}
+			}
+			
+			// set the password sharing confirmation checkbox
+			$('#confirm-password-sharing').attr('checked', sharepass);
+						
+			
+			// bind service dropdown
+			$('#file-uploader').bind('change', function() {
+				air.trace($('#file-uploader').val());
+				Spaz.Prefs.set('file-uploader', $('#file-uploader').val());
+				
+				$('.service-extras').fadeOut();
+				$('#extra-'+service).fadeIn();
+				
+			});
+			
+			// bind password sharing checkbox dropdown
+			$('#confirm-password-sharing').bind('change', function() {
+				if ($('#confirm-password-sharing').attr('checked')) {
+					Spaz.Prefs.get('services-twitpic-sharepassword', true);
+				} else {
+					Spaz.Prefs.get('services-twitpic-sharepassword', false);
+				}
+			});
+			
+
+			
+			// Spaz.dump("val:"+$('#shorten-original-link').val());
+			// $('#shorten-original-link').focus();
+			// $('#shorten-original-link').val('http://');
+			// // Spaz.dump(air.Clipboard.generalClipboard.formats);
+			// if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
+			// 	var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
+			// 	if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
+			// 		$('#shorten-original-link').val(cliptext);
+			// 		Spaz.Shortlink[service](cliptext);
+			// 	}
+			// 	$('#shorten-original-link').select();
+			// }
+			
+			
+			// bind click to shorten action
+			$('#upload-button').bind('click', function() {
+				var service = Spaz.Prefs.get('file-uploader');
+				air.trace("service is "+ service);
+				Spaz.Upload[service]($('#shorten-original-link').val());
+			});
+			
+			// air.trace(air.NativeApplication.nativeApplication.spazPrefs);
+		})
+	</script>
+	
+	
+	<style type="text/css" media="screen">
+		#upload-droplet {
+			margin-left:auto;
+			margin-right:auto;
+			margin-bottom:10px;
+			border:3px dashed #666;
+			background:transparent;
+			-webkit-border-radius:10px;
+			font-size:56pt;
+			width:100px;
+			height:100px;
+			text-align:center;
+		}
+		#upload-droplet:hover {
+			background:#CCFFCC;
+			cursor:pointer;
+		}
+	</style>
+	
+</head>
+
+<body id="uploadWindow">
+
+<h1>Upload Image</h1>
+
+<div id="content">
+	
+	<div id="upload-droplet" title="Click to upload">
+		
+		&#x21E7;
+		
+	</div>
+	
+	
+	<form id="shortenLink-form" onsubmit="return false;">
+		<div class="formrow">
+			<label for="file-uploader">Service</label>
+			<select id="file-uploader" name="file-uploader" onChange="">
+				<!-- stuff goes here -->
+			</select>
+		</div>
+		
+		
+		
+		
+		<div class="formrow">
+			<label for="original-link">File</label>
+			<input type="text" name="file-url" id="file-url" />
+		</div>
+		<div class="formrow checkbox">
+			<label>&nbsp;</label>
+			<input type="checkbox" name="confirm-password-sharing" id="confirm-password-sharing" value="" />
+			<label for="confirm-password-sharing" class="checkbox">Share my Twitter password with Twitpic</label>
+		</div>
+		
+		<div id="extra-twitpic" class="formrow service-extras" style="text-align:center; margin-top:15px">
+			<input type="button" id="upload-button" name="upload" value="Upload &bull;" disabled="disabled" style="font-size:24pt" /> 
+		</div>
+		<div id="verification-result" align="center">&nbsp;</div>
+	</form>
+</div>
+</div>
+
+</body>
+</html>

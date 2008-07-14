@@ -11,4 +11,4 @@
 		 title="Follow this user">Follow</a></td>
 	<td><a class="clickable directory-action-unfollow" user-screen_name="${screen_name}"
 		 title="Stop following this user">Unfollow</a></td> -->
-</tr>
+</tr>tt

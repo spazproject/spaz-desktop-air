@@ -5,17 +5,17 @@
 	Setting up some basics here
 */
 html {
-	width: 100%;
-	height:100%;
+    width: 100%;
+    height:100%;
 }
 
 body {
 	font-family:Tahoma, Arial, Helvetica, sans-serif;
 	margin:0px;
 	padding:0px;
-	width: 100%;
-	height:100%;
-	display:block;
+    width: 100%;
+    height:100%;
+    display:block;
 }
 
 h1, h2, h3, h4, h5 {
@@ -60,7 +60,7 @@ a, a:link, .clickable {
 		left:	8px; /* using all-four-sides positioning lets it expand properly on resizing */
 		bottom:	8px;
 		right:	8px;
-		position: fixed;
+        position: fixed;
 	}
 
 
