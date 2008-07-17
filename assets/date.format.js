@@ -108,7 +108,7 @@ dateFormat.masks = {
 	isoTime:        "HH:MM:ss",
 	isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
 	isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'",
-	RFC822:         "ddd, dd mmm yyyy HH:MM:ss Z",
+	RFC822:         "ddd, dd mmm yyyy HH:MM:ss o",
 };
 
 // Internationalization strings

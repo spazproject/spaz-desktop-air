@@ -223,7 +223,7 @@ Spaz_Tooltip.prototype.show = function() {
 		// air.trace('Tooltip hide delay:'+Spaz.Prefs.get('window-tooltiphidedelay'));
 
 		Spaz_Tooltip_hideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.Prefs.get('window-tooltiphidedelay'));
-		$('#tooltip').bind('mouseout', Spaz.UI.hideTooltips);
+		// $('#tooltip').bind('mouseout', Spaz.UI.hideTooltips);
 	}
 	
 }

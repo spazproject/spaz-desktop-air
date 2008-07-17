@@ -27,7 +27,7 @@ Spaz.Section.init = function() {
 				var dm_timeline_params = "";
 			} else {
 				var lastCheckDate = new Date(this.lastcheck).format('RFC822');
-				var friends_timeline_params = "?count=20&since="+lastCheckDate;
+				var friends_timeline_params = "?count=30&since="+lastCheckDate;
 				var replies_timeline_params = "?since="+lastCheckDate;
 				var dm_timeline_params = "?since="+lastCheckDate;
 			}
@@ -234,7 +234,7 @@ Spaz.Section.init = function() {
 		addItem: function(item) {
 			item.timeline = this.timeline;
 			
-			air.trace(JSON.stringify(item));
+			// air.trace(JSON.stringify(item));
 			
 			// convert common long/lat formats
 			if (item.location) {

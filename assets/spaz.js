@@ -72,13 +72,13 @@ Spaz.initialize = function() {
 
 	window.htmlLoader.manageCookies = false;
 	window.htmlLoader.paintsDefaultBackground = false;
-	window.htmlLoader.cacheResponse = false;
-	window.htmlLoader.useCache = false;
+	window.htmlLoader.cacheResponse = true;
+	window.htmlLoader.useCache = true;
 	Spaz.Sys.initUserAgentString();
 	
 	air.URLRequestDefaults.manageCookies = false;
-	air.URLRequestDefaults.cacheResponse = false;
-	air.URLRequestDefaults.useCache = false;
+	air.URLRequestDefaults.cacheResponse = true;
+	air.URLRequestDefaults.useCache = true;
 	
 	// apply dropshadow to window
 	air.trace('Applying Flash Filter Dropshadow');

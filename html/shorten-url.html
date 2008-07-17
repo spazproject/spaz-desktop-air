@@ -28,7 +28,8 @@
 			air.trace("service is "+ service);
 			
 			// populate the dropdown
-			for (method in Spaz.Shortlink) {
+			for (method in Spaz.Shortlink.services) {
+				air.trace(method)
 				if (method[0] != '$') {
 					if (method == service) {
 						$('#url-shortener').append('<option value="'+method+'" selected="selected">'+method+'</option>');
@@ -53,7 +54,7 @@
 			    var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
 				if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
 					$('#shorten-original-link').val(cliptext);
-					Spaz.Shortlink[service](cliptext);
+					Spaz.Shortlink.services[service](cliptext);
 				}
 				$('#shorten-original-link').select();
 			}
@@ -63,7 +64,7 @@
 			$('#prefs-update-button').bind('click', function() {
 				var service = Spaz.Prefs.get('url-shortener');
 				air.trace("service is "+ service);
-				Spaz.Shortlink[service]($('#shorten-original-link').val());
+				Spaz.Shortlink.services[service]($('#shorten-original-link').val());
 			});
 			
 			// air.trace(air.NativeApplication.nativeApplication.spazPrefs);

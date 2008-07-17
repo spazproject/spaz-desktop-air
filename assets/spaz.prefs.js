@@ -64,7 +64,8 @@ Spaz.Prefs.defaultPreferences = {
 	'services-twitpic-sharepassword':false,
 	
 	'services-pingfm-userappkey':'USERAPPKEYHERE',
-	'services-pingfm-enabled':true,
+	'services-pingfm-enabled':false,
+	'services-pingfm-sendreplies':false,
 	'services-pingfm-updatetype':'default',
 	
 	

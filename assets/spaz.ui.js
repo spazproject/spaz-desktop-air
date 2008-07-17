@@ -796,7 +796,7 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 
 
 
-Spaz.UI.addItemToTimeline = function(entry, section) {
+Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read) {
 	// alert('adding:'+entry.id)
 	
 	if (entry.error) {
@@ -878,7 +878,6 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 			if (isSent) {
 				entryHTML = entryHTML + '			<a title="Delete this message" class="status-action-del clickable" id="status-'+entry.id+'-del" entry-id="'+entry.id+'">del</a>';
 			}
-			// entryHTML = entryHTML + '			<a title="Delete this message" onclick=\'Spaz.Data.destroyStatus("'+entry.id+'")\' class="status-action-del" id="status-'+entry.id+'-del">del</a>';
 			entryHTML = entryHTML + '		</div>';
 		}
 		entryHTML = entryHTML + '	</div>';
@@ -892,6 +891,10 @@ Spaz.UI.addItemToTimeline = function(entry, section) {
 		// jqentry.css('opacity', .1);
 		// jqentry.css('display', 'none');
 		
+		if (mark_as_read) {
+			jqentry.addClass('read')
+			jqentry.removeClass('new')
+		}
 		
 		
 		if (isDM) {
@@ -1060,11 +1063,15 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	
+	
 	Spaz.dump('Sorting timeline');
 	Spaz.UI.sortTimeline(timelineid);
+
 	
 	Spaz.dump('Reversing timeline');
 	Spaz.UI.reverseTimeline(timelineid);
+
+	// return;
 
 	// remove the even and odds due to resorting
 	$("#"+timelineid + ' .timeline-entry').removeClass('even').removeClass('odd');
@@ -1108,8 +1115,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	
 	
 	
-	// make it here so we don't instantiate on every loopthrough
-	var md = new Showdown.converter();
+
 	
 	// convert post times to relative (these all need to be updated each time)
 	$(".timeline-entry", "#"+timelineid).each(function(i) {
@@ -1117,8 +1123,60 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		$(".status-created-at", this).html(get_relative_time( entrytime ));
 	});
 	
-	// clean up the .status-text
-	$("div.needs-cleanup div.status-text", "#"+timelineid).each(function(i){
+	
+	
+	var cleanupTweets = $("div.needs-cleanup", "#"+timelineid);
+	
+	// convert source links
+	cleanupTweets.find('span.status-source-label').each(function(i) {
+
+		var sourceHTML = false;
+
+		var jqsource = $(this)
+
+		if (jqsource.html().length>0){
+			jqsource.html( Spaz.UI.decodeSourceLinkEntities( jqsource.html() ) );
+			var jqsourcelink = jqsource.find('a');
+			var href;
+			if (href = jqsourcelink.attr('href')) {
+				jqsourcelink.attr('title', 'Open '+href+' in a browser window')
+			}
+
+		} else {
+			Spaz.dump('nothing to convert');
+		}
+	});
+	
+	// add protected post indicators
+	cleanupTweets.find("span.status-protected").each(function(i) {
+		var jqprtct = $(this);
+		if (jqprtct.html() == 'true') {
+			jqprtct.html('<img src="themes/'+Spaz.Prefs.get('theme-basetheme')+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />');
+		} else {
+			jqprtct.html('');
+		}
+	});
+	
+	// highlight all messages that mention @username
+	cleanupTweets.find(".status-text").each( function(i) {
+		var re = new RegExp('@'+Spaz.Prefs.getUser(), 'i');
+		if (re.test($(this).html())) {
+			// Spaz.dump("found reply in "+$(this).text());
+			$(this).parents('div.needs-cleanup').addClass('reply');
+		}
+	})
+	
+	// remove the needs-cleanup and show
+	cleanupTweets.css('display', '').removeClass('needs-cleanup');
+	
+
+
+	/* clean up the .status-text */
+
+	// make it here so we don't instantiate on every loopthrough
+	var md = new Showdown.converter();
+	
+	cleanupTweets.find("div.status-text").each(function(i){
 
 		// fix extra ampersand encoding
 		this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
@@ -1164,7 +1222,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		// convert @username reply indicators
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
 
-		// air.trace('converting emoticons');
+		// convert emoticons
 		Spaz.dump(Emoticons.SimpleSmileys);
 		this.innerHTML = Emoticons.SimpleSmileys.convertEmoticons(this.innerHTML)
 
@@ -1185,16 +1243,16 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		{
 			// Get domain
 			var domain = domains[i];
-
+	
 			// Iterate over URL pattern
 			var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\/]*)", "g");
 			var matchArray = null;
 			while (matchArray = urlRE.exec(txt)) {
 				Spaz.dump("Getting content of URL " + matchArray[1]);
-
+	
 				// Get the URL
 				var url = matchArray[0];
-
+	
 				// Now we make a request to obtain the response URL
 				var stream = new air.URLStream();
 				stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, function(event) {
@@ -1212,7 +1270,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 					air.trace('Request to '+event.responseURL+' returned an IRErrorEvent');
 					Spaz.dump(event);
 				})
-
+	
 				// Perform load
 				stream.load(new air.URLRequest(url));
 				Spaz.dump("Decoding " + domain + " URL " + url);
@@ -1223,70 +1281,70 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	
 	
 	// convert source link entries
-	$("div.needs-cleanup span.status-source-label", "#"+timelineid).each(function(i) {
-		
-		// var sourceHTML = Spaz.Cache.getSource(this.innerHTML);
-		var sourceHTML = false;
-		
-		var jqsource = $(this)
-		
-		if (jqsource.html().length>0){
-			jqsource.html( Spaz.UI.decodeSourceLinkEntities( jqsource.html() ) );
-			var jqsourcelink = jqsource.find('a');
-			var href;
-			if (href = jqsourcelink.attr('href')) {
-				jqsourcelink.attr('title', 'Open '+href+' in a browser window')
-			}
-
-		} else {
-			Spaz.dump('nothing to convert');
-		}
-	});
+	// $("div.needs-cleanup ", "#"+timelineid).each(function(i) {
+	// 	
+	// 	// var sourceHTML = Spaz.Cache.getSource(this.innerHTML);
+	// 	var sourceHTML = false;
+	// 	
+	// 	var jqsource = $(this)
+	// 	
+	// 	if (jqsource.html().length>0){
+	// 		jqsource.html( Spaz.UI.decodeSourceLinkEntities( jqsource.html() ) );
+	// 		var jqsourcelink = jqsource.find('a');
+	// 		var href;
+	// 		if (href = jqsourcelink.attr('href')) {
+	// 			jqsourcelink.attr('title', 'Open '+href+' in a browser window')
+	// 		}
+	// 
+	// 	} else {
+	// 		Spaz.dump('nothing to convert');
+	// 	}
+	// });
 
 
 	// add protected post indicators
-	$("div.needs-cleanup span.status-protected", "#"+timelineid).each(function(i) {
-		var jqprtct = $(this);
-		if (jqprtct.html() == 'true') {
-			jqprtct.html('<img src="themes/'+Spaz.Prefs.get('theme-basetheme')+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />');
-		} else {
-			jqprtct.html('');
-		}
-	});
+	// $("div.needs-cleanup span.status-protected", "#"+timelineid).each(function(i) {
+	// 	var jqprtct = $(this);
+	// 	if (jqprtct.html() == 'true') {
+	// 		jqprtct.html('<img src="themes/'+Spaz.Prefs.get('theme-basetheme')+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />');
+	// 	} else {
+	// 		jqprtct.html('');
+	// 	}
+	// });
 	
 
 	// highlight messages that mention @currentusername
-	$("div.needs-cleanup .status-text", "#"+timelineid).each( function(i) {
-		var re = new RegExp('@'+Spaz.Prefs.getUser(), 'i');
-		if (re.test($(this).html())) {
-			// Spaz.dump("found reply in "+$(this).text());
-			$(this).parents('div.needs-cleanup').addClass('reply');
-		}
-	})
+	// $("div.needs-cleanup .status-text", "#"+timelineid).each( function(i) {
+	// 	var re = new RegExp('@'+Spaz.Prefs.getUser(), 'i');
+	// 	if (re.test($(this).html())) {
+	// 		// Spaz.dump("found reply in "+$(this).text());
+	// 		$(this).parents('div.needs-cleanup').addClass('reply');
+	// 	}
+	// })
 	
 	
 	// animate in new stuff	
-	if (!$('#'+timelineid).is('.dm-replies')) {	
-		if ($("#"+timelineid + ' .timeline-entry.needs-cleanup').length > 0 ) {
-			$("#"+timelineid + ' .timeline-entry.needs-cleanup').each( function() {
-				$(this).slideDown({'duration':100});
-			}).css('display', '');
-		}
-	}
+	// if (!$('#'+timelineid).is('.dm-replies')) {	
+	// 	if ($("#"+timelineid + ' .timeline-entry.needs-cleanup').length > 0 ) {
+	// 		$("#"+timelineid + ' .timeline-entry.needs-cleanup').each( function() {
+	// 			$(this).slideDown({'duration':100});
+	// 		}).css('display', '');
+	// 	}
+	// }
 	
-	$("div.needs-cleanup", "#"+timelineid).css('display', '').removeClass('needs-cleanup');
+	// $("div.needs-cleanup", "#"+timelineid).css('display', '').removeClass('needs-cleanup');
 
 
 	/*
-		remove entries that are not dms or replies 
+		remove extra entries
 	*/
-	var nondirectedTweets = $('#'+timelineid + ' div.timeline-entry').not('.dm, .reply');
+	var tweets = $('#'+timelineid + ' div.timeline-entry');
 	
-	var numEntries = nondirectedTweets.length		
+	var numEntries = tweets.length		
 	if (numEntries > Spaz.Prefs.get('timeline-maxentries')) {
 		var diff = numEntries - Spaz.Prefs.get('timeline-maxentries');
 		Spaz.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('timeline-maxentries') + "; removing last "+diff+" entries");
-		nondirectedTweets.slice(diff*-1).remove();
+		tweets.slice(diff*-1).remove();
 	}
 	
 

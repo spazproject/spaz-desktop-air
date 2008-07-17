@@ -40,6 +40,8 @@ Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.
 Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials.json";
 Spaz.Data.url_ratelimit_status   = "https://twitter.com/account/rate_limit_status.json";
 
+Spaz.Data.url_pingfm_update    = "http://api.ping.fm/v1/user.post";
+
 // Ping.fm API key for Spaz
 Spaz.Data.apikey_pingfm = '4f6e7a44cf584f15193e1f4c04704465';
 
@@ -77,7 +79,13 @@ Spaz.Data.verifyPassword = function() {
 	
 	var xhr = $.ajax({
 		complete:Spaz.Data.onAjaxComplete,
-		error:Spaz.Data.onAjaxError,
+		error:function() {
+			// Spaz.verified = false;
+			Spaz.dump('verification failed');
+			Spaz.UI.statusBar("Verification failed");
+			Spaz.UI.flashStatusBar();
+			Spaz.Data.onAjaxError();
+		},
 		success:function(data){
 			var json = JSON.parse(data);
 			if (json.authorized) {
@@ -181,7 +189,7 @@ Spaz.Data.update = function(msg, username, password) {
 			}
 			var entry = JSON.parse(data);
 			
-			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends);
+			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true);
 			
 			// cleanup, but suppress the notifications by passing "true" as 2nd param
 			// surpress scrollTo with 3rd param
@@ -191,6 +199,11 @@ Spaz.Data.update = function(msg, username, password) {
 			Spaz.dump('reset entryBox (Spry)');
 			$('#entrybox')[0].blur();
 			Spaz.dump('Blurred entryBox (DOM)');
+			
+			if (Spaz.Prefs.get('services-pingfm-enabled')) {
+				Spaz.Data.updatePingFM(msg);
+			}
+			
 			//Spaz.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
@@ -672,8 +685,65 @@ Spaz.Data.searchSummize = function(query) {
 		url:url,
 		data:null
 	});
-	
 }
+
+
+
+Spaz.Data.updatePingFM = function(msg) {
+	if (!Spaz.Prefs.get('services-pingfm-enabled')) {
+		return false;
+	}
+	
+	// do not post dms or @replies
+	if (msg.match(/^(?:d\s|@\S).*/i)) {
+		return -1;
+	}
+	
+	var userappkey = Spaz.Prefs.get('services-pingfm-userappkey');
+	var posttype   = Spaz.Prefs.get('services-pingfm-updatetype');
+	
+	Spaz.UI.statusBar("Sending update to Ping.fm");
+	Spaz.UI.showLoading();
+
+	var xhr = $.ajax({
+		timeout:1000*40, // updates can take longer, so we double the standard timeout 
+		error:function(xhr, rstr){
+			Spaz.dump("ERROR");
+			if (xhr.readyState < 3) {
+				Spaz.dump("Update ERROR: Ping.fm did not confirm update. Who knows?");
+				Spaz.UI.statusBar("ERROR: Ping.fm did not confirm update. Who knows?")
+				return;
+			}
+			if (xhr.status != 200) { // sanity check
+	 			Spaz.dump("ERROR: " + rstr);
+				Spaz.UI.statusBar("ERROR: Ping.fm could not post update");
+				Spaz.UI.flashStatusBar();				
+			} else {
+
+			}
+		},
+		success:function(xml){
+			if ($(xml).find('rsp').attr('status') == 'OK') {
+				Spaz.dump('SUCCESS:'+xml);
+				Spaz.UI.statusBar("Ping.fm Update succeeded");
+			} else {
+				Spaz.dump('FAIL:'+xml);
+				Spaz.UI.statusBar("Ping.fm Update failed");
+			}
+		},
+		dataType:'xml',
+		type:"POST",
+		url:Spaz.Data.url_pingfm_update,
+		data: {
+			'api_key':Spaz.Data.apikey_pingfm,
+			'user_app_key':userappkey,
+			'post_method':posttype,
+			'body':msg
+		},
+	});
+	
+	
+};
 
 
 
@@ -713,6 +783,102 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 	});
 }
 
+
+
+
+Spaz.Data.uploadFile = function(opts) {
+	var request = new air.URLRequest(opts.url);
+	var loader = new air.URLLoader();
+
+	var file = new air.File(opts.fileUrl); //use file.browseForOpen() on ur wish
+	var stream = new air.FileStream();
+	var buf = new air.ByteArray();
+
+	stream.open(file, air.FileMode.READ);
+	stream.readBytes(buf);
+
+	PrepareMultipartRequest(request, buf, 'media', file.nativePath, opts.extra);
+
+	loader.addEventListener(air.Event.COMPLETE, opts.complete);
+	// loader.addEventListener(air.ProgressEvent.PROGRESS, progressHandler);
+	loader.addEventListener(air.Event.OPEN, opts.open);
+	loader.load(request);
+
+
+
+	/**
+	 * Multipart File Upload Request Helper Function
+	 * 
+	 * A function to help prepare URLRequest object for uploading.
+	 * The script works without FileReference.upload().
+	 * 
+	 * @author FreeWizard
+	 * 
+	 * Function Parameters:
+	 * void PrepareMultipartRequest(URLRequest request, ByteArray file_bytes,
+	 *                              string field_name = "file", string native_path = "C:\FILE",
+	 *                              object data_before = {}, object data_after = {});
+	 * 
+	 * Sample JS Code:
+	 * <script>
+	 * var request = new air.URLRequest('http://example.com/upload.php');
+	 * var loader = new air.URLLoader();
+	 * var file = new air.File('C:\\TEST.TXT'); //use file.browseForOpen() on ur wish
+	 * var stream = new air.FileStream();
+	 * var buf = new air.ByteArray();
+	 * var extra = {
+	 *     "id": "abcd"
+	 *     };
+	 * stream.open(file, air.FileMode.READ);
+	 * stream.readBytes(buf);
+	 * MultipartRequest(request, buf, 'myfile', file.nativePath, extra);
+	 * loader.load(request);
+	 * </script>
+	 * 
+	 * Sample PHP Code:
+	 * <?php
+	 * $id = $_POST['id'];
+	 * move_uploaded_file($_FILES['myfile']['tmp_name'], '/opt/blahblah');
+	 * ?>\
+	 * @link http://rollingcode.org/blog/2007/11/file-upload-with-urlrequest-in-air.html
+	 */
+	function PrepareMultipartRequest(request, file_bytes, field_name, native_path, data_before, data_after) {
+		var boundary = '---------------------------1076DEAD1076DEAD1076DEAD';
+		var header1 = '';
+		var header2 = '\r\n';
+		var header1_bytes = new air.ByteArray();
+		var header2_bytes = new air.ByteArray();
+		var body_bytes = new air.ByteArray();
+		var n;
+		if (!field_name) field_name = 'file';
+		if (!native_path) native_path = 'C:\FILE';
+		if (!data_before) data_before = {};
+		if (!data_after) data_after = {};
+		for (n in data_before) {
+			header1 += '--' + boundary + '\r\n'
+					+ 'Content-Disposition: form-data; name="' + n + '"\r\n\r\n'
+					+ data_before[n] + '\r\n';
+		}
+		header1 += '--' + boundary + '\r\n'
+				+ 'Content-Disposition: form-data; name="' + field_name + '"; filename="' + native_path + '"\r\n'
+				+ 'Content-Type: application/octet-stream\r\n\r\n';
+		for (n in data_after) {
+			header2 += '--' + boundary + '\r\n'
+					+ 'Content-Disposition: form-data; name="' + n + '"\r\n\r\n'
+					+ data_after[n] + '\r\n';
+		}
+		header2 += '--' + boundary + '--';
+		header1_bytes.writeMultiByte(header1, "ascii");
+		header2_bytes.writeMultiByte(header2, "ascii");
+		body_bytes.writeBytes(header1_bytes, 0, header1_bytes.length);
+		body_bytes.writeBytes(file_bytes, 0, file_bytes.length);
+		body_bytes.writeBytes(header2_bytes, 0, header2_bytes.length);
+		request.method = air.URLRequestMethod.POST;
+		request.contentType = 'multipart/form-data; boundary='+boundary;
+		request.data = body_bytes;
+	}
+};
+// return;
 
 
 
