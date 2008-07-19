@@ -22,7 +22,7 @@ if (!isDM) {
 	}
 		</div>
 		<div class="status-link">
-			<a href="http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/" class="status-created-at clickable" title="View full post in browser">'+entry.created_at+'</a>
+			<a href="${base_url}'+entry.user.screen_name+'/statuses/'+entry.id+'/" class="status-created-at clickable" title="View full post in browser">'+entry.created_at+'</a>
 			<span class="status-source">from <span class="status-source-label">'+entry.source+'</span></span>
 			<span class="status-protected">'+entry.user.protected+'</span>
 		</div>

@@ -96,7 +96,7 @@ Spaz_Tooltip.prototype.show = function() {
 
 			Spaz.dump('username is '+username)
 
-			var url = 'http://twitter.com/statuses/user_timeline.json'
+			var url = Spaz.Data.getAPIURL('user_timeline')
 			var data = {
 				'id':username,
 				'count':1

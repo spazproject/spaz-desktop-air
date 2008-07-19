@@ -16,21 +16,22 @@ Spaz.Cache.screenNamesAccesses = {};
 // Spaz.Cache.maxScreenNames = 300;
 
 Spaz.Cache.buildScreenNameCache = function() {
-	$('[user-screen_name]').each( function() {
-		Spaz.Cache.addScreenName($(this).attr('user-screen_name'));
-	});
-	
-	var numEntries = Spaz.Cache.screenNames.length;
-
-	if (numEntries > Spaz.Prefs.get('screennames-cache-max')) {
-		var diff = numEntries - Spaz.Prefs.get('screennames-cache-max');
-		air.trace("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
-
-		Spaz.Cache.screenNames.splice(0, diff);
-	}
-	
-	
-	air.trace('Spaz.Cache.screenNames = '+Spaz.Cache.screenNames.toString() + ' ['+Spaz.Cache.getScreenNamesCount()+']');
+	return;
+	// $('[user-screen_name]', '#'+Spaz.Section.friends.timeline).each( function() {
+	// 	Spaz.Cache.addScreenName($(this).attr('user-screen_name'));
+	// });
+	// 
+	// var numEntries = Spaz.Cache.screenNames.length;
+	// 
+	// if (numEntries > Spaz.Prefs.get('screennames-cache-max')) {
+	// 	var diff = numEntries - Spaz.Prefs.get('screennames-cache-max');
+	// 	air.trace("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
+	// 
+	// 	Spaz.Cache.screenNames.splice(0, diff);
+	// }
+	// 
+	// 
+	// air.trace('Spaz.Cache.screenNames = '+Spaz.Cache.screenNames.toString() + ' ['+Spaz.Cache.getScreenNamesCount()+']');
 };
 
 Spaz.Cache.addScreenName = function(name) {
@@ -48,7 +49,29 @@ Spaz.Cache.delScreenName = function(name) {
 };
 
 Spaz.Cache.getScreenNames = function() {
-	return Spaz.Cache.screenNames;
+	// return Spaz.Cache.screenNames;
+	
+	var screen_names = [];
+	
+	$('[user-screen_name]', '#'+Spaz.Section.friends.timeline).each(function() {
+		name = $(this).attr('user-screen_name');
+		if (screen_names.indexOf(name) == -1) {
+			screen_names.push(name);
+			// air.trace('Added "'+name+'". Number of screen names is '+screen_names.length);
+		}
+	});
+	
+	return screen_names;
+	
+	// var numEntries = Spaz.Cache.screenNames.length;
+	// 
+	// if (numEntries > Spaz.Prefs.get('screennames-cache-max')) {
+	// 	var diff = numEntries - Spaz.Prefs.get('screennames-cache-max');
+	// 	air.trace("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
+	// 
+	// 	Spaz.Cache.screenNames.splice(0, diff);
+	// }
+	
 }
 
 Spaz.Cache.getScreenNamesCount = function() {

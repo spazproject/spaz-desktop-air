@@ -13,32 +13,81 @@ $.ajaxSetup(
 	}
 );
 
-/*
-URLs for various thangs...
-*/
-// Timeline URLs
-Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
-Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.json";
-Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.json";
-Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.json";
-Spaz.Data.url_favorites        = "https://twitter.com/favorites.json";
-Spaz.Data.url_dm_timeline      = "https://twitter.com/direct_messages.json";
-Spaz.Data.url_dm_sent          = "https://twitter.com/direct_messages/sent.json";
-Spaz.Data.url_friendslist      = "https://twitter.com/statuses/friends.json";
-Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.json";
-Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.json";
+// /*
+// URLs for various thangs...
+// */
+// // Timeline URLs
+// Spaz.Data.url_public_timeline  = "https://twitter.com/statuses/public_timeline.json";
+// Spaz.Data.url_friends_timeline = "https://twitter.com/statuses/friends_timeline.json";
+// Spaz.Data.url_user_timeline    = "https://twitter.com/statuses/user_timeline.json";
+// Spaz.Data.url_replies_timeline = "https://twitter.com/statuses/replies.json";
+// Spaz.Data.url_favorites        = "https://twitter.com/favorites.json";
+// Spaz.Data.url_dm_timeline      = "https://twitter.com/direct_messages.json";
+// Spaz.Data.url_dm_sent          = "https://twitter.com/direct_messages/sent.json";
+// Spaz.Data.url_friendslist      = "https://twitter.com/statuses/friends.json";
+// Spaz.Data.url_followerslist    = "https://twitter.com/statuses/followers.json";
+// Spaz.Data.url_featuredlist     = "https://twitter.com/statuses/featured.json";
+// 
+// // Action URLs
+// Spaz.Data.url_update           = "https://twitter.com/statuses/update.json";
+// Spaz.Data.url_destroy_status   = "https://twitter.com/statuses/destroy/{{ID}}.json";
+// Spaz.Data.url_follow           = "https://twitter.com/friendships/create/{{ID}}.json";
+// Spaz.Data.url_stop_follow      = "https://twitter.com/friendships/destroy/{{ID}}.json";
+// Spaz.Data.url_start_notifications = "https://twitter.com/notifications/follow/{{ID}}.json";
+// Spaz.Data.url_stop_notifications  = "https://twitter.com/notifications/remove/{{ID}}.json";
+// Spaz.Data.url_favorites_create = "https://twitter.com/favourings/create/{{ID}}.json";
+// Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.json";
+// Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials.json";
+// Spaz.Data.url_ratelimit_status   = "https://twitter.com/account/rate_limit_status.json";
 
-// Action URLs
-Spaz.Data.url_update           = "https://twitter.com/statuses/update.json";
-Spaz.Data.url_destroy_status   = "https://twitter.com/statuses/destroy/{{ID}}.json";
-Spaz.Data.url_follow           = "https://twitter.com/friendships/create/{{ID}}.json";
-Spaz.Data.url_stop_follow      = "https://twitter.com/friendships/destroy/{{ID}}.json";
-Spaz.Data.url_start_notifications = "https://twitter.com/notifications/follow/{{ID}}.json";
-Spaz.Data.url_stop_notifications  = "https://twitter.com/notifications/remove/{{ID}}.json";
-Spaz.Data.url_favorites_create = "https://twitter.com/favourings/create/{{ID}}.json";
-Spaz.Data.url_favorites_destroy= "https://twitter.com/favourings/destroy/{{ID}}.json";
-Spaz.Data.url_verify_password  = "https://twitter.com/account/verify_credentials.json";
-Spaz.Data.url_ratelimit_status   = "https://twitter.com/account/rate_limit_status.json";
+
+Spaz.Data.getAPIURL = function(key) {
+	
+	var base_url = Spaz.Prefs.get('twitter-api-base-url');
+	
+	if (!base_url) {
+		base_url = 'https://twitter.com/';
+	}
+	
+	var urls = {}
+	
+	// Timeline URLs
+	urls.public_timeline    = "statuses/public_timeline.json";
+	urls.friends_timeline   = "statuses/friends_timeline.json";
+	urls.user_timeline      = "statuses/user_timeline.json";
+	urls.replies_timeline   = "statuses/replies.json";
+	urls.favorites          = "favorites.json";
+	urls.dm_timeline        = "direct_messages.json";
+	urls.dm_sent            = "direct_messages/sent.json";
+	urls.friendslist        = "statuses/friends.json";
+	urls.followerslist      = "statuses/followers.json";
+	urls.featuredlist       = "statuses/featured.json";
+
+	// Action URLs 
+	urls.update           	= "statuses/update.json";
+	urls.destroy_status   	= "statuses/destroy/{{ID}}.json";
+	urls.follow           	= "friendships/create/{{ID}}.json";
+	urls.stop_follow      	= "friendships/destroy/{{ID}}.json";
+	urls.start_notifications= "notifications/follow/{{ID}}.json";
+	urls.stop_notifications = "notifications/leave/{{ID}}.json";
+	urls.favorites_create 	= "favourings/create/{{ID}}.json";
+	urls.favorites_destroy	= "favourings/destroy/{{ID}}.json";
+	urls.verify_password  	= "account/verify_credentials.json";
+	urls.ratelimit_status   = "account/rate_limit_status.json";
+
+	// misc
+	urls.test 			  	= "help/test.json";	
+	urls.downtime_schedule	= "help/downtime_schedule.json";
+	
+	if (urls[key]) {
+		air.trace("URL:"+base_url + urls[key]);
+		return base_url + urls[key];
+	} else {
+		return false
+	}
+	
+};
+
 
 Spaz.Data.url_pingfm_update    = "http://api.ping.fm/v1/user.post";
 
@@ -113,7 +162,7 @@ Spaz.Data.verifyPassword = function() {
 		},
 		processData:false,
 		type:"POST",
-		url:Spaz.Data.url_verify_password,
+		url:Spaz.Data.getAPIURL('verify_password'),
 	})
 	
 	// Spaz.dump(xhr);
@@ -214,7 +263,7 @@ Spaz.Data.update = function(msg, username, password) {
 		},
 		processData:false,
 		type:"POST",
-		url:Spaz.Data.url_update,
+		url:Spaz.Data.getAPIURL('update'),
 		data:"&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg),
 //		data:"&status="+encodeURIComponent(msg),
 	});
@@ -252,7 +301,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		},
 		processData:false,
 		type:"GET",
-		url:Spaz.Data.url_destroy_status.replace(/{{ID}}/, postid),
+		url:Spaz.Data.getAPIURL('destroy_status').replace(/{{ID}}/, postid),
 	});
 	
 	// Spaz.dump(xhr);
@@ -288,7 +337,7 @@ Spaz.Data.makeFavorite = function(postid) {
 		},
 		processData:false,
 		type:"GET",
-		url:Spaz.Data.url_favorites_create.replace(/{{ID}}/, postid),
+		url:Spaz.Data.getAPIURL('favorites_create').replace(/{{ID}}/, postid),
 	});
 };
 
@@ -324,7 +373,7 @@ Spaz.Data.followUser = function(userid) {
 		},
 		processData:false,
 		type:"GET",
-		url:Spaz.Data.url_follow.replace(/{{ID}}/, userid),
+		url:Spaz.Data.getAPIURL('follow').replace(/{{ID}}/, userid),
 	});
 	
 	// Spaz.dump(xhr);
@@ -363,7 +412,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 		},
 		processData:false,
 		type:"GET",
-		url:Spaz.Data.url_stop_follow.replace(/{{ID}}/, userid),
+		url:Spaz.Data.getAPIURL('stop_follow').replace(/{{ID}}/, userid),
 	});
 	
 	// Spaz.dump(xhr);
@@ -779,7 +828,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 		},
 		processData:false,
 		type:"GET",
-		url:Spaz.Data.url_ratelimit_status,
+		url:Spaz.Data.getAPIURL('ratelimit_status'),
 	});
 }
 

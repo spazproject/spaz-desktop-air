@@ -549,7 +549,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 // 		
 // 		Spaz.dump('username is '+username)
 // 		
-// 		var url = 'http://twitter.com/statuses/user_timeline.json'
+// 		var url = Spaz.Data.getAPIURL('user_timeline')
 // 		var data = {
 // 			'id':username,
 // 			'count':1
@@ -868,7 +868,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read) {
 			}
 			entryHTML = entryHTML + '		</div>';
 			entryHTML = entryHTML + '		<div class="status-link">';
-			entryHTML = entryHTML + '			<a href="http://twitter.com/'+entry.user.screen_name+'/statuses/'+entry.id+'/" class="status-created-at clickable" title="View full post in browser">'+entry.created_at+'</a>';
+			entryHTML = entryHTML + '			<a href="'+Spaz.Prefs.get('twitter-base-url')+entry.user.screen_name+'/statuses/'+entry.id+'/" class="status-created-at clickable" title="View full post in browser">'+entry.created_at+'</a>';
 			entryHTML = entryHTML + '			<span class="status-source">from <span class="status-source-label">'+entry.source+'</span></span>';
 			entryHTML = entryHTML + '			<span class="status-protected">'+entry.user.protected+'</span>';
 			entryHTML = entryHTML + '		</div>';
@@ -1220,7 +1220,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 		this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
 	
 		// convert @username reply indicators
-		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="http://twitter.com/$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
+		this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="'+Spaz.Prefs.get('twitter-base-url')+'$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
 
 		// convert emoticons
 		Spaz.dump(Emoticons.SimpleSmileys);

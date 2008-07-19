@@ -68,6 +68,8 @@ Spaz.Prefs.defaultPreferences = {
 	'services-pingfm-sendreplies':false,
 	'services-pingfm-updatetype':'default',
 	
+	'twitter-api-base-url':'https://twitter.com/',
+	'twitter-base-url':'http://twitter.com/',
 	
 	'twitter-source':'spaz',
 }
@@ -356,7 +358,27 @@ Spaz.Prefs.changeMethods = {
 		check: function(value) {
 			Spaz.Prefs.set('debug-enabled', Boolean(Spaz.Prefs.get('debug-enabled'))) 
 		}
+	},
+	
+	'screennames-cache-max': {
+		check: function(value) {
+			var val = parseInt(Spaz.Prefs.get('screennames-cache-max'));
+			if (val > 150) {
+				Spaz.Prefs.set('screennames-cache-max', 150); 
+			}	
+		}
+	},
+	
+	'timeline-maxentries': {
+		check: function(value) {
+			var val = parseInt(Spaz.Prefs.get('timeline-maxentries'));
+			if (val > 200) {
+				Spaz.Prefs.set('timeline-maxentries', 200); 
+			}	
+		}		
 	}
+	
+	
 }
 
 

@@ -88,10 +88,6 @@ Spaz.initialize = function() {
 	// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
 
 	
-	// service monitor
-	Spaz.Sys.initNetworkConnectivityCheck()
-	
-	
 	// make the systray icon if on Windows
 	Spaz.Windows.makeSystrayIcon()
 
@@ -200,6 +196,15 @@ Spaz.initialize = function() {
 
 	// Spaz.UI.setSelectedTab([0]);
 	// 
+	
+	
+	// service monitor
+	Spaz.Sys.initNetworkConnectivityCheck();
+	
+	// mem monitor/gc
+	Spaz.Sys.initMemcheck();
+	
+	
 	
 	Spaz.dump('ended document.ready()');
 		

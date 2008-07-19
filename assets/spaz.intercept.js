@@ -153,7 +153,7 @@ Spaz.Intercept.init = function() {
 			
 			// user context menu handlers
 			'#userContextMenu-viewProfile':function(e) {
-				Spaz.Sys.openInBrowser('http://twitter.com/'+$(this).attr('user-screen_name'))
+				Spaz.Sys.openInBrowser(Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name'))
 			},
 			'#userContextMenu-follow':function(e) {
 				Spaz.Data.followUser($(this).attr('user-screen_name'));
@@ -175,11 +175,11 @@ Spaz.Intercept.init = function() {
 				return false;
 			},
 			'.user-screen-name':function(e) {
-				var url = 'http://twitter.com/'+$(this).attr('user-screen_name');
+				var url = Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name');
 				openInBrowser(url);
 			},
 			'.user-image':function(e) {
-				var url = 'http://twitter.com/'+$(this).attr('user-screen_name');
+				var url = Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name');
 				openInBrowser(url);
 			},
 			'.status-action-fav':function(e) {

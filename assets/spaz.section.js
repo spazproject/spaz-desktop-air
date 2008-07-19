@@ -7,9 +7,9 @@ Spaz.Section.init = function() {
 		timeline: 'timeline-friends', 
 		tab:      'tab-friends',
 		tabIndex: 0,
-		urls: new Array( Spaz.Data.url_friends_timeline,
-				Spaz.Data.url_replies_timeline,
-				Spaz.Data.url_dm_timeline
+		urls: new Array( Spaz.Data.getAPIURL('friends_timeline'),
+				Spaz.Data.getAPIURL('replies_timeline'),
+				Spaz.Data.getAPIURL('dm_timeline')
 			),
 		lastid:   0,
 		lastcheck:0,
@@ -31,9 +31,9 @@ Spaz.Section.init = function() {
 				var replies_timeline_params = "?since="+lastCheckDate;
 				var dm_timeline_params = "?since="+lastCheckDate;
 			}
-			this.urls = new Array( Spaz.Data.url_friends_timeline+friends_timeline_params,
-				Spaz.Data.url_replies_timeline+replies_timeline_params,
-				Spaz.Data.url_dm_timeline+dm_timeline_params
+			this.urls = new Array( Spaz.Data.getAPIURL('friends_timeline')+friends_timeline_params,
+				Spaz.Data.getAPIURL('replies_timeline')+replies_timeline_params,
+				Spaz.Data.getAPIURL('dm_timeline')+dm_timeline_params
 			);
 			
 			Spaz.Data.getDataForTimeline(this, force)
@@ -56,7 +56,7 @@ Spaz.Section.init = function() {
 		timeline: 'timeline-user', 
 		tab:      'tab-user',
 		tabIndex: 1,
-		urls:      new Array('https://twitter.com/statuses/user_timeline.json', 'http://twitter.com/direct_messages/sent.json'),
+		urls:      new Array(Spaz.Data.getAPIURL('user_timeline'), Spaz.Data.getAPIURL('dm_sent')),
 		lastid:   0,
 		lastcheck:0,
 		currdata: null,
@@ -86,7 +86,7 @@ Spaz.Section.init = function() {
 		timeline: 'timeline-public', 
 		tab:      'tab-public',
 		tabIndex: 2,
-		urls:      new Array('https://twitter.com/statuses/public_timeline.json'),
+		urls:      new Array(Spaz.Data.getAPIURL('public_timeline')),
 		lastid:   0,
 		lastcheck:0,
 		currdata: null,
@@ -216,7 +216,7 @@ Spaz.Section.init = function() {
 		timeline: 'timeline-friendslist', 
 		tab:      'tab-friendslist',
 		tabIndex: 3,
-		urls:      new Array('https://twitter.com/statuses/friends.json'),
+		urls:      new Array(Spaz.Data.getAPIURL('friendslist')),
 		lastid:   0,
 		lastcheck:0,
 		currdata: null,
@@ -233,6 +233,7 @@ Spaz.Section.init = function() {
 		},
 		addItem: function(item) {
 			item.timeline = this.timeline;
+			item.base_url = Spaz.Prefs.get('twitter-base-url');
 			
 			// air.trace(JSON.stringify(item));
 			
@@ -267,7 +268,7 @@ Spaz.Section.init = function() {
 		timeline: 'timeline-followerslist', 
 		tab:      'tab-followerslist',
 		tabIndex: 4,
-		urls:      new Array('https://twitter.com/statuses/followers.json'),
+		urls:      new Array(Spaz.Data.getAPIURL('followerslist')),
 		lastid:   0,
 		lastcheck:0,
 		currdata: null,
@@ -284,7 +285,8 @@ Spaz.Section.init = function() {
 		},
 		addItem: function(item) {		
 			item.timeline = this.timeline;
-
+			item.base_url = Spaz.Prefs.get('twitter-base-url');
+			
 			// convert common long/lat formats
 			if (item.location) {
 				item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
