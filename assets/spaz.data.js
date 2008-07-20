@@ -238,6 +238,8 @@ Spaz.Data.update = function(msg, username, password) {
 			}
 			var entry = JSON.parse(data);
 			
+			// We mark it as read in the db
+			Spaz.DB.markEntryAsRead(entry.id);
 			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true);
 			
 			// cleanup, but suppress the notifications by passing "true" as 2nd param

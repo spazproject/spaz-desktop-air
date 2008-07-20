@@ -67,6 +67,10 @@ Spaz.initialize = function() {
 	if (Spaz.Prefs.get('debug-enabled')) {
 		Spaz.Debug.insertDebugScripts();
 	}
+	
+	// Database initialization
+	air.trace("database initialization");
+	Spaz.DB.init();
 
 	air.NativeApplication.nativeApplication.autoExit = true;
 

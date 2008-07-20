@@ -901,8 +901,20 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read) {
 			jqentry.addClass('dm');
 		}
 		
-
-		
+		// We only do the fetch if the mark_as_read is not specified
+		if (typeof mark_as_read == 'undefined')
+		{
+			// The as read callback
+			Spaz.DB.asyncGetAsRead(entry.id, function(read)
+			{
+				if (read)
+				{
+					air.trace("Entry " + entry.id + " is read");
+					jqentry.addClass('read');
+					jqentry.removeClass('new');
+				}
+			});
+		}
 		
 		
 		// FINALLY -- prepend the entry
@@ -927,7 +939,30 @@ Spaz.UI.selectEntry = function(el) {
 	$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
 
 	Spaz.dump('selecting tweet');
-	$(el).addClass('ui-selected');
+	$(el).addClass('ui-selected').each(function() {
+		
+		//
+		var entryId = null;
+		if (this.id.indexOf("timeline-") == 0)
+		{
+			var index = this.id.indexOf("-", "timeline-".length);
+			if (index >= 0)
+			{
+				entryId = this.id.substring(index + 1);
+			}
+		}
+
+		//
+		if (entryId == null)
+		{
+			air.trace("Cannot obtain entry id for entry with DOM id " + this.id);
+		}
+		else
+		{
+			air.trace("Want to mark as read " + entryId);
+			Spaz.DB.markEntryAsRead(entryId);
+		}
+	});
 	
 	var el;	
 	Spaz.dump('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
