@@ -144,6 +144,11 @@ Spaz.Sys.openInBrowser = function(url) {
 
 
 
+Spaz.Sys.openAppStorageFolder = function() {
+	Spaz.Sys.openInBrowser('file://'+air.File.applicationStorageDirectory.nativePath);
+};
+
+
 Spaz.Sys.loadChildInterface = function() {
 	Spaz.Sys.ClassicSB = $("#classicSB")[0].contentWindow.childSandboxBridge;
 	// Spaz.dump(classicSB)

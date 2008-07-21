@@ -391,6 +391,7 @@ Spaz.UI.markCurrentTimelineAsRead = function() {
 
 	var timelineid = section.timeline;
 	$('#'+timelineid + " div.timeline-entry").each( function() {
+		Spaz.DB.markEntryAsRead( Spaz.UI.getStatusIdFromElement(this) );
 		Spaz.UI.markEntryAsRead(this);
 	} )
 	
@@ -940,25 +941,7 @@ Spaz.UI.selectEntry = function(el) {
 
 	Spaz.dump('selecting tweet');
 	$(el).addClass('ui-selected').each(function() {
-		
-		//
-		var entryId = null;
-		if (this.id.indexOf("timeline-") == 0)
-		{
-			var index = this.id.indexOf("-", "timeline-".length);
-			if (index >= 0)
-			{
-				entryId = this.id.substring(index + 1);
-			}
-		}
-
-		//
-		if (entryId == null)
-		{
-			air.trace("Cannot obtain entry id for entry with DOM id " + this.id);
-		}
-		else
-		{
+		if ( entryId = Spaz.UI.getStatusIdFromElement(this) ) {
 			air.trace("Want to mark as read " + entryId);
 			Spaz.DB.markEntryAsRead(entryId);
 		}
@@ -967,6 +950,31 @@ Spaz.UI.selectEntry = function(el) {
 	var el;	
 	Spaz.dump('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
 }
+
+
+
+Spaz.UI.getStatusIdFromElement = function(el) {
+	var entryId = null;
+	if (el.id.indexOf("timeline-") == 0)
+	{
+		var index = el.id.indexOf("-", "timeline-".length);
+		if (index >= 0)
+		{
+			entryId = el.id.substring(index + 1);
+		}
+	}
+
+	//
+	if (entryId == null)
+	{
+		air.trace("Cannot obtain entry id for entry with DOM id " + this.id);
+		return false
+	}
+	else
+	{
+		return entryId
+	}
+};
 
 
 

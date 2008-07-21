@@ -261,6 +261,10 @@ Spaz.Keyboard.moveSelect = function(jqelement, timelineid) {
 	// unselect everything
 	$('#'+timelineid+' div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
 	
+	if ( entryId = Spaz.UI.getStatusIdFromElement(jqelement[0]) ) {
+		Spaz.DB.markEntryAsRead(entryId);
+	}
+	
 	// select passed
 	if (jqelement.length > 0) {
 		jqelement.toggleClass('ui-selected');

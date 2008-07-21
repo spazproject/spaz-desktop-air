@@ -451,8 +451,16 @@ TODO:
 
 						<div class="formrow" style="text-align:right; margin-top:15px">
 							<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
+							
+							
+							
 							<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
 								onclick="Spaz.Prefs.setPrefs()" /> 
+								
+							<div style="margin-top:1em;">
+								<a onclick="Spaz.Sys.openAppStorageFolder()"
+									id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
+							</div>
 						</div>
 
 						</form>
