@@ -28,6 +28,9 @@ Spaz.Themes.init = function() {
 	$('#theme-basetheme').val(Spaz.Prefs.get('theme-basetheme'));
 	Spaz.Themes.setCurrentTheme();
 	
+	// make the element to contain user CSS
+	$('head').append('<style type="text/css" media="screen" id="UserCSSOverride"></style>');
+	
 	// load the user.css file
 	Spaz.Themes.loadUserCSS();
 };

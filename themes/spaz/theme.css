@@ -205,6 +205,7 @@ a, a:link, .clickable {
 					-khtml-user-select: none;
 					-khtml-border-top-left-radius:.5em;
 					-khtml-border-top-right-radius:.5em;
+					
 					cursor: pointer;
 					border:none;
 				}
