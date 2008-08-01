@@ -26,7 +26,7 @@ Spaz.Section.init = function() {
 				var replies_timeline_params = "";
 				var dm_timeline_params = "";
 			} else {
-				var lastCheckDate = new Date(this.lastcheck).format('isoUtcDateTime');
+				var lastCheckDate = new Date(this.lastcheck).toUTCString();
 				var friends_timeline_params = "?count=30&since="+lastCheckDate;
 				var replies_timeline_params = "?since="+lastCheckDate;
 				var dm_timeline_params = "?since="+lastCheckDate;
