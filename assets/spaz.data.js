@@ -745,8 +745,15 @@ Spaz.Data.updatePingFM = function(msg) {
 		return false;
 	}
 	
-	// do not post dms or @replies
-	if (msg.match(/^(?:d\s|@\S).*/i)) {
+	// do not post dms
+	if ( msg.match(/^(?:d\s).*/i) ) {
+		air.trace("Will not post dms to ping.fm");
+		return -1;
+	}
+	
+	// only post replies if preference set
+	if ( msg.match(/^(?:@\S).*/i) && !Spaz.Prefs.get('services-pingfm-sendreplies') ) {
+		air.trace("Will not post replies to ping.fm");
 		return -1;
 	}
 	
