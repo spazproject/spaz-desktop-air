@@ -302,7 +302,7 @@ Spaz.Data.destroyStatus = function(postid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"GET",
+		type:"POST",
 		url:Spaz.Data.getAPIURL('destroy_status').replace(/{{ID}}/, postid),
 	});
 	
@@ -338,7 +338,7 @@ Spaz.Data.makeFavorite = function(postid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"GET",
+		type:"POST",
 		url:Spaz.Data.getAPIURL('favorites_create').replace(/{{ID}}/, postid),
 	});
 };
@@ -374,7 +374,7 @@ Spaz.Data.followUser = function(userid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"GET",
+		type:"POST",
 		url:Spaz.Data.getAPIURL('follow').replace(/{{ID}}/, userid),
 	});
 	
@@ -413,7 +413,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
 		processData:false,
-		type:"GET",
+		type:"POST",
 		url:Spaz.Data.getAPIURL('stop_follow').replace(/{{ID}}/, userid),
 	});
 	
