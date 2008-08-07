@@ -796,24 +796,39 @@ div.timeline-entry {
 					The div.formrows wrap each pref gui piece
 				*/
 				div.formrow {
-					white-space: nowrap;
+/*                    white-space: nowrap;*/
 					clear:both;
 					margin-bottom:5px;
-				}
-
-
+				}                    
+                    
 					#prefs-form label {
 						min-width:80px;
 						text-align:left;
 						font-weight:bold;
 						display:block;
 					}
-						#prefs-form label.checkbox {
-							float: none;
-							padding:0;
-							margin:0 0 0 1px;
-							display:inline;
-						}
+					#prefs-form label.checkbox {
+						float: none;
+						padding:0;
+						margin:0 0 0 1px;
+						display:inline;
+					}
+
+                    #prefs-form fieldset {
+                        border-left-width: 0px;
+                        border-right-width: 0px;
+                        border-bottom-width: 0px;
+                        padding:5px 0 5px 3px;                        
+                        margin: 10px 0 0 0;                        
+                    }
+
+                        #prefs-form legend {
+                            font-weight:bold;
+                        }
+
+                        #prefs-form fieldset label {
+                            font-weight:normal;
+                        }
 
 					/*
 						Buncha junk for various form fields, really only used in the Preferences section
@@ -823,8 +838,7 @@ div.timeline-entry {
 					select {
 						border:1px solid #666;
 						padding:4px;
-						width:125px;
-						/*-khtml-border-radius:5px;*/
+						width:90%;
 					}
 					input[type='checkbox'] {
 						vertical-align:-20%;

@@ -322,6 +322,23 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<fieldset>
 										<legend>Twitter-compatible API</legend>
+										
+										<div class="formrow">
+											<select id="twitter-base-urls" disabled="true">
+												<option value="">Load settings for…</option>
+												<option value="twitter">Twitter.com</option>
+												<option value="identica">Identi.ca</option>
+											</select>
+										</div>
+										
+										<div class="formrow">
+											<label for="twitter-api-base-url">Base API URL </label>
+											<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" disabled="true" />
+										</div>
+										<div class="formrow">
+											<label for="twitter-base-url">Base WWW URL </label>
+											<input type="text" name="twitter-base-url" id="twitter-base-url" value="" disabled="true" />
+										</div>
 									</fieldset>
 									
 									<fieldset>
@@ -350,6 +367,11 @@ TODO:
 									
 									<fieldset>
 										<legend>Twitpic</legend>
+										<div class="formrow">
+											<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
+											<label for="services-twitpic-sharepassword" class="checkbox">Don't show warning</label>
+										</div>
+										
 									</fieldset>
 									<h3>
 								</div>
