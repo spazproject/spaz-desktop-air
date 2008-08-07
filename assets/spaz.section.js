@@ -27,9 +27,16 @@ Spaz.Section.init = function() {
 				var dm_timeline_params = "";
 			} else {
 				var lastCheckDate = new Date(this.lastcheck).toUTCString();
-				var friends_timeline_params = "?count=30&since="+lastCheckDate;
-				var replies_timeline_params = "?since="+lastCheckDate;
-				var dm_timeline_params = "?since="+lastCheckDate;
+				
+				/* even UTC doesn't seem to work. Disabling use of 'since' until it can work consistently */
+				
+				var friends_timeline_params = "?count=30&since="+encodeURIComponent(lastCheckDate);
+				var replies_timeline_params = "?since="+encodeURIComponent(lastCheckDate);
+				var dm_timeline_params = "?since="+encodeURIComponent(lastCheckDate);
+				
+				// var friends_timeline_params = "?count=20";
+				// var replies_timeline_params = "";
+				// var dm_timeline_params = "";
 			}
 			this.urls = new Array( Spaz.Data.getAPIURL('friends_timeline')+friends_timeline_params,
 				Spaz.Data.getAPIURL('replies_timeline')+replies_timeline_params,

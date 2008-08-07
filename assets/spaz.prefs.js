@@ -254,7 +254,8 @@ Spaz.Prefs.changeMethods = {
 	'services-pingfm-userappkey' : {
 		setUI: function(value) {
 			air.trace('value:'+value);
-			if (value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
+			
+			if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
 				$('#services-pingfm-userappkey').val(value);
 				Spaz.UI.statusBar('Valid Ping.fm API key');
 			} else {
@@ -266,7 +267,7 @@ Spaz.Prefs.changeMethods = {
 		},
 		check: function() {
 			var current = Spaz.Prefs.get('services-pingfm-userappkey');
-			if (current.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
+			if (current && current.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
 				Spaz.Prefs.set('services-pingfm-userappkey', Spaz.Prefs.get('services-pingfm-userappkey')); 
 				return true;
 			} else {
