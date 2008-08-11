@@ -168,23 +168,60 @@ Spaz_Tooltip.prototype.show = function() {
 
 			$('#tooltip').children('.preview').attr('id', previewid)
 
-			if (thisTT.previewurl.search(/^http:\/\//i) > -1) {
+         if (thisTT.previewurl.search(/^http:\/\//i) > -1) {
 
-				$.get(thisTT.previewurl, function(rtext, status, xhr) {
-					// air.trace('rtext:'+rtext);
-					var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
+            // Support for twitpic
+            var done = false;
 
-					// alert(rtext_matches);
+            //
+            var twitpicRE = new RegExp("^(http:\\/\\/" + "twitpic.com\\/)" + "(.*)$");
+            var twitpicMatch = thisTT.previewurl.match(twitpicRE);
 
-					if (rtext_matches && rtext_matches[1]) {			
-						var title = rtext_matches[1];
-						// air.trace('jqpreview.innerText:'+jqpreview[0].innerText);
-						$('#tooltip').children('.preview').empty();
-						$('#'+previewid).html('<strong>Title:</strong> '+title);
-						$('#'+previewid).fadeIn(500);
-						thisTT.resetPosition()
-					}
-				});
+            // First detect if we deal with a twitpic URL
+            if (twitpicMatch != null)
+            {
+               var width = $('#tooltip').css("width");
+               var widthRE = new RegExp("^([0-9]+)px$");
+               var widthMatch = width.match(widthRE);
+
+               // Check the width of the tooltip window is like number + px because we need
+               // the value to correctly resize the image
+               if (widthMatch != null)
+               {
+                  width = widthMatch[1];
+                  var imgURL = twitpicMatch[1] + "show/thumb/" + twitpicMatch[2] + ".jpg";
+                  var s = '<img src="' + imgURL + '" width="' + width + '" alt="Share photos on ' +
+                     'twitter with Twitpic"></img>';
+                  $('#tooltip').children('.preview').empty();
+                  $('#'+previewid).html(s);
+                  $('#'+previewid).fadeIn(500);
+                  thisTT.resetPosition()
+                  done = true;
+               }
+               else
+               {
+                  air.trace("Could not find the width of the tooltip window " + width);
+               }
+            }
+
+            if (!done)
+            {
+               $.get(thisTT.previewurl, function(rtext, status, xhr) {
+                  // air.trace('rtext:'+rtext);
+                  var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
+
+                  // alert(rtext_matches);
+
+                  if (rtext_matches && rtext_matches[1]) {
+                     var title = rtext_matches[1];
+                     // air.trace('jqpreview.innerText:'+jqpreview[0].innerText);
+                     $('#tooltip').children('.preview').empty();
+                     $('#'+previewid).html('<strong>Title:</strong> '+title);
+                     $('#'+previewid).fadeIn(500);
+                     thisTT.resetPosition()
+                  }
+               });
+            }
 			}
 
 
