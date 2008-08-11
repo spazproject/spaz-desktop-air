@@ -174,7 +174,7 @@ Spaz_Tooltip.prototype.show = function() {
             var done = false;
 
             //
-            var twitpicRE = new RegExp("^(http:\\/\\/" + "twitpic.com\\/)" + "(.*)$");
+            var twitpicRE = new RegExp("^(http:\\/\\/" + "twitpic.com\\/)" + "(.+)$");
             var twitpicMatch = thisTT.previewurl.match(twitpicRE);
 
             // First detect if we deal with a twitpic URL
@@ -188,15 +188,35 @@ Spaz_Tooltip.prototype.show = function() {
                // the value to correctly resize the image
                if (widthMatch != null)
                {
-                  width = widthMatch[1];
-                  var imgURL = twitpicMatch[1] + "show/thumb/" + twitpicMatch[2] + ".jpg";
-                  var s = '<img src="' + imgURL + '" width="' + width + '" alt="Share photos on ' +
-                     'twitter with Twitpic"></img>';
-                  $('#tooltip').children('.preview').empty();
-                  $('#'+previewid).html(s);
-                  $('#'+previewid).fadeIn(500);
-                  thisTT.resetPosition()
                   done = true;
+                  width = widthMatch[1];
+
+                  //
+                  $.get(thisTT.previewurl, function(text)
+                  {
+                     var imgURLPrefix = twitpicMatch[1] + "show/thumb/" + twitpicMatch[2] + ".";
+                     air.trace("Going to look for real thumbnail URL using the prefix " + imgURLPrefix);
+                     var index = text.indexOf(imgURLPrefix);
+                     air.trace("Index of real thumbnail URL is " + index);
+                     if (index != -1)
+                     {
+                        var imgURL = text.substring(index, index + imgURLPrefix.length + 3);
+                        air.trace("Real URL is " + imgURL);
+
+                        //
+                        var s = '<img src="' + imgURL + '" width="' + width + '" alt="Share photos on ' +
+                           'twitter with Twitpic"></img>';
+                        $('#tooltip').children('.preview').empty();
+                        $('#'+previewid).html(s);
+                        air.trace("HTML is " + s);
+                        $('#'+previewid).fadeIn(500);
+                        thisTT.resetPosition();
+                     }
+                     else
+                     {
+                        air.trace("Could not find the real thumbnail URL using the prefix " + imgURLPrefix);
+                     }
+                  });
                }
                else
                {
@@ -218,7 +238,7 @@ Spaz_Tooltip.prototype.show = function() {
                      $('#tooltip').children('.preview').empty();
                      $('#'+previewid).html('<strong>Title:</strong> '+title);
                      $('#'+previewid).fadeIn(500);
-                     thisTT.resetPosition()
+                     thisTT.resetPosition();
                   }
                });
             }
