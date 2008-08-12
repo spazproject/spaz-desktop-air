@@ -238,6 +238,11 @@ Spaz.Update.downloadNewest = function(url) {
 
 Spaz.Update.applyUpdate = function() {
 	
+	/*
+		Always save prefs before applying an update
+	*/
+	Spaz.Prefs.savePrefs();
+	
 	airUpdater = new air.Updater()
 	
 	airUpdater.update(Spaz.Update.info.airfile, Spaz.Update.info.newestVersion);

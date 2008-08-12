@@ -72,6 +72,12 @@ Spaz.Section.init = function() {
 		canclear: true,
 		mincachetime:60000*2,
 		build: function(force){
+			
+			/*
+				Reset our URLs each time in case of API URL switch
+			*/
+			this.urls = new Array(Spaz.Data.getAPIURL('user_timeline'), Spaz.Data.getAPIURL('dm_sent'));
+			
 			Spaz.Data.getDataForTimeline(this, force)
 		},
 		onAjaxComplete: function(url,xhr,msg){
@@ -102,6 +108,11 @@ Spaz.Section.init = function() {
 		canclear: true,
 		mincachetime:60000*1,
 		build: function(force){
+			/*
+				Reset our URLs each time in case of API URL switch
+			*/
+			this.urls = new Array(Spaz.Data.getAPIURL('public_timeline'));
+			
 			Spaz.Data.getDataForTimeline(this, force)
 		},
 		onAjaxComplete: function(url,xhr,msg){
@@ -232,6 +243,11 @@ Spaz.Section.init = function() {
 		canclear: false,
 		mincachetime:60000*15,
 		build: function(force){
+			/*
+				Reset our URLs each time in case of API URL switch
+			*/
+			this.urls = new Array(Spaz.Data.getAPIURL('friendslist'));
+			
 			Spaz.Data.getDataForTimeline(this, force)
 		},
 		onAjaxComplete: function(url,xhr,msg){
@@ -284,6 +300,11 @@ Spaz.Section.init = function() {
 		canclear: false,
 		mincachetime:60000*15,
 		build: function(force){
+			/*
+				Reset our URLs each time in case of API URL switch
+			*/
+			this.urls = new Array(Spaz.Data.getAPIURL('followerslist'));
+			
 			Spaz.Data.getDataForTimeline(this, force)
 		},
 		onAjaxComplete: function(url,xhr,msg){

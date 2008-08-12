@@ -324,7 +324,7 @@ TODO:
 										<legend>Twitter-compatible API</legend>
 										
 										<div class="formrow">
-											<select id="twitter-base-urls" disabled="true">
+											<select id="twitter-base-urls">
 												<option value="">Load settings for…</option>
 												<option value="twitter">Twitter.com</option>
 												<option value="identica">Identi.ca</option>
@@ -333,11 +333,11 @@ TODO:
 										
 										<div class="formrow">
 											<label for="twitter-api-base-url">Base API URL </label>
-											<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" disabled="true" />
+											<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
 										</div>
 										<div class="formrow">
 											<label for="twitter-base-url">Base WWW URL </label>
-											<input type="text" name="twitter-base-url" id="twitter-base-url" value="" disabled="true" />
+											<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
 										</div>
 									</fieldset>
 									
@@ -517,8 +517,7 @@ TODO:
 								onclick="Spaz.Prefs.setPrefs()" /> 
 								
 							<div style="margin-top:1em;">
-								<a onclick="Spaz.Sys.openAppStorageFolder()"
-									id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
+								<a id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
 							</div>
 						</div>
 

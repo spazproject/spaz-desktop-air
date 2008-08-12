@@ -330,7 +330,13 @@ a, a:link, .clickable {
 					}
 
 
+                        #search-menu {}
 
+                            input[type='text']#search-for {
+                                width:150px;
+                                border:1px solid #666;
+        						padding:2px;
+                            }
 
 
 
@@ -833,17 +839,17 @@ div.timeline-entry {
 					/*
 						Buncha junk for various form fields, really only used in the Preferences section
 					*/
-					input[type='password'],
-					input[type='text'],
-					select {
+					#prefs-form input[type='password'],
+					#prefs-form input[type='text'],
+					#prefs-form select {
 						border:1px solid #666;
 						padding:4px;
 						width:90%;
 					}
-					input[type='checkbox'] {
+					#prefs-form input[type='checkbox'] {
 						vertical-align:-20%;
 					}
-					option {
+					#prefs-form option {
 						font-family:sans-serif;
 						size:10px;
 					}
@@ -863,7 +869,13 @@ div.timeline-entry {
 							color:#FFFFFF;
 						}
 
-
+                    input[type="text"]:focus,
+                    input[type="password"]:focus,
+                    textarea:focus {
+                        background-color:#FFFFCC;
+                    }
+                    
+                    
 					/*
 						A few specific pref "widgets" need special formatting
 					*/
@@ -877,7 +889,6 @@ div.timeline-entry {
 						width:30px;
 						text-align:right;
 					}
-
 					#prefs-user-stylesheet-button, #prefs-user-stylesheet-clear {
 						padding:2px;
 						font-size:10px;

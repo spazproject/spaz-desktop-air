@@ -42,18 +42,25 @@ Spaz.Keyboard.setShortcuts = function() {
 	
 	shortcut.add(Modkey+'+Shift+A', function() {
 		Spaz.UI.showShortLink();
-	})
+	});
 	
 	shortcut.add(Modkey+'+Shift+M', function() {
 		Spaz.UI.markCurrentTimelineAsRead();
-	})
+	});
 
 
 
 
 	shortcut.add('F1', function() {
 		Spaz.UI.showHelp();
-	})
+	});
+	
+	/*
+		Added so we can open the preferences folder if the UI is hosed by bad CSS
+	*/
+	shortcut.add(Modkey+'+Shift+,', function() {
+		Spaz.Sys.openAppStorageFolder();
+	});
 	
 	shortcut.add(Modkey+'+Shift+@', function() {
 			Spaz.dump('getting screenname from current selection');

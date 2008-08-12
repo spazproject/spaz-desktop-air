@@ -250,6 +250,46 @@ Spaz.Prefs.changeMethods = {
 		}
 	},
 
+	'twitter-base-urls': {
+		setUI: function(value){
+			$('#twitter-base-urls').val(value);
+		},
+		onChange: function(value) {
+			if (value) {
+				
+				switch(value) {
+
+					case 'identica':
+						var baseurl = 'http://identi.ca/';
+						var apiurl  = 'http://identi.ca/api/';
+						break;
+						
+					default:
+						var baseurl = 'http://twitter.com/';
+						var apiurl  = 'https://twitter.com/';
+						break;
+				}
+				Spaz.Prefs.set('twitter-api-base-url', apiurl);
+				Spaz.Prefs.changeMethods['twitter-api-base-url'].setUI(apiurl);
+				Spaz.Prefs.set('twitter-base-url', baseurl);
+				Spaz.Prefs.changeMethods['twitter-base-url'].setUI(baseurl);
+			}
+		}
+	},
+	'twitter-api-base-url': {
+		setUI: function(value) {
+			air.trace('value:'+value);			
+			$('#twitter-api-base-url').val(value);
+		},
+	},
+	'twitter-base-url': {
+		setUI: function(value) {
+			air.trace('value:'+value);			
+			$('#twitter-base-url').val(value);
+		},
+		
+	},
+
 
 	'services-pingfm-userappkey' : {
 		setUI: function(value) {
@@ -296,6 +336,16 @@ Spaz.Prefs.changeMethods = {
 		}	
 	},
 
+
+	'services-twitpic-sharepassword':{
+		setUI: function(value){
+			$('#services-twitpic-sharepassword').attr('checked', value);
+		},
+		onChange: function(value) {},
+		check: function() {
+			Spaz.Prefs.set('services-twitpic-sharepassword', Boolean(Spaz.Prefs.get('services-twitpic-sharepassword'))) 
+		}
+	},
 
 
 	'network-refreshinterval'  : {
@@ -526,6 +576,10 @@ Spaz.Prefs.initUI = function() {
 	$('#debug-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
 	$('#timeline-scrollonupdate').bind('change', Spaz.Prefs.setFromUI);
+	$('#twitter-base-urls').bind('change', Spaz.Prefs.setFromUI);
+	$('#twitter-api-base-url').bind('change', Spaz.Prefs.setFromUI);
+	$('#twitter-base-url').bind('change', Spaz.Prefs.setFromUI);
+	$('services-twitpic-sharepassword').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-userappkey').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-sendreplies').bind('change', Spaz.Prefs.setFromUI);

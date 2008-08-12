@@ -13,6 +13,10 @@ body {
 	color:#444444;
 }
 
+*:focus {
+    outline:none;
+}
+
 a:link, .clickable {
     color:#000099;
     cursor:pointer;

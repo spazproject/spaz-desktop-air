@@ -93,6 +93,9 @@ Spaz.Intercept.init = function() {
 		})
 	
 		.intercept('click', {
+			'#prefs-open-folder':function(e) {
+				Spaz.Sys.openAppStorageFolder();
+			},
 			'#friendslist-showfriends':function(e) {
 				$('#timeline-followers').fadeOut();
 				$('#timeline-friendslist').fadeIn();
@@ -267,7 +270,11 @@ Spaz.Intercept.init = function() {
     function dropHandler(event){
 		event.preventDefault();
 		
-		if ( confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+		if (Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+			if ( confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+				uploadDraggedImage(event);
+			}
+		} else {
 			uploadDraggedImage(event);
 		}
 		
