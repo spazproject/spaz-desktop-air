@@ -39,12 +39,36 @@ Spaz.dock.init = function() {
    Spaz.dock.textFormat = format;
    Spaz.dock.padding = 4;
    Spaz.dock.border = 5;
+
+   // Install the refresh timer to 1/2 second which seems a reasonable value
+   window.setInterval(Spaz.dock.refresh, 500);
 }
 
 Spaz.dock.refresh = function(unreadCount)
 {
    if (!Spaz.dock.active)
    {
+      return;
+   }
+
+   //
+   if (typeof unreadCount == 'undefined')
+   {
+      unreadCount = $("#timeline-friends div.timeline-entry").size() - $("#timeline-friends div.timeline-entry.read").size();   
+   }
+
+   //
+   if (unreadCount == Spaz.dock.lastUnreadCount)
+   {
+      return;
+   }
+
+   // Use the original icon if count is zero
+   if (unreadCount == 0)
+   {
+      // Update state
+      Spaz.dock.icon.bitmaps = [Spaz.dock.bitmapData];
+      Spaz.dock.lastUnreadCount = 0;
       return;
    }
 
@@ -67,35 +91,10 @@ Spaz.dock.refresh = function(unreadCount)
 
    // Compute the bounding box, we cannot use TextField.textWidth and TextField.textHeight as
    // they return approximation which results into incorrect display
-   var xmin = buffer.width;
-   var ymin = buffer.height;
-   var xmax = 0;
-   var ymax = 0;
-   for (var x = 0;x < buffer.width;x++)
-   {
-      for (var y = 0;y < buffer.height;y++)
-      {
-         if (buffer.getPixel(x, y) != 0)
-         {
-            if (x < xmin)
-            {
-               xmin = x;
-            }
-            else if (x > xmax)
-            {
-               xmax = x;
-            }
-            if (y < ymin)
-            {
-               ymin = y;
-            }
-            else if (y > ymax)
-            {
-               ymax = y;
-            }
-         }
-      }
-   }
+   var xmin = 0;
+   var ymin = 0;
+   var xmax = tf.textWidth;
+   var ymax = tf.textHeight;
    var width = xmax - xmin;
    var height = ymax - ymin;
 
@@ -137,8 +136,9 @@ Spaz.dock.refresh = function(unreadCount)
       null,
       true);
 
-   // Update icon
+   // Update state
    Spaz.dock.icon.bitmaps = [clone];
+   Spaz.dock.lastUnreadCount = unreadCount;
 }
 
 Spaz.dock.drawPolygon = function(graphics, centerX, centerY, innerW, innerH, outterW, outterH, size)
