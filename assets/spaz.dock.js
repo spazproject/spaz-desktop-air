@@ -1,7 +1,7 @@
 if (!Spaz.dock) Spaz.dock = {};
 
 /***********
-Spaz.dock takes care of the docking
+Spaz.dock takes care of modifying the OS X dock icon
 ***********/
 
 /* Initiliaze everything.
