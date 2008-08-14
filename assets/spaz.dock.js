@@ -37,7 +37,7 @@ Spaz.dock.init = function() {
    // Save for later use
    Spaz.dock.icon = air.NativeApplication.nativeApplication.icon;
    Spaz.dock.textFormat = format;
-   Spaz.dock.padding = 4;
+   Spaz.dock.padding = 7;
    Spaz.dock.border = 5;
 
    //
@@ -111,15 +111,18 @@ Spaz.dock.refresh = function(unreadCount)
       256,
       256,
       true,
-      0);
+      0x000000);
    buffer.draw(tf);
 
    // Compute the bounding box, we cannot use TextField.textWidth and TextField.textHeight as
    // they return approximation which results into incorrect display
-   var xmin = 0;
-   var ymin = 0;
-   var xmax = tf.textWidth;
-   var ymax = tf.textHeight;
+   var rect = buffer.getColorBoundsRect(0xFFFFFFFF, 0xFFFFFFFF, true);
+   var xmin = rect.left;
+   var ymin = rect.top;
+   var xmax = rect.right;
+   var ymax = rect.bottom;
+
+   //
    var width = xmax - xmin;
    var height = ymax - ymin;
 
