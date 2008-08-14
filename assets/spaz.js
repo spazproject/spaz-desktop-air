@@ -51,10 +51,7 @@ Spaz.initialize = function() {
 	
 	air.trace('root init begin');
 
-	// create user themes and plugins dirs if necessary
-	Spaz.createUserDirs();
-	
-	/*************************** 
+   /***************************
 	 * Load prefs 
 	 **************************/
 	air.trace('init prefs');
@@ -72,7 +69,11 @@ Spaz.initialize = function() {
 	air.trace("database initialization");
 	Spaz.DB.init();
 
-	air.NativeApplication.nativeApplication.autoExit = true;
+   // Docking initialization
+   air.trace("docking initialization");
+   Spaz.dock.init();
+
+   air.NativeApplication.nativeApplication.autoExit = true;
 
 	window.htmlLoader.manageCookies = false;
 	window.htmlLoader.paintsDefaultBackground = false;
@@ -212,6 +213,10 @@ Spaz.initialize = function() {
 	
 	Spaz.dump('ended document.ready()');
 		
+
+   // create user themes and plugins dirs if necessary
+   Spaz.createUserDirs();
+
 }
 
 
