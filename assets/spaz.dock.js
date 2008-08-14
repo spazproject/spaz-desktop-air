@@ -199,27 +199,4 @@ Spaz.dock.drawPolygon = function(graphics, centerX, centerY, innerW, innerH, out
 
    //
    graphics.endFill();
-
-   // Draw the perimeter
-//   graphics.lineStyle(
-//      3,
-//      0xFF,
-//      1,
-//      false,
-//      window.runtime.flash.display.LineScaleMode.NORMAL,
-//      window.runtime.flash.display.CapsStyle.NONE,
-//      window.runtime.flash.display.JointStyle.MITER,
-//      3);
-//   for (var j in xs)
-//   {
-//      if (j == 0)
-//      {
-//         graphics.moveTo(xs[j], ys[j]);
-//      }
-//      else
-//      {
-//         graphics.lineTo(xs[j], ys[j]);
-//      }
-//   }
-//   graphics.lineTo(xs[0], ys[0]);
 }
