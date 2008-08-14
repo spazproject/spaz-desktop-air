@@ -17,7 +17,7 @@ Spaz.dock.init = function() {
 
    // Create the text format
    var format = new window.runtime.flash.text.TextFormat();
-   format.size = 30;
+   format.size = 25;
    format.color = 0xFFFFFF;
    format.bold = true;
    format.font = 'Arial';
@@ -203,7 +203,7 @@ Spaz.dock.drawPolygon = function(graphics, centerX, centerY, innerW, innerH, out
 
    //
    graphics.lineStyle(
-      2,
+      1,
       0x660000,
       1,
       false,
