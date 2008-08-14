@@ -885,6 +885,9 @@ div.timeline-entry {
 					input[type='text']#network-refreshinterval {
 						width:20px;
 					}
+               input[type='text']#dock-refreshinterval {
+                  width:30px;
+               }
 					input[type='text']#window-alpha {
 						width:30px;
 						text-align:right;

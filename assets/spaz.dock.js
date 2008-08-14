@@ -40,8 +40,30 @@ Spaz.dock.init = function() {
    Spaz.dock.padding = 4;
    Spaz.dock.border = 5;
 
-   // Install the refresh timer to 1/2 second which seems a reasonable value
-   window.setInterval(Spaz.dock.refresh, 500);
+   //
+   Spaz.dock.sync();
+}
+
+Spaz.dock.sync = function()
+{
+   if (!Spaz.dock.active)
+   {
+      return;
+   }
+
+   //
+   var reloadID = Spaz.dock.reloadID;
+   if (reloadID != null)
+   {
+      air.trace("Stopping dock refresh thread");
+      window.clearInterval(reloadID);
+   }
+   if (Spaz.Prefs.getDockDisplayUnreadBadge())
+   {
+      var refresh = Spaz.Prefs.getDockRefreshInterval();
+      air.trace("Starting dock refresh thread with refresh rate of " + refresh + " ms");
+      Spaz.dock.reloadID = window.setInterval(Spaz.dock.refresh, refresh);
+   }
 }
 
 Spaz.dock.refresh = function(unreadCount)
@@ -56,6 +78,9 @@ Spaz.dock.refresh = function(unreadCount)
    {
       unreadCount = $("#timeline-friends div.timeline-entry").size() - $("#timeline-friends div.timeline-entry.read").size();   
    }
+
+   //
+   air.trace("Refreshing unread badge count");
 
    //
    if (unreadCount == Spaz.dock.lastUnreadCount)

@@ -73,6 +73,9 @@ Spaz.Prefs.defaultPreferences = {
 	'twitter-base-url':'http://twitter.com/',
 	
 	'twitter-source':'spaz',
+
+   'dock-refreshinterval' : 500,
+   'dock-displayunreadbadge' : true
 }
 
 
@@ -475,9 +478,49 @@ Spaz.Prefs.changeMethods = {
 				Spaz.Prefs.set('timeline-maxentries', 200); 
 			}	
 		}		
-	}
+	},
 	
-	
+   'dock-refreshinterval'  : {
+      setUI: function(value){
+         $('#dock-refreshinterval').val(value);
+      },
+      onChange: function(value) {
+         Spaz.dock.sync();
+      },
+      check: function() {
+         var val = Spaz.Prefs.get('dock-refreshinterval');
+         if (val.match(/^[0-9]+$/))
+         {
+            val = parseInt(val);
+            if (val < 20)
+            {
+               Spaz.Prefs.set('dock-refreshinterval', 200);
+            }
+         }
+         else
+         {
+            air.trace("Coult not parse the dock refresh interval value " + val);
+            Spaz.Prefs.set('dock-refreshinterval', 500);
+         }
+      },
+      setFromUI: function(value) {
+         return value;
+      }
+   },
+   'dock-displayunreadbadge'  : {
+      setUI: function(value){
+         $('#dock-displayunreadbadge').attr('checked', value);
+      },
+      onChange: function(value) {
+         Spaz.dock.sync();
+      },
+      check: function() {
+         Spaz.Prefs.set('dock-displayunreadbadge', Boolean(Spaz.Prefs.get('dock-displayunreadbadge')))
+      },
+      setFromUI: function(value) {
+         return value;
+      }
+   }
 }
 
 
@@ -583,7 +626,9 @@ Spaz.Prefs.initUI = function() {
 	$('#services-pingfm-userappkey').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-sendreplies').bind('change', Spaz.Prefs.setFromUI);
-	
+   $('#dock-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
+   $('#dock-displayunreadbadge').bind('change', Spaz.Prefs.setFromUI);
+
 };
 
 
@@ -836,6 +881,16 @@ Spaz.Prefs.getPass = function(){
 
 Spaz.Prefs.getRefreshInterval = function(){
 	return Spaz.Prefs.get('network-refreshinterval');
+	// return 1000*5;
+}
+
+Spaz.Prefs.getDockRefreshInterval = function(){
+	return Spaz.Prefs.get('dock-refreshinterval');
+	// return 1000*5;
+}
+
+Spaz.Prefs.getDockDisplayUnreadBadge = function(){
+	return Spaz.Prefs.get('dock-displayunreadbadge');
 	// return 1000*5;
 }
 

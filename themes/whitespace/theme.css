@@ -608,6 +608,10 @@ input[type='text']#window-alpha {
 	text-align:right;
 }
 
+input[type='text']#dock-refreshinterval {
+	width:30px;
+}
+
 #prefs-user-stylesheet-button, #prefs-user-stylesheet-clear {
 	padding:2px;
 	font-size:10px;
