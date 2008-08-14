@@ -4,6 +4,8 @@ if (!Spaz.dock) Spaz.dock = {};
 Spaz.dock takes care of the docking
 ***********/
 
+/* Initiliaze everything.
+ */
 Spaz.dock.init = function() {
 
    // Only on OSX
@@ -44,6 +46,8 @@ Spaz.dock.init = function() {
    Spaz.dock.sync();
 }
 
+/* Synchronize the dock with its the prefs. It also takes care of starting/stopping the refresh thread.
+ */
 Spaz.dock.sync = function()
 {
    if (!Spaz.dock.active)
@@ -66,6 +70,9 @@ Spaz.dock.sync = function()
    }
 }
 
+/* Performs a visual refresh. The unreadCount argument is optional. If it is not provided
+ * then the value will be computed from the div elements non marked as read in the timeline of friends.
+ */
 Spaz.dock.refresh = function(unreadCount)
 {
    if (!Spaz.dock.active)
@@ -169,6 +176,16 @@ Spaz.dock.refresh = function(unreadCount)
    Spaz.dock.lastUnreadCount = unreadCount;
 }
 
+/* Draw a star polygon on the specified graphics.
+ * graphics: the graphics
+ * centerX: the x coordinate of the center of the polygon
+ * centerY: the y coordinate of the center of the polygon
+ * innerW: the width of the inner ellipse
+ * innerH: the height of the inner ellipse
+ * outterW: the width of the outter ellipse
+ * outterH: the height of the outter ellipse
+ * size: the number of branch in the star
+ */
 Spaz.dock.drawPolygon = function(graphics, centerX, centerY, innerW, innerH, outterW, outterH, size)
 {
    var delta = (Math.PI * 2) / size;
