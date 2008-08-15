@@ -574,7 +574,7 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 			
 			// air.trace(xhr.responseText);
 			
-			var data = JSON.parse(xhr.responseText);
+			var data = parseJSON(xhr.responseText);
 			
 			Spaz.dump(data)
 			Spaz.dump(typeof(data))
