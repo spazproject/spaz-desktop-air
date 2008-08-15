@@ -32,7 +32,7 @@
 				{/if}
 				</div>
 				<div class="status-link">
-					<a href="${base_url}/${user.screen_name}/statuses/${id}/" class="status-created-at clickable" title="View full post in browser">${created_at}</a>
+					<a href="${base_url}/${user.screen_name}/statuses/${id}/" data-created-at="${created_at}" class="status-created-at clickable" title="View full post in browser">${created_at}</a>
 					<span class="status-source">from
 						<span class="status-source-label">${source}</span>
 					</span>

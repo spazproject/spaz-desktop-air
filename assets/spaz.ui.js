@@ -802,10 +802,16 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	
+	var numentries = $('#'+timelineid + ' div.timeline-entry').length;
 	
 	time.start('sortTimeline');
-	Spaz.dump('Sorting timeline');
-	Spaz.UI.sortTimeline(timelineid, true);
+	
+	if (numentries > 1) {
+		Spaz.dump('Sorting timeline');
+		Spaz.UI.sortTimeline(timelineid, true);
+	} else {
+		air.trace('not sorting');
+	}
 	time.stop('sortTimeline');
 	
 	// time.start('reverseTimeline');
@@ -817,14 +823,23 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 
 	time.start('removeEvenOdd-convertPostTimes');
 	
-	$("#"+timelineid + ' .timeline-entry')
-		.each(function(i) {
-			var entrytime = $(".entry-time", this).text();
-			$(".status-created-at", this).html(get_relative_time( entrytime ));
-		})
-		// remove the even and odds due to resorting
-		.removeClass('even') 
-		.removeClass('odd');
+	$("#"+timelineid + ' .timeline-entry').removeClass('even') .removeClass('odd');
+
+	$("#"+timelineid + ' a.status-created-at').each(function(i) {
+		$(this).text( get_relative_time( $(this).attr('data-created-at') ) );
+	});
+
+
+	
+	// $("#"+timelineid + ' .timeline-entry')
+	// 	.each(function(i) {
+	// 		var entrytime = $(".entry-time", this).text();
+	// 					$(".status-created-at", this).html(get_relative_time( entrytime ));
+	// 	})
+	// 	// remove the even and odds due to resorting
+	// 	.removeClass('even') 
+	// 	.removeClass('odd');
+		
 	time.stop('removeEvenOdd-convertPostTimes');
 	
 	Spaz.dump("# of Timeline-entries = " +$("#"+timelineid + ' .timeline-entry').length)
