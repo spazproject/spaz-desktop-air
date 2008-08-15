@@ -87,7 +87,7 @@ Spaz.dock.refresh = function(unreadCount)
    }
 
    //
-   air.trace("Refreshing unread badge count");
+   // air.trace("Refreshing unread badge count");
 
    //
    if (unreadCount == Spaz.dock.lastUnreadCount)

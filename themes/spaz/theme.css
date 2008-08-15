@@ -313,25 +313,41 @@ a, a:link, .clickable {
 					*/
 					div.timeline {
 						overflow:auto;
-						border-top:6px solid #333300;
+						border-top:   6px solid #333300;
 						border-bottom:4px solid #333300;
 						background-color:#FFFFFF;
 						position:absolute;
-						top:67px;
-						left: 10px;
+						top:   67px;
+						left:  10px;
 						right: 10px;
 						bottom:90px;
 						background-image:url('images/dropshadow.png');
 						background-repeat:repeat-x;
 						background-position: 0px -4px;
 					}
-					#prefs-timeline, #public-timeline {
+					#timeline-prefs, #timeline-public {
 						bottom:90px; /* This is here to give a different bottom if the pager functionality ever returns */
 					}
-
-
-                        #search-menu {}
-
+					#timeline-search {
+						border-top:   2px solid #333300;
+						border-bottom:4px solid #333300;
+                    	top:102px;
+					}
+                        #search-menu {
+    						border-top:   6px solid #333300;
+                            top:   67px;
+                    		left:  10px;
+                    		right: 10px;
+                            height:24px;
+                            position:absolute;
+                            background-color:#111100;
+                            padding:2px
+                        }
+                            #search-menu form {
+                                margin-left: auto;
+                                margin-right:auto;
+                                text-align:center;
+                            }
                             input[type='text']#search-for {
                                 width:150px;
                                 border:1px solid #666;
@@ -726,12 +742,11 @@ div.timeline-entry {
 			.status-source-label {} /* the text with the name of the posting source ("Foobar") */
 
 			/* the icon that indicates this is a protected post */
-			span.status-protected img {
-				opacity:0.8;
-				vertical-align:-20%;
+			span.status-protected {
+				background:url('images/icon-lock.png');
+                padding:0 6px; /* width doesn't matter on inline element, so use padding to force width */
+                height:12px;
 			}
-
-
 
 
 

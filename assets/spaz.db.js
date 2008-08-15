@@ -43,7 +43,7 @@ Spaz.DB.markEntryAsRead = function(entryId) {
 		// We insert the value only if it does not exist already (otherwise will have an SQL error due to the existing PK)
 		Spaz.DB.asyncGetAsRead(entryId, function(read) {
 			if (!read) {
-				air.trace("Marking as read entry " + entryId);
+				// air.trace("Marking as read entry " + entryId);
 				var markAsReadSt = new air.SQLStatement();
 				markAsReadSt.text = "INSERT INTO read_entries (entry_id) VALUES (:entryId)";
 				markAsReadSt.parameters[":entryId"] = entryId;
@@ -62,11 +62,11 @@ Spaz.DB.asyncGetAsRead = function(entryId, callback) {
 	var conn = Spaz.DB.conn;
 	if (conn.connected)
 	{
-		air.trace("Read read entry status " + entryId);
+		// air.trace("Read read entry status " + entryId);
 		var markAsReadSt = new air.SQLStatement();
 		var callbackAdapter = function(event) {
 			var read =  markAsReadSt.getResult().data != null;
-			air.trace("Entry status of " + entryId + " read=" + read);
+			// air.trace("Entry status of " + entryId + " read=" + read);
 			callback.call(this, read);
 		};
 		var errorHandler = function(event) {

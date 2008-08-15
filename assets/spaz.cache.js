@@ -83,10 +83,10 @@ Spaz.Cache.getScreenNamesAsTags = function() {
 	var tagnames = [];
 	var names = Spaz.Cache.getScreenNames();
 	for (key in names) {
-		tagnames.push('@'+names[key]);
+		// tagnames.push('@'+names[key]);
+		names[key] = '@'+names[key];
 	}
-	Spaz.dump(tagnames);
-	return tagnames;
+	return names;
 };
 
 

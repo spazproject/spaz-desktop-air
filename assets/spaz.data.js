@@ -629,9 +629,13 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 		// air.trace('adding entries');
 
 		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
+			// time.start('addingItems');
 			for (var i in Spaz.Data.$ajaxQueueStorage) {
+				Spaz.UI.statusBar('Adding status ')
 				section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
-			}		
+			}
+			// time.stop('addingItems');
+			
 		}
 
 		Spaz.dump('cleaning up timeline');

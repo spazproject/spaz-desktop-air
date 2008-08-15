@@ -226,29 +226,48 @@ Borrowed from Mike Demers (slightly altered)
 https://twitter.pbwiki.com/RelativeTimeScripts
 */
 function get_relative_time(time_value) {
-	var parsed_date = new Date;
-	parsed_date.setTime(Date.parse(time_value));
+	
+	// air.trace(time_value);
+	// 
+	// return time_value;
+	// 
+	// time.start('getUnixTime');
+	// var unixtime = Date.parse(time_value);
+	// time.stop('getUnixTime');
+	// 
+	// time.start('setParsedDate');
+	var parsed_date = new Date(time_value);
+	// parsed_date.setTime(unixtime);
+	// time.stop('setParsedDate');
+	// 
+	// time.start('getNow');
 	var now = new Date;
+	// time.stop('getNow');
+	// 
+	// time.start('calcDelta');
 	var delta = parseInt( (now.getTime() - parsed_date.getTime()) / 1000);
-
-	if(delta < 60) {
-		return 'less than a minute ago';
+	// time.stop('calcDelta');
+	
+	if (delta < 10) {
+		return 'Just now';
+	} else if(delta < 60) {
+		return delta.toString() +' sec ago';
 	} else if(delta < 120) {
-		return 'about a minute ago';
+		return '1 min ago';
 	} else if(delta < (45*60)) {
-		return (parseInt(delta / 60)).toString() + ' minutes ago';
+		return Math.round(parseInt(delta / 60)).toString() + ' min ago';
 	} else if(delta < (90*60)) {
-		return 'about an hour ago';
+		return '1 hr ago';
 	} else if(delta < (24*60*60)) {
-		if (parseInt(delta / 3600) == 1) {
-			return 'about 2 hours ago';
+		if (Math.round(delta / 3600) == 1) {
+			return '2 hr ago';
 		} else {
-			return 'about ' + (parseInt(delta / 3600)).toString() + ' hours ago';
+			return Math.round(delta / 3600).toString() + ' hr ago';
 		}
 	} else if(delta < (48*60*60)) {
 		return '1 day ago';
 	} else {
-		return (parseInt(delta / 86400)).toString() + ' days ago';
+		return Math.round(delta / 86400).toString() + ' days ago';
 	}
 }
 

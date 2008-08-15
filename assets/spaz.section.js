@@ -42,19 +42,39 @@ Spaz.Section.init = function() {
 				Spaz.Data.getAPIURL('replies_timeline')+replies_timeline_params,
 				Spaz.Data.getAPIURL('dm_timeline')+dm_timeline_params
 			);
-			
+			// time.start('getDataForTimeline');
 			Spaz.Data.getDataForTimeline(this, force)
+			// time.stop('getDataForTimeline');
 		},
 		onAjaxComplete: function(url,xhr,msg){
+			// time.start('onSectionAjaxComplete');
 			Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
+			// time.stop('onSectionAjaxComplete');
 		},
 		addItem: function(item) {
-			Spaz.UI.addItemToTimeline(item, this)
+			Spaz.UI.addItemToTimeline(item, this);
 		},
 		cleanup: function(attribute){
+			
+			// time.start('cleanup');
+			// time.start('cleanupTimeline');
 			Spaz.UI.cleanupTimeline(this.timeline);
-			Spaz.Cache.buildScreenNameCache();
+			// time.stop('cleanupTimeline');
+			
+			// time.start('initSuggestions');
 			Spaz.Editor.initSuggestions();
+			// time.stop('initSuggestions');
+			
+			// time.stop('cleanup');
+			
+			// time.setReportMethod( function(l) {
+			// 	air.trace("TIMER====================\n"+l.join("\n"));
+			// });
+			// time.setLineReportMethod(function(l) {
+			// 	air.trace(l);
+			// });
+			
+			// time.report();
 		},
 	}
 
@@ -88,7 +108,6 @@ Spaz.Section.init = function() {
 		},
 		cleanup: function(attribute){
 			Spaz.UI.cleanupTimeline(this.timeline);
-			Spaz.Cache.buildScreenNameCache();
 			Spaz.Editor.initSuggestions();
 		},
 
@@ -265,8 +284,7 @@ Spaz.Section.init = function() {
 				item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
 			}
 			
-			var tpl		= Spaz.Sys.getFileContents('app:/templates/friendslist-row.tpl');
-			var parsed = Spaz.Sys.ClassicSB.parseTpl(tpl, item)
+			var parsed = Spaz.Tpl.parse('app:/templates/friendslist-row.tpl', item);
 			$('#'+this.timeline).append(parsed);
 		},
 		cleanup: function(){
@@ -280,7 +298,6 @@ Spaz.Section.init = function() {
 			$("#"+Spaz.Section.friendslist.timeline + ' div.friendslist-row:even').addClass('even');
 			$("#"+Spaz.Section.friendslist.timeline + ' div.friendslist-row:odd').addClass('odd');
 			
-			Spaz.Cache.buildScreenNameCache();
 			Spaz.Editor.initSuggestions();
 		},
 	
@@ -320,8 +337,7 @@ Spaz.Section.init = function() {
 				item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
 			}
 			
-			var tpl		= Spaz.Sys.getFileContents('app:/templates/friendslist-row.tpl');
-			var parsed = Spaz.Sys.ClassicSB.parseTpl(tpl, item)
+			var parsed = Spaz.Tpl.parse('app:/templates/friendslist-row.tpl', item);
 			$('#'+this.timeline).append(parsed);
 		},
 		cleanup: function(){
@@ -335,7 +351,6 @@ Spaz.Section.init = function() {
 			$("#"+Spaz.Section.followerslist.timeline + ' div.friendslist-row:even').addClass('even');
 			$("#"+Spaz.Section.followerslist.timeline + ' div.friendslist-row:odd').addClass('odd');
 			
-			Spaz.Cache.buildScreenNameCache();
 			Spaz.Editor.initSuggestions();
 		},
 	}

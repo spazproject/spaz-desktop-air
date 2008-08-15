@@ -17,6 +17,8 @@ TODO:
 
 	<link rel="stylesheet" href="assets/init.css" type="text/css" media="screen" charset="utf-8" />
 
+	<script src="assets/time.js" type="text/javascript" charset="utf-8"></script>
+
 	<script src="assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/json2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/date.format.js" type="text/javascript" charset="utf-8"></script>
@@ -262,17 +264,15 @@ TODO:
 		
 				<!-- SEARCH TIMELINE -->
 				<div class="TabbedPanelsContent" id="panel-search">
-
-					<div id="timeline-search" class="timeline">
-						<div class="search-menu">
-							<form>
-								<input type="text" name="search-for" value="" id="search-for" />
-								<input type="button" name="search-go" value="go!" id="search-go" />
-								<input type="button" name="search-help" value="?" id="search-help" title="Summize Search Help" />
-							</form>
-							<div id="search-results"></div>
-						</div>
+					<div id="search-menu">
+						<form>
+							<input type="text" name="search-for" value="" id="search-for" />
+							<input type="button" name="search-go" value="go!" id="search-go" />
+							<input type="button" name="search-help" value="?" id="search-help" title="Summize Search Help" />
+						</form>
 					</div>
+					<div id="timeline-search" class="timeline">
+					</div>					
 				</div>
 
 		
