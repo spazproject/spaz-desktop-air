@@ -6,14 +6,48 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>Tpl</title>
-	<script src="trimpath-template-1.0.38.js" type="text/javascript" charset="utf-8"></script>
+	<!-- // <script src="trimpath-template-1.0.38.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="trimpath-templates-r.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script type="text/javascript" charset="utf-8">
 	var interface = {};
-			
+	
+	var cachedTpls = {}
+	
 	interface.parseTpl = function(tpl, data) {
-		return tpl.process(data);
+		
+		if ( cachedTpls.tpl ) {
+			air.trace('using cached template object');
+			var tplObj = cachedTpls.tpl;
+		} else {
+			air.trace('making new template object');
+			var tplObj = TrimPath.parseTemplate(tpl);
+			cachedTpls.tpl = tplObj;
+		}
+		
+		
+	    return tplObj.process(data);
+	    // var result2 = myTemplateObj.process(differentData);
+		
+		// return tpl.process(data);
 	}
+
+	/*
+		Parse an *array* of data through a template multiple times, returning the result as
+		a single string. Good for tables, lists, etc
+	*/
+	interface.parseArrayTpl = function(tpl, data) {
+		var tplObj = TrimPath.parseTemplate(tpl);
+		var results = '';
+		for (var x=0; c<data.length; x++) {
+			results += tplObj.process(data);
+		}
+		return results;
+	    // var result2 = myTemplateObj.process(differentData);
+		
+		// return tpl.process(data);
+	}
+
 
 	window.childSandboxBridge = interface;
 	</script>
