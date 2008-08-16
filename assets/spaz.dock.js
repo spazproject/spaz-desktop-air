@@ -1,18 +1,18 @@
-if (!Spaz.dock) Spaz.dock = {};
+if (!Spaz.Dock) Spaz.Dock = {};
 
 /***********
-Spaz.dock takes care of modifying the OS X dock icon
+Spaz.Dock takes care of modifying the OS X dock icon
 ***********/
 
 /* Initiliaze everything.
  */
-Spaz.dock.init = function() {
+Spaz.Dock.init = function() {
 
    // Only on OSX
-   Spaz.dock.active = air.NativeApplication.supportsDockIcon;
+   Spaz.Dock.active = air.NativeApplication.supportsDockIcon;
 
    //
-   if (!Spaz.dock.active)
+   if (!Spaz.Dock.active)
    {
       return;
    }
@@ -32,31 +32,31 @@ Spaz.dock.init = function() {
    loader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, function(event)
    {
       air.trace("Loaded image " + imageURL);
-      Spaz.dock.bitmapData = event.target.content.bitmapData;
+      Spaz.Dock.bitmapData = event.target.content.bitmapData;
    }, false, 0, true);
    loader.load(new air.URLRequest(imageURL));
 
    // Save for later use
-   Spaz.dock.icon = air.NativeApplication.nativeApplication.icon;
-   Spaz.dock.textFormat = format;
-   Spaz.dock.padding = 7;
-   Spaz.dock.border = 5;
+   Spaz.Dock.icon = air.NativeApplication.nativeApplication.icon;
+   Spaz.Dock.textFormat = format;
+   Spaz.Dock.padding = 7;
+   Spaz.Dock.border = 5;
 
    //
-   Spaz.dock.sync();
+   Spaz.Dock.sync();
 }
 
 /* Synchronize the dock with its the prefs. It also takes care of starting/stopping the refresh thread.
  */
-Spaz.dock.sync = function()
+Spaz.Dock.sync = function()
 {
-   if (!Spaz.dock.active)
+   if (!Spaz.Dock.active)
    {
       return;
    }
 
    //
-   var reloadID = Spaz.dock.reloadID;
+   var reloadID = Spaz.Dock.reloadID;
    if (reloadID != null)
    {
       air.trace("Stopping dock refresh thread");
@@ -66,16 +66,22 @@ Spaz.dock.sync = function()
    {
       var refresh = Spaz.Prefs.getDockRefreshInterval();
       air.trace("Starting dock refresh thread with refresh rate of " + refresh + " ms");
-      Spaz.dock.reloadID = window.setInterval(Spaz.dock.refresh, refresh);
+      Spaz.Dock.reloadID = window.setInterval(Spaz.Dock.refresh, refresh);
    }
 }
 
 /* Performs a visual refresh. The unreadCount argument is optional. If it is not provided
  * then the value will be computed from the div elements non marked as read in the timeline of friends.
  */
-Spaz.dock.refresh = function(unreadCount)
+Spaz.Dock.refresh = function(unreadCount)
 {
-   if (!Spaz.dock.active)
+   if (!Spaz.Dock.active)
+   {
+      return;
+   }
+
+   // Maybe image has not been loaded yet, we want to avoid this case (it happens during the startup)
+   if (Spaz.Dock.bitmapData == null)
    {
       return;
    }
@@ -91,7 +97,7 @@ Spaz.dock.refresh = function(unreadCount)
    // air.trace("Refreshing unread badge count");
 
    //
-   if (unreadCount == Spaz.dock.lastUnreadCount)
+   if (unreadCount == Spaz.Dock.lastUnreadCount)
    {
       return;
    }
@@ -100,19 +106,19 @@ Spaz.dock.refresh = function(unreadCount)
    if (unreadCount == 0)
    {
       // Update state
-      Spaz.dock.icon.bitmaps = [Spaz.dock.bitmapData];
-      Spaz.dock.lastUnreadCount = 0;
+      Spaz.Dock.icon.bitmaps = [Spaz.Dock.bitmapData];
+      Spaz.Dock.lastUnreadCount = 0;
       return;
    }
 
    //
    var tf = new window.runtime.flash.text.TextField();
-   tf.defaultTextFormat = Spaz.dock.textFormat;
+   tf.defaultTextFormat = Spaz.Dock.textFormat;
    tf.text = "" + unreadCount;
    tf.wordWrap = true;
 
    // Clone the bitmap
-   var clone = Spaz.dock.bitmapData.clone();
+   var clone = Spaz.Dock.bitmapData.clone();
 
    // Draw the text in a buffer
    var buffer = new window.runtime.flash.display.BitmapData(
@@ -145,14 +151,14 @@ Spaz.dock.refresh = function(unreadCount)
    }
 
    // Compute the inner and outter ellipses
-   var innerW = eH + Spaz.dock.padding;
-   var innerH = eY + Spaz.dock.padding;
-   var outterW = eH + Spaz.dock.padding + Spaz.dock.border;
-   var outterH = eY + Spaz.dock.padding + Spaz.dock.border;
+   var innerW = eH + Spaz.Dock.padding;
+   var innerH = eY + Spaz.Dock.padding;
+   var outterW = eH + Spaz.Dock.padding + Spaz.Dock.border;
+   var outterH = eY + Spaz.Dock.padding + Spaz.Dock.border;
 
    // Draw the shape
    var shape = new window.runtime.flash.display.Shape();
-   Spaz.dock.drawPolygon(
+   Spaz.Dock.drawPolygon(
       shape.graphics,
       outterW,
       outterH,
@@ -173,8 +179,8 @@ Spaz.dock.refresh = function(unreadCount)
       true);
 
    // Update state
-   Spaz.dock.icon.bitmaps = [clone];
-   Spaz.dock.lastUnreadCount = unreadCount;
+   Spaz.Dock.icon.bitmaps = [clone];
+   Spaz.Dock.lastUnreadCount = unreadCount;
 }
 
 /* Draw a star polygon on the specified graphics.
@@ -187,7 +193,7 @@ Spaz.dock.refresh = function(unreadCount)
  * outterH: the height of the outter ellipse
  * size: the number of branch in the star
  */
-Spaz.dock.drawPolygon = function(graphics, centerX, centerY, innerW, innerH, outterW, outterH, size)
+Spaz.Dock.drawPolygon = function(graphics, centerX, centerY, innerW, innerH, outterW, outterH, size)
 {
    var delta = (Math.PI * 2) / size;
    var angle = 0;

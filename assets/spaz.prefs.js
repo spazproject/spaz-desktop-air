@@ -487,7 +487,7 @@ Spaz.Prefs.changeMethods = {
             $('#dock-refreshinterval').val(value);
         },
         onChange: function(value) {
-            Spaz.dock.sync();
+            Spaz.Dock.sync();
         },
         check: function() {
             var val = Spaz.Prefs.get('dock-refreshinterval');
@@ -505,7 +505,7 @@ Spaz.Prefs.changeMethods = {
             $('#dock-displayunreadbadge').attr('checked', value);
         },
         onChange: function(value) {
-            Spaz.dock.sync();
+            Spaz.Dock.sync();
         },
         check: function() {
             Spaz.Prefs.set('dock-displayunreadbadge', Boolean(Spaz.Prefs.get('dock-displayunreadbadge')))

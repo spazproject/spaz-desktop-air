@@ -71,7 +71,7 @@ Spaz.initialize = function() {
 
    // Docking initialization
    air.trace("docking initialization");
-   Spaz.dock.init();
+   Spaz.Dock.init();
 
    air.NativeApplication.nativeApplication.autoExit = true;
 
