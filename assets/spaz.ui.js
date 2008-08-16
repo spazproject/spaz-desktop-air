@@ -401,7 +401,6 @@ Spaz.UI.markCurrentTimelineAsRead = function() {
 Spaz.UI.toggleTimelineFilter = function() {
 	Spaz.dump('toggling class dm-replies on #'+Spaz.Section.friends.timeline)
 
-	
 	if ($('#'+Spaz.Section.friends.timeline).is('.dm-replies')) {
 		$('#'+Spaz.Section.friends.timeline).removeClass('dm-replies');
 		Spaz.UI.statusBar('Showing all tweets');
@@ -708,6 +707,20 @@ Spaz.UI.reverseTimeline = function(timelineid) {
 	var cells = $('#'+timelineid+' .timeline-entry');
 	cells.reverse(true).remove().appendTo('#'+timelineid);
 }
+
+
+Spaz.UI.getUnreadCount = function() {
+	var timelineid = Spaz.Section.friends.timeline;
+	
+	// unread count depends on whether or not we're showing everything, or just replies/dms
+	if ($('#'+timelineid).is('.dm-replies')) {
+		var selector = '#'+timelineid + ' div.timeline-entry.dm, #'+timelineid + ' div.timeline-entry.reply'
+	} else {
+		var selector = '#'+timelineid + ' div.timeline-entry'
+	}
+	
+	return $(selector).not('.read').size();
+};
 
 
 

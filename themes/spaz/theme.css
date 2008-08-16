@@ -97,8 +97,8 @@ a, a:link, .clickable {
 
 				.window-button {
 					padding:0px 6px 2px;
-					color:#999999;
-					background-color:#202020;
+					color:#AAAAAA;
+					background-color:#404040;
 					-khtml-border-radius:5px;
 					font-size:14px;
 					cursor:pointer;
@@ -117,7 +117,7 @@ a, a:link, .clickable {
 				padding:0px 6px 2px;
 				font-size:14px;
 				color:#FFFFFF;
-				background-color:#202020;
+				background-color:#404040;
 				-khtml-border-radius:5px;
 				cursor:pointer;
 				margin:0;

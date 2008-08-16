@@ -83,7 +83,8 @@ Spaz.dock.refresh = function(unreadCount)
    //
    if (typeof unreadCount == 'undefined')
    {
-      unreadCount = $("#timeline-friends div.timeline-entry").size() - $("#timeline-friends div.timeline-entry.read").size();   
+      // unreadCount = $("#timeline-friends div.timeline-entry").size() - $("#timeline-friends div.timeline-entry.read").size();   
+      unreadCount = Spaz.UI.getUnreadCount();
    }
 
    //
