@@ -279,6 +279,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		},
 		processData:false,
 		type:"POST",
+		data:'&id='+postid,
 		url:Spaz.Data.getAPIURL('destroy_status').replace(/{{ID}}/, postid),
 	});
 	
