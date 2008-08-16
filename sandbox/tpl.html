@@ -14,15 +14,15 @@
 	
 	var cachedTpls = {}
 	
-	interface.parseTpl = function(tpl, data) {
+	interface.parseTpl = function(tpl, data, label) {
 		
-		if ( cachedTpls.tpl ) {
+		if ( cachedTpls[label] ) {
 			// air.trace('using cached template object');
-			var tplObj = cachedTpls.tpl;
+			var tplObj = cachedTpls[label];
 		} else {
 			// air.trace('making new template object');
 			var tplObj = TrimPath.parseTemplate(tpl);
-			cachedTpls.tpl = tplObj;
+			cachedTpls[label] = tplObj;
 		}
 		
 		

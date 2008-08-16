@@ -913,6 +913,12 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll) {
 	});*/
 	time.stop('addProtectedPostInd');
 	
+	time.start('bindOnceFadein');
+	cleanupTweets.find('img.user-image').one('load', function() {
+		// alert('fadingIn');
+		$(this).fadeTo('500','1.0');
+	});
+	time.stop('bindOnceFadein');
 	
 	time.start('highlightReplies');
 	// highlight all messages that mention @username

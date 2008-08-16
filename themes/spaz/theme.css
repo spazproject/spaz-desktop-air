@@ -693,6 +693,8 @@ div.timeline-entry {
 			margin-bottom:2px;
 			background-color:#FFFFFF;
 			-webkit-box-shadow:0px 1px 5px #333;
+			background-image:url('images/userimg-bg.png');
+			opacity:.2;
 		}
 
 		div.user-screen-name {

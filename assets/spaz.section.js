@@ -280,7 +280,9 @@ Spaz.Section.init = function() {
 				item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
 			}
 			
+			
 			var parsed = Spaz.Tpl.parse('app:/templates/friendslist-row.tpl', item);
+			air.trace("\n\nappend this\n"+parsed);
 			$('#'+this.timeline).append(parsed);
 		},
 		cleanup: function(){
@@ -294,7 +296,13 @@ Spaz.Section.init = function() {
 			$("#"+Spaz.Section.friendslist.timeline + ' div.friendslist-row:even').addClass('even');
 			$("#"+Spaz.Section.friendslist.timeline + ' div.friendslist-row:odd').addClass('odd');
 			
-			Spaz.Editor.initSuggestions();
+			$("#"+Spaz.Section.friendslist.timeline + ' div.friendslist-row').find('img.user-image').one('load', function() {
+				// alert('fadingIn');
+				$(this).fadeTo('500','1.0');
+			});
+			
+			
+			// Spaz.Editor.initSuggestions();
 		},
 	
 	}
@@ -347,7 +355,11 @@ Spaz.Section.init = function() {
 			$("#"+Spaz.Section.followerslist.timeline + ' div.friendslist-row:even').addClass('even');
 			$("#"+Spaz.Section.followerslist.timeline + ' div.friendslist-row:odd').addClass('odd');
 			
-			Spaz.Editor.initSuggestions();
+			$("#"+Spaz.Section.followerslist.timeline + ' div.friendslist-row').find('img.user-image').one('load', function() {
+				// alert('fadingIn');
+				$(this).fadeTo('500','1.0');
+			});
+			
 		},
 	}
 

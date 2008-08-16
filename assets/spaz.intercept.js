@@ -249,6 +249,7 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.showLinkContextMenu($(this), url);
 			},
 		})
+		
 	// end intercept
 	
 	
