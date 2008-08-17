@@ -30,8 +30,6 @@ Spaz.Dock.init = function() {
 
    // Save for later use
    Spaz.Dock.icon = air.NativeApplication.nativeApplication.icon;
-   Spaz.Dock.padding = 12;
-   Spaz.Dock.border = 5;
 
    //
    Spaz.Dock.sync();
@@ -308,13 +306,13 @@ Spaz.Dock.Star = function(outterRadius, colors)
 Spaz.Dock.ClassicBadge = function(unreadCount, color)
 {
    var text = new Spaz.Dock.TextRasterizer("" + unreadCount);
-
+            
    //
    var shape = Spaz.Dock.createShape(
       text.width,
       text.height,
-      Spaz.Dock.padding,
-      Spaz.Dock.border,
+      12,
+      5,
       Spaz.Dock.colorMap[color]);
 
    //
