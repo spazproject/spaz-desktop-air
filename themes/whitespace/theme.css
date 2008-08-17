@@ -73,6 +73,23 @@ h1, h2, h3, h4, h5 {
 	font-weight: normal;
 }
 
+#header-label {
+	padding:0px 4px 2px;
+	color:#CCCCCC;
+	background-color:#FFFFFF;
+	-khtml-border-radius:2px;
+	cursor:pointer;
+	margin:0;
+}
+#header-label:after {
+	content:' \00BB';	
+}
+
+#header-label:hover {
+	color:#000000;
+}
+
+
 #window-buttons {
 	position:absolute;
 	right:	-3px;
@@ -133,6 +150,41 @@ div.timeline {
 #prefs-timeline, #public-timeline {
 	bottom:53px;
 }
+#timeline-search {
+	top:83px;
+}
+    #search-menu {
+		background-color:#EEE;
+        top:   55px;
+		left:0px;
+		right:0px;
+        height:24px;
+        position:absolute;
+        padding:2px
+    }
+        #search-menu form {
+            margin-left: auto;
+            margin-right:auto;
+            text-align:center;
+        }
+        input[type='text']#search-for {
+            width:150px;
+            border:1px solid #666;
+			padding:2px;
+        }
+		/*
+		  This is special formatting for the search menu
+		*/
+		div.search-menu {
+			text-align:center;
+			background:#202020;
+			color:#FFFFCC;
+			padding:3px 0 3px 0;
+		}
+			div.search-menu form {
+			    padding:0px;
+			    margin:0px;
+			}
 
 div.timeline-pager {
 	border-top:   1px solid #dddddd;
@@ -312,6 +364,7 @@ img.user-image {
 	/*margin-bottom:2px;*/
 	/*background-color:#FFFFFF;*/
 	-webkit-box-shadow:0px 1px 3px #333;
+	opacity:.2;
 }
 
 div.user-screen-name {
@@ -903,7 +956,7 @@ TabbedPanels
 	padding: 5px;
 	margin: 0px 1px 0px 0px;
 	font-size: 11px;
-	background-color: #FFFFFF;
+	background-color: #EEEEEE;
 	color:#CCCCCC;
 	list-style: none;
 

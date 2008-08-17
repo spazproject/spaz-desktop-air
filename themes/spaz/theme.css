@@ -391,22 +391,6 @@ a, a:link, .clickable {
 							top:  -4px;
 							font-size:16px;
 						}
-						
-						/*
-						  This is special formatting for the search menu
-						*/
-						div.search-menu {
-                            text-align:center;
-                            background:#202020;
-                            color:#FFFFCC;
-                            padding:3px 0 3px 0;
-                        }
-
-                        div.search-menu form {
-                            padding:0px;
-                            margin:0px;
-                        }
-
 
 		/*
 			The entryform contains the #entrybox textarea input for posts and the #updateButton

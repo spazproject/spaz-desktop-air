@@ -68,6 +68,24 @@ h1, h2, h3, h4, h5 {
 	cursor: move;
 }
 
+#header-label {
+	padding:0px 6px 2px;
+	color:#999999;
+	background-color:#202020;
+	-khtml-border-radius:5px;
+	font-size:10px;
+	cursor:pointer;
+	margin:0;
+}
+#header-label:after {
+	content:' \00BB';	
+}
+
+#header-label:hover {
+	color:#FFFFFF;
+	background-color:#666666;
+}
+
 #window-buttons {
 	position:absolute;
 	right:	5px;
@@ -136,7 +154,44 @@ div.timeline {
 #prefs-timeline, #public-timeline {
 	bottom:33px;
 }
-
+#timeline-search {
+	top:78px;
+}
+    #search-menu {
+		border-top:   2px solid #333300;
+        top:   47px;
+		left:0px;
+		right:0px;
+        height:24px;
+        position:absolute;
+        background-color:#111100;
+        padding:2px
+    }
+        #search-menu form {
+            margin-left: auto;
+            margin-right:auto;
+            text-align:center;
+        }
+        input[type='text']#search-for {
+            width:150px;
+            border:1px solid #666;
+			padding:2px;
+        }
+		/*
+		  This is special formatting for the search menu
+		*/
+		div.search-menu {
+			text-align:center;
+			background:#202020;
+			color:#FFFFCC;
+			padding:3px 0 3px 0;
+		}
+			div.search-menu form {
+			    padding:0px;
+			    margin:0px;
+			}
+			
+			
 div.timeline-pager {
 	background-color:#555555;
 	color:#ffffcc;
@@ -305,6 +360,7 @@ img.user-image {
 	margin-left: 7px;
 	float:right;
 	-khtml-border-radius:2px;
+	opacity:.2;
 }
 
 div.user-screen-name {
