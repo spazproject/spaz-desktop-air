@@ -306,7 +306,7 @@ Spaz.Dock.Star = function(outterRadius, colors)
 Spaz.Dock.ClassicBadge = function(unreadCount, color)
 {
    var text = new Spaz.Dock.TextRasterizer("" + unreadCount);
-            
+
    //
    var shape = Spaz.Dock.createShape(
       text.width,
@@ -348,8 +348,8 @@ Spaz.Dock.createShape = function(width, height, padding, border, colors)
    // Compute the inner and outter ellipses
    var innerW = eW + padding;
    var innerH = eH + padding;
-   var outterW = eW + Spaz.Dock.padding + border;
-   var outterH = eH + Spaz.Dock.padding + border;
+   var outterW = eW + padding + border;
+   var outterH = eH + padding + border;
 
    // Draw the shape
    var shape = new window.runtime.flash.display.Shape();
