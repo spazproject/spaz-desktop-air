@@ -14,10 +14,13 @@ body {
     outline:none;
 }
 
-input[type=text], textarea, div.status-text {
-/*	-khtml-user-select:text;*/
+/* selectable settings */
+* {
+	-webkit-user-select:none;
 }
-
+input, textarea, .status-text {
+	-webkit-user-select:text;
+}
 
 
 .restart-required {
