@@ -24,11 +24,11 @@
 			</div>
 		{else}
 			<div class="status-actions">
-				<span title="Make this message a favorite" class="status-action status-action-fav clickable" id="status-${id}-fav" id="${id}" user-screen_name="${user.screen_name}" ></span>
-				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-${id}-dm" id="${id}" user-screen_name="${user.screen_name}" ></span>
-				<span title="Send reply to this user" class="status-action status-action-reply clickable" id="status-${id}-reply" id="${id}" user-screen_name="${user.screen_name}" ></span>
+				<span title="Make this message a favorite" class="status-action status-action-fav clickable" id="status-${id}-fav" entry-id="${id}" user-screen_name="${user.screen_name}" ></span>
+				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-${id}-dm" entry-id="${id}" user-screen_name="${user.screen_name}" ></span>
+				<span title="Send reply to this user" class="status-action status-action-reply clickable" id="status-${id}-reply" entry-id="${id}" user-screen_name="${user.screen_name}" ></span>
 				{if isSent}
-					<a title="Delete this message" class="status-action-del clickable" id="status-${id}-del" id="${id}">del</a>
+					<a title="Delete this message" class="status-action-del clickable" id="status-${id}-del" entry-id="${id}">del</a>
 				{/if}
 				</div>
 				<div class="status-link">
