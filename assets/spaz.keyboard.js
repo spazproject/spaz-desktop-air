@@ -163,6 +163,18 @@ Spaz.Keyboard.setShortcuts = function() {
 	});
 	
 	
+	/*
+		Search box submit on Enter
+	*/
+	shortcut.add('Enter', function() {
+			Spaz.Section.search.build();
+		}, {
+			target:$('search-for')[0],
+			type:'keypress',
+			propagate:false
+	});
+	
+	
 	// ****************************************
 	// editor shortcuts
 	// ****************************************
