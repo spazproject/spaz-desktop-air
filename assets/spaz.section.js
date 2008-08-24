@@ -12,6 +12,7 @@ Spaz.Section.init = function() {
 				Spaz.Data.getAPIURL('dm_timeline')
 			),
 		lastid:   0,
+		lastid_dm:0,
 		lastcheck:0,
 		currdata: null,
 	 	prevdata: null,
@@ -21,18 +22,18 @@ Spaz.Section.init = function() {
 		build: function(force, reset){
 			
 			// initialize the URLs
-			if (this.lastcheck == 0 || reset) {
+			if (this.lastid == 0 || reset) {
 				var friends_timeline_params = "?count=100";
 				var replies_timeline_params = "";
 				var dm_timeline_params = "";
 			} else {
-				var lastCheckDate = new Date(this.lastcheck).toUTCString();
+				// var lastCheckDate = new Date(this.lastcheck).toUTCString();
 				
 				/* even UTC doesn't seem to work. Disabling use of 'since' until it can work consistently */
 				
-				var friends_timeline_params = "?count=30&since="+encodeURIComponent(lastCheckDate);
-				var replies_timeline_params = "?since="+encodeURIComponent(lastCheckDate);
-				var dm_timeline_params = "?since="+encodeURIComponent(lastCheckDate);
+				var friends_timeline_params = "?count=100&since_id="+this.lastid;
+				var replies_timeline_params = "?since_id="+this.lastid;
+				var dm_timeline_params = "?since_id="+this.lastid_dm;
 				
 				// var friends_timeline_params = "?count=20";
 				// var replies_timeline_params = "";
@@ -42,6 +43,9 @@ Spaz.Section.init = function() {
 				Spaz.Data.getAPIURL('replies_timeline')+replies_timeline_params,
 				Spaz.Data.getAPIURL('dm_timeline')+dm_timeline_params
 			);
+			
+			air.trace('URLs:::'+this.urls.toString());
+			
 			time.start('getDataForTimeline');
 			Spaz.Data.getDataForTimeline(this, force)
 			time.stop('getDataForTimeline');
@@ -51,7 +55,23 @@ Spaz.Section.init = function() {
 			Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 			time.stop('onSectionAjaxComplete');
 		},
-		addItem: function(item) {
+		addItem: function(item) {			
+
+			/*
+				We update the lastids here because it works best with the existing flow
+			*/
+			
+			/* this is a dm */
+			if (item.recipient_id) {
+				if (item.id > this.lastid_dm) {
+					this.lastid_dm = item.id;
+				}
+			} else { /* This is a reply or "normal" status */
+				if (item.id > this.lastid) {
+					this.lastid = item.id;
+				}
+			}
+			
 			Spaz.UI.addItemToTimeline(item, this);
 		},
 		cleanup: function(attribute){
