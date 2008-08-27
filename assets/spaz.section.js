@@ -26,6 +26,11 @@ Spaz.Section.init = function() {
 				var friends_timeline_params = "?count=100";
 				var replies_timeline_params = "";
 				var dm_timeline_params = "";
+				
+				this.lastid    = 0;
+            this.lastid_dm = 0;
+            this.lastcheck = 0;
+            
 			} else {
 				// var lastCheckDate = new Date(this.lastcheck).toUTCString();
 				
@@ -44,7 +49,7 @@ Spaz.Section.init = function() {
 				Spaz.Data.getAPIURL('dm_timeline')+dm_timeline_params
 			);
 			
-			air.trace('URLs:::'+this.urls.toString());
+			Spaz.dump('URLs:::'+this.urls.toString());
 			
 			time.start('getDataForTimeline');
 			Spaz.Data.getDataForTimeline(this, force)

@@ -36,7 +36,7 @@ Spaz.Keyboard.setShortcuts = function() {
 
 	shortcut.add('Shift+F5', function() {
 		Spaz.UI.clearCurrentTimeline();
-		Spaz.UI.reloadCurrentTab(true);
+		Spaz.UI.reloadCurrentTab(true, true);
 		Spaz.restartReloadTimer();
 	})
 	
@@ -279,6 +279,8 @@ Spaz.Keyboard.moveSelect = function(jqelement, timelineid) {
 	
 	// unselect everything
 	$('#'+timelineid+' div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
+
+	$().trigger('UNREAD_COUNT_CHANGED');
 	
 	if ( entryId = Spaz.UI.getStatusIdFromElement(jqelement[0]) ) {
 		Spaz.DB.markEntryAsRead(entryId);

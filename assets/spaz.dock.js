@@ -17,6 +17,9 @@ Spaz.Dock.init = function() {
       return;
    }
 
+	Spaz.Dock.mincachetime = 1000; // in mseconds
+	Spaz.Dock.lastchecked  = 0; // unix timestamp
+
    // Load the image async
    var imageURL = 'images/spaz-icon-alpha.png';
    air.trace("Want to load image " + imageURL);
@@ -105,24 +108,43 @@ Spaz.Dock.sync = function()
    if (reloadID != null)
    {
       air.trace("Stopping dock refresh thread");
+		$().unbind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);
       window.clearInterval(reloadID);
    }
    if (Spaz.Prefs.getDockDisplayUnreadBadge())
    {
-      var refresh = Spaz.Prefs.getDockRefreshInterval();
+		$().bind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);      
+		var refresh = Spaz.Prefs.getDockRefreshInterval();
       air.trace("Starting dock refresh thread with refresh rate of " + refresh + " ms");
-      Spaz.Dock.reloadID = window.setInterval(Spaz.Dock.refresh, refresh);
+      // Spaz.Dock.reloadID = window.setInterval(Spaz.Dock.refresh, refresh);
    }
 }
 
 /* Performs a visual refresh. The unreadCount argument is optional. If it is not provided
  * then the value will be computed from the div elements non marked as read in the timeline of friends.
+ * unreadCount should be an integer; if not, it is ignored and unreadCount is retrieved by Spaz.UI.getUnreadCount
  */
 Spaz.Dock.refresh = function(unreadCount)
 {
    if (!Spaz.Dock.active)
    {
       return;
+   }
+
+   // clear any existing timeouts so we don't fire a second time unnecessarily
+   if (Spaz.Dock.deferredRefresh) { clearTimeout(Spaz.Dock.deferredRefresh); }
+
+   // check if timelimit has passed
+   var now  = getTimeAsInt();
+   var diff = now - Spaz.Dock.lastchecked;
+   if (diff < Spaz.Dock.mincachetime) {
+           // air.trace('timelimit not passed (it is now '+now+')');
+        
+           // defer execution if time limit has not passed
+           Spaz.Dock.deferredRefresh = setTimeout(Spaz.Dock.refresh, Spaz.Dock.mincachetime);
+           return;
+   } else {
+           Spaz.Dock.lastchecked = now;
    }
 
    // Maybe image has not been loaded yet, we want to avoid this case (it happens during the startup)
@@ -132,7 +154,7 @@ Spaz.Dock.refresh = function(unreadCount)
    }
 
    //
-   if (typeof unreadCount == 'undefined')
+   if (typeof unreadCount != 'number')
    {
       unreadCount = Spaz.UI.getUnreadCount();
    }

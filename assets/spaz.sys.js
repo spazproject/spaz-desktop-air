@@ -32,36 +32,39 @@ Spaz.Sys.setUserAgent = function(uastring) {
 
 
 Spaz.Sys.initNetworkConnectivityCheck = function() {
-	var monitor;
-	
-	var test_url = Spaz.Data.getAPIURL('test');
-	
-	monitor = new air.URLMonitor( new air.URLRequest( test_url ) );
-	monitor.addEventListener(air.Event.NETWORK_CHANGE, announceStatus);
-	monitor.pollInterval = 30*1000;
-	monitor.start();
-	
-	function announceStatus(e) {
-		Spaz.dump("Network status change. Current status: " + monitor.available);
-		air.trace("Network status change. Current status: " + monitor.available);
-	}
+	Spaz.dump('initNetworkConnectivityCheck disabled');
+
+	// var monitor;
+	// 
+	// var test_url = Spaz.Data.getAPIURL('test');
+	// 
+	// monitor = new air.URLMonitor( new air.URLRequest( test_url ) );
+	// monitor.addEventListener(air.Event.NETWORK_CHANGE, announceStatus);
+	// monitor.pollInterval = 30*1000;
+	// monitor.start();
+	// 
+	// function announceStatus(e) {
+	// 	Spaz.dump("Network status change. Current status: " + monitor.available);
+	// 	air.trace("Network status change. Current status: " + monitor.available);
+	// }
 };
 
 
 Spaz.Sys.initMemcheck = function() {
-	// air.trace('initMemcheck');
-	t = new air.Timer(15*1000, 0);
-	t.addEventListener(air.TimerEvent.TIMER, memCheckGC);
-	t.start();
-	
-	// air.trace("Running!"+t.running);
-	
-	function memCheckGC(e) {
-		// air.trace("memcheck event");
-		Spaz.dump("air.System.totalMemory:"+air.System.totalMemory);
-		// air.System.gc();
-		// air.trace("post mem:"+air.System.totalMemory);
-	}
+	Spaz.dump('Memcheck disabled');
+
+	// t = new air.Timer(15*1000, 0);
+	// t.addEventListener(air.TimerEvent.TIMER, memCheckGC);
+	// t.start();
+	// 
+	// // air.trace("Running!"+t.running);
+	// 
+	// function memCheckGC(e) {
+	// 	// air.trace("memcheck event");
+	// 	Spaz.dump("air.System.totalMemory:"+air.System.totalMemory);
+	// 	// air.System.gc();
+	// 	// air.trace("post mem:"+air.System.totalMemory);
+	// }
 };
 
 

@@ -186,7 +186,7 @@ Spaz.Intercept.init = function() {
 				openInBrowser(url);
 			},
 			'.status-action-fav':function(e) {
-				Spaz.Data.makeFavorite($(this).attr('entry-id'))
+				Spaz.Data.makeFavorite($(this).attr('entry-id'));
 			},
 			'.status-action-dm':function(e) {
 				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));

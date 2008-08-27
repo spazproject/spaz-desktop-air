@@ -216,11 +216,16 @@ Spaz.Data.update = function(msg, username, password) {
 			
 			// We mark it as read in the db
 			Spaz.DB.markEntryAsRead(entry.id);
+
+			// Prepend this to the timeline (don't scroll to top)
 			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true);
 			
-			// cleanup, but suppress the notifications by passing "true" as 2nd param
-			// surpress scrollTo with 3rd param
-			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true, true);
+			/*
+				cleanup, but suppress the notifications by passing "true" as 2nd param
+				surpress scrollTo with 3rd param
+				don't sort with 4th param
+			*/
+			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true, true, true);
 		
 			Spaz.UI.entryBox.reset();
 			Spaz.dump('reset entryBox (Spry)');
@@ -964,20 +969,23 @@ Spaz.Data.uploadFile = function(opts) {
 /**
  * loads data for a particular tab (tabs are usually connected to a single Spaz.Section)
  * @param {Object} tab the DOM Element of the tab
- * @param {Boolean} tab if true, force a reload even if mincachetime of this tab's section has not expired
- * @param {Number} page the page # to request; not used ATM because paging is disabled
+ * @param {Boolean} force if true, force a reload even if mincachetime of this tab's section has not expired
+ * @param {Boolean} reset resets all lastid/mincachetime data on this section
  * @returns false
  * @type Boolean
  * @see Spaz.Section.getSectionFromTab
  */
 
-Spaz.Data.loadDataForTab = function(tab, force, page) {
-	if (!page || page < 1) {
-		page = 1;
-	}
+Spaz.Data.loadDataForTab = function(tab, force, reset) {
+
 	if (!force) {
 		force=false;
 	}
+
+	if (!reset) {
+		reset=false;
+	}
+
 	Spaz.dump('Loading data for tab:'+tab.id);
 	var section = Spaz.Section.getSectionFromTab(tab)
 	Spaz.dump('SECTION:'+section);
@@ -986,7 +994,7 @@ Spaz.Data.loadDataForTab = function(tab, force, page) {
 		case 'tab-prefs':
 			break;
 		default:
-			section.build(force);
+			section.build(force, reset);
 			break;
 	}
 	return false
