@@ -10,7 +10,7 @@
   </features>
   <libraries>
     <library path="library.swf">
-      <script name="com/adobe/air/notification/NotificationQueue" mod="1198720691000" signatureChecksum="1056877710" >
+      <script name="com/adobe/air/notification/NotificationQueue" mod="1219843145000" signatureChecksum="1056877710" >
         <def id="com.adobe.air.notification:NotificationQueue" /> 
         <dep id="Object" type="i" /> 
         <dep id="AS3" type="n" /> 
@@ -24,7 +24,7 @@
         <dep id="com.adobe.air.notification:AbstractNotification" type="e" /> 
         <dep id="flash.events:Event" type="e" /> 
       </script>
-      <script name="com/adobe/air/notification/Purr" mod="1198720691000" signatureChecksum="2267517331" >
+      <script name="com/adobe/air/notification/Purr" mod="1219843145000" signatureChecksum="2267517331" >
         <def id="com.adobe.air.notification:Purr" /> 
         <dep id="Object" type="i" /> 
         <dep id="AS3" type="n" /> 
@@ -45,7 +45,7 @@
         <dep id="flash.desktop:SystemTrayIcon" type="e" /> 
         <dep id="flash.events:Event" type="e" /> 
       </script>
-      <script name="com/adobe/air/notification/AbstractNotification" mod="1207273465000" signatureChecksum="3167039005" >
+      <script name="com/adobe/air/notification/AbstractNotification" mod="1219843145000" signatureChecksum="3167039005" >
         <def id="com.adobe.air.notification:AbstractNotification" /> 
         <dep id="flash.display:NativeWindow" type="i" /> 
         <dep id="AS3" type="n" /> 
@@ -67,7 +67,7 @@
         <dep id="flash.display:StageAlign" type="e" /> 
         <dep id="com.adobe.air.notification:NotificationClickedEvent" type="e" /> 
       </script>
-      <script name="com/adobe/air/notification/Notification" mod="1198723265000" signatureChecksum="124208627" >
+      <script name="com/adobe/air/notification/Notification" mod="1219843145000" signatureChecksum="1063282055" >
         <def id="com.adobe.air.notification:Notification" /> 
         <dep id="com.adobe.air.notification:AbstractNotification" type="i" /> 
         <dep id="AS3" type="n" /> 
@@ -80,9 +80,10 @@
         <dep id="flash.ui:ContextMenu" type="e" /> 
         <dep id="flash.display:Bitmap" type="e" /> 
         <dep id="flash.text:TextField" type="e" /> 
+        <dep id="flash.filters:DropShadowFilter" type="e" /> 
         <dep id="flash.text:TextFormatAlign" type="e" /> 
       </script>
-      <script name="com/adobe/air/notification/VideoNotification" mod="1198720691000" signatureChecksum="1689481338" >
+      <script name="com/adobe/air/notification/VideoNotification" mod="1219843145000" signatureChecksum="1689481338" >
         <def id="com.adobe.air.notification:VideoNotification" /> 
         <dep id="com.adobe.air.notification:AbstractNotification" type="i" /> 
         <dep id="AS3" type="n" /> 
@@ -108,13 +109,13 @@
         <dep id="flash.media:Video" type="e" /> 
         <dep id="flash.events:NetStatusEvent" type="e" /> 
       </script>
-      <script name="com/adobe/air/notification/NotificationClickedEvent" mod="1198721936000" signatureChecksum="3889519097" >
+      <script name="com/adobe/air/notification/NotificationClickedEvent" mod="1219843145000" signatureChecksum="3889519097" >
         <def id="com.adobe.air.notification:NotificationClickedEvent" /> 
         <dep id="flash.events:Event" type="i" /> 
         <dep id="AS3" type="n" /> 
       </script>
       <digests>
-        <digest type="SHA-256" signed="false" value="d13bad13fe945af6abeca780c16ac83aaf3f86dad4c69b3c42ee6dc1abc54e8c"   />
+        <digest type="SHA-256" signed="false" value="6446054480ced598409682c419d6f7d4a2acab8e8b6dd0934e4e31f9838cb908"   />
       </digests>
     </library>
   </libraries>

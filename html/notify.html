@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>notify</title>
+	<script src="app:/assets/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		// see http://www.netlobo.com/url_query_string_javascript.html
+		function gup( name )
+		{
+			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			var regexS = "[\\?&]"+name+"=([^&#]*)";
+			var regex = new RegExp( regexS );
+			var results = regex.exec( window.location.href );
+			if( results == null )
+			  return "";
+			else
+			  return results[1];
+		}
+		
+		$().ready( function() {
+			var title = decodeURIComponent(gup('title'));
+			var msg   = decodeURIComponent(gup('msg'));
+			var img   = decodeURIComponent(gup('img'));
+			
+			// air.trace(title);
+			// air.trace(msg);
+			// air.trace(img);
+			
+			
+			$('#title').html(title)
+			$('#msg').html(msg);
+			$('#icon').attr('src', img);
+		});
+	</script>
+	
+	<style type="text/css" media="screen">
+		html {
+			width: 100%;
+			height:100%;
+		}
+
+		body {
+			font-family:Tahoma, Arial, Helvetica, sans-serif;
+			margin: 0px;
+			padding:0px;
+			width:  100%;
+			height: 100%;
+			display:block;
+		}
+		
+		#container {
+			font-size:10pt;
+			border:10px solid #000;
+			color:#fff;
+			background-color: #000;
+			opacity: 0.8;
+			overflow:hidden;
+			-khtml-border-radius:15px; /* this is webkit-specific and gives us rounded corners*/
+			top:	0px; /* This has an effective 8px padding to show us the app dropshadow */
+			left:	0px; /* using all-four-sides positioning lets it expand properly on resizing */
+			bottom:	0px;
+			right:	0px;
+			position: fixed;
+		}
+		
+		#icon {
+			position:absolute;
+			width: 48px;
+			height:48px;
+			top:   0px;
+			left:  0px;
+		}
+		
+		#title {
+			position:absolute;
+			font-size:13px;
+			font-weight: bold;
+			left:57px;
+			top: -2px;
+			white-space: nowrap;
+		}
+		
+		#msg {
+			position:absolute;
+			font-size:11px;
+			left:57px;
+			top: 15px;
+		}
+	</style>
+	
+</head>
+
+<body>
+	
+	<div id="container">
+		<img id="icon" />
+		<div id="title"></div>
+		<div id="msg"></div>
+	
+</body>
+</html>

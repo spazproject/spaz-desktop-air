@@ -120,9 +120,9 @@ Spaz.Windows.makeSystrayIcon = function() {
 		// air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 		var systrayIconLoader = new air.Loader();
 		systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
-		                                                       Spaz.Menus.iconLoadComplete);
+		                                                       Spaz.Menus.iconLoadComplete, false, 0, true);
 		systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));
-		air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Windows.onSystrayClick);
+		air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Windows.onSystrayClick, false, 0, true);
 	}
 };
 

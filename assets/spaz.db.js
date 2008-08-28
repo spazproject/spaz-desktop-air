@@ -23,7 +23,7 @@ Spaz.DB.init = function() {
 		create.sqlConnection = conn;
 		create.execute();
 	};
-	conn.addEventListener(air.SQLEvent.OPEN, initListener);
+	conn.addEventListener(air.SQLEvent.OPEN, initListener, false, 0, true);
 
 	//
 	air.trace("Opening database");
@@ -72,8 +72,8 @@ Spaz.DB.asyncGetAsRead = function(entryId, callback) {
 		var errorHandler = function(event) {
 			air.trace("Async get read for entry id " + entryId + " failed " + event.error);
 		};
-		markAsReadSt.addEventListener(air.SQLEvent.RESULT, callbackAdapter);
-		markAsReadSt.addEventListener(air.SQLErrorEvent.ERROR, errorHandler);
+		markAsReadSt.addEventListener(air.SQLEvent.RESULT, callbackAdapter, false, 0, true);
+		markAsReadSt.addEventListener(air.SQLErrorEvent.ERROR, errorHandler, false, 0, true);
 		markAsReadSt.text = "SELECT entry_id FROM read_entries WHERE entry_id=:entryId";
 		markAsReadSt.parameters[":entryId"] = entryId;
 		markAsReadSt.sqlConnection = conn;

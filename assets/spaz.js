@@ -171,13 +171,13 @@ Spaz.initialize = function() {
 	/*
 		set-up window and app events
 	*/
-	window.nativeWindow.addEventListener(air.Event.EXITING, Spaz.Windows.onWindowClose); 
+	window.nativeWindow.addEventListener(air.Event.EXITING, Spaz.Windows.onWindowClose, false, 0, true); 
 	// air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
-	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose); 
-	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
-	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);
-	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.MOVE, Spaz.Windows.onWindowMove);
-	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate);
+	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose, false, 0, true); 
+	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive, false, 0, true);
+	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize, false, 0, true);
+	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.MOVE, Spaz.Windows.onWindowMove, false, 0, true);
+	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate, false, 0, true);
 
 
 	/*

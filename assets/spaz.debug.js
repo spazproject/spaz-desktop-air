@@ -77,7 +77,7 @@ Spaz.Debug.dumpHTML = function() {
 	var docsDir = air.File.documentsDirectory;
 	try {
 		docsDir.browseForSave("Save HTML As");
-		docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
+		docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener, false, 0, true);
 	} catch (error) {
 		Spaz.dump("Failed:"+error.message, 'error');
 	}

@@ -260,9 +260,9 @@ Spaz.Intercept.init = function() {
 
 
 	var target = document.getElementById('container');
-	target.addEventListener("dragenter", dragEnterOverHandler);
-	target.addEventListener("dragover", dragEnterOverHandler);
-	target.addEventListener("drop", dropHandler);
+	target.addEventListener("dragenter", dragEnterOverHandler, false, 0, true);
+	target.addEventListener("dragover", dragEnterOverHandler, false, 0, true);
+	target.addEventListener("drop", dropHandler, false, 0, true);
     
     function dragEnterOverHandler(event){
         event.preventDefault();

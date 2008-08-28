@@ -199,11 +199,11 @@ Spaz.Prefs.changeMethods = {
         },
         onChange: function(value) {
             if (value) {
-                air.NativeApplication.nativeApplication.addEventListener('deactivate',
-                function() {
-                    //window.nativeWindow.minimize();
-                    Spaz.Windows.windowMinimize();
-                })
+               air.NativeApplication.nativeApplication.addEventListener('deactivate',
+                   function() {
+                       //window.nativeWindow.minimize();
+                       Spaz.Windows.windowMinimize();
+                   }, false, 0, true)
             }
         },
         check: function() {
@@ -220,7 +220,7 @@ Spaz.Prefs.changeMethods = {
                 function() {
                     //window.nativeWindow.restore();
                     Spaz.Windows.windowRestore();
-                })
+                }, false, 0, true)
             }
         },
         check: function() {

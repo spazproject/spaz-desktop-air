@@ -41,7 +41,7 @@ Spaz.Themes.browseForUserCss = function() {
 	var cssFilter = new air.FileFilter("StyleSheets", "*.css;");
 	var userFile = new air.File();
 	userFile.browseForOpen("Choose a CSS file", [cssFilter]);
-	userFile.addEventListener(air.Event.SELECT, Spaz.Themes.userCSSSelected);
+	userFile.addEventListener(air.Event.SELECT, Spaz.Themes.userCSSSelected, false, 0, true);
 }
 
 

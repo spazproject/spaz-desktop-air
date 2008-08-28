@@ -43,7 +43,7 @@ Spaz.UI.playSound = function(url, callback) {
 
 	Spaz.dump("playing " + url);
 	if (callback) {
-		sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
+		sc.addEventListener(air.Event.SOUND_COMPLETE, callback, false, 0, true);
 	}
 
 
@@ -554,7 +554,6 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		entry.isSent = false;
 		
 		if (entry.sender) {
-			air.trace('entry.sender!!!')
 			entry.user = entry.sender
 			entry.isDM = true;
 		}
@@ -635,7 +634,9 @@ Spaz.UI.selectEntry = function(el) {
 
 	Spaz.dump('unselected tweets');
 	$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
-
+   
+   $().trigger('UNREAD_COUNT_CHANGED');
+   
 	Spaz.dump('selecting tweet');
 	$(el).addClass('ui-selected').each(function() {
 		if ( entryId = Spaz.UI.getStatusIdFromElement(this) ) {
@@ -675,6 +676,8 @@ Spaz.UI.getStatusIdFromElement = function(el) {
 Spaz.UI.markEntryAsRead = function(el) {
 	
 	$(el).addClass('read');
+	
+	$().trigger('UNREAD_COUNT_CHANGED');
 	
 }
 
@@ -733,29 +736,43 @@ Spaz.UI.getUnreadCount = function() {
 };
 
 
-
-Spaz.UI.notifyOfNewEntries = function() {
-	
-	var timelineid = Spaz.Section.friends.timeline;
-	
-	// we change the selector so that messages not showing do not trigger notifications
+Spaz.UI.getNewEntrySelector = function() {
+   var timelineid = Spaz.Section.friends.timeline;
+   
+   // we change the selector so that messages not showing do not trigger notifications
 	if ($('#'+timelineid).is('.dm-replies')) {
 		var selector = '#'+timelineid + ' .new.dm, #'+timelineid + ' .new.reply'
 	} else {
 		var selector = '#'+timelineid + ' .new'
 	}
 	
+	return selector;
+}
+
+Spaz.UI.getNewEntryCount = function() {
+	return $(Spaz.UI.getNewEntrySelector()).length;
+}
+
+
+Spaz.UI.notifyOfNewEntries = function() {
+	
+	$().trigger('UNREAD_COUNT_CHANGED');
+	
 	Spaz.dump('notifyOfNewEntries');
-	if ($(selector).length>0) {
+	if (Spaz.UI.getNewEntryCount()>0) {
 		
 		Spaz.dump('NewEntries found!');
 		
 		
-		var newtweets = $(selector).get().sort(Spaz.UI.sortTweetElements).reverse();
+		var newtweets = $(Spaz.UI.getNewEntrySelector()).get().sort(Spaz.UI.sortTweetElements).reverse();
 		
-		// get newest of the new
-		// we use this roundabout way of getting things to avoid a problem where
-		// you could get text from one tweet and a userimg from another
+		
+		
+		/*
+   		get newest of the new
+   		we use this roundabout way of getting things to avoid a problem where
+   		you could get text from one tweet and a userimg from another		 
+		*/
 		var newestHTML = newtweets[0].innerHTML;
 		Spaz.dump(newestHTML);
 		var jqnewest = $(newestHTML);
@@ -788,13 +805,16 @@ Spaz.UI.notifyOfNewEntries = function() {
 		// 		Spaz.dump(img);
 		// 		Spaz.dump(text);
 		// 		
-
-		Spaz.UI.notify(text, screen_name, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
+      var new_count = Spaz.UI.getNewEntryCount();
+      if (new_count > 1) {
+         var msg = screen_name + " (+"+new_count+")";
+      } else {
+         var msg = screen_name;
+      }
+		Spaz.UI.notify(text, msg, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
 		Spaz.UI.playSoundNew();
 		Spaz.UI.statusBar('Updates found');
 
-		// remove "new" indicators
-		$("#"+timelineid + ' .new').removeClass('new');
 	} else {
 		Spaz.dump('NewEntries NOT found!');
 		Spaz.UI.statusBar('No new messages');
@@ -811,7 +831,8 @@ Spaz.UI.alert = function(message, title) {
 
 Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 	if (Spaz.Prefs.get('window-shownotificationpopups') || force) {
-		Spaz.Notify.add(message, title, where, duration, icon);
+      // Spaz.Notify.add(message, title, where, duration, icon);
+      PurrJS.notify(title, message, icon, duration, where)
 	} else {
 		Spaz.dump('not showing notification popup - window-shownotificationpopups disabled');
 	}
@@ -828,7 +849,6 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 	var numentries = $('#'+timelineid + ' div.timeline-entry').length;
 	
 	time.start('sortTimeline');
-	
    if (numentries > 1 && !skip_sort) {
 		Spaz.dump('Sorting timeline');
 		Spaz.UI.sortTimeline(timelineid, true);
@@ -836,6 +856,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		air.trace('not sorting');
 	}
 	time.stop('sortTimeline');
+	
+
 	
 	// time.start('reverseTimeline');
 	// Spaz.dump('Reversing timeline');
@@ -865,18 +887,25 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		
 	time.stop('removeEvenOdd-convertPostTimes');
 	
-	Spaz.dump("# of Timeline-entries = " +$("#"+timelineid + ' .timeline-entry').length)
-	
 	//Spaz.dump($("#"+timelineid).html());
 	
 	time.start('setNotificationTimeout');
 	// we delay on notification of new entries because stuff gets 
 	// really confused and wonky if you fire it off right away
 	if (!suppressNotify) {
-		Spaz.dump('Set timeout for notifications')
-		setTimeout(Spaz.UI.notifyOfNewEntries, 1000);
+		Spaz.dump('Set timeout for notifications');
+		function notifyAndMark() {
+		   Spaz.UI.notifyOfNewEntries();
+		   // remove "new" indicators
+   		$("#"+Spaz.Section.friends.timeline + ' .new').removeClass('new');
+		}
+		
+		setTimeout(notifyAndMark, 1000);
 	}
 	time.stop('setNotificationTimeout');
+
+
+
 
 
 	time.start('applyEvenOdd');
@@ -907,21 +936,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 	}
 	time.stop('scrollTimeline');
 		
-	
+
 	var cleanupTweets = $("div.needs-cleanup", "#"+timelineid);
-	
-	
-	time.start('addProtectedPostInd');
-	// add protected post indicators
-/*	cleanupTweets.find("span.status-protected").each(function(i) {
-		var jqprtct = $(this);
-		if (jqprtct.html() == 'true') {
-			jqprtct.html('<img src="themes/'+Spaz.Prefs.get('theme-basetheme')+'/images/icon-lock.png" title="Protected post - please respect this user\'s privacy" class="protected-post" />');
-		} else {
-			jqprtct.html('');
-		}
-	});*/
-	time.stop('addProtectedPostInd');
 	
 	time.start('bindOnceFadein');
 	cleanupTweets.find('img.user-image').one('load', function() {
@@ -941,10 +957,13 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 	})
 	time.stop('highlightReplies');
 	
-	time.start('removeCleanupClass');
-	// remove the needs-cleanup and show
-	cleanupTweets.css('display', '').removeClass('needs-cleanup');
-	time.stop('removeCleanupClass');
+
+
+
+
+
+	
+
 
 
 	/* clean up the .status-text */
@@ -1004,57 +1023,77 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		this.innerHTML = Emoticons.SimpleSmileys.convertEmoticons(this.innerHTML)
 
 		
-		// ******************************
-		// Support for shortened URL rewriting
-		// ******************************
-
-		// We save this as it will be used in the response status callback
-		var divElt = this;
-
-		// We save the text as it could change in the loop due to async callbacks
-		var txt = divElt.innerHTML;
-
-		var domains = ["tinyurl.com","is.gd","snipr.com","snurl.com","moourl.com","url.ie","snipurl.com","xrl.us","bit.ly","ping.fm"];
-
-		for (var i in domains)
-		{
-			// Get domain
-			var domain = domains[i];
-	
-			// Iterate over URL pattern
-			var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\/]*)", "g");
-			var matchArray = null;
-			while (matchArray = urlRE.exec(txt)) {
-				Spaz.dump("Getting content of URL " + matchArray[1]);
-	
-				// Get the URL
-				var url = matchArray[0];
-	
-				// Now we make a request to obtain the response URL
-				var stream = new air.URLStream();
-				stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, function(event) {
-					if (event.status == 200) {
-						// Here we get the value to rewrite
-						var targetURL = event.responseURL;
-						var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
-						var targetDomain = targetURL.replace(slicerRE, "$2");
-						Spaz.dump("Got a response status event for url " + url + ": "+targetURL);
-						$(divElt).find("a[href*=" + url + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
-					}
-				});
-				stream.addEventListener(air.IOErrorEvent.IO_ERROR, function(event) {
-					var targetURL = event.responseURL;
-					air.trace('Request to '+event.responseURL+' returned an IRErrorEvent');
-					Spaz.dump(event);
-				})
-	
-				// Perform load
-				stream.load(new air.URLRequest(url));
-				Spaz.dump("Decoding " + domain + " URL " + url);
-			}
-		
-		}
+      // ******************************
+      // Support for shortened URL rewriting
+      // ******************************
+      
+      // We save this as it will be used in the response status callback
+      var divElt = this;
+      
+      // We save the text as it could change in the loop due to async callbacks
+      var txt = divElt.innerHTML;
+      
+      var domains = ["tinyurl.com","is.gd","snipr.com","snurl.com","moourl.com","url.ie","snipurl.com","xrl.us","bit.ly","ping.fm"];
+      var stream = new air.URLStream();
+      
+      for (var i in domains)
+      {
+         // Get domain
+         var domain = domains[i];
+         
+         // Iterate over URL pattern
+         var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\/]*)", "g");
+         var matchArray = null;
+         while (matchArray = urlRE.exec(txt)) {
+            // air.trace("Getting content of URL " + matchArray[1]);
+            Spaz.dump("Getting content of URL " + matchArray[1]);
+         
+            // Get the URL
+            var url = matchArray[0];
+         
+            // Now we make a request to obtain the response URL
+            
+            stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
+            stream.addEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
+         
+            // Perform load
+            stream.load(new air.URLRequest(url));
+            // air.trace("Decoding " + domain + " URL " + url);
+            Spaz.dump("Decoding " + domain + " URL " + url);
+         }
+      
+      }
+      
+      function onHTTPResponseStatus(event) {
+         // air.trace('onHTTPResponseStatus');
+         if (event.status == 200) {
+            // Here we get the value to rewrite
+            var targetURL = event.responseURL;
+            var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
+            var targetDomain = targetURL.replace(slicerRE, "$2");
+            Spaz.dump("Got a response status event for url " + url + ": "+targetURL);
+            $(divElt).find("a[href*=" + url + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
+         }
+         stream.removeEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
+         stream.removeEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
+      }
+      
+      function onIOError(event){
+         // air.trace('onIOError');
+         var targetURL = event.responseURL;
+         Spaz.dump('Request to '+event.responseURL+' returned an IRErrorEvent');
+         Spaz.dump(event);
+         stream.removeEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
+         stream.removeEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
+      }
+      
 	});
+	
+	time.start('removeCleanupClass');
+	// remove the needs-cleanup and show
+	cleanupTweets.css('display', '').removeClass('needs-cleanup');
+	time.stop('removeCleanupClass');
+	
 	time.stop('cleanupStatusText');
 	
 

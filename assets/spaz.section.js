@@ -57,6 +57,7 @@ Spaz.Section.init = function() {
 		},
 		onAjaxComplete: function(url,xhr,msg){
 			time.start('onSectionAjaxComplete');
+			Spaz.UI.statusBar('Received data from server');
 			Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
 			time.stop('onSectionAjaxComplete');
 		},
@@ -81,9 +82,11 @@ Spaz.Section.init = function() {
 		},
 		cleanup: function(attribute){
 			
+			Spaz.UI.statusBar('Cleaning up entries…');
+			
 			time.start('cleanup');
 			time.start('cleanupTimeline');
-			Spaz.UI.cleanupTimeline(this.timeline);
+         Spaz.UI.cleanupTimeline(this.timeline);
 			time.stop('cleanupTimeline');
 			
 			time.start('initSuggestions');
@@ -92,10 +95,33 @@ Spaz.Section.init = function() {
 			
 			time.stop('cleanup');
 			
-			time.setReportMethod( function(l) { air.trace("TIMER====================\n"+l.join("\n")) });
-			time.setLineReportMethod(function(l) { air.trace(l) });
+			Spaz.UI.statusBar('Done.');
 			
-			time.report();
+			
+			/*
+			   A little memory check
+			*/
+			var currentMemory = air.System.totalMemory;
+			
+			if (window.lastTotalMemory>0) {
+			   var diff = currentMemory - window.lastTotalMemory;
+			   Spaz.dump("MEMORY:" + currentMemory + " [diff: "+diff+"]");
+			} else { 
+			   Spaz.dump("MEMORY:" + currentMemory);
+			}
+			window.lastTotalMemory = currentMemory;
+
+         /*
+            Garbage collection, which may or may not help at all/
+         */
+			air.System.gc();
+			air.System.gc();
+			
+			
+         // time.setReportMethod( function(l) { air.trace("TIMER====================\n"+l.join("\n")) });
+         // time.setLineReportMethod(function(l) { air.trace(l) });
+			
+         // time.report();
 		},
 	}
 

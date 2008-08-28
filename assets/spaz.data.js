@@ -633,11 +633,14 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 		Spaz.Data.$ajaxQueueFinished = 0;
 
 		// air.trace('adding entries');
-
+      
+      Spaz.UI.statusBar('Adding '+Spaz.Data.$ajaxQueueStorage.length+' entries');
+      
 		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
 			// time.start('addingItems');
 			for (var i in Spaz.Data.$ajaxQueueStorage) {
-				Spaz.UI.statusBar('Adding status ')
+				Spaz.UI.statusBar('Adding status '+i+' of '+Spaz.Data.$ajaxQueueStorage.length);
+            // air.trace('Adding status '+i+' of '+Spaz.Data.$ajaxQueueStorage.length);
 				section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
 			}
 			// time.stop('addingItems');
@@ -882,9 +885,9 @@ Spaz.Data.uploadFile = function(opts) {
 
 	PrepareMultipartRequest(request, buf, 'media', file.nativePath, opts.extra);
 
-	loader.addEventListener(air.Event.COMPLETE, opts.complete);
+	loader.addEventListener(air.Event.COMPLETE, opts.complete, false, 0, true);
 	// loader.addEventListener(air.ProgressEvent.PROGRESS, progressHandler);
-	loader.addEventListener(air.Event.OPEN, opts.open);
+	loader.addEventListener(air.Event.OPEN, opts.open, false, 0, true);
 	loader.load(request);
 
 

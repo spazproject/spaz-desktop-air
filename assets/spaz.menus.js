@@ -36,7 +36,7 @@ Spaz.Menus.initAll = function() {
 		Spaz.dump('Dock Menus for OS X');
 		var iconLoader = new air.Loader();
         iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
-                                                Spaz.Menus.iconLoadComplete);
+                                                Spaz.Menus.iconLoadComplete, false, 0, true);
         iconLoader.load(new air.URLRequest("images/spaz-icon-alpha.png"));
         air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 
@@ -47,9 +47,9 @@ Spaz.Menus.initAll = function() {
 	    air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 	    var systrayIconLoader = new air.Loader();
 	    systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
-	                                                            Spaz.Menus.iconLoadComplete);
+	                                                            Spaz.Menus.iconLoadComplete, false, 0, true);
 	    systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));
-	    air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Menus.onSystrayClick);
+	    air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Menus.onSystrayClick, false, 0, true);
 	}
 	
 	Spaz.dump('Create Native context Menus');
@@ -212,7 +212,7 @@ Spaz.Menus.createFileMenu = function(){
 		Spaz.dump('adding listener to '+item.name)
 		item.addEventListener(air.Event.SELECT,function(event) {
 			Spaz.Menus.itemSelected(event);
-		});
+		}, false, 0, true);
 	}		
 	return menu;
 }
@@ -230,7 +230,7 @@ Spaz.Menus.createEditMenu = function(){
 		Spaz.dump('adding listener to '+item.name)
 		item.addEventListener(air.Event.SELECT,function(event) {
 			Spaz.Menus.itemSelected(event);
-		});
+		}, false, 0, true);
 	}		
 	return menu;
 	
@@ -281,7 +281,7 @@ Spaz.Menus.createViewMenu = function(){
 		Spaz.dump('adding listener to '+item.name)
 		item.addEventListener(air.Event.SELECT,function(event) {
 			Spaz.Menus.itemSelected(event);
-		});
+		}, false, 0, true);
 	}
 	return menu;
 }
@@ -317,7 +317,7 @@ Spaz.Menus.createHelpMenu = function(){
 		Spaz.dump('adding listener to '+item.name)
 		item.addEventListener(air.Event.SELECT,function(event) {
 			Spaz.Menus.itemSelected(event);
-		});
+		}, false, 0, true);
 	}	
 	return menu;			
 }

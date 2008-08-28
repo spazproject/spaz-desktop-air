@@ -190,8 +190,8 @@ Spaz.Update.downloadNewest = function(url) {
 	var urlReq = new air.URLRequest(url);
 	var urlStream = new air.URLStream();
 	var fileData = new air.ByteArray();
-	urlStream.addEventListener(air.Event.COMPLETE, loaded);
-	urlStream.addEventListener(air.ProgressEvent.PROGRESS, progress);
+	urlStream.addEventListener(air.Event.COMPLETE, loaded, false, 0, true);
+	urlStream.addEventListener(air.ProgressEvent.PROGRESS, progress, false, 0, true);
 	Spaz.UI.statusBar('Downloading new version…')
 	Spaz.dump("Downloading from "+url);
 	urlStream.load(urlReq);
