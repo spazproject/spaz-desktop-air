@@ -293,18 +293,24 @@
 			// replace with jQuery version
 			Spaz.dump('binding click to tagmatches')
 			Spaz.dump(tagMatches);
-			tagMatches = $(tagMatches).click(function (ev) {
-				Spaz.dump('clicked on Tag')
-				Spaz.dump(ev);
-				if (ev.target.nodeName == settings.tagWrap.toUpperCase() && $(ev.target).is('._tag_suggestion')) {
-					chooseTag(ev.target.innerHTML);
-				}				 
-			}).addClass(settings.matchClass);
+			// tagMatches = $(tagMatches).click(function (ev) {
+			// 	Spaz.dump('clicked on Tag')
+			// 	Spaz.dump(ev);
+			// 	if (ev.target.nodeName == settings.tagWrap.toUpperCase() && $(ev.target).is('._tag_suggestion')) {
+			// 		chooseTag(ev.target.innerHTML);
+			// 	}				 
+			// }).addClass(settings.matchClass);
+			tagMatches = $(tagMatches).addClass(settings.matchClass);
 						
-			
-			$('#'+settings.tagContainerId).children(settings.tagWrap).click(function(ev) {
-				chooseTag(this.innerHTML);
+			$('body').intercept('click', {
+				'._tag_suggestion':function(ev){
+					chooseTag(this.innerHTML);
+				}
 			})
+			
+			// $('#'+settings.tagContainerId).children(settings.tagWrap).click(function(ev) {
+			// 	chooseTag(this.innerHTML);
+			// })
 
 			// initialise
 			setSelection();

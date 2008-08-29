@@ -582,7 +582,7 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 			
 			var data = parseJSON(xhr.responseText);
 			
-			Spaz.dump(data)
+			// Spaz.dump(data)
 			Spaz.dump(typeof(data))
 			
 			// if (!data || (!data[0] && !data.results)) {
@@ -597,7 +597,7 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
 				}
 				
 				// air.trace('DATA->'+JSON.stringify(data));
-				Spaz.dump(data);
+				// Spaz.dump(data);
 				// air.trace('ERROR->'+data.error)
 				
 				// if (data[0].error) {

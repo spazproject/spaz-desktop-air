@@ -62,10 +62,12 @@ Spaz.Editor.$wrap = function(open, close, selstart, selend) {
 
 
 Spaz.Editor.initSuggestions = function() {
+
 	$('#entrybox').tagSuggest({
 		'tags':Spaz.Cache.getScreenNamesAsTags(),
 		'tagContainerId':'suggestions',
 		'tagWrap':'li',
-		delay:300,
+		delay:100,
 	});
+
 };

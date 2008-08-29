@@ -196,6 +196,10 @@ Spaz.initialize = function() {
 	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
 		Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
 	}
+
+
+
+
 	
 
 	if (Spaz.Prefs.get('timeline-loadonstartup')) {
@@ -213,6 +217,7 @@ Spaz.initialize = function() {
 	// Spaz.Sys.initMemcheck();
 	
 	
+
 	
 	Spaz.dump('ended document.ready()');
 		
