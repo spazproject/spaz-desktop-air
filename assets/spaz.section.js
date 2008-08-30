@@ -86,7 +86,7 @@ Spaz.Section.init = function() {
 			
 			time.start('cleanup');
 			time.start('cleanupTimeline');
-         Spaz.UI.cleanupTimeline(this.timeline);
+			Spaz.UI.cleanupTimeline(this.timeline);
 			time.stop('cleanupTimeline');
 			
 			time.start('initSuggestions');
