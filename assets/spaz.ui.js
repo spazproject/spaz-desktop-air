@@ -632,20 +632,20 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
 Spaz.UI.selectEntry = function(el) {
 
-	Spaz.dump('unselected tweets');
-	$('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
-   
-   $().trigger('UNREAD_COUNT_CHANGED');
-   
+   Spaz.dump('unselected tweets');
+	$('div.timeline-entry.ui-selected').removeClass('ui-selected');
+
+
 	Spaz.dump('selecting tweet');
-	$(el).addClass('ui-selected').each(function() {
+	$(el).addClass('ui-selected').addClass('read').each(function() {
 		if ( entryId = Spaz.UI.getStatusIdFromElement(this) ) {
 			air.trace("Want to mark as read " + entryId);
 			Spaz.DB.markEntryAsRead(entryId);
 		}
 	});
-	
-	var el;	
+
+   $().trigger('UNREAD_COUNT_CHANGED');
+
 	Spaz.dump('selected tweet #'+el.id+':'+el.tagName+'.'+el.className);
 }
 
