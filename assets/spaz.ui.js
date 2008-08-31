@@ -807,7 +807,7 @@ Spaz.UI.notifyOfNewEntries = function() {
 		// 		
       var new_count = Spaz.UI.getNewEntryCount();
       if (new_count > 1) {
-         var msg = screen_name + " (+"+new_count+")";
+         var msg = screen_name + " (+"+(new_count-1)+")";
       } else {
          var msg = screen_name;
       }
