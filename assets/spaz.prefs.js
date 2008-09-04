@@ -78,7 +78,9 @@ Spaz.Prefs.defaultPreferences = {
     'dock-refreshinterval': 500,
     'dock-displayunreadbadge': true,
     'dock-unreadbadgecolor': "red",
-    'dock-unreadbadgeshape': "classic"
+    'dock-unreadbadgeshape': "classic",
+	
+	'entryboxhint': "What are you doing?"
 }
 
 
@@ -542,7 +544,12 @@ Spaz.Prefs.changeMethods = {
  * Initializes the preferences: sets prefs from Spaz.Prefs.defaultPreferences, loads prefs file, and sets up the prefs UI
  */
 Spaz.Prefs.init = function() {
-    Spaz.Prefs.preferences = Spaz.Prefs.defaultPreferences;
+	
+	/*
+		WE NEED TO COPY THIS, NOT ASSIGN!!!!
+	*/
+	
+    Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
     Spaz.dump("defaultPreferences:" + Spaz.Prefs.defaultPreferences);
     Spaz.Prefs.loadPrefs();
     Spaz.Prefs.initUI();
@@ -581,7 +588,7 @@ Spaz.Prefs.loadPrefs = function() {
     } else {
         fs.open(prefsFile, air.FileMode.WRITE);
         fs.writeUTFBytes(JSON.stringify(Spaz.Prefs.defaultPreferences));
-        Spaz.Prefs.preferences = Spaz.Prefs.defaultPreferences;
+        Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
     }
     fs.close()
 
@@ -706,7 +713,7 @@ Spaz.Prefs.savePrefs = function() {
 
 
 Spaz.Prefs.resetPrefs = function() {
-    Spaz.Prefs.preferences = Spaz.Prefs.defaultPreferences;
+    Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
     Spaz.Prefs.savePrefs();
 };
 

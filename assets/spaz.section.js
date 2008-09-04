@@ -28,8 +28,8 @@ Spaz.Section.init = function() {
 				var dm_timeline_params = "";
 				
 				this.lastid    = 0;
-            this.lastid_dm = 0;
-            this.lastcheck = 0;
+	            this.lastid_dm = 0;
+	            this.lastcheck = 0;
             
 			} else {
 				// var lastCheckDate = new Date(this.lastcheck).toUTCString();
@@ -56,10 +56,19 @@ Spaz.Section.init = function() {
 			time.stop('getDataForTimeline');
 		},
 		onAjaxComplete: function(url,xhr,msg){
-			time.start('onSectionAjaxComplete');
-			Spaz.UI.statusBar('Received data from server');
-			Spaz.Data.onSectionAjaxComplete(this,url,xhr,msg);
-			time.stop('onSectionAjaxComplete');
+
+
+			/*
+				Make this non-blocking
+			*/
+			var this_section = this;
+			Spaz.Timers.add(function() {
+				time.start('onSectionAjaxComplete');
+				Spaz.UI.statusBar('Received data from server');
+				Spaz.Data.onSectionAjaxComplete(this_section,url,xhr,msg);
+				time.stop('onSectionAjaxComplete');
+				return false;
+			});
 		},
 		addItem: function(item) {			
 
@@ -78,7 +87,16 @@ Spaz.Section.init = function() {
 				}
 			}
 			
-			Spaz.UI.addItemToTimeline(item, this);
+			
+			/*
+				Make this non-blocking
+			*/
+			Spaz.Timers.add(function() {
+				Spaz.UI.statusBar('adding item '+item.id);
+				Spaz.UI.addItemToTimeline(item, Spaz.Section.friends);
+				return false;
+			});
+
 		},
 		cleanup: function(attribute){
 			
@@ -88,15 +106,15 @@ Spaz.Section.init = function() {
 			time.start('cleanupTimeline');
 			Spaz.UI.cleanupTimeline(this.timeline);
 			time.stop('cleanupTimeline');
-			
+		
 			time.start('initSuggestions');
 			Spaz.Editor.initSuggestions();
 			time.stop('initSuggestions');
-			
+		
 			time.stop('cleanup');
-			
+		
 			Spaz.UI.statusBar('Done.');
-			
+
 			
 			/*
 			   A little memory check
