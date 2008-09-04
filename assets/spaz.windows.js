@@ -122,27 +122,28 @@ Spaz.Windows.makeSystrayIcon = function() {
 		systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
 		                                                       Spaz.Menus.iconLoadComplete, false, 0, true);
 		systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));
-		air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Windows.onSystrayClick, false, 0, true);
+		air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Windows.onSystrayClick);
 	}
 };
 
 
 Spaz.Windows.onSystrayClick = function(event) {
-	// TODO replace this with call to Spaz.Windows.windowRestore()
-	Spaz.dump('clicked on systray');
-	Spaz.dump(nativeWindow.displayState);
-	Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
-	
-	if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-		Spaz.dump('restoring window');
- 		nativeWindow.restore();
- 	}
- 	Spaz.dump('activating application');
- 	air.NativeApplication.nativeApplication.activate() // bug fix by Mako
-	Spaz.dump('activating window');
-	nativeWindow.activate();
-	Spaz.dump('ordering-to-front window');
-	nativeWindow.orderToFront();
+	Spaz.Windows.windowRestore();
+	// // TODO replace this with call to Spaz.Windows.windowRestore()
+	// Spaz.dump('clicked on systray');
+	// Spaz.dump(nativeWindow.displayState);
+	// Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
+	// 
+	// if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
+	// 	Spaz.dump('restoring window');
+	//  		nativeWindow.restore();
+	//  	}
+	//  	Spaz.dump('activating application');
+	//  	air.NativeApplication.nativeApplication.activate() // bug fix by Mako
+	// Spaz.dump('activating window');
+	// nativeWindow.activate();
+	// Spaz.dump('ordering-to-front window');
+	// nativeWindow.orderToFront();
 }
 
 
@@ -178,10 +179,26 @@ Spaz.Windows.windowResize = function(){
 }
 
 
+Spaz.Windows.resetPosition = function() {
+	nativeWindow.x = Spaz.Prefs.defaultPreferences['window-x'];
+	nativeWindow.y = Spaz.Prefs.defaultPreferences['window-y'];
+	air.trace(Spaz.Prefs.defaultPreferences['window-x'] +"x"+Spaz.Prefs.defaultPreferences['window-y']);
+	air.trace(nativeWindow.x +"x"+nativeWindow.y);
+	Spaz.Windows.onWindowMove();
+	
+	nativeWindow.width  = Spaz.Prefs.defaultPreferences['window-width'];
+	nativeWindow.height = Spaz.Prefs.defaultPreferences['window-height'];
+	air.trace(Spaz.Prefs.defaultPreferences['window-width'] +"x"+Spaz.Prefs.defaultPreferences['window-height']);
+	air.trace(nativeWindow.width +"x"+nativeWindow.height);
+	Spaz.Windows.onWindowResize();
+}
+
+
 Spaz.Windows.onWindowResize = function() {
 	Spaz.Prefs.set('window-width', nativeWindow.width);
 	Spaz.Prefs.set('window-height', nativeWindow.height);
 };
+
 Spaz.Windows.onWindowMove = function() {
 	Spaz.Prefs.set('window-x', nativeWindow.x);
 	Spaz.Prefs.set('window-y', nativeWindow.y);	

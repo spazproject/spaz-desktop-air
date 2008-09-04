@@ -322,7 +322,7 @@ Spaz.UI.prepReply = function(username) {
 /* sends a twitter status update for the current user */
 Spaz.UI.sendUpdate = function() {
     var entrybox = $('#entrybox');
-    if (entrybox.val() != '' && entrybox.val() != entryBoxHint) {
+    if (entrybox.val() != '' && entrybox.val() != Spaz.Prefs.get('entryboxhint')) {
 
         Spaz.dump('length:' + entrybox.val().length)
 
