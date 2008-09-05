@@ -91,11 +91,11 @@ Spaz.Section.init = function() {
             /*
 				Make this non-blocking
 			*/
-            Spaz.Timers.add(function() {
+            // Spaz.Timers.add(function() {
                 Spaz.UI.statusBar('adding item ' + item.id);
                 Spaz.UI.addItemToTimeline(item, Spaz.Section.friends);
-                return false;
-            });
+            //     return false;
+            // });
 
         },
         cleanup: function(attribute) {

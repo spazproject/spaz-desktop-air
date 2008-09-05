@@ -579,13 +579,60 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		entry.timestamp = httpTimeToInt(entry.created_at);
 		entry.base_url = Spaz.Prefs.get('twitter-base-url');
 		entry.timelineid = timelineid;
+		
+		
+		/*
+			Clean the entry.text
+		*/
+		// fix extra ampersand encoding
+		entry.text = entry.text.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
+
+		// fix entity &#123; style extra encoding
+		entry.text = entry.text.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
+
+		// air.trace(this.innerHTML);
+		if (Spaz.Prefs.get('usemarkdown')) {
+			var md = new Showdown.converter();
+			
+			// Markdown conversion with Showdown
+			entry.text = md.makeHtml(entry.text);
+
+			// put title attr in converted Markdown link
+			entry.text = entry.text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
+		}
+
+		// convert inline links
+		/*
+			Inline links that start with http://
+		*/
+		var inlineRE = /(?:(\s|^|\.|\:|\())(https?:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-~]*)*)/g;
+		entry.text = entry.text.replace(inlineRE, '$1<a href=\"$2$3$6\" title="Open link in a browser window" class="inline-link">$3&raquo;</a>');
+
+		/*
+			this is the regex we use to match inline 
+			lots of uncommon but valid top-level domains aren't used
+			because they cause more problems than solved
+		*/
+		var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fm|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-~]*)*)/g;
+		entry.text = entry.text.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
+
+		// email addresses
+		entry.text = entry.text.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
+
+		// convert @username reply indicators
+		entry.text = entry.text.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="' + Spaz.Prefs.get('twitter-base-url') + '$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
+
+		// convert emoticons
+		entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
+
+		
+		
+		
 
 		var entryHTML = Spaz.Tpl.parse('app:/templates/timeline-entry.tpl', entry);
 
 		// Make the jQuery object and bind events
 		var jqentry = $(entryHTML);
-		// jqentry.css('opacity', .1);
-		// jqentry.css('display', 'none');
 		if (mark_as_read) {
 			jqentry.addClass('read')
 			jqentry.removeClass('new')
@@ -611,16 +658,16 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 				}
 			});
 		}
-
-
-		// air.trace(JSON.stringify(entry));
-		// air.trace(JSON.stringify(jqentry[0].outerHTML));
-		$('#' + timelineid).prepend(jqentry);
-		// if (prepend) {
-		//		$('#'+timelineid).prepend(jqentry);
-		// } else {
-		//		$('#'+timelineid).append(jqentry);
-		// }
+		
+		
+		
+		if (prepend) {
+			$('#' + timelineid).prepend(jqentry);
+		} else {
+			$('#' + timelineid).append(jqentry);
+		}
+		
+		
 		return true;
 
 	} else {
@@ -689,23 +736,66 @@ Spaz.UI.markEntryAsRead = function(el) {
 
 
 Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
-	// if (sort_all) {
-	time.start('sortTimeline');
-	var cells = $('#' + timelineid + ' div.timeline-entry').remove().get();
-	// } else {
-	// var cells = $('#'+timelineid+' div.timeline-entry.needs-cleanup');
-	// }
-	// Spaz.dump('cells length:'+cells.length);
-	
-	if (reverse) {
-		$(cells.sort(Spaz.UI.sortTweetElements)).prependTo('#' + timelineid);
-	} else {	 
-		$(cells.sort(Spaz.UI.sortTweetElements)).appendTo('#' + timelineid);
-	}
-	time.stop('sortTimeline');
 
-	// time.report();
-	// Spaz.dump('done sorting');
+	/*
+		Check the sorting
+	*/
+	var unsorted = false;
+	
+	$('#' + timelineid + ' div.timeline-entry').each(function() {
+		
+		// air.trace( $(this).find('div.entry-timestamp').text() +":"+ $(this).next().find('div.entry-timestamp').text() );
+		
+		if ( parseInt($(this).find('div.entry-timestamp').text()) < parseInt($(this).next().find('div.entry-timestamp').text()) ) {
+			unsorted = true;
+			return false;
+		}
+	});
+	
+	if (unsorted) {
+		// if (sort_all) {
+		time.start('sortTimeline');
+		var cells = $('#' + timelineid + ' div.timeline-entry').remove().get();
+		// } else {
+		// var cells = $('#'+timelineid+' div.timeline-entry.needs-cleanup');
+		// }
+		// Spaz.dump('cells length:'+cells.length);
+
+		if (reverse) {
+			$(cells.sort(Spaz.UI.sortTweetElements)).prependTo('#' + timelineid);
+		} else {	 
+			$(cells.sort(Spaz.UI.sortTweetElements)).appendTo('#' + timelineid);
+		}
+		time.stop('sortTimeline');
+
+		// time.report();
+		// Spaz.dump('done sorting');
+	}
+
+	// time.start('insertIntoTimeline');
+	// if ( parseInt($('#' + timelineid + ' div.timeline-entry:last').find('div.entry-timestamp').text()) >= entry.timestamp) {
+	// 	$('#' + timelineid).append(jqentry);
+	// } else if( 	$('#' + timelineid + ' div.timeline-entry').length < 1) {
+	// 	$('#' + timelineid).prepend(jqentry);
+	// 	// $('#' + timelineid)[0].innerHTML = entryHTML + $('#' + timelineid)[0].innerHTML;
+	// 	
+	// } else {
+	// 
+	// 	/*
+	// 		iterate over the timeline from start and add the item in the right place
+	// 	*/
+	// 	$('#' + timelineid + ' div.timeline-entry').each(function() {
+	// 		if ( parseInt($(this).find('div.entry-timestamp').text()) < entry.timestamp ) {
+	// 			$(jqentry).insertBefore(this);
+	// 			return false;
+	// 		} else if ( $(this).next().length == 0 ) {
+	// 			$(jqentry).insertAfter(this);
+	// 			return false;
+	// 		}
+	// 	});
+	// }
+	// time.stop('insertIntoTimeline');
+
 }
 
 
@@ -851,12 +941,6 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, skip_sort) {
 
-	air.trace('calling cleanupTimeline');
-
-	
-
-	air.trace(timelineid);
-
 	/*
 		Make this non-blocking
 	*/
@@ -872,6 +956,25 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		time.stop('sortTimeline');
 		return false;
 	});
+
+
+	/*
+		remove extra entries
+	*/
+	Spaz.Timers.add(function() {
+		time.start('removeExtras');
+		var tweets = $('#' + timelineid + ' div.timeline-entry');
+
+		var numEntries = tweets.length
+		if (numEntries > Spaz.Prefs.get('timeline-maxentries')) {
+			var diff = numEntries - Spaz.Prefs.get('timeline-maxentries');
+			Spaz.dump("numEntries is " + numEntries + " > " + Spaz.Prefs.get('timeline-maxentries') + "; removing last " + diff + " entries");
+			tweets.slice(diff * -1).remove();
+		}
+		time.stop('removeExtras');
+		return false;
+	});
+
 
 	/*
 		Make this non-blocking
@@ -889,35 +992,6 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 	});
 
 
-	// $("#"+timelineid + ' .timeline-entry')
-	//	.each(function(i) {
-	//		var entrytime = $(".entry-time", this).text();
-	//					$(".status-created-at", this).html(get_relative_time( entrytime ));
-	//	})
-	//	// remove the even and odds due to resorting
-	//	.removeClass('even')
-	//	.removeClass('odd');
-	
-
-
-	/*
-		Make this non-blocking
-	*/
-	Spaz.Timers.add(function() {
-		//Spaz.dump($("#"+timelineid).html());
-		time.start('setNotificationTimeout');
-		// we delay on notification of new entries because stuff gets
-		// really confused and wonky if you fire it off right away
-		if (!suppressNotify) {
-			Spaz.dump('Set timeout for notifications');
-			Spaz.UI.notifyOfNewEntries();
-			// remove "new" indicators
-			$("#" + Spaz.Section.friends.timeline + ' .new').removeClass('new');
-		}
-		time.stop('setNotificationTimeout');
-		
-		return false;
-	});
 		
 	/*
 		Make this non-blocking
@@ -988,14 +1062,6 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		time.stop('highlightReplies');
 
 
-
-
-
-
-
-
-
-
 		/* clean up the .status-text */
 
 		// make it here so we don't instantiate on every loopthrough
@@ -1003,55 +1069,6 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
 		time.start('cleanupStatusText');
 		cleanupTweets.find("div.status-text").each(function(i) {
-
-			// fix extra ampersand encoding
-			this.innerHTML = this.innerHTML.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-
-			// fix entity &#123; style extra encoding
-			this.innerHTML = this.innerHTML.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
-
-			// air.trace(this.innerHTML);
-			if (Spaz.Prefs.get('usemarkdown')) {
-				// Markdown conversion with Showdown
-				this.innerHTML = md.makeHtml(this.innerHTML);
-
-				// put title attr in converted Markdown link
-				this.innerHTML = this.innerHTML.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
-			}
-
-			// convert inline links
-			var before = this.innerHTML;
-
-			/*
-			Inline links that start with http://
-		*/
-			var inlineRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/g;
-			this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
-			if (before != this.innerHTML) {
-				// air.trace('BEFORE inline-links change HTTP ONLY: '+before);
-				// air.trace('AFTER inline-links change: '+this.innerHTML);
-				}
-
-			before = this.innerHTML;
-			/*
-			this is the regex we use to match inline 
-			lots of uncommon but valid top-level domains aren't used
-			because they cause more problems than solved
-		*/
-			var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_-]*)*)/g;
-			this.innerHTML = this.innerHTML.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
-
-
-			// email addresses
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
-
-			// convert @username reply indicators
-			this.innerHTML = this.innerHTML.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="' + Spaz.Prefs.get('twitter-base-url') + '$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
-
-			// convert emoticons
-			Spaz.dump(Emoticons.SimpleSmileys);
-			this.innerHTML = Emoticons.SimpleSmileys.convertEmoticons(this.innerHTML)
-
 
 			// ******************************
 			// Support for shortened URL rewriting
@@ -1062,9 +1079,10 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 			// We save the text as it could change in the loop due to async callbacks
 			var txt = divElt.innerHTML;
 
-			var domains = ["tinyurl.com", "is.gd", "snipr.com", "snurl.com", "moourl.com", "url.ie", "snipurl.com", "xrl.us", "bit.ly", "ping.fm"];
+			var domains = ["tinyurl.com", "is.gd", "snipr.com", "snurl.com", "moourl.com", "url.ie", "snipurl.com", "xrl.us", "bit.ly", "ping.fm", "urlzen.com"];
 			var stream = new air.URLStream();
 
+			// time.start('lookingForShortDomains');
 			for (var i in domains)
 			{
 				// Get domain
@@ -1091,6 +1109,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 				}
 
 			}
+			// time.stop('lookingForShortDomains');
 
 			function onHTTPResponseStatus(event) {
 				// air.trace('onHTTPResponseStatus');
@@ -1124,23 +1143,27 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
 		time.stop('cleanupStatusText');
 
-
-		time.start('removeExtras');
-		/*
-		remove extra entries
-*/
-		var tweets = $('#' + timelineid + ' div.timeline-entry');
-
-		var numEntries = tweets.length
-		if (numEntries > Spaz.Prefs.get('timeline-maxentries')) {
-			var diff = numEntries - Spaz.Prefs.get('timeline-maxentries');
-			Spaz.dump("numEntries is " + numEntries + " > " + Spaz.Prefs.get('timeline-maxentries') + "; removing last " + diff + " entries");
-			tweets.slice(diff * -1).remove();
-		}
-		time.stop('removeExtras');
-	
 		// Spaz.Timers.stop();
 	
+		return false;
+	});
+	
+	/*
+		Make this non-blocking
+	*/
+	Spaz.Timers.add(function() {
+		//Spaz.dump($("#"+timelineid).html());
+		time.start('setNotificationTimeout');
+		// we delay on notification of new entries because stuff gets
+		// really confused and wonky if you fire it off right away
+		if (!suppressNotify) {
+			Spaz.dump('Set timeout for notifications');
+			Spaz.UI.notifyOfNewEntries();
+			// remove "new" indicators
+			$("#" + Spaz.Section.friends.timeline + ' .new').removeClass('new');
+		}
+		time.stop('setNotificationTimeout');
+
 		return false;
 	});
 }

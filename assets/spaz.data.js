@@ -218,7 +218,7 @@ Spaz.Data.update = function(msg, username, password) {
 			Spaz.DB.markEntryAsRead(entry.id);
 
 			// Prepend this to the timeline (don't scroll to top)
-			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true);
+			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true, true);
 			
 			/*
 				cleanup, but suppress the notifications by passing "true" as 2nd param
@@ -637,13 +637,13 @@ Spaz.Data.onSectionAjaxComplete = function(section, url, xhr, msg) {
       Spaz.UI.statusBar('Adding '+Spaz.Data.$ajaxQueueStorage.length+' entries');
       
 		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
-			// time.start('addingItems');
+			time.start('addingItems');
 			for (var i in Spaz.Data.$ajaxQueueStorage) {
 				Spaz.UI.statusBar('Adding status '+i+' of '+Spaz.Data.$ajaxQueueStorage.length);
             // air.trace('Adding status '+i+' of '+Spaz.Data.$ajaxQueueStorage.length);
 				section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
 			}
-			// time.stop('addingItems');
+			time.stop('addingItems');
 			
 		}
 

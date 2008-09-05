@@ -121,6 +121,52 @@ Spaz.Shortlink.services = {
 	
 	
 	
+	urlzen : function(url) {
+		var origlink = encodeURI(url);
+
+		// air.trace('OrigLink:'+origlink);
+
+		$('#verification-result').text('Shortening URL...');
+
+		var xhr = $.ajax({
+			complete:function(xhr, rstr) {
+				if (xhr.readyState < 3) {
+					// air.trace("ERROR: Timeout");
+					$('#verification-result').text('ERROR: Timeout');
+					return;
+				}
+
+				var shorturl = trim(xhr.responseText);
+
+				if (shorturl.search(/^http/i)!=-1) {
+					Spaz.Shortlink.$copyToClipboard(shorturl)
+				} else {
+					$('#verification-result').text("Service returned an error: '"+shorturl+"'");
+				}
+
+			},
+			error:function(xhr, rstr){
+				// air.trace("ERROR: " + rstr);
+				$('#verification-result').text('Error trying to shorten link');
+				if (xhr.readyState < 3) {
+					// air.trace("ERROR: Timeout");
+				}
+
+			},
+			success:function(data){
+				// air.trace(data);
+				// Spaz.UI.statusBar("Shortened URL");
+				// $('#shorten-short-link').val(data);
+			},
+			beforeSend:function(xhr){},
+			processData:false,
+			type:"GET",
+			url:'http://urlzen.com/api',
+			data:"url="+origlink,
+		});
+	},
+	
+	
 	
 	xrlus : function(url) {
 		var origlink = encodeURI(url);
