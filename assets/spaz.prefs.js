@@ -11,8 +11,8 @@ if (!Spaz.Prefs) Spaz.Prefs = {};
 Spaz.Prefs.defaultPreferences = {
     'usemarkdown': true,
 
-    'window-x': 250,
-    'window-y': 250,
+    'window-x': 50,
+    'window-y': 50,
     'window-width': 275,
     'window-height': 600,
     'window-alpha': 100,
