@@ -34,6 +34,7 @@ Spaz.Prefs.defaultPreferences = {
     'theme-basetheme': 'spaz',
 
     'sound-enabled': true,
+    'wilhelm-enabled': true,
 
     'network-refreshinterval': 300000,
     'network-autoadjustrefreshinterval': true,
@@ -79,8 +80,8 @@ Spaz.Prefs.defaultPreferences = {
     'dock-displayunreadbadge': true,
     'dock-unreadbadgecolor': "red",
     'dock-unreadbadgeshape': "classic",
-	
-	'entryboxhint': "What are you doing?"
+
+    'entryboxhint': "What are you doing?"
 }
 
 
@@ -91,11 +92,11 @@ Spaz.Prefs.defaultPreferences = {
 // this maps methods to pref keys that should be
 // called when they are changed
 /*
-	the methods:
-	setUI: sets the exposed prefs UI for this preference
-	onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
-	check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
-	setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
+    the methods:
+    setUI: sets the exposed prefs UI for this preference
+    onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
+    check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
+    setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
 */
 Spaz.Prefs.changeMethods = {
     'usemarkdown': {
@@ -257,6 +258,16 @@ Spaz.Prefs.changeMethods = {
         onChange: function(value) {},
         check: function() {
             Spaz.Prefs.set('sound-enabled', Boolean(Spaz.Prefs.get('sound-enabled')))
+        }
+    },
+
+    'wilhelm-enabled': {
+        setUI: function(value) {
+            $('#wilhelm-enabled').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('wilhelm-enabled', Boolean(Spaz.Prefs.get('wilhelm-enabled')))
         }
     },
 
@@ -544,11 +555,11 @@ Spaz.Prefs.changeMethods = {
  * Initializes the preferences: sets prefs from Spaz.Prefs.defaultPreferences, loads prefs file, and sets up the prefs UI
  */
 Spaz.Prefs.init = function() {
-	
-	/*
-		WE NEED TO COPY THIS, NOT ASSIGN!!!!
-	*/
-	
+
+    /*
+        WE NEED TO COPY THIS, NOT ASSIGN!!!!
+    */
+
     Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
     Spaz.dump("defaultPreferences:" + Spaz.Prefs.defaultPreferences);
     Spaz.Prefs.loadPrefs();
@@ -629,6 +640,7 @@ Spaz.Prefs.initUI = function() {
     $('#window-shownotificationpopups').bind('change', Spaz.Prefs.setFromUI);
     $('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
     $('#sound-enabled').bind('change', Spaz.Prefs.setFromUI);
+    $('#wilhelm-enabled').bind('change', Spaz.Prefs.setFromUI);
     $('#checkupdate').bind('change', Spaz.Prefs.setFromUI);
     $('#checkupdate-testversions').bind('change', Spaz.Prefs.setFromUI);
     $('#network-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
