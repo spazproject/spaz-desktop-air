@@ -176,8 +176,6 @@ Spaz.initialize = function() {
     Spaz.dump('Set shortcut info in tab titles');
 
 
-
-
     /*
 		set-up window and app events
 	*/

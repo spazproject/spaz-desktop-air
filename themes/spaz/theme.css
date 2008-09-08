@@ -285,6 +285,15 @@ a, a:link, .clickable {
 			*/
 			#timeline-tabs-content, .TabbedPanelsContentGroup {
 				clear: both;
+				position:absolute;
+				overflow:auto;
+				border-top:   6px solid #333300;
+				border-bottom:4px solid #333300;
+				top:   67px;
+				left:  10px;
+				right: 10px;
+				bottom:90px;
+				background-color:#FFFFFF;
 			}
 
 				/* This is the selector for the Content panel. The Content panel holds the
@@ -297,7 +306,8 @@ a, a:link, .clickable {
 				 * want to style the Content container.
 				 */
 				.TabbedPanelsContent {
-					padding: 4px;
+					margin:0px;
+					padding:0px;
 				}
 
 				/* This selector is an example of how to change the appearnce of the currently
@@ -306,54 +316,54 @@ a, a:link, .clickable {
 				 * is activated/deactivated.
 				 */
 				.TabbedPanelsContentVisible {
+
 				}
-					
+										
 					/*
 						The .timeline divs are all inside .TabbedPanelsContent divs
 					*/
 					div.timeline {
-						overflow:auto;
-						border-top:   6px solid #333300;
-						border-bottom:4px solid #333300;
-						background-color:#FFFFFF;
-						position:absolute;
-						top:   67px;
-						left:  10px;
-						right: 10px;
-						bottom:90px;
+						width:100%;
+						height:100%;
+/*						overflow:auto;*/
 						background-image:url('images/dropshadow.png');
 						background-repeat:repeat-x;
 						background-position: 0px -4px;
+						padding:0px;
+						margin:0px;
 					}
 					#timeline-prefs, #timeline-public {
 						bottom:90px; /* This is here to give a different bottom if the pager functionality ever returns */
 					}
-					#timeline-search {
-						border-top:   2px solid #333300;
-						border-bottom:4px solid #333300;
-                    	top:102px;
-					}
-                        #search-menu {
-    						border-top:   6px solid #333300;
-                            top:   67px;
-                    		left:  10px;
-                    		right: 10px;
-                            height:24px;
-                            position:absolute;
+						.panelmenu {
                             background-color:#111100;
                             padding:2px
-                        }
-                            #search-menu form {
+						}
+							.panelmenu form {
                                 margin-left: auto;
                                 margin-right:auto;
-                                text-align:center;
+                                text-align:left;
+								margin:0px;
+								padding:0px;
                             }
-                            input[type='text']#search-for {
-                                width:150px;
+								.panelmenu form input[type='button'] {
+									padding:1px 6px;
+									border:1px solid transparent;
+									background-color:transparent;
+									color:#DDD;
+								}
+								.panelmenu form input[type='button']:hover {
+									border:1px solid #888;
+									background-color:#444;
+									color:#FFF;
+								}
+								
+					        .panelmenu form input[type='text'] {
+                                width:100px;
                                 border:1px solid #666;
-        						padding:2px;
+        						padding:1px;
                             }
-
+                    
 
 
 						/*

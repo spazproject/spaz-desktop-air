@@ -12,678 +12,708 @@ TODO:
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:spry="http://ns.adobe.com/spry">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Spaz</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Spaz</title>
 
-    <link rel="stylesheet" href="assets/init.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="assets/init.css" type="text/css" media="screen" charset="utf-8" />
 
 	
-    <script src="assets/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 
 
-    <script src="assets/lib/time.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/lib/json2.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/lib/date.format.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/lib/webtoolkit.base64.js" type="text/javascript"></script>
-    <script src="assets/lib/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/lib/trimpath-template-1.0.38.js" type="text/javascript" charset="utf-8"></script>
-    <!-- Keyboard shortcuts handling http://www.openjs.com/scripts/events/keyboard_shortcuts/ -->
-    <script src="assets/lib/shortcut.js" type="text/javascript" charset="utf-8"></script>
-    <!-- Showdown, the Markdown parser -->
-    <script src="assets/lib/showdown.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/lib/time.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/lib/json2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/lib/date.format.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/lib/webtoolkit.base64.js" type="text/javascript"></script>
+	<script src="assets/lib/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/lib/trimpath-template-1.0.38.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Keyboard shortcuts handling http://www.openjs.com/scripts/events/keyboard_shortcuts/ -->
+	<script src="assets/lib/shortcut.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Showdown, the Markdown parser -->
+	<script src="assets/lib/showdown.js" type="text/javascript" charset="utf-8"></script>
 
 
-    <!-- jQuery libs -->
-    <script src="assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/jquery/jquery.moreSelectors.js" type="text/javascript"></script>
-    <script src="assets/jquery/jquery.scrollTo.js" type="text/javascript"></script>
-    <!-- // <script src="assets/jquery/jquery.array.js" type="text/javascript" charset="utf-8"></script> -->
-    <script src="assets/jquery/jquery.intercept.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/jquery/jquery.positionBy.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/jquery/jquery.ajaxQueue.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/jquery/jquery.highlight-2.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/jquery/jquery-ui-personalized-1.5.2.js" type="text/javascript" charset="utf-8"></script>
+	<!-- jQuery libs -->
+	<script src="assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.moreSelectors.js" type="text/javascript"></script>
+	<script src="assets/jquery/jquery.scrollTo.js" type="text/javascript"></script>
+	<!-- // <script src="assets/jquery/jquery.array.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="assets/jquery/jquery.intercept.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.positionBy.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.ajaxQueue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.highlight-2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery-ui-personalized-1.5.2.js" type="text/javascript" charset="utf-8"></script>
 
-    <script src="assets/jquery/jquery.menu.js" type="text/javascript" charset="utf-8"></script>
-    <link rel="stylesheet" href="assets/jquery/menu/style.css" type="text/css" media="screen" charset="utf-8" />
+	<script src="assets/jquery/jquery.menu.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="assets/jquery/menu/style.css" type="text/css" media="screen" charset="utf-8" />
 
-    <script src="assets/jquery/jquery.center.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/jquery/tag.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.center.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/tag.js" type="text/javascript" charset="utf-8"></script>
 
-    <script src="assets/jquery/jqXMLUtils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jqXMLUtils.js" type="text/javascript" charset="utf-8"></script>
 
-    <!-- HTML notification library -->
-    <script src="assets/lib/purrjs.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jScrollPane.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="assets/jquery/jScrollPane/jScrollPane.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
-    <!-- Notification popups libs -->
-    <script src="lib/library.swf" type="application/x-shockwave-flash"></script>
+	<!-- HTML notification library -->
+	<script src="assets/lib/purrjs.js" type="text/javascript" charset="utf-8"></script>
 
-    <!-- Network service monitor -->
-    <script src="assets/servicemonitor.swf" type="application/x-shockwave-flash"></script>
+	<!-- Notification popups libs -->
+	<script src="lib/library.swf" type="application/x-shockwave-flash"></script>
 
-    <!-- Spry Widgets -->
-    <script language="JavaScript" type="text/javascript" src="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.js"></script>
-    <script language="JavaScript" type="text/javascript" src="assets/spry/widgets/textareavalidation/SpryValidationTextarea.js" ></script>
-    <script language="JavaScript" type="text/javascript" src="assets/spry/widgets/textfieldvalidation/SpryValidationTextField.js"></script>
-    <script language="JavaScript" type="text/javascript" src="assets/spry/widgets/collapsiblepanel/SpryCollapsiblePanel.js"></script>
-    <link rel="stylesheet" type="text/css" href="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.css" />
-    <link rel="stylesheet" type="text/css" href="assets/spry/widgets/textareavalidation/SpryValidationTextarea.css" />
-    <link rel="stylesheet" type="text/css" href="assets/spry/widgets/textfieldvalidation/SpryValidationTextField.css" />
+	<!-- Network service monitor -->
+	<script src="assets/servicemonitor.swf" type="application/x-shockwave-flash"></script>
 
-
-
-    <!-- Spaz libs -->
-    <script src="assets/spaz/spaz.js"        type="text/javascript"></script>
-    <script src="assets/spaz/spaz.timers.js"   type="text/javascript"></script>
-    <script src="assets/spaz/spaz.sys.js"   type="text/javascript"></script>
-    <script src="assets/spaz/spaz.prefs.js"  type="text/javascript"></script>
-    <script src="assets/spaz/spaz.db.js"  type="text/javascript"></script>
-    <script src="assets/spaz/spaz.dock.js"  type="text/javascript"></script>
-    <script src="assets/spaz/spaz.update.js" type="text/javascript"></script>
-    <script src="assets/spaz/spaz.info.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.tooltip.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.intercept.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.menus.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.windows.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.data.js"   type="text/javascript"></script>
-    <script src="assets/spaz/spaz.debug.js"  type="text/javascript"></script>
-    <script src="assets/spaz/spaz.cache.js"  type="text/javascript"></script>
-    <script src="assets/spaz/spaz.ui.js"     type="text/javascript"></script>
-    <script src="assets/spaz/spaz.themes.js"   type="text/javascript"></script>
-    <script src="assets/spaz/spaz.notify.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.section.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.handlers.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.keyboard.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.editor.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/spaz/spaz.tpl.js" type="text/javascript" charset="utf-8"></script>
-
-    <script src="assets/spaz/spaz.update.js" type="text/javascript"></script>
-
-
-    <!-- Emoticons lib developed by Graeme Dunlop -->
-    <script src="assets/emoticons/Emoticons.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/emoticons/Emoticons.SimpleSmileys.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/emoticons/Emoticons.GMailChat.js" type="text/javascript" charset="utf-8"></script>
-
-    <!-- theme scripts -->
-    <script type="text/javascript" charset="utf-8" id="themejs"></script>
-    <script type="text/javascript" charset="utf-8" id="themeinfo"></script>
+	<!-- Spry Widgets -->
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.js"></script>
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/textareavalidation/SpryValidationTextarea.js" ></script>
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/textfieldvalidation/SpryValidationTextField.js"></script>
+	<script language="JavaScript" type="text/javascript" src="assets/spry/widgets/collapsiblepanel/SpryCollapsiblePanel.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.css" />
+	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/textareavalidation/SpryValidationTextarea.css" />
+	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/textfieldvalidation/SpryValidationTextField.css" />
 
 
 
-    <!-- Helpers -->
-    <script src="assets/helpers/javascript.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/helpers/json.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/helpers/datetime.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/helpers/xml.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/helpers/sys.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Spaz libs -->
+	<script src="assets/spaz/spaz.js"		 type="text/javascript"></script>
+	<script src="assets/spaz/spaz.timers.js"   type="text/javascript"></script>
+	<script src="assets/spaz/spaz.sys.js"	type="text/javascript"></script>
+	<script src="assets/spaz/spaz.prefs.js"	 type="text/javascript"></script>
+	<script src="assets/spaz/spaz.db.js"  type="text/javascript"></script>
+	<script src="assets/spaz/spaz.dock.js"	type="text/javascript"></script>
+	<script src="assets/spaz/spaz.update.js" type="text/javascript"></script>
+	<script src="assets/spaz/spaz.info.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.tooltip.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.intercept.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.menus.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.windows.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.data.js"	 type="text/javascript"></script>
+	<script src="assets/spaz/spaz.debug.js"	 type="text/javascript"></script>
+	<script src="assets/spaz/spaz.cache.js"	 type="text/javascript"></script>
+	<script src="assets/spaz/spaz.ui.js"	 type="text/javascript"></script>
+	<script src="assets/spaz/spaz.themes.js"   type="text/javascript"></script>
+	<script src="assets/spaz/spaz.notify.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.section.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.handlers.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.keyboard.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.editor.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.tpl.js" type="text/javascript" charset="utf-8"></script>
+
+	<script src="assets/spaz/spaz.update.js" type="text/javascript"></script>
+
+
+	<!-- Emoticons lib developed by Graeme Dunlop -->
+	<script src="assets/emoticons/Emoticons.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/emoticons/Emoticons.SimpleSmileys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/emoticons/Emoticons.GMailChat.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- theme scripts -->
+	<script type="text/javascript" charset="utf-8" id="themejs"></script>
+	<script type="text/javascript" charset="utf-8" id="themeinfo"></script>
 
 
 
-    <script type="text/javascript">
-
-        /**
-         * Default prefs vars (global because of my bad coding skills)
-         */
-        var reloadID; // identifier for the auto-reloader
-        // var memoryRefreshID; // identifier for the memory reporter
-
+	<!-- Helpers -->
+	<script src="assets/helpers/javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/helpers/json.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/helpers/datetime.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/helpers/xml.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/helpers/sys.js" type="text/javascript" charset="utf-8"></script>
 
 
-        // stuff to load when this doc loads
-        $(document).ready( function() {
-            Spaz.initialize();
-        })
 
-        $(document).load( function() {
-            // hi
-        })
+	<script type="text/javascript">
 
-    </script>
+		/**
+		 * Default prefs vars (global because of my bad coding skills)
+		 */
+		var reloadID; // identifier for the auto-reloader
+		// var memoryRefreshID; // identifier for the memory reporter
+
+
+
+		// stuff to load when this doc loads
+		$(document).ready( function() {
+			Spaz.initialize();
+		})
+
+		$(document).load( function() {
+			// hi
+		})
+
+	</script>
 
 
 </head>
 
 <body id="home" onclick="$('#linkContextMenu').hide()">
 
-    <div id="container">
+	<div id="container">
 
-        <h1 id="header" onmousedown="Spaz.Windows.windowMove();">
-            <div id="window-buttons">
-                <!-- <span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
-                <span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span> -->
-                <span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
-                <span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
-            </div>
-            <!-- <span id="header-label" onclick="Spaz.UI.showMainMenu($(this))">Spaz &raquo;</span> -->
-            <span id="header-label" style="cursor:pointer">Spaz</span>
-        </h1>
-
-
-        <div id="tabs" class="TabbedPanels">
-            <ul class="TabbedPanelsTabGroup" id="timeline-tabs" tabindex="0">
-                <!-- YOUR TIMELINE -->
-                <li class="TabbedPanelsTab" tabindex="0" title="Your timeline"
-                    onmouseover="Spaz.UI.showTooltip(this, this.title)"
-                    onmouseout="Spaz.UI.hideTooltips()"
-                    id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)">
-                    <span class="tab-icon"></span>
-                </li>
-
-                <!-- SENT STATUSES -->
-                <li class="TabbedPanelsTab" tabindex="0" title="Tweets you've sent"
-                    onmouseover="Spaz.UI.showTooltip(this, this.title)"
-                    onmouseout="Spaz.UI.hideTooltips()"
-                    id="tab-user" onclick="Spaz.UI.setSelectedTab(this)">
-                    <span class="tab-icon"></span>
-                </li>
-
-                <!-- PUBLIC -->
-                <li class="TabbedPanelsTab" tabindex="0" title="Public timeline"
-                    onmouseover="Spaz.UI.showTooltip(this, this.title)"
-                    onmouseout="Spaz.UI.hideTooltips()"
-                    id="tab-public" onclick="Spaz.UI.setSelectedTab(this)">
-                    <span class="tab-icon"></span>
-                </li>
-
-                <!-- SEARCH -->
-                <li class="TabbedPanelsTab" tabindex="0" title="Search timeline"
-                    onmouseover="Spaz.UI.showTooltip(this, this.title)"
-                    onmouseout="Spaz.UI.hideTooltips()"
-                    id="tab-search" onclick="Spaz.UI.setSelectedTab(this)">
-                    <span class="tab-icon"></span>
-                </li>
-
-                <!-- Friendslist -->
-                <li class="TabbedPanelsTab" tabindex="0" title="Friends"
-                    onmouseover="Spaz.UI.showTooltip(this, this.title)"
-                    onmouseout="Spaz.UI.hideTooltips()"
-                    id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)">
-                    <span class="tab-icon"></span>
-                </li>
-
-                <!-- Followerslist -->
-                <li class="TabbedPanelsTab" tabindex="0" title="Followers"
-                    onmouseover="Spaz.UI.showTooltip(this, this.title)"
-                    onmouseout="Spaz.UI.hideTooltips()"
-                    id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)">
-                    <span class="tab-icon"></span>
-                </li>
-
-                <!-- PREFS -->
-                <li class="TabbedPanelsTab" tabindex="0" title="Preferences"
-                    onmouseover="Spaz.UI.showTooltip(this, this.title)"
-                    onmouseout="Spaz.UI.hideTooltips()"
-                    id="tab-prefs" onclick="Spaz.UI.setSelectedTab(this)">
-                    <span class="tab-icon"></span>
-                </li>
-            </ul>
+		<h1 id="header" onmousedown="Spaz.Windows.windowMove();">
+			<div id="window-buttons">
+				<!-- <span id="about" class="window-button" onclick="Spaz.UI.showAbout()" title="About">i</span>
+				<span id="help" class="window-button" onclick="Spaz.UI.showHelp()" title="Help">?</span> -->
+				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
+				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
+			</div>
+			<!-- <span id="header-label" onclick="Spaz.UI.showMainMenu($(this))">Spaz &raquo;</span> -->
+			<span id="header-label" style="cursor:pointer">Spaz</span>
+		</h1>
 
 
+		<div id="tabs" class="TabbedPanels">
+			<ul class="TabbedPanelsTabGroup" id="timeline-tabs" tabindex="0">
+				<!-- YOUR TIMELINE -->
+				<li class="TabbedPanelsTab" tabindex="0" title="Your timeline"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
 
+				<!-- SENT STATUSES -->
+				<li class="TabbedPanelsTab" tabindex="0" title="Tweets you've sent"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-user" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
 
-            <!-- BEGIN CONTENT TABS -->
-            <div class="TabbedPanelsContentGroup" id="timeline-tabs-content">
+				<!-- PUBLIC -->
+				<li class="TabbedPanelsTab" tabindex="0" title="Public timeline"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-public" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
 
-                <!-- FRIENDS AND YOU TIMELINE -->
-                <div class="TabbedPanelsContent" id="panel-friends">
-                    <div spry:region="Spaz.Data.ds_friends" id="timeline-friends" class="timeline">
-                    </div>
-                    <!-- <div class="timeline-pager">
-                        <div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>
-                        <div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
-                        <div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
-                    </div> -->
-                </div>
+				<!-- SEARCH -->
+				<li class="TabbedPanelsTab" tabindex="0" title="Search timeline"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-search" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
 
+				<!-- Friendslist -->
+				<li class="TabbedPanelsTab" tabindex="0" title="Friends"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
 
-                <!-- YOUR SENT MESSAGES -->
-                <div class="TabbedPanelsContent" id="panel-user">
-                    <div spry:region="Spaz.Data.ds_user" id="timeline-user" class="timeline">
+				<!-- Followerslist -->
+				<li class="TabbedPanelsTab" tabindex="0" title="Followers"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
 
-                    </div>
-                </div>
-
-
-                <!-- PUBLIC TIMELINE -->
-                <div class="TabbedPanelsContent" id="panel-public">
-                    <div id="timeline-public" class="timeline">
-
-                    </div>
-                </div>
-
-                <!-- SEARCH TIMELINE -->
-                <div class="TabbedPanelsContent" id="panel-search">
-                    <div id="search-menu">
-                        <form>
-                            <input type="text" name="search-for" value="" id="search-for" />
-                            <input type="button" name="search-go" value="go!" id="search-go" />
-                            <input type="button" name="search-help" value="?" id="search-help" title="Summize Search Help" />
-                        </form>
-                    </div>
-                    <div id="timeline-search" class="timeline">
-                    </div>
-                </div>
-
-
-                <!-- LIST OF PEOPLE YOU ARE FOLLOWING -->
-                <div class="TabbedPanelsContent" id="panel-friendslist">
-                    <div id="timeline-friendslist" class="timeline directory">
-                    </div>
-                </div>
-
-
-
-                <!-- LIST OF FOLLOWERS -->
-                <div class="TabbedPanelsContent" id="panel-followerslist">
-                    <div id="timeline-followerslist" class="timeline directory">
-                    </div>
-                </div>
+				<!-- PREFS -->
+				<li class="TabbedPanelsTab" tabindex="0" title="Preferences"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-prefs" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
+			</ul>
 
 
 
 
-                <!-- PREFS -->
-                <div class="TabbedPanelsContent" id="panel-prefs">
-                    <div class="timeline" id="timeline-prefs">
-                        <form id="prefs-form" onsubmit="Spaz.Prefs.setPrefs(); return false;">
-                        <div id="prefsCPG" class="CollapsiblePanelGroup">
+			<!-- BEGIN CONTENT TABS -->
+			<div class="TabbedPanelsContentGroup" id="timeline-tabs-content">
 
-                            <div id="prefs-user-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Account Information</h2>
-                                <div class="CollapsiblePanelContent">
+				<!-- FRIENDS AND YOU TIMELINE -->
+				<div class="TabbedPanelsContent" id="panel-friends">
+					<div id="menu-friends" class="panelmenu">
+						<form>
+							<input type="button" name="refresh-friends" value="Refresh" id="refresh-friends" title="Refresh this timeline" />
+							<input type="button" name="toggle-friends" value="Toggle" id="toggle-friends" title="Toggle between all messages and just replies/dms" />
+						</form>
+					</div>
+					<div id="timeline-friends" class="timeline">
+					</div>
+					<!-- <div class="timeline-pager">
+						<div class="timeline-pager-left"><a onclick="Spaz.UI.pageLeft(Spaz.UI.selectedTab);" title="Load newer entries">&laquo;</a></div>
+						<div class="timeline-pager-right"><a onclick="Spaz.UI.pageRight(Spaz.UI.selectedTab);" title="Load older entries">&raquo;</a></div>
+						<div class="timeline-pager-info">page <span class="timeline-pager-number">1</span></div>
+					</div> -->
+				</div>
+
+
+				<!-- YOUR SENT MESSAGES -->
+				<div class="TabbedPanelsContent" id="panel-user">
+					<div id="menu-user" class="panelmenu">
+						<form>
+							<input type="button" name="refresh-user" value="Refresh" id="refresh-user" />
+						</form>
+					</div>
+					<div id="timeline-user" class="timeline">
+
+					</div>
+				</div>
+
+
+				<!-- PUBLIC TIMELINE -->
+				<div class="TabbedPanelsContent" id="panel-public">
+					<div id="menu-public" class="panelmenu">
+						<form>
+							<input type="button" name="refresh-public" value="Refresh" id="refresh-public" />
+						</form>
+					</div>
+					<div id="timeline-public" class="timeline">
+
+					</div>
+				</div>
+
+				<!-- SEARCH TIMELINE -->
+				<div class="TabbedPanelsContent" id="panel-search">
+
+					<div id="menu-search" class="panelmenu">
+						<form>
+							<input type="text" name="search-for" value="" id="search-for" />
+							<input type="button" name="search-go" value="go!" id="search-go" />
+							<input type="button" name="search-help" value="?" id="search-help" title="Summize Search Help" />
+						</form>
+					</div>
+					<div id="timeline-search" class="timeline">
+					</div>
+				</div>
+
+
+				<!-- LIST OF PEOPLE YOU ARE FOLLOWING -->
+				<div class="TabbedPanelsContent" id="panel-friendslist">
+					<div id="menu-friendslist" class="panelmenu">
+						<form>
+							<input type="button" name="refresh-friendslist" value="Refresh" id="refresh-friendslist" />
+						</form>
+					</div>
+					<div id="timeline-friendslist" class="timeline directory">
+					</div>
+				</div>
+
+
+
+				<!-- LIST OF FOLLOWERS -->
+				<div class="TabbedPanelsContent" id="panel-followerslist">
+					<div id="menu-followerslist" class="panelmenu">
+						<form>
+							<input type="button" name="refresh-followerslist" value="Refresh" id="refresh-followerslist" />
+						</form>
+					</div>
+					<div id="timeline-followerslist" class="timeline directory">
+					</div>
+				</div>
+
+
+
+
+				<!-- PREFS -->
+				<div class="TabbedPanelsContent" id="panel-prefs">
+					<div class="timeline" id="timeline-prefs">
+						<form id="prefs-form" onsubmit="Spaz.Prefs.setPrefs(); return false;">
+						<div id="prefsCPG" class="CollapsiblePanelGroup">
+
+							<div id="prefs-user-fieldset" class="CollapsiblePanel">
+								<h2 class="CollapsiblePanelTab" tabindex="0">Account Information</h2>
+								<div class="CollapsiblePanelContent">
 									<fieldset>
-                                        <legend>Authentication</legend>
+										<legend>Authentication</legend>
 	
-	                                    <div class="formrow">
-	                                        <label for="username">Username</label>
-	                                        <input type="text" name="username" id="username" value="" />
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <label for="password">Password</label>
-	                                        <input type="password" name="password" id="password" value="" />
-	                                    </div>
+										<div class="formrow">
+											<label for="username">Username</label>
+											<input type="text" name="username" id="username" value="" />
+										</div>
+										<div class="formrow">
+											<label for="password">Password</label>
+											<input type="password" name="password" id="password" value="" />
+										</div>
 									</fieldset>
 									
-                                    <fieldset>
-                                        <legend>Service URLs</legend>
-
-                                        <div class="formrow">
-                                            <select id="twitter-base-urls">
-                                                <option value="">Load settings for…</option>
-                                                <option value="twitter">Twitter.com</option>
-                                                <option value="identica">Identi.ca</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="formrow">
-                                            <label for="twitter-api-base-url">Base API URL </label>
-                                            <input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
-                                        </div>
-                                        <div class="formrow">
-                                            <label for="twitter-base-url">Base WWW URL </label>
-                                            <input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </div>
-
-                            <div id="prefs-user-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
-                                <div class="CollapsiblePanelContent">
-
-
-                                    <fieldset>
-                                        <legend>Ping.FM</legend>
-                                        <div class="formrow">
-                                            <label for="services-pingfm-userappkey">Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)</label>
-                                            <input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
-                                        </div>
-                                        <!-- <div class="formrow">
-                                            <label for="base-theme">Update type</label>
-                                            <select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
-                                                <option value="default">default</option>
-                                                <option value="microblog">microblog</option>
-                                                <option value="status">status</option>
-                                            </select>
-                                        </div> -->
-                                        <div class="formrow">
-                                            <input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
-                                            <label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
-                                        </div>
-                                        <div class="formrow">
-                                            <input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
-                                            <label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
-                                        </div>
-                                    </fieldset>
-
-                                    <fieldset>
-                                        <legend>Twitpic</legend>
-                                        <div class="formrow">
-                                            <input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
-                                            <label for="services-twitpic-sharepassword" class="checkbox">Don't show warning</label>
-                                        </div>
-
-                                    </fieldset>
-                                    <h3>
-                                </div>
-                            </div>
-
-                            <div id="prefs-style-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Interface</h2>
-                                <div class="CollapsiblePanelContent">
 									<fieldset>
-                                        <legend>Theme</legend>
-	                                    <div class="formrow">
-	                                        <label for="user-stylesheet">User CSS</label>
-	                                        <!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
-	                                        <input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
-	                                        <input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
-	                                        <!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <label for="base-theme">Theme</label>
-	                                        <select id="theme-basetheme" name="base-theme" onChange="">
-	                                            <!-- stuff goes here -->
-	                                        </select> <span class="restart-required">*</span>
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <label for="base-theme">Opacity</label>
-	                                        <input type="text"
-	                                            name="opacity-percentage" id="window-alpha"
-	                                            value="100" maxlength="3" size="3" />%
-	                                    </div>
-									</fieldset>
+										<legend>Service URLs</legend>
 
-									<fieldset>
-                                        <legend>Dock</legend>
-			                           <!-- <div class="formrow">
-			                              <label for="dock-refresh-interval">Refresh interval</label>
-			                              <input type="text" name="dock-refresh-interval" id="dock-refreshinterval"
-			                                 value="500" maxlength="4" size="4" /> milliseconds
-			                           </div> -->
-			                           <div class="formrow">
-			                              <input type="checkbox" name="dock-display-unread-badge" value="1"
-			                                 id="dock-displayunreadbadge" />
-			                              <label for="dock-display-unread-badge" class="checkbox">Display unread badge</label>
-			                           </div>
-			                           <div class="formrow">
-			                              <label for="dock-unread-badge-color">Unread badge color</label>
-			                              <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
-			                                 <option value="red">Red</option>
-			                                 <option value="blue">Blue</option>
-			                                 <option value="yellow">Yellow</option>
-			                                 <option value="green">Green</option>
-			                                 <option value="cyan">Cyan</option>
-			                                 <option value="magenta">Magenta</option>
-			                              </select>
-			                           </div>
-			                           <div class="formrow">
-			                              <label for="dock-unread-badge-shape">Unread badge shape</label>
-			                              <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
-			                                 <option value="classic">Classic</option>
-			                                 <option value="star">Star</option>
-			                              </select>
-			                           </div>
+										<div class="formrow">
+											<select id="twitter-base-urls">
+												<option value="">Load settings for…</option>
+												<option value="twitter">Twitter.com</option>
+												<option value="identica">Identi.ca</option>
+											</select>
+										</div>
+
+										<div class="formrow">
+											<label for="twitter-api-base-url">Base API URL </label>
+											<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
+										</div>
+										<div class="formrow">
+											<label for="twitter-base-url">Base WWW URL </label>
+											<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
+										</div>
 									</fieldset>
+								</div>
+							</div>
+
+							<div id="prefs-user-fieldset" class="CollapsiblePanel">
+								<h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
+								<div class="CollapsiblePanelContent">
 
 
 									<fieldset>
-                                        <legend>Other options</legend>
-	                                    <div class="formrow">
-	                                        <input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
-	                                        <label for="markdown-enabled" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <input type="checkbox" name="minimize-systray" value="1"
-	                                            id="window-minimizetosystray" />
-	                                        <label for="minimize-systray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <input type="checkbox" name="minimize-background" value="1"
-	                                            id="window-minimizeonbackground" />
-	                                        <label for="minimize-background" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <input type="checkbox" name="maximize-foreground" value="1"
-	                                            id="window-restoreonactivate" />
-	                                        <label for="maximize-foreground" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <input type="checkbox" name="notification-popups" value="1"
-	                                            id="window-shownotificationpopups" />
-	                                        <label for="notification-popups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
-	                                    </div>
-	                                    <div class="formrow">
-	                                        <input type="checkbox" name="timeline-scrollonupdate" value="1"
-	                                            id="timeline-scrollonupdate" />
-	                                        <label for="timeline-scrollonupdate" class="checkbox">Scroll to top on refresh</label> <!-- <span class="restart-required">*</span> -->
-	                                    </div>
+										<legend>Ping.FM</legend>
+										<div class="formrow">
+											<label for="services-pingfm-userappkey">Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)</label>
+											<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
+										</div>
+										<!-- <div class="formrow">
+											<label for="base-theme">Update type</label>
+											<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
+												<option value="default">default</option>
+												<option value="microblog">microblog</option>
+												<option value="status">status</option>
+											</select>
+										</div> -->
+										<div class="formrow">
+											<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
+											<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
+											<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
+										</div>
 									</fieldset>
 
-                                </div>
-                            </div>
+									<fieldset>
+										<legend>Twitpic</legend>
+										<div class="formrow">
+											<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
+											<label for="services-twitpic-sharepassword" class="checkbox">Don't show warning</label>
+										</div>
 
-                            <div id="prefs-sound-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Sound</h2>
-                                <div class="CollapsiblePanelContent">
-                                    <div class="formrow">
-                                        <input type="checkbox" name="sound-enabled" value="1" id="sound-enabled" />
-                                        <label for="sound-enabled" class="checkbox">Play sounds</label>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="wilhelm-enabled" value="1" id="wilhelm-enabled" />
-                                        <label for="wilhelm-enabled" class="checkbox">Wilhelm can scream</label>
-                                    </div>
-                                </div>
-                            </div>
+									</fieldset>
+									<h3>
+								</div>
+							</div>
 
-                            <div id="prefs-upgrades-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Upgrades</h2>
-                                <div class="CollapsiblePanelContent">
-                                    <div class="formrow">
-                                        <input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
-                                        <label for="checkupdate-enabled" class="checkbox">Check on startup</label>
-                                        <span class="restart-required">*</span>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="checkupdate-testversions-enabled" value="1" id="checkupdate-testversions" />
-                                        <label for="checkupdate-testversions" class="checkbox">Check for test versions</label>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="button" name="checkupdate-button" value="Check Now &bull;"
-                                            id="prefs-checkupdate-button" onclick="Spaz.Update.go()" />
+							<div id="prefs-style-fieldset" class="CollapsiblePanel">
+								<h2 class="CollapsiblePanelTab" tabindex="0">Interface</h2>
+								<div class="CollapsiblePanelContent">
+									<fieldset>
+										<legend>Theme</legend>
+										<div class="formrow">
+											<label for="user-stylesheet">User CSS</label>
+											<!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
+											<input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
+											<input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
+											<!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
+										</div>
+										<div class="formrow">
+											<label for="base-theme">Theme</label>
+											<select id="theme-basetheme" name="base-theme" onChange="">
+												<!-- stuff goes here -->
+											</select> <span class="restart-required">*</span>
+										</div>
+										<div class="formrow">
+											<label for="base-theme">Opacity</label>
+											<input type="text"
+												name="opacity-percentage" id="window-alpha"
+												value="100" maxlength="3" size="3" />%
+										</div>
+									</fieldset>
 
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="prefs-network-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Networking</h2>
-                                <div class="CollapsiblePanelContent">
-                                    <div class="formrow">
-                                        <label for="refresh-interval">Refresh interval</label>
-                                        <input type="text" name="refresh-interval" id="network-refreshinterval"
-                                            value="5" maxlength="2" size="2" /> minutes
-                                            <span id="refreshRateInfo">
-                                                – <span id="refreshRateInfoValue">##</span> API reqs/hour
-                                            </span>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="button" name="autosetrefresh-button" value="Get rate from Twitter &bull;"
-                                            id="prefs-autosetrefresh-button" />
-
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="autoadjust-refresh-interval" value="1"
-                                            id="network-autoadjustrefreshinterval" />
-                                        <label for="autoadjust-refresh-interval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
-                                    </div>
-
-                                    <div class="formrow">
-                                        <input type="checkbox" name="handle-http-auth" value="1"
-                                            id="network-airhandlehttpauth" />
-                                        <label for="handle-http-auth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
-                                    </div>
-                                </div>
-                            </div>
-
-                     <!-- <div id="prefs-dock-fieldset" class="CollapsiblePanel">
-                        <h2 class="CollapsiblePanelTab" tabindex="0">Dock</h2>
-                        <div class="CollapsiblePanelContent">
-
-                        </div>
-                     </div> -->
-
-                            <div id="prefs-debugging-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
-                                <div class="CollapsiblePanelContent">
-                                    <div class="formrow">
-                                        <input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
-                                        <label class="checkbox" for="debugging-enabled">Enabled</label>
-                                        <span class="restart-required">*</span>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="formrow" style="text-align:right; margin-top:15px">
-                            <div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
+									<fieldset>
+										<legend>Dock</legend>
+									   <!-- <div class="formrow">
+										  <label for="dock-refresh-interval">Refresh interval</label>
+										  <input type="text" name="dock-refresh-interval" id="dock-refreshinterval"
+											 value="500" maxlength="4" size="4" /> milliseconds
+									   </div> -->
+									   <div class="formrow">
+										  <input type="checkbox" name="dock-display-unread-badge" value="1"
+											 id="dock-displayunreadbadge" />
+										  <label for="dock-display-unread-badge" class="checkbox">Display unread badge</label>
+									   </div>
+									   <div class="formrow">
+										  <label for="dock-unread-badge-color">Unread badge color</label>
+										  <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
+											 <option value="red">Red</option>
+											 <option value="blue">Blue</option>
+											 <option value="yellow">Yellow</option>
+											 <option value="green">Green</option>
+											 <option value="cyan">Cyan</option>
+											 <option value="magenta">Magenta</option>
+										  </select>
+									   </div>
+									   <div class="formrow">
+										  <label for="dock-unread-badge-shape">Unread badge shape</label>
+										  <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
+											 <option value="classic">Classic</option>
+											 <option value="star">Star</option>
+										  </select>
+									   </div>
+									</fieldset>
 
 
+									<fieldset>
+										<legend>Other options</legend>
+										<div class="formrow">
+											<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
+											<label for="markdown-enabled" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="minimize-systray" value="1"
+												id="window-minimizetosystray" />
+											<label for="minimize-systray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="minimize-background" value="1"
+												id="window-minimizeonbackground" />
+											<label for="minimize-background" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="maximize-foreground" value="1"
+												id="window-restoreonactivate" />
+											<label for="maximize-foreground" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="notification-popups" value="1"
+												id="window-shownotificationpopups" />
+											<label for="notification-popups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="timeline-scrollonupdate" value="1"
+												id="timeline-scrollonupdate" />
+											<label for="timeline-scrollonupdate" class="checkbox">Scroll to top on refresh</label> <!-- <span class="restart-required">*</span> -->
+										</div>
+									</fieldset>
 
-                            <input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
-                                onclick="Spaz.Prefs.setPrefs()" />
+								</div>
+							</div>
 
-                            <div style="margin-top:1em;">
-                                <a id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
-                            </div>
-                        </div>
+							<div id="prefs-sound-fieldset" class="CollapsiblePanel">
+								<h2 class="CollapsiblePanelTab" tabindex="0">Sound</h2>
+								<div class="CollapsiblePanelContent">
+									<div class="formrow">
+										<input type="checkbox" name="sound-enabled" value="1" id="sound-enabled" />
+										<label for="sound-enabled" class="checkbox">Play sounds</label>
+									</div>
+									<div class="formrow">
+										<input type="checkbox" name="wilhelm-enabled" value="1" id="wilhelm-enabled" />
+										<label for="wilhelm-enabled" class="checkbox">Wilhelm can scream</label>
+									</div>
+								</div>
+							</div>
 
-                        </form>
+							<div id="prefs-upgrades-fieldset" class="CollapsiblePanel">
+								<h2 class="CollapsiblePanelTab" tabindex="0">Upgrades</h2>
+								<div class="CollapsiblePanelContent">
+									<div class="formrow">
+										<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
+										<label for="checkupdate-enabled" class="checkbox">Check on startup</label>
+										<span class="restart-required">*</span>
+									</div>
+									<div class="formrow">
+										<input type="checkbox" name="checkupdate-testversions-enabled" value="1" id="checkupdate-testversions" />
+										<label for="checkupdate-testversions" class="checkbox">Check for test versions</label>
+									</div>
+									<div class="formrow">
+										<input type="button" name="checkupdate-button" value="Check Now &bull;"
+											id="prefs-checkupdate-button" onclick="Spaz.Update.go()" />
 
-                    </div>
-                </div>
+									</div>
+								</div>
+							</div>
 
-            </div>
-        </div>
+							<div id="prefs-network-fieldset" class="CollapsiblePanel">
+								<h2 class="CollapsiblePanelTab" tabindex="0">Networking</h2>
+								<div class="CollapsiblePanelContent">
+									<div class="formrow">
+										<label for="refresh-interval">Refresh interval</label>
+										<input type="text" name="refresh-interval" id="network-refreshinterval"
+											value="5" maxlength="2" size="2" /> minutes
+											<span id="refreshRateInfo">
+												– <span id="refreshRateInfoValue">##</span> API reqs/hour
+											</span>
+									</div>
+									<div class="formrow">
+										<input type="button" name="autosetrefresh-button" value="Get rate from Twitter &bull;"
+											id="prefs-autosetrefresh-button" />
 
+									</div>
+									<div class="formrow">
+										<input type="checkbox" name="autoadjust-refresh-interval" value="1"
+											id="network-autoadjustrefreshinterval" />
+										<label for="autoadjust-refresh-interval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
+									</div>
 
-        <!-- ENTRYFORM -->
-        <form id="entryform" onSubmit="return false;">
-            <textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea>
-            <div id="entrystats"><span id="chars-left"></span> chars left</div>
-            <input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" tabindex="0" />
-        </form>
+									<div class="formrow">
+										<input type="checkbox" name="handle-http-auth" value="1"
+											id="network-airhandlehttpauth" />
+										<label for="handle-http-auth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
+									</div>
+								</div>
+							</div>
 
-        <!-- STATUSBAR -->
-        <div id="statusbar" onmousedown="Spaz.Windows.windowMove();">
-            <!-- LOADING -->
-            <span id='loading'><!-- <img src='{theme-dir}/images/loading.gif' /> --></span>
-            <span id='statusbar-text'>Ready</span>
-        </div>
+					 <!-- <div id="prefs-dock-fieldset" class="CollapsiblePanel">
+						<h2 class="CollapsiblePanelTab" tabindex="0">Dock</h2>
+						<div class="CollapsiblePanelContent">
 
+						</div>
+					 </div> -->
 
-        <div id="resize-sw" onmousedown="Spaz.Windows.windowResize()">
-        </div>
+							<div id="prefs-debugging-fieldset" class="CollapsiblePanel">
+								<h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
+								<div class="CollapsiblePanelContent">
+									<div class="formrow">
+										<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
+										<label class="checkbox" for="debugging-enabled">Enabled</label>
+										<span class="restart-required">*</span>
+									</div>
+									<div class="formrow">
+										<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
+									</div>
+								</div>
+							</div>
 
+						</div>
 
-
-
-        <div id="updateCheckWindow" class="popupWindow" style="display:none;">
-            Checking for updates...
-        </div>
-
-
-
-
-        <!-- suggestions popup -->
-        <ul id="suggestions" style="display:none; left:15px;">
-
-        </ul>
-
-
-        <!-- the context menu container -->
-        <div id="linkContextMenu" class="context-menu">
-            <ul>
-                <li id="linkContextMenu-copyLink" class="clickable menuitem">Copy Link Address</li>
-            </ul>
-        </div>
-
-        <!-- User context menu -->
-        <div id="userContextMenu" class="context-menu">
-            <ul>
-
-                <li id="userContextMenu-sendReply" class="clickable menuitem">Send @Reply</li>
-                <li id="userContextMenu-sendDM" class="clickable menuitem">Send Direct Message</li>
-                <li id="userContextMenu-viewProfile" class="clickable menuitem">View Profile</li>
-                <li id="userContextMenu-follow" class="clickable menuitem">Follow</li>
-                <li id="userContextMenu-unfollow" class="clickable menuitem">Stop Following</li>
-                <!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
-            </ul>
-        </div>
-
-
-        <!-- the main menu container -->
-        <div id="mainMenu">
-            <ul id="mainMenuRoot" style="display:none;">
-                <li class="mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
-                <li class="mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
-                <li class="mainmenu-shortenLink"><a id="mainmenu-shortenLink">Shorten URL</a></li>
-                <!-- <li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
-                    <ul>
-                        <li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
-                        <li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
-                    </ul> -->
-                <li class="mainMenu-view">View…&nbsp;&raquo;
-                    <ul>
-                        <li class="mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li>
-                        <li class="mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li>
-                        <li class="mainMenu-view-reloadCurrentView"><a id="mainMenu-view-reloadCurrentView">Reload current view</a></li>
-                        <li class="mainMenu-view-clearReloadCurrentView"><a id="mainMenu-view-clearReloadCurrentView">Clear &amp; reload current view</a></li>
-                    </ul>
-                </li>
-                <li class="menu-separator"><hr /></li>
-
-                <li class="mainMenu-prefs"><a id="mainMenu-prefs">Preferences</a></li>
-
-                <li class="mainMenu-help"><a id="mainMenu-help">Help</a></li>
-                <li class="mainMenu-about"><a id="mainMenu-about">About Spaz</a></li>
-                <li class="mainMenu-followSpaz"><a id="mainMenu-followSpaz">Follow @spaz</a></li>
-
-            </ul>
-        </div>
-
-
-        <!-- The tooltip container -->
-        <div id="tooltip" class="context-menu">
-            <div class="tooltip-msg"></div>
-            <div class="preview" style='display:none; overflow:hidden; margin-top:.7em'></div>
-        </div>
+						<div class="formrow" style="text-align:right; margin-top:15px">
+							<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
 
 
 
+							<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
+								onclick="Spaz.Prefs.setPrefs()" />
 
-    </div> <!-- End #container -->
+							<div style="margin-top:1em;">
+								<a id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
+							</div>
+						</div>
 
-    <span id="wilhelm">
-        WILHELM!!!
-    </span>
+						</form>
 
-    <div id="spaz-dialog"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
 
 
-    <!-- hidden iframe for classic sandbox bridging -->
-    <iframe style="display:none" src="tpl.html"
-        sandboxRoot="http://funkatron.com/local/"
-        documentRoot="app:/sandbox/"
-        id="classicSB"
-        onload="Spaz.Sys.loadChildInterface()"></iframe>
+		<!-- ENTRYFORM -->
+		<form id="entryform" onSubmit="return false;">
+			<textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea>
+			<div id="entrystats"><span id="chars-left"></span> chars left</div>
+			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" tabindex="0" />
+		</form>
+
+		<!-- STATUSBAR -->
+		<div id="statusbar" onmousedown="Spaz.Windows.windowMove();">
+			<!-- LOADING -->
+			<span id='loading'><!-- <img src='{theme-dir}/images/loading.gif' /> --></span>
+			<span id='statusbar-text'>Ready</span>
+		</div>
+
+
+		<div id="resize-sw" onmousedown="Spaz.Windows.windowResize()">
+		</div>
+
+
+
+
+		<div id="updateCheckWindow" class="popupWindow" style="display:none;">
+			Checking for updates...
+		</div>
+
+
+
+
+		<!-- suggestions popup -->
+		<ul id="suggestions" style="display:none; left:15px;">
+
+		</ul>
+
+
+		<!-- the context menu container -->
+		<div id="linkContextMenu" class="context-menu">
+			<ul>
+				<li id="linkContextMenu-copyLink" class="clickable menuitem">Copy Link Address</li>
+			</ul>
+		</div>
+
+		<!-- User context menu -->
+		<div id="userContextMenu" class="context-menu">
+			<ul>
+
+				<li id="userContextMenu-sendReply" class="clickable menuitem">Send @Reply</li>
+				<li id="userContextMenu-sendDM" class="clickable menuitem">Send Direct Message</li>
+				<li id="userContextMenu-viewProfile" class="clickable menuitem">View Profile</li>
+				<li id="userContextMenu-follow" class="clickable menuitem">Follow</li>
+				<li id="userContextMenu-unfollow" class="clickable menuitem">Stop Following</li>
+				<!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
+			</ul>
+		</div>
+
+
+		<!-- the main menu container -->
+		<div id="mainMenu">
+			<ul id="mainMenuRoot" style="display:none;">
+				<li class="mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
+				<li class="mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
+				<li class="mainmenu-shortenLink"><a id="mainmenu-shortenLink">Shorten URL</a></li>
+				<!-- <li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
+					<ul>
+						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
+						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
+					</ul> -->
+				<li class="mainMenu-view">View…&nbsp;&raquo;
+					<ul>
+						<li class="mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li>
+						<li class="mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li>
+						<li class="mainMenu-view-reloadCurrentView"><a id="mainMenu-view-reloadCurrentView">Reload current view</a></li>
+						<li class="mainMenu-view-clearReloadCurrentView"><a id="mainMenu-view-clearReloadCurrentView">Clear &amp; reload current view</a></li>
+					</ul>
+				</li>
+				<li class="menu-separator"><hr /></li>
+
+				<li class="mainMenu-prefs"><a id="mainMenu-prefs">Preferences</a></li>
+
+				<li class="mainMenu-help"><a id="mainMenu-help">Help</a></li>
+				<li class="mainMenu-about"><a id="mainMenu-about">About Spaz</a></li>
+				<li class="mainMenu-followSpaz"><a id="mainMenu-followSpaz">Follow @spaz</a></li>
+
+			</ul>
+		</div>
+
+
+		<!-- The tooltip container -->
+		<div id="tooltip" class="context-menu">
+			<div class="tooltip-msg"></div>
+			<div class="preview" style='display:none; overflow:hidden; margin-top:.7em'></div>
+		</div>
+
+
+
+
+	</div> <!-- End #container -->
+
+	<span id="wilhelm">
+		WILHELM!!!
+	</span>
+
+	<div id="spaz-dialog"></div>
+
+
+	<!-- hidden iframe for classic sandbox bridging -->
+	<iframe style="display:none" src="tpl.html"
+		sandboxRoot="http://funkatron.com/local/"
+		documentRoot="app:/sandbox/"
+		id="classicSB"
+		onload="Spaz.Sys.loadChildInterface()"></iframe>
 
 </body>
 </html>
