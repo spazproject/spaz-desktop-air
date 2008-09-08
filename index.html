@@ -294,22 +294,21 @@ TODO:
                             <div id="prefs-user-fieldset" class="CollapsiblePanel">
                                 <h2 class="CollapsiblePanelTab" tabindex="0">Account Information</h2>
                                 <div class="CollapsiblePanelContent">
-                                    <div class="formrow">
-                                        <label for="username">Username</label>
-                                        <input type="text" name="username" id="username" value="" />
-                                    </div>
-                                    <div class="formrow">
-                                        <label for="password">Password</label>
-                                        <input type="password" name="password" id="password" value="" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="prefs-user-fieldset" class="CollapsiblePanel">
-                                <h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
-                                <div class="CollapsiblePanelContent">
+									<fieldset>
+                                        <legend>Authentication</legend>
+	
+	                                    <div class="formrow">
+	                                        <label for="username">Username</label>
+	                                        <input type="text" name="username" id="username" value="" />
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <label for="password">Password</label>
+	                                        <input type="password" name="password" id="password" value="" />
+	                                    </div>
+									</fieldset>
+									
                                     <fieldset>
-                                        <legend>Twitter-compatible API</legend>
+                                        <legend>Service URLs</legend>
 
                                         <div class="formrow">
                                             <select id="twitter-base-urls">
@@ -328,6 +327,13 @@ TODO:
                                             <input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
                                         </div>
                                     </fieldset>
+                                </div>
+                            </div>
+
+                            <div id="prefs-user-fieldset" class="CollapsiblePanel">
+                                <h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
+                                <div class="CollapsiblePanelContent">
+
 
                                     <fieldset>
                                         <legend>Ping.FM</legend>
@@ -368,54 +374,94 @@ TODO:
                             <div id="prefs-style-fieldset" class="CollapsiblePanel">
                                 <h2 class="CollapsiblePanelTab" tabindex="0">Interface</h2>
                                 <div class="CollapsiblePanelContent">
-                                    <div class="formrow">
-                                        <label for="user-stylesheet">User CSS</label>
-                                        <!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
-                                        <input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
-                                        <input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
-                                        <!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
-                                    </div>
-                                    <div class="formrow">
-                                        <label for="base-theme">Theme</label>
-                                        <select id="theme-basetheme" name="base-theme" onChange="">
-                                            <!-- stuff goes here -->
-                                        </select> <span class="restart-required">*</span>
-                                    </div>
-                                    <div class="formrow">
-                                        <label for="base-theme">Opacity</label>
-                                        <input type="text"
-                                            name="opacity-percentage" id="window-alpha"
-                                            value="100" maxlength="3" size="3" />%
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
-                                        <label for="markdown-enabled" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="minimize-systray" value="1"
-                                            id="window-minimizetosystray" />
-                                        <label for="minimize-systray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="minimize-background" value="1"
-                                            id="window-minimizeonbackground" />
-                                        <label for="minimize-background" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="maximize-foreground" value="1"
-                                            id="window-restoreonactivate" />
-                                        <label for="maximize-foreground" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="notification-popups" value="1"
-                                            id="window-shownotificationpopups" />
-                                        <label for="notification-popups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
-                                    </div>
-                                    <div class="formrow">
-                                        <input type="checkbox" name="timeline-scrollonupdate" value="1"
-                                            id="timeline-scrollonupdate" />
-                                        <label for="timeline-scrollonupdate" class="checkbox">Scroll to top on refresh</label> <!-- <span class="restart-required">*</span> -->
-                                    </div>
+									<fieldset>
+                                        <legend>Theme</legend>
+	                                    <div class="formrow">
+	                                        <label for="user-stylesheet">User CSS</label>
+	                                        <!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
+	                                        <input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
+	                                        <input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
+	                                        <!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <label for="base-theme">Theme</label>
+	                                        <select id="theme-basetheme" name="base-theme" onChange="">
+	                                            <!-- stuff goes here -->
+	                                        </select> <span class="restart-required">*</span>
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <label for="base-theme">Opacity</label>
+	                                        <input type="text"
+	                                            name="opacity-percentage" id="window-alpha"
+	                                            value="100" maxlength="3" size="3" />%
+	                                    </div>
+									</fieldset>
+
+									<fieldset>
+                                        <legend>Dock</legend>
+			                           <!-- <div class="formrow">
+			                              <label for="dock-refresh-interval">Refresh interval</label>
+			                              <input type="text" name="dock-refresh-interval" id="dock-refreshinterval"
+			                                 value="500" maxlength="4" size="4" /> milliseconds
+			                           </div> -->
+			                           <div class="formrow">
+			                              <input type="checkbox" name="dock-display-unread-badge" value="1"
+			                                 id="dock-displayunreadbadge" />
+			                              <label for="dock-display-unread-badge" class="checkbox">Display unread badge</label>
+			                           </div>
+			                           <div class="formrow">
+			                              <label for="dock-unread-badge-color">Unread badge color</label>
+			                              <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
+			                                 <option value="red">Red</option>
+			                                 <option value="blue">Blue</option>
+			                                 <option value="yellow">Yellow</option>
+			                                 <option value="green">Green</option>
+			                                 <option value="cyan">Cyan</option>
+			                                 <option value="magenta">Magenta</option>
+			                              </select>
+			                           </div>
+			                           <div class="formrow">
+			                              <label for="dock-unread-badge-shape">Unread badge shape</label>
+			                              <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
+			                                 <option value="classic">Classic</option>
+			                                 <option value="star">Star</option>
+			                              </select>
+			                           </div>
+									</fieldset>
+
+
+									<fieldset>
+                                        <legend>Other options</legend>
+	                                    <div class="formrow">
+	                                        <input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
+	                                        <label for="markdown-enabled" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <input type="checkbox" name="minimize-systray" value="1"
+	                                            id="window-minimizetosystray" />
+	                                        <label for="minimize-systray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <input type="checkbox" name="minimize-background" value="1"
+	                                            id="window-minimizeonbackground" />
+	                                        <label for="minimize-background" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <input type="checkbox" name="maximize-foreground" value="1"
+	                                            id="window-restoreonactivate" />
+	                                        <label for="maximize-foreground" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <input type="checkbox" name="notification-popups" value="1"
+	                                            id="window-shownotificationpopups" />
+	                                        <label for="notification-popups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
+	                                    </div>
+	                                    <div class="formrow">
+	                                        <input type="checkbox" name="timeline-scrollonupdate" value="1"
+	                                            id="timeline-scrollonupdate" />
+	                                        <label for="timeline-scrollonupdate" class="checkbox">Scroll to top on refresh</label> <!-- <span class="restart-required">*</span> -->
+	                                    </div>
+									</fieldset>
 
                                 </div>
                             </div>
@@ -484,39 +530,12 @@ TODO:
                                 </div>
                             </div>
 
-                     <div id="prefs-dock-fieldset" class="CollapsiblePanel">
+                     <!-- <div id="prefs-dock-fieldset" class="CollapsiblePanel">
                         <h2 class="CollapsiblePanelTab" tabindex="0">Dock</h2>
                         <div class="CollapsiblePanelContent">
-                           <!-- <div class="formrow">
-                              <label for="dock-refresh-interval">Refresh interval</label>
-                              <input type="text" name="dock-refresh-interval" id="dock-refreshinterval"
-                                 value="500" maxlength="4" size="4" /> milliseconds
-                           </div> -->
-                           <div class="formrow">
-                              <input type="checkbox" name="dock-display-unread-badge" value="1"
-                                 id="dock-displayunreadbadge" />
-                              <label for="dock-display-unread-badge" class="checkbox">Display unread badge</label>
-                           </div>
-                           <div class="formrow">
-                              <label for="dock-unread-badge-color">Unread badge color</label>
-                              <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
-                                 <option value="red">Red</option>
-                                 <option value="blue">Blue</option>
-                                 <option value="yellow">Yellow</option>
-                                 <option value="green">Green</option>
-                                 <option value="cyan">Cyan</option>
-                                 <option value="magenta">Magenta</option>
-                              </select>
-                           </div>
-                           <div class="formrow">
-                              <label for="dock-unread-badge-shape">Unread badge shape</label>
-                              <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
-                                 <option value="classic">Classic</option>
-                                 <option value="star">Star</option>
-                              </select>
-                           </div>
+
                         </div>
-                     </div>
+                     </div> -->
 
                             <div id="prefs-debugging-fieldset" class="CollapsiblePanel">
                                 <h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
