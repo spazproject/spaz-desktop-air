@@ -108,8 +108,8 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 Spaz.Debug.insertDebugScripts = function() {
 	air.trace("INSERT DEBUGGING SCRIPTS");
 	var e = document.createElement("script");
-	e.src = "assets/AIRIntrospector.js";
-	e.type="text/javascript";
+	e.src = "assets/air/AIRIntrospector.js";
+	e.type= "text/javascript";
 	document.getElementsByTagName("head")[0].appendChild(e);
 	//<base href="app:/"/>
 	//<script src="assets/jquery/jquery-profile.js" type="text/javascript" charset="utf-8"></script>
