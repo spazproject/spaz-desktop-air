@@ -346,10 +346,14 @@ a, a:link, .clickable {
 								margin:0px;
 								padding:0px;
                             }
+							.panelmenu form input {
+								font-size:10px;
+								margin:2px 0 2px;
+							}
 								.panelmenu form input[type='button'] {
-									padding:1px 6px;
+									padding:1px 4px;
 									border:1px solid transparent;
-									background-color:transparent;
+									background-color:#333;
 									color:#DDD;
 								}
 								.panelmenu form input[type='button']:hover {
@@ -360,10 +364,19 @@ a, a:link, .clickable {
 								
 					        .panelmenu form input[type='text'] {
                                 width:100px;
+								padding-left:6px;
+								background-color:#333;
                                 border:1px solid #666;
-        						padding:1px;
+								color:#CCC;
+								-khtml-border-radius:5px;
                             }
-                    
+	                    		.panelmenu form input[type='text']:focus {
+	                                width:100px;
+	                                border:1px solid #888;
+									background-color:#444;
+									color:#FFF;
+	                            }
+					        
 
 
 						/*

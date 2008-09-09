@@ -44,17 +44,13 @@ TODO:
 	<script src="assets/jquery/jquery.highlight-2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.contextmenu.r2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery-ui-personalized-1.5.2.js" type="text/javascript" charset="utf-8"></script>
-
+	<script src="assets/jquery/jquery.hint.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jquery.menu.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" href="assets/jquery/menu/style.css" type="text/css" media="screen" charset="utf-8" />
-
 	<script src="assets/jquery/jquery.center.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/tag.js" type="text/javascript" charset="utf-8"></script>
-
 	<script src="assets/jquery/jqXMLUtils.js" type="text/javascript" charset="utf-8"></script>
 
-	<script src="assets/jquery/jScrollPane.js" type="text/javascript" charset="utf-8"></script>
-	<link rel="stylesheet" href="assets/jquery/jScrollPane/jScrollPane.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
 	<!-- HTML notification library -->
 	<script src="assets/lib/purrjs.js" type="text/javascript" charset="utf-8"></script>
@@ -117,6 +113,7 @@ TODO:
 
 	<!-- Helpers -->
 	<script src="assets/helpers/javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/helpers/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/helpers/json.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/helpers/datetime.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/helpers/xml.js" type="text/javascript" charset="utf-8"></script>
@@ -235,6 +232,7 @@ TODO:
 						<form>
 							<input type="button" name="refresh-friends" value="Refresh" id="refresh-friends" title="Refresh this timeline" />
 							<input type="button" name="toggle-friends" value="Toggle" id="toggle-friends" title="Toggle between all messages and just replies/dms" />
+							<input type="text" name="filter-friends" value="" id="filter-friends" title="filter" /> 
 						</form>
 					</div>
 					<div id="timeline-friends" class="timeline">
@@ -252,6 +250,7 @@ TODO:
 					<div id="menu-user" class="panelmenu">
 						<form>
 							<input type="button" name="refresh-user" value="Refresh" id="refresh-user" />
+							<input type="text" name="filter-user" value="" id="filter-user" title="filter" /> 
 						</form>
 					</div>
 					<div id="timeline-user" class="timeline">
@@ -265,6 +264,7 @@ TODO:
 					<div id="menu-public" class="panelmenu">
 						<form>
 							<input type="button" name="refresh-public" value="Refresh" id="refresh-public" />
+							<input type="text" name="filter-public" value="" id="filter-public" title="filter" /> 
 						</form>
 					</div>
 					<div id="timeline-public" class="timeline">

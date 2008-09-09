@@ -1,5 +1,6 @@
 if (!Spaz.Section) Spaz.Section = {};
 
+
 Spaz.Section.init = function() {
 
     Spaz.Section.friends = {
@@ -15,7 +16,7 @@ Spaz.Section.init = function() {
         lastid_dm: 0,
         lastcheck: 0,
         currdata: null,
-         prevdata: null,
+        prevdata: null,
         autoload: true,
         canclear: true,
         mincachetime: 60000 * 3,
@@ -98,6 +99,12 @@ Spaz.Section.init = function() {
             // });
 
         },
+		filter: function(terms) {
+			$('#'+this.timeline + ' div.timeline-entry').show();
+			if (terms) {
+				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').hide();
+			}
+		},
         cleanup: function(attribute) {
 
             Spaz.UI.statusBar('Cleaning up entries…');
@@ -174,6 +181,12 @@ Spaz.Section.init = function() {
         addItem: function(item) {
             Spaz.UI.addItemToTimeline(item, this)
         },
+		filter: function(terms) {
+			$('#'+this.timeline + ' div.timeline-entry').show();
+			if (terms) {
+				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').hide();
+			}
+		},
         cleanup: function(attribute) {
             Spaz.UI.cleanupTimeline(this.timeline);
             Spaz.Editor.initSuggestions();
@@ -190,7 +203,7 @@ Spaz.Section.init = function() {
         lastid: 0,
         lastcheck: 0,
         currdata: null,
-         prevdata: null,
+		prevdata: null,
         autoload: true,
         canclear: true,
         mincachetime: 60000 * 1,
@@ -208,6 +221,12 @@ Spaz.Section.init = function() {
         addItem: function(item) {
             Spaz.UI.addItemToTimeline(item, this)
         },
+		filter: function(terms) {
+			$('#'+this.timeline + ' div.timeline-entry').show();
+			if (terms) {
+				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').hide();
+			}
+		},
         cleanup: function(attribute) {
             Spaz.UI.cleanupTimeline(this.timeline);
         },
@@ -471,5 +490,6 @@ Spaz.Section.init = function() {
         Spaz.dump('section for tab:' + sectionStr);
         return Spaz.Section[sectionStr];
     };
+
 
 }

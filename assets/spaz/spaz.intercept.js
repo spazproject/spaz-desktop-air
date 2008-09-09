@@ -93,6 +93,22 @@ Spaz.Intercept.init = function() {
 		})
 	
 		.intercept('click', {
+			'#refresh-friends':function(e) {
+				Spaz.UI.reloadCurrentTab(true);
+				Spaz.restartReloadTimer();
+			},
+			'#refresh-users':function(e) {
+				Spaz.UI.reloadCurrentTab(true);
+				Spaz.restartReloadTimer();
+			},
+			'#refresh-public':function(e) {
+				Spaz.UI.reloadCurrentTab(true);
+				Spaz.restartReloadTimer();
+			},
+			'#toggle-friends':function(e) {
+				Spaz.UI.toggleTimelineFilter();
+			},			
+			
 			'#prefs-open-folder':function(e) {
 				Spaz.Sys.openAppStorageFolder();
 			},
@@ -248,6 +264,17 @@ Spaz.Intercept.init = function() {
 				var url = $(this).attr('href');
 				Spaz.UI.showLinkContextMenu($(this), url);
 			},
+		})
+		.intercept('keyup', {
+			'#filter-friends':function(e) {
+				Spaz.Section.friends.filter( $(this).val() );
+			},
+			'#filter-user':function(e) {
+				Spaz.Section.user.filter( $(this).val() );
+			},
+			'#filter-public':function(e) {
+				Spaz.Section.public.filter( $(this).val() );
+			}
 		})
 		
 	// end intercept
