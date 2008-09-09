@@ -230,7 +230,9 @@ Spaz.Keyboard.move = function(dir, selector) {
 	
 	Spaz.dump("selector is '" + selector+"'")
 	
-	var timelineid = 'timeline-friends';
+	// var timelineid = 'timeline-friends';
+	var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
+	var timelineid = section.timeline;
 
 	if (!dir) { dir = 'down' }
 	
@@ -253,51 +255,78 @@ Spaz.Keyboard.move = function(dir, selector) {
 	// if none selected, or there is no 'next', select first
 	if (selector == ":first" || selector == ":last") {
 		Spaz.dump('first in timeline')
-		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry'+selector), timelineid)
+		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector), section)
 	} else if (jqsel.length == 0 ) {
 		Spaz.dump('nothing is selected')
-		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry'+selector+':'+wrapselc), timelineid)
+		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector+':'+wrapselc), section)
 		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);
 	} else if (jqsel[movefunc]('div.timeline-entry'+selector).eq(0).length == 0) {
 		Spaz.dump('we are at the beginning or end')
-		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry'+selector+':'+wrapselc), timelineid)
+		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector+':'+wrapselc), section)
 		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);				
 	} else {
 		Spaz.dump('something is now selected');
-		Spaz.Keyboard.moveSelect(jqsel[movefunc]('div.timeline-entry'+selector).eq(0), timelineid);
+		Spaz.Keyboard.moveSelect(jqsel[movefunc]('div.timeline-entry:visible'+selector).eq(0), section);
 	}
 	// if selected is at bottom, go to top
 }
 
 
 
-Spaz.Keyboard.moveSelect = function(jqelement, timelineid) {	
+Spaz.Keyboard.moveSelect = function(jqelement, section) {	
 	
 	Spaz.dump('Moving to new selected item');
-	
-	Spaz.dump('jqelement.length:'+jqelement.length);
+	Spaz.dump('timelineid:'+section.timeline);
 	
 	// unselect everything
-	$('#'+timelineid+' div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
+	$('#'+section.timeline+' div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
 
-	$().trigger('UNREAD_COUNT_CHANGED');
-	
 	if ( entryId = Spaz.UI.getStatusIdFromElement(jqelement[0]) ) {
+		Spaz.dump('entryId:'+entryId);
 		Spaz.DB.markEntryAsRead(entryId);
 	}
 	
 	// select passed
 	if (jqelement.length > 0) {
+		Spaz.dump("toggle ui-selected and scrollto");
 		jqelement.toggleClass('ui-selected');
-		$('#'+timelineid+'').scrollTo(jqelement, {
-								offset:-25,
-								speed:90,
-								easing:'swing'
-								}
-		);
+		
+		var viewport_bottom = $('#timeline-tabs-content').innerHeight();		
+		var selected_bottom = jqelement.position().top + jqelement.height();
+		
+		/*
+			going down
+		*/
+		if ( selected_bottom > viewport_bottom ) {
+			var scroll_offset = ($('#timeline-tabs-content').innerHeight()-jqelement.height())*-1;
+			Spaz.dump('scroll offset:'+scroll_offset);
+			$('#timeline-tabs-content').scrollTo(jqelement, {
+				offset:scroll_offset,
+				speed:1
+			});
+		}
+		
+		/*
+			going up
+		*/
+		if ( jqelement.position().top < $('#timeline-tabs-content').position().top ) {
+			$('#timeline-tabs-content').scrollTo(jqelement, {
+				offset:0,
+				speed:1
+			});
+		}
+		
+		// $('#timeline-tabs-content').scrollTo(jqelement, {
+		// 						offset:-25,
+		// 						speed:90,
+		// 						easing:'swing'
+		// 						}
+		// );
 	} else {
 		Spaz.dump("Problem - jqelement passed length = 0 - can't scroll to anything");
 	}
+	
+	$().trigger('UNREAD_COUNT_CHANGED');
 }
 
 

@@ -227,7 +227,7 @@ Spaz.Intercept.init = function() {
 			},
 			'.timeline-entry *':function(e) { // this one needs to be last so the more specific ones above take precedence
 				// $('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
-				var entry = $(this).parents('.timeline-entry');
+				var entry = $(this).parents('.timeline-entry').get(0);
 				Spaz.UI.selectEntry(entry);
 				// entry.addClass('ui-selected');
 			},

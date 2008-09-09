@@ -694,9 +694,11 @@ Spaz.UI.selectEntry = function(el) {
         }
     });
 
-    $().trigger('UNREAD_COUNT_CHANGED');
-
+	Spaz.dump(el);
     Spaz.dump('selected tweet #' + el.id + ':' + el.tagName + '.' + el.className);
+
+    $().trigger('UNREAD_COUNT_CHANGED');
+	
 }
 
 
@@ -1018,7 +1020,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
                 if (Spaz.Prefs.get('timeline-scrollonupdate')) {
                     try {
-                        $("#" + timelineid).scrollTo('.timeline-entry:eq(0)', {
+                        $('#timeline-tabs-content').scrollTo('.timeline-entry:eq(0)', {
                             speed: 800,
                             easing: 'swing'
                         })
