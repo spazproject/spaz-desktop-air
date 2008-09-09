@@ -100,9 +100,9 @@ Spaz.Section.init = function() {
 
         },
 		filter: function(terms) {
-			$('#'+this.timeline + ' div.timeline-entry').show();
+			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').hide();
+				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').addClass('hidden');
 			}
 		},
         cleanup: function(attribute) {
@@ -182,9 +182,9 @@ Spaz.Section.init = function() {
             Spaz.UI.addItemToTimeline(item, this)
         },
 		filter: function(terms) {
-			$('#'+this.timeline + ' div.timeline-entry').show();
+			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').hide();
+				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').addClass('hidden');
 			}
 		},
         cleanup: function(attribute) {
@@ -222,9 +222,9 @@ Spaz.Section.init = function() {
             Spaz.UI.addItemToTimeline(item, this)
         },
 		filter: function(terms) {
-			$('#'+this.timeline + ' div.timeline-entry').show();
+			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').hide();
+				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').addClass('hidden');
 			}
 		},
         cleanup: function(attribute) {

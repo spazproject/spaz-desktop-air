@@ -78,7 +78,9 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
     border-bottom:1px dotted #333333;
 }
 
-
+.hidden {
+	display:none;
+}
 
 
 #suggestions {
