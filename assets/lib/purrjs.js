@@ -19,7 +19,7 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 	
 	var opts = new air.NativeWindowInitOptions();
 	opts.transparent = true;
-	opts.type = air.NativeWindowType.LIGHTWEIGHT;
+	opts.type = air.NativeWindowType.UTILITY;
 	opts.systemChrome = air.NativeWindowSystemChrome.NONE;
 	opts.resizable = false;
 	opts.minimizable = false;
@@ -29,6 +29,11 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 	var notifyLoader = air.HTMLLoader.createRootWindow(true, opts, false, winBounds);
 	notifyLoader.load(new air.URLRequest("app:/html/modal.html"));
 	notifyLoader.alpha = .6;
+
+	/*
+		make sure the main window is active();
+	*/
+	window.nativeWindow.activate();
 
      // air.Introspector.Console.info(notifyLoader);
 
@@ -140,7 +145,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 	*/
 	var opts = new air.NativeWindowInitOptions();
 	opts.transparent = true;
-	opts.type = air.NativeWindowType.LIGHTWEIGHT;
+	opts.type = air.NativeWindowType.UTILITY;
 	opts.systemChrome = air.NativeWindowSystemChrome.NONE;
 	opts.resizable = false;
 	opts.minimizable = false;
@@ -151,8 +156,15 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 	"notify.html?msg="+msg+"&title="+title+"&img="+img
 	notifyLoader.load(new air.URLRequest("app:/html/notify.html?msg="+encodeURIComponent(msg)+"&title="+encodeURIComponent(title)+"&img="+encodeURIComponent(img)));
 	notifyLoader.alpha = .6; // make the loader object transparent
+	notifyLoader.stage.nativeWindow.visible = false; // use this to avoid stealing focus
 	notifyLoader.stage.nativeWindow.alwaysInFront = true; // make the notify window a modal
-
+	
+	/*
+		make sure the main window is active();
+	*/
+	window.nativeWindow.activate();
+	
+	
 	// air.Introspector.Console.info(notifyLoader);
 
    // notifyLoader.window.document.getElementById('msg').innerHTML = msg;
@@ -174,6 +186,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		
 		// start
 		opacityUp();
+		notifyLoader.stage.nativeWindow.visible = true; // doing this avoids stealing focus
 		
 		function opacityUp() {
 			notifyLoader.alpha += .1;
