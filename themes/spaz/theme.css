@@ -363,7 +363,7 @@ a, a:link, .clickable {
 								}
 								
 					        .panelmenu form input[type='text'] {
-                                width:100px;
+                                width:75px;
 								padding-left:6px;
 								background-color:#333;
                                 border:1px solid #666;

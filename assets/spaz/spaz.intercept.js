@@ -81,6 +81,15 @@ Spaz.Intercept.init = function() {
 				});
 				tt.show();
 			},
+			'input[title]':function(e) {
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'el'	:this,
+					'str'	:$(this).attr('title'),
+					// 'previewurl':href,
+				});
+				tt.show();
+			},
 		})
 	
 		.intercept('mouseout', {
@@ -97,7 +106,7 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.reloadCurrentTab(true);
 				Spaz.restartReloadTimer();
 			},
-			'#refresh-users':function(e) {
+			'#refresh-user':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
 				Spaz.restartReloadTimer();
 			},
@@ -105,10 +114,18 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.reloadCurrentTab(true);
 				Spaz.restartReloadTimer();
 			},
+			'#markread-friends':function(e) {
+				Spaz.UI.markCurrentTimelineAsRead();
+			},
+			'#markread-user':function(e) {
+				Spaz.UI.markCurrentTimelineAsRead();
+			},
+			'#markread-public':function(e) {
+				Spaz.UI.markCurrentTimelineAsRead();
+			},
 			'#toggle-friends':function(e) {
 				Spaz.UI.toggleTimelineFilter();
-			},			
-			
+			},
 			'#prefs-open-folder':function(e) {
 				Spaz.Sys.openAppStorageFolder();
 			},

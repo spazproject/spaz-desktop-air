@@ -232,6 +232,7 @@ TODO:
 						<form>
 							<input type="button" name="refresh-friends" value="Refresh" id="refresh-friends" title="Refresh this timeline" />
 							<input type="button" name="toggle-friends" value="Toggle" id="toggle-friends" title="Toggle between all messages and just replies/dms" />
+							<input type="button" name="markread-friends" value="Mark" id="markread-friends" title="Mark all as read" />
 							<input type="text" name="filter-friends" value="" id="filter-friends" title="filter" /> 
 						</form>
 					</div>
@@ -250,6 +251,7 @@ TODO:
 					<div id="menu-user" class="panelmenu">
 						<form>
 							<input type="button" name="refresh-user" value="Refresh" id="refresh-user" />
+							<input type="button" name="markread-user" value="Mark" id="markread-user" title="Mark all as read" />
 							<input type="text" name="filter-user" value="" id="filter-user" title="filter" /> 
 						</form>
 					</div>
@@ -264,6 +266,7 @@ TODO:
 					<div id="menu-public" class="panelmenu">
 						<form>
 							<input type="button" name="refresh-public" value="Refresh" id="refresh-public" />
+							<input type="button" name="markread-public" value="Mark" id="markread-public" title="Mark all as read" />
 							<input type="text" name="filter-public" value="" id="filter-public" title="filter" /> 
 						</form>
 					</div>
@@ -419,7 +422,7 @@ TODO:
 											</select> <span class="restart-required">*</span>
 										</div>
 										<div class="formrow">
-											<label for="base-theme">Opacity</label>
+											<label for="opacity-percentage">Opacity</label>
 											<input type="text"
 												name="opacity-percentage" id="window-alpha"
 												value="100" maxlength="3" size="3" />%
@@ -436,7 +439,7 @@ TODO:
 									   <div class="formrow">
 										  <input type="checkbox" name="dock-display-unread-badge" value="1"
 											 id="dock-displayunreadbadge" />
-										  <label for="dock-display-unread-badge" class="checkbox">Display unread badge</label>
+										  <label for="dock-displayunreadbadge" class="checkbox">Display unread badge</label>
 									   </div>
 									   <div class="formrow">
 										  <label for="dock-unread-badge-color">Unread badge color</label>
@@ -463,27 +466,27 @@ TODO:
 										<legend>Other options</legend>
 										<div class="formrow">
 											<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
-											<label for="markdown-enabled" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
+											<label for="usemarkdown" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
 										</div>
 										<div class="formrow">
 											<input type="checkbox" name="minimize-systray" value="1"
 												id="window-minimizetosystray" />
-											<label for="minimize-systray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
+											<label for="window-minimizetosystray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
 										</div>
 										<div class="formrow">
 											<input type="checkbox" name="minimize-background" value="1"
 												id="window-minimizeonbackground" />
-											<label for="minimize-background" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
+											<label for="window-minimizeonbackground" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
 										</div>
 										<div class="formrow">
 											<input type="checkbox" name="maximize-foreground" value="1"
 												id="window-restoreonactivate" />
-											<label for="maximize-foreground" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
+											<label for="window-restoreonactivate" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
 										</div>
 										<div class="formrow">
 											<input type="checkbox" name="notification-popups" value="1"
 												id="window-shownotificationpopups" />
-											<label for="notification-popups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
+											<label for="window-shownotificationpopups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
 										</div>
 										<div class="formrow">
 											<input type="checkbox" name="timeline-scrollonupdate" value="1"
@@ -514,7 +517,7 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
 										<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
-										<label for="checkupdate-enabled" class="checkbox">Check on startup</label>
+										<label for="checkupdate" class="checkbox">Check on startup</label>
 										<span class="restart-required">*</span>
 									</div>
 									<div class="formrow">
@@ -548,13 +551,13 @@ TODO:
 									<div class="formrow">
 										<input type="checkbox" name="autoadjust-refresh-interval" value="1"
 											id="network-autoadjustrefreshinterval" />
-										<label for="autoadjust-refresh-interval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
+										<label for="network-autoadjustrefreshinterval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
 									</div>
 
 									<div class="formrow">
 										<input type="checkbox" name="handle-http-auth" value="1"
 											id="network-airhandlehttpauth" />
-										<label for="handle-http-auth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
+										<label for="network-airhandlehttpauth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
 									</div>
 								</div>
 							</div>
@@ -571,7 +574,7 @@ TODO:
 								<div class="CollapsiblePanelContent">
 									<div class="formrow">
 										<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
-										<label class="checkbox" for="debugging-enabled">Enabled</label>
+										<label class="checkbox" for="debug-enabled">Enabled</label>
 										<span class="restart-required">*</span>
 									</div>
 									<div class="formrow">

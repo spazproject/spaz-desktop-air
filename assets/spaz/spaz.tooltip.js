@@ -147,7 +147,7 @@ Spaz_Tooltip.prototype.show = function() {
 						}
 
 						$('#'+previewid).fadeIn(500);
-						thisTT.resetTooltipPosition();
+						thisTT.resetPosition();
 
 					}
 					Spaz.dump($('#tooltip')[0].outerHTML);
