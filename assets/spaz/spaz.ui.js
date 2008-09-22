@@ -1033,7 +1033,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
                 if (Spaz.Prefs.get('timeline-scrollonupdate')) {
                     try {
-                        $('#timeline-tabs-content').scrollTo('.timeline-entry:eq(0)', {
+						air.trace('crolliong thee timeline'+timelineid);
+                        $('#'+timelineid).parent().scrollTo('.timeline-entry:eq(0)', {
                             speed: 800,
                             easing: 'swing'
                         })

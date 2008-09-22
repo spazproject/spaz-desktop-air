@@ -377,6 +377,9 @@ a, a:link, .clickable {
 						right:0px;
 						bottom:0px;
 					}
+					#timelinewrapper-prefs {
+						top:0px;
+					}
 					
 						/*
 							The .timeline divs are all inside .TabbedPanelsContent divs
@@ -391,9 +394,6 @@ a, a:link, .clickable {
 							margin:0px;
 /*							overflow:auto;*/
 /*							position:absolute;*/
-						}
-						#timeline-prefs, #timeline-public {
-							bottom:90px; /* This is here to give a different bottom if the pager functionality ever returns */
 						}
 
 

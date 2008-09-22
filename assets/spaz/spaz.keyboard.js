@@ -291,16 +291,19 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		Spaz.dump("toggle ui-selected and scrollto");
 		jqelement.toggleClass('ui-selected');
 		
-		var viewport_bottom = $('#timeline-tabs-content').innerHeight();		
+		var viewport_bottom = $('#'+section.wrapper).innerHeight();		
 		var selected_bottom = jqelement.position().top + jqelement.height();
 		
 		/*
 			going down
 		*/
+		// air.trace('bottom---')
+		// air.trace(selected_bottom)
+		// air.trace(viewport_bottom)
 		if ( selected_bottom > viewport_bottom ) {
-			var scroll_offset = ($('#timeline-tabs-content').innerHeight()-jqelement.height())*-1;
+			var scroll_offset = ($('#'+section.wrapper).innerHeight()-jqelement.height())*-1;
 			Spaz.dump('scroll offset:'+scroll_offset);
-			$('#timeline-tabs-content').scrollTo(jqelement, {
+			$('#'+section.wrapper).scrollTo(jqelement, {
 				offset:scroll_offset,
 				speed:1
 			});
@@ -309,8 +312,11 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		/*
 			going up
 		*/
-		if ( jqelement.position().top < $('#timeline-tabs-content').position().top ) {
-			$('#timeline-tabs-content').scrollTo(jqelement, {
+		// air.trace('top---')
+		// air.trace(jqelement.position().top)
+		// air.trace($('#'+section.wrapper).position().top)
+		if ( jqelement.position().top < $('#'+section.wrapper).position().top ) {
+			$('#'+section.wrapper).scrollTo(jqelement, {
 				offset:0,
 				speed:1
 			});

@@ -6,6 +6,7 @@ Spaz.Section.init = function() {
     Spaz.Section.friends = {
         panel: 'panel-friends',
         timeline: 'timeline-friends',
+        wrapper: 'timelinewrapper-friends',
         tab: 'tab-friends',
         tabIndex: 0,
         urls: new Array(Spaz.Data.getAPIURL('friends_timeline'),
@@ -156,6 +157,7 @@ Spaz.Section.init = function() {
     Spaz.Section.user = {
         panel: 'panel-user',
         timeline: 'timeline-user',
+		wrapper: 'timelinewrapper-user',
         tab: 'tab-user',
         tabIndex: 1,
         urls: new Array(Spaz.Data.getAPIURL('user_timeline'), Spaz.Data.getAPIURL('dm_sent')),
@@ -197,6 +199,7 @@ Spaz.Section.init = function() {
     Spaz.Section.public = {
         panel: 'panel-public',
         timeline: 'timeline-public',
+		wrapper: 'timelinewrapper-public',
         tab: 'tab-public',
         tabIndex: 2,
         urls: new Array(Spaz.Data.getAPIURL('public_timeline')),
@@ -237,6 +240,7 @@ Spaz.Section.init = function() {
     Spaz.Section.search = {
         panel: 'panel-search',
         timeline: 'timeline-search',
+		wrapper: 'timelinewrapper-search',
         tab: 'tab-search',
         tabIndex: 2,
         urls: new Array('http://summize.com/search.json?q={{query}}'),
@@ -336,6 +340,7 @@ Spaz.Section.init = function() {
     Spaz.Section.friendslist = {
         panel: 'panel-friendslist',
         timeline: 'timeline-friendslist',
+		wrapper: 'timelinewrapper-friendslist',
         tab: 'tab-friendslist',
         tabIndex: 3,
         urls: new Array(Spaz.Data.getAPIURL('friendslist')),
@@ -403,6 +408,7 @@ Spaz.Section.init = function() {
     Spaz.Section.followerslist = {
         panel: 'panel-followerslist',
         timeline: 'timeline-followerslist',
+		wrapper: 'timelinewrapper-followerslist',
         tab: 'tab-followerslist',
         tabIndex: 4,
         urls: new Array(Spaz.Data.getAPIURL('followerslist')),
@@ -464,6 +470,7 @@ Spaz.Section.init = function() {
     Spaz.Section.prefs = {
         panel: 'panel-prefs',
         timeline: 'timeline-prefs',
+		wrapper: '',
         tab: 'tab-prefs',
         tabIndex: 5,
         autoload: false,

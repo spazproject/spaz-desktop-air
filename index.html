@@ -1,14 +1,3 @@
-<!--
-TODO:
-* auto-hide after delay mode
-* auto-show on updates mode
-* always on top mode
-* Soft restart
-* Feature: option to NOT save password
-* auto-completing usernames when typing "@" or "d "
-* Feature: block users
-* snap-to-edge of screen
--->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:spry="http://ns.adobe.com/spry">
 <head>
@@ -252,8 +241,9 @@ TODO:
 							<input type="text" name="filter-user" value="" id="filter-user" title="filter" /> 
 						</form>
 					</div>
-					<div id="timeline-user" class="timeline">
-
+					<div id="timelinewrapper-user" class="timeline-wrapper">
+						<div id="timeline-user" class="timeline">
+						</div>
 					</div>
 				</div>
 
@@ -267,8 +257,9 @@ TODO:
 							<input type="text" name="filter-public" value="" id="filter-public" title="filter" /> 
 						</form>
 					</div>
-					<div id="timeline-public" class="timeline">
-
+					<div id="timelinewrapper-public" class="timeline-wrapper">
+						<div id="timeline-public" class="timeline">
+						</div>
 					</div>
 				</div>
 
@@ -282,7 +273,9 @@ TODO:
 							<input type="button" name="search-help" value="?" id="search-help" title="Summize Search Help" />
 						</form>
 					</div>
-					<div id="timeline-search" class="timeline">
+					<div id="timelinewrapper-search" class="timeline-wrapper">
+						<div id="timeline-search" class="timeline">
+						</div>
 					</div>
 				</div>
 
@@ -294,7 +287,9 @@ TODO:
 							<input type="button" name="refresh-friendslist" value="Refresh" id="refresh-friendslist" />
 						</form>
 					</div>
-					<div id="timeline-friendslist" class="timeline directory">
+					<div id="timelinewrapper-friendslist" class="timeline-wrapper">
+						<div id="timeline-friendslist" class="timeline directory">
+						</div>
 					</div>
 				</div>
 
@@ -307,7 +302,9 @@ TODO:
 							<input type="button" name="refresh-followerslist" value="Refresh" id="refresh-followerslist" />
 						</form>
 					</div>
-					<div id="timeline-followerslist" class="timeline directory">
+					<div id="timelinewrapper-followerslist" class="timeline-wrapper">
+						<div id="timeline-followerslist" class="timeline directory">
+						</div>
 					</div>
 				</div>
 
@@ -316,287 +313,289 @@ TODO:
 
 				<!-- PREFS -->
 				<div class="TabbedPanelsContent" id="panel-prefs">
-					<div class="timeline" id="timeline-prefs">
-						<form id="prefs-form" onsubmit="Spaz.Prefs.setPrefs(); return false;">
-						<div id="prefsCPG" class="CollapsiblePanelGroup">
+					<div id="timelinewrapper-prefs" class="timeline-wrapper">
+						<div class="timeline" id="timeline-prefs">
+							<form id="prefs-form" onsubmit="Spaz.Prefs.setPrefs(); return false;">
+							<div id="prefsCPG" class="CollapsiblePanelGroup">
 
-							<div id="prefs-user-fieldset" class="CollapsiblePanel">
-								<h2 class="CollapsiblePanelTab" tabindex="0">Account Information</h2>
-								<div class="CollapsiblePanelContent">
-									<fieldset>
-										<legend>Authentication</legend>
+								<div id="prefs-user-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Account Information</h2>
+									<div class="CollapsiblePanelContent">
+										<fieldset>
+											<legend>Authentication</legend>
 	
-										<div class="formrow">
-											<label for="username">Username</label>
-											<input type="text" name="username" id="username" value="" />
-										</div>
-										<div class="formrow">
-											<label for="password">Password</label>
-											<input type="password" name="password" id="password" value="" />
-										</div>
-									</fieldset>
+											<div class="formrow">
+												<label for="username">Username</label>
+												<input type="text" name="username" id="username" value="" />
+											</div>
+											<div class="formrow">
+												<label for="password">Password</label>
+												<input type="password" name="password" id="password" value="" />
+											</div>
+										</fieldset>
 									
-									<fieldset>
-										<legend>Service URLs</legend>
+										<fieldset>
+											<legend>Service URLs</legend>
 
-										<div class="formrow">
-											<select id="twitter-base-urls">
-												<option value="">Load settings for…</option>
-												<option value="twitter">Twitter.com</option>
-												<option value="identica">Identi.ca</option>
-											</select>
-										</div>
+											<div class="formrow">
+												<select id="twitter-base-urls">
+													<option value="">Load settings for…</option>
+													<option value="twitter">Twitter.com</option>
+													<option value="identica">Identi.ca</option>
+												</select>
+											</div>
 
-										<div class="formrow">
-											<label for="twitter-api-base-url">Base API URL </label>
-											<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
-										</div>
-										<div class="formrow">
-											<label for="twitter-base-url">Base WWW URL </label>
-											<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
-										</div>
-									</fieldset>
-								</div>
-							</div>
-
-							<div id="prefs-user-fieldset" class="CollapsiblePanel">
-								<h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
-								<div class="CollapsiblePanelContent">
-
-
-									<fieldset>
-										<legend>Ping.FM</legend>
-										<div class="formrow">
-											<label for="services-pingfm-userappkey">Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)</label>
-											<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
-										</div>
-										<!-- <div class="formrow">
-											<label for="base-theme">Update type</label>
-											<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
-												<option value="default">default</option>
-												<option value="microblog">microblog</option>
-												<option value="status">status</option>
-											</select>
-										</div> -->
-										<div class="formrow">
-											<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
-											<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
-										</div>
-										<div class="formrow">
-											<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
-											<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
-										</div>
-									</fieldset>
-
-									<fieldset>
-										<legend>Twitpic</legend>
-										<div class="formrow">
-											<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
-											<label for="services-twitpic-sharepassword" class="checkbox">Don't show warning</label>
-										</div>
-
-									</fieldset>
-									<h3>
-								</div>
-							</div>
-
-							<div id="prefs-style-fieldset" class="CollapsiblePanel">
-								<h2 class="CollapsiblePanelTab" tabindex="0">Interface</h2>
-								<div class="CollapsiblePanelContent">
-									<fieldset>
-										<legend>Theme</legend>
-										<div class="formrow">
-											<label for="user-stylesheet">User CSS</label>
-											<!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
-											<input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
-											<input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
-											<!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
-										</div>
-										<div class="formrow">
-											<label for="base-theme">Theme</label>
-											<select id="theme-basetheme" name="base-theme" onChange="">
-												<!-- stuff goes here -->
-											</select> <span class="restart-required">*</span>
-										</div>
-										<div class="formrow">
-											<label for="opacity-percentage">Opacity</label>
-											<input type="text"
-												name="opacity-percentage" id="window-alpha"
-												value="100" maxlength="3" size="3" />%
-										</div>
-									</fieldset>
-
-									<fieldset>
-										<legend>Dock</legend>
-									   <!-- <div class="formrow">
-										  <label for="dock-refresh-interval">Refresh interval</label>
-										  <input type="text" name="dock-refresh-interval" id="dock-refreshinterval"
-											 value="500" maxlength="4" size="4" /> milliseconds
-									   </div> -->
-									   <div class="formrow">
-										  <input type="checkbox" name="dock-display-unread-badge" value="1"
-											 id="dock-displayunreadbadge" />
-										  <label for="dock-displayunreadbadge" class="checkbox">Display unread badge</label>
-									   </div>
-									   <div class="formrow">
-										  <label for="dock-unread-badge-color">Unread badge color</label>
-										  <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
-											 <option value="red">Red</option>
-											 <option value="blue">Blue</option>
-											 <option value="yellow">Yellow</option>
-											 <option value="green">Green</option>
-											 <option value="cyan">Cyan</option>
-											 <option value="magenta">Magenta</option>
-										  </select>
-									   </div>
-									   <div class="formrow">
-										  <label for="dock-unread-badge-shape">Unread badge shape</label>
-										  <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
-											 <option value="classic">Classic</option>
-											 <option value="star">Star</option>
-										  </select>
-									   </div>
-									</fieldset>
-
-
-									<fieldset>
-										<legend>Other options</legend>
-										<div class="formrow">
-											<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
-											<label for="usemarkdown" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
-										</div>
-										<div class="formrow">
-											<input type="checkbox" name="minimize-systray" value="1"
-												id="window-minimizetosystray" />
-											<label for="window-minimizetosystray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
-										</div>
-										<div class="formrow">
-											<input type="checkbox" name="minimize-background" value="1"
-												id="window-minimizeonbackground" />
-											<label for="window-minimizeonbackground" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
-										</div>
-										<div class="formrow">
-											<input type="checkbox" name="maximize-foreground" value="1"
-												id="window-restoreonactivate" />
-											<label for="window-restoreonactivate" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
-										</div>
-										<div class="formrow">
-											<input type="checkbox" name="notification-popups" value="1"
-												id="window-shownotificationpopups" />
-											<label for="window-shownotificationpopups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
-										</div>
-										<div class="formrow">
-											<input type="checkbox" name="timeline-scrollonupdate" value="1"
-												id="timeline-scrollonupdate" />
-											<label for="timeline-scrollonupdate" class="checkbox">Scroll to top on refresh</label> <!-- <span class="restart-required">*</span> -->
-										</div>
-									</fieldset>
-
-								</div>
-							</div>
-
-							<div id="prefs-sound-fieldset" class="CollapsiblePanel">
-								<h2 class="CollapsiblePanelTab" tabindex="0">Sound</h2>
-								<div class="CollapsiblePanelContent">
-									<div class="formrow">
-										<input type="checkbox" name="sound-enabled" value="1" id="sound-enabled" />
-										<label for="sound-enabled" class="checkbox">Play sounds</label>
-									</div>
-									<div class="formrow">
-										<input type="checkbox" name="wilhelm-enabled" value="1" id="wilhelm-enabled" />
-										<label for="wilhelm-enabled" class="checkbox">Wilhelm can scream</label>
+											<div class="formrow">
+												<label for="twitter-api-base-url">Base API URL </label>
+												<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
+											</div>
+											<div class="formrow">
+												<label for="twitter-base-url">Base WWW URL </label>
+												<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
+											</div>
+										</fieldset>
 									</div>
 								</div>
-							</div>
 
-							<div id="prefs-upgrades-fieldset" class="CollapsiblePanel">
-								<h2 class="CollapsiblePanelTab" tabindex="0">Upgrades</h2>
-								<div class="CollapsiblePanelContent">
-									<div class="formrow">
-										<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
-										<label for="checkupdate" class="checkbox">Check on startup</label>
-										<span class="restart-required">*</span>
+								<div id="prefs-user-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
+									<div class="CollapsiblePanelContent">
+
+
+										<fieldset>
+											<legend>Ping.FM</legend>
+											<div class="formrow">
+												<label for="services-pingfm-userappkey">Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)</label>
+												<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
+											</div>
+											<!-- <div class="formrow">
+												<label for="base-theme">Update type</label>
+												<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
+													<option value="default">default</option>
+													<option value="microblog">microblog</option>
+													<option value="status">status</option>
+												</select>
+											</div> -->
+											<div class="formrow">
+												<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
+												<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
+												<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
+											</div>
+										</fieldset>
+
+										<fieldset>
+											<legend>Twitpic</legend>
+											<div class="formrow">
+												<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
+												<label for="services-twitpic-sharepassword" class="checkbox">Don't show warning</label>
+											</div>
+
+										</fieldset>
+										<h3>
 									</div>
-									<div class="formrow">
-										<input type="checkbox" name="checkupdate-testversions-enabled" value="1" id="checkupdate-testversions" />
-										<label for="checkupdate-testversions" class="checkbox">Check for test versions</label>
-									</div>
-									<div class="formrow">
-										<input type="button" name="checkupdate-button" value="Check Now &bull;"
-											id="prefs-checkupdate-button" onclick="Spaz.Update.go()" />
+								</div>
+
+								<div id="prefs-style-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Interface</h2>
+									<div class="CollapsiblePanelContent">
+										<fieldset>
+											<legend>Theme</legend>
+											<div class="formrow">
+												<label for="user-stylesheet">User CSS</label>
+												<!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
+												<input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
+												<input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
+												<!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
+											</div>
+											<div class="formrow">
+												<label for="base-theme">Theme</label>
+												<select id="theme-basetheme" name="base-theme" onChange="">
+													<!-- stuff goes here -->
+												</select> <span class="restart-required">*</span>
+											</div>
+											<div class="formrow">
+												<label for="opacity-percentage">Opacity</label>
+												<input type="text"
+													name="opacity-percentage" id="window-alpha"
+													value="100" maxlength="3" size="3" />%
+											</div>
+										</fieldset>
+
+										<fieldset>
+											<legend>Dock</legend>
+										   <!-- <div class="formrow">
+											  <label for="dock-refresh-interval">Refresh interval</label>
+											  <input type="text" name="dock-refresh-interval" id="dock-refreshinterval"
+												 value="500" maxlength="4" size="4" /> milliseconds
+										   </div> -->
+										   <div class="formrow">
+											  <input type="checkbox" name="dock-display-unread-badge" value="1"
+												 id="dock-displayunreadbadge" />
+											  <label for="dock-displayunreadbadge" class="checkbox">Display unread badge</label>
+										   </div>
+										   <div class="formrow">
+											  <label for="dock-unread-badge-color">Unread badge color</label>
+											  <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
+												 <option value="red">Red</option>
+												 <option value="blue">Blue</option>
+												 <option value="yellow">Yellow</option>
+												 <option value="green">Green</option>
+												 <option value="cyan">Cyan</option>
+												 <option value="magenta">Magenta</option>
+											  </select>
+										   </div>
+										   <div class="formrow">
+											  <label for="dock-unread-badge-shape">Unread badge shape</label>
+											  <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
+												 <option value="classic">Classic</option>
+												 <option value="star">Star</option>
+											  </select>
+										   </div>
+										</fieldset>
+
+
+										<fieldset>
+											<legend>Other options</legend>
+											<div class="formrow">
+												<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
+												<label for="usemarkdown" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="minimize-systray" value="1"
+													id="window-minimizetosystray" />
+												<label for="window-minimizetosystray" class="checkbox">Min. to Systray</label> <span class="restart-required">*</span>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="minimize-background" value="1"
+													id="window-minimizeonbackground" />
+												<label for="window-minimizeonbackground" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="maximize-foreground" value="1"
+													id="window-restoreonactivate" />
+												<label for="window-restoreonactivate" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="notification-popups" value="1"
+													id="window-shownotificationpopups" />
+												<label for="window-shownotificationpopups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="timeline-scrollonupdate" value="1"
+													id="timeline-scrollonupdate" />
+												<label for="timeline-scrollonupdate" class="checkbox">Scroll to top on refresh</label> <!-- <span class="restart-required">*</span> -->
+											</div>
+										</fieldset>
 
 									</div>
 								</div>
+
+								<div id="prefs-sound-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Sound</h2>
+									<div class="CollapsiblePanelContent">
+										<div class="formrow">
+											<input type="checkbox" name="sound-enabled" value="1" id="sound-enabled" />
+											<label for="sound-enabled" class="checkbox">Play sounds</label>
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="wilhelm-enabled" value="1" id="wilhelm-enabled" />
+											<label for="wilhelm-enabled" class="checkbox">Wilhelm can scream</label>
+										</div>
+									</div>
+								</div>
+
+								<div id="prefs-upgrades-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Upgrades</h2>
+									<div class="CollapsiblePanelContent">
+										<div class="formrow">
+											<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
+											<label for="checkupdate" class="checkbox">Check on startup</label>
+											<span class="restart-required">*</span>
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="checkupdate-testversions-enabled" value="1" id="checkupdate-testversions" />
+											<label for="checkupdate-testversions" class="checkbox">Check for test versions</label>
+										</div>
+										<div class="formrow">
+											<input type="button" name="checkupdate-button" value="Check Now &bull;"
+												id="prefs-checkupdate-button" onclick="Spaz.Update.go()" />
+
+										</div>
+									</div>
+								</div>
+
+								<div id="prefs-network-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Networking</h2>
+									<div class="CollapsiblePanelContent">
+										<div class="formrow">
+											<label for="refresh-interval">Refresh interval</label>
+											<input type="text" name="refresh-interval" id="network-refreshinterval"
+												value="5" maxlength="2" size="2" /> minutes
+												<span id="refreshRateInfo">
+													– <span id="refreshRateInfoValue">##</span> API reqs/hour
+												</span>
+										</div>
+										<div class="formrow">
+											<input type="button" name="autosetrefresh-button" value="Get rate from Twitter &bull;"
+												id="prefs-autosetrefresh-button" />
+
+										</div>
+										<div class="formrow">
+											<input type="checkbox" name="autoadjust-refresh-interval" value="1"
+												id="network-autoadjustrefreshinterval" />
+											<label for="network-autoadjustrefreshinterval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
+										</div>
+
+										<div class="formrow">
+											<input type="checkbox" name="handle-http-auth" value="1"
+												id="network-airhandlehttpauth" />
+											<label for="network-airhandlehttpauth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
+										</div>
+									</div>
+								</div>
+
+						 <!-- <div id="prefs-dock-fieldset" class="CollapsiblePanel">
+							<h2 class="CollapsiblePanelTab" tabindex="0">Dock</h2>
+							<div class="CollapsiblePanelContent">
+
+							</div>
+						 </div> -->
+
+								<div id="prefs-debugging-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
+									<div class="CollapsiblePanelContent">
+										<div class="formrow">
+											<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
+											<label class="checkbox" for="debug-enabled">Enabled</label>
+											<span class="restart-required">*</span>
+										</div>
+										<div class="formrow">
+											<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
+										</div>
+									</div>
+								</div>
+
 							</div>
 
-							<div id="prefs-network-fieldset" class="CollapsiblePanel">
-								<h2 class="CollapsiblePanelTab" tabindex="0">Networking</h2>
-								<div class="CollapsiblePanelContent">
-									<div class="formrow">
-										<label for="refresh-interval">Refresh interval</label>
-										<input type="text" name="refresh-interval" id="network-refreshinterval"
-											value="5" maxlength="2" size="2" /> minutes
-											<span id="refreshRateInfo">
-												– <span id="refreshRateInfoValue">##</span> API reqs/hour
-											</span>
-									</div>
-									<div class="formrow">
-										<input type="button" name="autosetrefresh-button" value="Get rate from Twitter &bull;"
-											id="prefs-autosetrefresh-button" />
+							<div class="formrow" style="text-align:right; margin-top:15px">
+								<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
 
-									</div>
-									<div class="formrow">
-										<input type="checkbox" name="autoadjust-refresh-interval" value="1"
-											id="network-autoadjustrefreshinterval" />
-										<label for="network-autoadjustrefreshinterval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
-									</div>
 
-									<div class="formrow">
-										<input type="checkbox" name="handle-http-auth" value="1"
-											id="network-airhandlehttpauth" />
-										<label for="network-airhandlehttpauth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
-									</div>
+
+								<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
+									onclick="Spaz.Prefs.setPrefs()" />
+
+								<div style="margin-top:1em;">
+									<a id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
 								</div>
 							</div>
 
-					 <!-- <div id="prefs-dock-fieldset" class="CollapsiblePanel">
-						<h2 class="CollapsiblePanelTab" tabindex="0">Dock</h2>
-						<div class="CollapsiblePanelContent">
+							</form>
 
 						</div>
-					 </div> -->
-
-							<div id="prefs-debugging-fieldset" class="CollapsiblePanel">
-								<h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
-								<div class="CollapsiblePanelContent">
-									<div class="formrow">
-										<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
-										<label class="checkbox" for="debug-enabled">Enabled</label>
-										<span class="restart-required">*</span>
-									</div>
-									<div class="formrow">
-										<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
-									</div>
-								</div>
-							</div>
-
-						</div>
-
-						<div class="formrow" style="text-align:right; margin-top:15px">
-							<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
-
-
-
-							<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
-								onclick="Spaz.Prefs.setPrefs()" />
-
-							<div style="margin-top:1em;">
-								<a id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
-							</div>
-						</div>
-
-						</form>
-
 					</div>
 				</div>
 
