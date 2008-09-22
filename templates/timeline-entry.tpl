@@ -1,4 +1,4 @@
-<div class="timeline-entry needs-cleanup new ${rowclass}" id="${timelineid}-${id}">
+<div class="timeline-entry needs-cleanup new ${rowclass} {if favorited}favorited{/if}" id="${timelineid}-${id}">
 	<div class="entry-timestamp" style="display:none">${timestamp}</div>
 	<div class="entry-id" style="display:none">[${id}]</div>
 	<div class="entry-time" style="display:none">${created_at}</div>

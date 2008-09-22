@@ -284,9 +284,9 @@ a, a:link, .clickable {
 				surround the content.
 			*/
 			#timeline-tabs-content, .TabbedPanelsContentGroup {
+/*				overflow:auto;*/
 				clear: both;
 				position:absolute;
-				overflow:auto;
 				border-top:   6px solid #333300;
 				border-bottom:4px solid #333300;
 				top:   67px;
@@ -318,102 +318,120 @@ a, a:link, .clickable {
 				.TabbedPanelsContentVisible {
 
 				}
-										
+
 					/*
-						The .timeline divs are all inside .TabbedPanelsContent divs
+						The panelmenu appears at the top of each timeline
 					*/
-					div.timeline {
-						width:100%;
-						height:100%;
-/*						overflow:auto;*/
-						background-image:url('images/dropshadow.png');
-						background-repeat:repeat-x;
-						background-position: 0px -4px;
-						padding:0px;
-						margin:0px;
+					.panelmenu {
+	                    background-color:#111100;
+	                    padding:2px;
+						height:20px;
 					}
-					#timeline-prefs, #timeline-public {
-						bottom:90px; /* This is here to give a different bottom if the pager functionality ever returns */
-					}
-						.panelmenu {
-                            background-color:#111100;
-                            padding:2px
+						.panelmenu form {
+	                        margin-left: auto;
+	                        margin-right:auto;
+	                        text-align:left;
+							margin:0px;
+							padding:0px;
+	                    }
+						.panelmenu form input {
+							font-size:10px;
+							margin:2px 0 2px;
 						}
-							.panelmenu form {
-                                margin-left: auto;
-                                margin-right:auto;
-                                text-align:left;
-								margin:0px;
-								padding:0px;
-                            }
-							.panelmenu form input {
-								font-size:10px;
-								margin:2px 0 2px;
-							}
-								.panelmenu form input[type='button'] {
-									padding:1px 4px;
-									border:1px solid transparent;
-									background-color:#333;
-									color:#DDD;
-								}
-								.panelmenu form input[type='button']:hover {
-									border:1px solid #888;
-									background-color:#444;
-									color:#FFF;
-								}
-								
-					        .panelmenu form input[type='text'] {
-                                width:75px;
-								padding-left:6px;
+							.panelmenu form input[type='button'] {
+								padding:1px 4px;
+								border:1px solid transparent;
 								background-color:#333;
-                                border:1px solid #666;
-								color:#CCC;
-								-khtml-border-radius:5px;
-                            }
-	                    		.panelmenu form input[type='text']:focus {
-	                                width:100px;
-	                                border:1px solid #888;
-									background-color:#444;
-									color:#FFF;
-	                            }
-					        
+								color:#DDD;
+							}
+							.panelmenu form input[type='button']:hover {
+								border:1px solid #888;
+								background-color:#444;
+								color:#FFF;
+							}
+						
+				        .panelmenu form input[type='text'] {
+	                        width:75px;
+							padding-left:6px;
+							background-color:#333;
+	                        border:1px solid #666;
+							color:#CCC;
+							-khtml-border-radius:5px;
+	                    }
+	                		.panelmenu form input[type='text']:focus {
+	                            border:1px solid #888;
+								background-color:#444;
+								color:#FFF;
+	                        }
+			        
 
-
+					/*
+						This wraps to provide scrolling for div.timeline
+					*/
+					.timeline-wrapper {
+/*						background:blue;*/
+						overflow:auto;
+						position:absolute;
+						top:24px;
+						left:0px;
+						right:0px;
+						bottom:0px;
+					}
+					
 						/*
-							This is effectively dead since the Twitter API doesn't support paging anymore.
-							Still, I'm keeping it in in case we ever re-enable some sort of paging.
+							The .timeline divs are all inside .TabbedPanelsContent divs
 						*/
-						div.timeline-pager {
-							background-color: #555555;
-							color:#ffffcc;
-							position:absolute;
-							bottom: 90px;
-							left:   10px;
-							right:  10px;
-							height: 11px;
-							padding:2px;
-							font-size: 8px;
-							border-top:   1px solid #555555;
-							border-bottom:1px solid #555555;
+						div.timeline {
+/*							overflow:auto;*/
+/*							background:green;*/
+							background-image:url('images/dropshadow.png');
+							background-repeat:repeat-x;
+							background-position: 0px -4px;
+							padding:0px;
+							margin:0px;
+/*							overflow:auto;*/
+/*							position:absolute;*/
 						}
-						div.timeline-pager a {
-							color:#ffffcc;
+						#timeline-prefs, #timeline-public {
+							bottom:90px; /* This is here to give a different bottom if the pager functionality ever returns */
 						}
-						div.timeline-pager-left {
-							position:absolute;
-							left: 4px;
-							top: -4px;
-							font-size:16px;
-						}
-						div.timeline-pager-info {
-							text-align:center;
-						}
-						div.timeline-pager-right {
-							position:absolute;
-							right: 4px;
-							top:  -4px;
-							font-size:16px;
-						}
+
+
+							/*
+								This is effectively dead since the Twitter API doesn't support paging anymore.
+								Still, I'm keeping it in in case we ever re-enable some sort of paging.
+							*/
+							div.timeline-pager {
+								background-color: #555555;
+								color:#ffffcc;
+								position:absolute;
+								bottom: 90px;
+								left:   10px;
+								right:  10px;
+								height: 11px;
+								padding:2px;
+								font-size: 8px;
+								border-top:   1px solid #555555;
+								border-bottom:1px solid #555555;
+							}
+							div.timeline-pager a {
+								color:#ffffcc;
+							}
+							div.timeline-pager-left {
+								position:absolute;
+								left: 4px;
+								top: -4px;
+								font-size:16px;
+							}
+							div.timeline-pager-info {
+								text-align:center;
+							}
+							div.timeline-pager-right {
+								position:absolute;
+								right: 4px;
+								top:  -4px;
+								font-size:16px;
+							}
 
 		/*
 			The entryform contains the #entrybox textarea input for posts and the #updateButton
@@ -737,6 +755,7 @@ div.timeline-entry {
 		    }
 
     		    .status-action-fav { background:url('images/status-fav-off.png'); }
+		 			div.timeline-entry.favorited .status-action-fav { background:url('images/status-fav-on.png'); }
     		    .status-action-dm { background:url('images/status-dm.png'); }
     		    .status-action-reply { background:url('images/status-reply.png'); }
 

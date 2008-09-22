@@ -724,6 +724,19 @@ Spaz.UI.getStatusIdFromElement = function(el) {
 };
 
 
+/*
+	this returns the first matching element that contains the given id
+*/
+Spaz.UI.getElementFromStatusId = function(id) {
+	var element = $('.entry-id:contains('+id+')').parent().get()[0];
+	if (element) {
+		air.trace(element.id);
+		return element
+	}
+	return false;
+};
+
+
 
 Spaz.UI.markEntryAsRead = function(el) {
 
