@@ -45,7 +45,7 @@ Spaz.UI.playSound = function(url, callback) {
 
     Spaz.dump("playing " + url);
     if (callback) {
-        sc.addEventListener(air.Event.SOUND_COMPLETE, callback, false, 0, true);
+        sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
     }
 
 
@@ -1114,7 +1114,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                     var url = matchArray[0];
 
                     // Now we make a request to obtain the response URL
-                    stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
+                    stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus, false, 0, true);
                     stream.addEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
 
                     // Perform load

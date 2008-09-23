@@ -114,7 +114,7 @@ Spaz.Notify.loadIcon = function(url) {
 	Spaz.dump('iconURL:'+url);
 	var iconLoader = new air.Loader();
 	iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
-	                                        Spaz.Notify.iconLoadComplete, false, 0, true);
+	                                        Spaz.Notify.iconLoadComplete);
 	iconLoader.load(new air.URLRequest(url));
 }
 Spaz.Notify.iconLoadComplete = function(event) {

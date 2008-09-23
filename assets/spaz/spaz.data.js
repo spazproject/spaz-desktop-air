@@ -893,9 +893,9 @@ Spaz.Data.uploadFile = function(opts) {
 
     PrepareMultipartRequest(request, buf, 'media', file.nativePath, opts.extra);
 
-    loader.addEventListener(air.Event.COMPLETE, opts.complete, false, 0, true);
+    loader.addEventListener(air.Event.COMPLETE, opts.complete);
     // loader.addEventListener(air.ProgressEvent.PROGRESS, progressHandler);
-    loader.addEventListener(air.Event.OPEN, opts.open, false, 0, true);
+    loader.addEventListener(air.Event.OPEN, opts.open);
     loader.load(request);
 
 

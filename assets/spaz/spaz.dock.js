@@ -28,7 +28,7 @@ Spaz.Dock.init = function() {
    {
       air.trace("Loaded image " + imageURL);
       Spaz.Dock.bitmapData = event.target.content.bitmapData;
-   }, false, 0, true);
+   });
    loader.load(new air.URLRequest(imageURL));
 
    // Save for later use

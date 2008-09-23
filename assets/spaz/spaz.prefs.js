@@ -206,7 +206,7 @@ Spaz.Prefs.changeMethods = {
                    function() {
                        //window.nativeWindow.minimize();
                        Spaz.Windows.windowMinimize();
-                   }, false, 0, true)
+                   })
             }
         },
         check: function() {
@@ -223,7 +223,7 @@ Spaz.Prefs.changeMethods = {
                 function() {
                     //window.nativeWindow.restore();
                     Spaz.Windows.windowRestore();
-                }, false, 0, true)
+                })
             }
         },
         check: function() {
