@@ -558,11 +558,16 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
     if ($('#' + timelineid + '-' + entry.id).length < 1) {
         entry.isDM = false;
         entry.isSent = false;
+		if (!entry.favorited) { // we do this to make a favorited property for DMs
+			entry.favorited = false;
+		}
 
         if (entry.sender) {
             entry.user = entry.sender
             entry.isDM = true;
         }
+
+	
 
         if (timelineid == 'timeline-user') {
             entry.isSent = true;
@@ -639,6 +644,8 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
         if (entry.isDM) {
             jqentry.addClass('dm');
+			air.trace('is DM!!');
+			air.trace(entryHTML);
         }
 
         // We only do the fetch if the mark_as_read is not specified
