@@ -375,7 +375,7 @@ Spaz.Section.init = function() {
 
 
             var parsed = Spaz.Tpl.parse('app:/templates/friendslist-row.tpl', item);
-            air.trace("\n\nappend this\n" + parsed);
+            // air.trace("\n\nappend this\n" + parsed);
             $('#' + this.timeline).append(parsed);
         },
         cleanup: function() {

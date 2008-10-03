@@ -644,8 +644,6 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
         if (entry.isDM) {
             jqentry.addClass('dm');
-			air.trace('is DM!!');
-			air.trace(entryHTML);
         }
 
         // We only do the fetch if the mark_as_read is not specified
