@@ -756,6 +756,7 @@ div.timeline-entry {
 
     		    .status-action-fav { background:url('images/status-fav-off.png'); }
 		 			div.timeline-entry.favorited .status-action-fav { background:url('images/status-fav-on.png'); }
+    		    .status-action-retweet { background:url('images/status-retweet.png'); }
     		    .status-action-dm { background:url('images/status-dm.png'); }
     		    .status-action-reply { background:url('images/status-reply.png'); }
 

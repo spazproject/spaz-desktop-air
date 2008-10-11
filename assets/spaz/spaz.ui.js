@@ -268,6 +268,28 @@ Spaz.UI.prepMessage = function() {
     eb[0].setSelectionRange(0, 0);
 };
 
+Spaz.UI.prepRetweet = function(entryid) {
+	var timelineid = Spaz.UI.selectedTab.id.replace(/tab-/, 'timeline-');
+	// air.trace(timelineid);
+	// air.trace('#'+timelineid+'-'+entryid);
+	var entry = $('#'+timelineid+'-'+entryid);
+	// air.trace(entry.html());
+	var text = entry.children('.entry-text').text();
+	var screenname = entry.children('.entry-user-screenname').text();
+	
+	var rtstr = 'RT @' + screenname + ' "'+text+'"';
+	
+	if (rtstr.length > 140) {
+		rtstr = rtstr.substr(0,138)+'…"';
+	}
+	
+    var eb = $('#entrybox');
+	eb.focus();
+	eb.val(rtstr);
+	eb[0].setSelectionRange(eb.val().length, eb.val().length)
+	
+};
+
 Spaz.UI.prepDirectMessage = function(username) {
     var eb = $('#entrybox');
     eb.focus();
@@ -588,6 +610,9 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
         /*
             Clean the entry.text
         */
+		// save a raw version
+		entry.rawtext = entry.text;
+
         // fix extra ampersand encoding
         entry.text = entry.text.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
 

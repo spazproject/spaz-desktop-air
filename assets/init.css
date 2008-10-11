@@ -95,17 +95,21 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	position:absolute;
 /*	overflow:none;*/
 /*	z-index: 1000;*/
+	bottom:150px;
+	left:15px;
+	max-height:200px;
+	max-width:200px;
 
 }
 
-#suggestions li {
+#suggestions .username-match {
     padding: 5px;
     cursor: pointer;
 	margin-right:5px;
 	font-size:10px;
 }
 
-#suggestions li:first-child {
+#suggestions .username-match:first-child {
 	font-weight: bold;
 	text-decoration: underline;
 	color:white;

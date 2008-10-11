@@ -218,13 +218,16 @@ Spaz.initialize = function() {
         $('#tab-friends').trigger('click');
     }
 
-    // Spaz.UI.setSelectedTab([0]);
-    //
-    // service monitor
-    // Spaz.Sys.initNetworkConnectivityCheck();
-    // mem monitor/gc
-    // Spaz.Sys.initMemcheck();
 
+	/*
+		set-up usernameCompleter
+	*/
+	Spaz.uc = new usernameCompleter({
+		'usernames':Spaz.Cache.getScreenNamesAsTags(),
+		'displayDiv':'#suggestions',
+		'textarea':'#entrybox',
+		'maxMatches':50
+	})
 
     Spaz.dump('ended document.ready()');
 

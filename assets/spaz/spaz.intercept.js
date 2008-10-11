@@ -221,6 +221,9 @@ Spaz.Intercept.init = function() {
 			'.status-action-fav':function(e) {
 				Spaz.Data.makeFavorite($(this).attr('entry-id'));
 			},
+			'.status-action-retweet':function(e) {
+				Spaz.UI.prepRetweet($(this).attr('entry-id'));
+			},
 			'.status-action-dm':function(e) {
 				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
 			},

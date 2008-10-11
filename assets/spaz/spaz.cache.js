@@ -37,7 +37,7 @@ Spaz.Cache.buildScreenNameCache = function() {
 Spaz.Cache.addScreenName = function(name) {
 	if (Spaz.Cache.screenNames.indexOf(name) == -1) {
 		Spaz.Cache.screenNames.push(name)
-		Spaz.dump('Added "'+name+'". Number of screen names is '+Spaz.Cache.getScreenNamesCount());
+		Spaz.dump('Added "'+name.toLowerCase()+'". Number of screen names is '+Spaz.Cache.getScreenNamesCount());
 	}
 };
 
@@ -82,10 +82,6 @@ Spaz.Cache.getScreenNamesCount = function() {
 Spaz.Cache.getScreenNamesAsTags = function() {
 	var tagnames = [];
 	var names = Spaz.Cache.getScreenNames();
-	for (key in names) {
-		// tagnames.push('@'+names[key]);
-		names[key] = '@'+names[key];
-	}
 	return names;
 };
 
