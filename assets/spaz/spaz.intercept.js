@@ -302,10 +302,26 @@ Spaz.Intercept.init = function() {
 	
 	
 	/*
+		Set-up invoke event for command-line processing
+	*/
+	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, invokeHandler);
+	
+	function invokeHandler (e) {
+		air.trace('Invoke args: '+e.arguments);
+		
+		
+		// spazjson:{
+		//  command:
+		//  msgtype:{std, reply, dm}
+		//  to:{<username>}
+		//  msg:{<message string>}
+		// }
+	}
+	
+	
+	/*
 		Set-up drag and drop events
 	*/
-
-
 	var target = document.getElementById('container');
 	target.addEventListener("dragenter", dragEnterOverHandler);
 	target.addEventListener("dragover", dragEnterOverHandler);

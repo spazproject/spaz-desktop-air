@@ -277,10 +277,10 @@ Spaz.UI.prepRetweet = function(entryid) {
 	var text = entry.children('.entry-text').text();
 	var screenname = entry.children('.entry-user-screenname').text();
 	
-	var rtstr = 'RT @' + screenname + ' "'+text+'"';
+	var rtstr = 'RT @' + screenname + ': '+text+'';
 	
 	if (rtstr.length > 140) {
-		rtstr = rtstr.substr(0,138)+'…"';
+		rtstr = rtstr.substr(0,139)+'…"';
 	}
 	
     var eb = $('#entrybox');
