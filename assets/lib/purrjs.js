@@ -190,7 +190,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		
 	}
 	
-	function fadeOut() {
+	function fadeOut(event) {
 		clearTimeout(fadeOutTimeout);
 		
 		notifyLoader.alpha = 1;

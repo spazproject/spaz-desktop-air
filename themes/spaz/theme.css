@@ -284,7 +284,6 @@ a, a:link, .clickable {
 				surround the content.
 			*/
 			#timeline-tabs-content, .TabbedPanelsContentGroup {
-/*				overflow:auto;*/
 				clear: both;
 				position:absolute;
 				border-top:   6px solid #333300;
@@ -369,7 +368,6 @@ a, a:link, .clickable {
 						This wraps to provide scrolling for div.timeline
 					*/
 					.timeline-wrapper {
-/*						background:blue;*/
 						overflow:auto;
 						position:absolute;
 						top:24px;

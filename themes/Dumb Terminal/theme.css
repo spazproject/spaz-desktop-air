@@ -15,8 +15,8 @@ body {
 /*	background-color:#000000;*/
 }
 a, a:link, .clickable {
-	color:#00CC00 !important;
-	border-bottom:1px solid #00CC00 !important;
+	color:#00CC00;
+	border-bottom:1px solid #00CC00;
 	text-decoration:none;
 	cursor:pointer;
 }
@@ -149,27 +149,102 @@ a.reload-button {
 	top:35px;
 }
 
-div.timeline {
-	overflow:auto;
-	/*background-color:#FFFFFF;*/
-	position:absolute;
-	top: 47px;
-	left:  5px;
-	right: 5px;
-	bottom:43px;
-/*	background-image:url('images/dropshadow.png');*/
-	background-repeat:repeat-x;
-	background-position: 0px -4px;
-	border-top:1px dotted #00CC00;
-	background-color:#003000;
+/*
+The panelmenu appears at the top of each timeline
+*/
+.panelmenu {
+background-color:#002200;
+padding:2px;
+height:20px;
 }
+.panelmenu form {
+margin-left: auto;
+margin-right:auto;
+text-align:left;
+margin:0px;
+padding:0px;
+}
+.panelmenu form input {
+font-size:10px;
+margin:2px 0 2px;
+}
+.panelmenu form input[type='button'] {
+padding:1px 4px;
+border:1px solid transparent;
+background-color:#040;
+color:#0E0;
+}
+.panelmenu form input[type='button']:hover {
+border:1px solid #080;
+background-color:#040;
+color:#0F0;
+}
+
+.panelmenu form input[type='text'] {
+width:75px;
+padding-left:6px;
+background-color:#030;
+border:1px solid #050;
+color:#0C0;
+-khtml-border-radius:5px;
+}
+.panelmenu form input[type='text']:focus {
+ border:1px solid #080;
+background-color:#040;
+color:#0F0;
+}
+
+
+/*
+This wraps to provide scrolling for div.timeline
+*/
+.timeline-wrapper {
+overflow:auto;
+position:absolute;
+top:24px;
+left:0px;
+right:0px;
+bottom:0px;
+}
+#timelinewrapper-prefs {
+top:0px;
+}
+
+
+/*
+This wraps to provide scrolling for div.timeline
+*/
+.timeline-wrapper {
+/*background:blue;*/
+overflow:auto;
+position:absolute;
+top:24px;
+left:0px;
+right:0px;
+bottom:0px;
+}
+#timelinewrapper-prefs {
+top:0px;
+}
+
+/*
+The .timeline divs are all inside .TabbedPanelsContent divs
+*/
+div.timeline {
+top:  1px;
+left:  0px;
+right: 0px;
+bottom:0px;
+border:none;
+}
+
 #prefs-timeline, #public-timeline {
 	bottom:43px;
 }
 
 
 #timeline-search {
-	top:75px;
+	top:1px;
 }
     #search-menu {
 		border-top:1px dotted #00CC00;
@@ -191,39 +266,41 @@ div.timeline {
         }
 
 
-
-div.timeline-pager {
-/*	background-color:#555555;
-	color:#ffffcc;
-*/
-	background-color:#001000;
-	position:absolute;
-	bottom: 43px;
-	left:    5px;
-	right:   5px;
-	height: 13px;
-	padding: 1px;
-	font-size: 10px;
-}
-div.timeline-pager a {
-/*	color:#ffffcc;*/
-	border:none !important;
-}
-div.timeline-pager-left {
-	position:absolute;
-	left: 6px;
-	top: -3px;
-	font-size:14px;
-}
-div.timeline-pager-info {
-	text-align:center;
-}
-div.timeline-pager-right {
-	position:absolute;
-	right: 6px;
-	top:  -3px;
-	font-size:14px;
-}
+		/*
+			This is effectively dead since the Twitter API doesn't support paging anymore.
+			Still, I'm keeping it in in case we ever re-enable some sort of paging.
+		*/
+		div.timeline-pager {
+			background-color: #555555;
+			color:#ffffcc;
+			position:absolute;
+			bottom: 90px;
+			left:   10px;
+			right:  10px;
+			height: 11px;
+			padding:2px;
+			font-size: 8px;
+			border-top:   1px solid #555555;
+			border-bottom:1px solid #555555;
+		}
+		div.timeline-pager a {
+			color:#ffffcc;
+		}
+		div.timeline-pager-left {
+			position:absolute;
+			left: 4px;
+			top: -4px;
+			font-size:16px;
+		}
+		div.timeline-pager-info {
+			text-align:center;
+		}
+		div.timeline-pager-right {
+			position:absolute;
+			right: 4px;
+			top:  -4px;
+			font-size:16px;
+		}
 
 #entryform {
 	position:absolute;
@@ -461,11 +538,14 @@ div.status-actions {
     height:10px;
     background-repeat: no-repeat;
     display: inline-block;
+	border-bottom:none;
 }
 
-    .status-action-fav { background:url('images/status-fav-off.png'); }
-    .status-action-dm { background:url('images/status-dm.png'); }
-    .status-action-reply { background:url('images/status-reply.png'); }
+.status-action-fav { background:url('images/status-fav-off.png'); }
+	div.timeline-entry.favorited .status-action-fav { background:url('images/status-fav-on.png'); }
+.status-action-retweet { background:url('images/status-retweet.png'); }
+.status-action-dm { background:url('images/status-dm.png'); }
+.status-action-reply { background:url('images/status-reply.png'); }
 
 div.status-actions a, div.status-link a {
 	color: #9999CC;
@@ -638,18 +718,17 @@ Prefs form
 ************************/
 #prefs-form {
 	font-size:11px;
-	margin:0px 5px;
-	padding:5px;
+	margin:0px 10px;
+	padding:10px;
 }
 #prefs-form h2.CollapsiblePanelTab {
-/*	font-weight:bold;*/
-	font-size:12px;
-/*	color:#999999;*/
-	border-bottom:1px dotted #009900;
-	padding-top:8px;
-	padding-bottom:2px;
+	font-weight:bold;
+	font-size:13px;
 	cursor: pointer;
+	padding-bottom:2px;
+	padding-top:8px;
 	margin-bottom:0px;
+	border-bottom: 1px dotted #00CC00;
 }
 #prefs-form h2.CollapsiblePanelTabHover {
 	color:#007700;
@@ -657,11 +736,12 @@ Prefs form
 #prefs-form .CollapsiblePanelOpen .CollapsiblePanelTab {
 	color:#00CC00;
 }
-.CollapsiblePanelContent {
+#prefs-form .CollapsiblePanelContent {
 	margin:   0px;
 	padding: 10px;
-	border-bottom: 1px dotted #00CC00;
 	clear:both;
+	overflow: hidden;
+	border-bottom: 1px dotted #00CC00;
 	background-color: #001100;
 }
 div.formrow {
@@ -671,39 +751,64 @@ div.formrow {
 }
 
 #prefs-form label {
-/*  min-width:60px;*/
-/*  text-align:right;
-    margin-right:5px;*/
+	min-width:80px;
+	text-align:left;
 	font-weight:bold;
 	display:block;
-/*  float:left;*/
-/*  padding:5px;*/
 }
-input[type='password'],
-input[type='text'],
-select {
+#prefs-form input[type='password'],
+#prefs-form input[type='text'],
+#prefs-form select {
 	border:1px solid #009900;
-	padding:2px;
+	padding:4px;
+	width:90%;
 	color:#009900;
 	background-color:#000000;
-	width:100px;
 	/*-khtml-border-radius:5px;*/
+}
+#prefs-form input[type="text"]:focus,
+#prefs-form input[type="password"]:focus,
+#prefs-form textarea:focus {
+    background-color:#003300;
 }
 #prefs-form label.checkbox {
 	float: none;
 	padding:0;
-	margin:0 0 0 5px;
+	margin:0 0 0 1px;
 	display:inline;
 }
-input[type='checkbox'] {
-	vertical-align:-20%;
-}
-option {
-	font-family:sans-serif;
-	size:.9em;
+
+#prefs-form fieldset {
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    padding:5px 0 5px 3px;                        
+    margin: 10px 0 0 0;
+    background:none;
+    border-top:1px dotted #060;
 }
 
-input[type='button'], input[type='submit'] {
+    #prefs-form legend {
+        font-weight:bold;
+    }
+
+    #prefs-form fieldset label {
+        font-weight:normal;
+    }
+
+#prefs-form input[type='checkbox'] {
+	vertical-align:-20%;
+	border:1px solid #0C0 !important;
+	background-color:#000 !important
+}
+#prefs-form option, #prefs-form select {
+	font-family:'Bitstream Vera Sans Mono', Inconsolata, 'Anadale Mono', Monaco, 'Lucida Console', monospace;
+	size:10px;
+	color:#000000;
+	
+}
+
+#prefs-form input[type='button'], input[type='submit'] {
 	background-color:#009900;
 	color:#001000;
 	border:2px solid #009900;
@@ -712,26 +817,57 @@ input[type='button'], input[type='submit'] {
 	padding:3px;
 }
 
-input[type='button']:focus, input[type='submit']:focus,
-input[type='button']:hover, input[type='submit']:hover {
+#prefs-form input[type='button']:focus, #prefs-form input[type='submit']:focus,
+#prefs-form input[type='button']:hover, #prefs-form input[type='submit']:hover {
 	background-color:#002000;
 	border-color:#00CC00;
 	color:#00CC00;
 }
 
-input[type='text']#prefs-user-stylesheet {
-	width:75px;
+		/*
+			A few specific pref "widgets" need special formatting
+		*/
+		input[type='text']#prefs-user-stylesheet {
+			width:80px;
+		}
+		input[type='text']#network-refreshinterval {
+			width:20px;
+		}
+input[type='text']#dock-refreshinterval {
+   width:30px;
 }
-input[type='text']#prefs-refresh-interval {
-	width:20px;
-}
-input[type='text']#prefs-opacity-percentage {
-	width:30px;
-	text-align:right;
-}
-#prefs-update-button {
-	font-size:12px;
-}
+		input[type='text']#window-alpha {
+			width:30px;
+			text-align:right;
+		}
+		#prefs-user-stylesheet-button, #prefs-user-stylesheet-clear {
+			padding:2px;
+			font-size:10px;
+			margin:0px;
+		}
+
+		/*
+			The update/save prefs button sits outside the panel group
+		*/
+		#prefs-update-button {
+			font-size:13px;
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #verification-result {
 	color:#00CC00;
@@ -958,12 +1094,9 @@ table.data td.value {
 /* selectables */
 .ui-selected
 {
-	background-color:#007700 !important;
+	background-color:#004400 !important;
 	background-image:none !important;
 	color:#000000;
-}
-.ui-selected a {
-	color:#001100 !important;
 }
 .ui-selecting
 {
@@ -1037,12 +1170,11 @@ div.context-menu li:hover {
  * necessary to make the widget function. You can use any class name you
  * want to style the TabbedPanels container.
  */
-.TabbedPanels {
+#tabs, .TabbedPanels {
 	margin: 0px;
 	padding: 0px;
 	float: left;
 	clear: none;
-	width: 100%; /* IE Hack to force proper layout when preceded by a paragraph. (hasLayout Bug)*/
 }
 
 /* This is the selector for the TabGroup. The TabGroup container houses
@@ -1144,13 +1276,13 @@ div.context-menu li:hover {
  * not necessary to make the widget function. You can use any class name you
  * want to style the ContentGroup container.
  */
-.TabbedPanelsContentGroup {
+#timeline-tabs-content, .TabbedPanelsContentGroup {
 	clear: both;
-	/* border-left: solid 1px #CCC;
-	border-bottom: solid 1px #CCC;
-	border-top: solid 1px #999;
-	border-right: solid 1px #999;
-	background-color: #EEE; */
+	position:absolute;
+	top:   48px;
+	left:   5px;
+	right: 5px;
+	bottom:43px;
 }
 
 /* This is the selector for the Content panel. The Content panel holds the
@@ -1163,7 +1295,8 @@ div.context-menu li:hover {
  * want to style the Content container.
  */
 .TabbedPanelsContent {
-	padding: 4px;
+	margin:0px;
+	padding:0px;
 }
 
 /* This selector is an example of how to change the appearnce of the currently
@@ -1249,3 +1382,11 @@ div.search-menu form {
     padding:0px;
     margin:0px;
 }
+
+
+
+
+
+
+
+
