@@ -96,6 +96,10 @@ function usernameCompleter(opts) {
 					var username = $(this).attr('title');
 					thisuc.insertUsername(username);
 				});
+				
+				var bottom = $('BODY').outerHeight() - $(this.textarea).offset().top;
+				
+				$(this.displayDiv).css('bottom', bottom);
 				$(this.displayDiv).show();
 				return true;
 			}

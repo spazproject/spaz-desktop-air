@@ -99,11 +99,11 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	left:15px;
 	max-height:200px;
 	max-width:200px;
-
+	overflow:hidden;
 }
 
 #suggestions .username-match {
-    padding: 5px;
+    padding: 4px 5px;
     cursor: pointer;
 	margin-right:5px;
 	font-size:10px;

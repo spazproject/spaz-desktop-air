@@ -226,7 +226,7 @@ Spaz.initialize = function() {
 		'usernames':Spaz.Cache.getScreenNamesAsTags(),
 		'displayDiv':'#suggestions',
 		'textarea':'#entrybox',
-		'maxMatches':50
+		'maxMatches':15
 	})
 
     Spaz.dump('ended document.ready()');
