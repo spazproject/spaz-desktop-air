@@ -461,7 +461,7 @@ a, a:link, .clickable {
 				height:16px;
 				font-size:11px;
 				overflow:auto;
-				padding-top:4px;
+				padding:6px 3px 0;
 				text-align:left;
 				background-color:#FFFFDD;
 				border:none;
