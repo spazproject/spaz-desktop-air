@@ -57,10 +57,11 @@ a, a:link, .clickable {
 		background-color:#FFFFFF;
 		-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
 		top:	2px; /* This has an effective 8px padding to show us the app dropshadow */
-		left:	2px; /* using all-four-sides positioning lets it expand properly on resizing */
-		bottom:	2px;
-		right:	2px;
+		left:	8px; /* using all-four-sides positioning lets it expand properly on resizing */
+		bottom:	8px;
+		right:	8px;
 	    position: fixed;
+		border:1px solid #CCC;
 	}
 	
 
