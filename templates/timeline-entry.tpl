@@ -34,6 +34,9 @@
 				</div>
 				<div class="status-link">
 					<a href="${base_url}/${user.screen_name}/statuses/${id}/" data-created-at="${created_at}" class="status-created-at clickable" title="View full post in browser">${created_at}</a>
+					{if in_reply_to_status_id}
+						<!-- <a href="${base_url}/${in_reply_to_user_id}/statuses/${in_reply_to_status_id}/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->
+					{/if}
 					<span class="status-source">from
 						<span class="status-source-label">${source}</span>
 					</span>

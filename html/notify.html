@@ -6,11 +6,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>notify</title>
+	
 	<script src="app:/assets/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
 	
+	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script type="text/javascript" charset="utf-8">
+
 		// see http://www.netlobo.com/url_query_string_javascript.html
 		function gup( name )
 		{
@@ -23,21 +27,22 @@
 			else
 			  return results[1];
 		}
-		
-		$().ready( function() {
-			var title = decodeURIComponent(gup('title'));
-			var msg   = decodeURIComponent(gup('msg'));
-			var img   = decodeURIComponent(gup('img'));
-			
-			// air.trace(title);
-			// air.trace(msg);
-			// air.trace(img);
-			
+
+		function setContentFromURL() {
+			var title = escape_html(decodeURIComponent(gup('title')));
+			var msg   = escape_html(decodeURIComponent(gup('msg')));
+			var img   = escape_html(decodeURIComponent(gup('img')));
 			
 			$('#title').html(title)
 			$('#msg').html(msg);
 			$('#icon').attr('src', img);
+		}
+
+		
+		$().ready( function() {
+			setContentFromURL();			
 		});
+
 	</script>
 	
 	<style type="text/css" media="screen">
@@ -103,6 +108,7 @@
 		<img id="icon" />
 		<div id="title"></div>
 		<div id="msg"></div>
-	
+	</div>
+
 </body>
 </html>

@@ -150,7 +150,8 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 	var winBounds = new air.Rectangle(winX, winY, width, height);
 	var notifyLoader = air.HTMLLoader.createRootWindow(true, opts, false, winBounds);
 	// "notify.html?msg="+msg+"&title="+title+"&img="+img
-	notifyLoader.load(new air.URLRequest("app:/html/notify.html?msg="+encodeURIComponent(msg)+"&title="+encodeURIComponent(title)+"&img="+encodeURIComponent(img)));
+	var notify_url = "app:/html/notify.html?msg="+encodeURIComponent(msg)+"&title="+encodeURIComponent(title)+"&img="+encodeURIComponent(img);
+	notifyLoader.load(new air.URLRequest(notify_url));
 	notifyLoader.alpha = .6; // make the loader object transparent
 	notifyLoader.stage.nativeWindow.visible = false; // use this to avoid stealing focus
 	notifyLoader.stage.nativeWindow.alwaysInFront = true; // make the notify window a modal
@@ -181,9 +182,14 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		notifyLoader.stage.nativeWindow.visible = true; // doing this avoids stealing focus
 		
 		function opacityUp() {
-			notifyLoader.alpha += .1;
-			if (notifyLoader.alpha < 1) {
-				setTimeout(opacityUp, 30); // do again
+			air.trace('opacityUp');
+			if (notifyLoader) {
+				notifyLoader.alpha += .1;
+				if (notifyLoader.alpha < 1) {
+					setTimeout(opacityUp, 30); // do again
+				}
+			} else {
+				return false;
 			}
 		}
 		
@@ -191,6 +197,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 	}
 	
 	function fadeOut(event) {
+		
 		clearTimeout(fadeOutTimeout);
 		
 		notifyLoader.alpha = 1;
@@ -199,6 +206,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		opacityDown();
 		
 		function opacityDown() {
+			air.trace('opacityDown');
 			notifyLoader.alpha -= .1;
 			if (notifyLoader.alpha > 0 && opacityDown) {
 				setTimeout(opacityDown, 30); // do again

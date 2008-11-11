@@ -7,9 +7,9 @@ var Spaz_Tooltip_hideTimeout = {};
 
 
 function Spaz_Tooltip(opts) {
-	this.event		= opts.e;
-	this.el			= opts.el;
-	this.str		= opts.str;
+	this.event	= opts.e;
+	this.el		= opts.el;
+	this.str	= opts.str;
 	this.previewurl = opts.previewurl;
 }
 
@@ -308,4 +308,6 @@ Spaz_Tooltip.prototype.resetPosition = function() {
 
 	// Spaz.dump("old width: "+newWidth);
 };
+
+
 

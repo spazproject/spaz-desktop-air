@@ -7,6 +7,8 @@
 
 	<title>modal</title>
 	
+	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script type="text/javascript" charset="utf-8">
 		// see http://www.netlobo.com/url_query_string_javascript.html
 		function gup( name )
@@ -22,8 +24,8 @@
 		}
 		
 		$().ready( function() {
-			var title = decodeURI(gup('title'));
-			var msg   = decodeURI(gup('msg'));
+			var title = escape_html(decodeURI(gup('title')));
+			var msg   = escape_html(decodeURI(gup('msg')));
             // var img   = decodeURI(gup('img'));
 			
 			$('#title').html(title)

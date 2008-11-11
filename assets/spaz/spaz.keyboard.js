@@ -169,7 +169,7 @@ Spaz.Keyboard.setShortcuts = function() {
 	shortcut.add('Enter', function() {
 			Spaz.Section.search.build();
 		}, {
-			target:$('search-for')[0],
+			target:$('#search-for')[0],
 			type:'keypress',
 			propagate:false
 	});
@@ -181,35 +181,35 @@ Spaz.Keyboard.setShortcuts = function() {
 	shortcut.add(Modkey+'+B', function() {
 			Spaz.Editor.bold();
 		}, {
-			target:$('entrybox')[0],
+			target:$('#entrybox')[0],
 			type:'keypress',
 			propagate:false
 	});
 	shortcut.add(Modkey+'+I', function() {
 			Spaz.Editor.italics();
 		}, {
-			target:$('entrybox')[0],
+			target:$('#entrybox')[0],
 			type:'keypress',
 			propagate:false
 	});
 	shortcut.add(Modkey+'+R', function() {
 			Spaz.Editor.code();
 		}, {
-			target:$('entrybox')[0],
+			target:$('#entrybox')[0],
 			type:'keypress',
 			propagate:false
 	});
 	shortcut.add(Modkey+'+U', function() {
 			Spaz.Editor.link();
 		}, {
-			target:$('entrybox')[0],
+			target:$('#entrybox')[0],
 			type:'keypress',
 			propagate:false
 	});
 	shortcut.add('Enter', function() {
 			Spaz.UI.sendUpdate();
 		}, {
-			target:$('entrybox')[0],
+			target:$('#entrybox')[0],
 			type:'keypress',
 			propagate:false
 	});

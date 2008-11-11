@@ -126,7 +126,7 @@ a, a:link, .clickable {
 					This puts a &raquo; after "Spaz"
 				*/
 				#header-label:after {
-					content:' \21F2';	
+					content:' \00BB';	
 				}
 
 				#header-label:hover {

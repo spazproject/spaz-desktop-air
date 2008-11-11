@@ -688,8 +688,6 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
             });
         }
 
-
-
         if (prepend) {
             $('#' + timelineid).prepend(jqentry);
         } else {
