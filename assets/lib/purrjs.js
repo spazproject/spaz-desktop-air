@@ -2,7 +2,7 @@
 PurrJS = {}
 
  /*
-     modal
+	 modal
  */
 PurrJS.modal = function(title, msg, icon, duration, position) {
 	
@@ -31,9 +31,9 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 	notifyLoader.alpha = .6;
 
 
-     // air.Introspector.Console.info(notifyLoader);
+	 // air.Introspector.Console.info(notifyLoader);
 
-     // notifyLoader.window.document.getElementById('container').innerHTML = msg;
+	 // notifyLoader.window.document.getElementById('container').innerHTML = msg;
 	
 
 	fadeIn();
@@ -106,34 +106,34 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 	/*
 	  get dimensions
 	*/
-	var farRight = air.Screen.mainScreen.bounds.right;
-	var farTop   = air.Screen.mainScreen.bounds.top;
-	var farLeft = air.Screen.mainScreen.bounds.left;
-	var farBottom   = air.Screen.mainScreen.bounds.bottom;
+	var farRight = air.Screen.mainScreen.visibleBounds.right;
+	var farTop   = air.Screen.mainScreen.visibleBounds.top;
+	var farLeft = air.Screen.mainScreen.visibleBounds.left;
+	var farBottom   = air.Screen.mainScreen.visibleBounds.bottom;
 	
 	/*
 	  Calculate position
 	*/
 	switch (position) {
-      case 'topLeft':
-         var winX = farLeft + padding;
-      	var winY = farTop + padding + 20;
-      	break;
-      
-      case 'bottomLeft':
-         var winX = farLeft + padding;
-      	var winY = farBottom - padding - 20;
-   	   break;
-      
-      case 'bottomRight':
-         var winX = farRight - width - padding;
-      	var winY = farBottom - padding - 20;
-      	break;
-	      
-	   default:
-	      var winX = farRight - width - padding;
-      	var winY = farTop + padding + 20;
-      	break;
+		case 'topLeft':
+			var winX = farLeft + padding;
+			var winY = farTop + padding + 0;
+			break;
+
+		case 'bottomLeft':
+			var winX = farLeft + padding;
+			var winY = farBottom - padding - 0;
+			break;
+		
+		case 'bottomRight':
+			var winX = farRight - width - padding;
+			var winY = farBottom - padding - 0;
+			break;
+		
+		default:
+			var winX = farRight - width - padding;
+			var winY = farTop + padding + 0;
+			break;
 	}
 	air.trace(winX+"x"+winY);
 	/*
@@ -141,21 +141,21 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 	*/
 	var opts = new air.NativeWindowInitOptions();
 	opts.transparent = true;
-	opts.type = air.NativeWindowType.UTILITY;
+	opts.type = air.NativeWindowType.LIGHTWEIGHT;
 	opts.systemChrome = air.NativeWindowSystemChrome.NONE;
 	opts.resizable = false;
 	opts.minimizable = false;
 	opts.maximizable = false;
 	
 	var winBounds = new air.Rectangle(winX, winY, width, height);
-	var notifyLoader = air.HTMLLoader.createRootWindow(true, opts, false, winBounds);
-	// "notify.html?msg="+msg+"&title="+title+"&img="+img
+	
+	// window is initially not visible to keep it from stealing focus
+	var notifyLoader = air.HTMLLoader.createRootWindow(false, opts, false, winBounds);
 	var notify_url = "app:/html/notify.html?msg="+encodeURIComponent(msg)+"&title="+encodeURIComponent(title)+"&img="+encodeURIComponent(img);
 	notifyLoader.load(new air.URLRequest(notify_url));
 	notifyLoader.alpha = .6; // make the loader object transparent
-	notifyLoader.stage.nativeWindow.visible = false; // use this to avoid stealing focus
-	notifyLoader.stage.nativeWindow.alwaysInFront = true; // make the notify window a modal
-
+	notifyLoader.stage.nativeWindow.alwaysInFront = true; // make the notify window a non-blocking modal
+	
 	
 	
 	// air.Introspector.Console.info(notifyLoader);
@@ -163,7 +163,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
    // notifyLoader.window.document.getElementById('msg').innerHTML = msg;
 	
 	notifyLoader.addEventListener('click', function(event) {
-	      fadeOut();
+		  fadeOut();
 	   }
 	);
 	
@@ -174,12 +174,14 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 	
 	
 	function fadeIn() {
-		
+
+
 		notifyLoader.alpha = 0;
 		
 		// start
 		opacityUp();
 		notifyLoader.stage.nativeWindow.visible = true; // doing this avoids stealing focus
+		// notifyLoader.stage.nativeWindow.orderToFront(); // bring to front
 		
 		function opacityUp() {
 			air.trace('opacityUp');
