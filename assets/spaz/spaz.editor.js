@@ -63,9 +63,9 @@ Spaz.Editor.$wrap = function(open, close, selstart, selend) {
 
 Spaz.Editor.initSuggestions = function() {
 	
-	air.trace("old: " + Spaz.uc.usernames);
+	// air.trace("old: " + Spaz.uc.usernames);
 	Spaz.uc.usernames = Spaz.Cache.getScreenNamesAsTags();
-	air.trace("new: " + Spaz.uc.usernames);
+	// air.trace("new: " + Spaz.uc.usernames);
 	
 	
 	// $('#entrybox').tagSuggest({

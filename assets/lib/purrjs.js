@@ -122,12 +122,12 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 
 		case 'bottomLeft':
 			var winX = farLeft + padding;
-			var winY = farBottom - padding - 0;
+			var winY = farBottom - height - padding - 0;
 			break;
 		
 		case 'bottomRight':
 			var winX = farRight - width - padding;
-			var winY = farBottom - padding - 0;
+			var winY = farBottom - height - padding - 0;
 			break;
 		
 		default:

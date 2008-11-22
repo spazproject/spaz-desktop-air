@@ -213,6 +213,26 @@ Spaz.Keyboard.setShortcuts = function() {
 			type:'keypress',
 			propagate:false
 	});
+	
+	
+	/*
+		Username/password prefs -> save
+	*/
+	shortcut.add('Enter', function() {
+			Spaz.Prefs.setPrefs();
+		}, {
+			target:$('#username')[0],
+			type:'keypress',
+			propagate:false
+	});
+	shortcut.add('Enter', function() {
+			Spaz.Prefs.setPrefs();
+		}, {
+			target:$('#password')[0],
+			type:'keypress',
+			propagate:false
+	});
+
 }
 
 

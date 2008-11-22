@@ -85,8 +85,8 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 
 #suggestions {
 	background-color: #000000;
+	background-color: rgba(0,0,0,.8);
 	color: #FFFFCC;
-	opacity:.8;
 	padding:0px;
 	margin:0px;
 	-khtml-border-radius:5px;

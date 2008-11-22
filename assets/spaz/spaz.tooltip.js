@@ -72,7 +72,7 @@ Spaz_Tooltip.prototype.show = function() {
 			.css('top',  thisTT.event.pageY+20)
 			.show()
 			.css('opacity', 0)
-			.animate({'opacity':'0.85'}, {speed:'fast'});
+			.animate({'opacity':'1.0'}, {speed:'fast'});
 			// .animate({'opacity':'0.85'}, {speed:200, queue:false});
 
 		$('#tooltip').children('.tooltip-msg').html(thisTT.str);
