@@ -205,7 +205,7 @@ Spaz.Data.update = function(msg, username, password) {
                     if (Spaz.Prefs.get('wilhelm-enabled')) {
                         Spaz.UI.doWilhelm();
                         Spaz.UI.statusBar("Wilhelm!");
-                        Spaz.UI.playSoundWilhelm(Spaz.UI.endWilhelm);
+                        Spaz.UI.playSoundWilhelm();
                     } else {
                         Spaz.dump('not doing Wilhelm because Wilhelm disabled');
                     }

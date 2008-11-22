@@ -83,17 +83,18 @@ Spaz.UI.playSoundWilhelm = function(callback) {
 Spaz.UI.doWilhelm = function() {
     Spaz.dump('Applying Flash Filter Dropshadow and Negative');
     window.htmlLoader.filters = window.runtime.Array(
-    new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
-    new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
+    	new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
     );
     $('#wilhelm').center();
     $('#wilhelm').show(300);
+	setTimeout(Spaz.UI.endWilhelm, 960); // end with a timeout instead of relying on sound to finish
 };
 
 Spaz.UI.endWilhelm = function() {
     Spaz.dump('Applying Flash Filter Dropshadow');
     window.htmlLoader.filters = window.runtime.Array(
-    new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
+    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
     );
     $('#wilhelm').hide();
 };
