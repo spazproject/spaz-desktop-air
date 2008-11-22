@@ -54,6 +54,7 @@ Spaz.Prefs.defaultPreferences = {
     'timeline-friends-getcount': 40,
     'timeline-replies-getcount': 20,
     'timeline-dm-getcount': 10,
+	'timeline-keyboardnavwrap': false,
 
     'screennames-cache-max': 150,
 
@@ -236,7 +237,15 @@ Spaz.Prefs.changeMethods = {
             Spaz.Prefs.set('window-restoreonactivate', Boolean(Spaz.Prefs.get('window-restoreonactivate')))
         }
     },
-
+	'timeline-keyboardnavwrap': {
+        setUI: function(value) {
+            $('#timeline-keyboardnavwrap').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('timeline-keyboardnavwrap', Boolean(Spaz.Prefs.get('timeline-keyboardnavwrap')))
+        }
+	},
 
     // 'theme-userstylesheet':{
     // 	setUI: function(value){
@@ -645,6 +654,7 @@ Spaz.Prefs.initUI = function() {
     $('#window-restoreonactivate').bind('change', Spaz.Prefs.setFromUI);
     $('#window-shownotificationpopups').bind('change', Spaz.Prefs.setFromUI);
 	$('#window-notificationposition').bind('change', Spaz.Prefs.setFromUI);
+	$('#timeline-keyboardnavwrap').bind('change', Spaz.Prefs.setFromUI);
     $('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
     $('#sound-enabled').bind('change', Spaz.Prefs.setFromUI);
     $('#wilhelm-enabled').bind('change', Spaz.Prefs.setFromUI);

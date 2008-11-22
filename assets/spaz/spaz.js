@@ -93,7 +93,7 @@ Spaz.initialize = function() {
     // apply dropshadow to window
     air.trace('Applying Flash Filter Dropshadow');
     window.htmlLoader.filters = window.runtime.Array(
-    new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
+    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
     );
     // new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
     // make the systray icon if on Windows
