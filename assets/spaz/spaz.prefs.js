@@ -187,6 +187,12 @@ Spaz.Prefs.changeMethods = {
             Spaz.Prefs.set('window-shownotificationpopups', Boolean(Spaz.Prefs.get('window-shownotificationpopups')))
         }
     },
+	'window-notificationposition': {
+		setUI: function(value) {
+			$('#window-notificationposition').val(value);
+		},
+		onChange: function(value) {}
+	},
     'window-minimizetosystray': {
         setUI: function(value) {
             $('#window-minimizetosystray').attr('checked', value);
@@ -638,6 +644,7 @@ Spaz.Prefs.initUI = function() {
     $('#window-minimizeonbackground').bind('change', Spaz.Prefs.setFromUI);
     $('#window-restoreonactivate').bind('change', Spaz.Prefs.setFromUI);
     $('#window-shownotificationpopups').bind('change', Spaz.Prefs.setFromUI);
+	$('#window-notificationposition').bind('change', Spaz.Prefs.setFromUI);
     $('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
     $('#sound-enabled').bind('change', Spaz.Prefs.setFromUI);
     $('#wilhelm-enabled').bind('change', Spaz.Prefs.setFromUI);

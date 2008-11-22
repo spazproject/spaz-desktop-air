@@ -305,17 +305,9 @@ Spaz.Intercept.init = function() {
 		Set-up invoke event for command-line processing
 	*/
 	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, invokeHandler);
-	
+
 	function invokeHandler (e) {
 		air.trace('Invoke args: '+e.arguments);
-		
-		
-		// spazjson:{
-		//  command:
-		//  msgtype:{std, reply, dm}
-		//  to:{<username>}
-		//  msg:{<message string>}
-		// }
 	}
 	
 	
@@ -329,12 +321,12 @@ Spaz.Intercept.init = function() {
     
     function dragEnterOverHandler(event){
         event.preventDefault();
-    }    
+    }
 
     function dropHandler(event){
 		event.preventDefault();
 		
-		if (Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+		if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
 			if ( confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
 				uploadDraggedImage(event);
 			}

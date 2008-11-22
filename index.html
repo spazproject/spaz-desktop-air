@@ -460,6 +460,23 @@
 										   </div>
 										</fieldset>
 
+										<fieldset>
+											<legend>Notifications</legend>
+											<div class="formrow">
+												<input type="checkbox" name="notification-popups" value="1"
+													id="window-shownotificationpopups" />
+												<label for="window-shownotificationpopups" class="checkbox">Show notifications</label>
+											</div>
+										   <div class="formrow">
+											  <label for="window-notificationposition">Position</label>
+											  <select id="window-notificationposition" name="window-notificationposition">
+												 <option value="topRight">Top-right</option>
+												 <option value="topLeft" >Top-left</option>
+												 <option value="bottomRight">Bottom-right</option>
+												 <option value="bottomLeft" >Bottom-left</option>
+											  </select>
+										   </div>											
+										</fieldset>
 
 										<fieldset>
 											<legend>Other options</legend>
@@ -481,11 +498,6 @@
 												<input type="checkbox" name="maximize-foreground" value="1"
 													id="window-restoreonactivate" />
 												<label for="window-restoreonactivate" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
-											</div>
-											<div class="formrow">
-												<input type="checkbox" name="notification-popups" value="1"
-													id="window-shownotificationpopups" />
-												<label for="window-shownotificationpopups" class="checkbox">Show notifications</label> <!-- <span class="restart-required">*</span> -->
 											</div>
 											<div class="formrow">
 												<input type="checkbox" name="timeline-scrollonupdate" value="1"
