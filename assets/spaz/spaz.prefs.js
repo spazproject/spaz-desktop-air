@@ -441,7 +441,7 @@ Spaz.Prefs.changeMethods = {
                 Spaz.Prefs.set('timeline-maxentries', 100);
             }
             if (parseInt(Spaz.Prefs.get('timeline-maxentries')) > 400) {
-                Spaz.Prefs.set('timeline-maxentries', 400);
+                Spaz.Prefs.set('timeline-maxentries', 1000);
             }
         }
     },
