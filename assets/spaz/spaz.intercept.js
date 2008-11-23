@@ -296,9 +296,25 @@ Spaz.Intercept.init = function() {
 				Spaz.Section.public.filter( $(this).val() );
 			}
 		})
+
+
 		
 	// end intercept
 	
+	
+	/*
+		Normal bindings where intercept doesn't work
+	*/
+	$('#entrybox').focus(function(e) {
+			Spaz.UI.showEntryboxTip();
+			$('#entrystats').fadeIn('fast');		
+		})
+		.blur(function(e) {
+			Spaz.UI.resetStatusBar();
+			$("body").focus();
+			$('#entrystats').fadeOut('fast');		
+			return false;
+		});
 	
 	
 	/*

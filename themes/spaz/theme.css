@@ -476,8 +476,8 @@ a, a:link, .clickable {
 				This is the counter for number of chars entered
 			*/
 			#entrystats {
-				bottom:  0px;
-				left:    8px;
+				bottom:   0px;
+				left:     8px;
 				position:absolute;
 				z-index: 100;
 				color:#999999;
@@ -778,10 +778,36 @@ div.timeline-entry {
 			}
 
 
+.friendslist-row {
+	font-size:8pt;
+	clear:both;
+	padding:8px;
+	border-top-width: medium;
+	border-top-style: solid;
+	border-top-color: #999966;
+}
+	.friendslist-row .directory-user {
 
+	}
+		.directory-user .user-image {
+			background-color:#dddddd;
+			border:1px solid #999;
+			width:24px;
+			height:24px;
+			margin:0 5px 0 0;
+			-webkit-box-shadow:none;
+			float:left;
+		}
+		.directory-user .directory-user-name {
+			font-weight:bold;
+			font-size:10pt;
+		}
+		.directory-user .directory-user-location {
 
+		}
+		.directory-user .directory-user-homepage {
 
-
+		}
 
 
 

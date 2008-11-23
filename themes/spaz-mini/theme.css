@@ -330,6 +330,9 @@ a, a:link, .clickable {
 
 				}
 
+
+
+
 					/*
 						The panelmenu appears at the top of each timeline
 					*/
@@ -344,10 +347,12 @@ a, a:link, .clickable {
 	                        text-align:left;
 							margin:0px;
 							padding:0px;
+							line-height:9px;
 	                    }
 						.panelmenu form input {
-							font-size: 9px;
-							margin:2px 0 2px;
+							font-size: 8px;
+							-khtml-border-radius:5px;
+							height: 15px;
 						}
 							.panelmenu form input[type='button'] {
 								padding:1px 4px;
@@ -363,11 +368,12 @@ a, a:link, .clickable {
 						
 				        .panelmenu form input[type='text'] {
 	                        width:75px;
-							padding-left:6px;
 							background-color:#333;
 	                        border:1px solid #666;
 							color:#CCC;
 							-khtml-border-radius:5px;
+							padding:0px 3px;
+							height:13px;
 	                    }
 	                		.panelmenu form input[type='text']:focus {
 	                            border:1px solid #888;
@@ -488,14 +494,17 @@ a, a:link, .clickable {
 				This is the counter for number of chars entered
 			*/
 			#entrystats {
-				bottom:  0px;
-				right:    8px;
 				position:absolute;
 				z-index: 100;
-				color:#999999;
 				font-size:9px;
-				opacity:1;
 				display:none;
+				bottom:22px;
+				right: 20px;
+				padding:3px;
+				background-color:rgba(102,102,102,.5);
+				color:#000;
+				-khtml-border-top-left-radius:5px;
+				-khtml-border-top-right-radius:5px;
 			}
 
 
@@ -717,13 +726,14 @@ div.timeline-entry {
 		A container for the avatar image and the user's screen name
 	*/
 	div.user {
-		float:left;
+		float:none;
 		width:auto;
 		text-align:center;
 		overflow:visible;
-		margin-right:3px;
+		margin-right:0px;
 		position:relative;
 		display:inline;
+		font-size:11px
 	}
 
 		img.user-image {
@@ -802,6 +812,36 @@ div.timeline-entry {
 			}
 
 
+.friendslist-row {
+	font-size:8pt;
+	clear:both;
+	padding:8px;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #999966;
+}
+	.friendslist-row .directory-user {
+
+	}
+		.directory-user .user-image {
+			background-color:#dddddd;
+			border:1px solid #999;
+			width:24px;
+			height:24px;
+			margin:0 5px 0 0;
+			-webkit-box-shadow:none;
+			float:left;
+		}
+		.directory-user .directory-user-name {
+			font-weight:bold;
+			font-size:10pt;
+		}
+		.directory-user .directory-user-location {
+
+		}
+		.directory-user .directory-user-homepage {
+
+		}
 
 
 
@@ -921,7 +961,7 @@ div.timeline-entry {
 						font-family:sans-serif;
 						size:10px;
 					}
-					input[type='button'], input[type='submit'] {
+					#prefs-form input[type='button'], #prefs-form input[type='submit'] {
 						background-color:#666666;
 						color:#FFFFFF;
 						-khtml-border-radius:5px;
@@ -930,16 +970,16 @@ div.timeline-entry {
 						cursor:pointer;
 						padding:3px;
 					}
-						input[type='button']:focus, input[type='submit']:focus,
-						input[type='button']:hover, input[type='submit']:hover {
+						#prefs-form input[type='button']:focus, #prefs-form input[type='submit']:focus,
+						#prefs-form input[type='button']:hover, #prefs-form input[type='submit']:hover {
 							background-color:#111111;
 							border-color:#444444;
 							color:#FFFFFF;
 						}
 
-                    input[type="text"]:focus,
-                    input[type="password"]:focus,
-                    textarea:focus {
+                    #prefs-form input[type="text"]:focus,
+                    #prefs-form input[type="password"]:focus,
+                    #prefs-form textarea:focus {
                         background-color:#FFFFCC;
                     }
                     

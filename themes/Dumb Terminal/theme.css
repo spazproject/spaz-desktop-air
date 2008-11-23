@@ -349,14 +349,18 @@ border:none;
 }
 
 #entrystats {
-	bottom:2px;
-	left:12px;
 	position:absolute;
 	z-index: 100;
-	color:#999999;
-	font-size:8px;
-	opacity:1;
+	font-size:9px;
 	display:none;
+	bottom:24px;
+	right: 20px;
+	left:auto;
+	padding:3px;
+	background-color:rgba(0,32,0,1);
+	color:#0C0;
+	-khtml-border-top-left-radius:5px;
+	-khtml-border-top-right-radius:5px;
 }
 
 
@@ -594,6 +598,36 @@ div.even div.user a {
 /*******
 Followers and following
 ********/
+
+.friendslist-row {
+	font-size:8pt;
+	clear:both;
+	padding:8px;
+	border-bottom:1px dotted #00CC00;
+}
+	.friendslist-row .directory-user {
+
+	}
+		.directory-user .user-image {
+			background-color:#dddddd;
+			border:1px solid #999;
+			width:24px;
+			height:24px;
+			margin:0 5px 0 0;
+			-webkit-box-shadow:none;
+			float:left;
+		}
+		.directory-user .directory-user-name {
+			font-weight:bold;
+			font-size:10pt;
+		}
+		.directory-user .directory-user-location {
+
+		}
+		.directory-user .directory-user-homepage {
+
+		}
+
 
 div.directory {
 	overflow:hidden;
