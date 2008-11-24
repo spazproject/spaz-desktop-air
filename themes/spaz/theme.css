@@ -332,6 +332,7 @@ a, a:link, .clickable {
 	                        text-align:left;
 							margin:0px;
 							padding:0px;
+							line-height:9px;
 	                    }
 						.panelmenu form input {
 							font-size:10px;

@@ -184,7 +184,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		// notifyLoader.stage.nativeWindow.orderToFront(); // bring to front
 		
 		function opacityUp() {
-			air.trace('opacityUp');
+			// air.trace('opacityUp');
 			if (notifyLoader) {
 				notifyLoader.alpha += .1;
 				if (notifyLoader.alpha < 1) {
@@ -208,7 +208,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		opacityDown();
 		
 		function opacityDown() {
-			air.trace('opacityDown');
+			// air.trace('opacityDown');
 			notifyLoader.alpha -= .1;
 			if (notifyLoader.alpha > 0 && opacityDown) {
 				setTimeout(opacityDown, 30); // do again
