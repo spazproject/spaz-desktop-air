@@ -156,7 +156,6 @@ Spaz.Keyboard.setShortcuts = function() {
 	
 	shortcut.add(Modkey+'+F', function() {
 			Spaz.UI.toggleTimelineFilter();
-			return false;
 		}, {
 			type:'keypress',
 			propagate:false
