@@ -503,15 +503,6 @@ Spaz.Prefs.changeMethods = {
         }
     },
 
-    'timeline-maxentries': {
-        check: function() {
-            var val = parseInt(Spaz.Prefs.get('timeline-maxentries'));
-            if (val > 200) { // max will be 200 entries
-                Spaz.Prefs.set('timeline-maxentries', 200);
-            }
-        }
-    },
-
     'dock-refreshinterval': {
         setUI: function(value) {
             $('#dock-refreshinterval').val(value);
