@@ -292,8 +292,8 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 	Spaz.dump('Moving to new selected item');
 	Spaz.dump('timelineid:'+section.timeline);
 	
-	// unselect everything
-	$('#'+section.timeline+' div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
+	// unselect everything that is selected
+	$('#'+section.timeline+' div.timeline-entry.ui-selected').removeClass('ui-selected');
 
 	if ( entryId = Spaz.UI.getStatusIdFromElement(jqelement[0]) ) {
 		air.trace('entryId:'+entryId);
@@ -303,7 +303,7 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 	// select passed
 	if (jqelement.length > 0) {
 		air.trace("toggle ui-selected and scrollto");
-		jqelement.toggleClass('ui-selected');
+		jqelement.toggleClass('ui-selected').addClass('read');
 		
 		var viewport_bottom = $('#'+section.wrapper).innerHeight();		
 		var selected_bottom = jqelement.position().top + jqelement.height();
@@ -335,13 +335,7 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 				speed:1
 			});
 		}
-		
-		// $('#timeline-tabs-content').scrollTo(jqelement, {
-		// 						offset:-25,
-		// 						speed:90,
-		// 						easing:'swing'
-		// 						}
-		// );
+
 	} else {
 		air.trace("Problem - jqelement passed length = 0 - can't scroll to anything");
 	}
