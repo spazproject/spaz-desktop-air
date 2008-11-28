@@ -141,7 +141,7 @@ Spaz.Intercept.init = function() {
 				Spaz.Section.search.build();
 			},
 			'#search-help':function(e) {
-				openInBrowser('http://summize.com/operators');
+				openInBrowser('http://search.twitter.com/operators');
 			},
 			'#mainMenu-help':function(e) {
 				Spaz.UI.showHelp();
