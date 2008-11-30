@@ -44,7 +44,10 @@
 				Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
 			});
 			
-
+      $('#url-shortener').bind('change', function() {
+				air.trace($('#url-shortener').val());
+				Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
+			});
 			
 			// Spaz.dump("val:"+$('#shorten-original-link').val());
 			$('#shorten-original-link').focus();
@@ -58,11 +61,9 @@
 				}
 				$('#shorten-original-link').select();
 			}
-			
-			
-			// bind click to shorten action
-			$('#prefs-update-button').bind('click', function() {
-				var service = Spaz.Prefs.get('url-shortener');
+						
+			$('#shortenLink-form').bind('submit', function() {
+		  	var service = Spaz.Prefs.get('url-shortener');
 				air.trace("service is "+ service);
 				Spaz.Shortlink.services[service]($('#shorten-original-link').val());
 			});
@@ -97,7 +98,7 @@
 		</div>
 		
 		<div class="formrow" style="text-align:right; margin-top:15px">
-			<input type="button" id="prefs-update-button" name="update" value="Shorten &bull;" /> 
+			<input type="submit" id="prefs-update-button" name="update" value="Shorten &bull;" /> 
 		</div>
 		<div id="verification-result" align="center">&nbsp;</div>
 	</form>
