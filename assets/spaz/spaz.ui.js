@@ -397,7 +397,18 @@ Spaz.UI.clearCurrentTimeline = function() {
     var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
 
     // reset the lastcheck b/c some timelines will use "since" parameters
-    section.lastcheck = 0;
+	section.lastcheck = 0;
+	Spaz.dump('set lastcheck to 0');
+	if (section.lastid) {
+		section.lastid = 0;
+		Spaz.dump('set lastid to 0');
+	}
+	if (section.lastid_dm) {
+		section.lastid_dm = 0;
+		Spaz.dump('set lastid_dm to 0');
+	}
+	
+
 
     if (section.canclear) {
         var timelineid = section.timeline;
