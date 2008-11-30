@@ -656,9 +656,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
         entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
 
 		// hashtags
-		entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9]+))/gi, '$1<a href="http://search.twitter.com/search?q=%23$3" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
-
-
+    entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9]+))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
 
         var entryHTML = Spaz.Tpl.parse('app:/templates/timeline-entry.tpl', entry);
 

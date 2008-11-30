@@ -260,7 +260,13 @@ Spaz.Intercept.init = function() {
 			'a':function(e) {
 				Spaz.dump(this.outerHTML);
 				if ($(this).attr('href')) {
-					openInBrowser($(this).attr('href'));
+          // hashtags
+				  if($(this).text().match(/^#/)) {
+				    $('#search-for')[0].value=$(this).text();
+				    Spaz.Section.search.build();				    
+				  }
+				  else
+					  openInBrowser($(this).attr('href'));
 				}
 				return false;
 			},
