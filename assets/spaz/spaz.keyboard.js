@@ -92,6 +92,7 @@ Spaz.Keyboard.setShortcuts = function() {
 	})
 	shortcut.add(Modkey+'+4', function() {
 		Spaz.UI.showTab(3);
+		$('#search-for')[0].focus();
 	})
 	shortcut.add(Modkey+'+5', function() {
 		Spaz.UI.showTab(4);
