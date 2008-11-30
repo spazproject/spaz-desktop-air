@@ -25,22 +25,22 @@ Spaz.Keyboard.setShortcuts = function() {
 	
 	Spaz.dump('Modkey is '+Modkey);
 	
-	shortcut.add(Modkey+'+T', function() {
-		$('#entrybox').focus();
-	})
+  shortcut.add(Modkey+Spaz.Prefs.get('key-newEntry'), function() {
+   $('#entrybox').focus();
+  })
 
 	shortcut.add('F5', function() {
 		Spaz.UI.reloadCurrentTab(true);
 		Spaz.restartReloadTimer();
 	})
 
-	shortcut.add('Shift+F5', function() {
+	shortcut.add(Spaz.Prefs.get('key-reloadTimeline'), function() {
 		Spaz.UI.clearCurrentTimeline();
 		Spaz.UI.reloadCurrentTab(true, true);
 		Spaz.restartReloadTimer();
 	})
 	
-	shortcut.add(Modkey+'+Shift+A', function() {
+	shortcut.add(Modkey+Spaz.Prefs.get('key-showShortenWindow'), function() {
 		Spaz.UI.showShortLink();
 	});
 	
@@ -62,7 +62,7 @@ Spaz.Keyboard.setShortcuts = function() {
 		Spaz.Sys.openAppStorageFolder();
 	});
 	
-	shortcut.add(Modkey+'+Shift+@', function() {
+	shortcut.add(Modkey+Spaz.Prefs.get('key-reply'), function() {
 			Spaz.dump('getting screenname from current selection');
 			var screenname = $('div.ui-selected .user-screen-name').text();
 			
@@ -154,7 +154,7 @@ Spaz.Keyboard.setShortcuts = function() {
 			'disable_in_input':true
 	});
 	
-	shortcut.add(Modkey+'+F', function() {
+	shortcut.add(Modkey+Spaz.Prefs.get('key-toggle'), function() {
 			Spaz.UI.toggleTimelineFilter();
 		}, {
 			propagate:false
@@ -171,7 +171,6 @@ Spaz.Keyboard.setShortcuts = function() {
 			propagate:false
 	});
 	
-	
 	// ****************************************
 	// editor shortcuts
 	// ****************************************
@@ -187,7 +186,7 @@ Spaz.Keyboard.setShortcuts = function() {
 			target:$('#entrybox')[0],
 			propagate:false
 	});
-	shortcut.add(Modkey+'+R', function() {
+	shortcut.add(Modkey+Spaz.Prefs.get('key-highlight-code'), function() {
 			Spaz.Editor.code();
 		}, {
 			target:$('#entrybox')[0],

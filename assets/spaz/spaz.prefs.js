@@ -54,7 +54,7 @@ Spaz.Prefs.defaultPreferences = {
     'timeline-friends-getcount': 40,
     'timeline-replies-getcount': 20,
     'timeline-dm-getcount': 10,
-	'timeline-keyboardnavwrap': false,
+	  'timeline-keyboardnavwrap': false,
 
     'screennames-cache-max': 150,
 
@@ -82,7 +82,14 @@ Spaz.Prefs.defaultPreferences = {
     'dock-unreadbadgecolor': "red",
     'dock-unreadbadgeshape': "classic",
 
-    'entryboxhint': "What are you doing?"
+    'entryboxhint': "What are you doing?",
+
+    'key-toggle': "+F",
+    'key-newEntry': "+T",
+    'key-reply': "+Shift+@",
+    'key-reloadTimeline': "Shift+F5",
+    'key-showShortenWindow': "+Shift+A",
+    'key-highlight-code': "+R"
 }
 
 
@@ -936,3 +943,6 @@ Spaz.Prefs.getHandleHTTPAuth = function() {
     return Spaz.Prefs.get('network-airhandlehttpauth');
 }
 
+Spaz.Prefs.getToggleKey = function() {
+    return Spaz.Prefs.get('key-toggle');
+}
