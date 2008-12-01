@@ -262,8 +262,9 @@ Spaz.Intercept.init = function() {
 				if ($(this).attr('href')) {
           // hashtags
 				  if($(this).text().match(/^#/)) {
-				    $('#search-for')[0].value=$(this).text();
-				    Spaz.Section.search.build();				    
+				    $('#search-for').val($(this).text());
+				    Spaz.Section.search.build();
+				    Spaz.UI.showTab(3);
 				  }
 				  else
 					  openInBrowser($(this).attr('href'));
