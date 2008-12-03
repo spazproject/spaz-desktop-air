@@ -112,8 +112,8 @@ Spaz.Data.verifyPassword = function() {
             Spaz.Data.onAjaxError();
         },
         success:function(data){
-            var json = JSON.parse(data);
-            if (json.authorized) {
+            // var json = JSON.parse(data);
+            // if (json.authorized) {
                 // Spaz.verified = true;
                 air.trace('verified; setting current user');
                 Spaz.Prefs.setCurrentUser();
@@ -124,12 +124,12 @@ Spaz.Data.verifyPassword = function() {
                     Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
                 }
 
-            } else {
+            // } else {
                 // Spaz.verified = false;
-                Spaz.dump('verification failed');
-                Spaz.UI.statusBar("Verification failed");
-                Spaz.UI.flashStatusBar();
-            }
+            //     Spaz.dump('verification failed');
+            //     Spaz.UI.statusBar("Verification failed");
+            //     Spaz.UI.flashStatusBar();
+            // }
         },
         beforeSend:function(xhr){
             xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
