@@ -601,6 +601,9 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
             entry.isDM = true;
         }
 
+		if (!entry.in_reply_to_screen_name) {
+			entry.in_reply_to_screen_name = false;
+		}
 	
 
         if (timelineid == 'timeline-user') {
@@ -612,7 +615,18 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
         if (!entry.user.name) {
             entry.user.name = entry.user.screen_name
         }
-
+		
+		/*
+			Check for reply
+		*/
+		
+		if (entry.in_reply_to_user_id && !entry.in_reply_to_screen_name) {
+			var reply_matches = null;
+			if (reply_matches = entry.text.match(/^@([a-zA-Z0-9_\-]+)/i)) {
+				entry.in_reply_to_screen_name = reply_matches[1];
+			}
+		}
+		
         entry.rowclass = "even";
         entry.timestamp = httpTimeToInt(entry.created_at);
         entry.base_url = Spaz.Prefs.get('twitter-base-url');
@@ -667,7 +681,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
         entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
 
 		// hashtags
-    entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9]+))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
+		entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9]+))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
 
         var entryHTML = Spaz.Tpl.parse('app:/templates/timeline-entry.tpl', entry);
 

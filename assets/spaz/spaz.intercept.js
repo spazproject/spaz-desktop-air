@@ -22,6 +22,17 @@ Spaz.Intercept.init = function() {
 
 				// Spaz.UI.showTooltip(this, $(this).attr('title'));
 			},
+			'a.in-reply-to':function(e) {
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'el'	:this,
+					'str'	:$(this).attr('title'),
+					'reply_status_id':$(this).attr('status-id'),
+					'reply_screen_name':$(this).attr('screen-name'),
+				});
+				tt.show();
+				// Spaz.UI.showTooltip(this, $(this).attr('title'));
+			},
 			'.user-image[title]':function(e) {
 				var tt = new Spaz_Tooltip({
 					'e'		:e,
@@ -65,6 +76,8 @@ Spaz.Intercept.init = function() {
 					'e'		:e,
 					'el'	:this,
 					'str'	:$(this).attr('title'),
+					'reply_status_id':$(this).attr('status-id'),
+					'reply_screen_name':$(this).attr('screen-name'),
 					'previewurl':$(this).attr('href'),
 				});
 				tt.show();

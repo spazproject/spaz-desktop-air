@@ -32,6 +32,7 @@ Spaz.Data.getAPIURL = function(key) {
     urls.friends_timeline   = "statuses/friends_timeline.json";
     urls.user_timeline      = "statuses/user_timeline.json";
     urls.replies_timeline   = "statuses/replies.json";
+    urls.show				= "statuses/show.json";
     urls.favorites          = "favorites.json";
     urls.dm_timeline        = "direct_messages.json";
     urls.dm_sent            = "direct_messages/sent.json";

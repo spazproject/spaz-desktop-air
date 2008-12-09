@@ -11,7 +11,12 @@
 		<div class="user-screen-name clickable" title="View user's profile" user-id="${user.id}" user-screen_name="${user.screen_name}">${user.screen_name}</div>
 	</div>
 	<div class="status" id="status-${id}">
-		<div class="status-text" id="status-text-${id}">${text}</div>
+		<div class="status-text" id="status-text-${id}">
+			{if in_reply_to_screen_name}
+				<a href="${base_url}${in_reply_to_screen_name}/statuses/${in_reply_to_status_id}/" title="In reply to:" class="in-reply-to" status-id="${in_reply_to_status_id}" screen-name="${in_reply_to_screen_name}">RE:</a>
+			{/if}
+			${text}
+		</div>
 		{if isDM}
 			<div class="status-actions">
 				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-${id}-dm" id="${id}" user-screen_name="${user.screen_name}" ></span>

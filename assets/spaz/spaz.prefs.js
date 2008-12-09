@@ -338,25 +338,25 @@ Spaz.Prefs.changeMethods = {
         setUI: function(value) {
             air.trace('value:' + value);
 
-            if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
+            if ((value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) || value == '') {
                 $('#services-pingfm-userappkey').val(value);
-                Spaz.UI.statusBar('Valid Ping.fm API key');
+                Spaz.dump('Valid Ping.fm API key');
             } else {
                 air.trace('invalid!');
                 $('#services-pingfm-userappkey').val('');
-                Spaz.UI.statusBar('Invalid Ping.fm API key');
+                Spaz.dump('Invalid Ping.fm API key');
                 // $('#services-pingfm-userappkey').val();
             }
         },
         check: function() {
             var current = Spaz.Prefs.get('services-pingfm-userappkey');
-            if (current && current.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
+            if ((current && current.match(/[a-f0-9]{32}-[0-9]{10}/i)) || current == '') {
                 Spaz.Prefs.set('services-pingfm-userappkey', Spaz.Prefs.get('services-pingfm-userappkey'));
                 return true;
             } else {
                 air.trace('invalid!');
                 Spaz.Prefs.set('services-pingfm-userappkey', '');
-                Spaz.UI.statusBar('Invalid Ping.fm API key')
+                Spaz.dump('Invalid Ping.fm API key');
                 return false;
             }
 

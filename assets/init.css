@@ -115,3 +115,6 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	color:white;
 }
 
+.timeline-entry .in-reply-to {
+	font-weight:bold;
+}
