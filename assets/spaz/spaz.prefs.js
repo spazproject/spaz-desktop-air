@@ -161,6 +161,16 @@ Spaz.Prefs.changeMethods = {
                 val = 1;
             }
 
+			/*  the bending code */
+			BlenderEffect.get('app:/assets/blender/page.pbj', function(shader) {
+				var tween = BlenderEffect.createShaderTransition(window.htmlLoader, 
+						shader, 
+						1200,
+						Tween.effects.elasticEase);
+				tween.hideOnFinish = false; 
+				tween.start(true);
+			});
+
             window.htmlLoader.alpha = val;
         },
         check: function() {

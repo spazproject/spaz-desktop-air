@@ -1,0 +1,39 @@
+/*
+ * Copyright 2007-2008. Adobe Systems Incorporated.
+ * All rights reserved.
+ */
+
+<languageVersion : 1.0;>
+
+kernel Disolve
+<   namespace : "com.adobe.air.samples.BlackBookSafe";
+    vendor : "Adobe";
+    version : 1;
+    description : "Disolve sample filter";
+>
+{
+    input image4 src;
+    output pixel4 dst;
+    parameter float width;
+    parameter float height;
+    parameter float transition
+     <
+        minValue: 0.0;
+        maxValue: 1.0;
+        defaultValue: 1.0;
+    >;
+    
+    void
+    evaluatePixel()
+    {
+        float amount = transition * 100.0;
+        pixel4 orig = sampleNearest(src, outCoord());
+        float2 pos = outCoord();
+        orig += sampleNearest(src, outCoord()-float2(cos(float(pos.x))*float(amount),0));
+        orig += sampleNearest(src, outCoord()-float2(sin(float(pos.y))*float(amount),0));
+        orig += sampleNearest(src, outCoord()-float2(0,cos(float(pos.x))*float(amount)));
+        orig += sampleNearest(src, outCoord()-float2(0,sin(float(pos.y))*float(amount)));
+        dst = orig/5.0;
+        dst[3] *= (1.0 - transition*transition);
+    }
+}

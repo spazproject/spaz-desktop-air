@@ -1,0 +1,105 @@
+/*
+ * Copyright 2007-2008. Adobe Systems Incorporated.
+ * All rights reserved.
+ */
+
+<languageVersion : 1.0;>
+
+kernel Shake
+<   namespace : "com.adobe.air.samples.BlackBookSafe";
+    vendor : "Adobe";
+    version : 1;
+    description : "Shake sample filter";
+>
+{
+    input image4 htmlLoaderSprite;
+
+    const float PI = 3.14159265;
+    
+    
+    output pixel4 dst;
+    
+    parameter float weight
+     <
+        minValue: 0.0;
+        maxValue: 20.0;
+        defaultValue: 0.5;
+    >;
+    
+     parameter float transition
+     <
+        minValue: 0.0;
+        maxValue: 1.0;
+        defaultValue: 1.0;
+    >;
+        
+     parameter float waves
+     <
+        minValue: 0.0;
+        maxValue: 20.0;
+        defaultValue: 3.0;
+    >;
+    
+    parameter float width
+    < 
+        minValue: 0.0;
+        maxValue: 1024.0;
+        defaultValue: 500.0; 
+    >;
+    
+     parameter float height
+    < 
+        minValue: 0.0;
+        maxValue: 1024.0;
+        defaultValue: 375.0; 
+    >;
+    
+
+
+    void
+    evaluatePixel()
+    {
+        float alfa;
+        if(transition<0.5){
+            alfa = 1.0 - transition * 2.0;
+        }else{
+            alfa = (transition - 0.5) * 2.0;
+        }
+        float position = cos( outCoord().y / height * waves + alfa * 20. );
+        float theta =  position * weight * (1.-alfa) * PI / 4.;
+        
+        float3 coord;
+        coord.xy = outCoord();
+        coord.x -= width/2.;
+        coord.z = - (1.0-alfa)*200.0;
+        
+        float3 camera = float3(0, 0, -2000);
+
+        float3x3 transform = float3x3(
+            cos(theta),  0,  sin(theta),
+                0,       1,        0, 
+            -sin(theta), 0,  cos(theta));
+                
+        float3 x1 = transform * float3(-1, 1, 0);
+        float3 x2 = transform * float3(1, -1, 0);
+        float3 x3 = transform * float3(-1, -1, 0);
+        
+        
+        float3 n = cross((x2-x1), (x3-x1));
+        float d = dot(x1, n);
+        
+        float t = (-d - dot(camera, n)) / dot(coord-camera, n);
+        
+        float3 intersection = (coord-camera) * t + camera;
+        
+        float2 pos = float2(
+                        dot(intersection-x3, (x2-x3)) / length(x2-x3),
+                        dot(intersection-x3, (x1-x3)) / length(x1-x3)
+                        );
+
+        // when the transition is finished we disable the blender effect and we have to match the same position
+        float2 errorCorrection = float2(-1.0, -1.0);
+        dst = sample(htmlLoaderSprite, pos + float2(width/2.0, 0.0) + errorCorrection );
+    }
+    
+}
