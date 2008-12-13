@@ -677,7 +677,7 @@ Spaz.Prefs.initUI = function() {
     $('#twitter-base-urls').bind('change', Spaz.Prefs.setFromUI);
     $('#twitter-api-base-url').bind('change', Spaz.Prefs.setFromUI);
     $('#twitter-base-url').bind('change', Spaz.Prefs.setFromUI);
-    $('services-twitpic-sharepassword').bind('change', Spaz.Prefs.setFromUI);
+    $('#services-twitpic-sharepassword').bind('change', Spaz.Prefs.setFromUI);
     $('#services-pingfm-userappkey').bind('change', Spaz.Prefs.setFromUI);
     $('#services-pingfm-enabled').bind('change', Spaz.Prefs.setFromUI);
     $('#services-pingfm-sendreplies').bind('change', Spaz.Prefs.setFromUI);
