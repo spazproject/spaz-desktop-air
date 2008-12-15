@@ -26,10 +26,15 @@
 			// get the pref
 			var service = Spaz.Prefs.get('url-shortener');
 			air.trace("service is "+ service);
-			
+
+            if (service == 'shortie') {
+                $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+            }
+
 			// populate the dropdown
 			for (method in Spaz.Shortlink.services) {
 				air.trace(method)
+
 				if (method[0] != '$') {
 					if (method == service) {
 						$('#url-shortener').append('<option value="'+method+'" selected="selected">'+method+'</option>');
@@ -44,9 +49,14 @@
 				Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
 			});
 			
-      $('#url-shortener').bind('change', function() {
+            $('#url-shortener').bind('change', function() {
 				air.trace($('#url-shortener').val());
 				Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
+                if ($('#url-shortener').val() != 'shortie') {
+                    $('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
+                } else {
+                    $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+                }
 			});
 			
 			// Spaz.dump("val:"+$('#shorten-original-link').val());
@@ -65,7 +75,12 @@
 			$('#shortenLink-form').bind('submit', function() {
 		  	var service = Spaz.Prefs.get('url-shortener');
 				air.trace("service is "+ service);
-				Spaz.Shortlink.services[service]($('#shorten-original-link').val());
+                var custom = $('#shorten-custom-link').val();
+                if (custom != '') {
+				    Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
+                } else {
+				    Spaz.Shortlink.services[service]($('#shorten-original-link').val());
+                }
 			});
 			
 			// air.trace(air.NativeApplication.nativeApplication.spazPrefs);
@@ -92,6 +107,12 @@
 			<label for="original-link">Link</label>
 			<input type="text" name="original-link" id="shorten-original-link" value="http://" />
 		</div>
+
+        <div class="formrow" id="shorten-custom-hidden" style="display: none; visibility: hidden;">
+            <label for="custom-link">Custom</label>
+            <input type="text" name="custom-link" id="shorten-custom-link" value="" />
+        </div>
+
 		<div class="formrow">
 			<label for="short-link">Short</label>
 			<input type="text" name="short-link" id="shorten-short-link" value="" />
@@ -103,7 +124,7 @@
 		<div id="verification-result" align="center">&nbsp;</div>
 	</form>
 </div>
-</div>
+
 
 </body>
 </html>

@@ -1146,8 +1146,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
             // We save the text as it could change in the loop due to async callbacks
             var txt = divElt.innerHTML;
-
-            var domains = ["tinyurl.com", "is.gd", "snipr.com", "snurl.com", "moourl.com", "url.ie", "snipurl.com", "xrl.us", "bit.ly", "ping.fm", "urlzen.com"];
+ 
+            var domains = ["short.ie", "tinyurl.com", "is.gd", "snipr.com", "snurl.com", "moourl.com", "url.ie", "snipurl.com", "xrl.us", "bit.ly", "ping.fm", "urlzen.com"];
             var stream = new air.URLStream();
 
             // time.start('lookingForShortDomains');

@@ -72,6 +72,9 @@ Spaz.Prefs.defaultPreferences = {
     'services-pingfm-sendreplies': false,
     'services-pingfm-updatetype': 'default',
 
+    'services-shortie-email': '',
+    'services-shortie-secretkey' : '',
+
     'twitter-api-base-url': 'https://twitter.com/',
     'twitter-base-url': 'http://twitter.com/',
 
@@ -343,6 +346,54 @@ Spaz.Prefs.changeMethods = {
 
     },
 
+    'services-shortie-secretkey': {
+        setUI: function(value) {
+            if (value || value == '') {
+                $('#services-shortie-secretkey').val(value);
+                Spaz.dump('Shortie secretkey set...');
+            } else {
+                $('#services-shortie-secretkey').val('');
+                Spaz.dump('Shortie secret key');
+            }
+        },
+
+        check: function() {
+            var current = Spaz.Prefs.get('services-shortie-secretkey');
+            if (current || current == '') {
+                Spaz.Prefs.set('services-shortie-secretkey', Spaz.Prefs.get('services-shortie-secretkey'));
+                return true;
+            } else {
+                Spaz.Prefs.set('services-shortie-secretkey', '');
+                Spaz.dump('Shortie secretkey bailed out');
+                return false;
+            }
+        }
+    },
+
+
+    'services-shortie-email': {
+        setUI: function(value) {
+            if (value || value == '') {
+                $('#services-shortie-email').val(value);
+                Spaz.dump('Shortie email set...');
+            } else {
+                $('#services-shortie-email').val('');
+                Spaz.dump('Shortie secret key');
+            }
+        },
+
+        check: function() {
+            var current = Spaz.Prefs.get('services-shortie-email');
+            if (current || current == '') {
+                Spaz.Prefs.set('services-shortie-email', Spaz.Prefs.get('services-shortie-email'));
+                return true;
+            } else {
+                Spaz.Prefs.set('services-shortie-email', '');
+                Spaz.dump('Shortie email bailed out');
+                return false;
+            }
+        }
+    },
 
     'services-pingfm-userappkey': {
         setUI: function(value) {
@@ -681,6 +732,8 @@ Spaz.Prefs.initUI = function() {
     $('#services-pingfm-userappkey').bind('change', Spaz.Prefs.setFromUI);
     $('#services-pingfm-enabled').bind('change', Spaz.Prefs.setFromUI);
     $('#services-pingfm-sendreplies').bind('change', Spaz.Prefs.setFromUI);
+    $('#services-shortie-email').bind('change', Spaz.Prefs.setFromUI);
+    $('#services-shortie-secretkey').bind('change', Spaz.Prefs.setFromUI);
     $('#dock-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
     $('#dock-displayunreadbadge').bind('change', Spaz.Prefs.setFromUI);
     $('#dock-unreadbadgecolor').bind('change', Spaz.Prefs.setFromUI);

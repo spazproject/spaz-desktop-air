@@ -26,6 +26,57 @@ Spaz.Shortlink.$copyToClipboard = function(shorturl) {
 
 
 Spaz.Shortlink.services = {
+    'shortie' : function (url, custom) {
+        var origLink = encodeURI(url);
+        
+        $('#verification-result').text('Shortening URL...');
+
+        var shortie = {
+            orig: '',
+            url: '',
+            email: '',
+            private: '',
+            format: 'rest'
+        };
+
+        shortie.orig = origLink;
+
+        shortie.url = shortie.orig;
+        shortie.email = Spaz.Prefs.get('services-shortie-email');
+        shortie.secretKey =  Spaz.Prefs.get('services-shortie-secretkey');
+        shortie.private =  'false';
+        shortie.format =  'rest';
+
+        if (custom != null) {
+            shortie.custom = custom;
+        }
+
+        var xhr = $.ajax({
+            complete: function (xhr, rstr) {
+                var shorturl = trim(xhr.responseText);
+                
+				if (shorturl.search(/^http/i)!=-1) {
+					Spaz.Shortlink.$copyToClipboard(shorturl)
+                } else {
+                    $('#verification-result').text("Service returned an error: '" + shorturl + "'");
+                }
+            },
+            error: function (xhr, rstr) {
+                $('#verification-result').text('Error trying to shorten link');
+            },
+            success: function (data) { },
+
+            beforeSend: function (xhr) {
+
+            },
+
+            processData: true,
+
+            type:"GET",
+            url: 'http://short.ie/api?',
+            data: shortie
+        });
+    },
 	
 	
 	'twurl.nl' : function(url) {
@@ -71,9 +122,7 @@ Spaz.Shortlink.services = {
 			data:"link[url]="+url,
 		});		
 	},
-	
-	
-	
+
 	bitly : function(url) {
 		var origlink = encodeURI(url);
 
@@ -220,6 +269,7 @@ Spaz.Shortlink.services = {
 		// air.trace('OrigLink:'+origlink);
 
 		$('#verification-result').text('Shortening URL...');
+
 
 		var xhr = $.ajax({
 			complete:function(xhr, rstr){
