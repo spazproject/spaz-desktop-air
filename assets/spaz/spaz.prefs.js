@@ -29,6 +29,7 @@ Spaz.Prefs.defaultPreferences = {
     'window-showcontextmenus': true,
     'window-tooltiphidedelay': 8000,
     'window-tooltipdelay': 500,
+	'window-dropshadow': true,
 
     // 'theme-userstylesheet':null,
     'theme-basetheme': 'spaz',
@@ -255,6 +256,23 @@ Spaz.Prefs.changeMethods = {
         },
         check: function() {
             Spaz.Prefs.set('window-restoreonactivate', Boolean(Spaz.Prefs.get('window-restoreonactivate')))
+        }
+    },
+    'window-dropshadow': {
+        setUI: function(value) {
+            $('#window-dropshadow').attr('checked', value);
+        },
+        onChange: function(value) {
+            if (value) {
+			    window.htmlLoader.filters = window.runtime.Array(
+			    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
+			    );
+            } else {
+			    window.htmlLoader.filters = null;	
+			}
+        },
+        check: function() {
+            Spaz.Prefs.set('window-dropshadow', Boolean(Spaz.Prefs.get('window-dropshadow')))
         }
     },
 	'timeline-keyboardnavwrap': {
@@ -713,6 +731,7 @@ Spaz.Prefs.initUI = function() {
     $('#window-restoreonactivate').bind('change', Spaz.Prefs.setFromUI);
     $('#window-shownotificationpopups').bind('change', Spaz.Prefs.setFromUI);
 	$('#window-notificationposition').bind('change', Spaz.Prefs.setFromUI);
+	$('#window-dropshadow').bind('change', Spaz.Prefs.setFromUI);
 	$('#timeline-keyboardnavwrap').bind('change', Spaz.Prefs.setFromUI);
     $('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
     $('#sound-enabled').bind('change', Spaz.Prefs.setFromUI);
