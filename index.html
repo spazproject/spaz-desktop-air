@@ -159,9 +159,9 @@
 
 
 		<div id="tabs" class="TabbedPanels">
-			<ul class="TabbedPanelsTabGroup" id="timeline-tabs" tabindex="0">
+			<ul class="TabbedPanelsTabGroup" id="timeline-tabs">
 				<!-- YOUR TIMELINE -->
-				<li class="TabbedPanelsTab" tabindex="0" title="Your timeline"
+				<li class="TabbedPanelsTab" tabindex="2" title="Your timeline"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-friends" onclick="Spaz.UI.setSelectedTab(this)">
@@ -169,7 +169,7 @@
 				</li>
 
 				<!-- SENT STATUSES -->
-				<li class="TabbedPanelsTab" tabindex="0" title="Tweets you've sent"
+				<li class="TabbedPanelsTab" tabindex="3" title="Tweets you've sent"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-user" onclick="Spaz.UI.setSelectedTab(this)">
@@ -177,7 +177,7 @@
 				</li>
 
 				<!-- PUBLIC -->
-				<li class="TabbedPanelsTab" tabindex="0" title="Public timeline"
+				<li class="TabbedPanelsTab" tabindex="4" title="Public timeline"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-public" onclick="Spaz.UI.setSelectedTab(this)">
@@ -185,7 +185,7 @@
 				</li>
 
 				<!-- SEARCH -->
-				<li class="TabbedPanelsTab" tabindex="0" title="Search timeline"
+				<li class="TabbedPanelsTab" tabindex="5" title="Search timeline"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-search" onclick="Spaz.UI.setSelectedTab(this);$('#search-for')[0].focus();">
@@ -193,7 +193,7 @@
 				</li>
 
 				<!-- Friendslist -->
-				<li class="TabbedPanelsTab" tabindex="0" title="Friends"
+				<li class="TabbedPanelsTab" tabindex="6" title="Friends"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)">
@@ -201,7 +201,7 @@
 				</li>
 
 				<!-- Followerslist -->
-				<li class="TabbedPanelsTab" tabindex="0" title="Followers"
+				<li class="TabbedPanelsTab" tabindex="7" title="Followers"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)">
@@ -209,7 +209,7 @@
 				</li>
 
 				<!-- PREFS -->
-				<li class="TabbedPanelsTab" tabindex="0" title="Preferences"
+				<li class="TabbedPanelsTab" tabindex="8" title="Preferences"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-prefs" onclick="Spaz.UI.setSelectedTab(this)">
@@ -648,9 +648,9 @@
 		<!-- ENTRYFORM -->
 		<form id="entryform" onSubmit="return false;">
 			<!-- <textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea> -->
-			<textarea id="entrybox" tabindex="0"></textarea>
+			<textarea id="entrybox" tabindex="1"></textarea>
 			<div id="entrystats"><span id="chars-left"></span> chars left</div>
-			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" tabindex="0" />
+			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" />
 		</form>
 
 		<!-- STATUSBAR -->

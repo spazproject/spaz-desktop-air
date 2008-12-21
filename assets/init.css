@@ -18,7 +18,7 @@ body {
 * {
 	-webkit-user-select:none;
 }
-input, textarea, .status-text {
+input, textarea, .status-text, .status-text * {
 	-webkit-user-select:text;
 }
 
