@@ -19,7 +19,7 @@ Spaz.Themes.init = function() {
 	* Under an Attribution, Share Alike License
 	* By Kelvin Luck ( http://www.kelvinluck.com/ )
 	**/
-	$('link[@rel*=style][@title]').each(function(i){
+	$('link[rel*=style][title]').each(function(i){
 		var title = this.getAttribute('title');
 		$('#theme-basetheme').append('<option value="'+title+'">'+title+'</option>');
 		Spaz.dump("css:"+this.title);
@@ -103,7 +103,7 @@ Spaz.Themes.clearUserStyleSheet = function() {
 **/
 Spaz.Themes.setCurrentTheme = function() {	
 	Spaz.dump('current theme:' + Spaz.Prefs.get('theme-basetheme'));
-	$('link[@rel*=style][@title]').each(function(i) {
+	$('link[rel*=style][title]').each(function(i) {
 		this.disabled = true;
 		Spaz.dump(this.getAttribute('title') + " is now disabled");
 		if (this.getAttribute('title') == Spaz.Prefs.get('theme-basetheme')) {
