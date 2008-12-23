@@ -699,9 +699,6 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		
 		
 		
-		
-		// var entryHTML = Spaz.Tpl.parse('app:/templates/timeline-entry.tpl', entry);
-		
 		var entryHTML = Spaz.Tpl.parse('timeline_entry', entry);
 		// air.trace(entryHTML);
 		

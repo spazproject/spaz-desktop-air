@@ -365,7 +365,7 @@ Spaz.Section.init = function() {
             }
 
 
-            var parsed = Spaz.Tpl.parse('app:/templates/friendslist-row.tpl', item);
+            var parsed = Spaz.Tpl.parse('friendslist_row', item);
             // air.trace("\n\nappend this\n" + parsed);
             $('#' + this.timeline).append(parsed);
         },
@@ -431,7 +431,7 @@ Spaz.Section.init = function() {
                 item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
             }
 
-            var parsed = Spaz.Tpl.parse('app:/templates/friendslist-row.tpl', item);
+            var parsed = Spaz.Tpl.parse('friendslist_row', item);
             $('#' + this.timeline).append(parsed);
         },
         cleanup: function() {

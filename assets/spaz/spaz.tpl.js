@@ -1,12 +1,15 @@
 var Spaz; if (!Spaz) Spaz = {};
 
 /***********
-Spaz.UI
+Spaz.Tpl
 ***********/
 if (!Spaz.Tpl) Spaz.Tpl = {};
 
+/**
+ * @param string  template  the template method to call in Spaz.Templates
+ * @param mixed   data      data to be used by the template method 
+ */
 Spaz.Tpl.parse =function(template, data) {
-		// var parsed  = Spaz.Sys.ClassicSB.parseTpl(tpl, data, path)
 		var parsed = Spaz.Templates[template](data);
 		return parsed;
 };
@@ -73,3 +76,29 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '</div>';
 	return entryHTML;
 }
+
+Spaz.Templates.friendslist_row = function(d) {
+	var entryHTML = '';
+	entryHTML += '<div screenname="'+d.screen_name+'" id="'+d.timeline+'-'+d.id+'" class="friendslist-row">';
+	entryHTML += '	<div class="directory-user">';
+	entryHTML += '		<img src="'+d.profile_image_url+'" class="user-image" user-screen_name="'+d.screen_name+'" title="View user\'s profile" />';
+	entryHTML += '		<div class="directory-user-name">';
+	entryHTML += '			<a href="'+d.base_url+''+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">';
+							if (d.name) {
+	entryHTML += 				d.name;
+							}
+	entryHTML += '			('+d.screen_name+')</a>';
+	entryHTML += '		</div>';
+	entryHTML += '		<div class="directory-user-info">';
+							if (d.location) {
+	entryHTML += '		    	<span class="directory-user-location clickable" title="View this location on a map">'+d.location+'</span>';
+							}
+							if (d.url) {
+	entryHTML += '		    	&middot; <a class="directory-user-homepage" href="'+d.url+'" title="Open user\'s homepage">www&raquo;</a>';
+							}
+	entryHTML += '		    &nbsp;';
+	entryHTML += '    	</div>';
+	entryHTML += '	</div>';
+	entryHTML += '</div>';
+	return entryHTML;
+};
