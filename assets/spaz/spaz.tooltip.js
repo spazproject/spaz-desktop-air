@@ -16,15 +16,15 @@ function Spaz_Tooltip(opts) {
 	this.reply_screen_name = opts.reply_screen_name;
 
 
-	air.trace('================================');
-	air.trace('FROM: '+this.el.outerHTML);
-	air.trace("opts: "+this.event);
-	air.trace("opts: "+this.el);
-	air.trace("opts: "+this.str);
-	air.trace("opts: "+this.previewurl);
-	air.trace("opts: "+this.reply_status_id);
-	air.trace("opts: "+this.reply_screen_name);
-
+	// air.trace('================================');
+	// air.trace('FROM: '+this.el.outerHTML);
+	// air.trace("opts: "+this.event);
+	// air.trace("opts: "+this.el);
+	// air.trace("opts: "+this.str);
+	// air.trace("opts: "+this.previewurl);
+	// air.trace("opts: "+this.reply_status_id);
+	// air.trace("opts: "+this.reply_screen_name);
+	// 
 
 }
 
