@@ -11,7 +11,7 @@ body {
     Should disable ugly AIR focus outlines in most cases
 */
 *:focus {
-    outline:none;
+    outline:1px dotted #666;
 }
 
 /* selectable settings */
@@ -116,5 +116,4 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 }
 
 .timeline-entry .in-reply-to {
-	font-weight:bold;
 }

@@ -416,7 +416,9 @@ Spaz.Section.init = function() {
         },
         onAjaxComplete: function(url, xhr, msg) {
 	
-		    this.$ajaxQueueFinished++;
+			air.trace("\n=========================================\ncompleted:" +url);
+	
+
 
 
 
@@ -457,7 +459,7 @@ Spaz.Section.init = function() {
 		                    Spaz.dump("ERROR: "+data.error+" ["+data.request+"]");
 		                    this.$ajaxQueueErrors.push("Twitter says: \""+data.error+"\"");
 		                } else {
-		                    this.$ajaxQueueStorage = this.$ajaxQueueStorage.concat(data);
+		                    // this.$ajaxQueueStorage = this.$ajaxQueueStorage.concat(data);
 		                }
 		            }
 		        } catch(e) {
@@ -466,36 +468,35 @@ Spaz.Section.init = function() {
 
 		        air.trace('this.$ajaxQueueFinished:'+this.$ajaxQueueFinished);
 		        air.trace('this.urls.length:'+this.urls.length);
-		        air.trace('this.$ajaxQueueStorage.length:'+this.$ajaxQueueStorage.length);
+		        air.trace('data.length:'+data.length);
 		        air.trace('this.$ajaxQueueErrors.length:'+this.$ajaxQueueErrors.length);
 		    }
 
-			air.trace('Adding '+this.$ajaxQueueStorage.length+' entries from '+url);
+			air.trace('Adding '+data.length+' entries from '+url);
 
+        	if (data.length > 0) {
+	            time.start('addingItems');
+	            for (var i in data) {
+					// air.trace('URL:'+thisurl);
+					// air.trace('section URLs:'+this.urls);
+					/*
+						Check the origin URL to see if this is a follower or someone the
+						user is following
+					*/
+					if (url == Spaz.Data.getAPIURL('friendslist')) {
+						data[i].is_following = true;
+					} else if (url == Spaz.Data.getAPIURL('followerslist')) {
+						data[i].is_follower = true;
+					}
+
+	                this.addItem(data[i]);
+	            }
+	            time.stop('addingItems');
+	        }
+
+		    this.$ajaxQueueFinished++;
 			if (this.$ajaxQueueFinished >= this.urls.length) {
-		        this.$ajaxQueueFinished = 0;
-				// Spaz.UI.statusBar('Adding '+Spaz.Data.$ajaxQueueStorage.length+' entries');
-
-
-	        	if (this.$ajaxQueueStorage.length > 0) {
-		            time.start('addingItems');
-		            for (var i in this.$ajaxQueueStorage) {
-						// air.trace('URL:'+thisurl);
-						// air.trace('section URLs:'+this.urls);
-						/*
-							Check the origin URL to see if this is a follower or someone the
-							user is following
-						*/
-						if (url == Spaz.Data.getAPIURL('friendslist')) {
-							this.$ajaxQueueStorage[i].is_following = true;
-						} else if (url == Spaz.Data.getAPIURL('followerslist')) {
-							this.$ajaxQueueStorage[i].is_follower = true;
-						}
-
-		                this.addItem(this.$ajaxQueueStorage[i]);
-		            }
-		            time.stop('addingItems');
-		        }
+		        // this.$ajaxQueueFinished = 0;
 
 		        Spaz.dump('cleaning up timeline');
 		        this.cleanup();
@@ -510,8 +511,8 @@ Spaz.Section.init = function() {
 		            this.$ajaxQueueErrors = [];
 		        }
 
-		        Spaz.dump('emptying storage');
-		        this.$ajaxQueueStorage = [];
+		        // Spaz.dump('emptying storage');
+		        // this.$ajaxQueueStorage = [];
 			
 				this.cleanup();
 			}
@@ -528,7 +529,7 @@ Spaz.Section.init = function() {
 		    if ($('#' + item.timeline + '-' + item.id).length >= 1) {
 				air.trace('MUTUAL FOLLOWER');
 			
-				$('.directory-user-followstatus[user-id="'+item.id+'"]').text('mutual follower');
+				$('.directory-user-followstatus[user-id="'+item.id+'"]').attr('rel','mutual');
 			} else {
 	            /*
 	            	convert common long/lat formats

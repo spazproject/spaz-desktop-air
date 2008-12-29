@@ -34,7 +34,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
 							if (d.in_reply_to_screen_name) {
-	entryHTML += '				<a href="'+d.base_url+''+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">re:</a>';
+	entryHTML += '				<a href="'+d.base_url+''+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
 	entryHTML += '		</div>';
@@ -78,8 +78,17 @@ Spaz.Templates.timeline_entry = function(d) {
 }
 
 Spaz.Templates.friendslist_row = function(d) {
+	air.trace(JSON.stringify(d));
+
 	var entryHTML = '';
 	entryHTML += '<div screenname="'+d.screen_name+'" user-id="'+d.id+'" id="'+d.timeline+'-'+d.id+'" class="friendslist-row">';
+	entryHTML += '		<span class="directory-user-followstatus" screen-name="'+d.screen_name+'" user-id="'+d.id+'"';
+						if (d.is_follower) {
+	entryHTML += '			rel="follower"';
+						} else if (d.is_following) {
+	entryHTML += '			rel="following"';
+						}
+	entryHTML += '		></span>';
 	entryHTML += '	<div class="directory-user">';
 	entryHTML += '		<img src="'+d.profile_image_url+'" class="user-image" user-screen_name="'+d.screen_name+'" title="View user\'s profile" />';
 	entryHTML += '		<div class="directory-user-name">';
@@ -96,13 +105,6 @@ Spaz.Templates.friendslist_row = function(d) {
 							if (d.url) {
 	entryHTML += '		    	&middot; <a class="directory-user-homepage" href="'+d.url+'" title="Open user\'s homepage">www&raquo;</a>';
 							}
-	entryHTML += '			<span class="directory-user-followstatus" screen-name="'+d.screen_name+'" user-id="'+d.id+'">';
-							if (d.is_follower) {
-	entryHTML += '				follower';
-							} else if (d.is_following) {
-	entryHTML += '				following';
-							}
-	entryHTML += '			</span>';
 	entryHTML += '		    &nbsp;';
 	entryHTML += '    	</div>';
 	entryHTML += '	</div>';
