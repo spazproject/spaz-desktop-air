@@ -655,6 +655,7 @@ Spaz.Prefs.init = function() {
     Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
     Spaz.dump("defaultPreferences:" + Spaz.Prefs.defaultPreferences);
     Spaz.Prefs.loadPrefs();
+	Spaz.Prefs.setSoundFileLocations();
     Spaz.Prefs.initUI();
 }
 
@@ -800,6 +801,54 @@ Spaz.Prefs.setFromUI = function(event) {
             Spaz.Prefs.changeMethods[id].onChange(Spaz.Prefs.get(id));
         }
     }
+};
+
+/*
+ * Allow user-created sounds by checking for their presence in the app storage directory.
+ * If found, override the defaults set in Spaz.Prefs.defaultPreferences. 
+ */
+Spaz.Prefs.setSoundFileLocations = function() {
+	air.trace("Setting sound file locations");
+	
+	var soundFileUpdate = air.File.applicationStorageDirectory;
+	soundFileUpdate = soundFileUpdate.resolvePath('usersounds/Csnd.mp3');
+
+	var soundFileStartup = air.File.applicationStorageDirectory;
+	soundFileStartup = soundFileStartup.resolvePath('usersounds/On.mp3');
+
+	var soundFileShutdown = air.File.applicationStorageDirectory;
+	soundFileShutdown = soundFileShutdown.resolvePath('usersounds/Off.mp3');
+
+	var soundFileNew = air.File.applicationStorageDirectory;
+	soundFileNew = soundFileNew.resolvePath('usersounds/New.mp3');
+
+	var soundFileWilhelm = air.File.applicationStorageDirectory;
+	soundFileWilhelm = soundFileWilhelm.resolvePath('usersounds/wilhelm.mp3');
+	
+	if (soundFileUpdate.exists) {
+		Spaz.Prefs.preferences['sound-update'] = soundFileUpdate.url;
+	}
+	air.trace('sound-update is: ' + Spaz.Prefs.preferences['sound-update']);
+	
+	if (soundFileStartup.exists) {
+		Spaz.Prefs.preferences['sound-startup'] = soundFileStartup.url;
+	}
+	air.trace('sound-startup is: ' + Spaz.Prefs.preferences['sound-startup']);
+	
+	if (soundFileShutdown.exists) {
+		Spaz.Prefs.preferences['sound-shutdown'] = soundFileShutdown.url;
+	}
+	air.trace('sound-shutdown is: ' + Spaz.Prefs.preferences['sound-shutdown']);
+	
+	if (soundFileNew.exists) {
+		Spaz.Prefs.preferences['sound-new'] = soundFileNew.url;
+	}
+	air.trace('sound-new is: ' + Spaz.Prefs.preferences['sound-new']);
+
+	if (soundFileWilhelm.exists) {
+		Spaz.Prefs.preferences['sound-wilhelm'] = soundFileWilhelm.url;
+	}
+	air.trace('sound-wilhelm is: ' + Spaz.Prefs.preferences['sound-wilhelm']);
 };
 
 
