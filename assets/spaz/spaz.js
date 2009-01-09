@@ -37,7 +37,7 @@ Spaz.createUserDirs = function() {
 	var userSmileysDir = appStore.resolvePath("usersmileys/");
 	userSmileysDir.createDirectory()
 
-	var userSoundsDir = appStore.resolvePath("usersounds/");
+	var userSoundsDir = appStore.resolvePath(Spaz.Const.userdirSound);
 	userSoundsDir.createDirectory()
 
 	air.trace(userThemesDir.nativePath);
