@@ -40,16 +40,25 @@ Spaz.UI.playSound = function(url, callback) {
     Spaz.dump("loading " + url);
 
     var req = new air.URLRequest(url);
-    var s = new air.Sound(req);
-    var sc = s.play();
+    var s = new air.Sound();
 
-    Spaz.dump("playing " + url);
-    if (callback) {
-        sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
+    function onComplete(e) {
+        var sc = s.play();
+        if (sc) {
+            Spaz.dump("playing " + url);
+            if (callback) {
+                sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
+            }
+        }
     }
 
+    function onIOError(e) {
+        Spaz.dump("failed to load " + url);
+    }
 
-
+    s.addEventListener(air.Event.COMPLETE, onComplete);
+    s.addEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
+    s.load(req);
 }
 
 
