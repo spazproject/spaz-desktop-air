@@ -43,7 +43,7 @@ Spaz.Prefs.defaultPreferences = {
 
     'debug-enabled': false,
 
-    'sound-update': '/assets/sounds/TokyoTrainStation/Csnd.mp3',
+    'sound-update': '/assets/sounds/TokyoTrainStation/CSnd.mp3',
     'sound-startup': '/assets/sounds/TokyoTrainStation/On.mp3',
     'sound-shutdown': '/assets/sounds/TokyoTrainStation/Off.mp3',
     'sound-new': '/assets/sounds/TokyoTrainStation/New.mp3',
