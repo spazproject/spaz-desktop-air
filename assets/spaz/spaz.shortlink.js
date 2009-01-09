@@ -124,7 +124,7 @@ Spaz.Shortlink.services = {
 	},
 
 	bitly : function(url) {
-		var origlink = encodeURI(url);
+		var origlink = encodeURIComponent(url);
 
 		// air.trace('OrigLink:'+origlink);
 
@@ -171,7 +171,7 @@ Spaz.Shortlink.services = {
 	
 	
 	urlzen : function(url) {
-		var origlink = encodeURI(url);
+		var origlink = encodeURIComponent(url);
 
 		// air.trace('OrigLink:'+origlink);
 
@@ -218,7 +218,7 @@ Spaz.Shortlink.services = {
 	
 	
 	xrlus : function(url) {
-		var origlink = encodeURI(url);
+		var origlink = encodeURIComponent(url);
 
 		// air.trace('OrigLink:'+origlink);
 
@@ -264,7 +264,7 @@ Spaz.Shortlink.services = {
 	
 	
 	snipr : function(url) {
-		var origlink = encodeURI(url);
+		var origlink = encodeURIComponent(url);
 
 		// air.trace('OrigLink:'+origlink);
 
@@ -320,7 +320,7 @@ Spaz.Shortlink.services = {
 	
 	
 	isgd : function(url) {
-		var origlink = encodeURI(url);
+		var origlink = encodeURIComponent(url);
 
 		// air.trace('OrigLink:'+origlink);
 
