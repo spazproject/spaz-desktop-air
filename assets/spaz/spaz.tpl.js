@@ -33,7 +33,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
-							if (d.in_reply_to_screen_name) {
+							if (d.in_reply_to_status_id) {
 	entryHTML += '				<a href="'+d.base_url+''+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
