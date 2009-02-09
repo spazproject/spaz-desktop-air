@@ -263,7 +263,7 @@ Spaz.Prefs.changeMethods = {
             $('#window-dropshadow').attr('checked', value);
         },
         onChange: function(value) {
-            if (value) {
+            if (value) { // && !Spaz.Sys.isLinux()) {
 			    window.htmlLoader.filters = window.runtime.Array(
 			    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
 			    );

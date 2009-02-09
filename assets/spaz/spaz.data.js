@@ -156,7 +156,7 @@ Spaz.Data.verifyPassword = function() {
  * @param {String} password the password
  * @returns void
  */
-Spaz.Data.update = function(msg, username, password) {
+Spaz.Data.update = function(msg, username, password, irt_id) {
 	var user = username;
 	var pass = password;
 
@@ -169,6 +169,11 @@ Spaz.Data.update = function(msg, username, password) {
 	$('#updateButton').attr('disabled', true);
 	var oldButtonLabel = $('#updateButton').val();
 	$('#updateButton').val('Sending...');
+
+	var update_data = "&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg);
+	if (irt_id) {
+		update_data = update_data+"&in_reply_to_status_id="+irt_id;
+	}
 
 	var xhr = $.ajax({
 		timeout:1000*40, // updates can take longer, so we double the standard timeout
@@ -233,6 +238,7 @@ Spaz.Data.update = function(msg, username, password) {
 			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true, true, true);
 
 			Spaz.UI.entryBox.reset();
+			Spaz.UI.clearPostIRT();
 			Spaz.dump('reset entryBox (Spry)');
 			$('#entrybox')[0].blur();
 			Spaz.dump('Blurred entryBox (DOM)');
@@ -252,7 +258,7 @@ Spaz.Data.update = function(msg, username, password) {
 		processData:false,
 		type:"POST",
 		url:Spaz.Data.getAPIURL('update'),
-		data:"&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg),
+		data:update_data,
 //		data:"&status="+encodeURIComponent(msg),
 	});
 
@@ -531,7 +537,7 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 		section.lastcheck = getTimeAsInt();
 
 		for (var i = 0; i < section.urls.length; i++) {
-			alert('section.urls['+i+']: '+ section.urls[i])
+			// alert('section.urls['+i+']: '+ section.urls[i])
 			Spaz.Data.getDataForUrl(section.urls[i], section);
 			// data = data.concat(thisdata);
 		}
@@ -607,8 +613,8 @@ Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
 		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
 			time.start('addingItems');
 			for (var i in Spaz.Data.$ajaxQueueStorage) {
-				air.trace('URL:'+thisurl);
-				air.trace('section URLs:'+section.urls);
+				// air.trace('URL:'+thisurl);
+				// air.trace('section URLs:'+section.urls);
 				/*
 					Check the origin URL to see if this is a follower or someone the
 					user is following

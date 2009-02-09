@@ -29,6 +29,15 @@ Spaz.Sys.setUserAgent = function(uastring) {
 	return window.htmlLoader.userAgent
 };
 
+Spaz.Sys.isWindows = function() {
+	return (air.Capabilities.os.search(/Windows/gi) > -1);
+};
+Spaz.Sys.isMac = function() {
+	return (air.Capabilities.os.search(/Mac OS/gi) > -1);
+};
+Spaz.Sys.isLinux = function() {
+	return (air.Capabilities.os.search(/Linux/gi) > -1);
+};
 
 
 Spaz.Sys.initNetworkConnectivityCheck = function() {

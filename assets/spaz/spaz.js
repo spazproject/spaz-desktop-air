@@ -58,7 +58,19 @@ Spaz.initialize = function() {
 
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
-
+	
+	// if (Spaz.Sys.isLinux()) {
+	// 	$('body').show();
+	// 	$('body').css('opacity', 1);
+	// 	$('#container').css('-khtml-border-radius','0'); /* this is webkit-specific and gives us rounded corners*/
+	// 	$('#container').css('top',   '0px;'); /* This has an effective 8px padding to show us the app dropshadow */
+	// 	$('#container').css('left',  '0px;'); /* using all-four-sides positioning lets it expand properly on resizing */
+	// 	$('#container').css('bottom','0px;');
+	// 	$('#container').css('right', '0px;');
+	// }
+	
+	// alert("OS:"+air.Capabilities.os);
+	
 	/***************************
 	 * Load prefs
 	 **************************/
@@ -94,14 +106,14 @@ Spaz.initialize = function() {
 	air.URLRequestDefaults.useCache = true;
 
 	// apply dropshadow to window
-	if (Spaz.Prefs.get('window-dropshadow')) {
-		air.trace('Applying Flash Filter Dropshadow');
-
-		window.htmlLoader.filters = window.runtime.Array(
-			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
-		);
-		// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-	}
+	// if (Spaz.Prefs.get('window-dropshadow') && !Spaz.Sys.isLinux()) {
+	// 	air.trace('Applying Flash Filter Dropshadow');
+	// 
+	// 	window.htmlLoader.filters = window.runtime.Array(
+	// 		new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
+	// 	);
+	// 	// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+	// }
 	// make the systray icon if on Windows
 	Spaz.Windows.makeSystrayIcon()
 
@@ -142,6 +154,7 @@ Spaz.initialize = function() {
 	Spaz.Windows.makeWindowVisible();
 	Spaz.dump('Made window visible');
 
+	window.nativeWindow.visible = true;
 	$('body').fadeIn(1000);
 
 
@@ -153,7 +166,7 @@ Spaz.initialize = function() {
 	{
 		maxChars: 140,
 		counterType: "chars_remaining",
-		counterId: 'chars-left',
+		counterId: 'chars-left-count',
 		hint: Spaz.Prefs.get('entryboxhint'),
 		useCharacterMasking: true
 	}

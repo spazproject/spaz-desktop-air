@@ -506,7 +506,24 @@ a, a:link, .clickable {
 				-khtml-border-top-left-radius:5px;
 				-khtml-border-top-right-radius:5px;
 			}
-
+				#irt {
+					color:#222;
+				}
+					#irt-message {
+					}
+					#irt-dismiss {
+						padding:0px 4px 1px;
+						color:#AAAAAA;
+						background-color:#404040;
+						-khtml-border-radius:4px;
+						font-size:9px;
+						cursor:pointer;
+						margin:0;
+					}
+						#irt-dismiss:hover {
+							color:#FFFFFF;
+							background-color:#666666;
+						}
 
 			/*
 				The button to submit the post. This can be hidden completely, and the user can still

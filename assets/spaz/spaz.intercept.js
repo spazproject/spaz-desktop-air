@@ -194,6 +194,12 @@ Spaz.Intercept.init = function() {
 			},
 			
 			
+			'#irt-dismiss':function(e) {
+				Spaz.UI.clearPostIRT();
+				$('#entrybox').focus();
+			},
+			
+			
 			// prefs buttons handlers
 			'#prefs-autosetrefresh-button':function(e) {
 				Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
@@ -241,7 +247,7 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
 			},
 			'.status-action-reply':function(e) {
-				Spaz.UI.prepReply($(this).attr('user-screen_name'));
+				Spaz.UI.prepReply($(this).attr('user-screen_name'), $(this).attr('entry-id'));
 			},
 			'.status-action-del':function(e) {
 				Spaz.Data.destroyStatus($(this).attr('entry-id'))

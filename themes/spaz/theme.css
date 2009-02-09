@@ -477,14 +477,32 @@ a, a:link, .clickable {
 				This is the counter for number of chars entered
 			*/
 			#entrystats {
-				bottom:   0px;
-				left:     8px;
+				bottom:   2px;
+				left:     6px;
 				position:absolute;
 				z-index: 100;
 				color:#999999;
 				font-size:9px;
 				opacity:1;
 			}
+				#irt {
+					color:#222;
+				}
+					#irt-message {
+					}
+					#irt-dismiss {
+						padding:0px 4px 1px;
+						color:#AAAAAA;
+						background-color:#404040;
+						-khtml-border-radius:4px;
+						font-size:9px;
+						cursor:pointer;
+						margin:0;
+					}
+						#irt-dismiss:hover {
+							color:#FFFFFF;
+							background-color:#666666;
+						}
 
 
 			/*
@@ -492,10 +510,12 @@ a, a:link, .clickable {
 				hit ENTER to send, so it's not really necessary
 			*/
 			#updateButton {
-				bottom:3px;
-				right: 3px;
+				bottom:6px;
+				right: 6px;
 				position:absolute;
 				opacity:0.5;
+				padding:2px;
+				display:none;
 			}
 				#updateButton:hover {
 					opacity:0.9;

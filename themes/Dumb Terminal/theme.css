@@ -363,6 +363,27 @@ border:none;
 	-khtml-border-top-right-radius:5px;
 }
 
+#irt {
+	color:#0F0;
+}
+	#irt-message {
+	}
+	#irt-dismiss {
+		padding:0px 4px 1px;
+		color:#030;
+		background-color:rgba(0,192,0,1);
+		-khtml-border-radius:4px;
+		font-size:9px;
+		cursor:pointer;
+		margin:0;
+	}
+		#irt-dismiss:hover {
+			color:#006600;
+			background-color:rgba(0,224,0,1);
+		}
+
+
+
 
 #statusbar {
 	position:absolute;

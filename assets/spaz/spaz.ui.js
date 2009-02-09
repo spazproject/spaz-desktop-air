@@ -290,6 +290,8 @@ Spaz.UI.prepMessage = function() {
     var eb = $('#entrybox');
     eb.val('');
     eb[0].setSelectionRange(0, 0);
+
+	Spaz.UI.clearPostIRT();
 };
 
 Spaz.UI.prepRetweet = function(entryid) {
@@ -310,7 +312,9 @@ Spaz.UI.prepRetweet = function(entryid) {
     var eb = $('#entrybox');
 	eb.focus();
 	eb.val(rtstr);
-	eb[0].setSelectionRange(eb.val().length, eb.val().length)
+	eb[0].setSelectionRange(eb.val().length, eb.val().length);s
+	
+	Spaz.UI.clearPostIRT();
 	
 };
 
@@ -324,6 +328,7 @@ Spaz.UI.prepDirectMessage = function(username) {
         eb.val('d username');
         eb[0].setSelectionRange(2, eb.val().length)
     }
+	Spaz.UI.clearPostIRT();
 };
 
 Spaz.UI.prepPhotoPost = function(url) {
@@ -337,11 +342,20 @@ Spaz.UI.prepPhotoPost = function(url) {
         return false;
     }
 
+	Spaz.UI.clearPostIRT();
+
 }
 
-Spaz.UI.prepReply = function(username) {
+Spaz.UI.prepReply = function(username, irt_id) {
     var eb = $('#entrybox');
     eb.focus();
+
+	if (irt_id) {
+		var timelineid = Spaz.UI.selectedTab.id.replace(/tab-/, 'timeline-');
+		var entry = $('#'+timelineid+'-'+irt_id);
+		var text = entry.children('.entry-text').text();
+		Spaz.UI.setPostIRT(irt_id, text);
+	}
 
     if (username) {
         var newText = '@' + username + ' ';
@@ -364,17 +378,64 @@ Spaz.UI.prepReply = function(username) {
     }
 };
 
+
+
+/**
+ *  
+ */
+Spaz.UI.setPostIRT = function(status_id, raw_text) {
+	if (raw_text) {
+		var status_text = raw_text;
+		if (status_text.length > 30) {
+			status_text = status_text.substr(0,29)+'…'
+		}
+	} else {
+		var status_text = 'status #'+status_id;
+	}
+	
+	// update the GUI stuff
+	$('#irt-message')
+		.html(status_text)
+		.attr('data-status-id', status_id);
+	$('#irt').fadeIn('fast');
+};
+
+
+/**
+ *  
+ */
+Spaz.UI.clearPostIRT = function() {
+	$('#irt').fadeOut('fast');
+	$('#irt-message').html('').attr('data-status-id', '0');
+};
+
+
+
 /* sends a twitter status update for the current user */
 Spaz.UI.sendUpdate = function() {
     var entrybox = $('#entrybox');
+
     if (entrybox.val() != '' && entrybox.val() != Spaz.Prefs.get('entryboxhint')) {
 
-        Spaz.dump('length:' + entrybox.val().length)
+        Spaz.dump('length:' + entrybox.val().length);
 
-        Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+		var irt_id = parseInt($('#irt-message').attr('data-status-id'));
+
+		if ( irt_id > 0 ) {
+			Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass(), irt_id);
+		} else {
+			Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+		}
+
+        
         // entrybox.val('');
     }
 }
+
+
+
+
+
 
 
 Spaz.UI.decodeSourceLinkEntities = function(str) {
