@@ -65,7 +65,7 @@ Spaz.Keyboard.setShortcuts = function() {
 	shortcut.add(Modkey+Spaz.Prefs.get('key-reply'), function() {
 			Spaz.dump('getting screenname from current selection');
 			var screenname = $('div.ui-selected .user-screen-name').text();
-			var irt_id = $('div.ui-selected .entry-id').text();
+			var irt_id = $('div.ui-selected .entry-id').text().replace(/(\[|\])/g, '');
 			
 			if (screenname) {
 				Spaz.dump('username for reply is:'+screenname);
