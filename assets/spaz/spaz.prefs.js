@@ -50,7 +50,9 @@ Spaz.Prefs.defaultPreferences = {
     'sound-wilhelm': '/assets/sounds/wilhelm.mp3',
 
     'timeline-scrollonupdate': true,
-    'timeline-maxentries': 300,
+    'timeline-maxentries': 325,
+    'timeline-maxentries-dm': 25,
+    'timeline-maxentries-reply': 50,
     'timeline-loadonstartup': true,
     'timeline-friends-getcount': 40,
     'timeline-replies-getcount': 20,

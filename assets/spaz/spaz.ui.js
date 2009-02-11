@@ -509,9 +509,11 @@ Spaz.UI.markCurrentTimelineAsRead = function() {
     var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
 
     var timelineid = section.timeline;
-    $('#' + timelineid + " div.timeline-entry").each(function() {
-        Spaz.DB.markEntryAsRead(Spaz.UI.getStatusIdFromElement(this));
+    $('#' + timelineid + " div.timeline-entry:visible").each(function() {
+
+		Spaz.DB.markEntryAsRead(Spaz.UI.getStatusIdFromElement(this));
         Spaz.UI.markEntryAsRead(this);
+
     });
 
     $().trigger('UNREAD_COUNT_CHANGED');
@@ -1117,14 +1119,39 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
     */
     Spaz.Timers.add(function() {
         time.start('removeExtras');
-        var tweets = $('#' + timelineid + ' div.timeline-entry');
+        
+		var tl_selector = '#' + timelineid + ' div.timeline-entry';
+		
+		function removeExtraItems(type) {
+			switch (type) {
+				case 'reply':
+					var tweets  = $(tl_selector).is('reply');
+					var prefkey = "timeline-maxentries-reply";
+					break;
+					
+				case 'dm':
+					var tweets  = $(tl_selector).is('dm');
+					var prefkey = "timeline-maxentries-dm";
+					break;
+					
+				default:
+					var tweets  = $(tl_selector).not('.reply, .dm');
+					var prefkey = "timeline-maxentries";
+			}
 
-        var numEntries = tweets.length
-        if (numEntries > Spaz.Prefs.get('timeline-maxentries')) {
-            var diff = numEntries - Spaz.Prefs.get('timeline-maxentries');
-            Spaz.dump("numEntries is " + numEntries + " > " + Spaz.Prefs.get('timeline-maxentries') + "; removing last " + diff + " entries");
-            tweets.slice(diff * -1).remove();
-        }
+			var numEntries = tweets.length
+	        if (numEntries > Spaz.Prefs.get(prefkey)) {
+	            var diff = numEntries - Spaz.Prefs.get(prefkey);
+	            air.trace("numEntries "+type+"is " + numEntries + " > " + Spaz.Prefs.get(prefkey) + "; removing last " + diff + " entries");
+	            tweets.slice(diff * -1).remove();
+	        }
+		}
+		
+		
+		removeExtraItems();
+		removeExtraItems('reply');
+		removeExtraItems('dm');
+
         time.stop('removeExtras');
         return false;
     });
