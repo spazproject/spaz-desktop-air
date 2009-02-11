@@ -187,7 +187,7 @@ Spaz.initialize = function() {
 	},
 	'#mainMenuRoot');
 
-	$('.panelmenu form input[title="filter"]').hint();
+	// $('.panelmenu form input[title="filter"]').hint();
 
 	$('.TabbedPanelsTab').each(function(i) {
 		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL+' + (parseInt(i) + 1) + '</strong>';

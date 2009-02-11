@@ -990,9 +990,9 @@ Spaz.UI.getNewEntrySelector = function() {
 
     // we change the selector so that messages not showing do not trigger notifications
     if ($('#' + timelineid).is('.dm-replies')) {
-        var selector = '#' + timelineid + ' .new.dm, #' + timelineid + ' .new.reply'
+        var selector = '#' + timelineid + ' .new.dm, #' + timelineid + ' .new.reply:visible'
     } else {
-        var selector = '#' + timelineid + ' .new'
+        var selector = '#' + timelineid + ' .new:visible'
     }
 
     return selector;
@@ -1035,17 +1035,17 @@ Spaz.UI.notifyOfNewEntries = function() {
 
         jqnewest.each(function(i) {
             switch ($(this).attr('class')) {
-            case 'entry-user-screenname':
-                screen_name = $(this).text();
-                Spaz.dump(screen_name)
-                break;
-            case 'entry-text':
-                text = $(this).text();
-                Spaz.dump('TEXT:' + text);
-                break;
-            case 'entry-user-img':
-                img = $(this).text();
-                break;
+	            case 'entry-user-screenname':
+	                screen_name = $(this).text();
+	                Spaz.dump(screen_name)
+	                break;
+	            case 'entry-text':
+	                text = $(this).text();
+	                Spaz.dump('TEXT:' + text);
+	                break;
+	            case 'entry-user-img':
+	                img = $(this).text();
+	                break;
             }
             // resp += $(this).attr('class')+":"+$(this).text()+"\n";
         })

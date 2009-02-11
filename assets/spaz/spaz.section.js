@@ -67,6 +67,10 @@ Spaz.Section.init = function() {
 				time.start('onSectionAjaxComplete');
 				Spaz.UI.statusBar('Processing data…');
 				Spaz.Data.onSectionAjaxComplete(this_section, url, xhr, msg);
+				/*
+					trigger the filtering by sending keyup
+				*/
+				$('#filter-friends').trigger('keyup');
 				time.stop('onSectionAjaxComplete');
 				return false;
 			});
@@ -175,6 +179,10 @@ Spaz.Section.init = function() {
 		},
 		onAjaxComplete: function(url, xhr, msg) {
 			Spaz.Data.onSectionAjaxComplete(this, url, xhr, msg);
+			/*
+				trigger the filtering by sending keyup
+			*/
+			$('#filter-user').trigger('keyup');
 		},
 		addItem: function(item) {
 			Spaz.UI.addItemToTimeline(item, this)
@@ -221,6 +229,11 @@ Spaz.Section.init = function() {
 		},
 		onAjaxComplete: function(url, xhr, msg) {
 			Spaz.Data.onSectionAjaxComplete(this, url, xhr, msg);
+			/*
+				trigger the filtering by sending keyup
+			*/
+			$('#filter-user').trigger('keyup');
+			
 		},
 		addItem: function(item) {
 			Spaz.UI.addItemToTimeline(item, this)
