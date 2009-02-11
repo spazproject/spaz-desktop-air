@@ -314,6 +314,7 @@ Spaz.Intercept.init = function() {
 		.intercept('keyup', {
 			'#filter-friends':function(e) {
 				Spaz.Section.friends.filter( $(this).val() );
+				
 			},
 			'#filter-user':function(e) {
 				Spaz.Section.user.filter( $(this).val() );
