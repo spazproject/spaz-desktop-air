@@ -94,7 +94,12 @@ Spaz.Section.init = function() {
 		filter: function(terms) {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').addClass('hidden');
+				var filter_re = new RegExp(terms, "i");
+				$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
+					if ( $(this).text().search(filter_re) == -1 ) {
+						$(this).addClass('hidden');
+					}
+				});
 			}
 		},
 		cleanup: function(attribute) {
@@ -177,7 +182,12 @@ Spaz.Section.init = function() {
 		filter: function(terms) {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').addClass('hidden');
+				var filter_re = new RegExp(terms, "i");
+				$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
+					if ( $(this).text().search(filter_re) == -1 ) {
+						$(this).addClass('hidden');
+					}
+				});
 			}
 		},
 		cleanup: function(attribute) {
@@ -218,7 +228,12 @@ Spaz.Section.init = function() {
 		filter: function(terms) {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				$('#'+this.timeline + ' div.timeline-entry').not('.timeline-entry:contains("'+terms+'")').addClass('hidden');
+				var filter_re = new RegExp(terms, "i");
+				$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
+					if ( $(this).text().search(filter_re) == -1 ) {
+						$(this).addClass('hidden');
+					}
+				});
 			}
 		},
 		cleanup: function(attribute) {
