@@ -25,6 +25,7 @@ Spaz.Prefs.defaultPreferences = {
 
     'window-notificationposition': 'topRight',
     'window-notificationhidedelay': 6,
+	'window-notificationmethod': 'internal', // 'growl' or 'internal'
 
     'window-showcontextmenus': true,
     'window-tooltiphidedelay': 8000,
@@ -216,6 +217,21 @@ Spaz.Prefs.changeMethods = {
 			$('#window-notificationposition').val(value);
 		},
 		onChange: function(value) {}
+	},
+	'window-notificationmethod': {
+		setUI: function(value) {
+			$('#window-notificationmethod').val(value);
+		},
+		onChange: function(value) {},
+		check: function() {
+			if (Spaz.Prefs.get('window-notificationmethod') !== 'growl') {
+				Spaz.Prefs.set('window-notificationmethod', 'internal');
+				$('#window-notificationposition').removeAttr("disabled");
+			} else { // is growl
+				$('#window-notificationposition').attr("disabled","disabled");;
+			}
+            
+        }
 	},
     'window-minimizetosystray': {
         setUI: function(value) {
@@ -734,6 +750,7 @@ Spaz.Prefs.initUI = function() {
     $('#window-restoreonactivate').bind('change', Spaz.Prefs.setFromUI);
     $('#window-shownotificationpopups').bind('change', Spaz.Prefs.setFromUI);
 	$('#window-notificationposition').bind('change', Spaz.Prefs.setFromUI);
+	$('#window-notificationmethod').bind('change', Spaz.Prefs.setFromUI);
 	$('#window-dropshadow').bind('change', Spaz.Prefs.setFromUI);
 	$('#timeline-keyboardnavwrap').bind('change', Spaz.Prefs.setFromUI);
     $('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);

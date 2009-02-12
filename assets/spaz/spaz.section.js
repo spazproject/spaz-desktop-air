@@ -183,6 +183,7 @@ Spaz.Section.init = function() {
 				trigger the filtering by sending keyup
 			*/
 			$('#filter-user').trigger('keyup');
+
 		},
 		addItem: function(item) {
 			Spaz.UI.addItemToTimeline(item, this)
@@ -232,7 +233,7 @@ Spaz.Section.init = function() {
 			/*
 				trigger the filtering by sending keyup
 			*/
-			$('#filter-user').trigger('keyup');
+			$('#filter-public').trigger('keyup');
 			
 		},
 		addItem: function(item) {

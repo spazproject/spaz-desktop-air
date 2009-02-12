@@ -1056,7 +1056,7 @@ Spaz.UI.notifyOfNewEntries = function() {
         //
         var new_count = Spaz.UI.getNewEntryCount();
         if (new_count > 1) {
-            var msg = screen_name + " (+" + (new_count - 1) + ")";
+            var msg = screen_name + " (+" + (new_count - 1) + " more)";
         } else {
             var msg = screen_name;
         }
@@ -1083,7 +1083,18 @@ Spaz.UI.alert = function(message, title) {
 Spaz.UI.notify = function(message, title, where, duration, icon, force) {
     if (Spaz.Prefs.get('window-shownotificationpopups') || force) {
         // Spaz.Notify.add(message, title, where, duration, icon);
-        PurrJS.notify(title, message, icon, duration, where)
+
+		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
+			
+			if (!Spaz.Growl) {
+				Spaz.Growl = new SpazGrowl('Spaz', new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url);
+			}
+			
+			Spaz.Growl.notify(title, message, icon);
+		} else {
+			PurrJS.notify(title, message, icon, duration, where);
+		}
+		
     } else {
         Spaz.dump('not showing notification popup - window-shownotificationpopups disabled');
     }

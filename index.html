@@ -50,6 +50,7 @@
 
 	<!-- HTML notification library -->
 	<script src="assets/lib/purrjs.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/lib/SpazGrowl.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!-- username completion lib -->
 	<script src="assets/lib/usernameCompleter.js" type="text/javascript" charset="utf-8"></script>
@@ -57,7 +58,7 @@
 
 	<!-- Notification popups libs -->
 	<script src="lib/library.swf" type="application/x-shockwave-flash"></script>
-	<!-- <script src="lib/as3growl.swf" type="application/x-shockwave-flash"></script> -->
+	<script src="lib/as3growl.swf" type="application/x-shockwave-flash"></script>
 
 	<!-- Network service monitor -->
 	<script src="assets/servicemonitor.swf" type="application/x-shockwave-flash"></script>
@@ -486,11 +487,19 @@
 
 										<fieldset>
 											<legend>Notifications</legend>
+											
 											<div class="formrow">
 												<input type="checkbox" name="notification-popups" value="1"
 													id="window-shownotificationpopups" />
 												<label for="window-shownotificationpopups" class="checkbox">Show notifications</label>
 											</div>
+										   <div class="formrow">
+											  <label for="window-notificationmethod">Method</label>
+											  <select id="window-notificationmethod" name="window-notificationmethod">
+												 <option value="internal">Internal</option>
+												 <option value="growl" >Growl (OS X-only –&nbsp;experimental)</option>
+											  </select>
+										   </div>											
 										   <div class="formrow">
 											  <label for="window-notificationposition">Position</label>
 											  <select id="window-notificationposition" name="window-notificationposition">
