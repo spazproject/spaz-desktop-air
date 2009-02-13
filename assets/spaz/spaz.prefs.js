@@ -26,6 +26,7 @@ Spaz.Prefs.defaultPreferences = {
     'window-notificationposition': 'topRight',
     'window-notificationhidedelay': 6,
 	'window-notificationmethod': 'internal', // 'growl' or 'internal'
+	'window-notificationmax': 10, // how many notifications can be raised at once (for messages)
 
     'window-showcontextmenus': true,
     'window-tooltiphidedelay': 8000,
@@ -58,7 +59,7 @@ Spaz.Prefs.defaultPreferences = {
     'timeline-friends-getcount': 40,
     'timeline-replies-getcount': 20,
     'timeline-dm-getcount': 10,
-	  'timeline-keyboardnavwrap': false,
+	'timeline-keyboardnavwrap': false,
 
     'screennames-cache-max': 150,
 
@@ -83,6 +84,8 @@ Spaz.Prefs.defaultPreferences = {
     'twitter-base-url': 'http://twitter.com/',
 
     'twitter-source': 'spaz',
+
+	'twitter-disable-direct-posting':false,
 
     'dock-refreshinterval': 500,
     'dock-displayunreadbadge': true,
@@ -382,6 +385,15 @@ Spaz.Prefs.changeMethods = {
 
     },
 
+	'twitter-disable-direct-posting': {
+        setUI: function(value) {
+            $('#twitter-disable-direct-posting').attr('checked', value);
+        },
+        check: function() {
+            Spaz.Prefs.set('twitter-disable-direct-posting', Boolean(Spaz.Prefs.get('twitter-disable-direct-posting')));
+        }
+    },
+
     'services-shortie-secretkey': {
         setUI: function(value) {
             if (value || value == '') {
@@ -501,8 +513,8 @@ Spaz.Prefs.changeMethods = {
         onChange: function(value) {},
         check: function() {
             var val = parseInt(Spaz.Prefs.get('network-refreshinterval'));
-            if (val < 3 * 60000) {
-                Spaz.Prefs.set('network-refreshinterval', 3 * 60000);
+            if (val < 2 * 60000) {
+                Spaz.Prefs.set('network-refreshinterval', 2 * 60000);
             }
         },
         setFromUI: function(value) {
@@ -767,6 +779,7 @@ Spaz.Prefs.initUI = function() {
     $('#twitter-base-urls').bind('change', Spaz.Prefs.setFromUI);
     $('#twitter-api-base-url').bind('change', Spaz.Prefs.setFromUI);
     $('#twitter-base-url').bind('change', Spaz.Prefs.setFromUI);
+    $('#twitter-disable-direct-posting').bind('change', Spaz.Prefs.setFromUI);
     $('#services-twitpic-sharepassword').bind('change', Spaz.Prefs.setFromUI);
     $('#services-pingfm-userappkey').bind('change', Spaz.Prefs.setFromUI);
     $('#services-pingfm-enabled').bind('change', Spaz.Prefs.setFromUI);

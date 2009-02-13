@@ -766,24 +766,29 @@ Spaz.Data.updatePingFM = function(msg) {
 			Spaz.dump("ERROR");
 			if (xhr.readyState < 3) {
 				Spaz.dump("Update ERROR: Ping.fm did not confirm update. Who knows?");
-				Spaz.UI.statusBar("ERROR: Ping.fm did not confirm update. Who knows?")
+				Spaz.UI.statusBar("ERROR: Ping.fm did not confirm update. Who knows?");
+				Spaz.UI.hideLoading();
 				return;
 			}
 			if (xhr.status != 200) { // sanity check
 				Spaz.dump("ERROR: " + rstr);
 				Spaz.UI.statusBar("ERROR: Ping.fm could not post update");
 				Spaz.UI.flashStatusBar();
+				Spaz.UI.hideLoading();
 			} else {
 
 			}
+			
 		},
 		success:function(xml){
 			if ($(xml).find('rsp').attr('status') == 'OK') {
 				Spaz.dump('SUCCESS:'+xml);
 				Spaz.UI.statusBar("Ping.fm Update succeeded");
+				Spaz.UI.hideLoading();
 			} else {
 				Spaz.dump('FAIL:'+xml);
 				Spaz.UI.statusBar("Ping.fm Update failed");
+				Spaz.UI.hideLoading();
 			}
 		},
 		dataType:'xml',

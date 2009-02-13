@@ -420,11 +420,17 @@ Spaz.UI.sendUpdate = function() {
         Spaz.dump('length:' + entrybox.val().length);
 
 		var irt_id = parseInt($('#irt-message').attr('data-status-id'));
-
-		if ( irt_id > 0 ) {
-			Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass(), irt_id);
+		
+		if (!Spaz.Prefs.get('twitter-disable-direct-posting')) {
+			if ( irt_id > 0 ) {
+				Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass(), irt_id);
+			} else {
+				Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+			}			
+		} else if (Spaz.Prefs.get('services-pingfm-enabled')) {
+			Spaz.Data.updatePingFM( entrybox.val() );
 		} else {
-			Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+			Spaz.UI.statusBar("Nothing sent! Enable direct posting and/or ping.fm");
 		}
 
         
@@ -1008,59 +1014,92 @@ Spaz.UI.notifyOfNewEntries = function() {
     $().trigger('UNREAD_COUNT_CHANGED');
 
     Spaz.dump('notifyOfNewEntries');
-    if (Spaz.UI.getNewEntryCount() > 0) {
+
+	var new_count = Spaz.UI.getNewEntryCount();
+
+    if (new_count > 0) {
 
         Spaz.dump('NewEntries found!');
 
+		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
+			
+			if (!Spaz.Growl) {
+				Spaz.Growl = new SpazGrowl('Spaz', new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url);
+			}
+			
+			Spaz.Growl.notify(new_count + " New Messages", "There were "+new_count+" new messages found", null, SpazGrowl.NEW_MESSAGE_COUNT, function() {
+				air.NativeApplication.nativeApplication.activate();
+			});
+			
+			
+			var newtweets = $(Spaz.UI.getNewEntrySelector());
+			
+			
+			if ( new_count > Spaz.Prefs.get('window-notificationmax')) {
+				newtweets = newtweets.slice(0, Spaz.Prefs.get('window-notificationmax'));
+			}
 
-        var newtweets = $(Spaz.UI.getNewEntrySelector()).get().sort(Spaz.UI.sortTweetElements).reverse();
 
+			newtweets.each( function(i) {
+				
+				var screen_name = $(this).children('.entry-user-screenname').text();
+				var text = $(this).children('.entry-text').text();
+				var img = $(this).children('.entry-user-img').text();
+				
+				Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE, function() {
+					air.NativeApplication.nativeApplication.activate();
+				});
+			});
+			
+		} else {
+			var newtweets = $(Spaz.UI.getNewEntrySelector()).get().sort(Spaz.UI.sortTweetElements).reverse();
 
+	        /*
+	        get newest of the new
+	        we use this roundabout way of getting things to avoid a problem where
+	        you could get text from one tweet and a userimg from another
+	        */
+	        var newestHTML = newtweets[0].innerHTML;
+	        Spaz.dump(newestHTML);
+	        var jqnewest = $(newestHTML);
 
-        /*
-        get newest of the new
-        we use this roundabout way of getting things to avoid a problem where
-        you could get text from one tweet and a userimg from another
-        */
-        var newestHTML = newtweets[0].innerHTML;
-        Spaz.dump(newestHTML);
-        var jqnewest = $(newestHTML);
+	        Spaz.dump('Sending notification');
+	        var resp = "";
 
-        Spaz.dump('Sending notification');
-        var resp = "";
+	        var text;
+	        var img;
+	        var screen_name;
 
-        var text;
-        var img;
-        var screen_name;
+	        jqnewest.each(function(i) {
+	            switch ($(this).attr('class')) {
+		            case 'entry-user-screenname':
+		                screen_name = $(this).text();
+		                Spaz.dump(screen_name)
+		                break;
+		            case 'entry-text':
+		                text = $(this).text();
+		                Spaz.dump('TEXT:' + text);
+		                break;
+		            case 'entry-user-img':
+		                img = $(this).text();
+		                break;
+	            }
+	            // resp += $(this).attr('class')+":"+$(this).text()+"\n";
+	        })
+	        // alert(resp);
+	        // Spaz.dump(screen_name);
+	        //		Spaz.dump(img);
+	        //		Spaz.dump(text);
+	        //
+	        var new_count = Spaz.UI.getNewEntryCount();
+	        if (new_count > 1) {
+	            var msg = screen_name + " (+" + (new_count - 1) + " more)";
+	        } else {
+	            var msg = screen_name;
+	        }
+	        Spaz.UI.notify(text, msg, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
+		}
 
-        jqnewest.each(function(i) {
-            switch ($(this).attr('class')) {
-	            case 'entry-user-screenname':
-	                screen_name = $(this).text();
-	                Spaz.dump(screen_name)
-	                break;
-	            case 'entry-text':
-	                text = $(this).text();
-	                Spaz.dump('TEXT:' + text);
-	                break;
-	            case 'entry-user-img':
-	                img = $(this).text();
-	                break;
-            }
-            // resp += $(this).attr('class')+":"+$(this).text()+"\n";
-        })
-        // alert(resp);
-        // Spaz.dump(screen_name);
-        //		Spaz.dump(img);
-        //		Spaz.dump(text);
-        //
-        var new_count = Spaz.UI.getNewEntryCount();
-        if (new_count > 1) {
-            var msg = screen_name + " (+" + (new_count - 1) + " more)";
-        } else {
-            var msg = screen_name;
-        }
-        Spaz.UI.notify(text, msg, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
         Spaz.UI.playSoundNew();
         Spaz.UI.statusBar('Updates found');
 
@@ -1295,10 +1334,17 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                     stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus, false, 0, true);
                     stream.addEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
 
-                    // Perform load
-                    stream.load(new air.URLRequest(url));
+					// make the URLRequest and set some properties
+					url_req = new air.URLRequest(url);
+					url_req.manageCookies = false;
+					url_req.authenticate = false;
+					url_req.cacheResponse = true;
+					url_req.userAgent = Spaz.Sys.getUserAgent();
+
+					// Perform load
+                    stream.load(url_req);
                     // air.trace("Decoding " + domain + " URL " + url);
-                    Spaz.dump("Decoding " + domain + " URL " + url);
+                    air.trace("Decoding " + domain + " URL " + url);
                 }
 
             }
