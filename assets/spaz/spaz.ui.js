@@ -1046,9 +1046,19 @@ Spaz.UI.notifyOfNewEntries = function() {
 				var text = $(this).children('.entry-text').text();
 				var img = $(this).children('.entry-user-img').text();
 				
-				Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE, function() {
-					air.NativeApplication.nativeApplication.activate();
-				});
+				if ( $(this).hasClass('reply') ) {
+					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_REPLY, function() {
+						air.NativeApplication.nativeApplication.activate();
+					});
+				} else if ( $(this).hasClass('dm') ) {
+					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_DM, function() {
+						air.NativeApplication.nativeApplication.activate();
+					});
+				} else {
+					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE, function() {
+						air.NativeApplication.nativeApplication.activate();
+					});
+				}
 			});
 			
 		} else {
@@ -1383,6 +1393,24 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         time.stop('cleanupStatusText');
 
         // Spaz.Timers.stop();
+
+
+		/*
+			this is a helper to fadeIn any user avatars that didn't see the load event properly
+		*/
+		function fadeInStragglers() {
+			$("img.user-image").each( function() {
+				if ($(this).css('opacity') < 1) {
+					air.trace('fadingIn: '+this.outerHTML);
+					$(this).fadeTo('500', '1.0');
+				}
+			});	
+		};
+		
+		/*
+			run the helper after 5 seconds
+		*/
+		setTimeout(fadeInStragglers, 5000);
 
         return false;
     });

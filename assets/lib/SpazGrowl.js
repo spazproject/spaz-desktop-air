@@ -22,6 +22,9 @@ SpazGrowl = function(appname, iconpath) {
 	
 	this.addNewType(SpazGrowl.NEW_MESSAGE_COUNT);
 	this.addNewType(SpazGrowl.NEW_MESSAGE);
+	this.addNewType(SpazGrowl.NEW_MESSAGE_REPLY);
+	this.addNewType(SpazGrowl.NEW_MESSAGE_DM);
+	this.addNewType(SpazGrowl.ERROR);
 };
 
 
@@ -30,7 +33,9 @@ SpazGrowl = function(appname, iconpath) {
  */
 SpazGrowl.NEW_MESSAGE_COUNT = 'SpazGrowl New Message Count';
 SpazGrowl.NEW_MESSAGE       = 'SpazGrowl New Message';
-SpazGrowl.ERROR             = 'SpazGrowl Error Message';
+SpazGrowl.NEW_MESSAGE_REPLY = 'SpazGrowl New Reply';
+SpazGrowl.NEW_MESSAGE_DM    = 'SpazGrowl New Direct Message';
+SpazGrowl.ERROR             = 'SpazGrowl Error';
 
 
 SpazGrowl.prototype.connect = function() {
@@ -68,7 +73,7 @@ SpazGrowl.prototype.notify = function(title, msg, img, type, onClick) {
 		img = this.app.iconPath;
 	}
 	
-	air.trace('notification img:'+img)
+	// air.trace('notification img:'+img)
 
 	
 	var n = new window.runtime.com.adobe.growl.Notification();
@@ -77,7 +82,7 @@ SpazGrowl.prototype.notify = function(title, msg, img, type, onClick) {
 	n.text  = msg;
 	n.sticky= false;
 	
-	air.trace("Notification id : " + n.id);
+	// air.trace("Notification id : " + n.id);
 
 	//testing x-headers
 	var xHeaders = [new window.runtime.com.adobe.growl.Header("X-foo", "bar")];
@@ -121,8 +126,7 @@ SpazGrowl.prototype.notify = function(title, msg, img, type, onClick) {
 		this.service.register(this.app, this._types);
 	}
 
-	function onNotify()
-	{
+	function onNotify() {
 		this.service.notify(n);
 	}
 
