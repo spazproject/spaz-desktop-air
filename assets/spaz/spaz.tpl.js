@@ -78,32 +78,32 @@ Spaz.Templates.timeline_entry = function(d) {
 }
 
 Spaz.Templates.friendslist_row = function(d) {
-	air.trace(JSON.stringify(d));
-
 	var entryHTML = '';
 	entryHTML += '<div screenname="'+d.screen_name+'" user-id="'+d.id+'" id="'+d.timeline+'-'+d.id+'" class="friendslist-row">';
 	entryHTML += '		<span class="directory-user-followstatus" screen-name="'+d.screen_name+'" user-id="'+d.id+'"';
-						if (d.is_follower) {
-	entryHTML += '			rel="follower"';
+						if (d.is_mutual) {
+	entryHTML += '			rel="mutual" title="'+d.screen_name+' is a mutual follower">&laquo;mutual&raquo;</span>';
+						} else if (d.is_follower) {
+	entryHTML += '			rel="follower" title="You are following '+d.screen_name+'">&laquo;follower</span>';
 						} else if (d.is_following) {
-	entryHTML += '			rel="following"';
+	entryHTML += '			rel="following" title="'+d.screen_name+' is following you">friend&raquo;</span>';
+						} else {
+	entryHTML += '			>?</span>';
 						}
-	entryHTML += '		></span>';
 	entryHTML += '	<div class="directory-user">';
 	entryHTML += '		<img src="'+d.profile_image_url+'" class="user-image" user-screen_name="'+d.screen_name+'" title="View user\'s profile" />';
 	entryHTML += '		<div class="directory-user-name">';
-	entryHTML += '			<a href="'+d.base_url+''+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">';
-							if (d.name) {
-	entryHTML += 				d.name;
+							if (d.name && d.name != d.screen_name) {
+	entryHTML += '				<div class="name"><a class="inline-link" href="'+d.base_url+''+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.name+'</a></div>';
 							}
-	entryHTML += '			('+d.screen_name+')</a>';
+	entryHTML += '			<div class="screen-name"><a class="inline-link" href="'+d.base_url+''+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.screen_name+'</a></div>';
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="directory-user-info">';
 							if (d.location) {
-	entryHTML += '		    	<span class="directory-user-location clickable" title="View this location on a map">'+d.location+'</span>';
+	entryHTML += '		    	<span class="directory-user-location clickable" title="View this location on a map">'+d.location+'</span>&nbsp;';
 							}
 							if (d.url) {
-	entryHTML += '		    	&middot; <a class="directory-user-homepage" href="'+d.url+'" title="Open user\'s homepage">www&raquo;</a>';
+	entryHTML += '		    	<a class="directory-user-homepage clickable" href="'+d.url+'" title="Open user\'s homepage">www&raquo;</a>';
 							}
 	entryHTML += '		    &nbsp;';
 	entryHTML += '    	</div>';

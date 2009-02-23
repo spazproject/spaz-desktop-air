@@ -716,7 +716,7 @@ Spaz.Data.searchSummize = function(query) {
 
 
 	var xhr = $.ajax({
-		mode:'queue',
+		// mode:'queue',
 
 		complete:function(xhr, msg){
 			section.onAjaxComplete(url,xhr,msg);

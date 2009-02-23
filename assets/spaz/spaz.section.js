@@ -164,7 +164,7 @@ Spaz.Section.init = function() {
 		lastid: 0,
 		lastcheck: 0,
 		currdata: null,
-		 prevdata: null,
+		prevdata: null,
 		autoload: false,
 		canclear: true,
 		mincachetime: 60000 * 2,
@@ -376,7 +376,8 @@ Spaz.Section.init = function() {
 		$ajaxQueueStorage:	[],
 		$ajaxQueueErrors:	[],
 
-
+		friends_ids   : [],
+		followers_ids : [],
 
 		build: function(force) {
 			/*
@@ -385,6 +386,8 @@ Spaz.Section.init = function() {
 			this.urls = new Array(Spaz.Data.getAPIURL('friendslist'), Spaz.Data.getAPIURL('followerslist'));
 
 			var username = Spaz.Prefs.getUser();
+			var password = Spaz.Prefs.getPass();
+
 			if (!username || username == 'null' || username == 'undefined' || username == 'false') {
 				if (confirm('Username not set. Enter this in Preferences?')) {
 					Spaz.UI.showPrefs();
@@ -398,10 +401,48 @@ Spaz.Section.init = function() {
 				return;
 			}
 
+			
+
 			if (force || (getTimeAsInt() - this.lastcheck) > this.mincachetime ) {
 				this.lastcheck = getTimeAsInt();
 				
-				$('#' + Spaz.Section.friendslist.timeline).empty();
+				
+				var thisSec = this;
+				/*
+					get friends
+				*/
+				$.ajax({
+					'url'	:'https://twitter.com/friends/ids.json',
+					'async'	:false,
+					'success':function(data) {
+						// air.trace(data);
+						// alert('got friends_ids');
+						thisSec.friends_ids = JSON.parse(data);
+					},
+					'data':{
+						'id':username
+					}
+				});
+				
+				/*
+					get followers
+				*/
+				$.ajax({
+					'url'	:'https://twitter.com/followers/ids.json',
+					'async'	:false,
+					beforeSend:function(xhr){
+						xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(username + ":" + password));
+						xhr.setRequestHeader("Cookie", '');
+					},
+					'success':function(data) {
+						// air.trace(data);
+						// alert('got followers_ids');
+						thisSec.followers_ids = JSON.parse(data);
+					},
+					'data':{
+						'id':username
+					}
+				});
 		
 				for (var i = 0; i < this.urls.length; i++) {
 					Spaz.dump('section.urls['+i+']: '+ this.urls[i])
@@ -412,10 +453,10 @@ Spaz.Section.init = function() {
 					var section = this;
 
 					var xhr = $.ajax({
-						mode:'queue',
+						// mode:'queue',
 						complete:function(xhr, msg){
-							air.trace(JSON.stringify(this.url));
-							air.trace('Getting data for url:'+this.url);
+							// air.trace(JSON.stringify(this.url));
+							// air.trace('Getting data for url:'+this.url);
 							section.onAjaxComplete(this.url,xhr,msg);
 						},
 						error:function(xhr, msg, exc) {
@@ -426,9 +467,7 @@ Spaz.Section.init = function() {
 							}
 						},
 						beforeSend:function(xhr){
-							var user = Spaz.Prefs.getUser();
-							var pass = Spaz.Prefs.getPass();
-							xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+							xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(username + ":" + password));
 							xhr.setRequestHeader("Cookie", '');
 						},
 						processData:false,
@@ -436,8 +475,6 @@ Spaz.Section.init = function() {
 						url:this.urls[i],
 						data:null
 					});
-		
-		
 				}
 			} else {
 				Spaz.dump('Not loading data - section.mincachetime has not expired');
@@ -446,10 +483,6 @@ Spaz.Section.init = function() {
 		onAjaxComplete: function(url, xhr, msg) {
 	
 			air.trace("\n=========================================\ncompleted:" +url);
-	
-
-
-
 
 			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
 				Spaz.dump("Error:Timeout on "+thisurl);
@@ -503,19 +536,27 @@ Spaz.Section.init = function() {
 
 			air.trace('Adding '+data.length+' entries from '+url);
 
+			$('#' + Spaz.Section.friendslist.timeline).empty();
+
 			if (data.length > 0) {
 				time.start('addingItems');
 				for (var i in data) {
-					// air.trace('URL:'+thisurl);
-					// air.trace('section URLs:'+this.urls);
-					/*
-						Check the origin URL to see if this is a follower or someone the
-						user is following
-					*/
-					if (url == Spaz.Data.getAPIURL('friendslist')) {
+					
+					air.trace(this.friends_ids.length + ":" + this.followers_ids.length);
+					
+					if ( this.friends_ids.indexOf(data[i].id) > -1 ) {
+						air.trace(data[i].id + " is your friend");
 						data[i].is_following = true;
-					} else if (url == Spaz.Data.getAPIURL('followerslist')) {
+					}
+					
+					if ( this.followers_ids.indexOf(data[i].id) > -1 ) {
+						air.trace(data[i].id + " is your follower");
 						data[i].is_follower = true;
+					}
+					
+					if (data[i].is_following && data[i].is_follower) {
+						air.trace(data[i].id + " is your friend and follower");
+						data[i].is_mutual = true;
 					}
 
 					this.addItem(data[i]);
@@ -531,6 +572,7 @@ Spaz.Section.init = function() {
 				this.cleanup();
 
 				Spaz.dump('hiding loading');
+				Spaz.UI.statusBar('Done.');
 				Spaz.UI.hideLoading();
 
 				if (this.$ajaxQueueErrors.length > 0) {
@@ -542,8 +584,6 @@ Spaz.Section.init = function() {
 
 				// Spaz.dump('emptying storage');
 				// this.$ajaxQueueStorage = [];
-			
-				this.cleanup();
 			}
 		},
 
@@ -552,24 +592,15 @@ Spaz.Section.init = function() {
 			item.base_url = Spaz.Prefs.get('twitter-base-url');
 
 			/*
-				Check for a dupe
+				convert common long/lat formats
 			*/
-			air.trace('#' + item.timeline + '-' + item.id);
-			if ($('#' + item.timeline + '-' + item.id).length >= 1) {
-				air.trace('MUTUAL FOLLOWER');
-			
-				$('.directory-user-followstatus[user-id="'+item.id+'"]').attr('rel','mutual');
-			} else {
-				/*
-					convert common long/lat formats
-				*/
-				if (item.location) {
-					item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
-				}
-
-				var parsed = Spaz.Tpl.parse('friendslist_row', item);
-				$('#' + this.timeline).append(parsed);				
+			if (item.location) {
+				item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
 			}
+
+			var parsed = Spaz.Tpl.parse('friendslist_row', item);
+			$('#' + this.timeline).append(parsed);				
+
 
 		},
 		cleanup: function() {
@@ -599,67 +630,66 @@ Spaz.Section.init = function() {
 
 	}
 
-	Spaz.Section.followerslist = {
-		panel: 'panel-followerslist',
-		timeline: 'timeline-followerslist',
-		wrapper: 'timelinewrapper-followerslist',
-		tab: 'tab-followerslist',
-		tabIndex: 4,
-		urls: new Array(Spaz.Data.getAPIURL('followerslist')),
-		lastid: 0,
-		lastcheck: 0,
-		currdata: null,
-		 prevdata: null,
-		autoload: false,
-		canclear: false,
-		mincachetime: 60000 * 15,
-		build: function(force) {
-			/*
-				Reset our URLs each time in case of API URL switch
-			*/
-			this.urls = new Array(Spaz.Data.getAPIURL('followerslist'));
-
-			Spaz.Data.getDataForTimeline(this, force)
-		},
-		onAjaxComplete: function(url, xhr, msg) {
-			$('#' + this.timeline).empty()
-			Spaz.Data.onSectionAjaxComplete(this, url, xhr, msg);
-		},
-		addItem: function(item) {
-			item.timeline = this.timeline;
-			item.base_url = Spaz.Prefs.get('twitter-base-url');
-
-			// convert common long/lat formats
-			if (item.location) {
-				item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
-			}
-
-			var parsed = Spaz.Tpl.parse('friendslist_row', item);
-			$('#' + this.timeline).append(parsed);
-		},
-		cleanup: function() {
-			function sortfunc(a, b) {
-				var keya = $(a).attr('screenname').toUpperCase();
-				var keyb = $(b).attr('screenname').toUpperCase();
-				if (keya < keyb) {
-					return - 1;
-				}
-				else {
-					return 1;
-				}
-			};
-			$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').sort(sortfunc, true).remove().appendTo('#' + Spaz.Section.followerslist.timeline);
-			$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:even').addClass('even');
-			$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:odd').addClass('odd');
-
-			$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').find('img.user-image').one('load',
-			function() {
-				// alert('fadingIn');
-				$(this).fadeTo('500', '1.0');
-			});
-
-		},
-	}
+	// Spaz.Section.followerslist = {
+	// 	panel: 'panel-followerslist',
+	// 	timeline: 'timeline-followerslist',
+	// 	wrapper: 'timelinewrapper-followerslist',
+	// 	tab: 'tab-followerslist',
+	// 	tabIndex: 4,
+	// 	urls: new Array(Spaz.Data.getAPIURL('followerslist')),
+	// 	lastid: 0,
+	// 	lastcheck: 0,
+	// 	currdata: null,
+	// 	 prevdata: null,
+	// 	autoload: false,
+	// 	canclear: false,
+	// 	mincachetime: 60000 * 15,
+	// 	build: function(force) {
+	// 		/*
+	// 			Reset our URLs each time in case of API URL switch
+	// 		*/
+	// 		this.urls = new Array(Spaz.Data.getAPIURL('followerslist'));
+	// 		Spaz.Data.getDataForTimeline(this, force)
+	// 	},
+	// 	onAjaxComplete: function(url, xhr, msg) {
+	// 		$('#' + this.timeline).empty()
+	// 		Spaz.Data.onSectionAjaxComplete(this, url, xhr, msg);
+	// 	},
+	// 	addItem: function(item) {
+	// 		item.timeline = this.timeline;
+	// 		item.base_url = Spaz.Prefs.get('twitter-base-url');
+	// 
+	// 		// convert common long/lat formats
+	// 		if (item.location) {
+	// 			item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
+	// 		}
+	// 
+	// 		var parsed = Spaz.Tpl.parse('friendslist_row', item);
+	// 		$('#' + this.timeline).append(parsed);
+	// 	},
+	// 	cleanup: function() {
+	// 		function sortfunc(a, b) {
+	// 			var keya = $(a).attr('screenname').toUpperCase();
+	// 			var keyb = $(b).attr('screenname').toUpperCase();
+	// 			if (keya < keyb) {
+	// 				return - 1;
+	// 			}
+	// 			else {
+	// 				return 1;
+	// 			}
+	// 		};
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').sort(sortfunc, true).remove().appendTo('#' + Spaz.Section.followerslist.timeline);
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:even').addClass('even');
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:odd').addClass('odd');
+	// 
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').find('img.user-image').one('load',
+	// 		function() {
+	// 			// alert('fadingIn');
+	// 			$(this).fadeTo('500', '1.0');
+	// 		});
+	// 
+	// 	},
+	// }
 
 	Spaz.Section.prefs = {
 		panel: 'panel-prefs',

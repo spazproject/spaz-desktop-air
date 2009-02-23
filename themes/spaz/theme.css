@@ -811,25 +811,16 @@ div.timeline-entry {
 
 	
 	.directory-user-followstatus {
-	  background-repeat:no-repeat;
-	  width:29px;
-	  height:32px;
-	  position:absolute;
-	  display:block;
-	  right:0px;
-	  bottom:0px;
-	  z-index:0;
-	  opacity:.6;
+		background-repeat:no-repeat;
+		position:absolute;
+		right:3px;
+		top:  7px;
+		padding:1px 4px;
+		background-color:rgba(255,255,255,.5);
+		color:#000;
+		-khtml-border-radius:7px;
+		font-weight:bold;
 	}
-		.directory-user-followstatus[rel="follower"] {
-		  background-image: url('themes/spaz/images/icon-follower.png');
-		}
-		.directory-user-followstatus[rel="following"] {
-		  background-image: url('themes/spaz/images/icon-following.png');
-		}
-		.directory-user-followstatus[rel="mutual"] {
-		  background-image: url('themes/spaz/images/icon-mutual-follower.png');
-		}
 
 	.friendslist-row .directory-user {
 		position:relative;
@@ -845,17 +836,24 @@ div.timeline-entry {
 		}
 		.directory-user .directory-user-name {
 			font-weight:bold;
-			font-size:10pt;
-			
+			font-size:8pt;
+			margin-left:36px;
 		}
 		.directory-user .directory-user-name a {
 			color:333300;
 		}
+			.directory-user .directory-user-name .name {
+			}
+			.directory-user .directory-user-name .screen-name {
+			}
 		.directory-user .directory-user-location {
 
 		}
 		.directory-user .directory-user-homepage {
 
+		}
+		.directory-user .directory-user-info {
+			margin-left:36px;
 		}
 
 
