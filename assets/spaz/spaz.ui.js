@@ -773,7 +773,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
 		
 		// hashtags
-		entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9]+))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
+		entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9]{2,}))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
 		
 		
 		
@@ -906,8 +906,6 @@ Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
 
     $('#' + timelineid + ' div.timeline-entry').each(function() {
 
-        // air.trace( $(this).find('div.entry-timestamp').text() +":"+ $(this).next().find('div.entry-timestamp').text() );
-
         if ( parseInt($(this).find('div.entry-timestamp').text()) < parseInt($(this).next().find('div.entry-timestamp').text()) ) {
             unsorted = true;
             return false;
@@ -965,7 +963,7 @@ Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
 Spaz.UI.sortTweetElements = function(a, b) {
     var inta = parseInt($(a).find('.entry-timestamp').text())
     var intb = parseInt($(b).find('.entry-timestamp').text())
-    var diff = inta - intb;
+    var diff =  intb - inta;
     return diff;
 };
 
@@ -1046,11 +1044,11 @@ Spaz.UI.notifyOfNewEntries = function() {
 				var text = $(this).children('.entry-text').text();
 				var img = $(this).children('.entry-user-img').text();
 				
-				if ( $(this).hasClass('reply') ) {
+				if ( $(this).hasClass('reply').not('.read') ) {
 					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_REPLY, function() {
 						air.NativeApplication.nativeApplication.activate();
 					});
-				} else if ( $(this).hasClass('dm') ) {
+				} else if ( $(this).hasClass('dm').not('.read') ) {
 					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_DM, function() {
 						air.NativeApplication.nativeApplication.activate();
 					});
@@ -1401,7 +1399,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		function fadeInStragglers() {
 			$("img.user-image").each( function() {
 				if ($(this).css('opacity') < 1) {
-					air.trace('fadingIn: '+this.outerHTML);
+					// air.trace('fadingIn: '+this.outerHTML);
 					$(this).fadeTo('500', '1.0');
 				}
 			});	
