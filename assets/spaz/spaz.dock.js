@@ -107,16 +107,16 @@ Spaz.Dock.sync = function()
    var reloadID = Spaz.Dock.reloadID;
    if (reloadID != null)
    {
-      air.trace("Stopping dock refresh thread");
+      // air.trace("Stopping dock refresh thread");
 		$().unbind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);
-      window.clearInterval(reloadID);
+      // window.clearInterval(reloadID);
    }
    if (Spaz.Prefs.getDockDisplayUnreadBadge())
    {
 		$().bind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);      
-		var refresh = Spaz.Prefs.getDockRefreshInterval();
-      air.trace("Starting dock refresh thread with refresh rate of " + refresh + " ms");
-      // Spaz.Dock.reloadID = window.setInterval(Spaz.Dock.refresh, refresh);
+		// var refresh = Spaz.Prefs.getDockRefreshInterval();
+		//       air.trace("Starting dock refresh thread with refresh rate of " + refresh + " ms");
+		//       // Spaz.Dock.reloadID = window.setInterval(Spaz.Dock.refresh, refresh);
    }
 }
 
@@ -161,17 +161,10 @@ Spaz.Dock.refresh = function(unreadCount)
    var color = Spaz.Dock.getColor();
    var shape = Spaz.Dock.getShape();
 
-   //
-   if (unreadCount == Spaz.Dock.cache.lastUnreadCount &&
-       color == Spaz.Dock.cache.color &&
-       shape == Spaz.Dock.cache.shape)
-   {
-      return;
-   }
-
    // Use the original icon if count is zero
    if (unreadCount == 0)
    {
+		air.trace('unread == 0');
       // Update state
       Spaz.Dock.icon.bitmaps = [Spaz.Dock.bitmapData];
       Spaz.Dock.lastUnreadCount = 0;

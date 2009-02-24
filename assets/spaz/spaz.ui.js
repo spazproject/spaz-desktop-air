@@ -537,6 +537,8 @@ Spaz.UI.toggleTimelineFilter = function() {
         $('#' + Spaz.Section.friends.timeline).addClass('dm-replies');
         Spaz.UI.statusBar('Hiding tweets not directed at you');
     }
+	
+	$().trigger('UNREAD_COUNT_CHANGED');
 };
 
 
@@ -978,14 +980,19 @@ Spaz.UI.reverseTimeline = function(timelineid) {
 Spaz.UI.getUnreadCount = function() {
     var timelineid = Spaz.Section.friends.timeline;
 
-    // unread count depends on whether or not we're showing everything, or just replies/dms
-    if ($('#' + timelineid).is('.dm-replies')) {
-        var selector = '#' + timelineid + ' div.timeline-entry.dm, #' + timelineid + ' div.timeline-entry.reply'
-    } else {
-        var selector = '#' + timelineid + ' div.timeline-entry'
-    }
+	var selector = '#' + timelineid + ' div.timeline-entry:visible'
 
-    return $(selector).not('.read').size();
+    // // unread count depends on whether or not we're showing everything, or just replies/dms
+    // if ($('#' + timelineid).is('.dm-replies')) {
+    //     var selector = '#' + timelineid + ' div.timeline-entry.dm, #' + timelineid + ' div.timeline-entry.reply'
+    // } else {
+    //     var selector = '#' + timelineid + ' div.timeline-entry'
+    // }
+	var unread_count = $(selector).not('.read').length;
+	
+	air.trace(unread_count);
+
+    return unread_count;
 };
 
 
@@ -1003,7 +1010,7 @@ Spaz.UI.getNewEntrySelector = function() {
 }
 
 Spaz.UI.getNewEntryCount = function() {
-    return $(Spaz.UI.getNewEntrySelector()).length;
+    return $(Spaz.UI.getNewEntrySelector()).not('.read').length;
 }
 
 
@@ -1030,7 +1037,7 @@ Spaz.UI.notifyOfNewEntries = function() {
 			});
 			
 			
-			var newtweets = $(Spaz.UI.getNewEntrySelector());
+			var newtweets = $(Spaz.UI.getNewEntrySelector()).not('.read');
 			
 			
 			if ( new_count > Spaz.Prefs.get('window-notificationmax')) {
@@ -1060,12 +1067,12 @@ Spaz.UI.notifyOfNewEntries = function() {
 			});
 			
 		} else {
-			var newtweets = $(Spaz.UI.getNewEntrySelector()).get().sort(Spaz.UI.sortTweetElements).reverse();
+			var newtweets = $(Spaz.UI.getNewEntrySelector()).not('.read').get().sort(Spaz.UI.sortTweetElements);
 
 	        /*
-	        get newest of the new
-	        we use this roundabout way of getting things to avoid a problem where
-	        you could get text from one tweet and a userimg from another
+		        get newest of the new
+		        we use this roundabout way of getting things to avoid a problem where
+		        you could get text from one tweet and a userimg from another
 	        */
 	        var newestHTML = newtweets[0].innerHTML;
 	        Spaz.dump(newestHTML);
@@ -1092,14 +1099,8 @@ Spaz.UI.notifyOfNewEntries = function() {
 		                img = $(this).text();
 		                break;
 	            }
-	            // resp += $(this).attr('class')+":"+$(this).text()+"\n";
 	        })
-	        // alert(resp);
-	        // Spaz.dump(screen_name);
-	        //		Spaz.dump(img);
-	        //		Spaz.dump(text);
-	        //
-	        var new_count = Spaz.UI.getNewEntryCount();
+
 	        if (new_count > 1) {
 	            var msg = screen_name + " (+" + (new_count - 1) + " more)";
 	        } else {
