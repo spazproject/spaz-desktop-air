@@ -124,6 +124,15 @@ Spaz.Intercept.init = function() {
 		})
 	
 		.intercept('click', {
+			'#filter-friends':function(e) {
+				this.select();
+			},
+			'#filter-user':function(e) {
+				this.select();
+			},
+			'#filter-public':function(e) {
+				this.select();
+			},
 			'#refresh-friends':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
 				Spaz.restartReloadTimer();
@@ -231,7 +240,20 @@ Spaz.Intercept.init = function() {
 			'#userContextMenu-sendDM':function(e) {
 				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
 			},
-			
+			'#userContextMenu-searchForUser':function(e) {
+				var screen_name = $(this).attr('user-screen_name');
+				var search_str = "from:"+screen_name+" OR to:"+screen_name;
+				
+				$('#search-for').val(search_str);
+			    Spaz.Section.search.build();
+			    Spaz.UI.showTab(3);
+			},
+			'#userContextMenu-filterByUser':function(e) {
+				var screen_name = $(this).attr('user-screen_name');
+				$('#filter-friends').val(screen_name);
+				$('#filter-friends').trigger('keyup');
+			    Spaz.UI.showTab(0);
+			},
 			
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
@@ -340,6 +362,8 @@ Spaz.Intercept.init = function() {
 	/*
 		Normal bindings where intercept doesn't work
 	*/
+
+	
 	$('#entrybox').focus(function(e) {
 			Spaz.UI.showEntryboxTip();
 			$('#entrystats').fadeIn('fast');		
