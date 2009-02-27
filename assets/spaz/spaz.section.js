@@ -338,7 +338,7 @@ Spaz.Section.init = function() {
 				for (var x = 0; x < data.results.length; x++) {
 					Spaz.Section.search.addItem(summizeToTweet(data.results[x]))
 				}
-				Spaz.dump('cleaning up timeline');
+				Spaz.dump('Search section cleaning up timeline');
 				Spaz.Section.search.cleanup();
 
 				// add search term highlighting
@@ -568,7 +568,7 @@ Spaz.Section.init = function() {
 			if (this.$ajaxQueueFinished >= this.urls.length) {
 				// this.$ajaxQueueFinished = 0;
 
-				Spaz.dump('cleaning up timeline');
+				Spaz.dump('friendsList cleaning up timeline');
 				this.cleanup();
 
 				Spaz.dump('hiding loading');

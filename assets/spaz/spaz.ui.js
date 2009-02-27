@@ -682,6 +682,8 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
     var timelineid = section.timeline;
 
+	Spaz.dump('TIMELINE #' + timelineid + '-' + entry.id);
+
     // air.trace(JSON.stringify(entry));
     if ($('#' + timelineid + '-' + entry.id).length < 1) {
 		entry.isDM = false;
@@ -934,30 +936,6 @@ Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
         // Spaz.dump('done sorting');
     }
 
-    // time.start('insertIntoTimeline');
-    // if ( parseInt($('#' + timelineid + ' div.timeline-entry:last').find('div.entry-timestamp').text()) >= entry.timestamp) {
-    // 	$('#' + timelineid).append(jqentry);
-    // } else if( 	$('#' + timelineid + ' div.timeline-entry').length < 1) {
-    // 	$('#' + timelineid).prepend(jqentry);
-    // 	// $('#' + timelineid)[0].innerHTML = entryHTML + $('#' + timelineid)[0].innerHTML;
-    //
-    // } else {
-    //
-    // 	/*
-    // 		iterate over the timeline from start and add the item in the right place
-    // 	*/
-    // 	$('#' + timelineid + ' div.timeline-entry').each(function() {
-    // 		if ( parseInt($(this).find('div.entry-timestamp').text()) < entry.timestamp ) {
-    // 			$(jqentry).insertBefore(this);
-    // 			return false;
-    // 		} else if ( $(this).next().length == 0 ) {
-    // 			$(jqentry).insertAfter(this);
-    // 			return false;
-    // 		}
-    // 	});
-    // }
-    // time.stop('insertIntoTimeline');
-
 }
 
 
@@ -1156,6 +1134,8 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, skip_sort) {
 
+	// alert('Spaz.UI.cleanupTimeline');
+
     /*
         Make this non-blocking
     */
@@ -1163,10 +1143,10 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         var numentries = $('#' + timelineid + ' div.timeline-entry').length;
         time.start('sortTimeline');
         if (numentries > 1 && !skip_sort) {
-            Spaz.dump('Sorting timeline');
+            Spaz.dump('Sorting timeline numentries:'+numentries);
             Spaz.UI.sortTimeline(timelineid, true);
         } else {
-            air.trace('not sorting');
+            Spaz.dump('not sorting - skip_sort:'+skip_sort+' numentries:'+numentries);
         }
         time.stop('sortTimeline');
         return false;
@@ -1180,6 +1160,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         time.start('removeExtras');
         
 		var tl_selector = '#' + timelineid + ' div.timeline-entry';
+		
+		// alert(tl_selector);
 		
 		function removeExtraItems(type) {
 			switch (type) {

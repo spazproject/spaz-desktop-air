@@ -630,7 +630,7 @@ Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
 			time.stop('addingItems');
 		}
 
-		Spaz.dump('cleaning up timeline');
+		Spaz.dump('onSectionAjaxComplete cleaning up timeline');
 		section.cleanup();
 
 		Spaz.dump('hiding loading');
