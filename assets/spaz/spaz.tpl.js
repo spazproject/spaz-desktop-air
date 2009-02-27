@@ -19,7 +19,11 @@ if (!Spaz.Templates) Spaz.Templates = {};
 
 Spaz.Templates.timeline_entry = function(d) {
 	var entryHTML = '';
-	entryHTML += '<div class="timeline-entry needs-cleanup new '+d.rowclass+' if (favorited) {favorited}" id="'+d.timelineid+'-'+d.id+'">';
+	entryHTML += '<div class="timeline-entry needs-cleanup new '+d.rowclass;
+	if (d.favorited) {
+		entryHTML += ' favorited ';
+	}
+	entryHTML += '"  id="'+d.timelineid+'-'+d.id+'">';
 	entryHTML += '	<div class="entry-timestamp" style="display:none">'+d.timestamp+'</div>';
 	entryHTML += '	<div class="entry-id" style="display:none">['+d.id+']</div>';
 	entryHTML += '	<div class="entry-time" style="display:none">'+d.created_at+'</div>';

@@ -943,7 +943,7 @@ Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
 Spaz.UI.sortTweetElements = function(a, b) {
     var inta = parseInt($(a).find('.entry-timestamp').text())
     var intb = parseInt($(b).find('.entry-timestamp').text())
-    var diff =  intb - inta;
+    var diff =  inta - intb;
     return diff;
 };
 
@@ -1045,40 +1045,20 @@ Spaz.UI.notifyOfNewEntries = function() {
 			});
 			
 		} else {
-			var newtweets = $(Spaz.UI.getNewEntrySelector()).not('.read').get().sort(Spaz.UI.sortTweetElements);
 
-	        /*
-		        get newest of the new
-		        we use this roundabout way of getting things to avoid a problem where
-		        you could get text from one tweet and a userimg from another
-	        */
-	        var newestHTML = newtweets[0].innerHTML;
-	        Spaz.dump(newestHTML);
-	        var jqnewest = $(newestHTML);
-
+			var newtweet = $(Spaz.UI.getNewEntrySelector()).not('.read').get(0);
+			
+			alert(newtweet.outerHTML);
+			
 	        Spaz.dump('Sending notification');
 	        var resp = "";
 
-	        var text;
-	        var img;
-	        var screen_name;
-
-	        jqnewest.each(function(i) {
-	            switch ($(this).attr('class')) {
-		            case 'entry-user-screenname':
-		                screen_name = $(this).text();
-		                Spaz.dump(screen_name)
-		                break;
-		            case 'entry-text':
-		                text = $(this).text();
-		                Spaz.dump('TEXT:' + text);
-		                break;
-		            case 'entry-user-img':
-		                img = $(this).text();
-		                break;
-	            }
-	        })
-
+			var screen_name = $(newtweet).children('.entry-user-screenname').text();
+			var text = $(newtweet).children('.entry-text').text();
+			var img = $(newtweet).children('.entry-user-img').text();
+			
+			alert("screen_name:"+screen_name+"\ntext:"+text+"\n img:"+img);
+			
 	        if (new_count > 1) {
 	            var msg = screen_name + " (+" + (new_count - 1) + " more)";
 	        } else {
