@@ -70,7 +70,11 @@ Spaz.Section.init = function() {
 				/*
 					trigger the filtering by sending keyup
 				*/
-				$('#filter-friends').trigger('keyup');
+				Spaz.dump('triggering keyup for #filter-friends!');
+				if ($('#filter-friends').val()) {
+					$('#filter-friends').trigger('keyup');
+				}
+
 				time.stop('onSectionAjaxComplete');
 				return false;
 			});

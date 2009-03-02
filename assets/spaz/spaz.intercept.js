@@ -344,6 +344,8 @@ Spaz.Intercept.init = function() {
 		})
 		.intercept('keyup', {
 			'#filter-friends':function(e) {
+				// air.trace('filter:'+this.outerHTML+"\n"+$(this).val());
+				
 				Spaz.Section.friends.filter( $(this).val() );
 			},
 			'#filter-user':function(e) {

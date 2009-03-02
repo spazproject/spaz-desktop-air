@@ -686,6 +686,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
     // air.trace(JSON.stringify(entry));
     if ($('#' + timelineid + '-' + entry.id).length < 1) {
+		// air.trace('adding #' + timelineid + '-' + entry.id);
 		entry.isDM = false;
 		entry.isSent = false;
 		if (!entry.favorited) { // we do this to make a favorited property for DMs
@@ -1048,7 +1049,7 @@ Spaz.UI.notifyOfNewEntries = function() {
 
 			var newtweet = $(Spaz.UI.getNewEntrySelector()).not('.read').get(0);
 			
-			alert(newtweet.outerHTML);
+			// alert(newtweet.outerHTML);
 			
 	        Spaz.dump('Sending notification');
 	        var resp = "";
@@ -1057,7 +1058,7 @@ Spaz.UI.notifyOfNewEntries = function() {
 			var text = $(newtweet).children('.entry-text').text();
 			var img = $(newtweet).children('.entry-user-img').text();
 			
-			alert("screen_name:"+screen_name+"\ntext:"+text+"\n img:"+img);
+			// alert("screen_name:"+screen_name+"\ntext:"+text+"\n img:"+img);
 			
 	        if (new_count > 1) {
 	            var msg = screen_name + " (+" + (new_count - 1) + " more)";
