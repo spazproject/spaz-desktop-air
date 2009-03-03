@@ -312,7 +312,7 @@ Spaz.UI.prepRetweet = function(entryid) {
     var eb = $('#entrybox');
 	eb.focus();
 	eb.val(rtstr);
-	eb[0].setSelectionRange(eb.val().length, eb.val().length);s
+	eb[0].setSelectionRange(eb.val().length, eb.val().length);
 	
 	Spaz.UI.clearPostIRT();
 	
