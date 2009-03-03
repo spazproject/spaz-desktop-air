@@ -1030,11 +1030,11 @@ Spaz.UI.notifyOfNewEntries = function() {
 				var text = $(this).children('.entry-text').text();
 				var img = $(this).children('.entry-user-img').text();
 				
-				if ( $(this).hasClass('reply').not('.read') ) {
+				if ( $(this).hasClass('reply') && $(this).not('.read') ) {
 					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_REPLY, function() {
 						air.NativeApplication.nativeApplication.activate();
 					});
-				} else if ( $(this).hasClass('dm').not('.read') ) {
+				} else if ( $(this).hasClass('dm') && $(this).not('.read') ) {
 					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_DM, function() {
 						air.NativeApplication.nativeApplication.activate();
 					});
