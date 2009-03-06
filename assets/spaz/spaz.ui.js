@@ -228,7 +228,7 @@ Spaz.UI.showEntryboxTip = function() {
 
 Spaz.UI.showLocationOnMap = function(location) {
     if (location.length > 0) {
-        var url = 'http://maps.yahoo.com/maps_result.php?q1=' + encodeURIComponent(location);
+        var url = 'http://maps.google.com/?q=' + encodeURIComponent(location);
         Spaz.dump("Loading " + url);
         openInBrowser(url);
     }
