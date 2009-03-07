@@ -1115,6 +1115,16 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 // cleans up and parses stuff in timeline's tweets
 Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, skip_sort) {
 
+	/*
+		record some values so we can adjust the scrollTop if necessary
+	*/
+	var oldFirst  = $('#'+timelineid+" div.timeline-entry:first");
+	var $timeline = $('#'+timelineid);
+	var offset_before = oldFirst.offset().top;
+	air.trace("oldFirst BEFORE top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop());
+
+	
+
 	// alert('Spaz.UI.cleanupTimeline');
 
     /*
@@ -1216,19 +1226,22 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
     Spaz.Timers.add(function() {
         time.start('scrollTimeline');
         if (!suppressScroll) {
-            if ($("#" + timelineid + ' .timeline-entry:eq(0)').length > 0) {
+            if ($("#" + timelineid + ' .timeline-entry.new:not(.read)').length > 0) {
                 // scroll to top
-                Spaz.dump('scrolling to .timeline-entry:eq(0) in #' + timelineid);
+                Spaz.dump('scrolling to .timeline-entry.new:not(.read) in #' + timelineid);
 
-                if (Spaz.Prefs.get('timeline-scrollonupdate')) {
+				/*
+					
+				*/
+                if (Spaz.Prefs.get('timeline-scrollonupdate') && $timeline.parent().scrollTop() > 0) {
                     try {
-						air.trace('crolliong thee timeline'+timelineid);
-                        $('#'+timelineid).parent().scrollTo('.timeline-entry:eq(0)', {
-                            speed: 800,
+						air.trace('scrolliong thee timeline '+timelineid);
+                        $('#'+timelineid).parent().scrollTo('.timeline-entry.new:not(.read):last', {
+                            speed: 400,
                             easing: 'swing'
                         })
                     } catch(e) {
-                        Spaz.dump('Error doing scrollTo first entry - probably switched tabs in the middle of loading. No sweat!');
+                        Spaz.dump('Error doing scrollTo first new entry - probably switched tabs in the middle of loading. No sweat!');
                     }
                 }
 
@@ -1373,7 +1386,19 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 			run the helper after 5 seconds
 		*/
 		setTimeout(fadeInStragglers, 5000);
-
+		
+		/*
+			if necessary, adjust the scrollTop
+		*/
+		var offset_after = oldFirst.offset().top;
+		var offset_diff = Math.abs(offset_before - offset_after);
+		air.trace("oldFirst AFTER top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop() + "\noffset_diff: "+offset_diff);
+		
+		if ($timeline.parent().scrollTop() > 0) {
+			$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );			
+		}
+		
+		air.trace($timeline.parent().scrollTop());
         return false;
     });
 
@@ -1395,6 +1420,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
         return false;
     });
+
+	
 }
 
 

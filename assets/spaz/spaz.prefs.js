@@ -51,7 +51,7 @@ Spaz.Prefs.defaultPreferences = {
     'sound-new': '/assets/sounds/TokyoTrainStation/New.mp3',
     'sound-wilhelm': '/assets/sounds/wilhelm.mp3',
 
-    'timeline-scrollonupdate': true,
+    'timeline-scrollonupdate': false,
     'timeline-maxentries': 325,
     'timeline-maxentries-dm': 25,
     'timeline-maxentries-reply': 50,

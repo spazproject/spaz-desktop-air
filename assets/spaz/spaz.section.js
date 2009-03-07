@@ -58,6 +58,7 @@ Spaz.Section.init = function() {
 		},
 		onAjaxComplete: function(url, xhr, msg) {
 
+			
 
 			/*
 				Make this non-blocking
@@ -65,6 +66,7 @@ Spaz.Section.init = function() {
 			var this_section = this;
 			Spaz.Timers.add(function() {
 				time.start('onSectionAjaxComplete');
+
 				Spaz.UI.statusBar('Processing data…');
 				Spaz.Data.onSectionAjaxComplete(this_section, url, xhr, msg);
 				/*
@@ -76,8 +78,12 @@ Spaz.Section.init = function() {
 				}
 
 				time.stop('onSectionAjaxComplete');
-				return false;
+				return false;				
 			});
+			
+			
+			
+			
 		},
 		addItem: function(item) {
 
