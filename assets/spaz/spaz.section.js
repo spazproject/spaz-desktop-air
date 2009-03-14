@@ -108,12 +108,17 @@ Spaz.Section.init = function() {
 		filter: function(terms) {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				var filter_re = new RegExp(terms, "i");
-				$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
-					if ( $(this).text().search(filter_re) == -1 ) {
-						$(this).addClass('hidden');
-					}
-				});
+				try {
+					var filter_re = new RegExp(terms, "i");
+					$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
+						if ( $(this).text().search(filter_re) == -1 ) {
+							$(this).addClass('hidden');
+						}
+					});
+				} catch(e) {
+					air.trace(e.name+":"+e.message);
+				}
+				
 			}
 		},
 		cleanup: function(attribute) {
@@ -201,12 +206,17 @@ Spaz.Section.init = function() {
 		filter: function(terms) {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				var filter_re = new RegExp(terms, "i");
-				$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
-					if ( $(this).text().search(filter_re) == -1 ) {
-						$(this).addClass('hidden');
-					}
-				});
+				try {
+					var filter_re = new RegExp(terms, "i");
+					$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
+						if ( $(this).text().search(filter_re) == -1 ) {
+							$(this).addClass('hidden');
+						}
+					});
+				} catch(e) {
+					air.trace(e.name+":"+e.message);
+				}
+				
 			}
 		},
 		cleanup: function(attribute) {
@@ -252,12 +262,16 @@ Spaz.Section.init = function() {
 		filter: function(terms) {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
-				var filter_re = new RegExp(terms, "i");
-				$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
-					if ( $(this).text().search(filter_re) == -1 ) {
-						$(this).addClass('hidden');
-					}
-				});
+				try {
+					var filter_re = new RegExp(terms, "i");
+					$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
+						if ( $(this).text().search(filter_re) == -1 ) {
+							$(this).addClass('hidden');
+						}
+					});
+				} catch(e) {
+					Spaz.dump(e.name+":"+e.message);
+				}
 			}
 		},
 		cleanup: function(attribute) {
