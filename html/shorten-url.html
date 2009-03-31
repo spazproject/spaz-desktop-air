@@ -22,6 +22,8 @@
 	
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
+			var nativeWin = window.htmlLoader.stage.nativeWindow;
+			var startHeight = nativeWin.height;
 
 			// get the pref
 			var service = Spaz.Prefs.get('url-shortener');
@@ -29,6 +31,7 @@
 
             if (service == 'shortie') {
                 $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+				nativeWin.height = startHeight + $('#shorten-custom-hidden').height();
             }
 
 			// populate the dropdown
@@ -50,12 +53,15 @@
 			});
 			
             $('#url-shortener').bind('change', function() {
+
 				air.trace($('#url-shortener').val());
 				Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
                 if ($('#url-shortener').val() != 'shortie') {
+					nativeWin.height = startHeight;
                     $('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
                 } else {
                     $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+					nativeWin.height = startHeight + $('#shorten-custom-hidden').height();
                 }
 			});
 			
