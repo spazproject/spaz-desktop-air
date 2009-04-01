@@ -35,7 +35,7 @@
 				air.trace('Chosen file: '+event.target.url);
 							
 				if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
-					if ( !confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+					if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
 						return false;
 					}
 				}
@@ -99,7 +99,7 @@
 			event.preventDefault();
 			
 			if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
-				if ( !confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+				if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
 					return false;
 				}
 			}
@@ -135,7 +135,7 @@
 				'url'    :service_url,
 				'fileUrl':fileUrl,
 				'open'   : function(event) {
-					$('#verification-result').html('Uploading image to Twitpic…');
+					$('#verification-result').html('Uploading image…');
 				},
 				'complete': function(event) {
 					$('#verification-result').html('Complete');
