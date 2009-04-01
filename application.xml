@@ -28,7 +28,7 @@
 		<x>150</x>
 		<y>150</y>
 	</initialWindow>
-	<installFolder>Spaz</installFolder>
+	<!-- <installFolder>Spaz</installFolder> -->
 	<programMenuFolder>Spaz</programMenuFolder>
 	<icon>  
 		<image128x128>images/spaz-icon-alpha.png</image128x128>
