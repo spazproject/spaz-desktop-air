@@ -193,6 +193,13 @@ Spaz.UI.showHelp = function() {
 Spaz.UI.showShortLink = function() {
     this.instance = window.open('app:/html/shorten-url.html', 'shortenWin', 'height=250,width=300');
 }
+Spaz.UI.uploadImage = function(imgurl) {
+	var url = 'app:/html/upload-file.html';
+	if (imgurl) {
+		url += '?fileUrl='+encodeURIComponent(imgurl);
+	}
+    this.instance = window.open(url, 'uploadWin', 'height=380,width=400');
+}
 Spaz.UI.showCSSEdit = function() {
     this.instance = window.open('app:/html/css_edit.html', 'cssEditWin', 'height=350,width=400');
 }

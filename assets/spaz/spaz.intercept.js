@@ -204,6 +204,9 @@ Spaz.Intercept.init = function() {
 			'#mainmenu-shortenLink':function(e) {
 				Spaz.UI.showShortLink();
 			},
+			'#mainmenu-uploadImage':function(e) {
+				Spaz.UI.uploadImage();
+			},
 			'#mainMenu-sendReply':function(e) {
 				Spaz.UI.prepReply('');
 			},
@@ -422,37 +425,40 @@ Spaz.Intercept.init = function() {
 			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
 				return;
+			} else {
+				Spaz.UI.uploadImage(fileUrl);
+				return;
 			}
 			
 			
 			// upload the file
-			Spaz.Data.uploadFile({
-				'extra'  :{
-					"username": Spaz.Prefs.getUser(),
-					"password": Spaz.Prefs.getPass(),
-					"source":Spaz.Prefs.get('twitter-source'),
-				},
-				'url'    :"http://twitpic.com/api/upload",
-				'fileUrl':fileUrl,
-				'open'   : function(event) {
-					Spaz.UI.showLoading();
-					Spaz.UI.statusBar('Uploading image to Twitpic…');
-				},
-				'complete': function(event) {
-					Spaz.UI.hideLoading();
-
-					var loader = event.target;
-				    air.trace(loader.data);
-
-					var parser=new DOMParser();
-					xmldoc = parser.parseFromString(loader.data,"text/xml");
-					var mediaurl = $(xmldoc).find('mediaurl').text();
-
-					air.trace(mediaurl);
-
-					Spaz.UI.prepPhotoPost(mediaurl);
-				},
-			});
+			// Spaz.Data.uploadFile({
+			// 	'extra'  :{
+			// 		"username": Spaz.Prefs.getUser(),
+			// 		"password": Spaz.Prefs.getPass(),
+			// 		"source":Spaz.Prefs.get('twitter-source'),
+			// 	},
+			// 	'url'    :"http://twitpic.com/api/upload",
+			// 	'fileUrl':fileUrl,
+			// 	'open'   : function(event) {
+			// 		Spaz.UI.showLoading();
+			// 		Spaz.UI.statusBar('Uploading image to Twitpic…');
+			// 	},
+			// 	'complete': function(event) {
+			// 		Spaz.UI.hideLoading();
+			// 
+			// 		var loader = event.target;
+			// 	    air.trace(loader.data);
+			// 
+			// 		var parser=new DOMParser();
+			// 		xmldoc = parser.parseFromString(loader.data,"text/xml");
+			// 		var mediaurl = $(xmldoc).find('mediaurl').text();
+			// 
+			// 		air.trace(mediaurl);
+			// 
+			// 		Spaz.UI.prepPhotoPost(mediaurl);
+			// 	},
+			// });
 			
 
 		}

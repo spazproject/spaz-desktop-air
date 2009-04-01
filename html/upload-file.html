@@ -14,24 +14,168 @@
 	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.upload.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.uploadservice.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script src="app:/assets/lib/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
+		
+		var service_url = null;
+	
+		var browseForImage = function() {
+			var imageFilter = new air.FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png");
+			var userFile = new air.File();
+			userFile.browseForOpen("Choose an image file", [imageFilter]);
+			
+			userFile.addEventListener(air.Event.SELECT, function(event) {
+				
+				air.trace('Chosen file: '+event.target.url);
+							
+				if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+					if ( !confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+						return false;
+					}
+				}
+							
+				if (event.target.url.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
+					alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
+					return;
+				}
+				handleDrop(event.target.url);
+			})
+		}
+
+		
+	
+		var prepPhotoPost = function(url) {
+		    var eb = window.opener.$('#entrybox');
+		    eb.focus();
+		    if (url) {
+		        eb.val(url + ' ' + $('#post-message').val());
+		        eb[0].setSelectionRange(eb.val().length - $('#post-message').val().length, eb.val().length);
+		        return true;
+		    } else {
+		        return false;
+		    }
+
+			window.opener.$('#irt').fadeOut('fast');
+			window.opener.$('#irt-message').html('').attr('data-status-id', '0');
+
+		}
+		
+		
+	
+		// see http://www.netlobo.com/url_query_string_javascript.html
+		function gup( name )
+		{
+			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			var regexS = "[\\?&]"+name+"=([^&#]*)";
+			var regex = new RegExp( regexS );
+			var results = regex.exec( window.location.href );
+			if( results == null )
+			  return "";
+			else
+			  return results[1];
+		}
+
+
+		function handleDrop(fileUrl) {
+			$('#upload-droplet').html('<img src="'+fileUrl+'" />');
+			$('#upload-droplet>img').css('width', $('#upload-droplet').width());
+			$('#upload-droplet>img').css('height', $('#upload-droplet').height());
+			$('#file-url').val(fileUrl);
+		}
+
+    
+	    function dragEnterOverHandler(event){
+	        event.preventDefault();
+	    }
+
+	    function dropHandler(event){
+
+			event.preventDefault();
+			
+			if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+				if ( !confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+					return false;
+				}
+			}
+
+
+		
+			var fileUrl = event.dataTransfer.getData("text/uri-list");
+		
+			air.trace(fileUrl);
+		
+			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
+				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
+				return;
+			}
+			handleDrop(fileUrl);
+			return;
+	    }
+	
+		/*
+			Upload the dragged image to Twitpic
+		*/
+		function uploadDraggedImage(fileUrl) {
+			air.trace(fileUrl);
+		
+			// upload the file
+			Spaz.Data.uploadFile({
+				'extra'  :{
+					"username": Spaz.Prefs.getUser(),
+					"password": Spaz.Prefs.getPass(),
+					"source":Spaz.Prefs.get('twitter-source'),
+					"message":$('#post-message').val()
+				},
+				'url'    :service_url,
+				'fileUrl':fileUrl,
+				'open'   : function(event) {
+					$('#verification-result').html('Uploading image to Twitpic…');
+				},
+				'complete': function(event) {
+					$('#verification-result').html('Complete');
+
+					var loader = event.target;
+				    air.trace(loader.data);
+
+					var parser=new DOMParser();
+					xmldoc = parser.parseFromString(loader.data,"text/xml");
+					var mediaurl = $(xmldoc).find('mediaurl').text();
+
+					air.trace(mediaurl);
+
+					prepPhotoPost(mediaurl);
+				},
+			});
+		}
 	</script>
 	
+	
 	<script type="text/javascript" charset="utf-8">
+	
 		$(document).ready(function() {
+			
+			var target = $('#content').get(0);
+			target.addEventListener("dragenter", dragEnterOverHandler);
+			target.addEventListener("dragover", dragEnterOverHandler);
+			target.addEventListener("drop", dropHandler);
 
 			// get the pref
 			var service = Spaz.Prefs.get('file-uploader');
+			service_url = Spaz.Uploadservice.services[service].url;
 			air.trace("service is "+ service);
+			air.trace("service url "+ service_url);
 
 			var sharepass = Spaz.Prefs.get('services-twitpic-sharepassword');
 			air.trace("sharepass is "+ sharepass);
 			
 			// populate the dropdown
-			for (method in Spaz.Upload) {
+			for (method in Spaz.Uploadservice.services) {
 				if (method[0] != '$') {
 					if (method == service) {
 						$('#file-uploader').append('<option value="'+method+'" selected="selected">'+method+'</option>');
@@ -43,51 +187,58 @@
 				}
 			}
 			
-			// set the password sharing confirmation checkbox
-			$('#confirm-password-sharing').attr('checked', sharepass);
-						
+			$('#upload-droplet').click(function() {
+				browseForImage();
+			});
+			
 			
 			// bind service dropdown
 			$('#file-uploader').bind('change', function() {
-				air.trace($('#file-uploader').val());
-				Spaz.Prefs.set('file-uploader', $('#file-uploader').val());
+				var service = $('#file-uploader').val()
+				Spaz.Prefs.set('file-uploader', service);
+				
+				service_url = Spaz.Uploadservice.services[service].url;
+				air.trace("service is "+ service);
+				air.trace("service url "+ service_url);
 				
 				$('.service-extras').fadeOut();
 				$('#extra-'+service).fadeIn();
 				
 			});
 			
-			// bind password sharing checkbox dropdown
-			$('#confirm-password-sharing').bind('change', function() {
-				if ($('#confirm-password-sharing').attr('checked')) {
-					Spaz.Prefs.get('services-twitpic-sharepassword', true);
-				} else {
-					Spaz.Prefs.get('services-twitpic-sharepassword', false);
-				}
-			});
-			
 
-			
-			// Spaz.dump("val:"+$('#shorten-original-link').val());
-			// $('#shorten-original-link').focus();
-			// $('#shorten-original-link').val('http://');
-			// // Spaz.dump(air.Clipboard.generalClipboard.formats);
-			// if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
-			// 	var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
-			// 	if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
-			// 		$('#shorten-original-link').val(cliptext);
-			// 		Spaz.Shortlink[service](cliptext);
-			// 	}
-			// 	$('#shorten-original-link').select();
-			// }
 			
 			
 			// bind click to shorten action
 			$('#upload-button').bind('click', function() {
-				var service = Spaz.Prefs.get('file-uploader');
-				air.trace("service is "+ service);
-				Spaz.Upload[service]($('#shorten-original-link').val());
+				var fileUrl = $('#file-url').val();
+				if (fileUrl) {
+					uploadDraggedImage(fileUrl);
+				} else {
+					browseForImage();
+				}
+				
+				// var service = Spaz.Prefs.get('file-uploader');
+				// air.trace("service is "+ service);
+				// Spaz.Upload[service]($('#shorten-original-link').val());
 			});
+			
+			
+			$('#post-message').keyup(function(e) {
+				if ($('#post-message').val().length>110) {
+					$('#post-message').val( $('#post-message').val().substr(0,110) );
+				}
+				air.trace($('#post-message').val().length);
+			})
+			
+			
+			
+			var fileUrl = escape_html(decodeURIComponent(gup('fileUrl')));
+			if (fileUrl) {
+				handleDrop(fileUrl);
+			}
+			
+			air.trace(window.location.href);
 			
 			// air.trace(air.NativeApplication.nativeApplication.spazPrefs);
 		})
@@ -99,9 +250,9 @@
 			margin-left:auto;
 			margin-right:auto;
 			margin-bottom:10px;
-			border:3px dashed #666;
+			border:3px solid #666;
 			background:transparent;
-			-webkit-border-radius:10px;
+/*			-webkit-border-radius:10px;*/
 			font-size:56pt;
 			width:100px;
 			height:100px;
@@ -110,6 +261,16 @@
 		#upload-droplet:hover {
 			background:#CCFFCC;
 			cursor:pointer;
+		}
+		#post-message {
+			height:4.2em;
+			font-size:9pt;
+		}
+		#upload-button {
+			font-size:11pt;
+		}
+		#verification-result {
+			font-size:8pt;
 		}
 	</style>
 	
@@ -132,7 +293,6 @@
 		<div class="formrow">
 			<label for="file-uploader">Service</label>
 			<select id="file-uploader" name="file-uploader" onChange="">
-				<!-- stuff goes here -->
 			</select>
 		</div>
 		
@@ -141,20 +301,22 @@
 		
 		<div class="formrow">
 			<label for="original-link">File</label>
-			<input type="text" name="file-url" id="file-url" />
+			<input type="text" name="file-url" id="file-url" disabled='disabled' />
 		</div>
-		<div class="formrow checkbox">
-			<label>&nbsp;</label>
-			<input type="checkbox" name="confirm-password-sharing" id="confirm-password-sharing" value="" />
-			<label for="confirm-password-sharing" class="checkbox">Share my Twitter password with Twitpic</label>
+		<div class="formrow">
+			<label for="post-message">Message</label>
+			<textarea type="text" name="post-message" id="post-message"></textarea>
 		</div>
 		
-		<div id="extra-twitpic" class="formrow service-extras" style="text-align:center; margin-top:15px">
-			<input type="button" id="upload-button" name="upload" value="Upload &bull;" disabled="disabled" style="font-size:24pt" /> 
+		<div style="text-align:center">
+			<input type="button" id="upload-button" name="upload" value="Upload" /> 
 		</div>
+		
+		<!-- <div id="extra-twitpic" class="formrow service-extras" style="text-align:center; margin-top:15px">
+			<input type="button" id="upload-button" name="upload" value="Upload" disabled="disabled" style="font-size:24pt" /> 
+		</div> -->
 		<div id="verification-result" align="center">&nbsp;</div>
 	</form>
-</div>
 </div>
 
 </body>

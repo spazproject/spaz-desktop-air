@@ -158,10 +158,10 @@ table.data td.value {
 	For Shorten URL
 */
 form label {
-	min-width:19%;
+	min-width:17%;
 	text-align:right;
 	margin-right:5px;
-	font-weight:bold;
+	font-weight:normal;
 	/*letter-spacing:-1px;*/
 	display:block;
 	float:left;
@@ -173,6 +173,7 @@ form label.checkbox {
 }
 form input[type='password'],
 form input[type='text'],
+form textarea,
 form select {
 	border:1px solid #666;
 	padding:4px;
