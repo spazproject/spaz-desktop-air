@@ -180,3 +180,13 @@ form select {
 	width:75%;
 	/*-khtml-border-radius:5px;*/
 }
+/*
+	The wrapper for the little loading animation
+*/
+#loading {
+	display:inline-block;
+	height:10px;
+	width: 10px;
+	background:url('img/loading.gif');
+	background-repeat: no-repeat;
+}

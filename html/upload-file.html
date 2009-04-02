@@ -16,6 +16,7 @@
 	<script src="app:/assets/spaz/spaz.upload.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.data.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.uploadservice.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.ui.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script src="app:/assets/lib/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
@@ -135,11 +136,13 @@
 				'url'    :service_url,
 				'fileUrl':fileUrl,
 				'open'   : function(event) {
-					$('#verification-result').html('Uploading image…');
+					$('#status-text').html('Uploading image…');
+					Spaz.UI.showLoading();
 				},
 				'complete': function(event) {
-					$('#verification-result').html('Complete');
-
+					$('#status-text').html('Complete');
+					Spaz.UI.hideLoading();
+					
 					var loader = event.target;
 				    air.trace(loader.data);
 
@@ -159,6 +162,9 @@
 	<script type="text/javascript" charset="utf-8">
 	
 		$(document).ready(function() {
+
+			$('#loading').hide();
+			
 			
 			var target = $('#content').get(0);
 			target.addEventListener("dragenter", dragEnterOverHandler);
@@ -272,6 +278,9 @@
 		#verification-result {
 			font-size:8pt;
 		}
+			#status-text {
+				margin-left:5px;
+			}
 	</style>
 	
 </head>
@@ -315,7 +324,7 @@
 		<!-- <div id="extra-twitpic" class="formrow service-extras" style="text-align:center; margin-top:15px">
 			<input type="button" id="upload-button" name="upload" value="Upload" disabled="disabled" style="font-size:24pt" /> 
 		</div> -->
-		<div id="verification-result" align="center">&nbsp;</div>
+		<div id="verification-result" align="center"><span id='loading'><!-- <img src='{theme-dir}/images/loading.gif' /> --></span><span id="status-text"></span></div>
 	</form>
 </div>
 

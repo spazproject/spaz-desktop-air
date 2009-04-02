@@ -11,6 +11,15 @@ if (!Spaz.Intercept) Spaz.Intercept = {};
 Spaz.Intercept.init = function() {
 
 	$('body').intercept('mouseover', {
+			'.status-action[title]':function(e) {
+				var tt = new Spaz_Tooltip({
+					'e'		:e,
+					'str'	:$(this).attr('title'),
+					// 'previewurl':href,
+				});
+				tt.show();
+				
+			},
 			'.user-screen-name[title]':function(e) {
 				var tt = new Spaz_Tooltip({
 					'e'		:e,
