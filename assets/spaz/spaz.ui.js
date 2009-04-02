@@ -1313,7 +1313,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                 var domain = domains[i];
 
                 // Iterate over URL pattern
-                var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\/]*)", "g");
+                var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\-_+\\/]*)", "g");
                 var matchArray = null;
                 while (matchArray = urlRE.exec(txt)) {
                     // air.trace("Getting content of URL " + matchArray[1]);
