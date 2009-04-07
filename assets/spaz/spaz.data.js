@@ -516,16 +516,20 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 
 	var username = Spaz.Prefs.getUser();
 	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
-		if (confirm('Username not set. Enter this in Preferences?')) {
+		
+		$('#timeline-friends').html("<div id='not-logged-in'><div>Username and password not set.</div><input type='button' id='open-login-panel' value='Enter user/pass' /> </div>");
+		
+		$('#open-login-panel').one('click', function() {
+			$('#not-logged-in').remove();
 			Spaz.UI.showPrefs();
 			setTimeout(Spaz.UI.openLoginPanel, 500);
-			Spaz.dump('set selected tab to PREFS');
-		} else {
-			Spaz.dump('user chose not to enter username')
-		}
+		});
+		
 		Spaz.dump('hiding loading');
 		Spaz.UI.hideLoading();
 		return;
+	} else {
+		$('#not-logged-in').remove();
 	}
 
 	Spaz.dump('now:'+getTimeAsInt());

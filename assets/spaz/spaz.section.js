@@ -413,13 +413,6 @@ Spaz.Section.init = function() {
 			var password = Spaz.Prefs.getPass();
 
 			if (!username || username == 'null' || username == 'undefined' || username == 'false') {
-				if (confirm('Username not set. Enter this in Preferences?')) {
-					Spaz.UI.showPrefs();
-					setTimeout(Spaz.UI.openLoginPanel, 500);
-					Spaz.dump('set selected tab to PREFS');
-				} else {
-					Spaz.dump('user chose not to enter username')
-				}
 				Spaz.dump('hiding loading');
 				Spaz.UI.hideLoading();
 				return;

@@ -91,10 +91,7 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	margin:0px;
 	-khtml-border-radius:5px;
 	list-style: none;
-/*	max-height:15px;*/
 	position:absolute;
-/*	overflow:none;*/
-/*	z-index: 1000;*/
 	bottom:150px;
 	left:15px;
 	max-height:200px;
@@ -116,4 +113,10 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 }
 
 .timeline-entry .in-reply-to {
+}
+
+#not-logged-in {
+	padding:5px;
+	background:#CCCCCC;
+	font-size:10pt;
 }
