@@ -43,6 +43,11 @@ Spaz.Keyboard.setShortcuts = function() {
 	shortcut.add(Modkey+Spaz.Prefs.get('key-showShortenWindow'), function() {
 		Spaz.UI.showShortLink();
 	});
+
+	shortcut.add(Modkey+Spaz.Prefs.get('key-showUploadImageWindow'), function() {
+		Spaz.UI.uploadImage();
+	});
+
 	
 	shortcut.add(Modkey+'+Shift+M', function() {
 		Spaz.UI.markCurrentTimelineAsRead();

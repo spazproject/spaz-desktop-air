@@ -66,9 +66,9 @@ Spaz.Prefs.defaultPreferences = {
     'checkupdate': true,
     'checkupdate-testversions': false,
 
-    'url-shortener': 'isgd',
+    'url-shortener': 'short.ie',
 
-    'file-uploader': 'twitpic',
+    'file-uploader': 'twitgoo',
 
     'services-twitpic-sharepassword': false,
 
@@ -99,6 +99,7 @@ Spaz.Prefs.defaultPreferences = {
     'key-reply': "+Shift+@",
     'key-reloadTimeline': "Shift+F5",
     'key-showShortenWindow': "+Shift+A",
+    'key-showUploadImageWindow': "+Shift+U",
     'key-highlight-code': "+R"
 }
 

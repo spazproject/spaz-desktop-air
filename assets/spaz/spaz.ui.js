@@ -1329,7 +1329,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 					// make the URLRequest and set some properties
 					url_req = new air.URLRequest(url);
 					url_req.manageCookies = false;
-					url_req.authenticate = false;
+					url_req.authenticate  = false;
 					url_req.cacheResponse = true;
 					url_req.userAgent = Spaz.Sys.getUserAgent();
 
@@ -1359,7 +1359,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
             function onIOError(event) {
                 // air.trace('onIOError');
                 var targetURL = event.responseURL;
-                Spaz.dump('Request to ' + event.responseURL + ' returned an IRErrorEvent');
+                Spaz.dump('Request to ' + event.responseURL + ' returned an IOErrorEvent');
                 Spaz.dump(event);
                 stream.removeEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
                 stream.removeEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
