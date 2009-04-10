@@ -1090,7 +1090,7 @@ Spaz.UI.alert = function(message, title) {
     if (!title) {
         title = "Alert"
     }
-    Spaz.UI.notify(message, title, null, 5, 'app:/images/spaz-icon-alpha_48.png');
+    Spaz.UI.notify(message, title, null, Spaz.Prefs.get('window-notificationhidedelay'), 'app:/images/spaz-icon-alpha_48.png');
 }
 
 
