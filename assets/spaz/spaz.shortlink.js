@@ -27,7 +27,13 @@ Spaz.Shortlink.$copyToClipboard = function(shorturl) {
 
 Spaz.Shortlink.services = {
     'shortie' : function (url, custom) {
-        var origLink = encodeURI(url);
+		if (url.match(/ /gi)) {
+			var origLink = url.replace(/ /gi, '%20');
+		} else {
+			var origLink = url;
+		}
+		
+		air.trace(url+"\n"+origLink);
         
         $('#verification-result').text('Shortening URL...');
 
@@ -82,6 +88,7 @@ Spaz.Shortlink.services = {
 	'twurl.nl' : function(url) {
 	
 		// air.trace('OrigLink:'+origlink);
+		var origlink = encodeURIComponent(url);
 	
 		$('#verification-result').text('Shortening URL...');
 	
