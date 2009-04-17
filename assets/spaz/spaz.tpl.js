@@ -88,9 +88,9 @@ Spaz.Templates.friendslist_row = function(d) {
 						if (d.is_mutual) {
 	entryHTML += '			rel="mutual" title="'+d.screen_name+' is a mutual follower">&laquo;mutual&raquo;</span>';
 						} else if (d.is_follower) {
-	entryHTML += '			rel="follower" title="You are following '+d.screen_name+'">&laquo;follower</span>';
+	entryHTML += '			rel="follower" title="'+d.screen_name+' is following you">&laquo;follower</span>';
 						} else if (d.is_following) {
-	entryHTML += '			rel="following" title="'+d.screen_name+' is following you">friend&raquo;</span>';
+	entryHTML += '			rel="following" title="You are following '+d.screen_name+'">friend&raquo;</span>';
 						} else {
 	entryHTML += '			>?</span>';
 						}

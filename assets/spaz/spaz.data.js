@@ -359,8 +359,12 @@ Spaz.Data.makeNotFavorite = function(postid) {
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
+			var faved_element;
 			Spaz.dump(data);
 			Spaz.UI.statusBar('Removed fav: ' + postid);
+			if (faved_element = Spaz.UI.getElementFromStatusId(postid)) {
+				$(faved_element).removeClass('favorited');
+			}
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){

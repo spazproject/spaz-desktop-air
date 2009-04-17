@@ -281,7 +281,14 @@ Spaz.Intercept.init = function() {
 				openInBrowser(url);
 			},
 			'.status-action-fav':function(e) {
-				Spaz.Data.makeFavorite($(this).attr('entry-id'));
+				var entryid = $(this).attr('entry-id')
+				var element = Spaz.UI.getElementFromStatusId(entryid)
+				if ($(element).hasClass('favorited')) {
+					Spaz.Data.makeNotFavorite(entryid);	
+				}
+				else {
+					Spaz.Data.makeFavorite(entryid);	
+				}								
 			},
 			'.status-action-retweet':function(e) {
 				Spaz.UI.prepRetweet($(this).attr('entry-id'));
