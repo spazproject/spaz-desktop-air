@@ -1277,7 +1277,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         time.start('highlightReplies');
         // highlight all messages that mention @username
         cleanupTweets.find(".status-text").each(function(i) {
-            var re = new RegExp('@' + Spaz.Prefs.getUser(), 'i');
+            var re = new RegExp('@' + Spaz.Prefs.getUser() + '\\b', 'i');
             if (re.test($(this).html())) {
                 // Spaz.dump("found reply in "+$(this).text());
                 $(this).parents('div.needs-cleanup').addClass('reply');
