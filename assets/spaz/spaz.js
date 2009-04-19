@@ -157,6 +157,11 @@ Spaz.initialize = function() {
 	Spaz.dump('Made window visible');
 
 	window.nativeWindow.visible = true;
+	
+	if (Spaz.Prefs.get('window-minimizeatstartup')) {
+		Spaz.Windows.windowMinimize()
+	}
+	
 	$('body').fadeIn(1000);
 
 

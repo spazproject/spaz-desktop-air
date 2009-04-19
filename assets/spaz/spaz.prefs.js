@@ -20,6 +20,7 @@ Spaz.Prefs.defaultPreferences = {
     'window-restoreonupdates': true,
     'window-shownotificationpopups': true,
     'window-minimizetosystray': true,
+    'window-minimizeatstartup': false,
     'window-minimizeonbackground': false,
     'window-restoreonactivate': true,
 
@@ -244,6 +245,15 @@ Spaz.Prefs.changeMethods = {
         onChange: function(value) {},
         check: function() {
             Spaz.Prefs.set('window-minimizetosystray', Boolean(Spaz.Prefs.get('window-minimizetosystray')))
+        }
+    },
+    'window-minimizeatstartup': {
+        setUI: function(value) {
+            $('#window-minimizeatstartup').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('window-minimizeatstartup', Boolean(Spaz.Prefs.get('window-minimizeatstartup')))
         }
     },
     'window-minimizeonbackground': {
@@ -759,6 +769,7 @@ Spaz.Prefs.initUI = function() {
     $('#window-alpha').bind('change', Spaz.Prefs.setFromUI);
     $('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
     $('#window-minimizetosystray').bind('change', Spaz.Prefs.setFromUI);
+    $('#window-minimizeatstartup').bind('change', Spaz.Prefs.setFromUI);
     $('#window-minimizeonbackground').bind('change', Spaz.Prefs.setFromUI);
     $('#window-restoreonactivate').bind('change', Spaz.Prefs.setFromUI);
     $('#window-shownotificationpopups').bind('change', Spaz.Prefs.setFromUI);
