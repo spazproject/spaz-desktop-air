@@ -120,3 +120,9 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	background:#CCCCCC;
 	font-size:10pt;
 }
+
+#tooltip img {
+    max-width: 73px;
+    max-height: 73px;
+}
+

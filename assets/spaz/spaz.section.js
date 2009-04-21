@@ -326,7 +326,7 @@ Spaz.Section.init = function() {
 
 			Spaz.Section.search.lastquery
 
-			var data = JSON.parse(data);
+			var data = parseJSON(data);
 			Spaz.dump(data);
 
 			var term = data.query;

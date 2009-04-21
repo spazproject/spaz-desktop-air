@@ -608,11 +608,6 @@ a, a:link, .clickable {
 			font-size:inherit;
 		}
 
-    #tooltip img {
-        max-width: 73px;
-        max-height: 73px;
-    }
-
 	/*********************************************
 		context menus
 		- not sure that these will continue to be used, if native versions can work okay

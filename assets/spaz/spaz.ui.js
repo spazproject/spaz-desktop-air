@@ -690,10 +690,13 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
     var timelineid = section.timeline;
 
 	Spaz.dump('TIMELINE #' + timelineid + '-' + entry.id);
+	air.trace('TIMELINE #' + timelineid + '-' + entry.id);
+	
+	
 
-    // air.trace(JSON.stringify(entry));
+    air.trace(JSON.stringify(entry));
     if ($('#' + timelineid + '-' + entry.id).length < 1) {
-		// air.trace('adding #' + timelineid + '-' + entry.id);
+		air.trace('adding #' + timelineid + '-' + entry.id);
 		entry.isDM = false;
 		entry.isSent = false;
 		if (!entry.favorited) { // we do this to make a favorited property for DMs
@@ -725,6 +728,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		*/
 		
 		if (entry.in_reply_to_user_id && !entry.in_reply_to_screen_name) {
+			air.trace('in_reply_to_user_id exists, but in_reply_to_screen_name not set');
 			var reply_matches = null;
 			if (reply_matches = entry.text.match(/^@([a-zA-Z0-9_\-]+)/i)) {
 				entry.in_reply_to_screen_name = reply_matches[1];
@@ -740,12 +744,15 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		/*
 			Clean the entry.text
 		*/
+		// fix weird unicode junk
+		entry.text = entry.text.replace(/\u2028/, " ");
+
 		// save a raw version
 		entry.rawtext = entry.text;
 		
 		// fix extra ampersand encoding
 		entry.text = entry.text.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-
+		
 		// fix entity &#123; style extra encoding
 		entry.text = entry.text.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
 
@@ -788,12 +795,18 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9_\-]{2,}))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
 		
 		
-		
 		var entryHTML = Spaz.Tpl.parse('timeline_entry', entry);
 		// air.trace(entryHTML);
 		
+		// air.trace('make DOMElement from string: '+entryHTML);
+		// var entryElement = document.createElement(entryHTML);
+		
 		// Make the jQuery object and bind events
+		// air.trace('make jQ entry and bind events to: '+entryElement);
+		// air.trace('make jQ entry and bind events to: '+entryElement);
+		
 		var jqentry = $(entryHTML);
+		
 		if (mark_as_read) {
 			jqentry.addClass('read')
 			jqentry.removeClass('new')
