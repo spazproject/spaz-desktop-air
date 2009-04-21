@@ -740,6 +740,9 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		/*
 			Clean the entry.text
 		*/
+		// fix weird unicode character that jacks up conversion to jQ obj below
+		entry.text = entry.text.replace(/\u2028/, " ");
+
 		// save a raw version
 		entry.rawtext = entry.text;
 		
