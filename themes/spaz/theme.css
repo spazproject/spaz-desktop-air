@@ -608,7 +608,10 @@ a, a:link, .clickable {
 			font-size:inherit;
 		}
 
-
+    #tooltip img {
+        max-width: 73px;
+        max-height: 73px;
+    }
 
 	/*********************************************
 		context menus
