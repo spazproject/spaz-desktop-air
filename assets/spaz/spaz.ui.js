@@ -767,7 +767,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		/*
 			Inline links that start with http://
 		*/
-		var inlineRE = /(?:(\s|^|\.|\:|\())(https?:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/g;
+		var inlineRE = /(?:(\s|^|\.|\:|\())(https?:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/gi;
 		entry.text = entry.text.replace(inlineRE, '$1<a href=\"$2$3$6\" title="Open link in a browser window" class="inline-link">$3&raquo;</a>');
 
 		/*
