@@ -409,7 +409,7 @@ a:hover{
 							The .timeline divs are all inside .TabbedPanelsContent divs
 						*/
 						div.timeline {
-							background:transparent url('images/dropshadow.png') 0 0 repeat-x;
+							background:transparent url('images/dropshadow.png') 0 -3px repeat-x;
 							padding:0px;
 							margin:0px;
 						}
@@ -481,6 +481,9 @@ a:hover{
 				text-align:left;
         background:#f0f0f0 url(images/text-input-bg.png) 0 0 no-repeat;
         border:none;
+			}
+			#entrybox:focus{
+			  outline:3px solid #98bde1; /* light blue */
 			}
 				/* the hint shown when the widget does not have focus */
 				.textareaHintState{
@@ -709,8 +712,14 @@ div.timeline-entry:hover{
 		}
     div.timeline-entry.read:not(.ui-selected) div.user{
       overflow:hidden;
-      opacity:0.5;
+      opacity:0.75;
       white-space:nowrap;
+    }
+    div.timeline-entry.read:not(.ui-selected):hover div.user{
+      opacity:1;
+    }
+    div.timeline-entry.read:not(.ui-selected):hover .status-text{
+      color:#000;
     }
     div.timeline-entry.read:not(.ui-selected) div.user img.user-image{
       width:24px;
@@ -761,7 +770,8 @@ div.timeline-entry:hover{
 
 		img.user-image{
 			margin-bottom:2px;
-			background:#fff url(images/userimg-bg.png) center center no-repeat;
+      /* background:#fff url(images/userimg-bg.png) center center no-repeat; */
+      background:transparent;
       /* border:1px solid #999999; */
 			-webkit-box-shadow:0px 1px 5px #333;
 		}
@@ -927,10 +937,15 @@ div.timeline-entry:hover{
 /*************************************************
 	All about the PREFERENCES panel
 */
+
+#panel-prefs .timeline-wrapper{
+  background-color:#d6dde5; /* light blue */
+  border-top: 1px solid #404040;
+}
 #prefs-form {
 	font-size:11px;
-	margin:0px 10px;
-	padding:10px;
+	margin:0;
+	padding:10px 0;
 }
 
 	/*
@@ -938,43 +953,45 @@ div.timeline-entry:hover{
 	*/
 	#prefsCPG, .CollapsiblePanelGroup {}
 		
-		.CollapsiblePanel {}
-		
-		.CollapsiblePanelClosed {}
-		
-		/* make the title tab darker when the panel is open */
-		#prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab {
-			color:#333333;
+		#prefs-form .CollapsiblePanel{
+		  margin:0 0 1px;
+      background:#e8e8e8 url(images/prefs-panel-header-bg.png) 0 0 repeat-x;
 		}
-
+    #panel-prefs .CollapsiblePanelOpen:last-child{
+      border-bottom:1px solid #a5a5a5;
+    }
+		#prefs-form .CollapsiblePanelClosed{}
+		
 			/*
 				The tab is the clickable title that opens and closes the panel
 			*/
-			#prefs-form h2.CollapsiblePanelTab {
-				font-weight:bold;
-				font-size:13px;
-				color:#999999;
-				border-bottom:2px solid #999999;
-				cursor: pointer;
-				padding-bottom:2px;
-				padding-top:8px;
-				margin-bottom:0px;
+			#prefs-form h2.CollapsiblePanelTab{
+			  height:14px;
+			  padding-left:17px;
+        background:transparent url(images/disclosure-triangles.png) 4px -17px no-repeat;
+        border-top:1px solid #818181;
+        border-bottom:1px solid #818181;
+        color:#555;
+        cursor:pointer;
+			  font-size:11px;
 			}
-				#prefs-form h2.CollapsiblePanelTabHover {
-					color:#666666;
-				}
-
-			
+				#prefs-form h2.CollapsiblePanelTabHover{}
+        #prefs-form h2.CollapsiblePanelTab:active{
+          background-position:4px -57px;
+        }
+				/* make the title tab darker when the panel is open */
+    		#prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab {
+          background-position:4px -97px;
+    		}
+    	
 			/*
 				The panel that actually contains stuff
 			*/
 			#prefs-form .CollapsiblePanelContent {
-				margin:   0px;
-				padding: 10px;
-				border-bottom: 2px solid #D0D0D0;
-				clear:both;
-				background-color: #F0F0F0;
-				overflow: hidden;
+			  clear:both;
+			  margin:0;
+			  padding:0;
+			  overflow:hidden;
 			}
 
 
@@ -983,10 +1000,38 @@ div.timeline-entry:hover{
 				/*
 					The div.formrows wrap each pref gui piece
 				*/
-				div.formrow {
+				#panel-prefs div.formrow{
 					clear:both;
 					margin-bottom:5px;
-				}                    
+					padding:0 10px;
+				}
+  				#prefs-form .CollapsiblePanelContent > div.formrow{
+  				  /* Form rows that aren't in fieldsets */
+            margin:0 8px;
+            padding:4px 8px;
+            background:#fff;
+            -khtml-border-radius:0;
+          }
+  				#prefs-form .CollapsiblePanelContent > div.formrow:first-child{
+            margin-top:8px;
+            padding-top:8px;
+            -khtml-border-top-left-radius:8px;
+            -khtml-border-top-right-radius:8px;
+          }
+  				#prefs-form .CollapsiblePanelContent > div.formrow:last-child{
+            margin-bottom:8px;
+            padding-bottom:8px;
+            -khtml-border-bottom-left-radius:8px;
+            -khtml-border-bottom-right-radius:8px;
+				  }
+          #prefs-form .CollapsiblePanelContent fieldset + div.formrow{
+            /* Form rows that are siblings of fieldsets */
+            -khtml-border-radius:8px;
+          }
+          #prefs-form > div.formrow{
+            /* "Save Preferences" section */
+            padding:0 16px;
+          }
                     
 					#prefs-form label {
 						min-width:80px;
@@ -1001,18 +1046,35 @@ div.timeline-entry:hover{
 						display:inline;
 					}
 
-                    #prefs-form fieldset {
-                        border-left-width: 0px;
-                        border-right-width: 0px;
-                        border-bottom-width: 0px;
-                        padding:5px 0 5px 3px;                        
-                        margin: 10px 0 0 0;                        
+                    #prefs-form fieldset{
+                      position:relative;
+                      display:block;
+                      margin:8px;
+                      padding-top:30px;
+                      background:#fff;
+                      border:2px solid #fff;
+                      -khtml-border-radius:8px;
+                      -webkit-box-shadow:2px 2px 5px #000;
                     }
-
+                      #prefs-form legend{
+                        position:absolute;
+                        top:0;
+                        left:0;
+                        right:0;
+                        display:block;
+                        margin:0;
+                        padding:2px 8px 4px;
+                        background:#d6dde5 url(images/prefs-panel-legend-bg.png) 0 0 repeat-x;
+                        -khtml-border-top-left-radius:8px;
+                        -khtml-border-top-right-radius:8px;
+                        border-bottom:2px ridge #ebeef2;
+                        font-weight:bold;
+                      }
+                      /*
                         #prefs-form legend {
                             font-weight:bold;
                         }
-
+                        */
                         #prefs-form fieldset label {
                             font-weight:normal;
                         }
@@ -1031,30 +1093,37 @@ div.timeline-entry:hover{
 						vertical-align:-20%;
 					}
 					#prefs-form option {
-						font-family:sans-serif;
+/*            font-family:sans-serif;*/
 						size:10px;
 					}
 					input[type='button'], input[type='submit'] {
-						background-color:#666666;
-						color:#FFFFFF;
-						-khtml-border-radius:5px;
-						border:2px solid #333333;
-						font-size:10px;
-						cursor:pointer;
-						padding:3px;
-					}
-						input[type='button']:focus, input[type='submit']:focus,
-						input[type='button']:hover, input[type='submit']:hover {
-							background-color:#111111;
-							border-color:#444444;
-							color:#FFFFFF;
-						}
-
+          	background:#d4d2d2 url(images/button-bg.png) 0 0 repeat-x;
+          	color:#000;
+          	-khtml-border-radius:0.875em;
+          	border:1px solid #7f7f7f;
+          	font-size:10px;
+          	cursor:pointer;
+          	padding:0.25em 0.75em;
+          }
+          	input[type='button']:active, input[type='submit']:active{
+          		background-color:#9a9a9b;
+          		background-position:0 -25px;
+          	}
+				  #prefs-form input[type=text],
+				  #prefs-form input[type=password]{
+            background: #fff url(images/text-input-bg.png) 0 0 no-repeat;
+            border-top:0;
+            border-left:0;
+            border-right:1px solid #c3c3c3;
+            border-bottom:1px solid #ddd;
+          }
+                    /*
                     input[type="text"]:focus,
                     input[type="password"]:focus,
                     textarea:focus {
                         background-color:#FFFFCC;
                     }
+                    */
                     
                     
 					/*
@@ -1073,11 +1142,14 @@ div.timeline-entry:hover{
 						width:30px;
 						text-align:right;
 					}
-					#prefs-user-stylesheet-button, #prefs-user-stylesheet-clear {
+					#prefs-user-stylesheet-button,
+          #prefs-user-stylesheet-edit,
+          #prefs-user-stylesheet-clear{
+            width:90px;
+						margin:0px;
 						padding:2px;
 						font-size:10px;
-						margin:0px;
-					}
+          }
 
 	/*
 		The update/save prefs button sits outside the panel group
