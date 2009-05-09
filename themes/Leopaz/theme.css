@@ -595,6 +595,9 @@ a:hover{
 			  overflow:hidden;
 			  text-overflow:ellipsis;
 			}
+      body:not(.active) #statusbar-text{
+        opacity:0.75;
+      }
 			span.statusbar-username{
 				font-weight:bold;
 			}
