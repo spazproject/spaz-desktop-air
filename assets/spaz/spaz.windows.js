@@ -10,14 +10,14 @@ Spaz.Windows.windowExitCalled = false;
 
 Spaz.Windows.onWindowActive = function (event) {
 	Spaz.dump('Window ACTIVE');
-	if ($('body').focus()) {
-	}
-	
+  // if ($('body').focus()) {}
+  $('body').addClass('active');
 }
 
 
 Spaz.Windows.onWindowDeactivate = function(event) {
 	Spaz.UI.hideTooltips();
+  $('body').removeClass('active');
 };
 
 

@@ -66,6 +66,10 @@ a:hover{
 		bottom:8px;
 		right:8px;
 	}
+	body:not(.active) #container{
+	  background-color:#d2d2d2;
+	  background-image:url(images/header-inactive-bg.png);
+	}
 
 
 		/*********************************************************************
@@ -104,6 +108,9 @@ a:hover{
 					font-size:0px;
 					text-indent:-9999em;
 				}
+				body:not(.active) .window-button{
+				  background-position:0 0;
+				}
 				#window-buttons:hover .window-button{
 				  background-position:-28px 0;
 				}
@@ -127,6 +134,9 @@ a:hover{
 				cursor:pointer;
   			text-shadow:0 1px 1px #fff;
 			}
+			body:not(.active) #header-label{
+        opacity:0.75;
+      }
 			#header-label:after{
         content:' \025BC'; /* Down-pointing triangle */
         font-size:0.5em;
@@ -235,24 +245,42 @@ a:hover{
 					color: #FFFFFF;
 					text-decoration: none;
 				}
-				#tab-friends                                {}
-				#tab-friends:active                         { background-position:0 -22px; }
-				#tab-friends.TabbedPanelsTabSelected        { background-position:0 -44px; }
-				#tab-user                                   { background-position:-31px 0; }
-				#tab-user:active                            { background-position:-31px -22px; }
-				#tab-user.TabbedPanelsTabSelected           { background-position:-31px -44px; }
-				#tab-public                                 { background-position:-31px 0; }
-				#tab-public:active                          { background-position:-31px -22px; }
-				#tab-public.TabbedPanelsTabSelected         { background-position:-31px -44px; }
-				#tab-search                                 { background-position:-62px 0; }
-				#tab-search:active                          { background-position:-62px -22px; }
-				#tab-search.TabbedPanelsTabSelected         { background-position:-62px -44px; }
-        #tab-friendslist                            { background-position:-93px 0; margin-left:9px; }
-        #tab-friendslist:active                     { background-position:-93px -22px; }
-        #tab-friendslist.TabbedPanelsTabSelected    { background-position:-93px -44px; }
-				#tab-prefs                                  { background-position:-93px 0; position:absolute; right:0; margin-left:15px; }
-				#tab-prefs:active                           { background-position:-93px -22px; }
-				#tab-prefs.TabbedPanelsTabSelected          { background-position:-93px -44px; }
+        #tab-friends                                                {}
+          body:not(.active) #tab-friends                              { background-position:0 -22px; }
+          #tab-friends:not(.TabbedPanelsTabSelected):active           { background-position:0 -44px; }
+          #tab-friends.TabbedPanelsTabSelected                        { background-position:0 -66px; }
+          body:not(.active) #tab-friends.TabbedPanelsTabSelected      { background-position:0 -88px; }
+          #tab-friends.TabbedPanelsTabSelected:active                 { background-position:0 -110px; }
+        #tab-user                                                   { background-position:-31px 0; }
+          body:not(.active) #tab-user                                 { background-position:-31px -22px; }
+          #tab-user:not(.TabbedPanelsTabSelected):active              { background-position:-31px -44px; }
+          #tab-user.TabbedPanelsTabSelected                           { background-position:-31px -66px; }
+          body:not(.active) #tab-user.TabbedPanelsTabSelected         { background-position:-31px -88px; }
+          #tab-user.TabbedPanelsTabSelected:active                    { background-position:-31px -110px; }
+        #tab-public                                                 { background-position:-31px 0;}
+          body:not(.active) #tab-public                               { background-position:-31px -22px; }
+          #tab-public:not(.TabbedPanelsTabSelected):active            { background-position:-31px -44px; }
+          #tab-public.TabbedPanelsTabSelected                         { background-position:-31px -66px; }
+          body:not(.active) #tab-public.TabbedPanelsTabSelected       { background-position:-31px -88px; }
+          #tab-public.TabbedPanelsTabSelected:active                  { background-position:-31px -110px; }
+        #tab-search                                                 { background-position:-62px 0; }
+          body:not(.active) #tab-search                               { background-position:-62px -22px; }
+          #tab-search:not(.TabbedPanelsTabSelected):active            { background-position:-62px -44px; }
+          #tab-search.TabbedPanelsTabSelected                         { background-position:-62px -66px; }
+          body:not(.active) #tab-search.TabbedPanelsTabSelected       { background-position:-62px -88px; }
+          #tab-search.TabbedPanelsTabSelected:active                  { background-position:-62px -110px; }
+        #tab-friendslist                                            { background-position:-93px 0; margin-left:9px; }
+          body:not(.active) #tab-friendslist                          { background-position:-93px -22px; }
+          #tab-friendslist:not(.TabbedPanelsTabSelected):active       { background-position:-93px -44px; }
+          #tab-friendslist.TabbedPanelsTabSelected                    { background-position:-93px -66px; }
+          body:not(.active) #tab-friendslist.TabbedPanelsTabSelected  { background-position:-93px -88px; }
+          #tab-friendslist.TabbedPanelsTabSelected:active             { background-position:-93px -110px; }
+        #tab-prefs                                                  { background-position:-93px 0; position:absolute; right:0; margin-left:15px; }
+          body:not(.active) #tab-prefs                                { background-position:-93px -22px; }
+          #tab-prefs:not(.TabbedPanelsTabSelected):active             { background-position:-93px -44px; }
+          #tab-prefs.TabbedPanelsTabSelected                          { background-position:-93px -66px; }
+          body:not(.active) #tab-prefs.TabbedPanelsTabSelected        { background-position:-93px -88px; }
+          #tab-prefs.TabbedPanelsTabSelected:active                   { background-position:-93px -110px; }
 				
 					/* The image in the tab itself */
 					.tab-icon{
@@ -260,6 +288,9 @@ a:hover{
 						width:31px;
 						height:22px;
 						cursor:default;
+					}
+					body:not(.active) .tab-icon{
+					  opacity:0.5;
 					}
 				    #tab-friends .tab-icon                              { background:url(images/tab-icon-timeline.png) 6px 3px no-repeat; }
 				    #tab-friends.TabbedPanelsTabSelected .tab-icon      { background:url(images/tab-icon-timeline-selected.png) 3px 0 no-repeat; }
@@ -465,6 +496,10 @@ a:hover{
 			background:#bdbdbd url(images/entry-form-bg.png) 0 0 repeat-x;
 			z-index:10;
 		}
+		body:not(.active) #entryform{
+		  background-color:#cfcfcf;
+		  background-image:url(images/entry-form-inactive-bg.png);
+		}
 			/*
 				This is a Spry textarea widget
 			*/
@@ -538,6 +573,9 @@ a:hover{
 			white-space:nowrap;
 			-khtml-border-bottom-left-radius:4px;
 			-khtml-border-bottom-right-radius:4px;
+		}
+		body:not(.active) #statusbar{
+		  background-image:url(images/status-bar-inactive-bg.png);
 		}
 			/*
 				The wrapper for the little loading animation
@@ -739,6 +777,11 @@ div.timeline-entry:hover{
     border-top:0;
 		color:#f0f0f0;
 	}
+	body:not(.active) div.timeline-entry.ui-selected{
+    background-image:url(images/timeline-entry-selected-inactive-bg.png);
+    background-color:#7d7e7e;
+  }
+  
 		div.timeline-entry.ui-selected div.status-link{
 			font-size:9px;
 			color:#CCCCCC;
@@ -1082,6 +1125,10 @@ div.timeline-entry:hover{
 					/*
 						Buncha junk for various form fields, really only used in the Preferences section
 					*/
+          body:not(.active) #prefs-form input,
+          body:not(.active) #prefs-form select{
+            opacity:0.5;
+          }
 					#prefs-form input[type='password'],
 					#prefs-form input[type='text'],
 					#prefs-form select {
