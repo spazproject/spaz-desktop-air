@@ -855,6 +855,8 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 
 
 Spaz.Data.uploadFile = function(opts) {
+	air.trace(opts.url);
+
 	var request = new air.URLRequest(opts.url);
 	var loader = new air.URLLoader();
 
@@ -864,15 +866,25 @@ Spaz.Data.uploadFile = function(opts) {
 
 	stream.open(file, air.FileMode.READ);
 	stream.readBytes(buf);
-
-	PrepareMultipartRequest(request, buf, 'media', file.nativePath, opts.extra);
+	
+	var contentType = GetContentType(file.extension.toUpperCase());
+	air.trace(contentType);
+	PrepareMultipartRequest(request, buf, contentType, 'media', file.nativePath, opts.extra);
 
 	loader.addEventListener(air.Event.COMPLETE, opts.complete);
 	// loader.addEventListener(air.ProgressEvent.PROGRESS, progressHandler);
 	loader.addEventListener(air.Event.OPEN, opts.open);
 	loader.load(request);
 
-
+	function GetContentType(fileType){
+		switch (fileType) {
+			  case "JPG": return "image/jpeg";
+			 case "JPEG": return "image/jpeg";
+			  case "PNG": return "image/png";
+ 			  case "GIF": return "image/gif";
+				 default: return "image/jpeg";
+		}
+	}
 
 	/**
 	 * Multipart File Upload Request Helper Function
@@ -910,7 +922,7 @@ Spaz.Data.uploadFile = function(opts) {
 	 * ?>\
 	 * @link http://rollingcode.org/blog/2007/11/file-upload-with-urlrequest-in-air.html
 	 */
-	function PrepareMultipartRequest(request, file_bytes, field_name, native_path, data_before, data_after) {
+	function PrepareMultipartRequest(request, file_bytes, file_type, field_name, native_path, data_before, data_after) {
 		var boundary = '---------------------------1076DEAD1076DEAD1076DEAD';
 		var header1 = '';
 		var header2 = '\r\n';
@@ -919,6 +931,7 @@ Spaz.Data.uploadFile = function(opts) {
 		var body_bytes = new air.ByteArray();
 		var n;
 		if (!field_name) field_name = 'file';
+		if (!file_type) file_type = 'application/octet-stream';
 		if (!native_path) native_path = 'C:\FILE';
 		if (!data_before) data_before = {};
 		if (!data_after) data_after = {};
@@ -929,7 +942,7 @@ Spaz.Data.uploadFile = function(opts) {
 		}
 		header1 += '--' + boundary + '\r\n'
 				+ 'Content-Disposition: form-data; name="' + field_name + '"; filename="' + native_path + '"\r\n'
-				+ 'Content-Type: application/octet-stream\r\n\r\n';
+				+ 'Content-Type: ' + file_type + '\r\n\r\n';
 		for (n in data_after) {
 			header2 += '--' + boundary + '\r\n'
 					+ 'Content-Disposition: form-data; name="' + n + '"\r\n\r\n'
@@ -984,6 +997,7 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 	}
 	return false
 };
+
 
 
 

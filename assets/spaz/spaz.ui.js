@@ -141,6 +141,7 @@ Spaz.UI.flashStatusBar = function() {
 }
 
 Spaz.UI.showLoading = function() {
+    $('#status-text').html('Uploading image…');
     $('#loading').fadeIn(500);
 }
 
@@ -1483,5 +1484,6 @@ Spaz.UI.clickHandler = function(event) {
 
     Spaz.dump('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
+
 
 

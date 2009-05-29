@@ -55,8 +55,9 @@
 		    var eb = window.opener.$('#entrybox');
 		    eb.focus();
 		    if (url) {
-		        eb.val(url + ' ' + $('#post-message').val());
-		        eb[0].setSelectionRange(eb.val().length - $('#post-message').val().length, eb.val().length);
+		        eb.val($('#post-message').val() + ' ' + url);
+		        //eb[0].setSelectionRange(eb.val().length - $('#post-message').val().length, eb.val().length);
+				eb[0].setSelectionRange(0, $('#post-message').val().length);
 		        return true;
 		    } else {
 		        return false;
@@ -124,7 +125,9 @@
 		*/
 		function uploadDraggedImage(fileUrl) {
 			air.trace(fileUrl);
-		
+			
+			Spaz.UI.showLoading();
+				
 			// upload the file
 			Spaz.Data.uploadFile({
 				'extra'  :{
@@ -135,12 +138,8 @@
 				},
 				'url'    :service_url,
 				'fileUrl':fileUrl,
-				'open'   : function(event) {
-					$('#status-text').html('Uploading image…');
-					Spaz.UI.showLoading();
-				},
+				'open'   : Spaz.UI.showLoading,
 				'complete': function(event) {
-					$('#status-text').html('Complete');
 					Spaz.UI.hideLoading();
 					
 					var loader = event.target;
@@ -148,12 +147,28 @@
 
 					var parser=new DOMParser();
 					xmldoc = parser.parseFromString(loader.data,"text/xml");
-					var mediaurl = $(xmldoc).find('mediaurl').text();
-
-					air.trace(mediaurl);
-
-					prepPhotoPost(mediaurl);
-				},
+					
+					//var mediaurl = $(xmldoc).find('mediaurl').text();
+					//air.trace(mediaurl);
+					//prepPhotoPost(mediaurl);
+					//$('#status-text').html('Complete');
+					var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+					if (rspAttr.getNamedItem("stat").nodeValue == 'ok')
+					{
+						var mediaurl = $(xmldoc).find('mediaurl').text();
+						air.trace(mediaurl);
+						prepPhotoPost(mediaurl);
+						$('#status-text').html('Complete');
+					} 
+					else
+					{
+						var errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
+						air.trace(errAttributes);
+						errMsg = errAttributes.getNamedItem("msg").nodeValue;
+						air.trace(errMsg);
+						$('#status-text').html(errMsg);
+					} 
+				}
 			});
 		}
 	</script>
@@ -164,7 +179,6 @@
 		$(document).ready(function() {
 
 			$('#loading').hide();
-			
 			
 			var target = $('#content').get(0);
 			target.addEventListener("dragenter", dragEnterOverHandler);
