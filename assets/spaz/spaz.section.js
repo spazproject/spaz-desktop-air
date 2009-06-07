@@ -1,5 +1,6 @@
 if (!Spaz.Section) Spaz.Section = {};
 
+const NEGATION_TOKEN = "not:";
 
 Spaz.Section.init = function() {
 
@@ -58,7 +59,7 @@ Spaz.Section.init = function() {
 		},
 		onAjaxComplete: function(url, xhr, msg) {
 
-			
+
 
 			/*
 				Make this non-blocking
@@ -78,12 +79,12 @@ Spaz.Section.init = function() {
 				}
 
 				time.stop('onSectionAjaxComplete');
-				return false;				
+				return false;
 			});
-			
-			
-			
-			
+
+
+
+
 		},
 		addItem: function(item) {
 
@@ -109,16 +110,27 @@ Spaz.Section.init = function() {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
 				try {
-					var filter_re = new RegExp(terms, "i");
+					var negate = false;
+					if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() == NEGATION_TOKEN) {
+						negate = true;
+						terms  = terms.slice(NEGATION_TOKEN.length);
+					}
+					var filter_re = new RegExp($.trim(terms), "i");
 					$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
-						if ( $(this).text().search(filter_re) == -1 ) {
-							$(this).addClass('hidden');
+						if (negate) {
+							if ( $(this).text().search(filter_re) > -1 ) {
+								$(this).addClass('hidden');
+							}
+						} else {
+							if ( $(this).text().search(filter_re) == -1 ) {
+								$(this).addClass('hidden');
+							}
 						}
 					});
 				} catch(e) {
 					air.trace(e.name+":"+e.message);
 				}
-				
+
 			}
 		},
 		cleanup: function(attribute) {
@@ -207,16 +219,27 @@ Spaz.Section.init = function() {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
 				try {
-					var filter_re = new RegExp(terms, "i");
+					var negate = false;
+					if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() == NEGATION_TOKEN) {
+						negate = true;
+						terms  = terms.slice(NEGATION_TOKEN.length);
+					}
+					var filter_re = new RegExp($.trim(terms), "i");
 					$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
-						if ( $(this).text().search(filter_re) == -1 ) {
-							$(this).addClass('hidden');
+						if (negate) {
+							if ( $(this).text().search(filter_re) > -1 ) {
+								$(this).addClass('hidden');
+							}
+						} else {
+							if ( $(this).text().search(filter_re) == -1 ) {
+								$(this).addClass('hidden');
+							}
 						}
 					});
 				} catch(e) {
 					air.trace(e.name+":"+e.message);
 				}
-				
+
 			}
 		},
 		cleanup: function(attribute) {
@@ -254,7 +277,7 @@ Spaz.Section.init = function() {
 				trigger the filtering by sending keyup
 			*/
 			$('#filter-public').trigger('keyup');
-			
+
 		},
 		addItem: function(item) {
 			Spaz.UI.addItemToTimeline(item, this)
@@ -263,10 +286,21 @@ Spaz.Section.init = function() {
 			$('#'+this.timeline + ' div.timeline-entry').removeClass('hidden');
 			if (terms) {
 				try {
-					var filter_re = new RegExp(terms, "i");
+					var negate = false;
+					if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() == NEGATION_TOKEN) {
+						negate = true;
+						terms  = terms.slice(NEGATION_TOKEN.length);
+					}
+					var filter_re = new RegExp($.trim(terms), "i");
 					$('#'+this.timeline + ' div.timeline-entry').each(function(i) {
-						if ( $(this).text().search(filter_re) == -1 ) {
-							$(this).addClass('hidden');
+						if (negate) {
+							if ( $(this).text().search(filter_re) > -1 ) {
+								$(this).addClass('hidden');
+							}
+						} else {
+							if ( $(this).text().search(filter_re) == -1 ) {
+								$(this).addClass('hidden');
+							}
 						}
 					});
 				} catch(e) {
@@ -418,12 +452,12 @@ Spaz.Section.init = function() {
 				return;
 			}
 
-			
+
 
 			if (force || (getTimeAsInt() - this.lastcheck) > this.mincachetime ) {
 				this.lastcheck = getTimeAsInt();
-				
-				
+
+
 				var thisSec = this;
 				/*
 					get friends
@@ -440,7 +474,7 @@ Spaz.Section.init = function() {
 						'id':username
 					}
 				});
-				
+
 				/*
 					get followers
 				*/
@@ -460,10 +494,10 @@ Spaz.Section.init = function() {
 						'id':username
 					}
 				});
-		
+
 				for (var i = 0; i < this.urls.length; i++) {
 					Spaz.dump('section.urls['+i+']: '+ this.urls[i])
-		
+
 					Spaz.UI.statusBar("Checking for new data…");
 					Spaz.UI.showLoading();
 
@@ -498,7 +532,7 @@ Spaz.Section.init = function() {
 			}
 		},
 		onAjaxComplete: function(url, xhr, msg) {
-	
+
 			air.trace("\n=========================================\ncompleted:" +url);
 
 			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
@@ -558,19 +592,19 @@ Spaz.Section.init = function() {
 			if (data.length > 0) {
 				time.start('addingItems');
 				for (var i in data) {
-					
+
 					air.trace(this.friends_ids.length + ":" + this.followers_ids.length);
-					
+
 					if ( this.friends_ids.indexOf(data[i].id) > -1 ) {
 						air.trace(data[i].id + " is your friend");
 						data[i].is_following = true;
 					}
-					
+
 					if ( this.followers_ids.indexOf(data[i].id) > -1 ) {
 						air.trace(data[i].id + " is your follower");
 						data[i].is_follower = true;
 					}
-					
+
 					if (data[i].is_following && data[i].is_follower) {
 						air.trace(data[i].id + " is your friend and follower");
 						data[i].is_mutual = true;
@@ -616,7 +650,7 @@ Spaz.Section.init = function() {
 			}
 
 			var parsed = Spaz.Tpl.parse('friendslist_row', item);
-			$('#' + this.timeline).append(parsed);				
+			$('#' + this.timeline).append(parsed);
 
 
 		},
@@ -675,12 +709,12 @@ Spaz.Section.init = function() {
 	// 	addItem: function(item) {
 	// 		item.timeline = this.timeline;
 	// 		item.base_url = Spaz.Prefs.get('twitter-base-url');
-	// 
+	//
 	// 		// convert common long/lat formats
 	// 		if (item.location) {
 	// 			item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
 	// 		}
-	// 
+	//
 	// 		var parsed = Spaz.Tpl.parse('friendslist_row', item);
 	// 		$('#' + this.timeline).append(parsed);
 	// 	},
@@ -698,13 +732,13 @@ Spaz.Section.init = function() {
 	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').sort(sortfunc, true).remove().appendTo('#' + Spaz.Section.followerslist.timeline);
 	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:even').addClass('even');
 	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:odd').addClass('odd');
-	// 
+	//
 	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').find('img.user-image').one('load',
 	// 		function() {
 	// 			// alert('fadingIn');
 	// 			$(this).fadeTo('500', '1.0');
 	// 		});
-	// 
+	//
 	// 	},
 	// }
 
