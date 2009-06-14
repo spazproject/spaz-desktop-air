@@ -497,7 +497,7 @@ a:hover{
 			z-index:10;
 		}
 		body:not(.active) #entryform{
-		  background-color:#cfcfcf;
+		  background-color:#e4e4e4;
 		  background-image:url(images/entry-form-inactive-bg.png);
 		}
 			/*
