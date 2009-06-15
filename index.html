@@ -235,7 +235,7 @@
 					<div id="menu-friends" class="panelmenu">
 						<form onsubmit="return false;">
 							<input type="button" name="refresh-friends" value="Refresh" id="refresh-friends" title="Refresh this timeline" />
-							<input type="button" name="toggle-friends" value="Toggle" id="toggle-friends" title="Toggle between all messages and just replies/dms" />
+							<input type="button" name="view-friends" value="View&#x2193;" id="view-friends" title="Toggle between all messages and just replies/dms" />
 							<input type="button" name="markread-friends" value="Mark" id="markread-friends" title="Mark all as read" />
 							<input type="text" name="filter-friends" value="" id="filter-friends" title="Enter text to filter this timeline" /> 
 						</form>
@@ -740,31 +740,43 @@
 		<!-- the main menu container -->
 		<div id="mainMenu">
 			<ul id="mainMenuRoot" style="display:none;">
-				<li class="mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
-				<li class="mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
-				<li class="mainmenu-shortenLink"><a id="mainmenu-shortenLink">Shorten URL</a></li>
-				<li class="mainmenu-uploadImage"><a id="mainmenu-uploadImage">Upload Image</a></li>
+				<li class="menuitem mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
+				<li class="menuitem mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
+				<li class="menuitem mainmenu-shortenLink"><a id="mainmenu-shortenLink">Shorten URL</a></li>
+				<li class="menuitem mainmenu-uploadImage"><a id="mainmenu-uploadImage">Upload Image</a></li>
 				<!-- <li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
 					<ul>
 						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
 						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
 					</ul> -->
-				<li class="mainMenu-view">View…&nbsp;&raquo;
+				<li class="menuitem mainMenu-view">View…&nbsp;&raquo;
 					<ul>
-						<li class="mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li>
-						<li class="mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li>
-						<li class="mainMenu-view-reloadCurrentView"><a id="mainMenu-view-reloadCurrentView">Reload current view</a></li>
-						<li class="mainMenu-view-clearReloadCurrentView"><a id="mainMenu-view-clearReloadCurrentView">Clear &amp; reload current view</a></li>
+						<li class="menuitem mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li>
+						<li class="menuitem mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li>
+						<li class="menuitem mainMenu-view-reloadCurrentView"><a id="mainMenu-view-reloadCurrentView">Reload current view</a></li>
+						<li class="menuitem mainMenu-view-clearReloadCurrentView"><a id="mainMenu-view-clearReloadCurrentView">Clear &amp; reload current view</a></li>
 					</ul>
 				</li>
 				<li class="menu-separator"><hr /></li>
 
-				<li class="mainMenu-prefs"><a id="mainMenu-prefs">Preferences</a></li>
+				<li class="menuitem mainMenu-prefs"><a id="mainMenu-prefs">Preferences</a></li>
 
-				<li class="mainMenu-help"><a id="mainMenu-help">Help</a></li>
-				<li class="mainMenu-about"><a id="mainMenu-about">About Spaz</a></li>
-				<li class="mainMenu-followSpaz"><a id="mainMenu-followSpaz">Follow @spaz</a></li>
+				<li class="menuitem mainMenu-help"><a id="mainMenu-help">Help</a></li>
+				<li class="menuitem mainMenu-about"><a id="mainMenu-about">About Spaz</a></li>
+				<li class="menuitem mainMenu-followSpaz"><a id="mainMenu-followSpaz">Follow @spaz</a></li>
 
+			</ul>
+		</div>
+		
+		<!-- view-friends-menu-container -->
+		<div id="view-friends-menu-container">
+			<ul id="view-friends-menu">
+				<li class="menuitem view-friends-menu-all"><a id="view-friends-menu-all">All</a></li>
+				<li class="menuitem view-friends-menu-replies-dms"><a id="view-friends-menu-replies-dms">Mentions and DMs</a></li>
+				<li class="menuitem view-friends-menu-replies"><a id="view-friends-menu-replies">Mentions</a></li>
+				<li class="menuitem view-friends-menu-dms"><a id="view-friends-menu-dms">DMs</a></li>
+				<li class="menuitem view-friends-menu-unread"><a id="view-friends-menu-unread">Unread</a></li>
+				<li class="menuitem view-friends-menu-custom"><a id="view-friends-menu-custom">Custom filters</a> <a id="view-friends-menu-custom-edit">[edit]</a></li>
 			</ul>
 		</div>
 

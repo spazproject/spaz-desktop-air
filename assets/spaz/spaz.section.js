@@ -70,6 +70,12 @@ Spaz.Section.init = function() {
 
 				Spaz.UI.statusBar('Processing data…');
 				Spaz.Data.onSectionAjaxComplete(this_section, url, xhr, msg);
+				
+				/*
+					Re-apply view settings
+				*/
+				Spaz.UI.setView();
+				
 				/*
 					trigger the filtering by sending keyup
 				*/

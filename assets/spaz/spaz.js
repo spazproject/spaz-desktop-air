@@ -188,11 +188,20 @@ Spaz.initialize = function() {
 
 
 	$('#header-label').menu({
-		copyClassAttr: true,
-		addExpando: true,
-		onClick: $.Menu.closeAll
-	},
-	'#mainMenuRoot');
+			copyClassAttr: true,
+			addExpando: true,
+			onClick: $.Menu.closeAll
+		},
+		'#mainMenuRoot'
+	);
+
+	$('#view-friends').menu({
+			copyClassAttr: true,
+			addExpando: true,
+			onClick: $.Menu.closeAll
+		},
+		'#view-friends-menu'
+	);
 
 	// $('.panelmenu form input[title="filter"]').hint();
 

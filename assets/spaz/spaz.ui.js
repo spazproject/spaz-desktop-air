@@ -536,18 +536,60 @@ Spaz.UI.markCurrentTimelineAsRead = function() {
 
 
 Spaz.UI.toggleTimelineFilter = function() {
-    Spaz.dump('toggling class dm-replies on #' + Spaz.Section.friends.timeline)
+	if (Spaz.UI.currentFriendsTimelineView === 'view-friends-menu-replies-dms') {
+		Spaz.UI.setView('view-friends-menu-all');
+	} else {
+		Spaz.UI.setView('view-friends-menu-replies-dms');
+	}
+	
+};
 
-    if ($('#' + Spaz.Section.friends.timeline).is('.dm-replies')) {
-        $('#' + Spaz.Section.friends.timeline).removeClass('dm-replies');
-        Spaz.UI.statusBar('Showing all tweets');
-    } else {
-        $('#' + Spaz.Section.friends.timeline).addClass('dm-replies');
-        Spaz.UI.statusBar('Hiding tweets not directed at you');
-    }
+Spaz.UI.setView = function(type ) {
+	
+	if (!type) {
+		var type = Spaz.UI.currentFriendsTimelineView || 'view-friends-menu-all';
+	}
+	
+	air.trace('View type is '+type);
+
+	var container = '#' + Spaz.Section.friends.timeline;
+
+	switch(type) {
+		
+		case 'view-friends-menu-all':
+			jQuery('div.timeline-entry', container).show();
+	        Spaz.UI.statusBar('Showing all tweets');
+			break;
+		case 'view-friends-menu-replies-dms':
+			jQuery('div.timeline-entry', container).hide();
+			jQuery('div.timeline-entry.reply, div.timeline-entry.dm', container).show();
+			Spaz.UI.statusBar('Hiding tweets not directed at you');
+			break;
+		case 'view-friends-menu-replies':
+			jQuery('div.timeline-entry', container).hide();
+			jQuery('div.timeline-entry.reply', container).show();
+			break;
+		case 'view-friends-menu-dms':
+			jQuery('div.timeline-entry', container).hide();
+			jQuery('div.timeline-entry.dm', container).show();
+			break;
+		case 'view-friends-menu-unread':
+			jQuery('div.timeline-entry', container).hide();
+			jQuery('div.timeline-entry:not(.read)', container).show();
+			break;
+		case 'view-friends-menu-custom':
+			alert('not yet implemented');
+			break;
+		default:
+			jQuery('div.timeline-entry', container).show();
+			break;
+	}
+	
+	Spaz.UI.currentFriendsTimelineView = type;
 	
 	$().trigger('UNREAD_COUNT_CHANGED');
-};
+	
+}
 
 
 
