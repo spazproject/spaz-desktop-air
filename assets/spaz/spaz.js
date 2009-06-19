@@ -15,7 +15,6 @@ Spaz.stopReloadTimer = function() {
 		window.clearInterval(reloadID);
 		Spaz.dump('stopped timer');
 	}
-
 }
 
 Spaz.restartReloadTimer = function() {
@@ -24,20 +23,18 @@ Spaz.restartReloadTimer = function() {
 	Spaz.startReloadTimer();
 }
 
-
-
 Spaz.createUserDirs = function() {
 	var appStore = air.File.applicationStorageDirectory;
-	var userThemesDir = appStore.resolvePath("userthemes/");
+	var userThemesDir = appStore.resolvePath(USERDIR_THEMES);
 	userThemesDir.createDirectory()
 
-	var userPluginsDir = appStore.resolvePath("userplugins/");
+	var userPluginsDir = appStore.resolvePath(USERDIR_PLUGINS);
 	userPluginsDir.createDirectory()
 
-	var userSmileysDir = appStore.resolvePath("usersmileys/");
+	var userSmileysDir = appStore.resolvePath(USERDIR_SMILEYS);
 	userSmileysDir.createDirectory()
 
-	var userSoundsDir = appStore.resolvePath(Spaz.Const.userdirSound);
+	var userSoundsDir = appStore.resolvePath(USERDIR_SOUND);
 	userSoundsDir.createDirectory()
 
 	air.trace(userThemesDir.nativePath);
@@ -46,21 +43,18 @@ Spaz.createUserDirs = function() {
 	air.trace(userSoundsDir.nativePath);
 };
 
-
-
-
 /**
  * Bootstraps the app
  */
 Spaz.initialize = function() {
 
 	air.trace('root init begin');
-	
-	
-	
+
+
+
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
-	
+
 	// if (Spaz.Sys.isLinux()) {
 	// 	$('body').show();
 	// 	$('body').css('opacity', 1);
@@ -70,9 +64,9 @@ Spaz.initialize = function() {
 	// 	$('#container').css('bottom','0px;');
 	// 	$('#container').css('right', '0px;');
 	// }
-	
+
 	// alert("OS:"+air.Capabilities.os);
-	
+
 	/***************************
 	 * Load prefs
 	 **************************/
@@ -110,7 +104,7 @@ Spaz.initialize = function() {
 	// apply dropshadow to window
 	// if (Spaz.Prefs.get('window-dropshadow') && !Spaz.Sys.isLinux()) {
 	// 	air.trace('Applying Flash Filter Dropshadow');
-	// 
+	//
 	// 	window.htmlLoader.filters = window.runtime.Array(
 	// 		new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
 	// 	);
@@ -157,17 +151,14 @@ Spaz.initialize = function() {
 	Spaz.dump('Made window visible');
 
 	window.nativeWindow.visible = true;
-	
+
 	if (Spaz.Prefs.get('window-minimizeatstartup')) {
 		Spaz.Windows.windowMinimize()
 	}
-	
+
 	$('body').fadeIn(1000);
 
-
-
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
-
 
 	Spaz.UI.entryBox = new Spry.Widget.ValidationTextarea("entrybox",
 	{
@@ -245,10 +236,6 @@ Spaz.initialize = function() {
 	}
 
 
-
-
-
-
 	if (Spaz.Prefs.get('timeline-loadonstartup')) {
 		$('#tab-friends').trigger('click');
 	}
@@ -265,15 +252,4 @@ Spaz.initialize = function() {
 	})
 
 	Spaz.dump('ended document.ready()');
-
-
-
-
-
 }
-
-
-
-
-
-

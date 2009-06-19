@@ -46,11 +46,11 @@ Spaz.Prefs.defaultPreferences = {
 
     'debug-enabled': false,
 
-    'sound-update': '/assets/sounds/TokyoTrainStation/CSnd.mp3',
-    'sound-startup': '/assets/sounds/TokyoTrainStation/On.mp3',
-    'sound-shutdown': '/assets/sounds/TokyoTrainStation/Off.mp3',
-    'sound-new': '/assets/sounds/TokyoTrainStation/New.mp3',
-    'sound-wilhelm': '/assets/sounds/wilhelm.mp3',
+    SOUND_UPDATE:  '/assets/sounds/TokyoTrainStation/CSnd.mp3',
+    SOUND_STARTUP: '/assets/sounds/TokyoTrainStation/On.mp3',
+    SOUND_SHUTDOWN:'/assets/sounds/TokyoTrainStation/Off.mp3',
+    SOUND_NEW:     '/assets/sounds/TokyoTrainStation/New.mp3',
+    SOUND_WILHELM: '/assets/sounds/wilhelm.mp3',
 
     'timeline-scrollonupdate': false,
     'timeline-maxentries': 325,
@@ -175,11 +175,11 @@ Spaz.Prefs.changeMethods = {
 
 			/*  the bending code */
 			BlenderEffect.get('app:/assets/blender/page.pbj', function(shader) {
-				var tween = BlenderEffect.createShaderTransition(window.htmlLoader, 
-						shader, 
+				var tween = BlenderEffect.createShaderTransition(window.htmlLoader,
+						shader,
 						1200,
 						Tween.effects.elasticEase);
-				tween.hideOnFinish = false; 
+				tween.hideOnFinish = false;
 				tween.start(true);
 			});
 
@@ -235,7 +235,7 @@ Spaz.Prefs.changeMethods = {
 			} else { // is growl
 				$('#window-notificationposition').attr("disabled","disabled");;
 			}
-            
+
         }
 	},
     'window-minimizetosystray': {
@@ -300,7 +300,7 @@ Spaz.Prefs.changeMethods = {
 			    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
 			    );
             } else {
-			    window.htmlLoader.filters = null;	
+			    window.htmlLoader.filters = null;
 			}
         },
         check: function() {
@@ -849,11 +849,11 @@ Spaz.Prefs.setFromUI = function(event) {
 
 /*
  * Allow user-created sounds by checking for their presence in the app storage directory.
- * If found, override the defaults set in Spaz.Prefs.defaultPreferences. 
+ * If found, override the defaults set in Spaz.Prefs.defaultPreferences.
  */
 Spaz.Prefs.setSoundFileLocations = function() {
 	Spaz.dump("Setting sound file locations");
-	
+
 	var soundFileUpdate = air.File.applicationStorageDirectory;
 	soundFileUpdate = soundFileUpdate.resolvePath('usersounds/Csnd.mp3');
 
@@ -868,31 +868,31 @@ Spaz.Prefs.setSoundFileLocations = function() {
 
 	var soundFileWilhelm = air.File.applicationStorageDirectory;
 	soundFileWilhelm = soundFileWilhelm.resolvePath('usersounds/wilhelm.mp3');
-	
+
 	if (soundFileUpdate.exists) {
-		Spaz.Prefs.preferences['sound-update'] = soundFileUpdate.url;
+		Spaz.Prefs.preferences[SOUND_UPDATE] = soundFileUpdate.url;
 	}
-	Spaz.dump('sound-update is: ' + Spaz.Prefs.preferences['sound-update']);
-	
+	Spaz.dump('sound-update is: ' + Spaz.Prefs.preferences[SOUND_UPDATE]);
+
 	if (soundFileStartup.exists) {
-		Spaz.Prefs.preferences['sound-startup'] = soundFileStartup.url;
+		Spaz.Prefs.preferences[SOUND_STARTUP] = soundFileStartup.url;
 	}
-	Spaz.dump('sound-startup is: ' + Spaz.Prefs.preferences['sound-startup']);
-	
+	Spaz.dump('sound-startup is: ' + Spaz.Prefs.preferences[SOUND_STARTUP]);
+
 	if (soundFileShutdown.exists) {
-		Spaz.Prefs.preferences['sound-shutdown'] = soundFileShutdown.url;
+		Spaz.Prefs.preferences[SOUND_SHUTDOWN] = soundFileShutdown.url;
 	}
-	Spaz.dump('sound-shutdown is: ' + Spaz.Prefs.preferences['sound-shutdown']);
-	
+	Spaz.dump('sound-shutdown is: ' + Spaz.Prefs.preferences[SOUND_SHUTDOWN]);
+
 	if (soundFileNew.exists) {
-		Spaz.Prefs.preferences['sound-new'] = soundFileNew.url;
+		Spaz.Prefs.preferences[SOUND_NEW] = soundFileNew.url;
 	}
-	Spaz.dump('sound-new is: ' + Spaz.Prefs.preferences['sound-new']);
+	Spaz.dump('sound-new is: ' + Spaz.Prefs.preferences[SOUND_NEW]);
 
 	if (soundFileWilhelm.exists) {
-		Spaz.Prefs.preferences['sound-wilhelm'] = soundFileWilhelm.url;
+		Spaz.Prefs.preferences[SOUND_WILHELM] = soundFileWilhelm.url;
 	}
-	Spaz.dump('sound-wilhelm is: ' + Spaz.Prefs.preferences['sound-wilhelm']);
+	Spaz.dump('sound-wilhelm is: ' + Spaz.Prefs.preferences[SOUND_WILHELM]);
 };
 
 

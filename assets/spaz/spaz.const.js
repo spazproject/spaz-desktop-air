@@ -5,12 +5,15 @@ Spaz.Const
 ***********/
 if (!Spaz.Const) Spaz.Const = {};
 
-// 'consts' for sound properties and methods
-Spaz.Const.soundUpdate   = 'sound-update';
-Spaz.Const.soundStartup  = 'sound-startup';
-Spaz.Const.soundShutdown = 'sound-shutdown';
-Spaz.Const.soundNew      = 'sound-new';
-Spaz.Const.soundWilhelm  = 'sound-wilhelm';
+// sound properties and methods
+const SOUND_UPDATE   = 'sound-update';
+const SOUND_STARTUP  = 'sound-startup';
+const SOUND_SHUTDOWN = 'sound-shutdown';
+const SOUND_NEW      = 'sound-new';
+const SOUND_WILHELM  = 'sound-wilhelm';
 
-// 'consts' for user directories
-Spaz.Const.userdirSound  = 'usersounds/';
+// user directories
+const USERDIR_PLUGINS = 'userplugins/';
+const USERDIR_SMILEYS = 'usersmileys/';
+const USERDIR_SOUND   = 'usersounds/';
+const USERDIR_THEMES  = 'userthemes/';

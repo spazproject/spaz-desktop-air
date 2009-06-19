@@ -68,25 +68,24 @@ Spaz.UI.onSoundPlaybackComplete = function(event) {
 
 
 Spaz.UI.playSoundUpdate = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-update'), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_UPDATE), callback);
 }
 
 Spaz.UI.playSoundStartup = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-startup'), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_STARTUP), callback);
 }
 
 Spaz.UI.playSoundShutdown = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-shutdown'), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_SHUTDOWN), callback);
 }
 
 Spaz.UI.playSoundNew = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-new'), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_NEW), callback);
 }
 
 Spaz.UI.playSoundWilhelm = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-wilhelm'), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_WILHELM), callback);
 }
-
 
 
 Spaz.UI.doWilhelm = function() {
@@ -103,7 +102,7 @@ Spaz.UI.doWilhelm = function() {
 		window.htmlLoader.filters = window.runtime.Array(
 	    	new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
 	    );
-	    
+
 	}
 
     $('#wilhelm').center();
@@ -310,20 +309,20 @@ Spaz.UI.prepRetweet = function(entryid) {
 	// air.trace(entry.html());
 	var text = entry.children('.entry-text').text();
 	var screenname = entry.children('.entry-user-screenname').text();
-	
+
 	var rtstr = 'RT @' + screenname + ': '+text+'';
-	
+
 	if (rtstr.length > 140) {
 		rtstr = rtstr.substr(0,139)+'…"';
 	}
-	
+
     var eb = $('#entrybox');
 	eb.focus();
 	eb.val(rtstr);
 	eb[0].setSelectionRange(eb.val().length, eb.val().length);
-	
+
 	Spaz.UI.clearPostIRT();
-	
+
 };
 
 Spaz.UI.prepDirectMessage = function(username) {
@@ -389,7 +388,7 @@ Spaz.UI.prepReply = function(username, irt_id) {
 
 
 /**
- *  
+ *
  */
 Spaz.UI.setPostIRT = function(status_id, raw_text) {
 	if (raw_text) {
@@ -400,7 +399,7 @@ Spaz.UI.setPostIRT = function(status_id, raw_text) {
 	} else {
 		var status_text = 'status #'+status_id;
 	}
-	
+
 	// update the GUI stuff
 	$('#irt-message')
 		.html(status_text)
@@ -410,7 +409,7 @@ Spaz.UI.setPostIRT = function(status_id, raw_text) {
 
 
 /**
- *  
+ *
  */
 Spaz.UI.clearPostIRT = function() {
 	$('#irt').fadeOut('fast');
@@ -428,20 +427,20 @@ Spaz.UI.sendUpdate = function() {
         Spaz.dump('length:' + entrybox.val().length);
 
 		var irt_id = parseInt($('#irt-message').attr('data-status-id'));
-		
+
 		if (!Spaz.Prefs.get('twitter-disable-direct-posting')) {
 			if ( irt_id > 0 ) {
 				Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass(), irt_id);
 			} else {
 				Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
-			}			
+			}
 		} else if (Spaz.Prefs.get('services-pingfm-enabled')) {
 			Spaz.Data.updatePingFM( entrybox.val() );
 		} else {
 			Spaz.UI.statusBar("Nothing sent! Enable direct posting and/or ping.fm");
 		}
 
-        
+
         // entrybox.val('');
     }
 }
@@ -505,7 +504,7 @@ Spaz.UI.clearCurrentTimeline = function() {
 		section.lastid_dm = 0;
 		Spaz.dump('set lastid_dm to 0');
 	}
-	
+
 
 
     if (section.canclear) {
@@ -541,21 +540,21 @@ Spaz.UI.toggleTimelineFilter = function() {
 	} else {
 		Spaz.UI.setView('view-friends-menu-replies-dms');
 	}
-	
+
 };
 
 Spaz.UI.setView = function(type ) {
-	
+
 	if (!type) {
 		var type = Spaz.UI.currentFriendsTimelineView || 'view-friends-menu-all';
 	}
-	
+
 	air.trace('View type is '+type);
 
 	var container = '#' + Spaz.Section.friends.timeline;
 
 	switch(type) {
-		
+
 		case 'view-friends-menu-all':
 			jQuery('div.timeline-entry', container).show();
 	        Spaz.UI.statusBar('Showing all tweets');
@@ -584,11 +583,11 @@ Spaz.UI.setView = function(type ) {
 			jQuery('div.timeline-entry', container).show();
 			break;
 	}
-	
+
 	Spaz.UI.currentFriendsTimelineView = type;
-	
+
 	$().trigger('UNREAD_COUNT_CHANGED');
-	
+
 }
 
 
@@ -734,8 +733,8 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
 	Spaz.dump('TIMELINE #' + timelineid + '-' + entry.id);
 	air.trace('TIMELINE #' + timelineid + '-' + entry.id);
-	
-	
+
+
 
     air.trace(JSON.stringify(entry));
     if ($('#' + timelineid + '-' + entry.id).length < 1) {
@@ -745,7 +744,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		if (!entry.favorited) { // we do this to make a favorited property for DMs
 			entry.favorited = false;
 		}
-		
+
 		if (entry.sender) {
 			entry.user = entry.sender
 			entry.isDM = true;
@@ -754,8 +753,8 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		if (!entry.in_reply_to_screen_name) {
 			entry.in_reply_to_screen_name = false;
 		}
-			
-		
+
+
 		if (timelineid == 'timeline-user') {
 			entry.isSent = true;
 		}
@@ -765,11 +764,11 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		if (!entry.user.name) {
 			entry.user.name = entry.user.screen_name
 		}
-		
+
 		/*
 			Check for reply
 		*/
-		
+
 		if (entry.in_reply_to_user_id && !entry.in_reply_to_screen_name) {
 			air.trace('in_reply_to_user_id exists, but in_reply_to_screen_name not set');
 			var reply_matches = null;
@@ -777,13 +776,13 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 				entry.in_reply_to_screen_name = reply_matches[1];
 			}
 		}
-		
+
 		entry.rowclass = "even";
 		entry.timestamp = httpTimeToInt(entry.created_at);
 		entry.base_url = Spaz.Prefs.get('twitter-base-url');
 		entry.timelineid = timelineid;
-		
-		
+
+
 		/*
 			Clean the entry.text
 		*/
@@ -792,10 +791,10 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
 		// save a raw version
 		entry.rawtext = entry.text;
-		
+
 		// fix extra ampersand encoding
 		entry.text = entry.text.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-		
+
 		// fix entity &#123; style extra encoding
 		entry.text = entry.text.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
 
@@ -833,32 +832,32 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
 		// convert emoticons
 		entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
-		
+
 		// hashtags
 		entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9_\-]{2,}))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
-		
-		
+
+
 		var entryHTML = Spaz.Tpl.parse('timeline_entry', entry);
 		// air.trace(entryHTML);
-		
+
 		// air.trace('make DOMElement from string: '+entryHTML);
 		// var entryElement = document.createElement(entryHTML);
-		
+
 		// Make the jQuery object and bind events
 		// air.trace('make jQ entry and bind events to: '+entryElement);
 		// air.trace('make jQ entry and bind events to: '+entryElement);
-		
+
 		var jqentry = $(entryHTML);
-		
+
 		if (mark_as_read) {
 			jqentry.addClass('read')
 			jqentry.removeClass('new')
 		}
-		
+
 		if (entry.isDM) {
 			jqentry.addClass('dm');
 		}
-		
+
 		// We only do the fetch if the mark_as_read is not specified
 		if (typeof mark_as_read == 'undefined')
 		{
@@ -875,7 +874,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 				}
 			});
 		}
-		
+
 		if (prepend) {
 			$('#' + timelineid).prepend(jqentry);
 		} else {
@@ -914,7 +913,7 @@ Spaz.UI.selectEntry = function(el) {
     Spaz.dump('selected tweet #' + el.id + ':' + el.tagName + '.' + el.className);
 
     $().trigger('UNREAD_COUNT_CHANGED');
-	
+
 }
 
 
@@ -1031,7 +1030,7 @@ Spaz.UI.getUnreadCount = function() {
     //     var selector = '#' + timelineid + ' div.timeline-entry'
     // }
 	var unread_count = $(selector).not('.read').length;
-	
+
 	air.trace(unread_count);
 
     return unread_count;
@@ -1069,30 +1068,30 @@ Spaz.UI.notifyOfNewEntries = function() {
         Spaz.dump('NewEntries found!');
 
 		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
-			
+
 			if (!Spaz.Growl) {
 				Spaz.Growl = new SpazGrowl('Spaz', new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url);
 			}
-			
+
 			Spaz.Growl.notify(new_count + " New Messages", "There were "+new_count+" new messages found", null, SpazGrowl.NEW_MESSAGE_COUNT, function() {
 				air.NativeApplication.nativeApplication.activate();
 			});
-			
-			
+
+
 			var newtweets = $(Spaz.UI.getNewEntrySelector()).not('.read');
-			
-			
+
+
 			if ( new_count > Spaz.Prefs.get('window-notificationmax')) {
 				newtweets = newtweets.slice(0, Spaz.Prefs.get('window-notificationmax'));
 			}
 
 
 			newtweets.each( function(i) {
-				
+
 				var screen_name = $(this).children('.entry-user-screenname').text();
 				var text = $(this).children('.entry-text').text();
 				var img = $(this).children('.entry-user-img').text();
-				
+
 				if ( $(this).hasClass('reply') && $(this).not('.read') ) {
 					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_REPLY, function() {
 						air.NativeApplication.nativeApplication.activate();
@@ -1107,22 +1106,22 @@ Spaz.UI.notifyOfNewEntries = function() {
 					});
 				}
 			});
-			
+
 		} else {
 
 			var newtweet = $(Spaz.UI.getNewEntrySelector()).not('.read').get(0);
-			
+
 			// alert(newtweet.outerHTML);
-			
+
 	        Spaz.dump('Sending notification');
 	        var resp = "";
 
 			var screen_name = $(newtweet).children('.entry-user-screenname').text();
 			var text = $(newtweet).children('.entry-text').text();
 			var img = $(newtweet).children('.entry-user-img').text();
-			
+
 			// alert("screen_name:"+screen_name+"\ntext:"+text+"\n img:"+img);
-			
+
 	        if (new_count > 1) {
 	            var msg = screen_name + " (+" + (new_count - 1) + " more)";
 	        } else {
@@ -1155,16 +1154,16 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
         // Spaz.Notify.add(message, title, where, duration, icon);
 
 		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
-			
+
 			if (!Spaz.Growl) {
 				Spaz.Growl = new SpazGrowl('Spaz', new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url);
 			}
-			
+
 			Spaz.Growl.notify(title, message, icon);
 		} else {
 			PurrJS.notify(title, message, icon, duration, where);
 		}
-		
+
     } else {
         Spaz.dump('not showing notification popup - window-shownotificationpopups disabled');
     }
@@ -1186,7 +1185,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 	var offset_before = oldFirst.offset().top;
 	air.trace("oldFirst BEFORE top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop());
 
-	
+
 
 	// alert('Spaz.UI.cleanupTimeline');
 
@@ -1212,23 +1211,23 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
     */
     Spaz.Timers.add(function() {
         time.start('removeExtras');
-        
+
 		var tl_selector = '#' + timelineid + ' div.timeline-entry';
-		
+
 		// alert(tl_selector);
-		
+
 		function removeExtraItems(type) {
 			switch (type) {
 				case 'reply':
 					var tweets  = $(tl_selector).is('reply');
 					var prefkey = "timeline-maxentries-reply";
 					break;
-					
+
 				case 'dm':
 					var tweets  = $(tl_selector).is('dm');
 					var prefkey = "timeline-maxentries-dm";
 					break;
-					
+
 				default:
 					var tweets  = $(tl_selector).not('.reply, .dm');
 					var prefkey = "timeline-maxentries";
@@ -1241,8 +1240,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 	            tweets.slice(diff * -1).remove();
 	        }
 		}
-		
-		
+
+
 		removeExtraItems();
 		removeExtraItems('reply');
 		removeExtraItems('dm');
@@ -1294,7 +1293,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                 Spaz.dump('scrolling to .timeline-entry.new:not(.read) in #' + timelineid);
 
 				/*
-					
+
 				*/
                 if (Spaz.Prefs.get('timeline-scrollonupdate') && $timeline.parent().scrollTop() > 0) {
                     try {
@@ -1358,7 +1357,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
             // We save the text as it could change in the loop due to async callbacks
             var txt = divElt.innerHTML;
- 
+
             var domains = ["short.ie", "tinyurl.com", "is.gd", "snipr.com", "snurl.com", "moourl.com", "url.ie", "snipurl.com", "xrl.us", "bit.ly", "ping.fm", "urlzen.com", "revcanonical" ];
             var stream = new air.URLStream();
 
@@ -1442,25 +1441,25 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 					// air.trace('fadingIn: '+this.outerHTML);
 					$(this).fadeTo('500', '1.0');
 				}
-			});	
+			});
 		};
-		
+
 		/*
 			run the helper after 5 seconds
 		*/
 		setTimeout(fadeInStragglers, 5000);
-		
+
 		/*
 			if necessary, adjust the scrollTop
 		*/
 		var offset_after = oldFirst.offset().top;
 		var offset_diff = Math.abs(offset_before - offset_after);
 		air.trace("oldFirst AFTER top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop() + "\noffset_diff: "+offset_diff);
-		
+
 		if ($timeline.parent().scrollTop() > 0) {
-			$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );			
+			$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );
 		}
-		
+
 		air.trace($timeline.parent().scrollTop());
         return false;
     });
@@ -1484,7 +1483,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         return false;
     });
 
-	
+
 }
 
 
@@ -1526,6 +1525,3 @@ Spaz.UI.clickHandler = function(event) {
 
     Spaz.dump('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
-
-
-
