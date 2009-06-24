@@ -1525,3 +1525,25 @@ Spaz.UI.clickHandler = function(event) {
 
     Spaz.dump('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
+
+/**
+ * Generates the Account (user) selection menu.
+ * @returns void
+ */
+Spaz.UI.generateAccountsMenu = function() {
+	var accounts = Spaz.DB.getUserList();
+
+	for (i = 0; i < accounts.length; i++) {
+		$('#mainMenu-accounts-list').append('<li class="menuitem mainMenu-account selected-account">' +
+											'<a id="mainMenu-account-' + accounts[i] + '">' +
+											accounts[i] + '</a></li>');
+	}
+
+	$('#header-label').menu({
+			copyClassAttr: true,
+			addExpando: true,
+			onClick: $.Menu.closeAll
+		},
+		'#mainMenuRoot'
+	);
+}

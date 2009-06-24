@@ -33,7 +33,7 @@ a, a:link, .clickable {
 }
 
 /*
-	the .even and .odd classes are really only used in the timelines, but 
+	the .even and .odd classes are really only used in the timelines, but
 	they're usedful and probably could be reused elsewhere.
 */
 .odd {
@@ -112,7 +112,7 @@ a, a:link, .clickable {
 					color:#FFFFFF;
 					background-color:#666666;
 				}
-			
+
 			/*
 				These mimic the window-button styles
 			*/
@@ -129,7 +129,7 @@ a, a:link, .clickable {
 					This puts a &raquo; after "Spaz"
 				*/
 				#header-label:after {
-					content:' \00BB';	
+					content:' \00BB';
 				}
 
 				#header-label:hover {
@@ -137,10 +137,10 @@ a, a:link, .clickable {
 					background-color:#666666;
 				}
 
-		
+
 		/*
 			The tabs group contains the tabs themselves and the content panels
-			
+
 			From Spry CSS Notes:
 			This is the selector for the main TabbedPanels container. For our
 			default style, this container does not contribute anything visually,
@@ -149,11 +149,11 @@ a, a:link, .clickable {
 			TabbedPanels container, to minimize any impact or undesireable
 			interaction with other floated elements on the page that may be used
 			for layout.
-			
+
 			If you want to constrain the width of the TabbedPanels widget, set a
 			width on the TabbedPanels container. By default, the TabbedPanels widget
 			expands horizontally to fill up available space.
-			 
+
 		*/
 		#tabs, .TabbedPanels {
 			margin: 0px;
@@ -161,10 +161,10 @@ a, a:link, .clickable {
 			float: left;
 			clear: none;
 		}
-		
+
 			/*
 				The timeline tabs, a UL group
-				
+
 				From Spry CSS Notes:
 				This is the selector for the TabGroup. The TabGroup container houses
 				all of the tab buttons for each tabbed panel in the widget. This container
@@ -179,8 +179,8 @@ a, a:link, .clickable {
 				margin: 0px;
 				padding: 0px;
 			}
-			
-				/*				
+
+				/*
 					From Spry CSS Notes:
 					This is the selector for the TabbedPanelsTab. This container houses
 					the title for the panel. This is also the tab "button" that the user clicks
@@ -208,7 +208,7 @@ a, a:link, .clickable {
 					-khtml-user-select: none;
 					-khtml-border-top-left-radius:.5em;
 					-khtml-border-top-right-radius:.5em;
-					
+
 					cursor: pointer;
 					border:none;
 				}
@@ -279,7 +279,7 @@ a, a:link, .clickable {
 
 			/*
 				These are the content panels, wrapped inside a single container div
-				
+
 				From Spry CSS Notes:
 				This is the selector for the ContentGroup. The ContentGroup container houses
 				all of the content panels for each tabbed panel in the widget. For our
@@ -352,7 +352,7 @@ a, a:link, .clickable {
 								background-color:#444;
 								color:#FFF;
 							}
-						
+
 				        .panelmenu form input[type='text'] {
 	                        width:75px;
 							padding-left:6px;
@@ -366,7 +366,7 @@ a, a:link, .clickable {
 								background-color:#444;
 								color:#FFF;
 	                        }
-			        
+
 
 					/*
 						This wraps to provide scrolling for div.timeline
@@ -382,7 +382,7 @@ a, a:link, .clickable {
 					#timelinewrapper-prefs {
 						top:0px;
 					}
-					
+
 						/*
 							The .timeline divs are all inside .TabbedPanelsContent divs
 						*/
@@ -475,7 +475,7 @@ a, a:link, .clickable {
 				.textareaFocusState {
 					color:#000000;
 				}
-			
+
 			/*
 				This is the counter for number of chars entered
 			*/
@@ -523,8 +523,8 @@ a, a:link, .clickable {
 				#updateButton:hover {
 					opacity:0.9;
 				}
-			
-			
+
+
 		/*
 			The bar at the bottom of the app that displays info
 		*/
@@ -553,7 +553,7 @@ a, a:link, .clickable {
 				width: 10px;
 				background:url('images/loading.gif');
 				background-repeat: no-repeat;
-				
+
 			}
 
 			#statusbar-text {}
@@ -707,7 +707,7 @@ div.timeline-entry {
 			background-color: #666666 !important;
 			opacity:0.6;
 		}
-		
+
 	/*
 		Entries that have been "read" (selected and then deselected)
 	*/
@@ -788,7 +788,7 @@ div.timeline-entry {
 			color:#666666;
 		}
 			a.status-created-at {} /* the link to the relative time of the posting. this is the permalink */
-			
+
 			.status-source {} /* the text that says "from Foobar" */
 			.status-source-label {} /* the text with the name of the posting source ("Foobar") */
 
@@ -810,7 +810,7 @@ div.timeline-entry {
 	position:relative;
 }
 
-	
+
 	.directory-user-followstatus {
 		background-repeat:no-repeat;
 		position:absolute;
@@ -825,7 +825,7 @@ div.timeline-entry {
 
 	.friendslist-row .directory-user {
 		position:relative;
-	}	
+	}
 		.directory-user .user-image {
 			background-color:#dddddd;
 			border:1px solid #999;
@@ -873,11 +873,11 @@ div.timeline-entry {
 		The Prefs form contains a collapsible panel group Spry widget
 	*/
 	#prefsCPG, .CollapsiblePanelGroup {}
-		
+
 		.CollapsiblePanel {}
-		
+
 		.CollapsiblePanelClosed {}
-		
+
 		/* make the title tab darker when the panel is open */
 		#prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab {
 			color:#333333;
@@ -900,7 +900,7 @@ div.timeline-entry {
 					color:#666666;
 				}
 
-			
+
 			/*
 				The panel that actually contains stuff
 			*/
@@ -923,8 +923,8 @@ div.timeline-entry {
 /*                    white-space: nowrap;*/
 					clear:both;
 					margin-bottom:5px;
-				}                    
-                    
+				}
+
 					#prefs-form label {
 						min-width:80px;
 						text-align:left;
@@ -942,8 +942,8 @@ div.timeline-entry {
                         border-left-width: 0px;
                         border-right-width: 0px;
                         border-bottom-width: 0px;
-                        padding:5px 0 5px 3px;                        
-                        margin: 10px 0 0 0;                        
+                        padding:5px 0 5px 3px;
+                        margin: 10px 0 0 0;
                     }
 
                         #prefs-form legend {
@@ -992,8 +992,8 @@ div.timeline-entry {
                     textarea:focus {
                         background-color:#FFFFCC;
                     }
-                    
-                    
+
+
 					/*
 						A few specific pref "widgets" need special formatting
 					*/
@@ -1096,3 +1096,7 @@ table.data {
 
 
 
+.selected-account {
+	/*content: " (selected)";*/
+	list-style-type: circle;
+}

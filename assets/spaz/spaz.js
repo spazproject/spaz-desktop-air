@@ -176,7 +176,6 @@ Spaz.initialize = function() {
 	}
 	);
 
-
 	$('#header-label').menu({
 			copyClassAttr: true,
 			addExpando: true,

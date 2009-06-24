@@ -7,15 +7,14 @@ if (!Spaz.Accounts) Spaz.Accounts = {};
 
 /**
  * Check whether this is the first time this user has hit the multiple account
- * function. If so, performs transition tasks.
+ * function. If so, perform transition tasks.
  * @returns void
  */
 Spaz.Accounts.checkForFirstTimeUse = function() {
 	if (Spaz.DB.getUserCount() == 0) {
 		air.trace("Attempting to add initial user: " + Spaz.Prefs.user);
 		if (!Spaz.Accounts.addUser(Spaz.Prefs.user)) {
-			air.trace("Failed to add initial user " + Spaz.Prefs.user);
-			Spaz.dump("Failed to add initial user " + Spaz.Prefs.user);
+			Spaz.dump("Failed to add first time user " + Spaz.Prefs.user);
 		}
 	}
 }
@@ -38,7 +37,7 @@ Spaz.Accounts.addUser = function(user) {
  * @param username The Twitter username to remove.
  * @returns true if action is successful; otherwise false;
  */
-Spaz.Accounts.removeUser() = function(user) {
+Spaz.Accounts.removeUser = function(user) {
 	if (Spaz.DB.maintainUser("remove", user)) {
 		return true;
 	} else {
