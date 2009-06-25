@@ -1534,11 +1534,19 @@ Spaz.UI.generateAccountsMenu = function() {
 	var accounts = Spaz.DB.getUserList();
 
 	for (i = 0; i < accounts.length; i++) {
-		$('#mainMenu-accounts-list').append('<li class="menuitem mainMenu-account selected-account">' +
-											'<a id="mainMenu-account-' + accounts[i] + '">' +
+		var selectedClass = "";
+		if (accounts[i].toLowerCase() == Spaz.Prefs.user) {
+			selectedClass = 'class="selected-account"';
+		}
+		$('#mainMenu-accounts-list').append('<li class="menuitem mainMenu-account">' +
+											'<a ' + selectedClass + ' id="mainMenu-accountname-' + accounts[i] + '">' +
 											accounts[i] + '</a></li>');
 	}
 
+	/**
+	 * Repeating this code block here makes the previously generated menu items
+	 * appear -- but I don't understand why.
+	 */
 	$('#header-label').menu({
 			copyClassAttr: true,
 			addExpando: true,

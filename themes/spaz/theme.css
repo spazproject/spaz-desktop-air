@@ -1077,15 +1077,6 @@ table.data {
 			padding:2px;
 		}
 
-
-
-
-
-
-
-
-
-
 /*
 	I think this is needed by some widgets. Maybe not?
 */
@@ -1093,10 +1084,6 @@ table.data {
 	visibility:hidden;
 }
 
-
-
-
-.selected-account {
-	/*content: " (selected)";*/
-	list-style-type: circle;
+.selected-account:after {
+	content: " \2713";
 }
