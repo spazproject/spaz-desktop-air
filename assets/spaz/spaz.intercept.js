@@ -18,7 +18,7 @@ Spaz.Intercept.init = function() {
 					// 'previewurl':href,
 				});
 				tt.show();
-				
+
 			},
 			'.user-screen-name[title]':function(e) {
 				var tt = new Spaz_Tooltip({
@@ -64,7 +64,7 @@ Spaz.Intercept.init = function() {
 					'previewurl':href,
 				});
 				tt.show();
-				
+
 				// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
 			},
 			'a .highlight':function(e) {
@@ -90,7 +90,7 @@ Spaz.Intercept.init = function() {
 					'previewurl':$(this).attr('href'),
 				});
 				tt.show();
-				
+
 				// Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
 
 			},
@@ -122,7 +122,7 @@ Spaz.Intercept.init = function() {
 				tt.show();
 			},
 		})
-	
+
 		.intercept('mouseout', {
 			'[title]':function(e) {
 				Spaz.UI.hideTooltips();
@@ -131,7 +131,7 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.hideTooltips();
 			}
 		})
-	
+
 		.intercept('click', {
 			'#filter-friends':function(e) {
 				this.select();
@@ -241,20 +241,23 @@ Spaz.Intercept.init = function() {
 			'#mainMenu-followSpaz':function(e) {
 				Spaz.Data.followUser('spaz');
 			},
-			
-			
+			'.mainMenu-account':function(e) {
+				alert('click: ' + $(this).text());
+			},
+
+
 			'#irt-dismiss':function(e) {
 				Spaz.UI.clearPostIRT();
 				$('#entrybox').focus();
 			},
-			
-			
+
+
 			// prefs buttons handlers
 			'#prefs-autosetrefresh-button':function(e) {
 				Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
 			},
-			
-			
+
+
 			// user context menu handlers
 			'#userContextMenu-viewProfile':function(e) {
 				Spaz.Sys.openInBrowser(Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name'))
@@ -274,7 +277,7 @@ Spaz.Intercept.init = function() {
 			'#userContextMenu-searchForUser':function(e) {
 				var screen_name = $(this).attr('user-screen_name');
 				var search_str = "from:"+screen_name+" OR to:"+screen_name;
-				
+
 				$('#search-for').val(search_str);
 			    Spaz.Section.search.build();
 			    Spaz.UI.showTab(3);
@@ -285,7 +288,7 @@ Spaz.Intercept.init = function() {
 				$('#filter-friends').trigger('keyup');
 			    Spaz.UI.showTab(0);
 			},
-			
+
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
 				openInBrowser(url);
@@ -303,11 +306,11 @@ Spaz.Intercept.init = function() {
 				var entryid = $(this).attr('entry-id')
 				var element = Spaz.UI.getElementFromStatusId(entryid)
 				if ($(element).hasClass('favorited')) {
-					Spaz.Data.makeNotFavorite(entryid);	
+					Spaz.Data.makeNotFavorite(entryid);
 				}
 				else {
-					Spaz.Data.makeFavorite(entryid);	
-				}								
+					Spaz.Data.makeFavorite(entryid);
+				}
 			},
 			'.status-action-retweet':function(e) {
 				Spaz.UI.prepRetweet($(this).attr('entry-id'));
@@ -359,11 +362,11 @@ Spaz.Intercept.init = function() {
 				}
 				return false;
 			},
-			
+
 			'document':function(e){
 				$('#userContextMenu').hide();
 			},
-			
+
 			// '#header-label':function(e) {
 			//	Spaz.UI.showMainMenu($(this));
 			// },
@@ -383,7 +386,7 @@ Spaz.Intercept.init = function() {
 		.intercept('keyup', {
 			'#filter-friends':function(e) {
 				// air.trace('filter:'+this.outerHTML+"\n"+$(this).val());
-				
+
 				Spaz.Section.friends.filter( $(this).val() );
 			},
 			'#filter-user':function(e) {
@@ -395,27 +398,27 @@ Spaz.Intercept.init = function() {
 		})
 
 
-		
+
 	// end intercept
-	
-	
+
+
 	/*
 		Normal bindings where intercept doesn't work
 	*/
 
-	
+
 	$('#entrybox').focus(function(e) {
 			Spaz.UI.showEntryboxTip();
-			$('#entrystats').fadeIn('fast');		
+			$('#entrystats').fadeIn('fast');
 		})
 		.blur(function(e) {
 			Spaz.UI.resetStatusBar();
 			$("body").focus();
-			$('#entrystats').fadeOut('fast');		
+			$('#entrystats').fadeOut('fast');
 			return false;
 		});
-	
-	
+
+
 	/*
 		Set-up invoke event for command-line processing
 	*/
@@ -424,8 +427,8 @@ Spaz.Intercept.init = function() {
 	function invokeHandler (e) {
 		air.trace('Invoke args: '+e.arguments);
 	}
-	
-	
+
+
 	/*
 		Set-up drag and drop events
 	*/
@@ -433,14 +436,14 @@ Spaz.Intercept.init = function() {
 	target.addEventListener("dragenter", dragEnterOverHandler);
 	target.addEventListener("dragover", dragEnterOverHandler);
 	target.addEventListener("drop", dropHandler);
-    
+
     function dragEnterOverHandler(event){
         event.preventDefault();
     }
 
     function dropHandler(event){
 		event.preventDefault();
-		
+
 		if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
 			if ( confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
 				uploadDraggedImage(event);
@@ -448,15 +451,15 @@ Spaz.Intercept.init = function() {
 		} else {
 			uploadDraggedImage(event);
 		}
-		
+
 		/*
 			Upload the dragged image to Twitpic
 		*/
 		function uploadDraggedImage(event) {
 			var fileUrl = event.dataTransfer.getData("text/uri-list");
-			
+
 			air.trace(fileUrl);
-			
+
 			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
 				return;
@@ -464,8 +467,8 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.uploadImage(fileUrl);
 				return;
 			}
-			
-			
+
+
 			// upload the file
 			// Spaz.Data.uploadFile({
 			// 	'extra'  :{
@@ -481,24 +484,24 @@ Spaz.Intercept.init = function() {
 			// 	},
 			// 	'complete': function(event) {
 			// 		Spaz.UI.hideLoading();
-			// 
+			//
 			// 		var loader = event.target;
 			// 	    air.trace(loader.data);
-			// 
+			//
 			// 		var parser=new DOMParser();
 			// 		xmldoc = parser.parseFromString(loader.data,"text/xml");
 			// 		var mediaurl = $(xmldoc).find('mediaurl').text();
-			// 
+			//
 			// 		air.trace(mediaurl);
-			// 
+			//
 			// 		Spaz.UI.prepPhotoPost(mediaurl);
 			// 	},
 			// });
-			
+
 
 		}
 
 
     }
-	
+
 };

@@ -1534,12 +1534,12 @@ Spaz.UI.generateAccountsMenu = function() {
 	var accounts = Spaz.DB.getUserList();
 
 	for (i = 0; i < accounts.length; i++) {
-		var selectedClass = "";
+		var declareClass = 'class="mainMenu-account"';
 		if (accounts[i].toLowerCase() == Spaz.Prefs.user) {
-			selectedClass = 'class="selected-account"';
+			declareClass = 'class="mainMenu-account selected-account"';
 		}
-		$('#mainMenu-accounts-list').append('<li class="menuitem mainMenu-account">' +
-											'<a ' + selectedClass + ' id="mainMenu-accountname-' + accounts[i] + '">' +
+		$('#mainMenu-accounts-list').append('<li class="menuitem">' +
+											'<a ' + declareClass + ' id="mainMenu-accountname-' + accounts[i] + '">' +
 											accounts[i] + '</a></li>');
 	}
 

@@ -53,11 +53,24 @@ Spaz.Accounts.removeUser = function(username) {
  * @returns true if successful; false otherwise.
  */
 Spaz.Accounts.switchAccount = function(username) {
+	var result = true;
+
 	if (username) {
-		return true;
-	} else {
-		return false;
+		// Retrieve password
+		var pw = Spaz.Accounts.loadAccountPassword(username);
+		if (pw) {
+			Spaz.Prefs.user = username;
+			Spaz.Prefs.pass = pw;
+		} else {
+			result = false;
+		}
+		// Switch accounts
+		if (switched) {
+			result = true;
+		}
 	}
+
+	return result;
 }
 
 /**
