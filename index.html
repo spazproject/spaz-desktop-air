@@ -325,11 +325,21 @@
 							<div id="prefsCPG" class="CollapsiblePanelGroup">
 
 								<div id="prefs-user-fieldset" class="CollapsiblePanel">
-									<h2 class="CollapsiblePanelTab" tabindex="0">Account Information</h2>
+									<h2 class="CollapsiblePanelTab" tabindex="0">Accounts</h2>
 									<div class="CollapsiblePanelContent">
 										<fieldset>
-											<legend>Authentication</legend>
-
+											<legend>Accounts Registered</legend>
+											<div class="formrow">
+												<ul id="accounts-list">
+												<!--
+													<li class="account-list-item selected-account"><a id="account-list-item-kibitzer">Kibitzer</a></li>
+													<li class="account-list-item"><a id="account-list-item-spaz">Spaz</a></li>
+											    -->
+												</ul>
+											</div>
+										</fieldset>
+										<fieldset id="account-details">
+											<legend>Account Details</legend>
 											<div class="formrow">
 												<label for="username">Username</label>
 												<input type="text" name="username" id="username" value="" />
@@ -339,41 +349,12 @@
 												<input type="password" name="password" id="password" value="" />
 											</div>
 										</fieldset>
-
-										<fieldset>
-											<legend>Service URLs</legend>
-
-											<div class="formrow">
-												<select id="twitter-base-urls">
-													<option value="">Load settings for…</option>
-													<option value="twitter">Twitter.com</option>
-													<option value="identica">Identi.ca</option>
-												</select>
-											</div>
-
-											<div class="formrow">
-												<label for="twitter-api-base-url">Base API URL </label>
-												<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
-											</div>
-											<div class="formrow">
-												<label for="twitter-base-url">Base WWW URL </label>
-												<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
-											</div>
-
-										</fieldset>
-
-										<div class="formrow">
-											<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
-											<label for="twitter-disable-direct-posting" class="checkbox">Disable direct posting (will only post via <strong>Other Services</strong>)</label>
-										</div>
-
 									</div>
 								</div>
 
 								<div id="prefs-user-fieldset" class="CollapsiblePanel">
 									<h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
 									<div class="CollapsiblePanelContent">
-
 
 										<fieldset>
 											<legend>Ping.FM</legend>
@@ -638,12 +619,40 @@
 									</div>
 								</div>
 
+								<div id="prefs-serviceurls-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Service URLs</h2>
+									<div class="CollapsiblePanelContent">
+										<fieldset>
+											<div class="formrow">
+												<select id="twitter-base-urls">
+													<option value="">Load settings for…</option>
+													<option value="twitter">Twitter.com</option>
+													<option value="identica">Identi.ca</option>
+												</select>
+											</div>
+
+											<div class="formrow">
+												<label for="twitter-api-base-url">Base API URL </label>
+												<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
+											</div>
+											<div class="formrow">
+												<label for="twitter-base-url">Base WWW URL </label>
+												<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
+											</div>
+										</fieldset>
+
+										<div class="formrow">
+											<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
+											<label for="twitter-disable-direct-posting" class="checkbox">Disable direct posting (will only post via <strong>Other Services</strong>)</label>
+										</div>
+
+									</div>
+								</div>
+
 							</div>
 
 							<div class="formrow" style="text-align:right; margin-top:15px">
 								<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
-
-
 
 								<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
 									onclick="Spaz.Prefs.setPrefs()" />
@@ -690,13 +699,9 @@
 		</div>
 
 
-
-
 		<div id="updateCheckWindow" class="popupWindow" style="display:none;">
 			Checking for updates...
 		</div>
-
-
 
 
 		<!-- suggestions popup -->
@@ -751,7 +756,6 @@
 
 				<li class="menu-separator"><hr /></li>
 
-				<li class="menuitem mainMenu-accounts-manage"><a id="mainMenu-accounts-manage">Manage Accounts</a></li>
 				<li class="menuitem mainMenu-accounts-switch">Switch Accounts…&nbsp;&raquo;
 					<ul id="mainMenu-accounts-list">
 <!--

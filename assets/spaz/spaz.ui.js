@@ -1534,14 +1534,19 @@ Spaz.UI.generateAccountsMenu = function() {
 	var accounts = Spaz.DB.getUserList();
 
 	for (i = 0; i < accounts.length; i++) {
-		var declareClass = 'class="mainMenu-account"';
-		if (accounts[i].toLowerCase() == Spaz.Prefs.user) {
-			declareClass = 'class="mainMenu-account selected-account"';
-		}
 		$('#mainMenu-accounts-list').append('<li class="menuitem">' +
-											'<a ' + declareClass + ' id="mainMenu-accountname-' + accounts[i] + '">' +
-											accounts[i] + '</a></li>');
+											'<a  class="mainMenu-account" id="mainMenu-accountname-' + accounts[i] +
+											'">' + accounts[i] + '</a></li>');
+		$('#accounts-list').append('<li class="account-list-item">' +
+								   '<a  class="account-item" id="account-list-item-' + accounts[i] +
+								   '">' + accounts[i] + '</a></li>');
+		if (accounts[i].toLowerCase() == Spaz.Prefs.user) {
+			$('#mainMenu-accountname-' + accounts[i]).addClass("selected-account");
+			$('#account-list-item-'    + accounts[i]).addClass("selected-account");
+		}
 	}
+
+	$('#account-details').hide();
 
 	/**
 	 * Repeating this code block here makes the previously generated menu items
