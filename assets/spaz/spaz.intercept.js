@@ -244,6 +244,9 @@ Spaz.Intercept.init = function() {
 			'.mainMenu-account':function(e) {
 				alert('click: ' + $(this).text());
 			},
+			'#mainMenu-accounts':function(e) {
+				Spaz.UI.accountMaintenance();
+			},
 
 
 			'#irt-dismiss':function(e) {

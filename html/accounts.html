@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Account Maintenance</title>
+
+	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="app:/assets/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.db.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript" charset="utf-8">
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+		var nativeWin;
+		var startHeight;
+
+		function resizeWindow() {
+			nativeWin.width = $('#am-list-panel').width() + $('#am-action-panel').width() + 70;
+			//$('#css').width($('#content').width()-15);
+		}
+
+		function loadAccounts() {
+			var accounts = Spaz.DB.getUserList();
+
+			for (i = 0; i < accounts.length; i++) {
+				$('#accounts-list').append('<li class="account" id="account-"' + accounts[i] + '">' + accounts[i] + '</li>');
+				if (accounts[i].toLowerCase() == Spaz.Prefs.user) {
+					$('#account-' + accounts[i]).addClass("active-account");
+				}
+			}
+		}
+
+		$(document).ready(function() {
+			nativeWin   = window.htmlLoader.stage.nativeWindow;
+			startHeight = nativeWin.height;
+			resizeWindow();
+		})
+	</script>
+
+	<style type="text/css">
+		#am-list-panel {
+			width: 12em;
+			float: left;
+		}
+		#am-action-panel {
+			width: 8em;
+			float: right;
+		}
+		#accounts-list {
+			width: 11em;
+			border: 1px solid #CCC;
+			list-style-position: outside;
+			list-style-type: none;
+			padding:0px;
+			margin:0px;
+			margin-top:3px;
+		}
+		#accounts-list li {
+			margin: 0px;
+			padding: 1px;
+			background:#efefef;
+			border-bottom:1px solid #CCC;
+			display:block;
+			cursor:pointer;
+		}
+		#accounts-list li:hover {
+			background:#FFC;
+		}
+		.am-button {
+			width: 7em;
+			font-weight: normal;
+		}
+	</style>
+
+</head>
+
+<body id="accountMaintenanceWindow">
+
+<h1>Account Maintenace</h1>
+
+<div id="content">
+	<h2>Registered Accounts</h2>
+	<div id="am-list-panel">
+		<!--<label>Registered Accounts</label>-->
+		<ul id="accounts-list">
+			<li class="account">Kibitzer</li>
+			<li class="account">Spaz</li>
+		</ul>
+	</div>
+	<div id="am-action-panel">
+		<!--<label>Actions</label>-->
+		<button id="account-add" type="button" class="am-button">Add</button>
+		<button id="account-remove" type="button" class="am-button">Remove</button>
+		<button id="account-remove" type="button" class="am-button">Make Active</button>
+	</div>
+</div>
+
+</body>
+</html>
