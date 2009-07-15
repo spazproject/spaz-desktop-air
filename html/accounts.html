@@ -7,23 +7,43 @@
 
 	<title>Account Maintenance</title>
 
-	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
-	<script src="app:/assets/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz/spaz.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz/spaz.db.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="utilitywindow.css"			type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="app:/assets/air/AIRAliases.js"				type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/jquery/jquery.js"				type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/jquery/jquery.intercept.js"	type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.js"					type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.debug.js"			type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.sys.js"				type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.db.js" 				type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.prefs.js"			type="text/javascript" charset="utf-8"></script>
 
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
 		var nativeWin;
 		var startHeight;
 
+		function registerIntercepts() {
+			$('body').intercept('click', {
+				'#acct-add':function(e) {
+					alert('Adding');
+				},
+				'#acct-remove':function(e) {
+					alert('Removing');
+				},
+				'#acct-make-active':function(e) {
+					alert('Make active');
+				},
+				'.account':function(e) {
+					$('.account').removeClass("selected");
+					$('#account-' + $(this).text()).addClass("selected");
+				}
+			})
+		}
+
 		function resizeWindow() {
 			nativeWin.width = $('#am-list-panel').width() + $('#am-action-panel').width() + 70;
 			//$('#css').width($('#content').width()-15);
-		}
+		};
 
 		function loadAccounts() {
 			var accounts = Spaz.DB.getUserList();
@@ -34,13 +54,15 @@
 					$('#account-' + accounts[i]).addClass("active-account");
 				}
 			}
-		}
+		};
 
 		$(document).ready(function() {
 			nativeWin   = window.htmlLoader.stage.nativeWindow;
 			startHeight = nativeWin.height;
+			loadAccounts();
+			registerIntercepts();
 			resizeWindow();
-		})
+		});
 	</script>
 
 	<style type="text/css">
@@ -62,7 +84,7 @@
 			margin-top:3px;
 		}
 		#accounts-list li {
-			margin: 0px;
+			margin: 2px;
 			padding: 1px;
 			background:#efefef;
 			border-bottom:1px solid #CCC;
@@ -75,6 +97,12 @@
 		.am-button {
 			width: 7em;
 			font-weight: normal;
+		}
+		.active-account:after {
+			content: " \2713";
+		}
+		.selected {
+			background-color:grey;
 		}
 	</style>
 
@@ -89,15 +117,15 @@
 	<div id="am-list-panel">
 		<!--<label>Registered Accounts</label>-->
 		<ul id="accounts-list">
-			<li class="account">Kibitzer</li>
-			<li class="account">Spaz</li>
+			<!--<li class="account">Kibitzer</li>-->
+			<!--<li class="account">Spaz</li>-->
 		</ul>
 	</div>
 	<div id="am-action-panel">
 		<!--<label>Actions</label>-->
-		<button id="account-add" type="button" class="am-button">Add</button>
-		<button id="account-remove" type="button" class="am-button">Remove</button>
-		<button id="account-remove" type="button" class="am-button">Make Active</button>
+		<button id="acct-add" type="button" class="am-button">Add</button>
+		<button id="acct-remove" type="button" class="am-button">Remove</button>
+		<button id="acct-make-active" type="button" class="am-button">Make Active</button>
 	</div>
 </div>
 
