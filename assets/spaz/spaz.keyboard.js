@@ -172,7 +172,7 @@ Spaz.Keyboard.setShortcuts = function() {
 		Search box submit on Enter
 	*/
 	shortcut.add('Enter', function() {
-			Spaz.Section.search.build();
+			Spaz.Timelines.search.activate();
 		}, {
 			target:$('#search-for')[0],
 			propagate:false

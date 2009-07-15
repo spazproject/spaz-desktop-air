@@ -756,7 +756,7 @@ div.timeline-entry {
 			background-color:#FFFFFF;
 			-webkit-box-shadow:0px 1px 5px #333;
 			background-image:url('images/userimg-bg.png');
-			opacity:.2;
+			opacity:1;
 		}
 
 		div.user-screen-name {

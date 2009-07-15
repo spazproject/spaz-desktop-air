@@ -763,7 +763,7 @@ div.timeline-entry {
 			background-color:#FFFFFF;
 			-webkit-box-shadow:none;
 			background-image:url('images/userimg-bg.png');
-			opacity:.2;
+			opacity:1;
 			width: 11px;
 			height:11px;
 		}

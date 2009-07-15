@@ -501,7 +501,7 @@ img.user-image {
 	margin-left: 7px;
 */	float:right;
 /*	-khtml-border-radius:2px;*/
-   opacity:.2;
+   opacity:1;
 }
 div user-image a {
 	opacity:0.5;

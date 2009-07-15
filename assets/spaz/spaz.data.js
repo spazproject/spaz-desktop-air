@@ -991,6 +991,12 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 	switch (tab.id) {
 		case 'tab-prefs':
 			break;
+		case 'tab-public':
+			Spaz.Timelines.public.activate();
+			break;
+		case 'tab-search':
+			Spaz.Timelines.search.activate();
+			break;
 		default:
 			section.build(force, reset);
 			break;

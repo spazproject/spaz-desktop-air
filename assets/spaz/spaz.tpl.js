@@ -23,7 +23,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	if (d.favorited) {
 		entryHTML += ' favorited ';
 	}
-	entryHTML += '"  id="'+d.timelineid+'-'+d.id+'">';
+	entryHTML += '"  id="'+d.timelineid+'-'+d.id+'" data-status-id="'+d.id+'">';
 	entryHTML += '	<div class="entry-timestamp" style="display:none">'+d.timestamp+'</div>';
 	entryHTML += '	<div class="entry-id" style="display:none">['+d.id+']</div>';
 	entryHTML += '	<div class="entry-time" style="display:none">'+d.created_at+'</div>';

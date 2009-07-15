@@ -393,7 +393,7 @@ Spaz.Section.init = function() {
 					}
 
 					// air.trace(JSON.stringify(tweet));
-					return tweet
+					return tweet;
 				}
 
 				Spaz.UI.statusBar("Found " + data.results.length + " results for '" + $('#search-for').val() + "'");

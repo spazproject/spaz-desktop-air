@@ -133,6 +133,12 @@ Spaz.Intercept.init = function() {
 		})
 
 		.intercept('click', {
+			
+			'#tab-public':function(e) {
+				alert('e.target');
+				Spaz.Timelines.public.activate();
+			},
+			
 			'#filter-friends':function(e) {
 				this.select();
 			},
@@ -197,7 +203,7 @@ Spaz.Intercept.init = function() {
 				$('#timeline-followers').fadeIn();
 			},
 			'#search-go':function(e) {
-				Spaz.Section.search.build();
+				Spaz.Timelines.search.activate();
 			},
 			'#search-help':function(e) {
 				openInBrowser('http://search.twitter.com/operators');

@@ -736,7 +736,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
 
 
-    air.trace(JSON.stringify(entry));
+    // air.trace(JSON.stringify(entry));
     if ($('#' + timelineid + '-' + entry.id).length < 1) {
 		air.trace('adding #' + timelineid + '-' + entry.id);
 		entry.isDM = false;
