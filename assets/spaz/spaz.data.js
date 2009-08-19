@@ -536,13 +536,13 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 		$('#not-logged-in').remove();
 	}
 
-	sch.dump('now:'+getTimeAsInt());
+	sch.dump('now:'+sch.getTimeAsInt());
 	sch.dump('then:'+section.lastcheck);
-	sch.dump('difference:'+(getTimeAsInt() - section.lastcheck));
+	sch.dump('difference:'+(sch.getTimeAsInt() - section.lastcheck));
 	sch.dump('section.mincachetime:'+section.mincachetime);
 
-	if (force || (getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
-		section.lastcheck = getTimeAsInt();
+	if (force || (sch.getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
+		section.lastcheck = sch.getTimeAsInt();
 
 		for (var i = 0; i < section.urls.length; i++) {
 			// alert('section.urls['+i+']: '+ section.urls[i])

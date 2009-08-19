@@ -215,7 +215,7 @@ Spaz_Tooltip.prototype.show = function() {
 		} else if (thisTT.previewurl) {
 			Spaz.dump('This is an URL preview tooltip');
 
-			var previewid = "preview-link-" + getTimeAsInt();
+			var previewid = "preview-link-" + sch.getTimeAsInt();
 
 			Spaz.dump('previewid = ' + previewid);
 

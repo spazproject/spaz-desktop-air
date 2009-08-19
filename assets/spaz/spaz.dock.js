@@ -135,7 +135,7 @@ Spaz.Dock.refresh = function(unreadCount)
    if (Spaz.Dock.deferredRefresh) { clearTimeout(Spaz.Dock.deferredRefresh); }
 
    // check if timelimit has passed
-   var now  = getTimeAsInt();
+   var now  = sch.getTimeAsInt();
    var diff = now - Spaz.Dock.lastchecked;
    if (diff < Spaz.Dock.mincachetime) {
            // sch.dump('timelimit not passed (it is now '+now+')');

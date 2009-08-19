@@ -693,7 +693,7 @@ Spaz.Prefs.init = function() {
         WE NEED TO COPY THIS, NOT ASSIGN!!!!
     */
 
-    Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
+    Spaz.Prefs.preferences = sch.clone(Spaz.Prefs.defaultPreferences);
     Spaz.dump("defaultPreferences:" + Spaz.Prefs.defaultPreferences);
     Spaz.Prefs.loadPrefs();
 	Spaz.Prefs.setSoundFileLocations();
@@ -733,7 +733,7 @@ Spaz.Prefs.loadPrefs = function() {
     } else {
         fs.open(prefsFile, air.FileMode.WRITE);
         fs.writeUTFBytes(JSON.stringify(Spaz.Prefs.defaultPreferences));
-        Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
+        Spaz.Prefs.preferences = sch.clone(Spaz.Prefs.defaultPreferences);
     }
     fs.close()
 
@@ -915,7 +915,7 @@ Spaz.Prefs.savePrefs = function() {
 
 
 Spaz.Prefs.resetPrefs = function() {
-    Spaz.Prefs.preferences = clone(Spaz.Prefs.defaultPreferences);
+    Spaz.Prefs.preferences = sch.clone(Spaz.Prefs.defaultPreferences);
     Spaz.Prefs.savePrefs();
 };
 

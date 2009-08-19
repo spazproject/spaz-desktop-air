@@ -460,8 +460,8 @@ Spaz.Section.init = function() {
 
 
 
-			if (force || (getTimeAsInt() - this.lastcheck) > this.mincachetime ) {
-				this.lastcheck = getTimeAsInt();
+			if (force || (sch.getTimeAsInt() - this.lastcheck) > this.mincachetime ) {
+				this.lastcheck = sch.getTimeAsInt();
 
 
 				var thisSec = this;
