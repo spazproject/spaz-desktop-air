@@ -25,13 +25,13 @@ Spaz.Cache.buildScreenNameCache = function() {
 	// 
 	// if (numEntries > Spaz.Prefs.get('screennames-cache-max')) {
 	// 	var diff = numEntries - Spaz.Prefs.get('screennames-cache-max');
-	// 	air.trace("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
+	// 	sch.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
 	// 
 	// 	Spaz.Cache.screenNames.splice(0, diff);
 	// }
 	// 
 	// 
-	// air.trace('Spaz.Cache.screenNames = '+Spaz.Cache.screenNames.toString() + ' ['+Spaz.Cache.getScreenNamesCount()+']');
+	// sch.dump('Spaz.Cache.screenNames = '+Spaz.Cache.screenNames.toString() + ' ['+Spaz.Cache.getScreenNamesCount()+']');
 };
 
 Spaz.Cache.addScreenName = function(name) {
@@ -43,7 +43,7 @@ Spaz.Cache.addScreenName = function(name) {
 
 Spaz.Cache.delScreenName = function(name) {
 	if (Spaz.Cache.screenNames.indexOf(name)) {
-		air.trace('Spaz.Cache.delScreenName not yet implemented');
+		sch.dump('Spaz.Cache.delScreenName not yet implemented');
 	}
 	
 };
@@ -57,7 +57,7 @@ Spaz.Cache.getScreenNames = function() {
 		name = $(this).attr('user-screen_name');
 		if (screen_names.indexOf(name) == -1) {
 			screen_names.push(name);
-			// air.trace('Added "'+name+'". Number of screen names is '+screen_names.length);
+			// sch.dump('Added "'+name+'". Number of screen names is '+screen_names.length);
 		}
 	});
 	
@@ -67,7 +67,7 @@ Spaz.Cache.getScreenNames = function() {
 	// 
 	// if (numEntries > Spaz.Prefs.get('screennames-cache-max')) {
 	// 	var diff = numEntries - Spaz.Prefs.get('screennames-cache-max');
-	// 	air.trace("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
+	// 	sch.dump("numEntries is "+ numEntries + " > " + Spaz.Prefs.get('screennames-cache-max') + "; removing last "+diff+" entries");
 	// 
 	// 	Spaz.Cache.screenNames.splice(0, diff);
 	// }

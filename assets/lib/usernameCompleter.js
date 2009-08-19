@@ -21,7 +21,7 @@ function usernameCompleter(opts) {
 	this.before_cursor	= null;
 
 	this.init = function() {
-		// air.trace(this.displayDiv);
+		// sch.dump(this.displayDiv);
 		
 		$(this.displayDiv).hide();
 	
@@ -42,7 +42,7 @@ function usernameCompleter(opts) {
 			
 			if ( !thisuc.matchAgainst("((@)([a-z0-9_]+))$") // replies
 				 && !thisuc.matchAgainst("^((d )([a-z0-9_]+))$") ) { // dms
-				// air.trace('Resetting topMatch to null');
+				// sch.dump('Resetting topMatch to null');
 				thisuc.topMatch = null;
 			}
 			
@@ -56,11 +56,11 @@ function usernameCompleter(opts) {
 			var thisuc = e.data.thisuc;	
 			
 			var key = e.charCode || e.keyCode || 0;
-			// air.trace(thisuc);
+			// sch.dump(thisuc);
 			
 			if (key == 9) { // TAB 
 				if (thisuc.topMatch) {
-					// air.trace('topmatch! is '+thisuc.topMatch);
+					// sch.dump('topmatch! is '+thisuc.topMatch);
 					thisuc.insertUsername(thisuc.topMatch);
 					return false;	
 				}
@@ -77,19 +77,19 @@ function usernameCompleter(opts) {
 		if ( reg_matches ) {
 			var username = reg_matches[3];
 			this.currentStub = username;
-			// air.trace('Looks like message to '+username);
+			// sch.dump('Looks like message to '+username);
 			
 			var matching_users = this.usernames.filter( function(val) {
 				return ( val.toLowerCase().indexOf(username.toLowerCase()) == 0 && username.length != val.length )
 			} );
 			if (matching_users.length > 0 && matching_users.length < this.maxMatches) {
-				air.trace('matching_users '+matching_users.toString());
+				sch.dump('matching_users '+matching_users.toString());
 				
 				this.topMatch = matching_users[0];
 				
 				var thisuc = this; // help with scoping
 				$.each(matching_users, function() {
-					// // air.trace('appending div title="'+this+'" class="username-match"'+this+'/div to');
+					// // sch.dump('appending div title="'+this+'" class="username-match"'+this+'/div to');
 					$(thisuc.displayDiv).append('<div title="'+this+'" class="username-match">'+this+'</div>');
 				});
 				$(this.displayDiv+' .username-match').one('click', function() {
@@ -109,11 +109,11 @@ function usernameCompleter(opts) {
 	};
 	
 	this.insertUsername = function(username) {
-		// air.trace('inserting '+username);
+		// sch.dump('inserting '+username);
 		// remove stub from username
 		var stubRE = new RegExp(this.currentStub, 'i')
 		username = username.replace(stubRE, '');
-		// air.trace('username is now '+username);
+		// sch.dump('username is now '+username);
 		var oldtext = $(this.textarea).val();
 		newtext = oldtext.substr(0,this.curpos) + username + oldtext.substr(this.curpos);
 		$(this.textarea).val(newtext);

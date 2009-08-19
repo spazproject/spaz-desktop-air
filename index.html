@@ -104,7 +104,8 @@
 	<script src="assets/spaz/spaz.prefs.js"      type="text/javascript"></script>
 	<script src="assets/spaz/spaz.update.js"     type="text/javascript"></script>
 	<script src="assets/spaz/spaz.accounts.js"   type="text/javascript"></script>
-
+	<script src="assets/spaz/spaz.timelines.js"    type="text/javascript" charset="utf-8"></script>
+	
 	<!-- Emoticons lib developed by Graeme Dunlop -->
 	<script src="assets/emoticons/Emoticons.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/emoticons/Emoticons.SimpleSmileys.js" type="text/javascript" charset="utf-8"></script>
@@ -113,14 +114,6 @@
 	<!-- theme scripts -->
 	<script type="text/javascript" charset="utf-8" id="themejs"></script>
 	<script type="text/javascript" charset="utf-8" id="themeinfo"></script>
-
-	<!-- Helpers -->
-	<script src="assets/helpers/javascript.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/helpers/jquery.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/helpers/json.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/helpers/datetime.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/helpers/xml.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/helpers/sys.js" type="text/javascript" charset="utf-8"></script>
 
 	<script type="text/javascript">
 
@@ -192,7 +185,7 @@
 				<li class="TabbedPanelsTab" tabindex="5" title="Search timeline"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
-					id="tab-search" onclick="Spaz.UI.setSelectedTab(this);$('#search-for')[0].focus();">
+					id="tab-search" onclick="Spaz.UI.setSelectedTab(this);">
 					<span class="tab-icon"></span>
 				</li>
 

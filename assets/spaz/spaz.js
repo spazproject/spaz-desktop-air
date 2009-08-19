@@ -37,10 +37,10 @@ Spaz.createUserDirs = function() {
 	var userSoundsDir = appStore.resolvePath(USERDIR_SOUND);
 	userSoundsDir.createDirectory()
 
-	air.trace(userThemesDir.nativePath);
-	air.trace(userPluginsDir.nativePath);
-	air.trace(userSmileysDir.nativePath);
-	air.trace(userSoundsDir.nativePath);
+	sch.dump(userThemesDir.nativePath);
+	sch.dump(userPluginsDir.nativePath);
+	sch.dump(userSmileysDir.nativePath);
+	sch.dump(userSoundsDir.nativePath);
 };
 
 /**
@@ -48,7 +48,7 @@ Spaz.createUserDirs = function() {
  */
 Spaz.initialize = function() {
 
-	air.trace('root init begin');
+	sch.dump('root init begin');
 	
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
@@ -68,10 +68,10 @@ Spaz.initialize = function() {
 	/***************************
 	 * Load prefs
 	 **************************/
-	air.trace('init prefs');
+	sch.dump('init prefs');
 	Spaz.Prefs.init();
 
-	air.trace('init Sections');
+	sch.dump('init Sections');
 	Spaz.Section.init();
 
 	// turn on debugging
@@ -80,11 +80,11 @@ Spaz.initialize = function() {
 	}
 
 	// Database initialization
-	air.trace("database initialization");
+	sch.dump("database initialization");
 	Spaz.DB.init();
 
 	// Docking initialization
-	air.trace("docking initialization");
+	sch.dump("docking initialization");
 	Spaz.Dock.init();
 
 	air.NativeApplication.nativeApplication.autoExit = true;
@@ -101,7 +101,7 @@ Spaz.initialize = function() {
 
 	// apply dropshadow to window
 	// if (Spaz.Prefs.get('window-dropshadow') && !Spaz.Sys.isLinux()) {
-	// 	air.trace('Applying Flash Filter Dropshadow');
+	// 	sch.dump('Applying Flash Filter Dropshadow');
 	//
 	// 	window.htmlLoader.filters = window.runtime.Array(
 	// 		new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)

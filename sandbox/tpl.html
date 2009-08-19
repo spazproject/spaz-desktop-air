@@ -17,10 +17,10 @@
 	interface.parseTpl = function(tpl, data, label) {
 		
 		if ( cachedTpls[label] ) {
-			// air.trace('using cached template object');
+			// sch.dump('using cached template object');
 			var tplObj = cachedTpls[label];
 		} else {
-			// air.trace('making new template object');
+			// sch.dump('making new template object');
 			var tplObj = TrimPath.parseTemplate(tpl);
 			cachedTpls[label] = tplObj;
 		}

@@ -17,7 +17,7 @@ Spaz.Sys.getVersion = function() {
 Spaz.Sys.initUserAgentString = function() {
 	window.htmlLoader.userAgent = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Spaz/' + Spaz.Sys.getVersion();
 	// air.URLRequestDefaults.userAgent = air.HTMLLoader.userAgent
-	air.trace(window.htmlLoader.userAgent)
+	sch.dump(window.htmlLoader.userAgent)
 	return window.htmlLoader.userAgent
 };
 Spaz.Sys.getUserAgent = function() {
@@ -54,7 +54,7 @@ Spaz.Sys.initNetworkConnectivityCheck = function() {
 	// 
 	// function announceStatus(e) {
 	// 	Spaz.dump("Network status change. Current status: " + monitor.available);
-	// 	air.trace("Network status change. Current status: " + monitor.available);
+	// 	sch.dump("Network status change. Current status: " + monitor.available);
 	// }
 };
 
@@ -66,13 +66,13 @@ Spaz.Sys.initMemcheck = function() {
 	// t.addEventListener(air.TimerEvent.TIMER, memCheckGC);
 	// t.start();
 	// 
-	// // air.trace("Running!"+t.running);
+	// // sch.dump("Running!"+t.running);
 	// 
 	// function memCheckGC(e) {
-	// 	// air.trace("memcheck event");
+	// 	// sch.dump("memcheck event");
 	// 	Spaz.dump("air.System.totalMemory:"+air.System.totalMemory);
 	// 	// air.System.gc();
-	// 	// air.trace("post mem:"+air.System.totalMemory);
+	// 	// sch.dump("post mem:"+air.System.totalMemory);
 	// }
 };
 
@@ -143,7 +143,7 @@ Spaz.Sys.setFileContents = function(path, content, serialize) {
 
 
 
-Spaz.Sys.openInBrowser = function(url) {
+Spaz.Sys.sc.helpers.openInBrowser = function(url) {
 	Spaz.dump('opening '+url);
 	var request = new air.URLRequest(url);
 	try {            
@@ -157,7 +157,7 @@ Spaz.Sys.openInBrowser = function(url) {
 
 
 Spaz.Sys.openAppStorageFolder = function() {
-	Spaz.Sys.openInBrowser('file://'+air.File.applicationStorageDirectory.nativePath);
+	Spaz.Sys.sc.helpers.openInBrowser('file://'+air.File.applicationStorageDirectory.nativePath);
 };
 
 

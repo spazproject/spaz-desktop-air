@@ -33,7 +33,7 @@ Spaz.Shortlink.services = {
 			var origLink = url;
 		}
 		
-		air.trace(url+"\n"+origLink);
+		sch.dump(url+"\n"+origLink);
         
         $('#verification-result').text('Shortening URL...');
 
@@ -87,7 +87,7 @@ Spaz.Shortlink.services = {
 	
 	'twurl.nl' : function(url) {
 	
-		// air.trace('OrigLink:'+origlink);
+		// sch.dump('OrigLink:'+origlink);
 		var origlink = encodeURIComponent(url);
 	
 		$('#verification-result').text('Shortening URL...');
@@ -95,7 +95,7 @@ Spaz.Shortlink.services = {
 		var xhr = $.ajax({
 			complete:function(xhr, rstr) {
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 					$('#verification-result').text('ERROR: Timeout');
 					return;
 				}
@@ -110,15 +110,15 @@ Spaz.Shortlink.services = {
 	
 			},
 			error:function(xhr, rstr){
-				// air.trace("ERROR: " + rstr);
+				// sch.dump("ERROR: " + rstr);
 				$('#verification-result').text('Error trying to shorten link');
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 				}
 	
 			},
 			success:function(data){
-				// air.trace(data);
+				// sch.dump(data);
 				// Spaz.UI.statusBar("Shortened URL");
 				// $('#shorten-short-link').val(data);
 			},
@@ -133,14 +133,14 @@ Spaz.Shortlink.services = {
 	bitly : function(url) {
 		var origlink = encodeURIComponent(url);
 
-		// air.trace('OrigLink:'+origlink);
+		// sch.dump('OrigLink:'+origlink);
 
 		$('#verification-result').text('Shortening URL...');
 
 		var xhr = $.ajax({
 			complete:function(xhr, rstr) {
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 					$('#verification-result').text('ERROR: Timeout');
 					return;
 				}
@@ -155,15 +155,15 @@ Spaz.Shortlink.services = {
 
 			},
 			error:function(xhr, rstr){
-				// air.trace("ERROR: " + rstr);
+				// sch.dump("ERROR: " + rstr);
 				$('#verification-result').text('Error trying to shorten link');
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 				}
 
 			},
 			success:function(data){
-				// air.trace(data);
+				// sch.dump(data);
 				// Spaz.UI.statusBar("Shortened URL");
 				// $('#shorten-short-link').val(data);
 			},
@@ -180,14 +180,14 @@ Spaz.Shortlink.services = {
 	urlzen : function(url) {
 		var origlink = encodeURIComponent(url);
 
-		// air.trace('OrigLink:'+origlink);
+		// sch.dump('OrigLink:'+origlink);
 
 		$('#verification-result').text('Shortening URL...');
 
 		var xhr = $.ajax({
 			complete:function(xhr, rstr) {
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 					$('#verification-result').text('ERROR: Timeout');
 					return;
 				}
@@ -202,15 +202,15 @@ Spaz.Shortlink.services = {
 
 			},
 			error:function(xhr, rstr){
-				// air.trace("ERROR: " + rstr);
+				// sch.dump("ERROR: " + rstr);
 				$('#verification-result').text('Error trying to shorten link');
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 				}
 
 			},
 			success:function(data){
-				// air.trace(data);
+				// sch.dump(data);
 				// Spaz.UI.statusBar("Shortened URL");
 				// $('#shorten-short-link').val(data);
 			},
@@ -227,14 +227,14 @@ Spaz.Shortlink.services = {
 	xrlus : function(url) {
 		var origlink = encodeURIComponent(url);
 
-		// air.trace('OrigLink:'+origlink);
+		// sch.dump('OrigLink:'+origlink);
 
 		$('#verification-result').text('Shortening URL...');
 
 		var xhr = $.ajax({
 			complete:function(xhr, rstr) {
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 					$('#verification-result').text('ERROR: Timeout');
 					return;
 				}
@@ -249,15 +249,15 @@ Spaz.Shortlink.services = {
 
 			},
 			error:function(xhr, rstr){
-				// air.trace("ERROR: " + rstr);
+				// sch.dump("ERROR: " + rstr);
 				$('#verification-result').text('Error trying to shorten link');
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 				}
 
 			},
 			success:function(data){
-				// air.trace(data);
+				// sch.dump(data);
 				// Spaz.UI.statusBar("Shortened URL");
 				// $('#shorten-short-link').val(data);
 			},
@@ -273,7 +273,7 @@ Spaz.Shortlink.services = {
 	snipr : function(url) {
 		var origlink = encodeURIComponent(url);
 
-		// air.trace('OrigLink:'+origlink);
+		// sch.dump('OrigLink:'+origlink);
 
 		$('#verification-result').text('Shortening URL...');
 
@@ -281,16 +281,16 @@ Spaz.Shortlink.services = {
 		var xhr = $.ajax({
 			complete:function(xhr, rstr){
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 					$('#verification-result').text('ERROR: Timeout');
 					return;
 				}
-				// air.trace('Response-headers:');
-				// air.trace(xhr.getAllResponseHeaders());
-				// air.trace('XHR Object:');
-				// air.trace(xhr);
-				// air.trace("COMPLETE: " + rstr);
-				// air.trace(xhr.responseText);
+				// sch.dump('Response-headers:');
+				// sch.dump(xhr.getAllResponseHeaders());
+				// sch.dump('XHR Object:');
+				// sch.dump(xhr);
+				// sch.dump("COMPLETE: " + rstr);
+				// sch.dump(xhr.responseText);
 
 				var shorturl = trim(xhr.responseText);
 
@@ -303,15 +303,15 @@ Spaz.Shortlink.services = {
 
 			},
 			error:function(xhr, rstr){
-				// air.trace("ERROR: " + rstr);
+				// sch.dump("ERROR: " + rstr);
 				$('#verification-result').text('Error trying to shorten link');
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 				}
 
 			},
 			success:function(data){
-				// air.trace(data);
+				// sch.dump(data);
 				// Spaz.UI.statusBar("Shortened URL");
 				// $('#shorten-short-link').val(data);
 			},
@@ -334,7 +334,7 @@ Spaz.Shortlink.services = {
 		var xhr = $.ajax({
 			complete:function(xhr, rstr) {
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 					$('#verification-result').text('ERROR: Timeout');
 					return;
 				}
@@ -349,15 +349,15 @@ Spaz.Shortlink.services = {
 
 			},
 			error:function(xhr, rstr){
-				// air.trace("ERROR: " + rstr);
+				// sch.dump("ERROR: " + rstr);
 				$('#verification-result').text('Error trying to shorten link');
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 				}
 
 			},
 			success:function(data){
-				// air.trace(data);
+				// sch.dump(data);
 				// Spaz.UI.statusBar("Shortened URL");
 				// $('#shorten-short-link').val(data);
 			},
@@ -373,14 +373,14 @@ Spaz.Shortlink.services = {
 	isgd : function(url) {
 		var origlink = encodeURIComponent(url);
 
-		// air.trace('OrigLink:'+origlink);
+		// sch.dump('OrigLink:'+origlink);
 
 		$('#verification-result').text('Shortening URL...');
 
 		var xhr = $.ajax({
 			complete:function(xhr, rstr) {
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 					$('#verification-result').text('ERROR: Timeout');
 					return;
 				}
@@ -395,15 +395,15 @@ Spaz.Shortlink.services = {
 
 			},
 			error:function(xhr, rstr){
-				// air.trace("ERROR: " + rstr);
+				// sch.dump("ERROR: " + rstr);
 				$('#verification-result').text('Error trying to shorten link');
 				if (xhr.readyState < 3) {
-					// air.trace("ERROR: Timeout");
+					// sch.dump("ERROR: Timeout");
 				}
 
 			},
 			success:function(data){
-				// air.trace(data);
+				// sch.dump(data);
 				// Spaz.UI.statusBar("Shortened URL");
 				// $('#shorten-short-link').val(data);
 			},

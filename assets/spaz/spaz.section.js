@@ -134,7 +134,7 @@ Spaz.Section.init = function() {
 						}
 					});
 				} catch(e) {
-					air.trace(e.name+":"+e.message);
+					sch.dump(e.name+":"+e.message);
 				}
 
 			}
@@ -177,10 +177,10 @@ Spaz.Section.init = function() {
 			// air.System.gc();
 
 			time.setReportMethod(function(l) {
-				air.trace("TIMER====================\n" + l.join("\n"))
+				sch.dump("TIMER====================\n" + l.join("\n"))
 			});
 			time.setLineReportMethod(function(l) {
-				air.trace(l)
+				sch.dump(l)
 			});
 
 			time.report();
@@ -243,7 +243,7 @@ Spaz.Section.init = function() {
 						}
 					});
 				} catch(e) {
-					air.trace(e.name+":"+e.message);
+					sch.dump(e.name+":"+e.message);
 				}
 
 			}
@@ -392,7 +392,7 @@ Spaz.Section.init = function() {
 						}
 					}
 
-					// air.trace(JSON.stringify(tweet));
+					// sch.dump(JSON.stringify(tweet));
 					return tweet;
 				}
 
@@ -472,7 +472,7 @@ Spaz.Section.init = function() {
 					'url'	:'https://twitter.com/friends/ids.json',
 					'async'	:false,
 					'success':function(data) {
-						// air.trace(data);
+						// sch.dump(data);
 						// alert('got friends_ids');
 						thisSec.friends_ids = JSON.parse(data);
 					},
@@ -492,7 +492,7 @@ Spaz.Section.init = function() {
 						xhr.setRequestHeader("Cookie", '');
 					},
 					'success':function(data) {
-						// air.trace(data);
+						// sch.dump(data);
 						// alert('got followers_ids');
 						thisSec.followers_ids = JSON.parse(data);
 					},
@@ -512,8 +512,8 @@ Spaz.Section.init = function() {
 					var xhr = $.ajax({
 						// mode:'queue',
 						complete:function(xhr, msg){
-							// air.trace(JSON.stringify(this.url));
-							// air.trace('Getting data for url:'+this.url);
+							// sch.dump(JSON.stringify(this.url));
+							// sch.dump('Getting data for url:'+this.url);
 							section.onAjaxComplete(this.url,xhr,msg);
 						},
 						error:function(xhr, msg, exc) {
@@ -539,7 +539,7 @@ Spaz.Section.init = function() {
 		},
 		onAjaxComplete: function(url, xhr, msg) {
 
-			air.trace("\n=========================================\ncompleted:" +url);
+			sch.dump("\n=========================================\ncompleted:" +url);
 
 			if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
 				Spaz.dump("Error:Timeout on "+thisurl);
@@ -585,13 +585,13 @@ Spaz.Section.init = function() {
 					Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name + ". Error message: " + e.message);
 				}
 
-				air.trace('this.$ajaxQueueFinished:'+this.$ajaxQueueFinished);
-				air.trace('this.urls.length:'+this.urls.length);
-				air.trace('data.length:'+data.length);
-				air.trace('this.$ajaxQueueErrors.length:'+this.$ajaxQueueErrors.length);
+				sch.dump('this.$ajaxQueueFinished:'+this.$ajaxQueueFinished);
+				sch.dump('this.urls.length:'+this.urls.length);
+				sch.dump('data.length:'+data.length);
+				sch.dump('this.$ajaxQueueErrors.length:'+this.$ajaxQueueErrors.length);
 			}
 
-			air.trace('Adding '+data.length+' entries from '+url);
+			sch.dump('Adding '+data.length+' entries from '+url);
 
 			$('#' + Spaz.Section.friendslist.timeline).empty();
 
@@ -599,20 +599,20 @@ Spaz.Section.init = function() {
 				time.start('addingItems');
 				for (var i in data) {
 
-					air.trace(this.friends_ids.length + ":" + this.followers_ids.length);
+					sch.dump(this.friends_ids.length + ":" + this.followers_ids.length);
 
 					if ( this.friends_ids.indexOf(data[i].id) > -1 ) {
-						air.trace(data[i].id + " is your friend");
+						sch.dump(data[i].id + " is your friend");
 						data[i].is_following = true;
 					}
 
 					if ( this.followers_ids.indexOf(data[i].id) > -1 ) {
-						air.trace(data[i].id + " is your follower");
+						sch.dump(data[i].id + " is your follower");
 						data[i].is_follower = true;
 					}
 
 					if (data[i].is_following && data[i].is_follower) {
-						air.trace(data[i].id + " is your friend and follower");
+						sch.dump(data[i].id + " is your friend and follower");
 						data[i].is_mutual = true;
 					}
 

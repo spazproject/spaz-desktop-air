@@ -12,7 +12,7 @@
 	<script src="app:/assets/spaz/spaz.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/helpers/sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
@@ -33,17 +33,17 @@
 		<h1>Spaz</h1>
 		<div id="content">
 			<h2>A Twitter client for the Adobe Integrated Runtime</h2>
-			<p><a class="clickable" onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/whatsnew.html')"><span id="about-version"></span> – What's new</a></p>
+			<p><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/apps/spaz/AIR/whatsnew.html')"><span id="about-version"></span> – What's new</a></p>
 
-			<p>Created by <a class="clickable" onclick="openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
+			<p>Created by <a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
 
 			<ul>
-				<li><a class="clickable" onclick="openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users group</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://funkatron.com/spaziki/')">Spaz Wiki and FAQ</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://code.google.com/p/spaz')">Spaz SVN Repository</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users group</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/spaziki/')">Spaz Wiki and FAQ</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://code.google.com/p/spaz')">Spaz SVN Repository</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
 			</ul>
 			
 			<h3>Contributors</h3>
@@ -75,18 +75,18 @@
 
 			<h3>Libraries used</h3>
 			<ul>
-				<li><a class="clickable" onclick="openInBrowser('http://www.jquery.com/')">jQuery</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://labs.adobe.com/technologies/spry/')">Spry</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://www.JSON.org/js.html')">JSON2.js</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://www.webtoolkit.info/javascript-md5.html')">Webtoolkit Base64</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://www.attacklab.net/showdown-gui.html')">Showdown</a></li>
-				<li><a class="clickable" onclick="openInBrowser('http://code.google.com/p/as3notificationlib/')">as3notificationlib</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.jquery.com/')">jQuery</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://labs.adobe.com/technologies/spry/')">Spry</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.JSON.org/js.html')">JSON2.js</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.webtoolkit.info/javascript-md5.html')">Webtoolkit Base64</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.attacklab.net/showdown-gui.html')">Showdown</a></li>
+				<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://code.google.com/p/as3notificationlib/')">as3notificationlib</a></li>
 			</ul>
 			
 			<h3>Media sets used</h3>
 			<ul>
-				<li><a class="clickable" onclick"openInBrowser('http://leobolin.net/simplesmileys/')">Simple Smileys emoticons by Leo Bolin</a></li>
-				<li><a class="clickable" onclick"openInBrowser('http://www.adiumxtras.com/index.php?a=xtras&xtra_id=602')">Tokyo Train Station soundset by Dominik Dimaano</a></li>
+				<li><a class="clickable" onclick"sc.helpers.openInBrowser('http://leobolin.net/simplesmileys/')">Simple Smileys emoticons by Leo Bolin</a></li>
+				<li><a class="clickable" onclick"sc.helpers.openInBrowser('http://www.adiumxtras.com/index.php?a=xtras&xtra_id=602')">Tokyo Train Station soundset by Dominik Dimaano</a></li>
 			</ul>
 			
 		</div>

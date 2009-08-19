@@ -63,7 +63,7 @@ Spaz.UI.playSound = function(url, callback) {
 
 
 Spaz.UI.onSoundPlaybackComplete = function(event) {
-    air.trace("The sound has finished playing.");
+    sch.dump("The sound has finished playing.");
 }
 
 
@@ -92,7 +92,7 @@ Spaz.UI.doWilhelm = function() {
     Spaz.dump('Applying Flash Filter Dropshadow and Negative');
 
 	if (Spaz.Prefs.get('window-dropshadow')) {
-	    air.trace('Applying Flash Filter Dropshadow');
+	    sch.dump('Applying Flash Filter Dropshadow');
 
 	    window.htmlLoader.filters = window.runtime.Array(
 	    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
@@ -112,7 +112,7 @@ Spaz.UI.doWilhelm = function() {
 
 Spaz.UI.endWilhelm = function() {
 	if (Spaz.Prefs.get('window-dropshadow')) {
-	    air.trace('Applying Flash Filter Dropshadow');
+	    sch.dump('Applying Flash Filter Dropshadow');
 
 	    window.htmlLoader.filters = window.runtime.Array(
 	    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
@@ -237,7 +237,7 @@ Spaz.UI.showLocationOnMap = function(location) {
     if (location.length > 0) {
         var url = 'http://maps.google.com/?q=' + encodeURIComponent(location);
         Spaz.dump("Loading " + url);
-        openInBrowser(url);
+        sc.helpers.openInBrowser(url);
     }
 };
 
@@ -303,10 +303,10 @@ Spaz.UI.prepMessage = function() {
 
 Spaz.UI.prepRetweet = function(entryid) {
 	var timelineid = Spaz.UI.selectedTab.id.replace(/tab-/, 'timeline-');
-	// air.trace(timelineid);
-	// air.trace('#'+timelineid+'-'+entryid);
+	// sch.dump(timelineid);
+	// sch.dump('#'+timelineid+'-'+entryid);
 	var entry = $('#'+timelineid+'-'+entryid);
-	// air.trace(entry.html());
+	// sch.dump(entry.html());
 	var text = entry.children('.entry-text').text();
 	var screenname = entry.children('.entry-user-screenname').text();
 
@@ -470,8 +470,8 @@ Spaz.UI.setSelectedTab = function(tab) {
 
     Spaz.dump('Spaz.UI.selectedTab: ' + Spaz.UI.selectedTab.id);
 
-    Spaz.dump('restarting reload timer');
-    Spaz.restartReloadTimer();
+    // Spaz.dump('restarting reload timer');
+    // Spaz.restartReloadTimer();
 
     Spaz.Data.loadDataForTab(tab);
 
@@ -549,7 +549,7 @@ Spaz.UI.setView = function(type ) {
 		var type = Spaz.UI.currentFriendsTimelineView || 'view-friends-menu-all';
 	}
 
-	air.trace('View type is '+type);
+	sch.dump('View type is '+type);
 
 	var container = '#' + Spaz.Section.friends.timeline;
 
@@ -648,11 +648,11 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
     var el = jq[0];
 
     // hide any showing tooltips
-    // air.trace('hiding tooltip');
+    // sch.dump('hiding tooltip');
     $('#tooltip').hide();
 
     // show the link context menu
-    // air.trace('opening context menu');
+    // sch.dump('opening context menu');
     $('#linkContextMenu').css('left', event.pageX)
     .css('top', event.pageY)
     .unbind()
@@ -661,27 +661,27 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 
     $('#userContextMenu .menuitem').unbind();
 
-    // air.trace('outerHTML:'+el.outerHTML);
+    // sch.dump('outerHTML:'+el.outerHTML);
     var urlarray = /http:\/\/([^'"]+)/i.exec(url);
     if (urlarray && urlarray.length > 0) {
         var elurl = urlarray[0];
 
-        // air.trace('url from element:'+elurl);
+        // sch.dump('url from element:'+elurl);
         $('#linkContextMenu-copyLink').one('click', {
             url: elurl
         },
         function(event) {
             Spaz.Sys.setClipboardText(event.data.url);
-            // air.trace('Current Clipboard:'+Spaz.Sys.getClipboardText());
+            // sch.dump('Current Clipboard:'+Spaz.Sys.getClipboardText());
         });
-        // air.trace('Set one-time click event on #menu-copyLink');
+        // sch.dump('Set one-time click event on #menu-copyLink');
         $(document).one('click',
         function() {
             $('#linkContextMenu').hide();
         });
-        // air.trace('set one-time link context menu close event for click on document');
+        // sch.dump('set one-time link context menu close event for click on document');
     } else {
-        // air.trace('no http link found');
+        // sch.dump('no http link found');
         }
 };
 
@@ -692,18 +692,18 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
         return false;
     }
 
-    air.trace(screen_name)
+    sch.dump(screen_name)
 
     var el = jq[0];
 
     Spaz.dump(el);
 
     // hide any showing tooltips
-    // air.trace('hiding tooltip');
+    // sch.dump('hiding tooltip');
     $('#tooltip').hide();
 
     // show the link context menu
-    // air.trace('opening context menu for user '+screen_name);
+    // sch.dump('opening context menu for user '+screen_name);
     $('#userContextMenu').css('left', event.pageX)
     .css('top', event.pageY)
     .show();
@@ -711,7 +711,7 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
     $('#userContextMenu .menuitem').attr('user-screen_name', screen_name);
 
 
-    // air.trace('Set one-time click event on #userContextMenu');
+    // sch.dump('Set one-time click event on #userContextMenu');
     $(document).one('click',
     function() {
         $('#userContextMenu').hide();
@@ -732,13 +732,13 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
     var timelineid = section.timeline;
 
 	Spaz.dump('TIMELINE #' + timelineid + '-' + entry.id);
-	air.trace('TIMELINE #' + timelineid + '-' + entry.id);
+	sch.dump('TIMELINE #' + timelineid + '-' + entry.id);
 
 
 
-    // air.trace(JSON.stringify(entry));
+    // sch.dump(JSON.stringify(entry));
     if ($('#' + timelineid + '-' + entry.id).length < 1) {
-		air.trace('adding #' + timelineid + '-' + entry.id);
+		sch.dump('adding #' + timelineid + '-' + entry.id);
 		entry.isDM = false;
 		entry.isSent = false;
 		if (!entry.favorited) { // we do this to make a favorited property for DMs
@@ -770,7 +770,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		*/
 
 		if (entry.in_reply_to_user_id && !entry.in_reply_to_screen_name) {
-			air.trace('in_reply_to_user_id exists, but in_reply_to_screen_name not set');
+			sch.dump('in_reply_to_user_id exists, but in_reply_to_screen_name not set');
 			var reply_matches = null;
 			if (reply_matches = entry.text.match(/^@([a-zA-Z0-9_\-]+)/i)) {
 				entry.in_reply_to_screen_name = reply_matches[1];
@@ -778,7 +778,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		}
 
 		entry.rowclass = "even";
-		entry.timestamp = httpTimeToInt(entry.created_at);
+		entry.timestamp = sch.httpTimeToInt(entry.created_at);
 		entry.base_url = Spaz.Prefs.get('twitter-base-url');
 		entry.timelineid = timelineid;
 
@@ -798,7 +798,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 		// fix entity &#123; style extra encoding
 		entry.text = entry.text.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
 
-		// air.trace(this.innerHTML);
+		// sch.dump(this.innerHTML);
 		if (Spaz.Prefs.get('usemarkdown')) {
 			var md = new Showdown.converter();
 
@@ -838,14 +838,14 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
 
 		var entryHTML = Spaz.Tpl.parse('timeline_entry', entry);
-		// air.trace(entryHTML);
+		// sch.dump(entryHTML);
 
-		// air.trace('make DOMElement from string: '+entryHTML);
+		// sch.dump('make DOMElement from string: '+entryHTML);
 		// var entryElement = document.createElement(entryHTML);
 
 		// Make the jQuery object and bind events
-		// air.trace('make jQ entry and bind events to: '+entryElement);
-		// air.trace('make jQ entry and bind events to: '+entryElement);
+		// sch.dump('make jQ entry and bind events to: '+entryElement);
+		// sch.dump('make jQ entry and bind events to: '+entryElement);
 
 		var jqentry = $(entryHTML);
 
@@ -867,7 +867,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 			{
 				if (read)
 				{
-					// air.trace("Entry " + entry.id + " is read");
+					// sch.dump("Entry " + entry.id + " is read");
 					jqentry.addClass('read');
 					jqentry.removeClass('new');
 					$().trigger('UNREAD_COUNT_CHANGED');
@@ -904,7 +904,7 @@ Spaz.UI.selectEntry = function(el) {
     Spaz.dump('selecting tweet');
     $(el).addClass('ui-selected').addClass('read').each(function() {
         if (entryId = Spaz.UI.getStatusIdFromElement(this)) {
-            air.trace("Want to mark as read " + entryId);
+            sch.dump("Want to mark as read " + entryId);
             Spaz.DB.markEntryAsRead(entryId);
         }
     });
@@ -931,7 +931,7 @@ Spaz.UI.getStatusIdFromElement = function(el) {
 
     //
     if (entryId == null) {
-        air.trace("Cannot obtain entry id for entry with DOM id " + this.id);
+        sch.dump("Cannot obtain entry id for entry with DOM id " + this.id);
         return false
     } else {
         return entryId
@@ -945,7 +945,7 @@ Spaz.UI.getStatusIdFromElement = function(el) {
 Spaz.UI.getElementFromStatusId = function(id) {
 	var element = $('.entry-id:contains('+id+')').parent().get()[0];
 	if (element) {
-		air.trace(element.id);
+		sch.dump(element.id);
 		return element
 	}
 	return false;
@@ -1031,7 +1031,7 @@ Spaz.UI.getUnreadCount = function() {
     // }
 	var unread_count = $(selector).not('.read').length;
 
-	air.trace(unread_count);
+	sch.dump(unread_count);
 
     return unread_count;
 };
@@ -1183,7 +1183,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 	var oldFirst  = $('#'+timelineid+" div.timeline-entry:first");
 	var $timeline = $('#'+timelineid);
 	var offset_before = oldFirst.offset().top;
-	air.trace("oldFirst BEFORE top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop());
+	sch.dump("oldFirst BEFORE top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop());
 
 
 
@@ -1236,7 +1236,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 			var numEntries = tweets.length
 	        if (numEntries > Spaz.Prefs.get(prefkey)) {
 	            var diff = numEntries - Spaz.Prefs.get(prefkey);
-	            air.trace("numEntries "+type+"is " + numEntries + " > " + Spaz.Prefs.get(prefkey) + "; removing last " + diff + " entries");
+	            sch.dump("numEntries "+type+"is " + numEntries + " > " + Spaz.Prefs.get(prefkey) + "; removing last " + diff + " entries");
 	            tweets.slice(diff * -1).remove();
 	        }
 		}
@@ -1297,7 +1297,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 				*/
                 if (Spaz.Prefs.get('timeline-scrollonupdate') && $timeline.parent().scrollTop() > 0) {
                     try {
-						air.trace('scrolliong thee timeline '+timelineid);
+						sch.dump('scrolliong thee timeline '+timelineid);
                         $('#'+timelineid).parent().scrollTo('.timeline-entry.new:not(.read):last', {
                             speed: 400,
                             easing: 'swing'
@@ -1371,7 +1371,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                 var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\-_+\\/]*)", "g");
                 var matchArray = null;
                 while (matchArray = urlRE.exec(txt)) {
-                    // air.trace("Getting content of URL " + matchArray[1]);
+                    // sch.dump("Getting content of URL " + matchArray[1]);
                     Spaz.dump("Getting content of URL " + matchArray[1]);
 
                     // Get the URL
@@ -1390,15 +1390,15 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
 					// Perform load
                     stream.load(url_req);
-                    // air.trace("Decoding " + domain + " URL " + url);
-                    air.trace("Decoding " + domain + " URL " + url);
+                    // sch.dump("Decoding " + domain + " URL " + url);
+                    sch.dump("Decoding " + domain + " URL " + url);
                 }
 
             }
             // time.stop('lookingForShortDomains');
 
             function onHTTPResponseStatus(event) {
-                // air.trace('onHTTPResponseStatus');
+                // sch.dump('onHTTPResponseStatus');
                 if (event.status == 200) {
                     // Here we get the value to rewrite
                     var targetURL = event.responseURL;
@@ -1412,7 +1412,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
             }
 
             function onIOError(event) {
-                // air.trace('onIOError');
+                // sch.dump('onIOError');
                 var targetURL = event.responseURL;
                 Spaz.dump('Request to ' + event.responseURL + ' returned an IOErrorEvent');
                 Spaz.dump(event);
@@ -1438,7 +1438,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		function fadeInStragglers() {
 			$("img.user-image").each( function() {
 				if ($(this).css('opacity') < 1) {
-					// air.trace('fadingIn: '+this.outerHTML);
+					// sch.dump('fadingIn: '+this.outerHTML);
 					$(this).fadeTo('500', '1.0');
 				}
 			});
@@ -1454,13 +1454,13 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 		*/
 		var offset_after = oldFirst.offset().top;
 		var offset_diff = Math.abs(offset_before - offset_after);
-		air.trace("oldFirst AFTER top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop() + "\noffset_diff: "+offset_diff);
+		sch.dump("oldFirst AFTER top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop() + "\noffset_diff: "+offset_diff);
 
 		if ($timeline.parent().scrollTop() > 0) {
 			$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );
 		}
 
-		air.trace($timeline.parent().scrollTop());
+		sch.dump($timeline.parent().scrollTop());
         return false;
     });
 

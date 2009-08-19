@@ -18,8 +18,7 @@
 	<script src="app:/assets/spaz/spaz.uploadservice.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.ui.js" type="text/javascript" charset="utf-8"></script>
 	
-	<script src="app:/assets/lib/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
@@ -33,7 +32,7 @@
 			
 			userFile.addEventListener(air.Event.SELECT, function(event) {
 				
-				air.trace('Chosen file: '+event.target.url);
+				sch.dump('Chosen file: '+event.target.url);
 							
 				if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
 					if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
@@ -110,7 +109,7 @@
 		
 			var fileUrl = event.dataTransfer.getData("text/uri-list");
 		
-			air.trace(fileUrl);
+			sch.dump(fileUrl);
 		
 			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
@@ -124,7 +123,7 @@
 			Upload the dragged image to Twitpic
 		*/
 		function uploadDraggedImage(fileUrl) {
-			air.trace(fileUrl);
+			sch.dump(fileUrl);
 			
 			Spaz.UI.showLoading();
 				
@@ -143,29 +142,29 @@
 					Spaz.UI.hideLoading();
 					
 					var loader = event.target;
-				    air.trace(loader.data);
+				    sch.dump(loader.data);
 
 					var parser=new DOMParser();
 					xmldoc = parser.parseFromString(loader.data,"text/xml");
 					
 					//var mediaurl = $(xmldoc).find('mediaurl').text();
-					//air.trace(mediaurl);
+					//sch.dump(mediaurl);
 					//prepPhotoPost(mediaurl);
 					//$('#status-text').html('Complete');
 					var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
 					if (rspAttr.getNamedItem("stat").nodeValue == 'ok')
 					{
 						var mediaurl = $(xmldoc).find('mediaurl').text();
-						air.trace(mediaurl);
+						sch.dump(mediaurl);
 						prepPhotoPost(mediaurl);
 						$('#status-text').html('Complete');
 					} 
 					else
 					{
 						var errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
-						air.trace(errAttributes);
+						sch.dump(errAttributes);
 						errMsg = errAttributes.getNamedItem("msg").nodeValue;
-						air.trace(errMsg);
+						sch.dump(errMsg);
 						$('#status-text').html(errMsg);
 					} 
 				}
@@ -188,11 +187,11 @@
 			// get the pref
 			var service = Spaz.Prefs.get('file-uploader');
 			service_url = Spaz.Uploadservice.services[service].url;
-			air.trace("service is "+ service);
-			air.trace("service url "+ service_url);
+			sch.dump("service is "+ service);
+			sch.dump("service url "+ service_url);
 
 			var sharepass = Spaz.Prefs.get('services-twitpic-sharepassword');
-			air.trace("sharepass is "+ sharepass);
+			sch.dump("sharepass is "+ sharepass);
 			
 			// populate the dropdown
 			for (method in Spaz.Uploadservice.services) {
@@ -218,8 +217,8 @@
 				Spaz.Prefs.set('file-uploader', service);
 				
 				service_url = Spaz.Uploadservice.services[service].url;
-				air.trace("service is "+ service);
-				air.trace("service url "+ service_url);
+				sch.dump("service is "+ service);
+				sch.dump("service url "+ service_url);
 				
 				$('.service-extras').fadeOut();
 				$('#extra-'+service).fadeIn();
@@ -239,7 +238,7 @@
 				}
 				
 				// var service = Spaz.Prefs.get('file-uploader');
-				// air.trace("service is "+ service);
+				// sch.dump("service is "+ service);
 				// Spaz.Upload[service]($('#shorten-original-link').val());
 			});
 			
@@ -248,19 +247,19 @@
 				if ($('#post-message').val().length>110) {
 					$('#post-message').val( $('#post-message').val().substr(0,110) );
 				}
-				air.trace($('#post-message').val().length);
+				sch.dump($('#post-message').val().length);
 			})
 			
 			
 			
-			var fileUrl = escape_html(decodeURIComponent(gup('fileUrl')));
+			var fileUrl = sc.helpers.escape_html(decodeURIComponent(gup('fileUrl')));
 			if (fileUrl) {
 				handleDrop(fileUrl);
 			}
 			
-			air.trace(window.location.href);
+			sch.dump(window.location.href);
 			
-			// air.trace(air.NativeApplication.nativeApplication.spazPrefs);
+			// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);
 		})
 	</script>
 	

@@ -105,8 +105,8 @@ Spaz.Update.compareVersions = function(current, newest) {
 	var siteV = {};
 	var currV = {};
 	
-	air.trace('current:'+current+' ('+typeof(current)+')')
-	air.trace('newest:'+newest+' ('+typeof(newest)+')')
+	sch.dump('current:'+current+' ('+typeof(current)+')')
+	sch.dump('newest:'+newest+' ('+typeof(newest)+')')
 	
 	var newpieces = newest.split('.');
 	Spaz.dump(newpieces);
@@ -176,7 +176,7 @@ Spaz.Update.compareVersions = function(current, newest) {
 Spaz.Update.deleteExisting = function() {
 	var existingFile = air.File.applicationStorageDirectory.resolvePath("Spaz-Newest.air");
 	if (existingFile.exists) {
-		air.trace('Existing file; will now delete')
+		sch.dump('Existing file; will now delete')
 		existingFile.deleteFile();
 	}
 };
@@ -199,7 +199,7 @@ Spaz.Update.downloadNewest = function(url) {
 	function loaded(event) {
 		Spaz.dump("Loaded...");
 		Spaz.dump(event);
-		// air.trace(urlStream.bytesAvailable);
+		// sch.dump(urlStream.bytesAvailable);
 		urlStream.readBytes(fileData, 0, urlStream.bytesAvailable);
 		writeAirFile();
 	}

@@ -135,7 +135,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 			var winY = farTop + padding + 0;
 			break;
 	}
-	air.trace(winX+"x"+winY);
+	sch.dump(winX+"x"+winY);
 	/*
 	  Create window
 	*/
@@ -184,7 +184,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		// notifyLoader.stage.nativeWindow.orderToFront(); // bring to front
 		
 		function opacityUp() {
-			// air.trace('opacityUp');
+			// sch.dump('opacityUp');
 			if (notifyLoader) {
 				notifyLoader.alpha += .1;
 				if (notifyLoader.alpha < 1) {
@@ -208,7 +208,7 @@ PurrJS.notify = function(title, msg, img, duration, position) {
 		opacityDown();
 		
 		function opacityDown() {
-			// air.trace('opacityDown');
+			// sch.dump('opacityDown');
 			notifyLoader.alpha -= .1;
 			if (notifyLoader.alpha > 0 && opacityDown) {
 				setTimeout(opacityDown, 30); // do again

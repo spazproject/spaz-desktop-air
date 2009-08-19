@@ -31,7 +31,7 @@ Spaz.Debug.dump = function(msg, type) {
 		if (air.Introspector && air.Introspector.Console && air.Introspector.Console[type]) {
 			air.Introspector.Console[type](msg);
 		} else {
-			air.trace(msg);
+			sch.dump(msg);
 		}
 	
 		Spaz.Debug.logToFile(msg);
@@ -63,12 +63,12 @@ Spaz.dump = function(msg, type) {
 
 
 Spaz.Debug.showProps = function(obj, objName) {
-	air.trace('dumping '+objName);
+	sch.dump('dumping '+objName);
 	var result = "";
 	for (var i in obj) {
 	   result += objName + "." + i + " = " + obj[i] + "\n";
 	}
-	air.trace(result);
+	sch.dump(result);
 }
 
 
@@ -106,7 +106,7 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 
 
 Spaz.Debug.insertDebugScripts = function() {
-	air.trace("INSERT DEBUGGING SCRIPTS");
+	sch.dump("INSERT DEBUGGING SCRIPTS");
 	var e = document.createElement("script");
 	e.src = "assets/air/AIRIntrospector.js";
 	e.type= "text/javascript";

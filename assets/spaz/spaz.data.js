@@ -57,7 +57,7 @@ Spaz.Data.getAPIURL = function(key) {
 	urls.downtime_schedule	= "help/downtime_schedule.json";
 
 	if (urls[key]) {
-		// air.trace("URL:"+base_url + urls[key]);
+		// sch.dump("URL:"+base_url + urls[key]);
 		return base_url + urls[key];
 	} else {
 		return false
@@ -98,7 +98,7 @@ Spaz.Data.verifyPassword = function() {
 	var user = $('#username').val();
 	var pass = $('#password').val();
 
-	Spaz.dump('user:'+user+' pass:********');
+	sch.dump('user:'+user+' pass:********');
 
 	Spaz.UI.statusBar("Verifying username and password");
 	Spaz.UI.showLoading();
@@ -107,7 +107,7 @@ Spaz.Data.verifyPassword = function() {
 		complete:Spaz.Data.onAjaxComplete,
 		error:function() {
 			// Spaz.verified = false;
-			Spaz.dump('verification failed');
+			sch.dump('verification failed');
 			Spaz.UI.statusBar("Verification failed");
 			Spaz.UI.flashStatusBar();
 			Spaz.Data.onAjaxError();
@@ -116,7 +116,7 @@ Spaz.Data.verifyPassword = function() {
 			// var json = JSON.parse(data);
 			// if (json.authorized) {
 				// Spaz.verified = true;
-				air.trace('verified; setting current user');
+				sch.dump('verified; setting current user');
 				Spaz.Prefs.setCurrentUser();
 				Spaz.UI.statusBar("Verification succeeded");
 				Spaz.UI.flashStatusBar();
@@ -127,7 +127,7 @@ Spaz.Data.verifyPassword = function() {
 
 			// } else {
 				// Spaz.verified = false;
-			//	   Spaz.dump('verification failed');
+			//	   sch.dump('verification failed');
 			//	   Spaz.UI.statusBar("Verification failed");
 			//	   Spaz.UI.flashStatusBar();
 			// }
@@ -142,7 +142,7 @@ Spaz.Data.verifyPassword = function() {
 		url:Spaz.Data.getAPIURL('verify_password'),
 	})
 
-	// Spaz.dump(xhr);
+	// sch.dump(xhr);
 
 }
 
@@ -160,7 +160,7 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 	var user = username;
 	var pass = password;
 
-	Spaz.dump('user:'+user+' pass:********');
+	sch.dump('user:'+user+' pass:********');
 
 	Spaz.UI.statusBar("Sending update");
 	Spaz.UI.showLoading();
@@ -179,19 +179,19 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 		timeout:1000*40, // updates can take longer, so we double the standard timeout
 		complete:Spaz.Data.onAjaxComplete,
 		error:function(xhr, rstr){
-			Spaz.dump("ERROR");
+			sch.dump("ERROR");
 			$('#entrybox').attr('disabled', false);
 			$('#updateButton').attr('disabled', false);
 			$('#updateButton').val(oldButtonLabel);
 
 			if (xhr.readyState < 3) {
-				Spaz.dump("Update ERROR: Server did not confirm update");
+				sch.dump("Update ERROR: Server did not confirm update");
 				Spaz.UI.statusBar("ERROR: Server did not confirm update")
 				return;
 			}
 
 			if (xhr.status != 200) { // sanity check
-				Spaz.dump("ERROR: " + rstr);
+				sch.dump("ERROR: " + rstr);
 				Spaz.UI.statusBar("ERROR: Server could not post update");
 				Spaz.UI.flashStatusBar();
 			} else {
@@ -199,13 +199,13 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 			}
 		},
 		success:function(data){
-			Spaz.dump('SUCCESS:'+data);
+			sch.dump('SUCCESS:'+data);
 			$('#entrybox').attr('disabled', false);
 			$('#updateButton').attr('disabled', false);
 			$('#entrybox').val('');
-			Spaz.dump('Emptied #entrybox');
+			sch.dump('Emptied #entrybox');
 			$('#updateButton').val(oldButtonLabel);
-			Spaz.dump('reset #updateButton label');
+			sch.dump('reset #updateButton label');
 			if (msg.length == 140) {
 				if (Spaz.Prefs.get('sound-enabled')) {
 					if (Spaz.Prefs.get('wilhelm-enabled')) {
@@ -213,10 +213,10 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 						Spaz.UI.statusBar("Wilhelm!");
 						Spaz.UI.playSoundWilhelm();
 					} else {
-						Spaz.dump('not doing Wilhelm because Wilhelm disabled');
+						sch.dump('not doing Wilhelm because Wilhelm disabled');
 					}
 				} else {
-					Spaz.dump('not doing Wilhelm because sound disabled');
+					sch.dump('not doing Wilhelm because sound disabled');
 				}
 			} else {
 				Spaz.UI.playSoundUpdate();
@@ -239,9 +239,9 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 
 			Spaz.UI.entryBox.reset();
 			Spaz.UI.clearPostIRT();
-			Spaz.dump('reset entryBox (Spry)');
+			sch.dump('reset entryBox (Spry)');
 			$('#entrybox')[0].blur();
-			Spaz.dump('Blurred entryBox (DOM)');
+			sch.dump('Blurred entryBox (DOM)');
 
 			if (Spaz.Prefs.get('services-pingfm-enabled')) {
 				Spaz.Data.updatePingFM(msg);
@@ -262,7 +262,7 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 //		data:"&status="+encodeURIComponent(msg),
 	});
 
-	// Spaz.dump(xhr);
+	// sch.dump(xhr);
 }
 
 
@@ -283,7 +283,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
-			Spaz.dump(data);
+			sch.dump(data);
 			Spaz.UI.statusBar("Status deleted");
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
@@ -299,7 +299,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		url:Spaz.Data.getAPIURL('destroy_status').replace(/{{ID}}/, postid),
 	});
 
-	// Spaz.dump(xhr);
+	// sch.dump(xhr);
 }
 
 
@@ -321,7 +321,7 @@ Spaz.Data.makeFavorite = function(postid) {
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			var faved_element;
-			Spaz.dump(data);
+			sch.dump(data);
 			Spaz.UI.statusBar('Added fav: ' + postid);
 			if (faved_element = Spaz.UI.getElementFromStatusId(postid)) {
 				$(faved_element).addClass('favorited');
@@ -360,7 +360,7 @@ Spaz.Data.makeNotFavorite = function(postid) {
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			var faved_element;
-			Spaz.dump(data);
+			sch.dump(data);
 			Spaz.UI.statusBar('Removed fav: ' + postid);
 			if (faved_element = Spaz.UI.getElementFromStatusId(postid)) {
 				$(faved_element).removeClass('favorited');
@@ -391,7 +391,7 @@ Spaz.Data.followUser = function(userid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
 
-	Spaz.dump('user:'+user+' pass:********');
+	sch.dump('user:'+user+' pass:********');
 
 	Spaz.UI.statusBar('Start following: ' + userid)
 	Spaz.UI.showLoading();
@@ -400,7 +400,7 @@ Spaz.Data.followUser = function(userid) {
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
-			Spaz.dump(data);
+			sch.dump(data);
 			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
 			Spaz.UI.reloadCurrentTab();
 			Spaz.UI.statusBar("Now following " + userid);
@@ -417,7 +417,7 @@ Spaz.Data.followUser = function(userid) {
 		url:Spaz.Data.getAPIURL('follow').replace(/{{ID}}/, userid),
 	});
 
-	// Spaz.dump(xhr);
+	// sch.dump(xhr);
 };
 
 
@@ -431,7 +431,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
 
-	Spaz.dump('user:'+user+' pass:********');
+	sch.dump('user:'+user+' pass:********');
 
 	Spaz.UI.statusBar('Stop following: ' + userid)
 	Spaz.UI.showLoading();
@@ -440,7 +440,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
-			Spaz.dump(data);
+			sch.dump(data);
 			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
 			Spaz.UI.reloadCurrentTab();
 			Spaz.UI.statusBar("No longer following " + userid);
@@ -457,7 +457,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 		url:Spaz.Data.getAPIURL('stop_follow').replace(/{{ID}}/, userid),
 	});
 
-	// Spaz.dump(xhr);
+	// sch.dump(xhr);
 };
 
 
@@ -470,13 +470,13 @@ Spaz.Data.stopFollowingUser = function(userid) {
 Spaz.Data.onAjaxComplete = function(xhr, rstr) {
 	Spaz.UI.hideLoading();
 	if (xhr.readyState < 3) {
-		Spaz.dump("ERROR: Server did not respond");
+		sch.dump("ERROR: Server did not respond");
 		Spaz.UI.statusBar("ERROR: Server did not respond")
 		return;
 	}
-	Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-	Spaz.dump("DATA:\n"+xhr.responseText);
-	Spaz.dump("COMPLETE: " + rstr);
+	sch.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
+	sch.dump("DATA:\n"+xhr.responseText);
+	sch.dump("COMPLETE: " + rstr);
 };
 
 
@@ -487,9 +487,9 @@ Spaz.Data.onAjaxComplete = function(xhr, rstr) {
  * @returns void
  */
 Spaz.Data.onAjaxError = function(xhr,rstr) {
-	Spaz.dump("ERROR: " + rstr);
+	sch.dump("ERROR: " + rstr);
 	if (xhr.readyState < 3) {
-		Spaz.dump("ERROR: Server did not respond.");
+		sch.dump("ERROR: Server did not respond.");
 	}
 	if (xhr.responseText) {
 		try {
@@ -500,7 +500,7 @@ Spaz.Data.onAjaxError = function(xhr,rstr) {
 				Spaz.UI.statusBar('ERROR: Server returned invalid data');
 			}
 		} catch(e) {
-			Spaz.dump('Error parsing for JSON in error response');
+			sch.dump('Error parsing for JSON in error response');
 			Spaz.UI.statusBar('ERROR: Server returned invalid data');
 		}
 	}
@@ -529,17 +529,17 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 			setTimeout(Spaz.UI.openLoginPanel, 500);
 		});
 		
-		Spaz.dump('hiding loading');
+		sch.dump('hiding loading');
 		Spaz.UI.hideLoading();
 		return;
 	} else {
 		$('#not-logged-in').remove();
 	}
 
-	Spaz.dump('now:'+getTimeAsInt());
-	Spaz.dump('then:'+section.lastcheck);
-	Spaz.dump('difference:'+(getTimeAsInt() - section.lastcheck));
-	Spaz.dump('section.mincachetime:'+section.mincachetime);
+	sch.dump('now:'+getTimeAsInt());
+	sch.dump('then:'+section.lastcheck);
+	sch.dump('difference:'+(getTimeAsInt() - section.lastcheck));
+	sch.dump('section.mincachetime:'+section.mincachetime);
 
 	if (force || (getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
 		section.lastcheck = getTimeAsInt();
@@ -550,7 +550,7 @@ Spaz.Data.getDataForTimeline = function(section, force) {
 			// data = data.concat(thisdata);
 		}
 	} else {
-		Spaz.dump('Not loading data - section.mincachetime has not expired');
+		sch.dump('Not loading data - section.mincachetime has not expired');
 	}
 
 }
@@ -564,53 +564,53 @@ Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
 	Spaz.Data.$ajaxQueueFinished++;
 
 	if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
-		Spaz.dump("Error:Timeout on "+thisurl);
+		sch.dump("Error:Timeout on "+thisurl);
 	} else {
-		Spaz.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-		Spaz.dump("STATUS:\n"+xhr.status);
-		Spaz.dump("DATA:\n"+xhr.responseText);
-		Spaz.dump("COMPLETE: " + msg);
+		sch.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
+		sch.dump("STATUS:\n"+xhr.status);
+		sch.dump("DATA:\n"+xhr.responseText);
+		sch.dump("COMPLETE: " + msg);
 
 		if (xhr.status == 400) {
-			Spaz.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
+			sch.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
 		}
 
 		else if (xhr.status == 401) {
-			Spaz.dump("ERROR: 401 error - Not Authenticated. Check your username and password.	Response from Twitter:\n"+xhr.responseText);
+			sch.dump("ERROR: 401 error - Not Authenticated. Check your username and password.	Response from Twitter:\n"+xhr.responseText);
 			Spaz.Data.$ajaxQueueErrors.push("Not Authenticated. Check your username and password.");
 		}
 
 		else if (xhr.responseText.length < 0) {
-			Spaz.dump("Error:response empty from "+thisurl);
+			sch.dump("Error:response empty from "+thisurl);
 			Spaz.Data.$ajaxQueueErrors.push("Empty response from server for "+thisurl)
 		}
 
 		try {
-			var data = parseJSON(xhr.responseText);
-			Spaz.dump(typeof(data))
+			var data = sch.deJSON(xhr.responseText);
+			sch.dump(typeof(data))
 
 			if (!data) {
-				Spaz.dump("Error: no data returned from "+thisurl);
+				sch.dump("Error: no data returned from "+thisurl);
 			} else {
 				/* This is a little hack for summize data */
 				if (data.results) {
 					data = data.results;
 				}
 				if (data.error) {
-					Spaz.dump("ERROR: "+data.error+" ["+data.request+"]");
+					sch.dump("ERROR: "+data.error+" ["+data.request+"]");
 					Spaz.Data.$ajaxQueueErrors.push("Twitter says: \""+data.error+"\"");
 				} else {
 					Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
 				}
 			}
 		} catch(e) {
-			Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name + ". Error message: " + e.message);
+			sch.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name + ". Error message: " + e.message);
 		}
 
-		Spaz.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
-		Spaz.dump('section.urls.length:'+section.urls.length);
-		Spaz.dump('Spaz.Data.$ajaxQueueStorage.length:'+Spaz.Data.$ajaxQueueStorage.length);
-		Spaz.dump('Spaz.Data.$ajaxQueueErrors.length:'+Spaz.Data.$ajaxQueueErrors.length);
+		sch.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
+		sch.dump('section.urls.length:'+section.urls.length);
+		sch.dump('Spaz.Data.$ajaxQueueStorage.length:'+Spaz.Data.$ajaxQueueStorage.length);
+		sch.dump('Spaz.Data.$ajaxQueueErrors.length:'+Spaz.Data.$ajaxQueueErrors.length);
 
 	}
 
@@ -621,8 +621,8 @@ Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
 		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
 			time.start('addingItems');
 			for (var i in Spaz.Data.$ajaxQueueStorage) {
-				// air.trace('URL:'+thisurl);
-				// air.trace('section URLs:'+section.urls);
+				// sch.dump('URL:'+thisurl);
+				// sch.dump('section URLs:'+section.urls);
 				/*
 					Check the origin URL to see if this is a follower or someone the
 					user is following
@@ -638,20 +638,20 @@ Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
 			time.stop('addingItems');
 		}
 
-		Spaz.dump('onSectionAjaxComplete cleaning up timeline');
+		sch.dump('onSectionAjaxComplete cleaning up timeline');
 		section.cleanup();
 
-		Spaz.dump('hiding loading');
+		sch.dump('hiding loading');
 		Spaz.UI.hideLoading();
 
 		if (Spaz.Data.$ajaxQueueErrors.length > 0) {
 			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
 			Spaz.UI.alert(errors, "Error");
-			Spaz.dump(errors);
+			sch.dump(errors);
 			Spaz.Data.$ajaxQueueErrors = [];
 		}
 
-		Spaz.dump('emptying storage');
+		sch.dump('emptying storage');
 		Spaz.Data.$ajaxQueueStorage = [];
 	}
 }
@@ -666,9 +666,9 @@ Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
  */
 Spaz.Data.getDataForUrl = function(url, section) {
 
-	Spaz.dump('getting:'+url);
+	sch.dump('getting:'+url);
 
-	Spaz.dump('section.timeline:'+section.timeline);
+	sch.dump('section.timeline:'+section.timeline);
 
 	Spaz.UI.statusBar("Checking for new data…");
 	Spaz.UI.showLoading();
@@ -676,14 +676,14 @@ Spaz.Data.getDataForUrl = function(url, section) {
 	var xhr = $.ajax({
 		// mode:'queue',
 		complete:function(xhr, msg){
-			air.trace('Getting data for url:'+url);
+			sch.dump('Getting data for url:'+url);
 			section.onAjaxComplete(url,xhr,msg);
 		},
 		error:function(xhr, msg, exc) {
 			if (xhr && xhr.responseText) {
-				Spaz.dump("Error:"+xhr.responseText+" from "+url);
+				sch.dump("Error:"+xhr.responseText+" from "+url);
 			} else {
-				Spaz.dump("Error:Unknown from "+url);
+				sch.dump("Error:Unknown from "+url);
 			}
 		},
 		beforeSend:function(xhr){
@@ -715,9 +715,9 @@ Spaz.Data.searchSummize = function(query) {
 	var section = Spaz.Section.search;
 	var url = Spaz.Section.search[0].replace(/\{\{query\}\}/, query)
 
-	Spaz.dump('getting:'+url);
+	sch.dump('getting:'+url);
 
-	Spaz.dump('section.timeline:'+section.timeline);
+	sch.dump('section.timeline:'+section.timeline);
 
 	Spaz.UI.statusBar("Searching for '"+query+"'…");
 	Spaz.UI.showLoading();
@@ -731,9 +731,9 @@ Spaz.Data.searchSummize = function(query) {
 		},
 		error:function(xhr, msg, exc) {
 			if (xhr && xhr.responseText) {
-				Spaz.dump("Error:"+xhr.responseText+" from "+url);
+				sch.dump("Error:"+xhr.responseText+" from "+url);
 			} else {
-				Spaz.dump("Error:Unknown from "+url);
+				sch.dump("Error:Unknown from "+url);
 			}
 		},
 		processData:false,
@@ -752,13 +752,13 @@ Spaz.Data.updatePingFM = function(msg) {
 
 	// do not post dms
 	if ( msg.match(/^(?:d\s).*/i) ) {
-		air.trace("Will not post dms to ping.fm");
+		sch.dump("Will not post dms to ping.fm");
 		return -1;
 	}
 
 	// only post replies if preference set
 	if ( msg.match(/^(?:@\S).*/i) && !Spaz.Prefs.get('services-pingfm-sendreplies') ) {
-		air.trace("Will not post replies to ping.fm");
+		sch.dump("Will not post replies to ping.fm");
 		return -1;
 	}
 
@@ -771,15 +771,15 @@ Spaz.Data.updatePingFM = function(msg) {
 	var xhr = $.ajax({
 		timeout:1000*40, // updates can take longer, so we double the standard timeout
 		error:function(xhr, rstr){
-			Spaz.dump("ERROR");
+			sch.dump("ERROR");
 			if (xhr.readyState < 3) {
-				Spaz.dump("Update ERROR: Ping.fm did not confirm update. Who knows?");
+				sch.dump("Update ERROR: Ping.fm did not confirm update. Who knows?");
 				Spaz.UI.statusBar("ERROR: Ping.fm did not confirm update. Who knows?");
 				Spaz.UI.hideLoading();
 				return;
 			}
 			if (xhr.status != 200) { // sanity check
-				Spaz.dump("ERROR: " + rstr);
+				sch.dump("ERROR: " + rstr);
 				Spaz.UI.statusBar("ERROR: Ping.fm could not post update");
 				Spaz.UI.flashStatusBar();
 				Spaz.UI.hideLoading();
@@ -790,11 +790,11 @@ Spaz.Data.updatePingFM = function(msg) {
 		},
 		success:function(xml){
 			if ($(xml).find('rsp').attr('status') == 'OK') {
-				Spaz.dump('SUCCESS:'+xml);
+				sch.dump('SUCCESS:'+xml);
 				Spaz.UI.statusBar("Ping.fm Update succeeded");
 				Spaz.UI.hideLoading();
 			} else {
-				Spaz.dump('FAIL:'+xml);
+				sch.dump('FAIL:'+xml);
 				Spaz.UI.statusBar("Ping.fm Update failed");
 				Spaz.UI.hideLoading();
 			}
@@ -820,7 +820,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 	var pass = Spaz.Prefs.getPass();
 
 	if (!user || !pass) {
-		air.trace('Dropping out of getRateLimitInfo because user or pass is not set');
+		sch.dump('Dropping out of getRateLimitInfo because user or pass is not set');
 		return false;
 	}
 
@@ -831,7 +831,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
-			air.trace(data);
+			sch.dump(data);
 
 			json = JSON.parse(data);
 
@@ -855,7 +855,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 
 
 Spaz.Data.uploadFile = function(opts) {
-	air.trace(opts.url);
+	sch.dump(opts.url);
 
 	var request = new air.URLRequest(opts.url);
 	var loader = new air.URLLoader();
@@ -868,7 +868,7 @@ Spaz.Data.uploadFile = function(opts) {
 	stream.readBytes(buf);
 	
 	var contentType = GetContentType(file.extension.toUpperCase());
-	air.trace(contentType);
+	sch.dump(contentType);
 	PrepareMultipartRequest(request, buf, contentType, 'media', file.nativePath, opts.extra);
 
 	loader.addEventListener(air.Event.COMPLETE, opts.complete);
@@ -984,20 +984,25 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 		reset=false;
 	}
 
-	Spaz.dump('Loading data for tab:'+tab.id);
-	var section = Spaz.Section.getSectionFromTab(tab)
-	Spaz.dump('SECTION:'+section);
-	Spaz.dump('load data for tab '+tab.id);
+	sch.dump('Loading data for tab:'+tab.id);
+	sch.dump('load data for tab '+tab.id);
 	switch (tab.id) {
 		case 'tab-prefs':
+			break;
+		case 'tab-friends':
+			Spaz.Timelines.friends.activate();
 			break;
 		case 'tab-public':
 			Spaz.Timelines.public.activate();
 			break;
 		case 'tab-search':
+			$('#search-for')[0].focus();
 			Spaz.Timelines.search.activate();
 			break;
 		default:
+			var section = Spaz.Section.getSectionFromTab(tab)
+			sch.dump('SECTION:'+section);
+			sch.dump(section);
 			section.build(force, reset);
 			break;
 	}

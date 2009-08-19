@@ -16,14 +16,14 @@ function Spaz_Tooltip(opts) {
 	this.reply_screen_name = opts.reply_screen_name;
 
 
-	// air.trace('================================');
-	// air.trace('FROM: '+this.el.outerHTML);
-	// air.trace("opts: "+this.event);
-	// air.trace("opts: "+this.el);
-	// air.trace("opts: "+this.str);
-	// air.trace("opts: "+this.previewurl);
-	// air.trace("opts: "+this.reply_status_id);
-	// air.trace("opts: "+this.reply_screen_name);
+	// sch.dump('================================');
+	// sch.dump('FROM: '+this.el.outerHTML);
+	// sch.dump("opts: "+this.event);
+	// sch.dump("opts: "+this.el);
+	// sch.dump("opts: "+this.str);
+	// sch.dump("opts: "+this.previewurl);
+	// sch.dump("opts: "+this.reply_status_id);
+	// sch.dump("opts: "+this.reply_screen_name);
 	// 
 
 }
@@ -50,12 +50,12 @@ Spaz_Tooltip.prototype.show = function() {
 	*/
 	var thisTT = this;
 
-	//air.trace('delaying tooltip "'+this.str+'" for 500 mseconds');
+	//sch.dump('delaying tooltip "'+this.str+'" for 500 mseconds');
 	Spaz_Tooltip_Timeout = setTimeout(delayedShow, Spaz.Prefs.get('window-tooltipdelay'));
 
 	function delayedShow() {
-		air.trace('showing tooltip "' + thisTT.str + '"');
-		air.trace('reply_status_id' + thisTT.reply_status_id);
+		sch.dump('showing tooltip "' + thisTT.str + '"');
+		sch.dump('reply_status_id' + thisTT.reply_status_id);
 		
 
 		if (!thisTT.event) {
@@ -115,8 +115,8 @@ Spaz_Tooltip.prototype.show = function() {
 
 			$.get(url, data,
 				function(data, textStatus) {
-					air.trace('textStatus:'+textStatus);
-					air.trace('DATA:'+data);
+					sch.dump('textStatus:'+textStatus);
+					sch.dump('DATA:'+data);
 					try {
 						var tweets = JSON.parse(data);
 
@@ -165,9 +165,9 @@ Spaz_Tooltip.prototype.show = function() {
 		*/
 		} else if(thisTT.reply_status_id) {
 			
-			air.trace('This is an Reply preview tooltip');
+			sch.dump('This is an Reply preview tooltip');
 			var previewid = "preview-status-" + thisTT.reply_status_id;
-			air.trace('previewid = ' + previewid);
+			sch.dump('previewid = ' + previewid);
 			$('#tooltip').children('.preview').attr('id', previewid);
 			
 			var url = Spaz.Data.getAPIURL('show');
@@ -252,14 +252,14 @@ Spaz_Tooltip.prototype.show = function() {
 						'twitter with Twitpic"></img>';
 						$('#tooltip').children('.preview').empty();
 						$('#' + previewid).html(s);
-						air.trace("HTML is " + s);
+						sch.dump("HTML is " + s);
 						$('#' + previewid).fadeIn(500);
 						thisTT.resetPosition();
 
 					}
 					else
 					{
-						air.trace("Could not find the width of the tooltip window " + width);
+						sch.dump("Could not find the width of the tooltip window " + width);
 					}
 				}
 
@@ -267,13 +267,13 @@ Spaz_Tooltip.prototype.show = function() {
 				{
 					$.get(thisTT.previewurl,
 						function(rtext, status, xhr) {
-							// air.trace('rtext:'+rtext);
+							// sch.dump('rtext:'+rtext);
 							var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
 
 							// alert(rtext_matches);
 							if (rtext_matches && rtext_matches[1]) {
 								var title = rtext_matches[1];
-								// air.trace('jqpreview.innerText:'+jqpreview[0].innerText);
+								// sch.dump('jqpreview.innerText:'+jqpreview[0].innerText);
 								$('#tooltip').children('.preview').empty();
 								$('#' + previewid).html('<strong>Title:</strong> ' + title);
 								$('#' + previewid).fadeIn(500);
@@ -290,13 +290,13 @@ Spaz_Tooltip.prototype.show = function() {
 		var vp = Spaz.UI.getViewport();
 		var off = $('#tooltip').offset();
 
-		// air.trace('Viewport:')
+		// sch.dump('Viewport:')
 		// Spaz.dump(vp);
-		// air.trace('Offset:')
+		// sch.dump('Offset:')
 		// Spaz.dump(off);
 		// check horizontal position
 		if (vp.x + vp.cx < off.left + $('#tooltip').width()) {
-			// air.trace('horz over')
+			// sch.dump('horz over')
 			$('#tooltip').css('left', parseInt($('#tooltip').css('left')) - ($('#tooltip').width() + 20));
 			if ($('#tooltip').offset().left < 5) {
 				$('#tooltip').css('left', 5);
@@ -306,15 +306,15 @@ Spaz_Tooltip.prototype.show = function() {
 
 		// check vertical position
 		if (vp.y + vp.cy < off.top + $('#tooltip').height()) {
-			// air.trace('vert over');
+			// sch.dump('vert over');
 			$('#tooltip').css('top', parseInt($('#tooltip').css('top')) - ($('#tooltip').height() + 20));
 			if ($('#tooltip').offset().top < 5) {
 				$('#tooltip').css('top', 5);
 			}
 		}
 
-		// air.trace('setting tooltip hide timeout');
-		// air.trace('Tooltip hide delay:'+Spaz.Prefs.get('window-tooltiphidedelay'));
+		// sch.dump('setting tooltip hide timeout');
+		// sch.dump('Tooltip hide delay:'+Spaz.Prefs.get('window-tooltiphidedelay'));
 		Spaz_Tooltip_hideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.Prefs.get('window-tooltiphidedelay'));
 		// $('#tooltip').bind('mouseout', Spaz.UI.hideTooltips);
 	}

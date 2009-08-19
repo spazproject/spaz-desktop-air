@@ -18,10 +18,18 @@ Spaz.Tpl.parse =function(template, data) {
 if (!Spaz.Templates) Spaz.Templates = {};
 
 Spaz.Templates.timeline_entry = function(d) {
+	
+	sch.dump(d);
+	
+	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
+	
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry needs-cleanup new '+d.rowclass;
 	if (d.favorited) {
 		entryHTML += ' favorited ';
+	}
+	if (d.SC_is_reply) {
+		entryHTML += ' reply ';
 	}
 	entryHTML += '"  id="'+d.timelineid+'-'+d.id+'" data-status-id="'+d.id+'">';
 	entryHTML += '	<div class="entry-timestamp" style="display:none">'+d.timestamp+'</div>';
@@ -30,7 +38,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '	<div class="entry-user-id" style="display:none">'+d.user.id+'</div>';
 	entryHTML += '	<div class="entry-user-screenname" style="display:none">'+d.user.screen_name+'</div>';
 	entryHTML += '	<div class="entry-user-img" style="display:none">'+d.user.profile_image_url+'</div>';
-	entryHTML += '	<div class="entry-text" style="display:none">'+d.rawtext+'</div>';
+	entryHTML += '	<div class="entry-text" style="display:none">'+d.SC_text_raw+'</div>';
 	entryHTML += '	<div class="user" id="user-'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">';
 	entryHTML += '		<img class="user-image clickable" height="48" width="48" src="'+d.user.profile_image_url+'" alt="'+d.user.screen_name+'" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'" />';
 	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
@@ -42,7 +50,7 @@ Spaz.Templates.timeline_entry = function(d) {
 							}
 	entryHTML += '			'+d.text+'';
 	entryHTML += '		</div>';
-						if (d.isDM) {
+						if (d.SC_is_dm) {
 	entryHTML += '			<div class="status-actions">';
 	entryHTML += '				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 								if (d.isSent) {
@@ -80,6 +88,50 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '</div>';
 	return entryHTML;
 }
+
+
+Spaz.Templates.timeline_entry_dm = function(d) {
+	
+	sch.dump(d);
+	
+	d.isSent = (d.sender_screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
+	
+	var entryHTML = '';
+	entryHTML += '<div class="timeline-entry dm needs-cleanup new '+d.rowclass;
+	entryHTML += '"  id="'+d.timelineid+'-'+d.id+'" data-status-id="'+d.id+'">';
+	entryHTML += '	<div class="entry-timestamp" style="display:none">'+d.SC_created_at_unixtime+'</div>';
+	entryHTML += '	<div class="entry-id" style="display:none">['+d.id+']</div>';
+	entryHTML += '	<div class="entry-time" style="display:none">'+d.created_at+'</div>';
+	entryHTML += '	<div class="entry-user-id" style="display:none">'+d.sender.id+'</div>';
+	entryHTML += '	<div class="entry-user-screenname" style="display:none">'+d.sender_screen_name+'</div>';
+	entryHTML += '	<div class="entry-user-img" style="display:none">'+d.sender.profile_image_url+'</div>';
+	entryHTML += '	<div class="entry-text" style="display:none">'+d.SC_text_raw+'</div>';
+	entryHTML += '	<div class="user" id="user-'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">';
+	entryHTML += '		<img class="user-image clickable" height="48" width="48" src="'+d.sender.profile_image_url+'" alt="'+d.sender_screen_name+'" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'" />';
+	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">'+d.sender_screen_name+'</div>';
+	entryHTML += '	</div>';
+	entryHTML += '	<div class="status" id="status-'+d.id+'">';
+	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
+							if (d.in_reply_to_status_id) {
+	entryHTML += '				<a href="'+d.base_url+''+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
+							}
+	entryHTML += '			'+d.text+'';
+	entryHTML += '	</div>';
+	entryHTML += '		<div class="status-actions">';
+	entryHTML += '			<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.sender_screen_name+'" ></span>';
+							if (d.isSent) {
+	entryHTML += '				<a title="Delete this message" class="status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'">del</a>';
+							}
+	entryHTML += '		</div>';
+	entryHTML += '		<div class="status-link">';
+	entryHTML += '			<!-- '+d.created_at+' -->';
+	entryHTML += '		</div>';
+	entryHTML += '	</div>';
+	entryHTML += '</div>';
+	return entryHTML;
+}
+
+
 
 Spaz.Templates.friendslist_row = function(d) {
 	var entryHTML = '';

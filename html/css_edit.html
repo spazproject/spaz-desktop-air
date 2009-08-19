@@ -24,7 +24,7 @@
 	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.themes.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/lib/json2.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/helpers/sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
 
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
@@ -94,7 +94,7 @@
 		<div id="buttons">
 			<input type="button" name="save" value="Save" id="save"		onclick="setUserCSS()" />
 			<input type="button" name="reset" value="Reset" id="reset"	onclick="getUserCSS()" />
-			<a class="clickable" onClick="openInBrowser('http://funkatron.com/spaziki/User-CSS-Hacks/')" title="Load the Spaziki CSS hacks page">Get &amp; share CSS hacks</a>
+			<a class="clickable" onClick="sc.helpers.openInBrowser('http://funkatron.com/spaziki/User-CSS-Hacks/')" title="Load the Spaziki CSS hacks page">Get &amp; share CSS hacks</a>
 			<!-- <span style="color:red">CSS Does Not Get Saved Yet</span> -->
 		</div>
 		<!-- <input type="text" name="csscode" value="" id="css" /> -->

@@ -73,7 +73,7 @@ SpazGrowl.prototype.notify = function(title, msg, img, type, onClick) {
 		img = this.app.iconPath;
 	}
 	
-	// air.trace('notification img:'+img)
+	// sch.dump('notification img:'+img)
 
 	
 	var n = new window.runtime.com.adobe.growl.Notification();
@@ -82,7 +82,7 @@ SpazGrowl.prototype.notify = function(title, msg, img, type, onClick) {
 	n.text  = msg;
 	n.sticky= false;
 	
-	// air.trace("Notification id : " + n.id);
+	// sch.dump("Notification id : " + n.id);
 
 	//testing x-headers
 	var xHeaders = [new window.runtime.com.adobe.growl.Header("X-foo", "bar")];
@@ -102,12 +102,12 @@ SpazGrowl.prototype.notify = function(title, msg, img, type, onClick) {
 	
 	function onIOError(e)
 	{
-		air.trace("IOError");
+		sch.dump("IOError");
 	}
 
 	function onNotificationClick(e)
 	{
-		air.trace("Notification Clicked : " + e.notificationId);
+		sch.dump("Notification Clicked : " + e.notificationId);
 		
 		thisSG.service.removeEventListener( click_event, onNotificationClick );
 		

@@ -11,7 +11,9 @@
 	
 	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
 	
-	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
+	
+	
 	
 	<script type="text/javascript" charset="utf-8">
 
@@ -29,9 +31,9 @@
 		}
 
 		function setContentFromURL() {
-			var title = escape_html(decodeURIComponent(gup('title')));
-			var msg   = escape_html(decodeURIComponent(gup('msg')));
-			var img   = escape_html(decodeURIComponent(gup('img')));
+			var title = sc.helpers.escape_html(decodeURIComponent(gup('title')));
+			var msg   = sc.helpers.escape_html(decodeURIComponent(gup('msg')));
+			var img   = sc.helpers.escape_html(decodeURIComponent(gup('img')));
 			
 			$('#title').html(title)
 			$('#msg').html(msg);

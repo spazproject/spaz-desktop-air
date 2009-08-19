@@ -265,27 +265,27 @@ Spaz.Keyboard.move = function(dir, selector) {
 	
 	// get current selected
 	var jqsel = $('#'+timelineid+' div.ui-selected');
-	// air.trace('selected:'+jqsel.length);
-	// air.trace('moving:'+movefunc+'/'+wrapselc+"\n"+'selected:'+jqsel.length);
+	// sch.dump('selected:'+jqsel.length);
+	// sch.dump('moving:'+movefunc+'/'+wrapselc+"\n"+'selected:'+jqsel.length);
 	
 	// if none selected, or there is no 'next', select first
 	if (selector == ":first" || selector == ":last") {
-		// air.trace('first in timeline');
+		// sch.dump('first in timeline');
 		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector), section)
 	} else if (jqsel.length == 0 ) {
-		// air.trace('nothing is selected')
+		// sch.dump('nothing is selected')
 		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector+':'+wrapselc), section)
 		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);
 	} else if (jqsel[movefunc]('div.timeline-entry'+selector).eq(0).length == 0) {
-		// air.trace('we are at the beginning or end');
+		// sch.dump('we are at the beginning or end');
 		if (Spaz.Prefs.get('timeline-keyboardnavwrap')) {
 			Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector+':'+wrapselc), section)
 			jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);				
 		} else {
-			air.trace('NOT WRAPPING');
+			sch.dump('NOT WRAPPING');
 		}
 	} else {
-		// air.trace('something is now selected');
+		// sch.dump('something is now selected');
 		Spaz.Keyboard.moveSelect(jqsel[movefunc]('div.timeline-entry:visible'+selector).eq(0), section);
 	}
 	// if selected is at bottom, go to top
@@ -302,13 +302,13 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 	$('#'+section.timeline+' div.timeline-entry.ui-selected').removeClass('ui-selected');
 
 	if ( entryId = Spaz.UI.getStatusIdFromElement(jqelement[0]) ) {
-		air.trace('entryId:'+entryId);
+		sch.dump('entryId:'+entryId);
 		Spaz.DB.markEntryAsRead(entryId);
 	}
 	
 	// select passed
 	if (jqelement.length > 0) {
-		air.trace("toggle ui-selected and scrollto");
+		sch.dump("toggle ui-selected and scrollto");
 		jqelement.toggleClass('ui-selected').addClass('read');
 		
 		var viewport_bottom = $('#'+section.wrapper).innerHeight();		
@@ -317,12 +317,12 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		/*
 			going down
 		*/
-		// air.trace('bottom---')
-		// air.trace(selected_bottom)
-		// air.trace(viewport_bottom)
+		// sch.dump('bottom---')
+		// sch.dump(selected_bottom)
+		// sch.dump(viewport_bottom)
 		if ( selected_bottom > viewport_bottom ) {
 			var scroll_offset = ($('#'+section.wrapper).innerHeight()-jqelement.height())*-1;
-			air.trace('scroll offset:'+scroll_offset);
+			sch.dump('scroll offset:'+scroll_offset);
 			$('#'+section.wrapper).scrollTo(jqelement, {
 				offset:scroll_offset,
 				speed:1
@@ -332,9 +332,9 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		/*
 			going up
 		*/
-		// air.trace('top---')
-		// air.trace(jqelement.position().top)
-		// air.trace($('#'+section.wrapper).position().top)
+		// sch.dump('top---')
+		// sch.dump(jqelement.position().top)
+		// sch.dump($('#'+section.wrapper).position().top)
 		if ( jqelement.position().top < $('#'+section.wrapper).position().top ) {
 			$('#'+section.wrapper).scrollTo(jqelement, {
 				offset:0,
@@ -343,7 +343,7 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		}
 
 	} else {
-		air.trace("Problem - jqelement passed length = 0 - can't scroll to anything");
+		sch.dump("Problem - jqelement passed length = 0 - can't scroll to anything");
 	}
 	
 	$().trigger('UNREAD_COUNT_CHANGED');

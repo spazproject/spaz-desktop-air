@@ -7,7 +7,7 @@
 
 	<title>modal</title>
 	
-	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script type="text/javascript" charset="utf-8">
 		// see http://www.netlobo.com/url_query_string_javascript.html
@@ -24,8 +24,8 @@
 		}
 		
 		$().ready( function() {
-			var title = escape_html(decodeURI(gup('title')));
-			var msg   = escape_html(decodeURI(gup('msg')));
+			var title = sc.helpers.escape_html(decodeURI(gup('title')));
+			var msg   = sc.helpers.escape_html(decodeURI(gup('msg')));
             // var img   = decodeURI(gup('img'));
 			
 			$('#title').html(title)

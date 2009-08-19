@@ -109,7 +109,7 @@ Spaz.Themes.setCurrentTheme = function() {
 
 	// change the paths for embedded imgs
 	$('img.tab-icon, #loading img, .status-actions img').each(function(i) {
-		// air.trace('SETTING EMBEDDED IMG PATHS');
+		// sch.dump('SETTING EMBEDDED IMG PATHS');
 		// 		var themePath = Spaz.Themes.getPathByName( Spaz.Prefs.get('theme-basetheme') );
 
 		this.src = this.src.replace(/\{theme-dir\}/, Spaz.Prefs.get('theme-basetheme'));
@@ -159,13 +159,13 @@ Spaz.Themes.getThemePaths = function() {
 
 
 Spaz.Themes.getPathByName = function(themename) {
-	// air.trace('Looking for:'+themename);
+	// sch.dump('Looking for:'+themename);
 
 
 	for (i = 0; i < Spaz.Themes.themes.length; i++) {
-		// air.trace(JSON.stringify(Spaz.Themes.themes[i]))
+		// sch.dump(JSON.stringify(Spaz.Themes.themes[i]))
 		if (Spaz.Themes.themes[i].themename == themename) {
-			// air.trace('same');
+			// sch.dump('same');
 			return Spaz.Themes.themes[i].themedir;
 		}
 	}

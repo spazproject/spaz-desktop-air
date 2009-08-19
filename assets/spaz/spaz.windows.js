@@ -56,10 +56,10 @@ Spaz.Windows.windowRestore = function() {
 
 Spaz.Windows.onAppExit = function(event) 
 {
-	air.trace('Spaz.Windows.windowExitCalled is '+Spaz.Windows.windowExitCalled);
+	sch.dump('Spaz.Windows.windowExitCalled is '+Spaz.Windows.windowExitCalled);
 	// 
 	// if (Spaz.Windows.windowExitCalled == false) {
-	// 	air.trace('windowClose was not called');
+	// 	sch.dump('windowClose was not called');
 	// 	Spaz.Windows.windowClose();
 	// 	return;
 	// }
@@ -68,7 +68,7 @@ Spaz.Windows.onAppExit = function(event)
 	Spaz.Prefs.savePrefs();
 	
 	if (event) {
-		air.trace('onAppExit triggered by event')
+		sch.dump('onAppExit triggered by event')
 		// event.preventDefault();
 		// event.stopImmediatePropagation();
 	}
@@ -76,7 +76,7 @@ Spaz.Windows.onAppExit = function(event)
 	window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
 	window.nativeWindow.removeEventListener(air.Event.EXITING, Spaz.Windows.windowClose);
 	// air.NativeApplication.nativeApplication.removeEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
-	air.trace("i'm exiting the app!");
+	sch.dump("i'm exiting the app!");
 
 	// alert('onAppExit');
 
@@ -89,7 +89,7 @@ Spaz.Windows.onAppExit = function(event)
 			air.NativeApplication.nativeApplication.exit();
 		});
 	} else {
-		air.trace('sound not playing');
+		sch.dump('sound not playing');
 		air.NativeApplication.nativeApplication.exit();
 	}
 	
@@ -97,7 +97,7 @@ Spaz.Windows.onAppExit = function(event)
 
 
 Spaz.Windows.onWindowClose = function(event) {
-	air.trace("i'm closing a window!");
+	sch.dump("i'm closing a window!");
 	Spaz.Prefs.savePrefs();
 };
 
@@ -107,7 +107,7 @@ Spaz.Windows.onWindowClose = function(event) {
 */
 Spaz.Windows.windowClose = function() {
 	Spaz.Prefs.savePrefs();
-	air.trace('calling windowClose');
+	sch.dump('calling windowClose');
 	Spaz.Windows.windowExitCalled = true;
 	Spaz.Windows.onAppExit();
 };
@@ -182,14 +182,14 @@ Spaz.Windows.windowResize = function(){
 Spaz.Windows.resetPosition = function() {
 	nativeWindow.x = Spaz.Prefs.defaultPreferences['window-x'];
 	nativeWindow.y = Spaz.Prefs.defaultPreferences['window-y'];
-	air.trace(Spaz.Prefs.defaultPreferences['window-x'] +"x"+Spaz.Prefs.defaultPreferences['window-y']);
-	air.trace(nativeWindow.x +"x"+nativeWindow.y);
+	sch.dump(Spaz.Prefs.defaultPreferences['window-x'] +"x"+Spaz.Prefs.defaultPreferences['window-y']);
+	sch.dump(nativeWindow.x +"x"+nativeWindow.y);
 	Spaz.Windows.onWindowMove();
 	
 	nativeWindow.width  = Spaz.Prefs.defaultPreferences['window-width'];
 	nativeWindow.height = Spaz.Prefs.defaultPreferences['window-height'];
-	air.trace(Spaz.Prefs.defaultPreferences['window-width'] +"x"+Spaz.Prefs.defaultPreferences['window-height']);
-	air.trace(nativeWindow.width +"x"+nativeWindow.height);
+	sch.dump(Spaz.Prefs.defaultPreferences['window-width'] +"x"+Spaz.Prefs.defaultPreferences['window-height']);
+	sch.dump(nativeWindow.width +"x"+nativeWindow.height);
 	Spaz.Windows.onWindowResize();
 }
 

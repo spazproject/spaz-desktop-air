@@ -14,7 +14,7 @@ const ELS_KEY_PW = 'twitter_password_';
  */
 Spaz.Accounts.checkForFirstTimeUse = function() {
     if (Spaz.DB.getUserCount() == 0) {
-        air.trace("Attempting to add initial user: " + Spaz.Prefs.user);
+        sch.dump("Attempting to add initial user: " + Spaz.Prefs.user);
         if (!Spaz.Accounts.addUser(Spaz.Prefs.user)) {
             Spaz.dump("Failed to add first time user " + Spaz.Prefs.user);
         }

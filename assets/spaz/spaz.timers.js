@@ -5,18 +5,18 @@ Spaz.Timers = {
 	timerID: -1,
 	timers: [],
 	start: function() {
-		// air.trace('called start');
+		// sch.dump('called start');
 		if (Spaz.Timers.timerID > -1) {
-			// air.trace('nothing queued');
+			// sch.dump('nothing queued');
 			return;
 		}
 
-		// air.trace(Spaz.Timers.timers);
-		air.trace(Spaz.Timers.timerID);
+		// sch.dump(Spaz.Timers.timers);
+		sch.dump(Spaz.Timers.timerID);
 		(function() {
 			for (var i = 0; i < Spaz.Timers.timers.length; i++) {
 				if (Spaz.Timers.timers[i]() === false) {
-					// air.trace('timer finished: dropping');
+					// sch.dump('timer finished: dropping');
 					Spaz.Timers.timers.splice(i, 1);
 					i--;
 				}

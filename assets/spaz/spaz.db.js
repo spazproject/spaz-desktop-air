@@ -17,14 +17,14 @@ Spaz.DB.init = function() {
 
 	// The initializer
 	var initListener = function() {
-		air.trace("Creating read_entries table if necessary : " + conn.connected);
+		sch.dump("Creating read_entries table if necessary : " + conn.connected);
 		var create = new air.SQLStatement();
 		create.text =
 		"CREATE TABLE IF NOT EXISTS read_entries (entry_id INTEGER PRIMARY KEY)";
 		create.sqlConnection = conn;
 		create.execute();
 
-		air.trace("Creating users table if necessary : " + conn.connected);
+		sch.dump("Creating users table if necessary : " + conn.connected);
 		var create2 = new air.SQLStatement();
 		create2.text =
 		"CREATE TABLE IF NOT EXISTS users (name TEXT PRIMARY KEY)";
@@ -36,7 +36,7 @@ Spaz.DB.init = function() {
 	};
 	conn.addEventListener(air.SQLEvent.OPEN, initListener);
 
-	air.trace("Opening database");
+	sch.dump("Opening database");
 	conn.openAsync(spazDB);
 
 	// Save connection for later reuse, for now I am supposing that a conn is thread safe...
@@ -54,7 +54,7 @@ Spaz.DB.markEntryAsRead = function(entryId) {
 		// We insert the value only if it does not exist already (otherwise will have an SQL error due to the existing PK)
 		Spaz.DB.asyncGetAsRead(entryId, function(read) {
 			if (!read) {
-				// air.trace("Marking as read entry " + entryId);
+				// sch.dump("Marking as read entry " + entryId);
 				var markAsReadSt = new air.SQLStatement();
 				markAsReadSt.text = "INSERT INTO read_entries (entry_id) VALUES (:entryId)";
 				markAsReadSt.parameters[":entryId"] = entryId;
@@ -73,18 +73,18 @@ Spaz.DB.asyncGetAsRead = function(entryId, callback) {
 	var conn = Spaz.DB.conn;
 	if (conn.connected)
 	{
-		// air.trace("Read read entry status " + entryId);
+		// sch.dump("Read read entry status " + entryId);
 		var markAsReadSt = new air.SQLStatement();
 		var callbackAdapter = function(event) {
 			markAsReadSt.removeEventListener(air.SQLEvent.RESULT, callbackAdapter);
 			markAsReadSt.removeEventListener(air.SQLErrorEvent.ERROR, errorHandler);
 			var read =  markAsReadSt.getResult().data != null;
-			// air.trace("Entry status of " + entryId + " read=" + read);
+			// sch.dump("Entry status of " + entryId + " read=" + read);
 
 			callback.call(this, read);
 		};
 		var errorHandler = function(event) {
-			air.trace("Async get read for entry id " + entryId + " failed " + event.error);
+			sch.dump("Async get read for entry id " + entryId + " failed " + event.error);
 		};
 		markAsReadSt.addEventListener(air.SQLEvent.RESULT, callbackAdapter);
 		markAsReadSt.addEventListener(air.SQLErrorEvent.ERROR, errorHandler);

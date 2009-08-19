@@ -12,7 +12,7 @@
 	<script src="app:/assets/spaz/spaz.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/helpers/sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
 	
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
@@ -50,9 +50,9 @@
 		<div id="content">
 			<h2>Online resources</h2>
 			<ul id="resources">
-				<li><a href="http://funkatron.com/spaziki" onClick="Spaz.Sys.openInBrowser($(this).attr('href'));return false;">Spaziki – The Spaz Wiki and FAQ</a></li>
-				<li><a href="http://groups.google.com/group/spaz-users/" onClick="Spaz.Sys.openInBrowser($(this).attr('href'));return false;">Spaz-Users @ Google Groups</a></li>
-				<li><a href="http://code.google.com/p/spaz/" onClick="Spaz.Sys.openInBrowser($(this).attr('href'));return false;">Spaz Source Code Repository</a></li>
+				<li><a href="http://funkatron.com/spaziki" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaziki – The Spaz Wiki and FAQ</a></li>
+				<li><a href="http://groups.google.com/group/spaz-users/" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz-Users @ Google Groups</a></li>
+				<li><a href="http://code.google.com/p/spaz/" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz Source Code Repository</a></li>
 			</ul>
 			
 			

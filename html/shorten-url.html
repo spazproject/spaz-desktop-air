@@ -14,7 +14,8 @@
 	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.shortlink.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/lib/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
+
 	
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
@@ -27,7 +28,7 @@
 
 			// get the pref
 			var service = Spaz.Prefs.get('url-shortener');
-			air.trace("service is "+ service);
+			sch.dump("service is "+ service);
 
             if (service == 'shortie') {
                 $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
@@ -36,7 +37,7 @@
 
 			// populate the dropdown
 			for (method in Spaz.Shortlink.services) {
-				air.trace(method)
+				sch.dump(method)
 
 				if (method[0] != '$') {
 					if (method == service) {
@@ -48,13 +49,13 @@
 			}
 			
 			// $('#url-shortener').bind('change', function() {
-			// 	air.trace($('#url-shortener').val());
+			// 	sch.dump($('#url-shortener').val());
 			// 	Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
 			// });
 			
             $('#url-shortener').bind('change', function() {
 
-				air.trace($('#url-shortener').val());
+				sch.dump($('#url-shortener').val());
 				Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
                 if ($('#url-shortener').val() != 'shortie') {
 					nativeWin.height = startHeight;
@@ -80,7 +81,7 @@
 						
 			$('#shortenLink-form').bind('submit', function() {
 		  	var service = Spaz.Prefs.get('url-shortener');
-				air.trace("service is "+ service);
+				sch.dump("service is "+ service);
                 var custom = $('#shorten-custom-link').val();
                 if (custom != '') {
 				    Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
@@ -89,7 +90,7 @@
                 }
 			});
 			
-			// air.trace(air.NativeApplication.nativeApplication.spazPrefs);
+			// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);
 		})
 	</script>
 	

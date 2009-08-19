@@ -22,11 +22,11 @@ Spaz.Dock.init = function() {
 
    // Load the image async
    var imageURL = 'images/spaz-icon-alpha.png';
-   air.trace("Want to load image " + imageURL);
+   sch.dump("Want to load image " + imageURL);
    var loader = new air.Loader();
    loader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, function(event)
    {
-      air.trace("Loaded image " + imageURL);
+      sch.dump("Loaded image " + imageURL);
       Spaz.Dock.bitmapData = event.target.content.bitmapData;
    });
    loader.load(new air.URLRequest(imageURL));
@@ -107,7 +107,7 @@ Spaz.Dock.sync = function()
    var reloadID = Spaz.Dock.reloadID;
    if (reloadID != null)
    {
-      // air.trace("Stopping dock refresh thread");
+      // sch.dump("Stopping dock refresh thread");
 		$().unbind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);
       // window.clearInterval(reloadID);
    }
@@ -115,7 +115,7 @@ Spaz.Dock.sync = function()
    {
 		$().bind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);      
 		// var refresh = Spaz.Prefs.getDockRefreshInterval();
-		//       air.trace("Starting dock refresh thread with refresh rate of " + refresh + " ms");
+		//       sch.dump("Starting dock refresh thread with refresh rate of " + refresh + " ms");
 		//       // Spaz.Dock.reloadID = window.setInterval(Spaz.Dock.refresh, refresh);
    }
 }
@@ -138,7 +138,7 @@ Spaz.Dock.refresh = function(unreadCount)
    var now  = getTimeAsInt();
    var diff = now - Spaz.Dock.lastchecked;
    if (diff < Spaz.Dock.mincachetime) {
-           // air.trace('timelimit not passed (it is now '+now+')');
+           // sch.dump('timelimit not passed (it is now '+now+')');
         
            // defer execution if time limit has not passed
            Spaz.Dock.deferredRefresh = setTimeout(Spaz.Dock.refresh, Spaz.Dock.mincachetime);
@@ -164,7 +164,7 @@ Spaz.Dock.refresh = function(unreadCount)
    // Use the original icon if count is zero
    if (unreadCount == 0)
    {
-		air.trace('unread == 0');
+		sch.dump('unread == 0');
       // Update state
       Spaz.Dock.icon.bitmaps = [Spaz.Dock.bitmapData];
       Spaz.Dock.lastUnreadCount = 0;

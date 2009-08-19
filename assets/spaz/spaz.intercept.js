@@ -135,8 +135,8 @@ Spaz.Intercept.init = function() {
 		.intercept('click', {
 			
 			'#tab-public':function(e) {
-				alert('e.target');
-				Spaz.Timelines.public.activate();
+				// alert('e.target');
+				// Spaz.Timelines.public.activate();
 			},
 			
 			'#filter-friends':function(e) {
@@ -206,7 +206,7 @@ Spaz.Intercept.init = function() {
 				Spaz.Timelines.search.activate();
 			},
 			'#search-help':function(e) {
-				openInBrowser('http://search.twitter.com/operators');
+				sc.helpers.openInBrowser('http://search.twitter.com/operators');
 			},
 			'#mainMenu-help':function(e) {
 				Spaz.UI.showHelp();
@@ -269,7 +269,7 @@ Spaz.Intercept.init = function() {
 
 			// user context menu handlers
 			'#userContextMenu-viewProfile':function(e) {
-				Spaz.Sys.openInBrowser(Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name'))
+				Spaz.Sys.sc.helpers.openInBrowser(Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name'))
 			},
 			'#userContextMenu-follow':function(e) {
 				Spaz.Data.followUser($(this).attr('user-screen_name'));
@@ -300,16 +300,16 @@ Spaz.Intercept.init = function() {
 
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
-				openInBrowser(url);
+				sc.helpers.openInBrowser(url);
 				return false;
 			},
 			'.user-screen-name':function(e) {
 				var url = Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name');
-				openInBrowser(url);
+				sc.helpers.openInBrowser(url);
 			},
 			'.user-image':function(e) {
 				var url = Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name');
-				openInBrowser(url);
+				sc.helpers.openInBrowser(url);
 			},
 			'.status-action-fav':function(e) {
 				var entryid = $(this).attr('entry-id')
@@ -353,7 +353,7 @@ Spaz.Intercept.init = function() {
 			},
 			'a .highlight':function(e) {
 				if ($(this).parents('a').attr('href')) {
-					openInBrowser($(this).parents('a').attr('href'));
+					sc.helpers.openInBrowser($(this).parents('a').attr('href'));
 				}
 				return false;
 			},
@@ -367,7 +367,7 @@ Spaz.Intercept.init = function() {
 				    Spaz.UI.showTab(3);
 				  }
 				  else
-					  openInBrowser($(this).attr('href'));
+					  sc.helpers.openInBrowser($(this).attr('href'));
 				}
 				return false;
 			},
@@ -383,7 +383,7 @@ Spaz.Intercept.init = function() {
 		.intercept('contextmenu', {
 			// 'div.timeline-entry .user, div.timeline-entry .user-image, div.timeline-entry .user-screen-name':function(e) {
 			'.user,.user-image,.user-screen-name,a[user-screen_name]':function(e) {
-				// air.trace(this.outerHTML);
+				// sch.dump(this.outerHTML);
 				var screen_name = $(this).attr('user-screen_name');
 				Spaz.UI.showUserContextMenu($(this), screen_name);
 			},
@@ -394,7 +394,7 @@ Spaz.Intercept.init = function() {
 		})
 		.intercept('keyup', {
 			'#filter-friends':function(e) {
-				// air.trace('filter:'+this.outerHTML+"\n"+$(this).val());
+				// sch.dump('filter:'+this.outerHTML+"\n"+$(this).val());
 
 				Spaz.Section.friends.filter( $(this).val() );
 			},
@@ -434,7 +434,7 @@ Spaz.Intercept.init = function() {
 	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, invokeHandler);
 
 	function invokeHandler (e) {
-		air.trace('Invoke args: '+e.arguments);
+		sch.dump('Invoke args: '+e.arguments);
 	}
 
 
@@ -467,7 +467,7 @@ Spaz.Intercept.init = function() {
 		function uploadDraggedImage(event) {
 			var fileUrl = event.dataTransfer.getData("text/uri-list");
 
-			air.trace(fileUrl);
+			sch.dump(fileUrl);
 
 			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
@@ -495,13 +495,13 @@ Spaz.Intercept.init = function() {
 			// 		Spaz.UI.hideLoading();
 			//
 			// 		var loader = event.target;
-			// 	    air.trace(loader.data);
+			// 	    sch.dump(loader.data);
 			//
 			// 		var parser=new DOMParser();
 			// 		xmldoc = parser.parseFromString(loader.data,"text/xml");
 			// 		var mediaurl = $(xmldoc).find('mediaurl').text();
 			//
-			// 		air.trace(mediaurl);
+			// 		sch.dump(mediaurl);
 			//
 			// 		Spaz.UI.prepPhotoPost(mediaurl);
 			// 	},
