@@ -82,6 +82,11 @@ Spaz.initialize = function() {
 	// Database initialization
 	sch.dump("database initialization");
 	Spaz.DB.init();
+	
+	sch.dump('JazzRecord initialization');
+	JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db"});
+	JazzRecord.depth = 0;
+	JazzRecord.migrate();
 
 	// Docking initialization
 	sch.dump("docking initialization");
@@ -156,16 +161,6 @@ Spaz.initialize = function() {
 	$('body').fadeIn(1000);
 
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
-
-	Spaz.UI.entryBox = new Spry.Widget.ValidationTextarea("entrybox",
-	{
-		maxChars: 140,
-		counterType: "chars_remaining",
-		counterId: 'chars-left-count',
-		hint: Spaz.Prefs.get('entryboxhint'),
-		useCharacterMasking: true
-	}
-	);
 
 	Spaz.UI.prefsCPG = new Spry.Widget.CollapsiblePanelGroup("prefsCPG",
 	{
@@ -246,6 +241,13 @@ Spaz.initialize = function() {
 		'textarea':'#entrybox',
 		'maxMatches':15
 	})
+	
+	/*
+		set-up post panel
+	*/
+	Spaz.postPanel = new SpazPostPanel({
+		
+	});
 
 	Spaz.dump('ended document.ready()');
 }

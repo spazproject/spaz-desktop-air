@@ -1260,7 +1260,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         $("#" + timelineid + ' .timeline-entry').removeClass('even').removeClass('odd');
 
         $("#" + timelineid + ' a.status-created-at').each(function(i) {
-            $(this).text(get_relative_time($(this).attr('data-created-at')));
+            $(this).text(sch.get_relative_time($(this).attr('data-created-at')));
         });
         time.stop('removeEvenOdd-convertPostTimes');
         return false;

@@ -389,5 +389,5 @@ Spaz.Menus.menuHelp = function() {
 }
 
 Spaz.Menus.menuFeedback = function() {
-	// Spaz.UI.prepReply('spaz');
+	// Spaz.UI.Spaz.postPanel.prepReply('spaz');
 }

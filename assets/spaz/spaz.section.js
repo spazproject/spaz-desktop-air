@@ -488,7 +488,7 @@ Spaz.Section.init = function() {
 					'url'	:'https://twitter.com/followers/ids.json',
 					'async'	:false,
 					beforeSend:function(xhr){
-						xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(username + ":" + password));
+						xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(username + ":" + password));
 						xhr.setRequestHeader("Cookie", '');
 					},
 					'success':function(data) {
@@ -524,7 +524,7 @@ Spaz.Section.init = function() {
 							}
 						},
 						beforeSend:function(xhr){
-							xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(username + ":" + password));
+							xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(username + ":" + password));
 							xhr.setRequestHeader("Cookie", '');
 						},
 						processData:false,

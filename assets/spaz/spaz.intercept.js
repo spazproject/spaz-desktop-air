@@ -242,7 +242,7 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.uploadImage();
 			},
 			'#mainMenu-sendReply':function(e) {
-				Spaz.UI.prepReply('');
+				Spaz.postPanel.prepReply('');
 			},
 			'#mainMenu-followSpaz':function(e) {
 				Spaz.Data.followUser('spaz');
@@ -278,7 +278,7 @@ Spaz.Intercept.init = function() {
 				Spaz.Data.stopFollowingUser($(this).attr('user-screen_name'));
 			},
 			'#userContextMenu-sendReply':function(e) {
-				Spaz.UI.prepReply($(this).attr('user-screen_name'));
+				Spaz.postPanel.prepReply($(this).attr('user-screen_name'));
 			},
 			'#userContextMenu-sendDM':function(e) {
 				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
@@ -328,7 +328,7 @@ Spaz.Intercept.init = function() {
 				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
 			},
 			'.status-action-reply':function(e) {
-				Spaz.UI.prepReply($(this).attr('user-screen_name'), $(this).attr('entry-id'));
+				Spaz.postPanel.prepReply($(this).attr('user-screen_name'), $(this).attr('entry-id'));
 			},
 			'.status-action-del':function(e) {
 				Spaz.Data.destroyStatus($(this).attr('entry-id'))

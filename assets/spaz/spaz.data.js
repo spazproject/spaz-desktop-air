@@ -133,7 +133,7 @@ Spaz.Data.verifyPassword = function() {
 			// }
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			// cookies just get in the way.	 eliminate them.
 			xhr.setRequestHeader("Cookie", "");
 		},
@@ -250,7 +250,7 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 			//Spaz.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", '');
 			// have to kill referer header to post
@@ -288,7 +288,7 @@ Spaz.Data.destroyStatus = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
@@ -329,7 +329,7 @@ Spaz.Data.makeFavorite = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
@@ -368,7 +368,7 @@ Spaz.Data.makeNotFavorite = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
@@ -406,7 +406,7 @@ Spaz.Data.followUser = function(userid) {
 			Spaz.UI.statusBar("Now following " + userid);
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
@@ -446,7 +446,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 			Spaz.UI.statusBar("No longer following " + userid);
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
@@ -689,7 +689,7 @@ Spaz.Data.getDataForUrl = function(url, section) {
 		beforeSend:function(xhr){
 			var user = Spaz.Prefs.getUser();
 			var pass = Spaz.Prefs.getPass();
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			xhr.setRequestHeader("Cookie", '');
 		},
 		processData:false,
@@ -841,7 +841,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 			}
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},

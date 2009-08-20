@@ -75,7 +75,7 @@ Spaz.Keyboard.setShortcuts = function() {
 			if (screenname) {
 				Spaz.dump('username for reply is:'+screenname);
 				// var username = '';
-				Spaz.UI.prepReply(screenname, irt_id);
+				Spaz.postPanel.prepReply(screenname, irt_id);
 			}
 		}, {
 			'disable_in_input':false

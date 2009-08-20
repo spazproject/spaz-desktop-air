@@ -281,6 +281,8 @@ var SearchTimeline = function(args) {
 			
 			var data = data.reverse();
 			var no_dupes = [];
+			var md = new Showdown.converter();
+			
 			
 			for (var i=0; i < data.length; i++) {
 				
@@ -290,6 +292,12 @@ var SearchTimeline = function(args) {
 				if (jQuery('#timeline-search div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
 					data[i].text = sc.helpers.makeClickable(data[i].text);
+
+					if (Spaz.Prefs.get('usemarkdown')) {
+						data[i].text = md.makeHtml(data[i].text);
+						data[i].text = data[i].text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
+					}
+					
 					no_dupes.push(data[i]);
 				}
 				
@@ -322,7 +330,8 @@ var SearchTimeline = function(args) {
 		},
 		'renderer': function(obj) {
 			
-			return Spaz.Tpl.parse('timeline_entry', obj);
+			var html = Spaz.Tpl.parse('timeline_entry', obj);
+			return html;
 			
 		}
 	});
