@@ -51,6 +51,12 @@ var FriendsTimeline = function(args) {
 					
 					data[i].text = sc.helpers.makeClickable(data[i].text);
 					no_dupes.push(data[i]);
+					
+					/*
+						Save to DB via JazzRecord
+					*/
+					TweetModel.saveTweet(data[i]);
+					
 				}
 				
 			};
@@ -299,6 +305,7 @@ var SearchTimeline = function(args) {
 					}
 					
 					no_dupes.push(data[i]);
+					
 				}
 				
 			};

@@ -60,7 +60,9 @@ var TwUserModel = new JazzRecord.Model({
 
 		userExistsId: function(twitter_id, return_id) {
 			if (return_id) {
+				sch.dump("return user_id for "+twitter_id);
 				var user = this.findBy('twitter_id', twitter_id);
+				sch.dump(user);
 				if (user) {
 					return user.id;
 				} else {
@@ -82,12 +84,13 @@ var TwUserModel = new JazzRecord.Model({
 		 */
 		findOrCreate: function(userobj) {
 			var user_id;
+			sch.dump("findOrCreate "+userobj.id);
 			if ((user_id = this.userExistsId(userobj.id, true))) {
 				return user_id;
 			} else {
 				userobj.twitter_id = userobj.id;
 				delete userobj.id;
-				return this.created(userobj).id;
+				return this.create(userobj).twitter_id;
 			}
 		},
 

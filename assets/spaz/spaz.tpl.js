@@ -21,7 +21,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	
 	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
 
-	sch.dump(sch.enJSON(d));
+	// sch.dump(sch.enJSON(d));
 	
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry needs-cleanup new '+d.rowclass;
@@ -94,7 +94,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	
 	d.isSent = (d.sender_screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
 	
-	sch.dump(sch.enJSON(d));
+	// sch.dump(sch.enJSON(d));
 
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry dm needs-cleanup new '+d.rowclass;

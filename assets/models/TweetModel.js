@@ -29,15 +29,13 @@ var TweetModel = new JazzRecord.Model({
 	},
 	modelMethods: {
 		saveTweet : function(obj) {
-			var obj.twitter_id = obj.id;
-			delete obj.id;
-
-			obj.user.twitter_id = obj.user.id;
-			delete obj.user.id;
 
 			var user_id = TwUserModel.findOrCreate(obj.user);
 			delete obj.user;
-			
+
+			obj.twitter_id = obj.id;
+			delete obj.id;
+		
 			obj.user_id = user_id;
 			return this.create(obj);
 		}
