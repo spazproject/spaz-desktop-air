@@ -84,7 +84,7 @@ Spaz.initialize = function() {
 	Spaz.DB.init();
 	
 	sch.dump('JazzRecord initialization');
-	JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db", });
+	JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db"});
 	JazzRecord.debug = true;
 	JazzRecord.depth = 0;
 	JazzRecord.migrate();

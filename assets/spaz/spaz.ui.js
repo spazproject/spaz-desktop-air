@@ -1546,7 +1546,7 @@ Spaz.UI.generateAccountsMenu = function() {
 		}
 	}
 
-	$('#account-details').hide();
+	// $('#account-details').hide();
 
 	/**
 	 * Repeating this code block here makes the previously generated menu items
