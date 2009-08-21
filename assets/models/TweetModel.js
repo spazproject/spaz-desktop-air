@@ -4,22 +4,22 @@ var TweetModel = new JazzRecord.Model({
 		user: "twusers"
 	},
 	columns: {
-		user_id: "integer",
+		user_id: "int",
 		favorited: "bool",
-		in_reply_to_user_id: "integer",
+		in_reply_to_user_id: "int",
 		in_reply_to_screen_name: "string",
 		text: "text",
 		created_at: "string",
 		truncated: "bool",
-		twitter_id: "integer",
-		in_reply_to_status_id: "integer",
+		twitter_id: "int",
+		in_reply_to_status_id: "int",
 		source: "string",
 		SC_timeline_from: "string",
 		SC_user_received_by: "string",
 		SC_is_reply: "bool",
-		SC_created_at_unixtime: "integer",
+		SC_created_at_unixtime: "int",
 		SC_text_raw: "text",
-		SC_retrieved_unixtime: "integer",
+		SC_retrieved_unixtime: "int",
 		isSent: "bool"
 	},
 	recordMethods: {
