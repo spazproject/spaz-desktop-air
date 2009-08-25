@@ -322,13 +322,17 @@ Spaz.Intercept.init = function() {
 				}
 			},
 			'.status-action-retweet':function(e) {
-				Spaz.UI.prepRetweet($(this).attr('entry-id'));
+				var tweet_id = parseInt($(this).attr('entry-id'), 10);
+				var tweetobj = TweetModel.getById( tweet_id );
+				Spaz.postPanel.prepRetweet(tweetobj.user.screen_name, tweetobj.SC_text_raw);
 			},
 			'.status-action-dm':function(e) {
 				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
 			},
 			'.status-action-reply':function(e) {
-				Spaz.postPanel.prepReply($(this).attr('user-screen_name'), $(this).attr('entry-id'));
+				var tweet_id = parseInt($(this).attr('entry-id'), 10);
+				var tweetobj = TweetModel.getById( tweet_id );
+				Spaz.postPanel.prepReply(tweetobj.user.screen_name, tweetobj.twitter_id, tweetobj.SC_text_raw);
 			},
 			'.status-action-del':function(e) {
 				Spaz.Data.destroyStatus($(this).attr('entry-id'))

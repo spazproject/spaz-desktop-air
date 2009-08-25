@@ -24,21 +24,14 @@ Spaz.Templates.timeline_entry = function(d) {
 	// sch.dump(sch.enJSON(d));
 	
 	var entryHTML = '';
-	entryHTML += '<div class="timeline-entry needs-cleanup new '+d.rowclass;
+	entryHTML += '<div class="timeline-entry new ';
 	if (d.favorited) {
 		entryHTML += ' favorited ';
 	}
 	if (d.SC_is_reply) {
 		entryHTML += ' reply ';
 	}
-	entryHTML += '"  id="'+d.timelineid+'-'+d.id+'" data-status-id="'+d.id+'">';
-	entryHTML += '	<div class="entry-timestamp" style="display:none">'+d.timestamp+'</div>';
-	entryHTML += '	<div class="entry-id" style="display:none">['+d.id+']</div>';
-	entryHTML += '	<div class="entry-time" style="display:none">'+d.created_at+'</div>';
-	entryHTML += '	<div class="entry-user-id" style="display:none">'+d.user.id+'</div>';
-	entryHTML += '	<div class="entry-user-screenname" style="display:none">'+d.user.screen_name+'</div>';
-	entryHTML += '	<div class="entry-user-img" style="display:none">'+d.user.profile_image_url+'</div>';
-	entryHTML += '	<div class="entry-text" style="display:none">'+d.SC_text_raw+'</div>';
+	entryHTML += '"  data-status-id="'+d.id+'" data-user-screen_name="'+d.user.screen_name+'" data-user-id="'+d.user.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">';
 	entryHTML += '		<img class="user-image clickable" height="48" width="48" src="'+d.user.profile_image_url+'" alt="'+d.user.screen_name+'" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'" />';
 	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
@@ -97,15 +90,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	// sch.dump(sch.enJSON(d));
 
 	var entryHTML = '';
-	entryHTML += '<div class="timeline-entry dm needs-cleanup new '+d.rowclass;
-	entryHTML += '"  id="'+d.timelineid+'-'+d.id+'" data-status-id="'+d.id+'">';
-	entryHTML += '	<div class="entry-timestamp" style="display:none">'+d.SC_created_at_unixtime+'</div>';
-	entryHTML += '	<div class="entry-id" style="display:none">['+d.id+']</div>';
-	entryHTML += '	<div class="entry-time" style="display:none">'+d.created_at+'</div>';
-	entryHTML += '	<div class="entry-user-id" style="display:none">'+d.sender.id+'</div>';
-	entryHTML += '	<div class="entry-user-screenname" style="display:none">'+d.sender_screen_name+'</div>';
-	entryHTML += '	<div class="entry-user-img" style="display:none">'+d.sender.profile_image_url+'</div>';
-	entryHTML += '	<div class="entry-text" style="display:none">'+d.SC_text_raw+'</div>';
+	entryHTML += '<div class="timeline-entry dm new data-status-id="'+d.id+'" data-user-screen_name="'+d.sender_screen_name+'" data-user-id="'+d.sender.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">';
 	entryHTML += '		<img class="user-image clickable" height="48" width="48" src="'+d.sender.profile_image_url+'" alt="'+d.sender_screen_name+'" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'" />';
 	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">'+d.sender_screen_name+'</div>';

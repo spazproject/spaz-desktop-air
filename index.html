@@ -44,6 +44,8 @@
 	<script src="assets/jquery/jquery.center.js" 				type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/tag.js" 							type="text/javascript" charset="utf-8"></script>
 	<script src="assets/jquery/jqXMLUtils.js" 					type="text/javascript" charset="utf-8"></script>
+	<script src="assets/jquery/jquery.DOMWindow.js" type="text/javascript" charset="utf-8"></script>
+
 
 
 
@@ -103,6 +105,9 @@
 	<script src="assets/spaz/spaz.accounts.js"   type="text/javascript"></script>
 	<script src="assets/spaz/spaz.timelines.js"  type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz/spaz.postpanel.js"  type="text/javascript" charset="utf-8"></script>
+	<script src="assets/spaz/spaz.shortlink.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="assets/helpers/spaz.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!-- Emoticons lib developed by Graeme Dunlop -->
 	<script src="assets/emoticons/Emoticons.js" type="text/javascript" charset="utf-8"></script>
@@ -133,6 +138,10 @@
 		})
 
 	</script>
+
+	<style type="text/css" media="screen" title="custom-timeline-filters">
+		
+	</style>
 
 
 </head>
@@ -666,9 +675,9 @@
 				<span id="chars-left">
 					<span id="chars-left-count"></span> chars left
 				</span>
-				<span id="irt" style="display:none"> :: <strong>Re:</strong><span id="irt-message" data-status-id="0"></span>
+				<div id="irt" style="display:none"><strong>Re:</strong><span id="irt-message" data-status-id="0"></span>
 					<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
-				</span>
+				</div>
 			</div>
 			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" />
 		</form>
@@ -762,7 +771,7 @@
 		</div>
 
 		<!-- view-friends-menu-container -->
-		<div id="view-friends-menu-container">
+		<div id="view-friends-menu-container" style="display:none">
 			<ul id="view-friends-menu">
 				<li class="menuitem view-friends-menu-all"><a id="view-friends-menu-all">All</a></li>
 				<li class="menuitem view-friends-menu-replies-dms"><a id="view-friends-menu-replies-dms">Mentions and DMs</a></li>
@@ -780,8 +789,248 @@
 			<div class="preview" style='display:none; overflow:hidden; margin-top:.7em'></div>
 		</div>
 
+		<!--
+			The About popup
+		-->
+		<div id="aboutWindow" class="popbox-content-wrapper">
+			<div class="popbox-content">
+				<h1>About</h1>
+				<div class="content">
+					<h2>A microblogging client for Twitter, Identi.ca and Laconica</h2>
+					<p><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/apps/spaz/AIR/whatsnew.html')"><span id="about-version"></span> – What's new</a></p>
+
+					<p>Created by <a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
+
+					<ul>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users group</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/spaziki/')">Spaz Wiki and FAQ</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://code.google.com/p/spaz')">Spaz SVN Repository</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
+					</ul>
+
+					<h3>Contributors</h3>
+					<ul>
+						<li>Ed Finkler</li>
+						<li>Graeme Dunlop</li>
+						<li>Julien Viet</li>
+						<li>Alexandru Chiculita and the AIR engineering team</li>
+					</ul>
+
+					<h3>Donors</h3>
+					<ul>
+						<li>Bare Feet Studios</li>
+						<li>Erica Baker</li>
+						<li>Fred Leo</li>
+						<li>Geoffrey T. Cheshire</li>
+						<li>Graeme Dunlop</li>
+						<li>Konstantin Klein</li>
+						<li>Lionel Lenoir</li>
+						<li>Philippe Bradley</li>
+						<li>Rob Stead</li>
+						<li>Robert Rebholz</li>
+						<li>S Kayser</li>
+						<li>Sarah Adamec</li>
+						<li>Tracy Whitt</li>
+						<li>Vincent Koser</li>
+						<li>Webdurance Web Solutions</li>
+					</ul>
+
+					<h3>Libraries used</h3>
+					<ul>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.jquery.com/')">jQuery</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://labs.adobe.com/technologies/spry/')">Spry</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.JSON.org/js.html')">JSON2.js</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.webtoolkit.info/javascript-md5.html')">Webtoolkit Base64</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.attacklab.net/showdown-gui.html')">Showdown</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://code.google.com/p/as3notificationlib/')">as3notificationlib</a></li>
+					</ul>
+
+					<h3>Media sets used</h3>
+					<ul>
+						<li><a class="clickable" onclick"sc.helpers.openInBrowser('http://leobolin.net/simplesmileys/')">Simple Smileys emoticons by Leo Bolin</a></li>
+						<li><a class="clickable" onclick"sc.helpers.openInBrowser('http://www.adiumxtras.com/index.php?a=xtras&xtra_id=602')">Tokyo Train Station soundset by Dominik Dimaano</a></li>
+					</ul>
+
+				</div>
+
+			</div>
+		</div>
+		
+		
+		<!--
+			The Help popup
+		-->
+		<div id="helpWindow" class="popbox-content-wrapper">
+			<div class="popbox-content">
+
+				<h1>Help</h1>
+
+				<div class="content">
+					<h2>Online resources</h2>
+					<ul id="resources">
+						<li><a href="http://funkatron.com/spaziki" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaziki – The Spaz Wiki and FAQ</a></li>
+						<li><a href="http://groups.google.com/group/spaz-users/" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz-Users @ Google Groups</a></li>
+						<li><a href="http://code.google.com/p/spaz/" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz Source Code Repository</a></li>
+					</ul>
 
 
+					<h2>Keyboard shortcuts</h2>
+
+					<p><em>Note: Windows users should use CTRL instead of CMD</em></p>
+
+					<table id="help-shortcuts" class="data">
+						<thead>
+							<tr>
+								<th>keystroke</th>
+								<th>command</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="label">CMD+B</td>
+								<td class="value">Markdown: <strong>bold</strong></td>
+							</tr>
+							<tr>
+								<td class="label">CMD+I</td>
+								<td class="value">Markdown: <em>italic</em></td>
+							</tr>
+							<tr>
+								<td class="label">CMD+U</td>
+								<td class="value">Markdown: <a>link&raquo;</a></td>
+							</tr>
+							<tr>
+								<td class="label">CMD+R</td>
+								<td class="value">Markdown: <code>code</code></td>
+							</tr>
+							<tr>
+								<td class="label">CMD+F</td>
+								<td class="value"><strong>toggle</strong> between showing all tweets and only @replies &amp; dms</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+SHIFT+M</td>
+								<td class="value"><strong>Mark</strong> all messages as read in current view</td>
+							</tr>
+							<tr>
+								<td class="label">&#x2191; <em>or</em> K <em>or</em> CMD+K</td>
+								<td class="value">Up one message</td>
+							</tr>
+							<tr>
+								<td class="label">&#x2193; <em>or</em> J <em>or</em> CMD+J</td>
+								<td class="value">Down one message</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+&#x2191;</td>
+								<td class="value">Up one reply</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+&#x2193;</td>
+								<td class="value">Down one reply</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+SHIFT+&#x2191;</td>
+								<td class="value">Up one dm</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+SHIFT+&#x2193;</td>
+								<td class="value">Down one dm</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+HOME</td>
+								<td class="value">Select first message</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+END</td>
+								<td class="value">Select last message</td>
+							</tr>
+							<tr>
+								<td class="label">F5</td>
+								<td class="value">Reload current view</td>
+							</tr>
+							<tr>
+								<td class="label">SHIFT+F5</td>
+								<td class="value">Clear and reload current view</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+SHIFT+A</td>
+								<td class="value">Open shorten link window</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+SHIFT+U</td>
+								<td class="value">Open image upload window</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+T</td>
+								<td class="value">Jump to message entry box</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+SHIFT+2</td>
+								<td class="value">Respond to sender of currently selected message</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+,</td>
+								<td class="value">View Preferences</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+SHIFT+,</td>
+								<td class="value">Open preferences folder</td>
+							</tr>
+							<tr>
+								<td class="label">CMD+{1-7}</td>
+								<td class="value">Switch to Tab 1-7</td>
+							</tr>
+
+
+						</tbody>
+					</table>	
+				</div>
+			</div>
+		</div>
+		
+		
+		<!--
+			Short Link Window
+		-->
+		<div id="shortLinkWindow" class="popbox-content-wrapper">
+			<div class="popbox-content">
+				<h1>Shorten Link</h1>
+
+				<div class="content">
+					<form id="shortenLink-form" onsubmit="return false;">
+						<div class="formrow">
+							<label for="url-shortener">Service</label>
+							<select id="url-shortener" name="url-shortener" onChange="">
+								<!-- stuff goes here -->
+							</select>
+						</div>
+
+						<div class="formrow">
+							<label for="original-link">Link</label>
+							<input type="text" name="original-link" id="shorten-original-link" value="http://" />
+						</div>
+
+				        <div class="formrow" id="shorten-custom-hidden" style="display: none; visibility: hidden;">
+				            <label for="custom-link">Custom</label>
+				            <input type="text" name="custom-link" id="shorten-custom-link" value="" />
+				        </div>
+
+						<div class="formrow">
+							<label for="short-link">Short</label>
+							<input type="text" name="short-link" id="shorten-short-link" value="" />
+						</div>
+
+						<div class="formrow" style="text-align:right; margin-top:15px">
+							<input type="submit" id="prefs-update-button" name="update" value="Shorten &bull;" /> 
+						</div>
+						<div id="verification-result" align="center">&nbsp;</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		
+		
 
 	</div> <!-- End #container -->
 
@@ -798,6 +1047,8 @@
 		documentRoot="app:/sandbox/"
 		id="classicSB"
 		onload="Spaz.Sys.loadChildInterface()"></iframe>
+		
+	
 
 </body>
 </html>

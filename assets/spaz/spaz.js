@@ -250,5 +250,86 @@ Spaz.initialize = function() {
 		
 	});
 
+
+	/*
+		About popbox
+	*/
+	$('#about-version').text("v"+Spaz.Sys.getVersion())
+
+
+	/*
+		URL shortener
+	*/
+	var initUrlShortener = function() {
+		
+		var method;
+		
+		// get the pref
+		var service = Spaz.Prefs.get('url-shortener');
+		sch.dump("service is "+ service);
+
+        if (service == 'shortie') {
+            $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+        }
+
+		// populate the dropdown
+		for (method in Spaz.Shortlink.services) {
+			sch.dump(method)
+
+			if (method[0] != '$') {
+				if (method == service) {
+					$('#url-shortener').append('<option value="'+method+'" selected="selected">'+method+'</option>');
+				} else {
+					$('#url-shortener').append('<option value="'+method+'">'+method+'</option>');
+				}
+			}
+		}
+		
+		// $('#url-shortener').bind('change', function() {
+		// 	sch.dump($('#url-shortener').val());
+		// 	Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
+		// });
+		
+        $('#url-shortener').bind('change', function() {
+
+			sch.dump($('#url-shortener').val());
+			Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
+            if ($('#url-shortener').val() != 'shortie') {
+                $('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
+            } else {
+                $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+            }
+		});
+		
+		// Spaz.dump("val:"+$('#shorten-original-link').val());
+		$('#shorten-original-link').focus();
+		$('#shorten-original-link').val('http://');
+		// Spaz.dump(air.Clipboard.generalClipboard.formats);
+		if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
+		    var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
+			if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
+				$('#shorten-original-link').val(cliptext);
+				Spaz.Shortlink.services[service](cliptext);
+			}
+			$('#shorten-original-link').select();
+		}
+					
+		$('#shortenLink-form').bind('submit', function() {
+	  	var service = Spaz.Prefs.get('url-shortener');
+			sch.dump("service is "+ service);
+            var custom = $('#shorten-custom-link').val();
+            if (custom != '') {
+			    Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
+            } else {
+			    Spaz.Shortlink.services[service]($('#shorten-original-link').val());
+            }
+		});
+		
+		// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);
+	};
+	
+	initUrlShortener();
+
+
 	Spaz.dump('ended document.ready()');
 }

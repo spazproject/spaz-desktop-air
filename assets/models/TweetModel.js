@@ -28,16 +28,40 @@ var TweetModel = new JazzRecord.Model({
 			}
 	},
 	modelMethods: {
-		saveTweet : function(obj) {
+		saveTweet : function(obj) {			
+			/*
+				we clone to avoid modifying the original object we passed in by ref
+			*/
+			thisobj = sch.clone(obj);
+			
+			if (this.tweetExists(thisobj.id)) {
+				return false;
+			}
+			
+			if (thisobj.SC_is_dm) {
+				return false;
+			}
+			
+			var user_id = TwUserModel.findOrCreate(thisobj.user);
+			delete thisobj.user;
 
-			var user_id = TwUserModel.findOrCreate(obj.user);
-			delete obj.user;
-
-			obj.twitter_id = obj.id;
-			delete obj.id;
+			thisobj.twitter_id = thisobj.id;
+			delete thisobj.id;
 		
-			obj.user_id = user_id;
-			return this.create(obj);
+			thisobj.user_id = user_id;
+
+			return this.create(thisobj);
+		},
+		tweetExists : function(twitter_id) {
+			var count = this.count('twitter_id = ' + twitter_id);
+			if (count > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		getById : function(twitter_id) {
+			return this.findBy('twitter_id', twitter_id, 1);
 		}
 	}
 });

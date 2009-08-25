@@ -56,13 +56,13 @@ ul.menu,
 	margin: 0;
 	padding: 0;
 	*/
-	padding:0;
+	padding:4px;
 	margin:0;
 	list-style: none;
 }
 #root-menu-div li {
 	list-style: none;
-	padding:4px;
+	padding:  4px;
 	min-width:125px;
 }
 
@@ -83,14 +83,11 @@ li.menumain {
 	float: left;
 	padding: 0 10px;
 }
-div.menu-item {
-	padding: 1px 10px 1px 4px;
-}
-img.menu-item-arrow{
-	position: absolute;
-	right: 4px;
-	top: 8px;
-}
+	img.menu-item-arrow{
+		position: absolute;
+		right: 4px;
+		top: 8px;
+	}
 
 /*
 	This is for separators
@@ -109,6 +106,7 @@ img.menu-item-arrow{
 div.menu-item a {
 	color:inherit !important;
 	display:block;
+	padding: 1px 10px 1px 0px;
 }
 
 /*

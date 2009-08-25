@@ -59,7 +59,7 @@ Spaz.Shortlink.services = {
 
         var xhr = $.ajax({
             complete: function (xhr, rstr) {
-                var shorturl = trim(xhr.responseText);
+                var shorturl = sch.trim(xhr.responseText);
                 
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)
@@ -100,7 +100,7 @@ Spaz.Shortlink.services = {
 					return;
 				}
 	
-				var shorturl = trim(xhr.responseText);
+				var shorturl = sch.trim(xhr.responseText);
 	
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)
@@ -145,7 +145,7 @@ Spaz.Shortlink.services = {
 					return;
 				}
 
-				var shorturl = trim(xhr.responseText);
+				var shorturl = sch.trim(xhr.responseText);
 
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)
@@ -192,7 +192,7 @@ Spaz.Shortlink.services = {
 					return;
 				}
 
-				var shorturl = trim(xhr.responseText);
+				var shorturl = sch.trim(xhr.responseText);
 
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)
@@ -239,7 +239,7 @@ Spaz.Shortlink.services = {
 					return;
 				}
 
-				var shorturl = trim(xhr.responseText);
+				var shorturl = sch.trim(xhr.responseText);
 
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)
@@ -292,7 +292,7 @@ Spaz.Shortlink.services = {
 				// sch.dump("COMPLETE: " + rstr);
 				// sch.dump(xhr.responseText);
 
-				var shorturl = trim(xhr.responseText);
+				var shorturl = sch.trim(xhr.responseText);
 
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)
@@ -339,7 +339,7 @@ Spaz.Shortlink.services = {
 					return;
 				}
 
-				var shorturl = trim(xhr.responseText);
+				var shorturl = sch.trim(xhr.responseText);
 
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)
@@ -385,7 +385,7 @@ Spaz.Shortlink.services = {
 					return;
 				}
 
-				var shorturl = trim(xhr.responseText);
+				var shorturl = sch.trim(xhr.responseText);
 
 				if (shorturl.search(/^http/i)!=-1) {
 					Spaz.Shortlink.$copyToClipboard(shorturl)

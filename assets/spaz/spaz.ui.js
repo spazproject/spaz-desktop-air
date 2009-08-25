@@ -185,13 +185,13 @@ Spaz.UI.hideUpdateCheck = function() {
 
 
 Spaz.UI.showAbout = function() {
-    this.instance = window.open('app:/html/about.html', 'aboutWin', 'height=400,width=350,scrollbars=yes');
+    openPopboxInline('#aboutWindow');
 }
 Spaz.UI.showHelp = function() {
-    this.instance = window.open('app:/html/help.html', 'helpWin', 'height=400,width=350,scrollbars=yes');
+    openPopboxInline('#helpWindow');
 }
 Spaz.UI.showShortLink = function() {
-    this.instance = window.open('app:/html/shorten-url.html', 'shortenWin', 'height=250,width=300');
+    openPopboxInline('#shortLinkWindow');
 }
 Spaz.UI.uploadImage = function(imgurl) {
 	var url = 'app:/html/upload-file.html';
@@ -203,6 +203,7 @@ Spaz.UI.uploadImage = function(imgurl) {
 Spaz.UI.showCSSEdit = function() {
     this.instance = window.open('app:/html/css_edit.html', 'cssEditWin', 'height=350,width=400');
 }
+
 
 
 
@@ -552,37 +553,40 @@ Spaz.UI.setView = function(type ) {
 	sch.dump('View type is '+type);
 
 	var container = '#' + Spaz.Section.friends.timeline;
+	
+	/*
+		clear it and add the base 'timeline' class back
+	*/
+	jQuery(container).attr('class', '');
+	jQuery(container).attr('class', 'timeline');
 
 	switch(type) {
 
 		case 'view-friends-menu-all':
-			jQuery('div.timeline-entry', container).show();
-	        Spaz.UI.statusBar('Showing all tweets');
+			jQuery(container).addClass('filter-timeline-all');
 			break;
 		case 'view-friends-menu-replies-dms':
-			jQuery('div.timeline-entry', container).hide();
-			jQuery('div.timeline-entry.reply, div.timeline-entry.dm', container).show();
+			jQuery(container).addClass('filter-timeline-replies-dms');
 			Spaz.UI.statusBar('Hiding tweets not directed at you');
 			break;
 		case 'view-friends-menu-replies':
-			jQuery('div.timeline-entry', container).hide();
-			jQuery('div.timeline-entry.reply', container).show();
+			jQuery(container).addClass('filter-timeline-replies');
 			break;
 		case 'view-friends-menu-dms':
-			jQuery('div.timeline-entry', container).hide();
-			jQuery('div.timeline-entry.dm', container).show();
+			jQuery(container).addClass('filter-timeline-dms');
 			break;
 		case 'view-friends-menu-unread':
-			jQuery('div.timeline-entry', container).hide();
-			jQuery('div.timeline-entry:not(.read)', container).show();
+			jQuery(container).addClass('filter-timeline-unread');
 			break;
 		case 'view-friends-menu-custom':
 			alert('not yet implemented');
 			break;
 		default:
-			jQuery('div.timeline-entry', container).show();
+			jQuery(container).addClass('filter-timeline-all');
 			break;
 	}
+
+	sch.dump(jQuery(container).attr('class'));
 
 	Spaz.UI.currentFriendsTimelineView = type;
 

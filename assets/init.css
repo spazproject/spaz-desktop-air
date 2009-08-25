@@ -2,6 +2,9 @@
 which will be re-shown when a theme kicks in. This, of course,
 means themes must set display:block on the <body> element */
 
+@import url("timeline-filters.css");
+@import url("popbox-content.css");
+
 body {
 	display:none;
 /*	-khtml-user-select:none;*/
@@ -126,6 +129,8 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
     max-height: 73px;
 }
 
+
 .menuitem.selected {
 	font-weight:bold;
 }
+

@@ -1,0 +1,224 @@
+#DOMWindow {
+	-webkit-border-radius:10px;
+	border:6px solid #333 !important;
+}
+
+div.popbox-content-wrapper {
+	display:none;
+}
+
+
+
+ 
+/*
+	This stuff is used across all popboxes
+*/
+div.popbox-content {
+	padding:0px;
+	margin:0px;
+	font-family:Tahoma, Arial, Helvetica, sans-serif;
+	background-color: #FFFF9B;
+	background-image: url('../assets/images/popbox-img/body-bg.png');
+	background-repeat:repeat-x;
+	background-position: center bottom;
+	-webkit-background-size:100% 100%;	
+	font-size:.8em;
+	color:#444444;
+	position:relative;
+}
+
+
+
+	div.popbox-content h1 {
+		background-color:#222222;
+		color:#FFFFFF;
+		padding:10px;
+		margin:0px;
+		-webkit-box-shadow:0px 0px 6px #333333;
+		font-size:1.5em;
+		top:0px;
+		background-image: url('../images/spaz-icon-alpha.png');
+		background-repeat: no-repeat;
+		background-position: 90% 40%;
+		overflow:hidden;
+	}
+
+
+	div.popbox-content div.content {
+		padding:5px 10px;
+		background-image: url('../images/popbox-img/body-bg.png');
+		background-repeat: repeat-x;
+		background-position: center bottom;
+		-webkit-background-size:100% 100%;
+		height:100%;
+		bottom:0px;
+		top:0px;
+		overflow:auto;
+	
+	}
+	
+		div.popbox-content *:focus {
+		    outline:none;
+		}
+
+		div.popbox-content a:link, div.popbox-content .clickable {
+		    color:#000099;
+		    cursor:pointer;
+		}
+
+
+		div.popbox-content h2,div.popbox-content h3 {
+			text-shadow: #999999 0px 1px 2px;
+		}
+
+		div.popbox-content h2 {
+			margin:0px;
+			font-size:1.2em;
+		}
+
+
+		div.popbox-content div.formrow {
+			white-space: nowrap;
+			clear:both;
+			margin-bottom:5px;
+		}
+
+
+/*
+			for keyboard shortcut table
+*/
+		div.popbox-content table.data {
+/*			border-collapse:collapse;*/
+/*			border:2px solid #666699;*/
+			margin-left:auto;
+			margin-right:auto;
+			text-align:center;
+			padding:5px;
+			border-top:3px solid #333333;
+			border-bottom:1px solid #333333;
+			border-collapse:collapse;
+			width:100%;
+		}
+		div.popbox-content table.data th {
+			background-color:#cccccc;
+			color:#333333;
+			font-size:12px;
+			font-weight:bold;
+		}
+		div.popbox-content table.data tr {
+		}
+		div.popbox-content table.data td {
+			font-size:12px;
+			padding:4px;
+		}
+		div.popbox-content table.data td.label {
+			font-weight:bold;
+			text-align:right;
+			border-right:1px solid #999999;
+		}
+		div.popbox-content table.data td.label:after { /*content:":";*/ }
+		div.popbox-content table.data td.value {
+			padding:2px;
+			text-align:left;
+		}
+
+
+
+/*
+			For About info
+*/
+		div.popbox-content #about-version {
+			font-weight:strong;
+		}
+
+		div.popbox-content #about-thanks {
+			font-weight:strong;
+			border:1px solid #999999;
+			padding:5px;
+			background-color:#FFFFFF;
+		}
+		div.popbox-content #sysinfo {
+/*			border-collapse:collapse;*/
+/*			border:2px solid #666699;*/
+			margin-left:auto;
+			margin-right:auto;
+			text-align:center;
+			background-color: #EEEEFF;
+			background-image: url('images/entry-even-bg.png');
+			-khtml-border-radius:.5em;
+			padding:5px;
+		}
+
+		div.popbox-content #sysinfo td {
+			font-size:12px;
+			padding:2px;
+		}
+		div.popbox-content #sysinfo td.label {
+			font-weight:bold;
+			text-align:right;
+		}
+		div.popbox-content #sysinfo td.label:after { content:":"; }
+		div.popbox-content #sysinfo .value {
+			padding:2px;
+			text-align:left;
+		}
+
+
+/*
+			For Shorten URL
+*/
+		div.popbox-content form label {
+			text-align:left;
+			font-weight:normal;
+			display:block;
+			padding:5px;
+		}
+		div.popbox-content form label.checkbox {
+			float: none;
+			display:inline;
+		}
+		div.popbox-content form input[type='password'],
+		div.popbox-content form input[type='text'],
+		div.popbox-content form textarea,
+		div.popbox-content form select {
+			border:1px solid #666;
+			padding:4px;
+			display:block;
+			/*-khtml-border-radius:5px;*/
+		}
+/*
+			The wrapper for the little loading animation
+*/
+		div.popbox-content #loading {
+			display:inline-block;
+			height:10px;
+			width: 10px;
+			background:url('../images/popbox-img/loading.gif');
+			background-repeat: no-repeat;
+		}
+
+
+/*
+	help content
+*/
+#resources {
+	padding-left: 0;
+	margin-left:  0;
+}
+#resources li {
+	list-style-type: none;
+}
+#resources li a {
+	padding:6px;
+	margin:6px;
+	color:#FFFFFF;
+	background-color:#660000;
+	-khtml-border-radius:10px;
+	text-decoration: none;
+	display: block;
+	font-size: 1.4em;
+	opacity: .8;
+}
+#resources li a:hover {
+	background-color:#220000;
+}

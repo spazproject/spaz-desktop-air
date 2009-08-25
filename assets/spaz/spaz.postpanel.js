@@ -6,7 +6,8 @@ function SpazPostPanel(opts) {
 	this.container = opts.container || document.getElementById('entryform');
 	this.textarea  = opts.textarea  || document.getElementById('entrybox');
 	this.counter   = opts.counter   || document.getElementById('chars-left-count');
-	this.irt_container = opts.irt_container || document.getElementById('irt-message');
+	this.irt_container = opts.irt_container || document.getElementById('irt');
+	this.irt_message = opts.irt_message || document.getElementById('irt-message');
 	this.irt_id_attr   = opts.irt_id_attr   || 'data-status-id';
 	this.menu      = opts.menu      || null;
 	this.maxlen    = opts.maxlen    || 140;
@@ -129,9 +130,9 @@ SpazPostPanel.prototype.prepPhotoPost = function(url) {
 SpazPostPanel.prototype.clearPostIRT = function() {
 	this.irt_status = '';
 	this.irt_status_id = 0;
-	jQuery(this.irt_container).attr(this.irt_id_attr, this.irt_status_id)
-							.text('')
-							.hide();
+	jQuery(this.irt_container).hide();
+	jQuery(this.irt_message).attr(this.irt_id_attr, this.irt_status_id)
+							.text(this.irt_status);
 };
 
 
@@ -146,18 +147,20 @@ SpazPostPanel.prototype.shortenText = function() {
 
 
 SpazPostPanel.prototype.setPostIRT = function(status_id, status_text) {
+	
 	if (status_id) {
 		this.irt_status_id = status_id;
-		jQuery(this.irt_container).attr(this.irt_id_attr, this.irt_status_id)
-								.text(this.irt_status_id)
-								.show();
+		jQuery(this.irt_container).show();
+		jQuery(this.irt_message).attr(this.irt_id_attr, this.irt_status_id)
+								.text(this.irt_status_id);
+
 	}
 	
 	if (status_text) {
 		this.irt_status = status_text;
-		jQuery(this.irt_container).text(this.irt_status)
-								.show();
+		jQuery(this.irt_message).text(this.irt_status);
 	}
+	
 };
 
 
@@ -198,12 +201,13 @@ SpazPostPanel.prototype.removeListeners = function() {
 
 
 SpazPostPanel.prototype.on_over_default = function(info) {
-	jQuery(info.count_el).css('color','#990000');
-	jQuery(info.entry_el).css('background-color','#FFCCCC');
+	jQuery(info.count_el).addClass('over').removeClass('under');
+	jQuery(info.entry_el).addClass('under').removeClass('over');
 };
 
 
 SpazPostPanel.prototype.on_under_default = function(info) {
-	jQuery(info.count_el).css('color','#000000');
-	jQuery(info.entry_el).css('background-color','#FFFFFF');
+	jQuery(info.count_el).addClass('under').removeClass('over');
+	jQuery(info.entry_el).addClass('under').removeClass('over');
 };
+
