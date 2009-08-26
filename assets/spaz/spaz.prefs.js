@@ -921,8 +921,6 @@ Spaz.Prefs.resetPrefs = function() {
 
 
 Spaz.Prefs.get = function(key) {
-    // Spaz.dump("Getting pref key '"+key+"'");
-    // Spaz.dump("Value is "+Spaz.Prefs.preferences[key]);
     if (Spaz.Prefs.preferences[key]) {
         return Spaz.Prefs.preferences[key];
     } else {

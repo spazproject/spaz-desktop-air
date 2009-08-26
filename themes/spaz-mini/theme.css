@@ -496,7 +496,7 @@ a, a:link, .clickable {
 			/*
 				This is the counter for number of chars entered
 			*/
-			#entrystats {
+			#entrybox-popup {
 				position:absolute;
 				z-index: 100;
 				font-size:9px;

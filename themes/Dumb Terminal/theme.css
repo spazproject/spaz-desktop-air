@@ -351,7 +351,7 @@ border:none;
 	display:none;
 }
 
-#entrystats {
+#entrybox-popup {
 	position:absolute;
 	z-index: 100;
 	font-size:9px;

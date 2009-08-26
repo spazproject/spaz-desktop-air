@@ -456,10 +456,10 @@ a, a:link, .clickable {
 				margin:0;
 				left:   0px;
 				right:  0px;
-				height:40px;
+				height:55px;
 				font-size:13px;
 				overflow:auto;
-				padding:5px 5px 15px 5px;
+				padding:5px 5px 0px 5px;
 				text-align:left;
 				background-color:#FFFFEE;
 				border:none;
@@ -485,7 +485,7 @@ a, a:link, .clickable {
 			/*
 				This is the counter for number of chars entered
 			*/
-			#entrystats {
+			#entrybox-popup {
 				position:absolute;
 				z-index: 100;
 				font-size:10px;
@@ -498,10 +498,10 @@ a, a:link, .clickable {
 				-khtml-border-radius:5px;
 				border:1px solid #666;
 			}
-				#chars-left.under {
+				#chars-left-count.under {
 					color:#000000;
 				}
-				#chars-left.over {
+				#chars-left-count.over {
 					color:#CC0000;
 				}
 				#irt {

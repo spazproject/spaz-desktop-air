@@ -534,7 +534,7 @@ a:hover{
 			/*
 				This is the counter for number of chars entered
 			*/
-			#entrystats{
+			#entrybox-popup{
 				position:absolute;
 				bottom:0;
 				left:8px;

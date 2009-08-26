@@ -672,12 +672,16 @@
 		<form id="entryform" onSubmit="return false;">
 			<!-- <textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea> -->
 			<textarea id="entrybox" tabindex="1"></textarea>
-			<div id="entrystats">
+			<div id="entrybox-popup">
+				<div id="irt" style="display:none"><strong>Re:</strong><span id="irt-message" data-status-id="0"></span>
+					<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
+				</div>
 				<span id="chars-left">
 					<span id="chars-left-count"></span> chars left
 				</span>
-				<div id="irt" style="display:none"><strong>Re:</strong><span id="irt-message" data-status-id="0"></span>
-					<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
+				<div id="entrybox-actions">
+					<input type="button" name="entrybox-shortenText" value="Shorten Text" id="entrybox-shortenText" />
+					<input type="button" name="entrybox-shortenURLs" value="Shorten URLs" id="entrybox-shortenURLs" />
 				</div>
 			</div>
 			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" />

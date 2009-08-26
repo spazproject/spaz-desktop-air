@@ -85,7 +85,9 @@ Spaz.initialize = function() {
 	
 	sch.dump('JazzRecord initialization');
 	JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db"});
-	JazzRecord.debug = true;
+	if (Spaz.Prefs.get('debug-enabled')) {
+		JazzRecord.debug = true;
+	}
 	JazzRecord.depth = 0;
 	JazzRecord.migrate();
 
@@ -219,6 +221,9 @@ Spaz.initialize = function() {
 	}
 
 
+	Spaz.Timelines.init();
+
+
 	if (Spaz.Prefs.get('timeline-loadonstartup')) {
 		$('#tab-friends').trigger('click');
 	}
@@ -240,7 +245,7 @@ Spaz.initialize = function() {
 	Spaz.postPanel = new SpazPostPanel({
 		on_submit:function() {
 			this.disable();
-			var status = sch.trim(this.textarea.value);
+			var status = sch.trim(this.getMessageText());
 			var twit = new SpazTwit(Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
 			var source = Spaz.Prefs.get('twitter-source');
 			var irt_id = this.irt_status_id;

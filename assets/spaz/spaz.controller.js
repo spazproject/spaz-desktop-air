@@ -27,10 +27,6 @@ sch.listen(document, 'update_succeeded', function(e) {
 	// }
 
 });
-
-/**
- * listen for new posting responses 
- */
 sch.listen(document, 'update_failed', function(e) {
 	Spaz.postPanel.enable();
 	Spaz.UI.statusBar('Posting to twitter failed!');
@@ -287,6 +283,16 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.UI.accountMaintenance();
 			},
 
+			'#entrybox-shortenText':function(e) {
+				Spaz.postPanel.textarea.focus();
+				Spaz.postPanel.shortenText.call(Spaz.postPanel);
+				return false;
+			},
+			'#entrybox-shortenURLs':function(e) {
+				Spaz.postPanel.textarea.focus();
+				Spaz.postPanel.shortenURLs.call(Spaz.postPanel);
+				return false;
+			},
 
 			'#irt-dismiss':function(e) {
 				Spaz.UI.clearPostIRT();
@@ -453,12 +459,12 @@ Spaz.Controller.initIntercept = function() {
 
 	$('#entrybox').focus(function(e) {
 			Spaz.UI.showEntryboxTip();
-			$('#entrystats').fadeIn('fast');
+			$('#entrybox-popup').fadeIn('fast');
 		})
 		.blur(function(e) {
 			Spaz.UI.resetStatusBar();
 			$("body").focus();
-			$('#entrystats').fadeOut('fast');
+			$('#entrybox-popup').fadeOut('fast');
 			return false;
 		});
 

@@ -26,10 +26,11 @@ var FriendsTimeline = function(args) {
 		'failure_event':'error_combined_timeline_data',
 		'event_target' :document,
 		
-		'refresh_time':1000*3600,
+		'refresh_time':Spaz.Prefs.get('network-refreshinterval'),
 		'max_items':300,
 
 		'request_data': function() {
+			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
 			sc.helpers.markAllAsRead('#timeline-friends div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
@@ -430,7 +431,9 @@ SearchTimeline.prototype.destroy = function(args) {
 }
 
 
-Spaz.Timelines.friends= new FriendsTimeline();
-Spaz.Timelines.public = new PublicTimeline();
-Spaz.Timelines.search = new SearchTimeline();
+Spaz.Timelines.init = function() {
+	Spaz.Timelines.friends= new FriendsTimeline();
+	Spaz.Timelines.public = new PublicTimeline();
+	Spaz.Timelines.search = new SearchTimeline();
+}
 

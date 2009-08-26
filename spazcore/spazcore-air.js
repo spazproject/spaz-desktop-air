@@ -6484,8 +6484,11 @@ SpazTimeline.prototype.stopListening = function() {
 
 SpazTimeline.prototype.startRefresher = function() {
 	this.stopRefresher();
+	sch.dump('START REFRESHER ================================');
 	if (this.refresh_time > 1000) { // the minimum refresh is 1000ms. Otherwise we don't auto-refresh
 		this.refresher = setInterval(this.refresh, this.refresh_time);
+	} else {
+		alert('OH SHIT');
 	}
 };
 
