@@ -28,7 +28,7 @@ var TweetModel = new JazzRecord.Model({
 			}
 	},
 	modelMethods: {
-		saveTweet : function(obj) {			
+		saveTweet : function(obj) {
 			/*
 				we clone to avoid modifying the original object we passed in by ref
 			*/

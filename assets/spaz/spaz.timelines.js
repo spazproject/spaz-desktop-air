@@ -117,6 +117,36 @@ var FriendsTimeline = function(args) {
 			
 		}
 	});
+	
+	
+	this.filter = function(terms) {
+		$('#timeline-friends div.timeline-entry').removeClass('hidden');
+		if (terms) {
+			try {
+				var negate = false;
+				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() == NEGATION_TOKEN) {
+					negate = true;
+					terms  = terms.slice(NEGATION_TOKEN.length);
+				}
+				var filter_re = new RegExp($.trim(terms), "i");
+				$('#timeline-friends div.timeline-entry').each(function(i) {
+					if (negate) {
+						if ( $(this).text().search(filter_re) > -1 ) {
+							$(this).addClass('hidden');
+						}
+					} else {
+						if ( $(this).text().search(filter_re) == -1 ) {
+							$(this).addClass('hidden');
+						}
+					}
+				});
+			} catch(e) {
+				sch.dump(e.name+":"+e.message);
+			}
+
+		}
+	};
+	
 };
 
 FriendsTimeline.prototype.init = function(args) {
@@ -124,7 +154,9 @@ FriendsTimeline.prototype.init = function(args) {
 }
 
 FriendsTimeline.prototype.activate = function(args) {
-	// alert('called activate');
+	
+	
+	
 	this.timeline.start();
 }
 
@@ -135,6 +167,8 @@ FriendsTimeline.prototype.deactivate = function(args) {
 FriendsTimeline.prototype.destroy = function(args) {
 	
 }
+
+
 
 
 
@@ -216,6 +250,37 @@ var PublicTimeline = function(args) {
 			
 		}
 	});
+	
+	
+	this.filter = function(terms) {
+		$('#timeline-public div.timeline-entry').removeClass('hidden');
+		if (terms) {
+			try {
+				var negate = false;
+				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() == NEGATION_TOKEN) {
+					negate = true;
+					terms  = terms.slice(NEGATION_TOKEN.length);
+				}
+				var filter_re = new RegExp($.trim(terms), "i");
+				$('#timeline-public div.timeline-entry').each(function(i) {
+					if (negate) {
+						if ( $(this).text().search(filter_re) > -1 ) {
+							$(this).addClass('hidden');
+						}
+					} else {
+						if ( $(this).text().search(filter_re) == -1 ) {
+							$(this).addClass('hidden');
+						}
+					}
+				});
+			} catch(e) {
+				sch.dump(e.name+":"+e.message);
+			}
+
+		}
+	};
+	
+	
 };
 
 PublicTimeline.prototype.init = function(args) {

@@ -105,23 +105,14 @@ Spaz.initialize = function() {
 	air.URLRequestDefaults.cacheResponse = true;
 	air.URLRequestDefaults.useCache = true;
 
-	// apply dropshadow to window
-	// if (Spaz.Prefs.get('window-dropshadow') && !Spaz.Sys.isLinux()) {
-	// 	sch.dump('Applying Flash Filter Dropshadow');
-	//
-	// 	window.htmlLoader.filters = window.runtime.Array(
-	// 		new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
-	// 	);
-	// 	// new window.runtime.flash.filters.ColorMatrixFilter(([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-	// }
-	// make the systray icon if on Windows
+
 	Spaz.Windows.makeSystrayIcon()
 
 
 	// ***************************************************************
 	// Keyboard shortcut handling
 	// ***************************************************************
-	Spaz.Keyboard.setShortcuts();
+	Spaz.Controller.setKeyboardShortcuts();
 
 
 	// insert theme CSS links
@@ -213,7 +204,7 @@ Spaz.initialize = function() {
 	/*
 		Set up event delegation stuff
 	*/
-	Spaz.Intercept.init();
+	Spaz.Controller.initIntercept();
 
 	/*
 		Start check for updates process
@@ -247,7 +238,14 @@ Spaz.initialize = function() {
 		set-up post panel
 	*/
 	Spaz.postPanel = new SpazPostPanel({
-		
+		on_submit:function() {
+			this.disable();
+			var status = sch.trim(this.textarea.value);
+			var twit = new SpazTwit(Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+			var source = Spaz.Prefs.get('twitter-source');
+			var irt_id = this.irt_status_id;
+			twit.update(status, source, irt_id);
+		}
 	});
 
 

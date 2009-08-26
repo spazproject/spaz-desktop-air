@@ -1,14 +1,47 @@
+/**
+ * The controller handles interception of events and delegation to methods 
+ * 
+ * 
+ */
+
 var Spaz; if (!Spaz) Spaz = {};
 
-/***********
-Spaz.Intercept
-************/
-if (!Spaz.Intercept) Spaz.Intercept = {};
+if (!Spaz.Controller) Spaz.Controller = {};
 
-// ***************************************************************
-// Event delegation handling
-// ***************************************************************
-Spaz.Intercept.init = function() {
+
+
+
+/**
+ * listen for new posting responses 
+ */
+sch.listen(document, 'update_succeeded', function(e) {
+	Spaz.postPanel.reset();
+	Spaz.postPanel.enable();
+	var data = sch.getEventData(e);
+	sch.trigger('new_combined_timeline_data', document.getElementById('timeline-friends'), data);
+	$('#entrybox')[0].blur();
+	
+
+	// if (Spaz.Prefs.get('services-pingfm-enabled')) {
+	// 	Spaz.Data.updatePingFM(msg);
+	// }
+
+});
+
+/**
+ * listen for new posting responses 
+ */
+sch.listen(document, 'update_failed', function(e) {
+	Spaz.postPanel.enable();
+	Spaz.UI.statusBar('Posting to twitter failed!');
+});
+
+
+
+/**
+ * Event delegation handling 
+ */
+Spaz.Controller.initIntercept = function() {
 
 	$('body').intercept('mouseover', {
 			'.status-action[title]':function(e) {
@@ -398,15 +431,13 @@ Spaz.Intercept.init = function() {
 		})
 		.intercept('keyup', {
 			'#filter-friends':function(e) {
-				// sch.dump('filter:'+this.outerHTML+"\n"+$(this).val());
-
-				Spaz.Section.friends.filter( $(this).val() );
+				Spaz.Timelines.friends.filter( $(this).val() );
 			},
 			'#filter-user':function(e) {
 				Spaz.Section.user.filter( $(this).val() );
 			},
 			'#filter-public':function(e) {
-				Spaz.Section.public.filter( $(this).val() );
+				Spaz.Timelines.public.filter( $(this).val() );
 			}
 		})
 
@@ -481,40 +512,241 @@ Spaz.Intercept.init = function() {
 				return;
 			}
 
-
-			// upload the file
-			// Spaz.Data.uploadFile({
-			// 	'extra'  :{
-			// 		"username": Spaz.Prefs.getUser(),
-			// 		"password": Spaz.Prefs.getPass(),
-			// 		"source":Spaz.Prefs.get('twitter-source'),
-			// 	},
-			// 	'url'    :"http://twitpic.com/api/upload",
-			// 	'fileUrl':fileUrl,
-			// 	'open'   : function(event) {
-			// 		Spaz.UI.showLoading();
-			// 		Spaz.UI.statusBar('Uploading image to Twitpic…');
-			// 	},
-			// 	'complete': function(event) {
-			// 		Spaz.UI.hideLoading();
-			//
-			// 		var loader = event.target;
-			// 	    sch.dump(loader.data);
-			//
-			// 		var parser=new DOMParser();
-			// 		xmldoc = parser.parseFromString(loader.data,"text/xml");
-			// 		var mediaurl = $(xmldoc).find('mediaurl').text();
-			//
-			// 		sch.dump(mediaurl);
-			//
-			// 		Spaz.UI.prepPhotoPost(mediaurl);
-			// 	},
-			// });
-
-
 		}
 
 
     }
 
 };
+
+
+
+/**
+ * Sets up keyboard event handlers 
+ */
+Spaz.Controller.setKeyboardShortcuts = function() {
+	Spaz.dump("Setting Shortcuts=================================================")
+    Spaz.dump("os: " + air.Capabilities['os']);
+
+	var Modkey = 'Meta';
+
+	if (air.Capabilities['os'].search(/Windows/i) != -1) {
+		Spaz.dump('THIS IS WINDOWS');
+		Modkey = 'Ctrl';
+	} else if (air.Capabilities['os'].search(/Linux/i) != -1) { // thx agolna
+		Spaz.dump('THIS IS LINUX');
+		Modkey = 'Ctrl';
+	} else if (air.Capabilities['os'].search(/Mac/i) != -1) {
+		Spaz.dump('THIS IS MACOS');
+		Modkey = 'Meta';
+	}
+
+	Spaz.dump('Modkey is '+Modkey);
+
+  shortcut.add(Modkey+Spaz.Prefs.get('key-newEntry'), function() {
+   $('#entrybox').focus();
+  })
+
+	shortcut.add('F5', function() {
+		Spaz.UI.reloadCurrentTab(true);
+		Spaz.restartReloadTimer();
+	})
+
+	shortcut.add(Spaz.Prefs.get('key-reloadTimeline'), function() {
+		Spaz.UI.clearCurrentTimeline();
+		Spaz.UI.reloadCurrentTab(true, true);
+		Spaz.restartReloadTimer();
+	})
+
+	shortcut.add(Modkey+Spaz.Prefs.get('key-showShortenWindow'), function() {
+		Spaz.UI.showShortLink();
+	});
+
+	shortcut.add(Modkey+Spaz.Prefs.get('key-showUploadImageWindow'), function() {
+		Spaz.UI.uploadImage();
+	});
+
+
+	shortcut.add(Modkey+'+Shift+M', function() {
+		Spaz.UI.markCurrentTimelineAsRead();
+	});
+
+
+
+
+	shortcut.add('F1', function() {
+		Spaz.UI.showHelp();
+	});
+
+	/*
+		Added so we can open the preferences folder if the UI is hosed by bad CSS
+	*/
+	shortcut.add(Modkey+'+Shift+,', function() {
+		Spaz.Sys.openAppStorageFolder();
+	});
+
+	shortcut.add(Modkey+Spaz.Prefs.get('key-reply'), function() {
+			Spaz.dump('getting screenname from current selection');
+			var screenname = $('div.ui-selected .user-screen-name').text();
+			var irt_id = $('div.ui-selected .entry-id').text().replace(/(\[|\])/g, '');
+
+			if (screenname) {
+				Spaz.dump('username for reply is:'+screenname);
+				// var username = '';
+				Spaz.postPanel.prepReply(screenname, irt_id);
+			}
+		}, {
+			'disable_in_input':false
+	});
+
+
+
+
+	// ****************************************
+	// tabs shortcuts
+	// ****************************************
+	shortcut.add(Modkey+'+1', function() {
+		Spaz.UI.showTab(0);
+	})
+	shortcut.add(Modkey+'+2', function() {
+		Spaz.UI.showTab(1);
+	})
+	shortcut.add(Modkey+'+3', function() {
+		Spaz.UI.showTab(2);
+	})
+	shortcut.add(Modkey+'+4', function() {
+		Spaz.UI.showTab(3);
+		$('#search-for')[0].focus();
+	})
+	shortcut.add(Modkey+'+5', function() {
+		Spaz.UI.showTab(4);
+	})
+	shortcut.add(Modkey+'+6', function() {
+		Spaz.UI.showTab(5);
+	})
+	// shortcut.add(Modkey+'+7', function() {
+	// 	Spaz.UI.showTab(6);
+	// })
+	shortcut.add(Modkey+'+,', function() {
+		Spaz.UI.showPrefs()
+	})
+
+	// ****************************************
+	// Keys to navigate timeline
+	// ****************************************
+	shortcut.add(Modkey+'+down', function() {
+		Spaz.Keyboard.move('down', '.reply');
+	});
+	shortcut.add(Modkey+'+up', function() {
+		Spaz.Keyboard.move('up', '.reply');
+	});
+	shortcut.add(Modkey+'+Shift+down', function() {
+		Spaz.Keyboard.move('down', '.dm');
+	});
+	shortcut.add(Modkey+'+Shift+up', function() {
+		Spaz.Keyboard.move('up', '.dm');
+	});
+	shortcut.add(Modkey+'+End', function() {
+		Spaz.Keyboard.move('down', ':last');
+	});
+	shortcut.add(Modkey+'+Home', function() {
+		Spaz.Keyboard.move('up', ':first');
+	});	
+	shortcut.add('Down', function() {
+			Spaz.Keyboard.move('down');
+		}, {
+			'disable_in_input':true
+	});
+	shortcut.add('Up', function() {
+			Spaz.Keyboard.move('up');
+		}, {
+			'disable_in_input':true
+	});
+	shortcut.add(Modkey+'+J', function() {
+		Spaz.Keyboard.move('down');
+	});
+	shortcut.add(Modkey+'+K', function() {
+		Spaz.Keyboard.move('up');
+	});
+	shortcut.add('J', function() {
+			Spaz.Keyboard.move('down');
+		}, {
+			'disable_in_input':true
+	});
+	shortcut.add('K', function() {
+			Spaz.Keyboard.move('up');
+		}, {
+			'disable_in_input':true
+	});
+
+	shortcut.add(Modkey+Spaz.Prefs.get('key-toggle'), function() {
+			Spaz.UI.toggleTimelineFilter();
+		}, {
+			propagate:false
+	});
+
+
+	/*
+		Search box submit on Enter
+	*/
+	shortcut.add('Enter', function() {
+			Spaz.Timelines.search.activate();
+		}, {
+			target:$('#search-for')[0],
+			propagate:false
+	});
+
+	// ****************************************
+	// editor shortcuts
+	// ****************************************
+	shortcut.add(Modkey+'+B', function() {
+			Spaz.Editor.bold();
+		}, {
+			target:$('#entrybox')[0],
+			propagate:false
+	});
+	shortcut.add(Modkey+'+I', function() {
+			Spaz.Editor.italics();
+		}, {
+			target:$('#entrybox')[0],
+			propagate:false
+	});
+	shortcut.add(Modkey+Spaz.Prefs.get('key-highlight-code'), function() {
+			Spaz.Editor.code();
+		}, {
+			target:$('#entrybox')[0],
+			propagate:false
+	});
+	shortcut.add(Modkey+'+U', function() {
+			Spaz.Editor.link();
+		}, {
+			target:$('#entrybox')[0],
+			propagate:false
+	});
+	shortcut.add('Enter', function() {
+			Spaz.postPanel.submit();
+		}, {
+			target:$('#entrybox')[0],
+			propagate:false
+	});
+
+
+	/*
+		Username/password prefs -> save
+	*/
+	shortcut.add('Enter', function() {
+			Spaz.Prefs.setPrefs();
+		}, {
+			target:$('#username')[0],
+			propagate:false
+	});
+	shortcut.add('Enter', function() {
+			Spaz.Prefs.setPrefs();
+		}, {
+			target:$('#password')[0],
+			propagate:false
+	});
+
+}
+
+

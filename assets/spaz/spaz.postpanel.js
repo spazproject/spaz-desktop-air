@@ -13,6 +13,7 @@ function SpazPostPanel(opts) {
 	this.maxlen    = opts.maxlen    || 140;
 	this.on_over   = opts.on_over   || this.on_over_default;
 	this.on_under  = opts.on_under  || this.on_under_default;
+	this.on_submit = opts.on_submit || null;
 	
 	this.shortener = new SpazShortText();
 	
@@ -22,20 +23,7 @@ function SpazPostPanel(opts) {
 	
 	var thisPP = this;
 		
-
-
-
-
-
-
-
-
-
-
-
-
-
-	this.updateCharCount = function (on_over, on_under) {
+	this.updateCharCount = function(e) {
 
 		var curr_count = thisPP.textarea.value.length;
 		var left = thisPP.maxlen - curr_count;
@@ -57,11 +45,6 @@ function SpazPostPanel(opts) {
 		}
 
 	};
-
-
-
-
-
 
 
 	this.addListeners();
@@ -211,3 +194,27 @@ SpazPostPanel.prototype.on_under_default = function(info) {
 	jQuery(info.entry_el).addClass('under').removeClass('over');
 };
 
+
+SpazPostPanel.prototype.submit = function() {
+	
+	if (this.on_submit) {
+		this.on_submit.call(this);
+	}
+};
+
+SpazPostPanel.prototype.disable = function() {
+	this.disabled = true;
+	this.textarea.setAttribute("disabled","disabled");
+};
+
+SpazPostPanel.prototype.enable = function() {
+	this.disabled = false;
+	this.textarea.removeAttribute("disabled");
+};
+
+
+SpazPostPanel.prototype.reset = function() {
+	this.clearPostIRT();
+	this.textarea.value = '';
+	this.updateCharCount();
+};
