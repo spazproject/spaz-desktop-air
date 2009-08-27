@@ -53,8 +53,14 @@ var TweetModel = new JazzRecord.Model({
 			return this.create(thisobj);
 		},
 		tweetExists : function(twitter_id) {
-			var count = this.count('twitter_id = ' + twitter_id);
-			if (count > 0) {
+			
+			var rs = this.all({
+				select:"twitter_id",
+				conditions:"twitter_id = "+twitter_id,
+				limit:1
+			});
+			
+			if (rs) {
 				return true;
 			} else {
 				return false;

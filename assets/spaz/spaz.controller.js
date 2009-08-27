@@ -179,15 +179,12 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'#refresh-friends':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
-				Spaz.restartReloadTimer();
 			},
 			'#refresh-user':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
-				Spaz.restartReloadTimer();
 			},
 			'#refresh-public':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
-				Spaz.restartReloadTimer();
 			},
 			'#markread-friends':function(e) {
 				Spaz.UI.markCurrentTimelineAsRead();
@@ -223,12 +220,12 @@ Spaz.Controller.initIntercept = function() {
 			'#prefs-open-folder':function(e) {
 				Spaz.Sys.openAppStorageFolder();
 			},
-			'#friendslist-showfriends':function(e) {
+			'#followerslist-showfriends':function(e) {
 				$('#timeline-followers').fadeOut();
-				$('#timeline-friendslist').fadeIn();
+				$('#timeline-followerslist').fadeIn();
 			},
-			'#friendslist-showfollowers':function(e) {
-				$('#timeline-friendslist').fadeOut();
+			'#followerslist-showfollowers':function(e) {
+				$('#timeline-followerslist').fadeOut();
 				$('#timeline-followers').fadeIn();
 			},
 			'#search-go':function(e) {
@@ -251,7 +248,6 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'#mainMenu-view-reloadCurrentView':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
-				Spaz.restartReloadTimer();
 			},
 			'#mainMenu-view-markAsReadCurrentView':function(e) {
 				Spaz.UI.markCurrentTimelineAsRead();
@@ -259,7 +255,6 @@ Spaz.Controller.initIntercept = function() {
 			'#mainMenu-view-clearReloadCurrentView':function(e) {
 				Spaz.UI.clearCurrentTimeline();
 				Spaz.UI.reloadCurrentTab(true);
-				Spaz.restartReloadTimer();
 			},
 			'#mainMenu-sendDM':function(e) {
 				Spaz.UI.prepDirectMessage('');
@@ -555,13 +550,11 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 
 	shortcut.add('F5', function() {
 		Spaz.UI.reloadCurrentTab(true);
-		Spaz.restartReloadTimer();
 	})
 
 	shortcut.add(Spaz.Prefs.get('key-reloadTimeline'), function() {
 		Spaz.UI.clearCurrentTimeline();
 		Spaz.UI.reloadCurrentTab(true, true);
-		Spaz.restartReloadTimer();
 	})
 
 	shortcut.add(Modkey+Spaz.Prefs.get('key-showShortenWindow'), function() {

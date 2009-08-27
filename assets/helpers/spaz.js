@@ -12,7 +12,7 @@ function openPopboxURL(url) {
 
 		// height:'300',
 		overlay:1,
-		overlayOpacity:0,
+		overlayOpacity:60,
 		overlayColor:'#000'
     });
 
@@ -34,7 +34,7 @@ function openPopboxInline(content_id) {
 		width:         cont_width-30,
 		// height:'300',
 		overlay:1,
-		overlayOpacity:0,
+		overlayOpacity:60,
 		overlayColor:'#000'
     });
 }

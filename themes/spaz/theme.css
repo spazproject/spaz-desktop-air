@@ -65,6 +65,20 @@ a, a:link, .clickable {
 		right:	8px;
         position: fixed;
 	}
+	
+		/*
+			DOMWindowOverlay is used by the DOMWindow plugin for popboxes
+		*/
+		#DOMWindowOverlay {
+			-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
+			top:	1px !important; /* This has an effective 8px padding to show us the app dropshadow */
+			left:	8px !important; /* using all-four-sides positioning lets it expand properly on resizing */
+			bottom:	8px !important;
+			right:	8px !important;
+			position:fixed !important;
+			width:  auto !important;			
+			height: auto !important;			
+		}
 
 
 		/*********************************************************************
@@ -255,7 +269,7 @@ a, a:link, .clickable {
 					text-decoration: none;
 				}
 				/* These two tabs get a little extra margin-left to separate things into groups */
-				#tab-friendslist {
+				#tab-followerslist {
 					margin-left:5px;
 				}
 				#tab-prefs {
@@ -273,7 +287,7 @@ a, a:link, .clickable {
 				    #tab-user .tab-icon { background:url('images/tab-icon-user.png'); }
 				    #tab-public .tab-icon { background:url('images/tab-icon-public.png'); }
 				    #tab-search .tab-icon { background:url('images/tab-icon-search.png'); }
-				    #tab-friendslist .tab-icon { background:url('images/tab-icon-following.png'); }
+				    #tab-followerslist .tab-icon { background:url('images/tab-icon-following.png'); }
 				    #tab-followerslist .tab-icon { background:url('images/tab-icon-followers.png'); }
 				    #tab-prefs .tab-icon { background:url('images/tab-icon-prefs.png'); }
 
@@ -490,36 +504,45 @@ a, a:link, .clickable {
 				z-index: 100;
 				font-size:10px;
 				display:none;
-				bottom:64px;
+				bottom:60px;
 				right: 18px;
 				padding:6px;
-				background-color:rgba(255,255,255,.8);
-				color:#222222;
-				-khtml-border-radius:5px;
-				border:1px solid #666;
+				background-color:rgba(34,34,0,.9);
+				color:#FFFFFF;
+				-khtml-border-top-left-radius: 8px;
+				-khtml-border-top-right-radius:8px;
 			}
-				#chars-left-count.under {
-					color:#000000;
+				#chars-left {
+					font-size:12px;
+					margin:4px 0;
 				}
-				#chars-left-count.over {
-					color:#CC0000;
-				}
+					#chars-left-count.under {
+						color:#FFFF66;
+					}
+					#chars-left-count.over {
+						color:#FF9999;
+					}
 				#irt {
-					background-color:rgba(0,0,0,.8);
-					color:#FFFFFF;
-					-khtml-border-radius:5px;
-					padding:6px;
+					background-color:rgba(34,34,34,.9);
+					color:#DDDDDD;
+					-khtml-border-radius:8px;
+					padding:4px;
+					margin-bottom:4px;
+					overflow:auto;
+					padding-left:20px;
 				}
 					#irt-message {
 					}
 					#irt-dismiss {
 						padding:0px 4px 1px;
+						margin-left:-17px;
 						color:#AAAAAA;
 						background-color:#000000;
-						-khtml-border-radius:4px;
-						font-size:9px;
+						-khtml-border-radius:5px;
+						font-size:11px;
 						cursor:pointer;
-						margin:0;
+						float:left;
+						line-height:7px;
 					}
 						#irt-dismiss:hover {
 							color:#FFFFFF;
@@ -819,7 +842,7 @@ div.timeline-entry {
 			}
 
 
-.friendslist-row {
+.followerslist-row {
 	font-size:8pt;
 	clear:both;
 	padding:8px;
@@ -842,7 +865,7 @@ div.timeline-entry {
 		font-weight:bold;
 	}
 
-	.friendslist-row .directory-user {
+	.followerslist-row .directory-user {
 		position:relative;
 	}
 		.directory-user .user-image {

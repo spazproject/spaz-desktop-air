@@ -39,7 +39,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
 							if (d.in_reply_to_status_id) {
-	entryHTML += '				<a href="'+d.base_url+''+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
+	entryHTML += '				<a href="'+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
 	entryHTML += '		</div>';
@@ -64,9 +64,9 @@ Spaz.Templates.timeline_entry = function(d) {
 								}
 	entryHTML += '				</div>';
 	entryHTML += '				<div class="status-link">';
-	entryHTML += '					<a href="'+d.base_url+''+d.user.screen_name+'/statuses/'+d.id+'/" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
+	entryHTML += '					<a href="'+d.user.screen_name+'/statuses/'+d.id+'/" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
 									if (d.in_reply_to_status_id) {
-	entryHTML += '						<!-- <a href="'+d.base_url+'/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
+	entryHTML += '						<!-- <a href="/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
 									}
 	entryHTML += '					<span class="status-source">from';
 	entryHTML += '						<span class="status-source-label">'+d.source+'</span>';
@@ -98,7 +98,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
 							if (d.in_reply_to_status_id) {
-	entryHTML += '				<a href="'+d.base_url+''+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
+	entryHTML += '				<a href="'+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
 	entryHTML += '	</div>';
@@ -118,26 +118,26 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 
 
 
-Spaz.Templates.friendslist_row = function(d) {
+Spaz.Templates.followerslist_row = function(d) {
 	var entryHTML = '';
-	entryHTML += '<div screenname="'+d.screen_name+'" user-id="'+d.id+'" id="'+d.timeline+'-'+d.id+'" class="friendslist-row">';
-	entryHTML += '		<span class="directory-user-followstatus" screen-name="'+d.screen_name+'" user-id="'+d.id+'"';
-						if (d.is_mutual) {
-	entryHTML += '			rel="mutual" title="'+d.screen_name+' is a mutual follower">&laquo;mutual&raquo;</span>';
-						} else if (d.is_follower) {
-	entryHTML += '			rel="follower" title="'+d.screen_name+' is following you">&laquo;follower</span>';
-						} else if (d.is_following) {
-	entryHTML += '			rel="following" title="You are following '+d.screen_name+'">friend&raquo;</span>';
-						} else {
-	entryHTML += '			>?</span>';
-						}
+	entryHTML += '<div screenname="'+d.screen_name+'" user-id="'+d.id+'" id="'+d.timeline+'-'+d.id+'" class="followerslist-row">';
+	// entryHTML += '		<span class="directory-user-followstatus" screen-name="'+d.screen_name+'" user-id="'+d.id+'"';
+	// 					if (d.is_mutual) {
+	// entryHTML += '			rel="mutual" title="'+d.screen_name+' is a mutual follower">&laquo;mutual&raquo;</span>';
+	// 					} else if (d.is_follower) {
+	// entryHTML += '			rel="follower" title="'+d.screen_name+' is following you">&laquo;follower</span>';
+	// 					} else if (d.is_following) {
+	// entryHTML += '			rel="following" title="You are following '+d.screen_name+'">friend&raquo;</span>';
+	// 					} else {
+	// entryHTML += '			>?</span>';
+	// 					}
 	entryHTML += '	<div class="directory-user">';
 	entryHTML += '		<img src="'+d.profile_image_url+'" class="user-image" user-screen_name="'+d.screen_name+'" title="View user\'s profile" />';
 	entryHTML += '		<div class="directory-user-name">';
 							if (d.name && d.name != d.screen_name) {
-	entryHTML += '				<div class="name"><a class="inline-link" href="'+d.base_url+''+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.name+'</a></div>';
+	entryHTML += '				<div class="name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.name+'</a></div>';
 							}
-	entryHTML += '			<div class="screen-name"><a class="inline-link" href="'+d.base_url+''+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.screen_name+'</a></div>';
+	entryHTML += '			<div class="screen-name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.screen_name+'</a></div>';
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="directory-user-info">';
 							if (d.location) {

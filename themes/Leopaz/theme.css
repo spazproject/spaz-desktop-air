@@ -269,12 +269,12 @@ a:hover{
           #tab-search.TabbedPanelsTabSelected                         { background-position:-62px -66px; }
           body:not(.active) #tab-search.TabbedPanelsTabSelected       { background-position:-62px -88px; }
           #tab-search.TabbedPanelsTabSelected:active                  { background-position:-62px -110px; }
-        #tab-friendslist                                            { background-position:-93px 0; margin-left:9px; }
-          body:not(.active) #tab-friendslist                          { background-position:-93px -22px; }
-          #tab-friendslist:not(.TabbedPanelsTabSelected):active       { background-position:-93px -44px; }
-          #tab-friendslist.TabbedPanelsTabSelected                    { background-position:-93px -66px; }
-          body:not(.active) #tab-friendslist.TabbedPanelsTabSelected  { background-position:-93px -88px; }
-          #tab-friendslist.TabbedPanelsTabSelected:active             { background-position:-93px -110px; }
+        #tab-followerslist                                            { background-position:-93px 0; margin-left:9px; }
+          body:not(.active) #tab-followerslist                          { background-position:-93px -22px; }
+          #tab-followerslist:not(.TabbedPanelsTabSelected):active       { background-position:-93px -44px; }
+          #tab-followerslist.TabbedPanelsTabSelected                    { background-position:-93px -66px; }
+          body:not(.active) #tab-followerslist.TabbedPanelsTabSelected  { background-position:-93px -88px; }
+          #tab-followerslist.TabbedPanelsTabSelected:active             { background-position:-93px -110px; }
         #tab-prefs                                                  { background-position:-93px 0; position:absolute; right:0; margin-left:15px; }
           body:not(.active) #tab-prefs                                { background-position:-93px -22px; }
           #tab-prefs:not(.TabbedPanelsTabSelected):active             { background-position:-93px -44px; }
@@ -300,8 +300,8 @@ a:hover{
 				    #tab-public.TabbedPanelsTabSelected .tab-icon       { background:url(images/tab-icon-public-selected.png) 5px 0 no-repeat; }
 				    #tab-search .tab-icon                               { background:url(images/tab-icon-search.png) 7px 4px no-repeat; }
 				    #tab-search.TabbedPanelsTabSelected .tab-icon       { background:url(images/tab-icon-search-selected.png) 5px 1px no-repeat; }
-				    #tab-friendslist .tab-icon                          { background:url(images/tab-icon-following.png) 7px 5px no-repeat; }
-				    #tab-friendslist.TabbedPanelsTabSelected .tab-icon  { background:url(images/tab-icon-following-selected.png) 4px 1px no-repeat; }
+				    #tab-followerslist .tab-icon                          { background:url(images/tab-icon-following.png) 7px 5px no-repeat; }
+				    #tab-followerslist.TabbedPanelsTabSelected .tab-icon  { background:url(images/tab-icon-following-selected.png) 4px 1px no-repeat; }
 				    #tab-prefs .tab-icon                                { background:url(images/tab-icon-prefs.png) 6px 3px no-repeat; }
 				    #tab-prefs.TabbedPanelsTabSelected .tab-icon        { background:url(images/tab-icon-prefs-selected.png) 3px 0 no-repeat; }
 
@@ -910,31 +910,31 @@ div.timeline-entry:hover{
 			}
 
 
-.friendslist-row{
+.followerslist-row{
   min-height:30px;
 	padding:8px;
 	clear:both;
 	font-size:8pt;
 }
-  .friendslist-row .directory-user-followstatus{
+  .followerslist-row .directory-user-followstatus{
     float:right;
     height:10px;
     background:transparent 0 0 no-repeat;
     text-indent:-9999em;
   }
-  .friendslist-row .directory-user-followstatus[rel=mutual]{
+  .followerslist-row .directory-user-followstatus[rel=mutual]{
     width:60px;
     background-image:url(images/followstatus-mutual.png);
   }
-  .friendslist-row .directory-user-followstatus[rel=follower]{
+  .followerslist-row .directory-user-followstatus[rel=follower]{
     width:61px;
     background-image:url(images/followstatus-follower.png);
   }
-  .friendslist-row .directory-user-followstatus[rel=following]{
+  .followerslist-row .directory-user-followstatus[rel=following]{
     width:44px;
     background-image:url(images/followstatus-friend.png);
   }
-	.friendslist-row .directory-user{
+	.followerslist-row .directory-user{
 	  margin-top:-2px;
 	}
 		.directory-user .user-image{

@@ -261,7 +261,7 @@ a, a:link, .clickable {
 				text-decoration: none;
 			}
 			/* These two tabs get a little extra margin-left to separate things into groups */
-			#tab-friendslist {
+			#tab-followerslist {
 				margin-left:5px;
 			}
 			#tab-prefs {
@@ -279,7 +279,7 @@ a, a:link, .clickable {
 				    				    #tab-user .tab-icon { background:url('images/tab-icon-user.png'); }
 				    				    #tab-public .tab-icon { background:url('images/tab-icon-public.png'); }
 				    				    #tab-search .tab-icon { background:url('images/tab-icon-search.png'); }
-				    				    #tab-friendslist .tab-icon { background:url('images/tab-icon-following.png'); }
+				    				    #tab-followerslist .tab-icon { background:url('images/tab-icon-following.png'); }
 				    				    #tab-followerslist .tab-icon { background:url('images/tab-icon-followers.png'); }
 				    				    #tab-prefs .tab-icon { background:url('images/tab-icon-prefs.png'); }*/
 
@@ -821,12 +821,12 @@ div.timeline-entry {
 
 
 
-.friendslist-row {
+.followerslist-row {
 	font-size:8pt;
 	clear:both;
 	padding:8px;
 }
-	.friendslist-row .directory-user {
+	.followerslist-row .directory-user {
 
 	}
 		.directory-user .user-image {

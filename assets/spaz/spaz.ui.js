@@ -536,7 +536,7 @@ Spaz.UI.markCurrentTimelineAsRead = function() {
 
 
 Spaz.UI.toggleTimelineFilter = function() {
-	if (Spaz.UI.currentFriendsTimelineView === 'view-friends-menu-replies-dms') {
+	if (Spaz.UI.currentFriendsTimelineView !== 'view-friends-menu-all') {
 		Spaz.UI.setView('view-friends-menu-all');
 	} else {
 		Spaz.UI.setView('view-friends-menu-replies-dms');

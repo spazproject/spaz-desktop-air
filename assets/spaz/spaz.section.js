@@ -421,13 +421,13 @@ Spaz.Section.init = function() {
 
 	}
 
-	Spaz.Section.friendslist = {
-		panel: 'panel-friendslist',
-		timeline: 'timeline-friendslist',
-		wrapper: 'timelinewrapper-friendslist',
-		tab: 'tab-friendslist',
+	Spaz.Section.followerslist = {
+		panel: 'panel-followerslist',
+		timeline: 'timeline-followerslist',
+		wrapper: 'timelinewrapper-followerslist',
+		tab: 'tab-followerslist',
 		tabIndex: 3,
-		urls: new Array(Spaz.Data.getAPIURL('friendslist'), Spaz.Data.getAPIURL('followerslist')),
+		urls: new Array(Spaz.Data.getAPIURL('followerslist'), Spaz.Data.getAPIURL('followerslist')),
 		lastid: 0,
 		lastcheck: 0,
 		currdata: null,
@@ -447,7 +447,7 @@ Spaz.Section.init = function() {
 			/*
 				Reset our URLs each time in case of API URL switch
 			*/
-			this.urls = new Array(Spaz.Data.getAPIURL('friendslist'), Spaz.Data.getAPIURL('followerslist'));
+			this.urls = new Array(Spaz.Data.getAPIURL('followerslist'), Spaz.Data.getAPIURL('followerslist'));
 
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
@@ -593,7 +593,7 @@ Spaz.Section.init = function() {
 
 			sch.dump('Adding '+data.length+' entries from '+url);
 
-			$('#' + Spaz.Section.friendslist.timeline).empty();
+			$('#' + Spaz.Section.followerslist.timeline).empty();
 
 			if (data.length > 0) {
 				time.start('addingItems');
@@ -655,7 +655,7 @@ Spaz.Section.init = function() {
 				item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
 			}
 
-			var parsed = Spaz.Tpl.parse('friendslist_row', item);
+			var parsed = Spaz.Tpl.parse('followerslist_row', item);
 			$('#' + this.timeline).append(parsed);
 
 
@@ -671,10 +671,10 @@ Spaz.Section.init = function() {
 					return 1;
 				}
 			};
-			$("#" + this.timeline + ' div.friendslist-row').sort(sortfunc, true).remove().appendTo('#' + Spaz.Section.friendslist.timeline);
-			$("#" + this.timeline + ' div.friendslist-row:even').addClass('even');
-			$("#" + this.timeline + ' div.friendslist-row:odd').addClass('odd');
-			$("#" + this.timeline + ' div.friendslist-row').find('img.user-image').one('load',
+			$("#" + this.timeline + ' div.followerslist-row').sort(sortfunc, true).remove().appendTo('#' + Spaz.Section.followerslist.timeline);
+			$("#" + this.timeline + ' div.followerslist-row:even').addClass('even');
+			$("#" + this.timeline + ' div.followerslist-row:odd').addClass('odd');
+			$("#" + this.timeline + ' div.followerslist-row').find('img.user-image').one('load',
 				function() {
 					// alert('fadingIn');
 					$(this).fadeTo('500', '1.0');
@@ -721,7 +721,7 @@ Spaz.Section.init = function() {
 	// 			item.location = item.location.replace(/^(?:iphone|L|loc|spaz):\s*(-?[\d\.]+),?\s*(-?[\d\.]+)/i, "$1,$2");
 	// 		}
 	//
-	// 		var parsed = Spaz.Tpl.parse('friendslist_row', item);
+	// 		var parsed = Spaz.Tpl.parse('followerslist_row', item);
 	// 		$('#' + this.timeline).append(parsed);
 	// 	},
 	// 	cleanup: function() {
@@ -735,11 +735,11 @@ Spaz.Section.init = function() {
 	// 				return 1;
 	// 			}
 	// 		};
-	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').sort(sortfunc, true).remove().appendTo('#' + Spaz.Section.followerslist.timeline);
-	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:even').addClass('even');
-	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row:odd').addClass('odd');
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.followerslist-row').sort(sortfunc, true).remove().appendTo('#' + Spaz.Section.followerslist.timeline);
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.followerslist-row:even').addClass('even');
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.followerslist-row:odd').addClass('odd');
 	//
-	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.friendslist-row').find('img.user-image').one('load',
+	// 		$("#" + Spaz.Section.followerslist.timeline + ' div.followerslist-row').find('img.user-image').one('load',
 	// 		function() {
 	// 			// alert('fadingIn');
 	// 			$(this).fadeTo('500', '1.0');

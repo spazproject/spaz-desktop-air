@@ -41,51 +41,52 @@ var TwUserModel = new JazzRecord.Model({
 
 	modelMethods: {
 		userExists: function(screen_name, return_id) {
-			if (return_id) {
-				var user = this.findBy('screen_name', screen_name);
-				if (user) {
+			var user = this.all({
+				select:"id",
+				conditions:'screen_name LIKE ' + '\'' + screen_name + '\'',
+				limit:1
+			});
+			
+			if (user) {
+				if (return_id) {
 					return user.id;
 				} else {
-					return false;
+					return true;
 				}
 			} else {
-				var count = this.count('screen_name LIKE ' + '\'' + screen_name + '\'');
-				if (count > 0) {
-					return true;
-				} else {
-					return false;
-				}
+				return false;
 			}
 		},
 
 		userExistsId: function(twitter_id, return_id) {
-			if (return_id) {
-				sch.dump("return user_id for "+twitter_id);
-				var user = this.findBy('twitter_id', twitter_id);
-				sch.dump(user);
-				if (user) {
+			var user = this.all({
+				select:"id",
+				conditions:'twitter_id = ' + twitter_id,
+				limit:1
+			});
+			
+			if (user) {
+				if (return_id) {
 					return user.id;
 				} else {
-					return false;
+					return true;
 				}
 			} else {
-				var count = this.count('twitter_id = ' + twitter_id);
-				if (count > 0) {
-					return true;
-				} else {
-					return false;
-				}
+				return false;
 			}
 		},
 
 		/**
 		 * given a user object, return the id if it exists, or create a new record
 		 * and return that id 
+		 * @return {integer} the user id
 		 */
 		findOrCreate: function(userobj) {
-			var user;
-			if (user = this.findBy("twitter_id", userobj.id)) {
-				return user.id;
+			var user_id;
+			user_id = this.userExistsId(userobj.id, true);
+
+			if ( user_id ) {
+				return user_id;
 			} else {
 				userobj.twitter_id = userobj.id;
 				delete userobj.id;

@@ -5,7 +5,7 @@ if (!Spaz.Timelines) Spaz.Timelines = {};
 
 
 /**
- * Public timeline def 
+ * Friends timeline def 
  */
 var FriendsTimeline = function(args) {
 	
@@ -16,7 +16,7 @@ var FriendsTimeline = function(args) {
 
 	
 	/*
-		set up the public timeline
+		set up the Friends timeline
 	*/
 	this.timeline  = new SpazTimeline({
 		'timeline_container_selector' :'#timeline-friends',
@@ -121,23 +121,23 @@ var FriendsTimeline = function(args) {
 	
 	
 	this.filter = function(terms) {
-		$('#timeline-friends div.timeline-entry').removeClass('hidden');
+		jQuery('#timeline-friends div.timeline-entry').removeClass('hidden');
 		if (terms) {
 			try {
 				var negate = false;
-				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() == NEGATION_TOKEN) {
+				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
 					negate = true;
 					terms  = terms.slice(NEGATION_TOKEN.length);
 				}
-				var filter_re = new RegExp($.trim(terms), "i");
-				$('#timeline-friends div.timeline-entry').each(function(i) {
+				var filter_re = new RegExp(sch.trim(terms), "i");
+				jQuery('#timeline-friends div.timeline-entry').each(function(i) {
 					if (negate) {
-						if ( $(this).text().search(filter_re) > -1 ) {
-							$(this).addClass('hidden');
+						if ( jQuery(this).text().search(filter_re) > -1 ) {
+							jQuery(this).addClass('hidden');
 						}
 					} else {
-						if ( $(this).text().search(filter_re) == -1 ) {
-							$(this).addClass('hidden');
+						if ( jQuery(this).text().search(filter_re) === -1 ) {
+							jQuery(this).addClass('hidden');
 						}
 					}
 				});
@@ -194,7 +194,7 @@ var PublicTimeline = function(args) {
 		'failure_event':'error_public_timeline_data',
 		'event_target' :document,
 		
-		'refresh_time':1000*3600,
+		'refresh_time':1000*60*30, // 30 minutes
 		'max_items':100,
 
 		'request_data': function() {
@@ -254,23 +254,23 @@ var PublicTimeline = function(args) {
 	
 	
 	this.filter = function(terms) {
-		$('#timeline-public div.timeline-entry').removeClass('hidden');
+		jQuery('#timeline-public div.timeline-entry').removeClass('hidden');
 		if (terms) {
 			try {
 				var negate = false;
-				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() == NEGATION_TOKEN) {
+				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
 					negate = true;
 					terms  = terms.slice(NEGATION_TOKEN.length);
 				}
-				var filter_re = new RegExp($.trim(terms), "i");
-				$('#timeline-public div.timeline-entry').each(function(i) {
+				var filter_re = new RegExp(sch.trim(terms), "i");
+				jQuery('#timeline-public div.timeline-entry').each(function(i) {
 					if (negate) {
-						if ( $(this).text().search(filter_re) > -1 ) {
-							$(this).addClass('hidden');
+						if ( jQuery(this).text().search(filter_re) > -1 ) {
+							jQuery(this).addClass('hidden');
 						}
 					} else {
-						if ( $(this).text().search(filter_re) == -1 ) {
-							$(this).addClass('hidden');
+						if ( jQuery(this).text().search(filter_re) === -1 ) {
+							jQuery(this).addClass('hidden');
 						}
 					}
 				});
@@ -303,6 +303,139 @@ PublicTimeline.prototype.destroy = function(args) {
 
 
 /**
+ * User timeline def 
+ */
+var UserTimeline = function(args) {
+	
+	var thisUT = this;
+	
+	this.twit = new SpazTwit();
+
+	
+	/*
+		set up the user timeline
+	*/
+	this.timeline  = new SpazTimeline({
+		'timeline_container_selector' :'#timeline-user',
+		'entry_relative_time_selector':'.status-created-at',
+		
+		'success_event':'new_user_timeline_data',
+		'failure_event':'error_user_timeline_data',
+		'event_target' :document,
+		
+		'refresh_time':1000*60*30, // 30 minutes
+		'max_items':100,
+
+		'request_data': function() {
+			sc.helpers.markAllAsRead('#timeline-user div.timeline-entry');
+			var username = Spaz.Prefs.getUser();
+			var password = Spaz.Prefs.getPass();
+			thisUT.twit.setCredentials(username, password);
+			thisUT.twit.getUserTimeline(username);
+			Spaz.UI.statusBar("Loading user timeline");
+			Spaz.UI.showLoading();
+		},
+		'data_success': function(e, data) {
+			var data = data.reverse();
+			var no_dupes = [];
+			
+			for (var i=0; i < data.length; i++) {
+				
+				/*
+					only add if it doesn't already exist
+				*/
+				if (jQuery('#timeline-user div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+					
+					data[i].text = sc.helpers.makeClickable(data[i].text);
+					no_dupes.push(data[i]);
+					/*
+						Save to DB via JazzRecord
+					*/
+					TweetModel.saveTweet(data[i]);
+				}
+				
+			};
+			
+			thisUT.timeline.addItems(no_dupes);
+
+			sc.helpers.markAllAsRead('#timeline-user div.timeline-entry'); // user is never "new"
+			sc.helpers.updateRelativeTimes('#timeline-user a.status-created-at', 'data-created-at');
+			jQuery('#timeline-user div.timeline-entry').removeClass('even').removeClass('odd');
+			jQuery('#timeline-user div.timeline-entry:even').addClass('even');
+			jQuery('#timeline-user div.timeline-entry:odd').addClass('odd');
+
+			Spaz.UI.hideLoading();
+			Spaz.UI.statusBar("Ready");
+			
+		},
+		'data_failure': function(e, error_obj) {
+			var err_msg = "There was an error retrieving the user timeline";
+			Spaz.UI.statusBar(err_msg);
+
+			/*
+				Update relative dates
+			*/
+			sc.helpers.updateRelativeTimes('#timeline-user a.status-created-at', 'data-created-at');
+			Spaz.UI.hideLoading();
+		},
+		'renderer': function(obj) {
+			return Spaz.Tpl.parse('timeline_entry', obj);
+			
+		}
+	});
+	
+	
+	this.filter = function(terms) {
+		jQuery('#timeline-user div.timeline-entry').removeClass('hidden');
+		if (terms) {
+			try {
+				var negate = false;
+				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
+					negate = true;
+					terms  = terms.slice(NEGATION_TOKEN.length);
+				}
+				var filter_re = new RegExp(sch.trim(terms), "i");
+				jQuery('#timeline-user div.timeline-entry').each(function(i) {
+					if (negate) {
+						if ( jQuery(this).text().search(filter_re) > -1 ) {
+							jQuery(this).addClass('hidden');
+						}
+					} else {
+						if ( jQuery(this).text().search(filter_re) === -1 ) {
+							jQuery(this).addClass('hidden');
+						}
+					}
+				});
+			} catch(e) {
+				sch.dump(e.name+":"+e.message);
+			}
+
+		}
+	};
+	
+	
+};
+
+UserTimeline.prototype.init = function(args) {
+	
+}
+
+UserTimeline.prototype.activate = function(args) {
+	// alert('called activate');
+	this.timeline.start();
+}
+
+UserTimeline.prototype.deactivate = function(args) {
+	
+}
+
+UserTimeline.prototype.destroy = function(args) {
+	
+}
+
+
+
+/**
  * Search timeline def 
  */
 var SearchTimeline = function(args) {
@@ -312,9 +445,7 @@ var SearchTimeline = function(args) {
 	this.query = null;
 	this.lastquery = null;
 	
-	this.twit = new SpazTwit({
-		event_target:$('#timeline-search').get(0)
-	});
+	this.twit = new SpazTwit();
 	
 	/*
 		set up the public timeline
@@ -326,17 +457,20 @@ var SearchTimeline = function(args) {
 		'success_event':'new_search_timeline_data',
 		'failure_event':'error_search_timeline_data',
 		
-		'refresh_time':1000*3600,
+		'event_target' :document,
+		
+		
+		'refresh_time':1000*60*15, // 15 minutes
 		'max_items':100,
 
 		'request_data': function() {
-			if ($('#search-for').val().length > 0) {
-				thisST.query = $('#search-for').val();
+			if (jQuery('#search-for').val().length > 0) {
+				thisST.query = jQuery('#search-for').val();
 				
 				if (!thisST.lastquery) {
 					thisST.lastquery = thisST.query;
 				} else if (thisST.lastquery != thisST.query) {
-					$('#timeline-search .timeline-entry').remove();
+					jQuery('#timeline-search .timeline-entry').remove();
 				};
 				
 				// alert(thisST.lastquery+"\n"+thisST.query);
@@ -379,7 +513,6 @@ var SearchTimeline = function(args) {
 				}
 				
 			};
-			// alert(no_dupes.length);
 			
 			if (no_dupes.length > 0) {
 				thisST.timeline.addItems(no_dupes);
@@ -431,9 +564,147 @@ SearchTimeline.prototype.destroy = function(args) {
 }
 
 
+
+
+/**
+ * Followers/following timeline def 
+ */
+var FollowersTimeline = function(args) {
+	
+	var thisFLT = this;
+	
+	this.twit = new SpazTwit();
+
+	
+	/*
+		set up the user timeline
+	*/
+	this.timeline  = new SpazTimeline({
+		'timeline_container_selector' :'#timeline-followerslist',
+		'entry_relative_time_selector':'.status-created-at',
+		
+		'success_event':'get_followerslist_succeeded',
+		'failure_event':'get_followerslist_failed',
+		'event_target' :document,
+		
+		'refresh_time':-1, // never automatically
+		'max_items':200,
+
+		'request_data': function() {
+			sc.helpers.markAllAsRead('#timeline-followerslist div.timeline-entry');
+			var username = Spaz.Prefs.getUser();
+			var password = Spaz.Prefs.getPass();
+			thisFLT.twit.setCredentials(username, password);
+			thisFLT.twit.getFollowersList();
+			Spaz.UI.statusBar("Loading followerslist");
+			Spaz.UI.showLoading();
+		},
+		'data_success': function(e, data) {
+			// alert('got follower data');
+			var data = data.reverse();
+			
+			var no_dupes = [];
+			
+			for (var i=0; i < data.length; i++) {
+				
+				/*
+					only add if it doesn't already exist
+				*/
+				if (jQuery('#timeline-followerslist div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+					
+					no_dupes.push(data[i]);
+					/*
+						Save to DB via JazzRecord
+					*/
+					TwUserModel.findOrCreate(data[i]);
+				}
+				
+			};
+			
+			thisFLT.timeline.addItems(no_dupes);
+
+			jQuery('#timeline-followerslist div.timeline-entry').removeClass('even').removeClass('odd');
+			jQuery('#timeline-followerslist div.timeline-entry:even').addClass('even');
+			jQuery('#timeline-followerslist div.timeline-entry:odd').addClass('odd');
+
+			Spaz.UI.hideLoading();
+			Spaz.UI.statusBar("Ready");
+			
+		},
+		'data_failure': function(e, error_obj) {
+			var err_msg = "There was an error retrieving the user timeline";
+			Spaz.UI.statusBar(err_msg);
+
+			/*
+				Update relative dates
+			*/
+			sc.helpers.updateRelativeTimes('#timeline-followerslist a.status-created-at', 'data-created-at');
+			Spaz.UI.hideLoading();
+		},
+		'renderer': function(obj) {
+			// sch.error(obj);
+			return Spaz.Tpl.parse('followerslist_row', obj);
+			
+		}
+	});
+	
+	
+	this.filter = function(terms) {
+		jQuery('#timeline-user div.timeline-entry').removeClass('hidden');
+		if (terms) {
+			try {
+				var negate = false;
+				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
+					negate = true;
+					terms  = terms.slice(NEGATION_TOKEN.length);
+				}
+				var filter_re = new RegExp(sch.trim(terms), "i");
+				jQuery('#timeline-user div.timeline-entry').each(function(i) {
+					if (negate) {
+						if ( jQuery(this).text().search(filter_re) > -1 ) {
+							jQuery(this).addClass('hidden');
+						}
+					} else {
+						if ( jQuery(this).text().search(filter_re) === -1 ) {
+							jQuery(this).addClass('hidden');
+						}
+					}
+				});
+			} catch(e) {
+				sch.dump(e.name+":"+e.message);
+			}
+
+		}
+	};
+	
+	
+};
+
+FollowersTimeline.prototype.init = function(args) {
+	
+}
+
+FollowersTimeline.prototype.activate = function(args) {
+	// alert('called activate');
+	this.timeline.start();
+}
+
+FollowersTimeline.prototype.deactivate = function(args) {
+	
+}
+
+FollowersTimeline.prototype.destroy = function(args) {
+	
+}
+
+
+
+
 Spaz.Timelines.init = function() {
-	Spaz.Timelines.friends= new FriendsTimeline();
-	Spaz.Timelines.public = new PublicTimeline();
-	Spaz.Timelines.search = new SearchTimeline();
+	Spaz.Timelines.friends   = new FriendsTimeline();
+	Spaz.Timelines.user      = new UserTimeline();
+	Spaz.Timelines.public    = new PublicTimeline();
+	Spaz.Timelines.search    = new SearchTimeline();
+	Spaz.Timelines.followers = new FollowersTimeline();
 }
 

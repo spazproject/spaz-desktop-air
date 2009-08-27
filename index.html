@@ -51,6 +51,13 @@
 
 	<!-- SpazCore -->
 	<script src="spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		/*
+			set your dump level now to get dumps asap
+		*/
+		sc.setDumpLevel(1); // 1 shows errors, nothing else
+	</script>
+	
 
 	<!-- JazzRecord models -->
 	<script src="assets/models/TweetModel.js" type="text/javascript" charset="utf-8"></script>
@@ -77,7 +84,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/spry/widgets/tabbedpanels/SpryTabbedPanels.css" />
 
 	<!-- Spaz libs -->
-	<script src="assets/spaz/spaz.js"            type="text/javascript"></script>
+	<script src="assets/spaz/spaz.js"            type="text/javascript"></script>	
+	
 	<script src="assets/spaz/spaz.controller.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/spaz/spaz.const.js"      type="text/javascript"></script>
 	<script src="assets/spaz/spaz.timers.js"     type="text/javascript"></script>
@@ -201,7 +209,7 @@
 				<li class="TabbedPanelsTab" tabindex="6" title="Friends"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
-					id="tab-friendslist" onclick="Spaz.UI.setSelectedTab(this)">
+					id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)">
 					<span class="tab-icon"></span>
 				</li>
 
@@ -294,14 +302,14 @@
 
 
 				<!-- LIST OF PEOPLE YOU ARE FOLLOWING -->
-				<div class="TabbedPanelsContent" id="panel-friendslist">
-					<div id="menu-friendslist" class="panelmenu">
+				<div class="TabbedPanelsContent" id="panel-followerslist">
+					<div id="menu-followerslist" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="button" name="refresh-friendslist" value="Refresh" id="refresh-friendslist" />
+							<input type="button" name="refresh-followerslist" value="Refresh" id="refresh-followerslist" />
 						</form>
 					</div>
-					<div id="timelinewrapper-friendslist" class="timeline-wrapper">
-						<div id="timeline-friendslist" class="timeline directory">
+					<div id="timelinewrapper-followerslist" class="timeline-wrapper">
+						<div id="timeline-followerslist" class="timeline directory">
 						</div>
 					</div>
 				</div>
@@ -673,8 +681,9 @@
 			<!-- <textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea> -->
 			<textarea id="entrybox" tabindex="1"></textarea>
 			<div id="entrybox-popup">
-				<div id="irt" style="display:none"><strong>Re:</strong><span id="irt-message" data-status-id="0"></span>
+				<div id="irt" style="display:none">
 					<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
+					<strong>Re:</strong><span id="irt-message" data-status-id="0"></span>
 				</div>
 				<span id="chars-left">
 					<span id="chars-left-count"></span> chars left
@@ -745,7 +754,7 @@
 						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
 						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
 					</ul> -->
-				<li class="menuitem mainMenu-view">View…&nbsp;&raquo;
+				<li class="menuitem mainMenu-view"><a>View…&nbsp;&raquo;</a>
 					<ul>
 						<li class="menuitem mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li>
 						<li class="menuitem mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li>
@@ -756,7 +765,7 @@
 
 				<li class="menu-separator"><hr /></li>
 
-				<li class="menuitem mainMenu-account-switch">Switch Accounts…&nbsp;&raquo;
+				<li class="menuitem mainMenu-account-switch"><a>Switch Accounts…&nbsp;&raquo;</a>
 					<ul id="mainMenu-account-list">
 <!--
 						<li class="menuitem mainMenu-account selected-account"><a id="mainMenu-account-kibitzer">Kibitzer</a></li>

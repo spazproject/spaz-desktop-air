@@ -622,13 +622,13 @@ div.even div.user a {
 Followers and following
 ********/
 
-.friendslist-row {
+.followerslist-row {
 	font-size:8pt;
 	clear:both;
 	padding:8px;
 	border-bottom:1px dotted #00CC00;
 }
-	.friendslist-row .directory-user {
+	.followerslist-row .directory-user {
 
 	}
 		.directory-user .user-image {
@@ -655,7 +655,7 @@ Followers and following
 div.directory {
 	overflow:hidden;
 }
-#friendslist-detail,
+#followerslist-detail,
 #followerslist-detail {
 	background-color:#005500;
 	color:#009900;
@@ -671,13 +671,13 @@ div.directory {
 	clear:both;
 	/*background-image: url('images/user-detail-bg.png');*/
 }
-#friendslist-detail h2,
+#followerslist-detail h2,
 #followerslist-detail h2 {
 	margin:0;
 	font-size:18px;
 	letter-spacing: -1px;
 }
-#friendslist-detail div.user-image,
+#followerslist-detail div.user-image,
 #followerslist-detail div.user-image {
 	float:right;
 	margin:0 5px 5px 0;
@@ -685,7 +685,7 @@ div.directory {
 	height:48px;
 	width:48px;
 }
-#friendslist-detail img.user-image,
+#followerslist-detail img.user-image,
 #followerslist-detail img.user-image {
 	height:48px;
 	width:48px;

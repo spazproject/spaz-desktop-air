@@ -43,71 +43,66 @@ div.outerbox div.shadowbox3
 }
 
 #root-menu-div ul {
-/*	border: 1px solid #000;*/
-
 }
-#root-menu-div li{
-/*	white-space:nowrap;*/
-}
-ul.menu,
-#root-menu-div ul {
-/*	background-color: #fff;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	*/
-	padding:4px;
-	margin:0;
-	list-style: none;
-}
-#root-menu-div li {
-	list-style: none;
-	padding:  4px;
-	min-width:125px;
-}
-
-li.menu-separator.active{
-	background-color: transparent;
-}
-li.active {
-	background-color:#eeeeee;
-	color:#222222;
-	cursor: pointer;
-	-khtml-border-radius:5px;
-}
-.activetarget{
-	/*background-color: white;*/
-}
-
-li.menumain {
-	float: left;
-	padding: 0 10px;
-}
-	img.menu-item-arrow{
-		position: absolute;
-		right: 4px;
-		top: 8px;
+	#root-menu-div li {
+		list-style: none;
+		min-width:125px;
 	}
 
-/*
-	This is for separators
-*/
-#root-menu-div hr {
-	border-bottom: 1px solid #999999;
-	border-left-width: 0px;
-	border-right-width: 0px;
-	border-top-width: 0px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	width: 80%;
-}
+		ul.menu,
+		#root-menu-div ul {
+			padding:0px;
+			margin:0;
+			list-style: none;
+		}
 
-div.menu-item a {
-	color:inherit !important;
-	display:block;
-	padding: 1px 10px 1px 0px;
-}
+
+		li.menu-separator.active{
+			background-color: transparent;
+		}
+		.activetarget{
+			/*background-color: white;*/
+		}
+
+		li.menumain {
+			float: left;
+/*			padding: 0 10px;*/
+		}
+			img.menu-item-arrow{
+				position: absolute;
+				right: 4px;
+				top: 8px;
+			}
+
+	/*
+		This is for separators
+	*/
+	#root-menu-div hr {
+		border-bottom: 1px solid #999999;
+		border-left-width: 0px;
+		border-right-width: 0px;
+		border-top-width: 0px;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		width: 80%;
+	}
+
+	div.menu-item a {
+		color:inherit;
+		display:block;
+		padding: 5px 10px;
+	}
+		li.active {
+			padding:0;
+		}
+		li.active>div.menu-item>a {
+			background-color:#eeeeee;
+			color:#222222;
+			cursor: pointer;
+			-khtml-border-radius:5px;
+		}
+		
 
 /*
 	This isn't used because we can't make them small enough

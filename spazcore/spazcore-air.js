@@ -79,6 +79,18 @@ sc.app = {};
 sc.helpers = {};
 
 /**
+ * dump level for limiting what gets dumped to console 
+ */
+sc.dumplevel = 1;
+
+/**
+ * method to set dump level 
+ */
+sc.setDumpLevel = function(level) {
+	sc.dumplevel = parseInt(level, 10);
+};
+
+/**
  * @namespace helper shortcuts 
  * this lets us write "sch.method" instead of "sc.helpers.method"
  * 
@@ -87,6 +99,8 @@ var sch = sc.helpers;
 
 
 sc.events = {};
+
+
 
 
 
@@ -4380,6 +4394,44 @@ sc.helpers.fromHTMLSpecialChars = function(str) {
 };
 
 
+sc.helpers.escape_html = function(string) {
+	return sc.helpers.htmlspecialchars(string, 'ENT_QUOTES');
+};
+
+
+sc.helpers.htmlspecialchars = function(string, quote_style) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Mirek Slugen
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Nathan
+    // +   bugfixed by: Arno
+    // +    revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // -    depends on: get_html_translation_table
+    // *     example 1: htmlspecialchars("<a href='test'>Test</a>", 'ENT_QUOTES');
+    // *     returns 1: '&lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;'
+
+    var histogram = {}, symbol = '', tmp_str = '', i = 0;
+    tmp_str = string.toString();
+
+    if (false === (histogram = sc.helpers._get_html_translation_table('HTML_SPECIALCHARS', quote_style))) {
+        return false;
+    }
+
+	// first, do &amp;
+	tmp_str = tmp_str.split('&').join(histogram['&']);
+	
+	// then do the rest
+    for (symbol in histogram) {
+		if (symbol != '&') {
+			entity = histogram[symbol];
+	        tmp_str = tmp_str.split(symbol).join(entity);
+		}
+    }
+
+    return tmp_str;
+}
+
+
 
 sc.helpers.htmlentities = function(string, quote_style) {
     // http://kevin.vanzonneveld.net
@@ -4698,6 +4750,18 @@ var SPAZCORE_PLATFORM_WEBOS		= 'webOS';
 var SPAZCORE_PLATFORM_TITANIUM	= 'Titanium';
 var SPAZCORE_PLATFORM_UNKNOWN		= '__UNKNOWN';
 
+/**
+ * error reporting levels 
+ */
+var SPAZCORE_DUMPLEVEL_DEBUG   = 4;
+var SPAZCORE_DUMPLEVEL_NOTICE  = 3;
+var SPAZCORE_DUMPLEVEL_WARNING = 2;
+var SPAZCORE_DUMPLEVEL_ERROR   = 1;
+var SPAZCORE_DUMPLEVEL_NONE    = 0; // this means "never ever dump anything!"
+
+
+
+
 
 /**
 * Returns a string identifier for the platform.
@@ -4751,10 +4815,39 @@ sc.helpers.isTitanium = function() {
 
 
 /**
+ * Helper to send a debug dump 
+ */
+sc.helpers.debug = function(obj) {
+	sc.helpers.dump(obj, SPAZCORE_DUMPLEVEL_DEBUG);
+};
+
+/**
+ * helper to send a notice dump 
+ */
+sc.helpers.note = function(obj) {
+	sc.helpers.dump(obj, SPAZCORE_DUMPLEVEL_NOTICE);
+};
+
+/**
+ * helper to send a warn dump 
+ */
+sc.helpers.warn = function(obj) {
+	sc.helpers.dump(obj, SPAZCORE_DUMPLEVEL_WARN);
+};
+
+/**
+ * helper to send an error dump 
+ */
+sc.helpers.error = function(obj) {
+	sc.helpers.dump(obj, SPAZCORE_DUMPLEVEL_ERROR);
+};
+
+
+/**
  * A simple logging function
  * @platformstub
  */
-sc.helpers.dump = function(obj) {
+sc.helpers.dump = function(obj, level) {
 	// stub
 };
 
@@ -6484,11 +6577,8 @@ SpazTimeline.prototype.stopListening = function() {
 
 SpazTimeline.prototype.startRefresher = function() {
 	this.stopRefresher();
-	sch.dump('START REFRESHER ================================');
 	if (this.refresh_time > 1000) { // the minimum refresh is 1000ms. Otherwise we don't auto-refresh
 		this.refresher = setInterval(this.refresh, this.refresh_time);
-	} else {
-		alert('OH SHIT');
 	}
 };
 
@@ -6665,6 +6755,8 @@ var SPAZCORE_SECTION_COMBINED = 'combined';
 var SPAZCORE_SECTION_PUBLIC = 'public';
 var SPAZCORE_SECTION_SEARCH = 'search';
 var SPAZCORE_SECTION_USER = 'user-timeline';
+var SPAZCORE_SECTION_FRIENDLIST = 'friendslist';
+var SPAZCORE_SECTION_FOLLOWERSLIST = 'followerslist';
 
 var SPAZCORE_SERVICE_TWITTER = 'twitter';
 var SPAZCORE_SERVICE_IDENTICA = 'identi.ca';
@@ -6842,6 +6934,18 @@ SpazTwit.prototype.initializeData = function() {
 		'max':400,
 		'min_age':5*60
 	};
+	this.data[SPAZCORE_SECTION_FRIENDLIST] = {
+		'items':   [],
+		'newitems':[],
+		'max':500,
+		'min_age':5*60
+	};
+	this.data[SPAZCORE_SECTION_FOLLOWERSLIST] = {
+		'items':   [],
+		'newitems':[],
+		'max':500,
+		'min_age':5*60
+	};
 	this.data[SPAZCORE_SECTION_SEARCH] = {
 		'lastid':  0, // search api prefers 0, will freak out on "1"
 		'items':   [],
@@ -6878,8 +6982,6 @@ SpazTwit.prototype.combinedTimelineFinished = function() {
 	}
 	return true;
 };
-
-
 
 /**
  * Checks to see if the combined timeline is finished 
@@ -7329,6 +7431,7 @@ SpazTwit.prototype.getUserTimeline = function(id, count, page) {
 	
 	
 	var url = this.getAPIURL('user_timeline', data);
+	
 	this._getTimeline({
 		'url':url,
 		'username':this.username,
@@ -7437,7 +7540,7 @@ SpazTwit.prototype.search = function(query, since_id, results_per_page, page, la
 SpazTwit.prototype._processSearchTimeline = function(search_result, finished_event, processing_opts) {	
 	/*
 		Search is different enough that we need to break it out and 
-		write a custom alternative to _processTimelines
+		write a custom alternative to _processTimeline
 	*/
 	if (!processing_opts) { processing_opts = {}; }
 
@@ -7943,6 +8046,48 @@ SpazTwit.prototype._processItem = function(item, section_name) {
 };
 
 
+
+/**
+ * This modifies a Twitter post, adding some properties. All new properties are
+ * prepended with "SC_"
+ * 
+ * this executes within the jQuery.each scope, so this === the item 
+ */
+SpazTwit.prototype._processUser = function(item, section_name) {
+	
+	item.SC_timeline_from = section_name;
+	if (this.username) {
+		item.SC_user_received_by = this.username;
+	}
+	
+	
+	if (section_name === SPAZCORE_SECTION_FOLLOWERSLIST) {
+		item.SC_is_follower;
+	}
+	if (section_name === SPAZCORE_SECTION_FRIENDLIST) {
+		item.SC_is_followed;
+	}
+	
+	/*
+		add unix timestamp .SC_created_at_unixtime for easier date comparison
+	*/
+	if (!item.SC_created_at_unixtime) {
+		item.SC_created_at_unixtime = sc.helpers.httpTimeToInt(item.created_at);
+	}
+	
+	/*
+		add .SC_retrieved_unixtime
+	*/
+	if (!item.SC_retrieved_unixtime) {
+		item.SC_retrieved_unixtime = sc.helpers.getTimeAsInt();
+	}
+	
+	return item;
+};
+
+
+
+
 /**
  * this is a general wrapper for non-timeline methods on the Twitter API. We
  * use this to call methods that will return a single response 
@@ -8040,7 +8185,7 @@ SpazTwit.prototype.getUser = function(user_id) {
 		'url':url,
 		'username':this.username,
 		'password':this.password,
-		'process_callback': this._processUserData,
+		// 'process_callback': this._processUserData,
 		'success_event_type':'get_user_succeeded',
 		'failure_event_type':'get_user_failed',
 		'method':'GET'
@@ -8054,8 +8199,99 @@ SpazTwit.prototype.getUser = function(user_id) {
 
 
 
-SpazTwit.prototype.getFriends = function() {};
-SpazTwit.prototype.getFollowers = function() {};
+SpazTwit.prototype.getFriendsList = function() {
+	
+	var url = this.getAPIURL('friendslist');
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'process_callback': this._processFriendsList,
+		'success_event_type':'get_friendslist_succeeded',
+		'failure_event_type':'get_friendslist_failed',
+		'method':'GET'
+	};
+
+	var xhr = this._getTimeline(opts);
+};
+/**
+ * @private
+ */
+SpazTwit.prototype._processFriendsList = function(ret_items, finished_event, processing_opts) {
+	this._processUserList(SPAZCORE_SECTION_FRIENDLIST, ret_items, finished_event, processing_opts);
+};
+
+
+
+
+
+
+SpazTwit.prototype.getFollowersList = function() {
+	var url = this.getAPIURL('followerslist');
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'process_callback': this._processFollowersList,
+		'success_event_type':'get_followerslist_succeeded',
+		'failure_event_type':'get_followerslist_failed',
+		'method':'GET'
+	};
+
+	var xhr = this._getTimeline(opts);
+};
+/**
+ * @private
+ */
+SpazTwit.prototype._processFollowersList = function(ret_items, finished_event, processing_opts) {
+	this._processUserList(SPAZCORE_SECTION_FOLLOWERSLIST, ret_items, finished_event, processing_opts);
+};
+
+
+
+/**
+ * general processor for timeline data 
+ * @private
+ */
+SpazTwit.prototype._processUserList = function(section_name, ret_items, finished_event, processing_opts) {
+	
+	if (!processing_opts) { processing_opts = {}; }
+
+	if (ret_items.length > 0){
+		/*
+			we process each item, adding some attributes and generally making it cool
+		*/
+		for (var k=0; k<ret_items.length; k++) {
+			ret_items[k] = this._processUser(ret_items[k], section_name);
+			sch.dump(ret_items[k]);
+		}
+
+		/*
+			sort items
+		*/
+		ret_items.sort(this._sortItemsAscending);
+		
+			
+		// set lastid
+		var lastid = ret_items[ret_items.length-1].id;
+		this.data[section_name].lastid = lastid;
+		sc.helpers.dump('this.data['+section_name+'].lastid:'+this.data[section_name].lastid);
+
+		// add new items to data.newitems array
+		this.data[section_name].newitems = ret_items;
+
+		this._addToSectionItems(section_name, this.data[section_name].newitems);
+		
+		this.triggerEvent(finished_event,this.data[section_name].newitems );
+
+	} else { // no new items, but we should fire off success anyway
+		this.triggerEvent(finished_event);
+	}
+
+};
+
 
 SpazTwit.prototype.addFriend = function(user_id) {
 	var data = {};
@@ -8690,14 +8926,21 @@ onevar: false
 var sc, air, window, DOMParser;
  
 /*
+	AIR VERSION
 	We load this file to redefine platform-specific methods
 */
 
 /*
 	dump an object's first level to console
 */
-sc.helpers.dump = function(obj) {
+sc.helpers.dump = function(obj, level) {
 	var dumper;
+	
+	if (!level) { level = SPAZCORE_DUMPLEVEL_DEBUG; }
+	
+	if (sc.dumplevel < level ) {
+		return;
+	}
 	
 	if (sc.helpers.isString(obj) || sc.helpers.isNumber(obj) || !obj) {
 		dumper = air.trace;

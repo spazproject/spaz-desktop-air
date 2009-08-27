@@ -36,7 +36,7 @@ Spaz.Data.getAPIURL = function(key) {
 	urls.favorites			= "favorites.json";
 	urls.dm_timeline		= "direct_messages.json";
 	urls.dm_sent			= "direct_messages/sent.json";
-	urls.friendslist		= "statuses/friends.json";
+	urls.followerslist		= "statuses/friends.json";
 	urls.followerslist		= "statuses/followers.json";
 	urls.featuredlist		= "statuses/featured.json";
 
@@ -627,7 +627,7 @@ Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
 					Check the origin URL to see if this is a follower or someone the
 					user is following
 				*/
-				if (thisurl == Spaz.Data.getAPIURL('friendslist')) {
+				if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
 					Spaz.Data.$ajaxQueueStorage[i].is_following = true;
 				} else if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
 					Spaz.Data.$ajaxQueueStorage[i].is_follower = true;
@@ -995,15 +995,18 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 		case 'tab-public':
 			Spaz.Timelines.public.activate();
 			break;
+		case 'tab-user':
+			Spaz.Timelines.user.activate();
+			break;
 		case 'tab-search':
 			$('#search-for')[0].focus();
 			Spaz.Timelines.search.activate();
 			break;
+		case 'tab-followerslist':
+			Spaz.Timelines.followers.activate();
+			break;
 		default:
-			var section = Spaz.Section.getSectionFromTab(tab)
-			sch.dump('SECTION:'+section);
-			sch.dump(section);
-			section.build(force, reset);
+			sch.error('Tab not implemented or something!');
 			break;
 	}
 	return false
