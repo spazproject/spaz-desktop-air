@@ -1,0 +1,74 @@
+/*
+ * Copyright 2007-2008. Adobe Systems Incorporated.
+ * All rights reserved.
+ */
+
+<languageVersion : 1.0;>
+
+kernel NewFilter
+<   namespace : "com.adobe.air.samples.BlackBookSafe";
+    vendor : "Adobe";
+    version : 1;
+    description : "Page transition sample filter";
+>
+{
+    input image4 htmlLoaderSprite;
+
+    const float PI = 3.14159265;
+    
+    output pixel4 dst;
+    
+    parameter float transition
+     <
+        minValue: 0.0;
+        maxValue: 1.0;
+        defaultValue: 1.0;
+    >;
+    
+    parameter float width
+    < 
+        defaultValue: 576.0; 
+    >;
+    
+     parameter float height
+    < 
+        defaultValue: 384.0; 
+    >;
+    
+
+
+    void
+    evaluatePixel()
+    {
+        float position = 1. - (outCoord().x / width / 2. );
+        float theta = position * transition * PI / 2.9;
+        float3 coord;
+        coord.xy = outCoord();
+        coord.z = 0.0;
+        
+        float3 camera = float3( 0, height/2., -2000 );
+        
+        float3x3 rotation = float3x3(
+            cos(theta), 0,  sin(theta),
+                    0, 1,         0,
+            -sin(theta), 0,  cos(theta));
+        
+        float3 x1 = rotation * float3(1, 0, 0);
+        float3 x2 = rotation * float3(0, 1, 0);
+        float3 x3 = rotation * float3(1, 1, 0);
+        
+        float3 n = cross((x2-x1), (x3-x1));
+        float d = dot(x1, n);
+        
+        float t = (-d - dot(camera, n)) / dot(coord-camera, n);
+        
+        float3 intersection = (coord-camera) * t + camera;
+        
+        float2 pos = float2(
+                        dot(intersection, x1) / length(x1),
+                        dot(intersection, x2) / length(x2)
+                        );
+
+        dst = sample(htmlLoaderSprite, pos);
+    }
+}
