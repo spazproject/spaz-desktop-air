@@ -1,6 +1,6 @@
 if (!Spaz.DB) Spaz.DB = {};
 
-const SPAZ_DB_NAME = "spaz.db";
+var SPAZ_DB_NAME = "spaz.db";
 
 /***********
 Spaz.DB takes care of persisting a portion of the application state

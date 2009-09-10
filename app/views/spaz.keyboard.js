@@ -17,7 +17,7 @@ Spaz.Keyboard.move = function(dir, selector) {
 	Spaz.dump("selector is '" + selector+"'")
 	
 	// var timelineid = 'timeline-friends';
-	var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
+	var section = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
 	var timelineid = section.timeline;
 
 	if (!dir) { dir = 'down' }

@@ -971,7 +971,7 @@ Spaz.Data.uploadFile = function(opts) {
  * @param {Boolean} reset resets all lastid/mincachetime data on this section
  * @returns false
  * @type Boolean
- * @see Spaz.Section.getSectionFromTab
+ * @see Spaz.Timelines.getTimelineFromTab
  */
 
 Spaz.Data.loadDataForTab = function(tab, force, reset) {

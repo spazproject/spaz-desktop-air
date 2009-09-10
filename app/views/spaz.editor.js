@@ -62,17 +62,5 @@ Spaz.Editor.$wrap = function(open, close, selstart, selend) {
 
 
 Spaz.Editor.initSuggestions = function() {
-	
-	// sch.dump("old: " + Spaz.uc.usernames);
 	Spaz.uc.usernames = Spaz.Cache.getScreenNamesAsTags();
-	// sch.dump("new: " + Spaz.uc.usernames);
-	
-	
-	// $('#entrybox').tagSuggest({
-	// 	'tags':Spaz.Cache.getScreenNamesAsTags(),
-	// 	'tagContainerId':'suggestions',
-	// 	'tagWrap':'li',
-	// 	delay:100,
-	// });
-
 };

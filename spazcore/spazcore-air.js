@@ -1,3 +1,4 @@
+/*********** Built 2009-09-10 15:44:50 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -4354,11 +4355,51 @@ sc.helpers.autolinkTwitterHashtag = function(str, tpl) {
 
 
 
-
+/**
+ * Applies autolink, autolinkTwitterScreenname, autolinkTwitterHashtag
+ * 
+ * @param {string} str
+ * @param {oobject} opts
+ * 
+ * Opts structure:
+ *  {
+ *  	'autolink': {
+ *  		'type'      :'both', (email, url, or both)
+ *  		'extra_code':'',
+ *  		'maxlen'    :20
+ *  	},
+ *  	'screenname': {
+ *  		'tpl':'' // should contain macro '#username#'
+ *  	},
+ *  	'hashtag': {
+ *  		'tpl':'' // should contain macros '#hashtag#' and '#hashtag_enc#'
+ *  	}
+ *  }
+ */
 sc.helpers.makeClickable = function(str, opts) {
-	str = sc.helpers.autolink(str);
-	str = sc.helpers.autolinkTwitterScreenname(str);
-	str = sc.helpers.autolinkTwitterHashtag(str);
+	var autolink_type, autolink_extra_code, autolink_maxlen, screenname_tpl, hashtag_tpl;
+	
+	if (!opts) {
+		opts = {};
+	}
+	
+	if (opts.autolink) {
+		var autolink_type       = opts.autolink.type || null;
+		var autolink_extra_code = opts.autolink.extra_code || null;
+		var autolink_maxlen     = opts.autolink.maxlen || null;
+	}
+	
+	if (opts.screenname) {
+		var screenname_tpl      = opts.screenname.tpl || null;
+	}
+	
+	if (opts.hashtag) {
+		var hashtag_tpl         = opts.hashtag.tpl || null;
+	}
+	
+	str = sc.helpers.autolink(str, autolink_type, autolink_extra_code, autolink_maxlen);
+	str = sc.helpers.autolinkTwitterScreenname(str, screenname_tpl);
+	str = sc.helpers.autolinkTwitterHashtag(str, hashtag_tpl);
 	return str;
 };
 
@@ -5083,7 +5124,206 @@ sc.helpers.createXMLFromString = function (string) {
 };
 
 
-/*jslint 
+/**
+ * a library to get direct image urls for various image hosting servces 
+ */
+function SpazImageURL(args) {
+	
+	this.apis = {};
+	
+	this.initAPIs();
+	
+};
+
+/**
+ * Creates the initial default set of API descriptions 
+ */
+SpazImageURL.prototype.initAPIs = function() {
+	this.addAPI('twitpic', {
+		'url_regex'       : new RegExp("http://twitpic.com/([a-zA-Z0-9]+)", "gi"),
+		'getThumbnailUrl' : function(id) {
+			var url = 'http://twitpic.com/show/thumb/'+id;
+			return url;
+		},
+		'getImageUrl'     : function(id) {
+			return null;
+		}
+	});
+
+
+	this.addAPI('yfrog', {
+		'url_regex'       : new RegExp("http://yfrog.(?:com|us)/([a-zA-Z0-9]+)", "gim"),
+		'getThumbnailUrl' : function(id) {
+			var url = 'http://yfrog.com/'+id+'.th.jpg';
+			return url;
+		},
+		'getImageUrl'     : function(id) {
+			return null;
+		}
+	});
+	
+	
+	this.addAPI('twitgoo', {
+		'url_regex'       : /http:\/\/twitgoo.com\/([a-zA-Z0-9]+)/gi,
+		'getThumbnailUrl' : function(id) {
+			var url = 'http://twitgoo.com/show/thumb/'+id;
+			return url;
+		},
+		'getImageUrl'     : function(id) {
+			var url = 'http://twitgoo.com/show/img/'+id;
+			return url;
+		}
+	});
+	
+	
+	
+	this.addAPI('pikchur', {
+		'url_regex'       : /http:\/\/pikchur.com\/([a-zA-Z0-9]+)/gi,
+		'getThumbnailUrl' : function(id) {
+			// http://img.pikchur.com/pic_GPT_t.jpg
+			var url = 'http://img.pikchur.com/pic_'+id+'_t.jpg';
+			return url;
+		},
+		'getImageUrl'     : function(id) {
+			//http://img.pikchur.com/pic_GPT_l.jpg
+			var url = 'http://img.pikchur.com/pic_'+id+'_l.jpg';
+			return url;
+		}
+	});
+	
+	
+	this.addAPI('tweetphoto', {
+		'url_regex'       : /http:\/\/tweetphoto.com\/([a-zA-Z0-9]+)/gi,
+		'getThumbnailUrl' : function(id) {
+			// http://TweetPhotoAPI.com/api/TPAPI.svc/json/imagefromurl?size=thumbnail&url=http://tweetphoto.com/iyb9azy4
+			var url = 'http://TweetPhotoAPI.com/api/TPAPI.svc/imagefromurl?size=thumbnail&url=http://tweetphoto.com/'+id;
+			return url;
+		},
+		'getImageUrl'     : function(id) {
+			// http://TweetPhotoAPI.com/api/TPAPI.svc/imagefromurl?size=big&url=http://tweetphoto.com/iyb9azy4
+			var url = 'http://TweetPhotoAPI.com/api/TPAPI.svc/imagefromurl?size=big&url=http://tweetphoto.com/'+id;
+			return url;
+		}
+	});
+	
+	
+	this.addAPI('pic.gd', {
+		'url_regex'       : /http:\/\/pic.gd\/([a-zA-Z0-9]+)/gi,
+		'getThumbnailUrl' : function(id) {
+			// http://TweetPhotoAPI.com/api/TPAPI.svc/json/imagefromurl?size=thumbnail&url=http://pic.gd/iyb9azy4
+			var url = 'http://TweetPhotoAPI.com/api/TPAPI.svc/imagefromurl?size=thumbnail&url=http://pic.gd/'+id;
+			return url;
+		},
+		'getImageUrl'     : function(id) {
+			// http://TweetPhotoAPI.com/api/TPAPI.svc/imagefromurl?size=big&url=http://pic.gd/iyb9azy4
+			var url = 'http://TweetPhotoAPI.com/api/TPAPI.svc/imagefromurl?size=big&url=http://pic.gd/'+id;
+			return url;
+		}
+	});	
+};
+
+
+/**
+ * retrieve APIs 
+ * @return {array}
+ */
+SpazImageURL.prototype.getAPIs = function() {
+	return this.apis;	
+};
+
+/**
+ * get an api for a service
+ * @param {string} service_name 
+ * @return {object}
+ */
+SpazImageURL.prototype.getAPI = function(service_name) {
+	
+	return this.apis[service_name];
+	
+};
+
+/**
+ * add a new API for a service
+ * @param {string} service_name
+ * @param {object} opts (url_regex regexp, getThumbnailUrl method, getImageUrl method)
+ */
+SpazImageURL.prototype.addAPI = function(service_name, opts) {
+	
+	var newapi = {};
+	newapi.url_regex       = opts.url_regex;       // a regex used to look for this service's urls, must provide a parens match for image ID code
+	newapi.getThumbnailUrl = opts.getThumbnailUrl; // a function
+	newapi.getImageUrl     = opts.getImageUrl;     // a function
+	
+	this.apis[service_name] = newapi;
+	
+};
+
+/**
+ * find the image service URLs that work with our defined APIs in a given string
+ * @param {string} str
+ * @return {object|null} an object of services (keys) and an array of their matches (vals)
+ */
+SpazImageURL.prototype.findServiceUrlsInString = function(str) {
+	
+	var matches = {}, num_matches = 0, re_matches, key, thisapi;
+	
+	for (key in this.apis) {
+		
+		thisapi = this.getAPI(key);
+		
+		while( (re_matches = thisapi.url_regex.exec(sch.trim(str))) != null) {
+			matches[key] = re_matches;
+			num_matches++;
+		}
+	}
+	
+	if (num_matches > 0) {
+		return matches;
+	} else {
+		return null;
+	}
+	
+};
+
+/**
+ * find the image service URLs that work with our defined APIs in a given string
+ * @param {object} matches
+ * @return {object|null} fullurl:thumburl key:val pairs
+ */
+SpazImageURL.prototype.getThumbsForMatches = function(matches) {
+	var x, service, api, thumburl, thumburls = {}, num_urls = 0;
+	
+	for (service in matches) {
+		api = this.getAPI(service);
+		urls = matches[service]; // an array
+		
+		thumburls[urls[0]] = api.getThumbnailUrl(urls[1]);
+		num_urls++;
+	}
+	
+	if (num_urls > 0) {
+		return thumburls;
+	} else {
+		return null;
+	}
+};
+
+
+/**
+ * given a string, this returns a set of key:val pairs of main url:thumbnail url
+ * for image hosting services for urls within the string
+ * @param {string} str
+ * @return {object|null} fullurl:thumburl key:val pairs
+ */
+SpazImageURL.prototype.getThumbsForUrls = function(str) {
+	var matches = this.findServiceUrlsInString(str);
+	if (matches) {
+		return this.getThumbsForMatches(matches);
+	} else {
+		return null;
+	}
+	
+};/*jslint 
 browser: true,
 nomen: false,
 debug: true,
@@ -5446,37 +5686,29 @@ SpazPrefs.prototype.load = function(name) {
 	if (sc.helpers.iswebOS()) {
 
 		sc.helpers.dump('this is webOS');
-		if (!this.mojoDepot) {
-			sc.helpers.dump('making depot');
-			this.mojoDepot = new Mojo.Depot({
-				name:'SpazDepotPrefs',
-				replace:false
-			});
+		if (!this.mojoCookie) {
+			sc.helpers.dump('making cookie');
+			this.mojoCookie = new Mojo.Model.Cookie('SpazPrefs');
+			
+			
+			
+		}
+		var loaded_prefs = this.mojoCookie.get();
+		if (loaded_prefs) {
+			sc.helpers.dump('Prefs loaded');
+			for (var key in loaded_prefs) {
+				//sc.helpers.dump('Copying loaded pref "' + key + '":"' + thisPrefs._prefs[key] + '" (' + typeof(thisPrefs._prefs[key]) + ')');
+	            thisPrefs._prefs[key] = loaded_prefs[key];
+	       	}
+			jQuery().trigger('spazprefs_loaded');
+		} else {
+			sc.helpers.dump('Prefs loading failed in onGet');
+			this.migrateFromMojoDepot();
+			// thisPrefs.resetPrefs();
 		}
 		
-		var onGet = function(loaded_prefs) {
-			if (loaded_prefs) {
-				sc.helpers.dump('Prefs loaded');
-				for (var key in loaded_prefs) {
-					//sc.helpers.dump('Copying loaded pref "' + key + '":"' + thisPrefs._prefs[key] + '" (' + typeof(thisPrefs._prefs[key]) + ')');
-		            thisPrefs._prefs[key] = loaded_prefs[key];
-		       	}
-			} else {
-				sc.helpers.dump('Prefs loading failed in onGet');
-				thisPrefs.resetPrefs();
-			}
-			jQuery().trigger('spazprefs_loaded');
-		};
 
-		var onFail = function() {
-			sc.helpers.dump('Prefs loading failed in onFail');
-			thisPrefs.resetPrefs();
-			jQuery().trigger('spazprefs_loaded');
-		};
 		
-		sc.helpers.dump('simpleget depot');
-		this.mojoDepot.simpleGet('SpazPrefs', onGet, onFail);
-		sc.helpers.dump('sent simpleget');
 
 	}
 	
@@ -5502,6 +5734,54 @@ SpazPrefs.prototype.load = function(name) {
 };
 
 
+/**
+ * We used to store the data in a Depot, so we may need
+ * to migrate data out of there 
+ */
+SpazPrefs.prototype.migrateFromMojoDepot = function() {
+	
+	var thisPrefs = this;
+	
+	sch.error('MIGRATING FROM DEPOT! ============================ ');
+	
+	sc.helpers.dump('this is webOS');
+	if (!this.mojoDepot) {
+		sc.helpers.dump('making depot');
+		this.mojoDepot = new Mojo.Depot({
+			name:'SpazDepotPrefs',
+			replace:false
+		});
+	}
+	
+	var onGet = function(loaded_prefs) {
+		if (loaded_prefs) {
+			sc.helpers.dump('Prefs loaded');
+			for (var key in loaded_prefs) {
+				//sc.helpers.dump('Copying loaded pref "' + key + '":"' + thisPrefs._prefs[key] + '" (' + typeof(thisPrefs._prefs[key]) + ')');
+	            thisPrefs._prefs[key] = loaded_prefs[key];
+	       	}
+		} else {
+			sc.helpers.dump('Prefs loading failed in onGet');
+			thisPrefs.resetPrefs();
+		}
+		thisPrefs.save(); // write to cookie
+		jQuery().trigger('spazprefs_loaded');
+	};
+
+	var onFail = function() {
+		sc.helpers.dump('Prefs loading failed in onFail');
+		thisPrefs.resetPrefs();
+		jQuery().trigger('spazprefs_loaded');
+	};
+	
+	sc.helpers.dump('simpleget depot');
+	this.mojoDepot.simpleGet('SpazPrefs', onGet, onFail);
+	sc.helpers.dump('sent simpleget');
+	
+};
+
+
+
 
 /**
  * saves the current preferences
@@ -5510,14 +5790,11 @@ SpazPrefs.prototype.load = function(name) {
 SpazPrefs.prototype.save = function(name) {
 
 	if (sc.helpers.iswebOS()) {
-		if (!this.mojoDepot) {
-			this.mojoDepot = new Mojo.Depot({
-				name:'SpazDepotPrefs',
-				replace:false
-			});
+		if (!this.mojoCookie) {
+			this.mojoCookie = new Mojo.Model.Cookie('SpazPrefs');
 		}
 		
-		this.mojoDepot.simpleAdd('SpazPrefs', this._prefs);
+		this.mojoCookie.put(this._prefs);
 	}
 	
 	/*
@@ -6748,6 +7025,7 @@ var sc, jQuery, window, Mojo, use_palmhost_proxy;
  * various constant definitions
  */
 var SPAZCORE_SECTION_FRIENDS = 'friends';
+var SPAZCORE_SECTION_HOME = 'home';
 var SPAZCORE_SECTION_REPLIES = 'replies';
 var SPAZCORE_SECTION_DMS = 'dms';
 var SPAZCORE_SECTION_FAVORITES = 'favorites';
@@ -6828,6 +7106,7 @@ function SpazTwit(username, password, opts) {
 	this.opts            = opts || {};
 	this.opts.event_mode = this.opts.event_mode || 'DOM';
 	this.opts.event_target = this.opts.event_target || document;
+	this.opts.timeout    = this.opts.timeout || 1000*60; // 60 seconds default
 	
 	this.setSource('SpazCore');
 	
@@ -6847,14 +7126,6 @@ function SpazTwit(username, password, opts) {
 	
 
 	this.setBaseURL(SPAZCORE_SERVICEURL_TWITTER);
-
-	/*
-		apply defaults for ajax calls
-	*/
-	jQuery.ajaxSetup( {
-        timeout:1000*45, // 45 seconds
-        async:true
-    });
 
 	/**
 	 * remap dump calls as appropriate 
@@ -6878,7 +7149,7 @@ SpazTwit.prototype.getPassword = function() {
 
 /**
  * retrieves the last status id retrieved for a given section
- * @param {string} section  use one of the defined constants (ex. SPAZCORE_SECTION_FRIENDS)
+ * @param {string} section  use one of the defined constants (ex. SPAZCORE_SECTION_HOME)
  * @return {integer} the last id retrieved for this section
  */
 SpazTwit.prototype.getLastId   = function(section) {
@@ -6887,7 +7158,7 @@ SpazTwit.prototype.getLastId   = function(section) {
 
 /**
  * sets the last status id retrieved for a given section
- * @param {string} section  use one of the defined constants (ex. SPAZCORE_SECTION_FRIENDS)
+ * @param {string} section  use one of the defined constants (ex. SPAZCORE_SECTION_HOME)
  * @param {integer} id  the new last id retrieved for this section
  */
 SpazTwit.prototype.setLastId   = function(section, id) {
@@ -6900,6 +7171,13 @@ SpazTwit.prototype.initializeData = function() {
 		this is where we store timeline data and settings for persistence
 	*/
 	this.data = {};
+	this.data[SPAZCORE_SECTION_HOME] = {
+		'lastid':   1,
+		'items':   [],
+		'newitems':[],
+		'max':200,
+		'min_age':5*60
+	};
 	this.data[SPAZCORE_SECTION_FRIENDS] = {
 		'lastid':   1,
 		'items':   [],
@@ -6963,7 +7241,7 @@ SpazTwit.prototype.initializeData = function() {
  */
 SpazTwit.prototype.initializeCombinedTracker = function() {
 	this.combined_finished = {};
-	this.combined_finished[SPAZCORE_SECTION_FRIENDS] = false;
+	this.combined_finished[SPAZCORE_SECTION_HOME] = false;
 	this.combined_finished[SPAZCORE_SECTION_REPLIES] = false;
 	this.combined_finished[SPAZCORE_SECTION_DMS] = false;
 	
@@ -7072,6 +7350,7 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
     // Timeline URLs
     urls.public_timeline    = "statuses/public_timeline.json";
     urls.friends_timeline   = "statuses/friends_timeline.json";
+    urls.home_timeline		= "statuses/home_timeline.json";
     urls.user_timeline      = "statuses/user_timeline.json";
     urls.replies_timeline   = "statuses/replies.json";
     urls.show				= "statuses/show/{{ID}}.json";
@@ -7213,6 +7492,62 @@ SpazTwit.prototype.getPublicTimeline = function() {
 		'success_event_type': 'new_public_timeline_data'
 	});
 };
+
+
+/**
+ * Initiates retrieval of the home timeline (all the people you are following)
+ * 
+ * @param {integer} since_id default is 1
+ * @param {integer} count default is 200 
+ * @param {integer} page default is null (ignored if null)
+ */
+SpazTwit.prototype.getHomeTimeline = function(since_id, count, page, processing_opts) {
+	
+	if (!page) { page = null;}
+	if (!count) { count = 50;}
+	if (!since_id) {
+		if (this.data[SPAZCORE_SECTION_HOME].lastid && this.data[SPAZCORE_SECTION_HOME].lastid > 1) {
+			since_id = this.data[SPAZCORE_SECTION_HOME].lastid;
+		} else {
+			since_id = 1;
+		}
+	}
+	
+	if (!processing_opts) {
+		processing_opts = {};
+	}
+	
+	if (processing_opts.combined) {
+		processing_opts.section = SPAZCORE_SECTION_HOME;
+	}
+	
+	var data = {};
+	data['since_id'] = since_id;
+	data['count']	 = count;
+	if (page) {
+		data['page'] = page;
+	}
+	
+	
+	var url = this.getAPIURL('home_timeline', data);
+	this._getTimeline({
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'process_callback'	: this._processHomeTimeline,
+		'success_event_type': 'new_home_timeline_data',
+		'failure_event_type': 'error_home_timeline_data',
+		'processing_opts':processing_opts
+	});
+};
+
+/**
+ * @private
+ */
+SpazTwit.prototype._processHomeTimeline = function(ret_items, finished_event, processing_opts) {
+	this._processTimeline(SPAZCORE_SECTION_HOME, ret_items, finished_event, processing_opts);
+};
+
 
 
 /**
@@ -7459,7 +7794,7 @@ SpazTwit.prototype._processUserTimeline = function(ret_items, finished_event, pr
  * 
  */
 SpazTwit.prototype.getCombinedTimeline = function(com_opts) {
-	var friends_count, replies_count, dm_count, friends_since, dm_since, replies_since = null;
+	var home_count, friends_count, replies_count, dm_count, home_since, friends_since, dm_since, replies_since = null;
 
 	var opts = {
 		'combined':true
@@ -7469,11 +7804,17 @@ SpazTwit.prototype.getCombinedTimeline = function(com_opts) {
 		if (com_opts.friends_count) {
 			friends_count = com_opts.friends_count;
 		}
+		if (com_opts.home_count) {
+			home_count = com_opts.home_count;
+		}
 		if (com_opts.replies_count) {
 			replies_count = com_opts.replies_count; // this is not used yet
 		}
 		if (com_opts.dm_count) {
 			dm_count = com_opts.dm_count; // this is not used yet
+		}
+		if (com_opts.home_since) {
+			home_since = com_opts.home_since;
 		}
 		if (com_opts.friends_since) {
 			friends_since = com_opts.friend_since;
@@ -7485,13 +7826,18 @@ SpazTwit.prototype.getCombinedTimeline = function(com_opts) {
 			dm_since = com_opts.dm_since;
 		}
 		
+		/*
+			we might still only pass in friends_* opts, so we translate those to home_*
+		*/
+		if (!home_count) { home_count = friends_count; }
+		if (!home_since) { home_since = friends_since; }
 		
 		if (com_opts.force) {
 			opts.force = true;
 		}
 	}
 	
-	this.getFriendsTimeline(friends_since, friends_count, null, opts);
+	this.getHomeTimeline(home_since, home_count, null, opts);
 	this.getReplies(replies_since, replies_count, null, opts);
 	this.getDirectMessages(dm_since, dm_count, null, opts);
 };
@@ -7727,6 +8073,7 @@ SpazTwit.prototype._getTimeline = function(opts) {
 	var stwit = this;
 	
 	var xhr = jQuery.ajax({
+		'timeout' :this.opts.timeout,
         'complete':function(xhr, msg){
             sc.helpers.dump(opts.url + ' complete:'+msg);
 			if (msg === 'timeout') {
@@ -8111,6 +8458,7 @@ SpazTwit.prototype._callMethod = function(opts) {
 	}
 	
 	var xhr = jQuery.ajax({
+		'timeout' :this.opts.timeout,
 	    'complete':function(xhr, msg){
 	        sc.helpers.dump(opts.url + ' complete:'+msg);
 	    },
@@ -8420,9 +8768,10 @@ SpazTwit.prototype.update = function(status, source, in_reply_to_status_id) {
 SpazTwit.prototype._processUpdateReturn = function(data, finished_event) {
 	
 	/*
-		this item needs to be added to the friends timeline
+		this item needs to be added to the friends + home timeline
 		so we can avoid dupes
 	*/
+	this._processTimeline(SPAZCORE_SECTION_HOME, [data], finished_event);
 	this._processTimeline(SPAZCORE_SECTION_FRIENDS, [data], finished_event);
 };
 

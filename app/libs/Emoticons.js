@@ -1,9 +1,9 @@
 var Emoticons; if (!Emoticons) Emoticons = {};
 
 // Might be going completely over the top with this char set...
-// const CHARS_TO_ESCAPE = /[\\=!^$*+?.:|(){}[\]]/g;
-const CHARS_TO_ESCAPE = /[\\=!^$*+?.:|(){}[\]]/g;
-//const CHARS_TO_ESCAPE = /[\\?|()]/g;
+// var CHARS_TO_ESCAPE = /[\\=!^$*+?.:|(){}[\]]/g;
+var CHARS_TO_ESCAPE = /[\\=!^$*+?.:|(){}[\]]/g;
+//var CHARS_TO_ESCAPE = /[\\?|()]/g;
 
 // Create a regular expression to match all emoticons
 // defined for a particular emoticons set.

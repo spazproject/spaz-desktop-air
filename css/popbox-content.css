@@ -18,7 +18,7 @@ div.popbox-content {
 	margin:0px;
 	font-family:Tahoma, Arial, Helvetica, sans-serif;
 	background-color: #FFFF9B;
-	background-image: url('../assets/images/popbox-img/body-bg.png');
+	background-image: url('../images/popbox-img/body-bg.png');
 	background-repeat:repeat-x;
 	background-position: center bottom;
 	-webkit-background-size:100% 100%;	

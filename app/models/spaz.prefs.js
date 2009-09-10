@@ -46,11 +46,11 @@ Spaz.Prefs.defaultPreferences = {
 
     'debug-enabled': false,
 
-    SOUND_UPDATE:  '/assets/sounds/TokyoTrainStation/CSnd.mp3',
-    SOUND_STARTUP: '/assets/sounds/TokyoTrainStation/On.mp3',
-    SOUND_SHUTDOWN:'/assets/sounds/TokyoTrainStation/Off.mp3',
-    SOUND_NEW:     '/assets/sounds/TokyoTrainStation/New.mp3',
-    SOUND_WILHELM: '/assets/sounds/wilhelm.mp3',
+    SOUND_UPDATE:  '/sounds/TokyoTrainStation/CSnd.mp3',
+    SOUND_STARTUP: '/sounds/TokyoTrainStation/On.mp3',
+    SOUND_SHUTDOWN:'/sounds/TokyoTrainStation/Off.mp3',
+    SOUND_NEW:     '/sounds/TokyoTrainStation/New.mp3',
+    SOUND_WILHELM: '/sounds/wilhelm.mp3',
 
     'timeline-scrollonupdate': false,
     'timeline-maxentries': 325,
@@ -174,7 +174,7 @@ Spaz.Prefs.changeMethods = {
             }
 
 			/*  the bending code */
-			BlenderEffect.get('app:/assets/blender/page.pbj', function(shader) {
+			BlenderEffect.get('app:/vendors/blender/page.pbj', function(shader) {
 				var tween = BlenderEffect.createShaderTransition(window.htmlLoader,
 						shader,
 						1200,

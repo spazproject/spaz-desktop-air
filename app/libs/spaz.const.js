@@ -6,14 +6,14 @@ Spaz.Const
 if (!Spaz.Const) Spaz.Const = {};
 
 // sound properties and methods
-const SOUND_UPDATE   = 'sound-update';
-const SOUND_STARTUP  = 'sound-startup';
-const SOUND_SHUTDOWN = 'sound-shutdown';
-const SOUND_NEW      = 'sound-new';
-const SOUND_WILHELM  = 'sound-wilhelm';
+var SOUND_UPDATE   = 'sound-update';
+var SOUND_STARTUP  = 'sound-startup';
+var SOUND_SHUTDOWN = 'sound-shutdown';
+var SOUND_NEW      = 'sound-new';
+var SOUND_WILHELM  = 'sound-wilhelm';
 
 // user directories
-const USERDIR_PLUGINS = 'userplugins/';
-const USERDIR_SMILEYS = 'usersmileys/';
-const USERDIR_SOUND   = 'usersounds/';
-const USERDIR_THEMES  = 'userthemes/';
+var USERDIR_PLUGINS = 'userplugins/';
+var USERDIR_SMILEYS = 'usersmileys/';
+var USERDIR_SOUND   = 'usersounds/';
+var USERDIR_THEMES  = 'userthemes/';

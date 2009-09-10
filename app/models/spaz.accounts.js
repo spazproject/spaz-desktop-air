@@ -1,6 +1,6 @@
 if (!Spaz.Accounts) Spaz.Accounts = {};
 
-const ELS_KEY_PW = 'twitter_password_';
+var ELS_KEY_PW = 'twitter_password_';
 
 /**
  * Handles multiple account manipulation. Spaz provides fast account switching,

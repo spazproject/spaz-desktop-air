@@ -492,7 +492,7 @@ Spaz.UI.autoReloadCurrentTab = function() {
 
 Spaz.UI.clearCurrentTimeline = function() {
     Spaz.dump('clearing the current timeline');
-    var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
+    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
 
     // reset the lastcheck b/c some timelines will use "since" parameters
 	section.lastcheck = 0;
@@ -520,11 +520,10 @@ Spaz.UI.clearCurrentTimeline = function() {
 
 Spaz.UI.markCurrentTimelineAsRead = function() {
     Spaz.dump('clearing the current timeline');
-    var section = Spaz.Section.getSectionFromTab(Spaz.UI.selectedTab)
+    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
 
-    var timelineid = section.timeline;
+    var timelineid = tl.timeline.timeline_container_selector;
     $('#' + timelineid + " div.timeline-entry:visible").each(function() {
-
 		Spaz.DB.markEntryAsRead(Spaz.UI.getStatusIdFromElement(this));
         Spaz.UI.markEntryAsRead(this);
 

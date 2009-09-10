@@ -3,17 +3,126 @@ var Spaz; if (!Spaz) Spaz = {};
 if (!Spaz.Timelines) Spaz.Timelines = {};
 
 
+/**
+ * options used for makeClickable calls 
+ */
+var SPAZ_MAKECLICKABLE_OPTS = {
+ 	'autolink': {
+ 		'type'      :'both',
+ 		'extra_code':'',
+ 		'maxlen'    :25
+ 	},
+ 	'screenname': {
+ 		'tpl':'<span class="user-screen-name clickable" title="View user\'s profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
+ 	},
+ 	'hashtag': {
+ 		'tpl':'<span class="hashtag clickable" title="Search for this hashtag" data-hashtag="#hashtag_enc#">##hashtag#</span>' // should contain macros '#hashtag#' and '#hashtag_enc#'
+ 	}
+};
+
+//'';
+
+
+
+
+/**
+ * The string prefix for a "not these" filter
+ */
+var NEGATION_TOKEN = "not:";
+
+/**
+ * The AppTimeline is defined here so we can inherit its prototype below 
+ */
+var AppTimeline = function() {};
+
+/**
+ * This is just a wrapper to start the SpazTimeline object contained within 
+ */
+AppTimeline.prototype.activate = function() {
+	this.timeline.start();
+};
+
+/**
+ * filter the timeline (hide or show entries) based on a string of terms
+ * @param {string} terms 
+ */
+AppTimeline.prototype.filter = function(terms) {
+	var entry_selector = this.timeline.timeline_container_selector+' div.timeline-entry';
+	jQuery(entry_selector).removeClass('hidden');
+		
+	if (terms) {
+		try {
+			var negate = false;
+			if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
+				negate = true;
+				terms  = terms.slice(NEGATION_TOKEN.length);
+			}
+			var filter_re = new RegExp(sch.trim(terms), "i");
+			jQuery(entry_selector).each(function(i) {
+				if (negate) {
+					if ( jQuery(this).text().search(filter_re) > -1 ) {
+						jQuery(this).addClass('hidden');
+					}
+				} else {
+					if ( jQuery(this).text().search(filter_re) === -1 ) {
+						jQuery(this).addClass('hidden');
+					}
+				}
+			});
+		} catch(e) {
+			sch.dump(e.name+":"+e.message);
+		}
+	}
+	
+};
+
+AppTimeline.prototype.clear = function() {
+	// Spaz.dump('clearing the current timeline');
+	// var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
+	// 
+	// // reset the lastcheck b/c some timelines will use "since" parameters
+	// section.lastcheck = 0;
+	// Spaz.dump('set lastcheck to 0');
+	// if (section.lastid) {
+	// 	section.lastid = 0;
+	// 	Spaz.dump('set lastid to 0');
+	// }
+	// if (section.lastid_dm) {
+	// 	section.lastid_dm = 0;
+	// 	Spaz.dump('set lastid_dm to 0');
+	// }
+	// 
+	// var timelineid = var timelineid = this.timeline.timeline_container_selector;
+	// $('#' + timelineid + ' .timeline-entry').remove();
+	// Spaz.dump('cleared timeline #' + timelineid);
+}
+
+
+AppTimeline.prototype.markAsRead = function() {
+	//     Spaz.dump('clearing the current timeline');
+	// 
+	//     var timelineid = this.timeline.timeline_container_selector;
+	//     $('#' + timelineid + " div.timeline-entry:visible").each(function() {
+	// Spaz.DB.markEntryAsRead(Spaz.UI.getStatusIdFromElement(this));
+	//         Spaz.UI.markEntryAsRead(this);
+	// 
+	//     });
+	// 
+	//     $().trigger('UNREAD_COUNT_CHANGED');
+
+};
+
+
+// Spaz.uc.usernames = Spaz.Cache.getScreenNamesAsTags();
+
 
 /**
  * Friends timeline def 
  */
-var FriendsTimeline = function(args) {
+var FriendsTimeline = function() {
 	
 	var thisFT = this;
-	
 	this.twit = new SpazTwit();
-
-
 	
 	/*
 		set up the Friends timeline
@@ -38,19 +147,32 @@ var FriendsTimeline = function(args) {
 			thisFT.twit.getCombinedTimeline();
 			Spaz.UI.statusBar("Loading friends timeline");
 			Spaz.UI.showLoading();
+			
+			sch.error('REQUEST_DATA');
 		},
 		'data_success': function(e, data) {
-			var data = data.reverse();
+			
+			sch.error('DATA_SUCCESS');
+			
+			data = data.reverse();
 			var no_dupes = [];
+
+			sch.dump(data);
+			
+			
+			var sui = new SpazImageURL();
 			
 			for (var i=0; i < data.length; i++) {
-				
+				sch.dump(i);
 				/*
 					only add if it doesn't already exist
 				*/
 				if (jQuery('#timeline-friends div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text);
+					
+					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					
+					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					no_dupes.push(data[i]);
 					
 					/*
@@ -87,8 +209,11 @@ var FriendsTimeline = function(args) {
 				$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );
 			}
 
-
-			sc.helpers.markAllAsRead('#timeline-friends div.timeline-entry'); // public are never "new"
+			/*
+			 reapply filtering
+			*/
+			$('#filter-friends').trigger('keyup');
+			
 			sc.helpers.updateRelativeTimes('#timeline-friends a.status-created-at', 'data-created-at');
 			jQuery('#timeline-friends div.timeline-entry').removeClass('even').removeClass('odd');
 			jQuery('#timeline-friends div.timeline-entry:even').addClass('even');
@@ -99,6 +224,7 @@ var FriendsTimeline = function(args) {
 			
 		},
 		'data_failure': function(e, error_obj) {
+			sch.error('DATA_FAILURE');
 			var err_msg = "There was an error retrieving your timeline";
 			Spaz.UI.statusBar(err_msg);
 
@@ -118,54 +244,11 @@ var FriendsTimeline = function(args) {
 			
 		}
 	});
-	
-	
-	this.filter = function(terms) {
-		jQuery('#timeline-friends div.timeline-entry').removeClass('hidden');
-		if (terms) {
-			try {
-				var negate = false;
-				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
-					negate = true;
-					terms  = terms.slice(NEGATION_TOKEN.length);
-				}
-				var filter_re = new RegExp(sch.trim(terms), "i");
-				jQuery('#timeline-friends div.timeline-entry').each(function(i) {
-					if (negate) {
-						if ( jQuery(this).text().search(filter_re) > -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					} else {
-						if ( jQuery(this).text().search(filter_re) === -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					}
-				});
-			} catch(e) {
-				sch.dump(e.name+":"+e.message);
-			}
-
-		}
-	};
-	
 };
 
-FriendsTimeline.prototype.init = function(args) {
-	
-}
+FriendsTimeline.prototype = new AppTimeline();
 
-FriendsTimeline.prototype.activate = function(args) {
-	
-	
-	
-	this.timeline.start();
-}
-
-FriendsTimeline.prototype.deactivate = function(args) {
-	
-}
-
-FriendsTimeline.prototype.destroy = function(args) {
+FriendsTimeline.prototype.reset = function() {
 	
 }
 
@@ -204,8 +287,10 @@ var PublicTimeline = function(args) {
 			Spaz.UI.showLoading();
 		},
 		'data_success': function(e, data) {
-			var data = data.reverse();
+			data = data.reverse();
 			var no_dupes = [];
+			
+			var sui = new SpazImageURL();
 			
 			for (var i=0; i < data.length; i++) {
 				
@@ -214,7 +299,10 @@ var PublicTimeline = function(args) {
 				*/
 				if (jQuery('#timeline-public div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text);
+					
+					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					
+					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
@@ -225,6 +313,12 @@ var PublicTimeline = function(args) {
 			};
 			
 			thisPT.timeline.addItems(no_dupes);
+
+			/*
+			 reapply filtering
+			*/
+			$('#filter-public').trigger('keyup');
+
 
 			sc.helpers.markAllAsRead('#timeline-public div.timeline-entry'); // public are never "new"
 			sc.helpers.updateRelativeTimes('#timeline-public a.status-created-at', 'data-created-at');
@@ -252,54 +346,12 @@ var PublicTimeline = function(args) {
 		}
 	});
 	
-	
-	this.filter = function(terms) {
-		jQuery('#timeline-public div.timeline-entry').removeClass('hidden');
-		if (terms) {
-			try {
-				var negate = false;
-				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
-					negate = true;
-					terms  = terms.slice(NEGATION_TOKEN.length);
-				}
-				var filter_re = new RegExp(sch.trim(terms), "i");
-				jQuery('#timeline-public div.timeline-entry').each(function(i) {
-					if (negate) {
-						if ( jQuery(this).text().search(filter_re) > -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					} else {
-						if ( jQuery(this).text().search(filter_re) === -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					}
-				});
-			} catch(e) {
-				sch.dump(e.name+":"+e.message);
-			}
 
-		}
-	};
 	
 	
 };
 
-PublicTimeline.prototype.init = function(args) {
-	
-}
-
-PublicTimeline.prototype.activate = function(args) {
-	// alert('called activate');
-	this.timeline.start();
-}
-
-PublicTimeline.prototype.deactivate = function(args) {
-	
-}
-
-PublicTimeline.prototype.destroy = function(args) {
-	
-}
+PublicTimeline.prototype = new AppTimeline();
 
 
 /**
@@ -336,8 +388,10 @@ var UserTimeline = function(args) {
 			Spaz.UI.showLoading();
 		},
 		'data_success': function(e, data) {
-			var data = data.reverse();
+			data = data.reverse();
 			var no_dupes = [];
+			
+			var sui = new SpazImageURL();
 			
 			for (var i=0; i < data.length; i++) {
 				
@@ -346,7 +400,9 @@ var UserTimeline = function(args) {
 				*/
 				if (jQuery('#timeline-user div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text);
+					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					
+					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
@@ -357,6 +413,12 @@ var UserTimeline = function(args) {
 			};
 			
 			thisUT.timeline.addItems(no_dupes);
+
+			/*
+			 reapply filtering
+			*/
+			$('#filter-user').trigger('keyup');
+
 
 			sc.helpers.markAllAsRead('#timeline-user div.timeline-entry'); // user is never "new"
 			sc.helpers.updateRelativeTimes('#timeline-user a.status-created-at', 'data-created-at');
@@ -385,54 +447,10 @@ var UserTimeline = function(args) {
 	});
 	
 	
-	this.filter = function(terms) {
-		jQuery('#timeline-user div.timeline-entry').removeClass('hidden');
-		if (terms) {
-			try {
-				var negate = false;
-				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
-					negate = true;
-					terms  = terms.slice(NEGATION_TOKEN.length);
-				}
-				var filter_re = new RegExp(sch.trim(terms), "i");
-				jQuery('#timeline-user div.timeline-entry').each(function(i) {
-					if (negate) {
-						if ( jQuery(this).text().search(filter_re) > -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					} else {
-						if ( jQuery(this).text().search(filter_re) === -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					}
-				});
-			} catch(e) {
-				sch.dump(e.name+":"+e.message);
-			}
-
-		}
-	};
-	
 	
 };
 
-UserTimeline.prototype.init = function(args) {
-	
-}
-
-UserTimeline.prototype.activate = function(args) {
-	// alert('called activate');
-	this.timeline.start();
-}
-
-UserTimeline.prototype.deactivate = function(args) {
-	
-}
-
-UserTimeline.prototype.destroy = function(args) {
-	
-}
-
+UserTimeline.prototype = new AppTimeline();
 
 
 /**
@@ -487,12 +505,14 @@ var SearchTimeline = function(args) {
 		'data_success': function(e, data) {
 			sch.dump(e);
 			var query_info = data[1];
-			var data = data[0];
+			data = data[0];
 			
-			var data = data.reverse();
+			data = data.reverse();
 			var no_dupes = [];
 			var md = new Showdown.converter();
 			
+			
+			var sui = new SpazImageURL();
 			
 			for (var i=0; i < data.length; i++) {
 				
@@ -501,7 +521,9 @@ var SearchTimeline = function(args) {
 				*/
 				if (jQuery('#timeline-search div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text);
+					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					
+					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 
 					if (Spaz.Prefs.get('usemarkdown')) {
 						data[i].text = md.makeHtml(data[i].text);
@@ -547,21 +569,7 @@ var SearchTimeline = function(args) {
 	});
 };
 
-SearchTimeline.prototype.init = function(args) {
-	
-}
-
-SearchTimeline.prototype.activate = function(args) {
-	this.timeline.start();
-}
-
-SearchTimeline.prototype.deactivate = function(args) {
-	
-}
-
-SearchTimeline.prototype.destroy = function(args) {
-	
-}
+SearchTimeline.prototype = new AppTimeline();
 
 
 
@@ -601,7 +609,7 @@ var FollowersTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			// alert('got follower data');
-			var data = data.reverse();
+			data = data.reverse();
 			
 			var no_dupes = [];
 			
@@ -648,63 +656,32 @@ var FollowersTimeline = function(args) {
 		}
 	});
 	
-	
-	this.filter = function(terms) {
-		jQuery('#timeline-user div.timeline-entry').removeClass('hidden');
-		if (terms) {
-			try {
-				var negate = false;
-				if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
-					negate = true;
-					terms  = terms.slice(NEGATION_TOKEN.length);
-				}
-				var filter_re = new RegExp(sch.trim(terms), "i");
-				jQuery('#timeline-user div.timeline-entry').each(function(i) {
-					if (negate) {
-						if ( jQuery(this).text().search(filter_re) > -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					} else {
-						if ( jQuery(this).text().search(filter_re) === -1 ) {
-							jQuery(this).addClass('hidden');
-						}
-					}
-				});
-			} catch(e) {
-				sch.dump(e.name+":"+e.message);
-			}
-
-		}
-	};
-	
-	
 };
 
-FollowersTimeline.prototype.init = function(args) {
-	
-}
-
-FollowersTimeline.prototype.activate = function(args) {
-	// alert('called activate');
-	this.timeline.start();
-}
-
-FollowersTimeline.prototype.deactivate = function(args) {
-	
-}
-
-FollowersTimeline.prototype.destroy = function(args) {
-	
-}
+FollowersTimeline.prototype = new AppTimeline();
 
 
-
-
+/**
+ * Initialize the timelines 
+ */
 Spaz.Timelines.init = function() {
 	Spaz.Timelines.friends   = new FriendsTimeline();
 	Spaz.Timelines.user      = new UserTimeline();
 	Spaz.Timelines.public    = new PublicTimeline();
 	Spaz.Timelines.search    = new SearchTimeline();
 	Spaz.Timelines.followers = new FollowersTimeline();
+	
+	Spaz.Timelines.map = {
+		'friends':Spaz.Timelines.friends,
+		'user':   Spaz.Timelines.user,
+		'public': Spaz.Timelines.public,
+		'search': Spaz.Timelines.search,
+		'followerslist':Spaz.Timelines.followerslist
+	}
 }
 
+Spaz.Timelines.getTimelineFromTab = function(tab) {
+	var sectionStr = tab.id.replace(/tab-/, '');
+	Spaz.dump('section for tab:' + sectionStr);
+	return Spaz.Section[sectionStr];
+};

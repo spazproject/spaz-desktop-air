@@ -21,7 +21,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	
 	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
 
-	// sch.dump(sch.enJSON(d));
+	sch.error(d.SC_thumbnail_urls);
 	
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry new ';
@@ -42,6 +42,14 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '				<a href="'+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
+	entryHTML += '		</div>';
+	entryHTML += '		<div class="status-thumbnails">';
+						if (d.SC_thumbnail_urls) {
+						     sch.error(d.SC_thumbnail_urls);
+							for (var key in d.SC_thumbnail_urls) {
+								entryHTML += '<span class="clickable" href="'+key+'"><img src="'+d.SC_thumbnail_urls[key]+'" class="status-thumbnail"></a>';
+							}
+						}
 	entryHTML += '		</div>';
 						if (d.SC_is_dm) {
 	entryHTML += '			<div class="status-actions">';
@@ -101,7 +109,8 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	entryHTML += '				<a href="'+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
-	entryHTML += '	</div>';
+	entryHTML += '		</div>';
+	entryHTML += '		<div class="status-thumbnails"></div>';
 	entryHTML += '		<div class="status-actions">';
 	entryHTML += '			<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.sender_screen_name+'" ></span>';
 							if (d.isSent) {

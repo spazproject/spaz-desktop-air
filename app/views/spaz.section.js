@@ -1,6 +1,6 @@
 if (!Spaz.Section) Spaz.Section = {};
 
-const NEGATION_TOKEN = "not:";
+
 
 Spaz.Section.init = function() {
 
@@ -143,16 +143,9 @@ Spaz.Section.init = function() {
 
 			Spaz.UI.statusBar('Cleaning up entries…');
 
-			time.start('cleanup');
-			time.start('cleanupTimeline');
 			Spaz.UI.cleanupTimeline(this.timeline);
-			time.stop('cleanupTimeline');
 
-			time.start('initSuggestions');
 			Spaz.Editor.initSuggestions();
-			time.stop('initSuggestions');
-
-			time.stop('cleanup');
 
 			Spaz.UI.statusBar('Done.');
 
