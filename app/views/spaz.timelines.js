@@ -47,7 +47,7 @@ AppTimeline.prototype.activate = function() {
  * @param {string} terms 
  */
 AppTimeline.prototype.filter = function(terms) {
-	var entry_selector = this.timeline.timeline_container_selector+' div.timeline-entry';
+	var entry_selector = this.getEntrySelector();
 	jQuery(entry_selector).removeClass('hidden');
 		
 	if (terms) {
@@ -77,41 +77,25 @@ AppTimeline.prototype.filter = function(terms) {
 };
 
 AppTimeline.prototype.clear = function() {
-	// Spaz.dump('clearing the current timeline');
-	// var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
-	// 
-	// // reset the lastcheck b/c some timelines will use "since" parameters
-	// section.lastcheck = 0;
-	// Spaz.dump('set lastcheck to 0');
-	// if (section.lastid) {
-	// 	section.lastid = 0;
-	// 	Spaz.dump('set lastid to 0');
-	// }
-	// if (section.lastid_dm) {
-	// 	section.lastid_dm = 0;
-	// 	Spaz.dump('set lastid_dm to 0');
-	// }
-	// 
-	// var timelineid = var timelineid = this.timeline.timeline_container_selector;
-	// $('#' + timelineid + ' .timeline-entry').remove();
-	// Spaz.dump('cleared timeline #' + timelineid);
+	var entry_selector = this.getEntrySelector();
+	$(entry_selector).remove();
 }
 
 
 AppTimeline.prototype.markAsRead = function() {
-	//     Spaz.dump('clearing the current timeline');
-	// 
-	//     var timelineid = this.timeline.timeline_container_selector;
-	//     $('#' + timelineid + " div.timeline-entry:visible").each(function() {
-	// Spaz.DB.markEntryAsRead(Spaz.UI.getStatusIdFromElement(this));
-	//         Spaz.UI.markEntryAsRead(this);
-	// 
-	//     });
-	// 
-	//     $().trigger('UNREAD_COUNT_CHANGED');
-
+	var entry_selector = this.getEntrySelector();
+	/* we use our own "mark as read" here because the helper version just removes the 'new' class' */
+	$(entry_selector+':visible').removeClass('new').addClass('read');
+	$().trigger('UNREAD_COUNT_CHANGED');
 };
 
+AppTimeline.prototype.getEntrySelector = function() {
+	return this.timeline.timeline_container_selector+' div.timeline-entry';
+}
+
+AppTimeline.prototype.getWrapperSelector = function() {
+	return this.timeline.timeline_container_selector.replace('timeline-', 'timelinewrapper-');
+}
 
 // Spaz.uc.usernames = Spaz.Cache.getScreenNamesAsTags();
 
@@ -244,6 +228,16 @@ var FriendsTimeline = function() {
 			
 		}
 	});
+	
+	/*
+		override the default method
+	*/
+	this.timeline.removeExtraItems = function() {
+		sch.removeExtraElements('#timeline-friends div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-maxentries'));
+		sch.removeExtraElements('#timeline-friends div.timeline-entry.reply', Spaz.Prefs.get('timeline-maxentries-reply'));
+		sch.removeExtraElements('#timeline-friends div.timeline-entry.dm', Spaz.Prefs.get('timeline-maxentries-dm'));
+	};
+	
 };
 
 FriendsTimeline.prototype = new AppTimeline();
@@ -251,6 +245,8 @@ FriendsTimeline.prototype = new AppTimeline();
 FriendsTimeline.prototype.reset = function() {
 	
 }
+
+
 
 
 
@@ -681,7 +677,9 @@ Spaz.Timelines.init = function() {
 }
 
 Spaz.Timelines.getTimelineFromTab = function(tab) {
-	var sectionStr = tab.id.replace(/tab-/, '');
-	Spaz.dump('section for tab:' + sectionStr);
-	return Spaz.Section[sectionStr];
+	var timeline = tab.id.replace(/tab-/, '');
+	Spaz.dump('timeline for tab:' + timeline);
+	return Spaz.Timelines.map[timeline];
 };
+
+

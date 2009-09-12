@@ -17,8 +17,9 @@ Spaz.Keyboard.move = function(dir, selector) {
 	Spaz.dump("selector is '" + selector+"'")
 	
 	// var timelineid = 'timeline-friends';
-	var section = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
-	var timelineid = section.timeline;
+	var timeline = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
+
+	var entry_selector = timeline.getEntrySelector();
 
 	if (!dir) { dir = 'down' }
 	
@@ -34,44 +35,43 @@ Spaz.Keyboard.move = function(dir, selector) {
 	}
 	
 	// get current selected
-	var jqsel = $('#'+timelineid+' div.ui-selected');
-	// sch.dump('selected:'+jqsel.length);
-	// sch.dump('moving:'+movefunc+'/'+wrapselc+"\n"+'selected:'+jqsel.length);
+	var jqsel = $(entry_selector+'.ui-selected');
 	
 	// if none selected, or there is no 'next', select first
 	if (selector == ":first" || selector == ":last") {
 		// sch.dump('first in timeline');
-		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector), section)
+		Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector), timeline)
 	} else if (jqsel.length == 0 ) {
 		// sch.dump('nothing is selected')
-		Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector+':'+wrapselc), section)
-		jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);
+		Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector+':'+wrapselc), timeline)
+		jqsel = $(entry_selector+'.ui-selected'+selector);
 	} else if (jqsel[movefunc]('div.timeline-entry'+selector).eq(0).length == 0) {
 		// sch.dump('we are at the beginning or end');
 		if (Spaz.Prefs.get('timeline-keyboardnavwrap')) {
-			Spaz.Keyboard.moveSelect($('#'+timelineid+' div.timeline-entry:visible'+selector+':'+wrapselc), section)
-			jqsel = $('#'+timelineid+' div.timeline-entry.ui-selected'+selector);				
+			Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector+':'+wrapselc), timeline)
+			jqsel = $(entry_selector+'.ui-selected'+selector);				
 		} else {
 			sch.dump('NOT WRAPPING');
 		}
 	} else {
 		// sch.dump('something is now selected');
-		Spaz.Keyboard.moveSelect(jqsel[movefunc]('div.timeline-entry:visible'+selector).eq(0), section);
+		Spaz.Keyboard.moveSelect(jqsel[movefunc]('div.timeline-entry:visible'+selector).eq(0), timeline);
 	}
 	// if selected is at bottom, go to top
 }
 
 
 
-Spaz.Keyboard.moveSelect = function(jqelement, section) {	
+Spaz.Keyboard.moveSelect = function(jqelement, timeline) {	
 	
 	Spaz.dump('Moving to new selected item');
-	Spaz.dump('timelineid:'+section.timeline);
+	var wrapper_selector = timeline.getWrapperSelector();
+	var entry_selector   = timeline.getEntrySelector();
 	
 	// unselect everything that is selected
-	$('#'+section.timeline+' div.timeline-entry.ui-selected').removeClass('ui-selected');
+	$(entry_selector+'.ui-selected').removeClass('ui-selected');
 
-	if ( entryId = Spaz.UI.getStatusIdFromElement(jqelement[0]) ) {
+	if ( (entryId = Spaz.UI.getStatusIdFromElement(jqelement[0])) ) {
 		sch.dump('entryId:'+entryId);
 		Spaz.DB.markEntryAsRead(entryId);
 	}
@@ -81,7 +81,7 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		sch.dump("toggle ui-selected and scrollto");
 		jqelement.toggleClass('ui-selected').addClass('read');
 		
-		var viewport_bottom = $('#'+section.wrapper).innerHeight();		
+		var viewport_bottom = $(wrapper_selector).innerHeight();		
 		var selected_bottom = jqelement.position().top + jqelement.height();
 		
 		/*
@@ -91,9 +91,9 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		// sch.dump(selected_bottom)
 		// sch.dump(viewport_bottom)
 		if ( selected_bottom > viewport_bottom ) {
-			var scroll_offset = ($('#'+section.wrapper).innerHeight()-jqelement.height())*-1;
+			var scroll_offset = ($(wrapper_selector).innerHeight()-jqelement.height())*-1;
 			sch.dump('scroll offset:'+scroll_offset);
-			$('#'+section.wrapper).scrollTo(jqelement, {
+			$(wrapper_selector).scrollTo(jqelement, {
 				offset:scroll_offset,
 				speed:1
 			});
@@ -105,8 +105,8 @@ Spaz.Keyboard.moveSelect = function(jqelement, section) {
 		// sch.dump('top---')
 		// sch.dump(jqelement.position().top)
 		// sch.dump($('#'+section.wrapper).position().top)
-		if ( jqelement.position().top < $('#'+section.wrapper).position().top ) {
-			$('#'+section.wrapper).scrollTo(jqelement, {
+		if ( jqelement.position().top < $(wrapper_selector).position().top ) {
+			$(wrapper_selector).scrollTo(jqelement, {
 				offset:0,
 				speed:1
 			});

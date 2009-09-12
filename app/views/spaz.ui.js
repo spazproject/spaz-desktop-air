@@ -475,7 +475,14 @@ Spaz.UI.setSelectedTab = function(tab) {
     // Spaz.restartReloadTimer();
 
     Spaz.Data.loadDataForTab(tab);
+};
 
+/**
+ * returns the currently selected tab element
+ * @return {DOMElement}
+ */
+Spaz.UI.getSelectedTab = function() {
+    return Spaz.UI.selectedTab;
 }
 
 
@@ -520,17 +527,8 @@ Spaz.UI.clearCurrentTimeline = function() {
 
 Spaz.UI.markCurrentTimelineAsRead = function() {
     Spaz.dump('clearing the current timeline');
-    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
-
-    var timelineid = tl.timeline.timeline_container_selector;
-    $('#' + timelineid + " div.timeline-entry:visible").each(function() {
-		Spaz.DB.markEntryAsRead(Spaz.UI.getStatusIdFromElement(this));
-        Spaz.UI.markEntryAsRead(this);
-
-    });
-
-    $().trigger('UNREAD_COUNT_CHANGED');
-
+    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab);
+    tl.markAsRead();
 };
 
 

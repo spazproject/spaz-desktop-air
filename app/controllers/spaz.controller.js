@@ -43,7 +43,7 @@ Spaz.Controller.initIntercept = function() {
 			'.status-action[title]':function(e) {
 				var tt = new Spaz_Tooltip({
 					'e'		:e,
-					'str'	:$(this).attr('title'),
+					'str'	:$(this).attr('title')
 					// 'previewurl':href,
 				});
 				tt.show();
@@ -53,7 +53,7 @@ Spaz.Controller.initIntercept = function() {
 				var tt = new Spaz_Tooltip({
 					'e'		:e,
 					'el'	:this,
-					'str'	:$(this).attr('title'),
+					'str'	:$(this).attr('title')
 					// 'previewurl':href,
 				});
 				tt.show();
@@ -66,7 +66,7 @@ Spaz.Controller.initIntercept = function() {
 					'el'	:this,
 					'str'	:$(this).attr('title'),
 					'reply_status_id':$(this).attr('status-id'),
-					'reply_screen_name':$(this).attr('screen-name'),
+					'reply_screen_name':$(this).attr('screen-name')
 				});
 				tt.show();
 				// Spaz.UI.showTooltip(this, $(this).attr('title'));
@@ -75,7 +75,7 @@ Spaz.Controller.initIntercept = function() {
 				var tt = new Spaz_Tooltip({
 					'e'		:e,
 					'el'	:this,
-					'str'	:$(this).attr('title'),
+					'str'	:$(this).attr('title')
 					// 'previewurl':href,
 				});
 				tt.show();
@@ -90,7 +90,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'el'	:this,
 					'str'	:"Open "+href+" in a browser window",
-					'previewurl':href,
+					'previewurl':href
 				});
 				tt.show();
 
@@ -103,7 +103,7 @@ Spaz.Controller.initIntercept = function() {
 						'e'		:e,
 						'el'	:this,
 						'str'	:"Open "+href+" in a browser window",
-						'previewurl':href,
+						'previewurl':href
 					});
 					tt.show();
 					// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
@@ -116,7 +116,7 @@ Spaz.Controller.initIntercept = function() {
 					'str'	:$(this).attr('title'),
 					'reply_status_id':$(this).attr('status-id'),
 					'reply_screen_name':$(this).attr('screen-name'),
-					'previewurl':$(this).attr('href'),
+					'previewurl':$(this).attr('href')
 				});
 				tt.show();
 
@@ -128,7 +128,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'el'	:this,
 					'str'	:$(this).attr('title'),
-					'previewurl':$(this).attr('href'),
+					'previewurl':$(this).attr('href')
 				});
 				tt.show();
 			},
@@ -136,7 +136,7 @@ Spaz.Controller.initIntercept = function() {
 				var tt = new Spaz_Tooltip({
 					'e'		:e,
 					'el'	:this,
-					'str'	:$(this).attr('title'),
+					'str'	:$(this).attr('title')
 					// 'previewurl':href,
 				});
 				tt.show();
@@ -145,11 +145,11 @@ Spaz.Controller.initIntercept = function() {
 				var tt = new Spaz_Tooltip({
 					'e'		:e,
 					'el'	:this,
-					'str'	:$(this).attr('title'),
+					'str'	:$(this).attr('title')
 					// 'previewurl':href,
 				});
 				tt.show();
-			},
+			}
 		})
 
 		.intercept('mouseout', {
@@ -406,7 +406,7 @@ Spaz.Controller.initIntercept = function() {
 
 			'document':function(e){
 				$('#userContextMenu').hide();
-			},
+			}
 
 		})
 		.intercept('contextmenu', {
@@ -419,7 +419,7 @@ Spaz.Controller.initIntercept = function() {
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
 				Spaz.UI.showLinkContextMenu($(this), url);
-			},
+			}
 		})
 		.intercept('keyup', {
 			'#filter-friends':function(e) {
