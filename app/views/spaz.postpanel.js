@@ -200,6 +200,7 @@ SpazPostPanel.prototype.shortenText = function() {
 	this.setMessageText(shorttext);
 	this.updateCharCount();
 };
+
 SpazPostPanel.prototype.shortenURLs = function() {
 	
 	var thisPP = this;

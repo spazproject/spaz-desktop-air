@@ -79,7 +79,7 @@ Spaz.Keyboard.moveSelect = function(jqelement, timeline) {
 	// select passed
 	if (jqelement.length > 0) {
 		sch.dump("toggle ui-selected and scrollto");
-		jqelement.toggleClass('ui-selected').addClass('read');
+		Spaz.UI.markEntryAsRead(jqelement);
 		
 		var viewport_bottom = $(wrapper_selector).innerHeight();		
 		var selected_bottom = jqelement.position().top + jqelement.height();
@@ -127,33 +127,33 @@ Spaz.Keyboard.moveSelect = function(jqelement, timeline) {
  * Keyboard 
  ******************************/
 Spaz.Keyboard.keyboardHandler = function(event) {
-	e = event || window.event;
-	el = e.srcElement || e.target;
-	
-	if (el.name) {
-		return true;
-	}
-
-
-	if (e.which == 13 && e.srcElement.id == 'entrybox') {
-		Spaz.UI.sendUpdate();
-		return false;
-	}
-
-	// debugging
-	if (e.srcElement.id == 'home') {
-		Spaz.dump('keyboard Event =================');
-		Spaz.dump("keyIdentifier:"+ e.keyIdentifier);
-		Spaz.dump("KeyCode:" + e.keyCode);
-		Spaz.dump("which:"+ e.which);
-		Spaz.dump("type:"+ e.type);
-		Spaz.dump("shift:"+ e.shiftKey);
-		Spaz.dump("ctrl:"+ e.ctrlKey);
-		Spaz.dump("alt:"+ e.altKey);
-		Spaz.dump("meta:"+ e.metaKey);
-		Spaz.dump("src:"+ e.srcElement.id);
-	}
-
-
-	return true;
+	// e = event || window.event;
+	// el = e.srcElement || e.target;
+	// 
+	// if (el.name) {
+	// 	return true;
+	// }
+	// 
+	// 
+	// if (e.which == 13 && e.srcElement.id == 'entrybox') {
+	// 	Spaz.UI.sendUpdate();
+	// 	return false;
+	// }
+	// 
+	// // debugging
+	// if (e.srcElement.id == 'home') {
+	// 	Spaz.dump('keyboard Event =================');
+	// 	Spaz.dump("keyIdentifier:"+ e.keyIdentifier);
+	// 	Spaz.dump("KeyCode:" + e.keyCode);
+	// 	Spaz.dump("which:"+ e.which);
+	// 	Spaz.dump("type:"+ e.type);
+	// 	Spaz.dump("shift:"+ e.shiftKey);
+	// 	Spaz.dump("ctrl:"+ e.ctrlKey);
+	// 	Spaz.dump("alt:"+ e.altKey);
+	// 	Spaz.dump("meta:"+ e.metaKey);
+	// 	Spaz.dump("src:"+ e.srcElement.id);
+	// }
+	// 
+	// 
+	// return true;
 }

@@ -48,8 +48,10 @@ AppTimeline.prototype.activate = function() {
  */
 AppTimeline.prototype.filter = function(terms) {
 	var entry_selector = this.getEntrySelector();
-	jQuery(entry_selector).removeClass('hidden');
-		
+	sch.dump(entry_selector);
+	var jqentries = jQuery(entry_selector);
+	jqentries.removeClass('hidden');
+	
 	if (terms) {
 		try {
 			var negate = false;
@@ -58,19 +60,21 @@ AppTimeline.prototype.filter = function(terms) {
 				terms  = terms.slice(NEGATION_TOKEN.length);
 			}
 			var filter_re = new RegExp(sch.trim(terms), "i");
-			jQuery(entry_selector).each(function(i) {
+			sch.dump(filter_re.toString());
+			jqentries.each(function(i) {
+				var jqthis = jQuery(this);
 				if (negate) {
-					if ( jQuery(this).text().search(filter_re) > -1 ) {
-						jQuery(this).addClass('hidden');
+					if ( jqthis.text().search(filter_re) > -1 ) {
+						jqthis.addClass('hidden');
 					}
 				} else {
-					if ( jQuery(this).text().search(filter_re) === -1 ) {
-						jQuery(this).addClass('hidden');
+					if ( jqthis.text().search(filter_re) === -1 ) {
+						jqthis.addClass('hidden');
 					}
 				}
 			});
 		} catch(e) {
-			sch.dump(e.name+":"+e.message);
+			sch.error(e.name+":"+e.message);
 		}
 	}
 	
@@ -157,6 +161,10 @@ var FriendsTimeline = function() {
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
 					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					
+					// convert emoticons
+					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+					
 					no_dupes.push(data[i]);
 					
 					/*
@@ -299,6 +307,10 @@ var PublicTimeline = function(args) {
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
 					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					
+					// convert emoticons
+					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+					
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
@@ -399,6 +411,10 @@ var UserTimeline = function(args) {
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
 					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					
+					// convert emoticons
+					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+					
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
@@ -521,10 +537,13 @@ var SearchTimeline = function(args) {
 					
 					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 
-					if (Spaz.Prefs.get('usemarkdown')) {
-						data[i].text = md.makeHtml(data[i].text);
-						data[i].text = data[i].text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
-					}
+					// convert emoticons
+					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+
+					// if (Spaz.Prefs.get('usemarkdown')) {
+					// 	data[i].text = md.makeHtml(data[i].text);
+					// 	data[i].text = data[i].text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
+					// }
 					
 					no_dupes.push(data[i]);
 					

@@ -82,7 +82,7 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 }
 
 .hidden {
-	display:none;
+	display:none !important;
 }
 
 

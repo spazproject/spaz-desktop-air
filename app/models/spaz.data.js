@@ -157,112 +157,112 @@ Spaz.Data.verifyPassword = function() {
  * @returns void
  */
 Spaz.Data.update = function(msg, username, password, irt_id) {
-	var user = username;
-	var pass = password;
-
-	sch.dump('user:'+user+' pass:********');
-
-	Spaz.UI.statusBar("Sending update");
-	Spaz.UI.showLoading();
-
-	$('#entrybox').attr('disabled', true);
-	$('#updateButton').attr('disabled', true);
-	var oldButtonLabel = $('#updateButton').val();
-	$('#updateButton').val('Sending...');
-
-	var update_data = "&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg);
-	if (irt_id) {
-		update_data = update_data+"&in_reply_to_status_id="+irt_id;
-	}
-
-	var xhr = $.ajax({
-		timeout:1000*40, // updates can take longer, so we double the standard timeout
-		complete:Spaz.Data.onAjaxComplete,
-		error:function(xhr, rstr){
-			sch.dump("ERROR");
-			$('#entrybox').attr('disabled', false);
-			$('#updateButton').attr('disabled', false);
-			$('#updateButton').val(oldButtonLabel);
-
-			if (xhr.readyState < 3) {
-				sch.dump("Update ERROR: Server did not confirm update");
-				Spaz.UI.statusBar("ERROR: Server did not confirm update")
-				return;
-			}
-
-			if (xhr.status != 200) { // sanity check
-				sch.dump("ERROR: " + rstr);
-				Spaz.UI.statusBar("ERROR: Server could not post update");
-				Spaz.UI.flashStatusBar();
-			} else {
-
-			}
-		},
-		success:function(data){
-			sch.dump('SUCCESS:'+data);
-			$('#entrybox').attr('disabled', false);
-			$('#updateButton').attr('disabled', false);
-			$('#entrybox').val('');
-			sch.dump('Emptied #entrybox');
-			$('#updateButton').val(oldButtonLabel);
-			sch.dump('reset #updateButton label');
-			if (msg.length == 140) {
-				if (Spaz.Prefs.get('sound-enabled')) {
-					if (Spaz.Prefs.get('wilhelm-enabled')) {
-						Spaz.UI.doWilhelm();
-						Spaz.UI.statusBar("Wilhelm!");
-						Spaz.UI.playSoundWilhelm();
-					} else {
-						sch.dump('not doing Wilhelm because Wilhelm disabled');
-					}
-				} else {
-					sch.dump('not doing Wilhelm because sound disabled');
-				}
-			} else {
-				Spaz.UI.playSoundUpdate();
-				Spaz.UI.statusBar("Update succeeded");
-			}
-			var entry = JSON.parse(data);
-
-			// We mark it as read in the db
-			Spaz.DB.markEntryAsRead(entry.id);
-
-			// Prepend this to the timeline (don't scroll to top)
-			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true, true);
-
-			/*
-				cleanup, but suppress the notifications by passing "true" as 2nd param
-				surpress scrollTo with 3rd param
-				don't sort with 4th param
-			*/
-			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true, true, true);
-
-			Spaz.UI.entryBox.reset();
-			Spaz.UI.clearPostIRT();
-			sch.dump('reset entryBox (Spry)');
-			$('#entrybox')[0].blur();
-			sch.dump('Blurred entryBox (DOM)');
-
-			if (Spaz.Prefs.get('services-pingfm-enabled')) {
-				Spaz.Data.updatePingFM(msg);
-			}
-
-			//Spaz.loadUserTimelineData('tab-user');
-		},
-		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-			// cookies just get in the way.	 eliminate them
-			xhr.setRequestHeader("Cookie", '');
-			// have to kill referer header to post
-		},
-		processData:false,
-		type:"POST",
-		url:Spaz.Data.getAPIURL('update'),
-		data:update_data,
-//		data:"&status="+encodeURIComponent(msg),
-	});
-
-	// sch.dump(xhr);
+// 	var user = username;
+// 	var pass = password;
+// 
+// 	sch.dump('user:'+user+' pass:********');
+// 
+// 	Spaz.UI.statusBar("Sending update");
+// 	Spaz.UI.showLoading();
+// 
+// 	$('#entrybox').attr('disabled', true);
+// 	$('#updateButton').attr('disabled', true);
+// 	var oldButtonLabel = $('#updateButton').val();
+// 	$('#updateButton').val('Sending...');
+// 
+// 	var update_data = "&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg);
+// 	if (irt_id) {
+// 		update_data = update_data+"&in_reply_to_status_id="+irt_id;
+// 	}
+// 
+// 	var xhr = $.ajax({
+// 		timeout:1000*40, // updates can take longer, so we double the standard timeout
+// 		complete:Spaz.Data.onAjaxComplete,
+// 		error:function(xhr, rstr){
+// 			sch.dump("ERROR");
+// 			$('#entrybox').attr('disabled', false);
+// 			$('#updateButton').attr('disabled', false);
+// 			$('#updateButton').val(oldButtonLabel);
+// 
+// 			if (xhr.readyState < 3) {
+// 				sch.dump("Update ERROR: Server did not confirm update");
+// 				Spaz.UI.statusBar("ERROR: Server did not confirm update")
+// 				return;
+// 			}
+// 
+// 			if (xhr.status != 200) { // sanity check
+// 				sch.dump("ERROR: " + rstr);
+// 				Spaz.UI.statusBar("ERROR: Server could not post update");
+// 				Spaz.UI.flashStatusBar();
+// 			} else {
+// 
+// 			}
+// 		},
+// 		success:function(data){
+// 			sch.dump('SUCCESS:'+data);
+// 			$('#entrybox').attr('disabled', false);
+// 			$('#updateButton').attr('disabled', false);
+// 			$('#entrybox').val('');
+// 			sch.dump('Emptied #entrybox');
+// 			$('#updateButton').val(oldButtonLabel);
+// 			sch.dump('reset #updateButton label');
+// 			if (msg.length == 140) {
+// 				if (Spaz.Prefs.get('sound-enabled')) {
+// 					if (Spaz.Prefs.get('wilhelm-enabled')) {
+// 						Spaz.UI.doWilhelm();
+// 						Spaz.UI.statusBar("Wilhelm!");
+// 						Spaz.UI.playSoundWilhelm();
+// 					} else {
+// 						sch.dump('not doing Wilhelm because Wilhelm disabled');
+// 					}
+// 				} else {
+// 					sch.dump('not doing Wilhelm because sound disabled');
+// 				}
+// 			} else {
+// 				Spaz.UI.playSoundUpdate();
+// 				Spaz.UI.statusBar("Update succeeded");
+// 			}
+// 			var entry = JSON.parse(data);
+// 
+// 			// We mark it as read in the db
+// 			Spaz.DB.markEntryAsRead(entry.id);
+// 
+// 			// Prepend this to the timeline (don't scroll to top)
+// 			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true, true);
+// 
+// 			/*
+// 				cleanup, but suppress the notifications by passing "true" as 2nd param
+// 				surpress scrollTo with 3rd param
+// 				don't sort with 4th param
+// 			*/
+// 			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true, true, true);
+// 
+// 			Spaz.UI.entryBox.reset();
+// 			Spaz.UI.clearPostIRT();
+// 			sch.dump('reset entryBox (Spry)');
+// 			$('#entrybox')[0].blur();
+// 			sch.dump('Blurred entryBox (DOM)');
+// 
+// 			if (Spaz.Prefs.get('services-pingfm-enabled')) {
+// 				Spaz.Data.updatePingFM(msg);
+// 			}
+// 
+// 			//Spaz.loadUserTimelineData('tab-user');
+// 		},
+// 		beforeSend:function(xhr){
+// 			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
+// 			// cookies just get in the way.	 eliminate them
+// 			xhr.setRequestHeader("Cookie", '');
+// 			// have to kill referer header to post
+// 		},
+// 		processData:false,
+// 		type:"POST",
+// 		url:Spaz.Data.getAPIURL('update'),
+// 		data:update_data,
+// //		data:"&status="+encodeURIComponent(msg),
+// 	});
+// 
+// 	// sch.dump(xhr);
 }
 
 
@@ -746,69 +746,69 @@ Spaz.Data.searchSummize = function(query) {
 
 
 Spaz.Data.updatePingFM = function(msg) {
-	if (!Spaz.Prefs.get('services-pingfm-enabled')) {
-		return false;
-	}
-
-	// do not post dms
-	if ( msg.match(/^(?:d\s).*/i) ) {
-		sch.dump("Will not post dms to ping.fm");
-		return -1;
-	}
-
-	// only post replies if preference set
-	if ( msg.match(/^(?:@\S).*/i) && !Spaz.Prefs.get('services-pingfm-sendreplies') ) {
-		sch.dump("Will not post replies to ping.fm");
-		return -1;
-	}
-
-	var userappkey = Spaz.Prefs.get('services-pingfm-userappkey');
-	var posttype   = Spaz.Prefs.get('services-pingfm-updatetype');
-
-	Spaz.UI.statusBar("Sending update to Ping.fm");
-	Spaz.UI.showLoading();
-
-	var xhr = $.ajax({
-		timeout:1000*40, // updates can take longer, so we double the standard timeout
-		error:function(xhr, rstr){
-			sch.dump("ERROR");
-			if (xhr.readyState < 3) {
-				sch.dump("Update ERROR: Ping.fm did not confirm update. Who knows?");
-				Spaz.UI.statusBar("ERROR: Ping.fm did not confirm update. Who knows?");
-				Spaz.UI.hideLoading();
-				return;
-			}
-			if (xhr.status != 200) { // sanity check
-				sch.dump("ERROR: " + rstr);
-				Spaz.UI.statusBar("ERROR: Ping.fm could not post update");
-				Spaz.UI.flashStatusBar();
-				Spaz.UI.hideLoading();
-			} else {
-
-			}
-			
-		},
-		success:function(xml){
-			if ($(xml).find('rsp').attr('status') == 'OK') {
-				sch.dump('SUCCESS:'+xml);
-				Spaz.UI.statusBar("Ping.fm Update succeeded");
-				Spaz.UI.hideLoading();
-			} else {
-				sch.dump('FAIL:'+xml);
-				Spaz.UI.statusBar("Ping.fm Update failed");
-				Spaz.UI.hideLoading();
-			}
-		},
-		dataType:'xml',
-		type:"POST",
-		url:Spaz.Data.url_pingfm_update,
-		data: {
-			'api_key':Spaz.Data.apikey_pingfm,
-			'user_app_key':userappkey,
-			'post_method':posttype,
-			'body':msg
-		},
-	});
+	// if (!Spaz.Prefs.get('services-pingfm-enabled')) {
+	// 	return false;
+	// }
+	// 
+	// // do not post dms
+	// if ( msg.match(/^(?:d\s).*/i) ) {
+	// 	sch.dump("Will not post dms to ping.fm");
+	// 	return -1;
+	// }
+	// 
+	// // only post replies if preference set
+	// if ( msg.match(/^(?:@\S).*/i) && !Spaz.Prefs.get('services-pingfm-sendreplies') ) {
+	// 	sch.dump("Will not post replies to ping.fm");
+	// 	return -1;
+	// }
+	// 
+	// var userappkey = Spaz.Prefs.get('services-pingfm-userappkey');
+	// var posttype   = Spaz.Prefs.get('services-pingfm-updatetype');
+	// 
+	// Spaz.UI.statusBar("Sending update to Ping.fm");
+	// Spaz.UI.showLoading();
+	// 
+	// var xhr = $.ajax({
+	// 	timeout:1000*40, // updates can take longer, so we double the standard timeout
+	// 	error:function(xhr, rstr){
+	// 		sch.dump("ERROR");
+	// 		if (xhr.readyState < 3) {
+	// 			sch.dump("Update ERROR: Ping.fm did not confirm update. Who knows?");
+	// 			Spaz.UI.statusBar("ERROR: Ping.fm did not confirm update. Who knows?");
+	// 			Spaz.UI.hideLoading();
+	// 			return;
+	// 		}
+	// 		if (xhr.status != 200) { // sanity check
+	// 			sch.dump("ERROR: " + rstr);
+	// 			Spaz.UI.statusBar("ERROR: Ping.fm could not post update");
+	// 			Spaz.UI.flashStatusBar();
+	// 			Spaz.UI.hideLoading();
+	// 		} else {
+	// 
+	// 		}
+	// 		
+	// 	},
+	// 	success:function(xml){
+	// 		if ($(xml).find('rsp').attr('status') == 'OK') {
+	// 			sch.dump('SUCCESS:'+xml);
+	// 			Spaz.UI.statusBar("Ping.fm Update succeeded");
+	// 			Spaz.UI.hideLoading();
+	// 		} else {
+	// 			sch.dump('FAIL:'+xml);
+	// 			Spaz.UI.statusBar("Ping.fm Update failed");
+	// 			Spaz.UI.hideLoading();
+	// 		}
+	// 	},
+	// 	dataType:'xml',
+	// 	type:"POST",
+	// 	url:Spaz.Data.url_pingfm_update,
+	// 	data: {
+	// 		'api_key':Spaz.Data.apikey_pingfm,
+	// 		'user_app_key':userappkey,
+	// 		'post_method':posttype,
+	// 		'body':msg
+	// 	},
+	// });
 
 
 };

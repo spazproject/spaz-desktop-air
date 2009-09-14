@@ -35,18 +35,18 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
+	entryHTML += '		<div class="status-thumbnails">';
+						if (d.SC_thumbnail_urls) {
+							for (var key in d.SC_thumbnail_urls) {
+								entryHTML += '<img class="clickable status-thumbnail" data-href="'+key+'" src="'+d.SC_thumbnail_urls[key]+'">';
+							}
+						}
+	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
 							if (d.in_reply_to_status_id) {
 	entryHTML += '				<a href="'+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
-	entryHTML += '		</div>';
-	entryHTML += '		<div class="status-thumbnails">';
-						if (d.SC_thumbnail_urls) {
-							for (var key in d.SC_thumbnail_urls) {
-								entryHTML += '<span class="clickable" href="'+key+'"><img src="'+d.SC_thumbnail_urls[key]+'" class="status-thumbnail"></a>';
-							}
-						}
 	entryHTML += '		</div>';
 						if (d.SC_is_dm) {
 	entryHTML += '			<div class="status-actions">';

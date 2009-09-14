@@ -257,7 +257,7 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.UI.reloadCurrentTab(true);
 			},
 			'#mainMenu-sendDM':function(e) {
-				Spaz.UI.prepDirectMessage('');
+				Spaz.postPanel.prepDirectMessage('');
 			},
 			'#mainmenu-shortenLink':function(e) {
 				Spaz.UI.showShortLink();
@@ -315,7 +315,7 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.postPanel.prepReply($(this).attr('user-screen_name'));
 			},
 			'#userContextMenu-sendDM':function(e) {
-				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
+				Spaz.postPanel.prepDirectMessage($(this).attr('user-screen_name'));
 			},
 			'#userContextMenu-searchForUser':function(e) {
 				var screen_name = $(this).attr('user-screen_name');
@@ -334,6 +334,7 @@ Spaz.Controller.initIntercept = function() {
 
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
+				sch.dump('Intercepted click on <a> and sending to '+url);
 				sc.helpers.openInBrowser(url);
 				return false;
 			},
@@ -349,6 +350,10 @@ Spaz.Controller.initIntercept = function() {
 				$('#search-for').val($(this).text());
 				Spaz.UI.showTab(3);
 				Spaz.Timelines.search.activate();
+			},
+			'.status-thumbnail':function(e) {
+				var url = $(this).attr('data-href');
+				sc.helpers.openInBrowser(url);
 			},
 			'.status-action-fav':function(e) {
 				var entryid = $(this).attr('entry-id')
@@ -366,7 +371,7 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.postPanel.prepRetweet(tweetobj.user.screen_name, tweetobj.SC_text_raw);
 			},
 			'.status-action-dm':function(e) {
-				Spaz.UI.prepDirectMessage($(this).attr('user-screen_name'));
+				Spaz.postPanel.prepDirectMessage($(this).attr('user-screen_name'));
 			},
 			'.status-action-reply':function(e) {
 				var tweet_id = parseInt($(this).attr('entry-id'), 10);
@@ -389,10 +394,8 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.UI.selectEntry(this);
 			},
 			'.timeline-entry *':function(e) { // this one needs to be last so the more specific ones above take precedence
-				// $('div.timeline-entry.ui-selected').removeClass('ui-selected').addClass('read');
 				var entry = $(this).parents('.timeline-entry').get(0);
 				Spaz.UI.selectEntry(entry);
-				// entry.addClass('ui-selected');
 			},
 			'a .highlight':function(e) { // this is for search-highlighted links
 				if ($(this).parents('a').attr('href')) {

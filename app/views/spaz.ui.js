@@ -295,95 +295,95 @@ Spaz.UI.centerPopup = function(windowid) {
 
 
 Spaz.UI.prepMessage = function() {
-    var eb = $('#entrybox');
-    eb.val('');
-    eb[0].setSelectionRange(0, 0);
-
-	Spaz.UI.clearPostIRT();
+	//     var eb = $('#entrybox');
+	//     eb.val('');
+	//     eb[0].setSelectionRange(0, 0);
+	// 
+	// Spaz.UI.clearPostIRT();
 };
 
 Spaz.UI.prepRetweet = function(entryid) {
-	var timelineid = Spaz.UI.selectedTab.id.replace(/tab-/, 'timeline-');
-	// sch.dump(timelineid);
-	// sch.dump('#'+timelineid+'-'+entryid);
-	var entry = $('#'+timelineid+'-'+entryid);
-	// sch.dump(entry.html());
-	var text = entry.children('.entry-text').text();
-	var screenname = entry.children('.entry-user-screenname').text();
-
-	var rtstr = 'RT @' + screenname + ': '+text+'';
-
-	if (rtstr.length > 140) {
-		rtstr = rtstr.substr(0,139)+'…"';
-	}
-
-    var eb = $('#entrybox');
-	eb.focus();
-	eb.val(rtstr);
-	eb[0].setSelectionRange(eb.val().length, eb.val().length);
-
-	Spaz.UI.clearPostIRT();
+	// var timelineid = Spaz.UI.selectedTab.id.replace(/tab-/, 'timeline-');
+	// // sch.dump(timelineid);
+	// // sch.dump('#'+timelineid+'-'+entryid);
+	// var entry = $('#'+timelineid+'-'+entryid);
+	// // sch.dump(entry.html());
+	// var text = entry.children('.entry-text').text();
+	// var screenname = entry.children('.entry-user-screenname').text();
+	// 
+	// var rtstr = 'RT @' + screenname + ': '+text+'';
+	// 
+	// if (rtstr.length > 140) {
+	// 	rtstr = rtstr.substr(0,139)+'…"';
+	// }
+	// 
+	//     var eb = $('#entrybox');
+	// eb.focus();
+	// eb.val(rtstr);
+	// eb[0].setSelectionRange(eb.val().length, eb.val().length);
+	// 
+	// Spaz.UI.clearPostIRT();
 
 };
 
 Spaz.UI.prepDirectMessage = function(username) {
-    var eb = $('#entrybox');
-    eb.focus();
-    if (username) {
-        eb.val('d ' + username + ' ...');
-        eb[0].setSelectionRange(eb.val().length - 3, eb.val().length)
-    } else {
-        eb.val('d username');
-        eb[0].setSelectionRange(2, eb.val().length)
-    }
-	Spaz.UI.clearPostIRT();
+	//     var eb = $('#entrybox');
+	//     eb.focus();
+	//     if (username) {
+	//         eb.val('d ' + username + ' ...');
+	//         eb[0].setSelectionRange(eb.val().length - 3, eb.val().length)
+	//     } else {
+	//         eb.val('d username');
+	//         eb[0].setSelectionRange(2, eb.val().length)
+	//     }
+	// Spaz.UI.clearPostIRT();
 };
 
 Spaz.UI.prepPhotoPost = function(url) {
-    var eb = $('#entrybox');
-    eb.focus();
-    if (url) {
-        eb.val(url + ' desc');
-        eb[0].setSelectionRange(eb.val().length - 4, eb.val().length);
-        return true;
-    } else {
-        return false;
-    }
-
-	Spaz.UI.clearPostIRT();
+	//     var eb = $('#entrybox');
+	//     eb.focus();
+	//     if (url) {
+	//         eb.val(url + ' desc');
+	//         eb[0].setSelectionRange(eb.val().length - 4, eb.val().length);
+	//         return true;
+	//     } else {
+	//         return false;
+	//     }
+	// 
+	// Spaz.UI.clearPostIRT();
 
 }
 
 Spaz.UI.prepReply = function(username, irt_id) {
-    var eb = $('#entrybox');
-    eb.focus();
-
-	if (irt_id) {
-		var timelineid = Spaz.UI.selectedTab.id.replace(/tab-/, 'timeline-');
-		var entry = $('#'+timelineid+'-'+irt_id);
-		var text = entry.children('.entry-text').text();
-		Spaz.UI.setPostIRT(irt_id, text);
-	}
-
-    if (username) {
-        var newText = '@' + username + ' ';
-
-        if (eb.val() != '') {
-            eb.val(newText + eb.val());
-            eb[0].setSelectionRange(eb.val().length, eb.val().length);
-        } else {
-            eb.val('@' + username + ' ...');
-            eb[0].setSelectionRange(eb.val().length - 3, eb.val().length);
-        }
-    } else {
-        var newText = '@';
-        if (eb.val() != '') {
-            eb.val(newText + ' ' + eb.val());
-        } else {
-            eb.val('@');
-        }
-        eb[0].setSelectionRange(newText.length, newText.length);
-    }
+	//     var eb = $('#entrybox');
+	//     eb.focus();
+	// 
+	// if (irt_id) {
+	// 	var timelineid = Spaz.UI.selectedTab.id.replace(/tab-/, 'timeline-');
+	// 	var entry = $('#'+timelineid+'-'+irt_id);
+	// 	var text = entry.children('.entry-text').text();
+	// 	Spaz.UI.setPostIRT(irt_id, text);
+	// }
+	// 
+	//     if (username) {
+	//         var newText = '@' + username + ' ';
+	// 
+	//         if (eb.val() != '') {
+	//             eb.val(newText + eb.val());
+	//             eb[0].setSelectionRange(eb.val().length, eb.val().length);
+	//         } else {
+	//             eb.val('@' + username + ' ...');
+	//             eb[0].setSelectionRange(eb.val().length - 3, eb.val().length);
+	//         }
+	//     } else {
+	//         var newText = '@';
+	//         if (eb.val() != '') {
+	//             eb.val(newText + ' ' + eb.val());
+	//         } else {
+	//             eb.val('@');
+	//         }
+	//         eb[0].setSelectionRange(newText.length, newText.length);
+	//     }
 };
 
 
@@ -392,20 +392,20 @@ Spaz.UI.prepReply = function(username, irt_id) {
  *
  */
 Spaz.UI.setPostIRT = function(status_id, raw_text) {
-	if (raw_text) {
-		var status_text = raw_text;
-		if (status_text.length > 30) {
-			status_text = status_text.substr(0,29)+'…'
-		}
-	} else {
-		var status_text = 'status #'+status_id;
-	}
-
-	// update the GUI stuff
-	$('#irt-message')
-		.html(status_text)
-		.attr('data-status-id', status_id);
-	$('#irt').fadeIn('fast');
+	// if (raw_text) {
+	// 	var status_text = raw_text;
+	// 	if (status_text.length > 30) {
+	// 		status_text = status_text.substr(0,29)+'…'
+	// 	}
+	// } else {
+	// 	var status_text = 'status #'+status_id;
+	// }
+	// 
+	// // update the GUI stuff
+	// $('#irt-message')
+	// 	.html(status_text)
+	// 	.attr('data-status-id', status_id);
+	// $('#irt').fadeIn('fast');
 };
 
 
@@ -413,37 +413,37 @@ Spaz.UI.setPostIRT = function(status_id, raw_text) {
  *
  */
 Spaz.UI.clearPostIRT = function() {
-	$('#irt').fadeOut('fast');
-	$('#irt-message').html('').attr('data-status-id', '0');
+	// $('#irt').fadeOut('fast');
+	// $('#irt-message').html('').attr('data-status-id', '0');
 };
 
 
 
 /* sends a twitter status update for the current user */
 Spaz.UI.sendUpdate = function() {
-    var entrybox = $('#entrybox');
-
-    if (entrybox.val() != '' && entrybox.val() != Spaz.Prefs.get('entryboxhint')) {
-
-        Spaz.dump('length:' + entrybox.val().length);
-
-		var irt_id = parseInt($('#irt-message').attr('data-status-id'));
-
-		if (!Spaz.Prefs.get('twitter-disable-direct-posting')) {
-			if ( irt_id > 0 ) {
-				Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass(), irt_id);
-			} else {
-				Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
-			}
-		} else if (Spaz.Prefs.get('services-pingfm-enabled')) {
-			Spaz.Data.updatePingFM( entrybox.val() );
-		} else {
-			Spaz.UI.statusBar("Nothing sent! Enable direct posting and/or ping.fm");
-		}
-
-
-        // entrybox.val('');
-    }
+		//     var entrybox = $('#entrybox');
+		// 
+		//     if (entrybox.val() != '' && entrybox.val() != Spaz.Prefs.get('entryboxhint')) {
+		// 
+		//         Spaz.dump('length:' + entrybox.val().length);
+		// 
+		// var irt_id = parseInt($('#irt-message').attr('data-status-id'));
+		// 
+		// if (!Spaz.Prefs.get('twitter-disable-direct-posting')) {
+		// 	if ( irt_id > 0 ) {
+		// 		Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass(), irt_id);
+		// 	} else {
+		// 		Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+		// 	}
+		// } else if (Spaz.Prefs.get('services-pingfm-enabled')) {
+		// 	Spaz.Data.updatePingFM( entrybox.val() );
+		// } else {
+		// 	Spaz.UI.statusBar("Nothing sent! Enable direct posting and/or ping.fm");
+		// }
+		// 
+		// 
+		//         // entrybox.val('');
+		//     }
 }
 
 
@@ -725,171 +725,171 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 
 
 Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
-    // alert('adding:'+entry.id)
-    if (entry.error) {
-        Spaz.dump('There was an error in the entry:' + entry.error)
-    }
-
-    var timelineid = section.timeline;
-
-	Spaz.dump('TIMELINE #' + timelineid + '-' + entry.id);
-	sch.dump('TIMELINE #' + timelineid + '-' + entry.id);
-
-
-
-    // sch.dump(JSON.stringify(entry));
-    if ($('#' + timelineid + '-' + entry.id).length < 1) {
-		sch.dump('adding #' + timelineid + '-' + entry.id);
-		entry.isDM = false;
-		entry.isSent = false;
-		if (!entry.favorited) { // we do this to make a favorited property for DMs
-			entry.favorited = false;
-		}
-
-		if (entry.sender) {
-			entry.user = entry.sender
-			entry.isDM = true;
-		}
-
-		if (!entry.in_reply_to_screen_name) {
-			entry.in_reply_to_screen_name = false;
-		}
-
-
-		if (timelineid == 'timeline-user') {
-			entry.isSent = true;
-		}
-
-		// Spaz.dump(entry);
-
-		if (!entry.user.name) {
-			entry.user.name = entry.user.screen_name
-		}
-
-		/*
-			Check for reply
-		*/
-
-		if (entry.in_reply_to_user_id && !entry.in_reply_to_screen_name) {
-			sch.dump('in_reply_to_user_id exists, but in_reply_to_screen_name not set');
-			var reply_matches = null;
-			if (reply_matches = entry.text.match(/^@([a-zA-Z0-9_\-]+)/i)) {
-				entry.in_reply_to_screen_name = reply_matches[1];
-			}
-		}
-
-		entry.rowclass = "even";
-		entry.timestamp = sch.httpTimeToInt(entry.created_at);
-		entry.base_url = Spaz.Prefs.get('twitter-base-url');
-		entry.timelineid = timelineid;
-
-
-		/*
-			Clean the entry.text
-		*/
-		// fix weird unicode junk
-		entry.text = entry.text.replace(/\u2028/, " ");
-
-		// save a raw version
-		entry.rawtext = entry.text;
-
-		// fix extra ampersand encoding
-		entry.text = entry.text.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-
-		// fix entity &#123; style extra encoding
-		entry.text = entry.text.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
-
-		// sch.dump(this.innerHTML);
-		if (Spaz.Prefs.get('usemarkdown')) {
-			var md = new Showdown.converter();
-
-			// Markdown conversion with Showdown
-			entry.text = md.makeHtml(entry.text);
-
-			// put title attr in converted Markdown link
-			entry.text = entry.text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
-		}
-
-		// convert inline links
-		/*
-			Inline links that start with http://
-		*/
-		var inlineRE = /(?:(\s|^|\.|\:|\())(https?:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/gi;
-		entry.text = entry.text.replace(inlineRE, '$1<a href=\"$2$3$6\" title="Open link in a browser window" class="inline-link">$3&raquo;</a>');
-
-		/*
-			this is the regex we use to match inline
-			lots of uncommon but valid top-level domains aren't used
-			because they cause more problems than solved
-		*/
-		var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fm|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/g;
-		entry.text = entry.text.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
-
-		// email addresses
-		entry.text = entry.text.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
-
-		// convert @username reply indicators
-		entry.text = entry.text.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="' + Spaz.Prefs.get('twitter-base-url') + '$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
-
-		// convert emoticons
-		entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
-
-		// hashtags
-		entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9_\-]{2,}))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
-
-
-		var entryHTML = Spaz.Tpl.parse('timeline_entry', entry);
-		// sch.dump(entryHTML);
-
-		// sch.dump('make DOMElement from string: '+entryHTML);
-		// var entryElement = document.createElement(entryHTML);
-
-		// Make the jQuery object and bind events
-		// sch.dump('make jQ entry and bind events to: '+entryElement);
-		// sch.dump('make jQ entry and bind events to: '+entryElement);
-
-		var jqentry = $(entryHTML);
-
-		if (mark_as_read) {
-			jqentry.addClass('read')
-			jqentry.removeClass('new')
-		}
-
-		if (entry.isDM) {
-			jqentry.addClass('dm');
-		}
-
-		// We only do the fetch if the mark_as_read is not specified
-		if (typeof mark_as_read == 'undefined')
-		{
-			// The as read callback
-			Spaz.DB.asyncGetAsRead(entry.id,
-			function(read)
-			{
-				if (read)
-				{
-					// sch.dump("Entry " + entry.id + " is read");
-					jqentry.addClass('read');
-					jqentry.removeClass('new');
-					$().trigger('UNREAD_COUNT_CHANGED');
-				}
-			});
-		}
-
-		if (prepend) {
-			$('#' + timelineid).prepend(jqentry);
-		} else {
-			$('#' + timelineid).append(jqentry);
-		}
-
-
-		return true;
-
-    } else {
-        Spaz.dump('skipping ' + entry.id);
-
-        return false;
-    }
+	//     // alert('adding:'+entry.id)
+	//     if (entry.error) {
+	//         Spaz.dump('There was an error in the entry:' + entry.error)
+	//     }
+	// 
+	//     var timelineid = section.timeline;
+	// 
+	// Spaz.dump('TIMELINE #' + timelineid + '-' + entry.id);
+	// sch.dump('TIMELINE #' + timelineid + '-' + entry.id);
+	// 
+	// 
+	// 
+	//     // sch.dump(JSON.stringify(entry));
+	//     if ($('#' + timelineid + '-' + entry.id).length < 1) {
+	// 	sch.dump('adding #' + timelineid + '-' + entry.id);
+	// 	entry.isDM = false;
+	// 	entry.isSent = false;
+	// 	if (!entry.favorited) { // we do this to make a favorited property for DMs
+	// 		entry.favorited = false;
+	// 	}
+	// 
+	// 	if (entry.sender) {
+	// 		entry.user = entry.sender
+	// 		entry.isDM = true;
+	// 	}
+	// 
+	// 	if (!entry.in_reply_to_screen_name) {
+	// 		entry.in_reply_to_screen_name = false;
+	// 	}
+	// 
+	// 
+	// 	if (timelineid == 'timeline-user') {
+	// 		entry.isSent = true;
+	// 	}
+	// 
+	// 	// Spaz.dump(entry);
+	// 
+	// 	if (!entry.user.name) {
+	// 		entry.user.name = entry.user.screen_name
+	// 	}
+	// 
+	// 	/*
+	// 		Check for reply
+	// 	*/
+	// 
+	// 	if (entry.in_reply_to_user_id && !entry.in_reply_to_screen_name) {
+	// 		sch.dump('in_reply_to_user_id exists, but in_reply_to_screen_name not set');
+	// 		var reply_matches = null;
+	// 		if (reply_matches = entry.text.match(/^@([a-zA-Z0-9_\-]+)/i)) {
+	// 			entry.in_reply_to_screen_name = reply_matches[1];
+	// 		}
+	// 	}
+	// 
+	// 	entry.rowclass = "even";
+	// 	entry.timestamp = sch.httpTimeToInt(entry.created_at);
+	// 	entry.base_url = Spaz.Prefs.get('twitter-base-url');
+	// 	entry.timelineid = timelineid;
+	// 
+	// 
+	// 	/*
+	// 		Clean the entry.text
+	// 	*/
+	// 	// fix weird unicode junk
+	// 	entry.text = entry.text.replace(/\u2028/, " ");
+	// 
+	// 	// save a raw version
+	// 	entry.rawtext = entry.text;
+	// 
+	// 	// fix extra ampersand encoding
+	// 	entry.text = entry.text.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
+	// 
+	// 	// fix entity &#123; style extra encoding
+	// 	entry.text = entry.text.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
+	// 
+	// 	// sch.dump(this.innerHTML);
+	// 	if (Spaz.Prefs.get('usemarkdown')) {
+	// 		var md = new Showdown.converter();
+	// 
+	// 		// Markdown conversion with Showdown
+	// 		entry.text = md.makeHtml(entry.text);
+	// 
+	// 		// put title attr in converted Markdown link
+	// 		entry.text = entry.text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
+	// 	}
+	// 
+	// 	// convert inline links
+	// 	/*
+	// 		Inline links that start with http://
+	// 	*/
+	// 	var inlineRE = /(?:(\s|^|\.|\:|\())(https?:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/gi;
+	// 	entry.text = entry.text.replace(inlineRE, '$1<a href=\"$2$3$6\" title="Open link in a browser window" class="inline-link">$3&raquo;</a>');
+	// 
+	// 	/*
+	// 		this is the regex we use to match inline
+	// 		lots of uncommon but valid top-level domains aren't used
+	// 		because they cause more problems than solved
+	// 	*/
+	// 	var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fm|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/g;
+	// 	entry.text = entry.text.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
+	// 
+	// 	// email addresses
+	// 	entry.text = entry.text.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
+	// 
+	// 	// convert @username reply indicators
+	// 	entry.text = entry.text.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="' + Spaz.Prefs.get('twitter-base-url') + '$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
+	// 
+	// 	// convert emoticons
+	// 	entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
+	// 
+	// 	// hashtags
+	// 	entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9_\-]{2,}))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
+	// 
+	// 
+	// 	var entryHTML = Spaz.Tpl.parse('timeline_entry', entry);
+	// 	// sch.dump(entryHTML);
+	// 
+	// 	// sch.dump('make DOMElement from string: '+entryHTML);
+	// 	// var entryElement = document.createElement(entryHTML);
+	// 
+	// 	// Make the jQuery object and bind events
+	// 	// sch.dump('make jQ entry and bind events to: '+entryElement);
+	// 	// sch.dump('make jQ entry and bind events to: '+entryElement);
+	// 
+	// 	var jqentry = $(entryHTML);
+	// 
+	// 	if (mark_as_read) {
+	// 		jqentry.addClass('read')
+	// 		jqentry.removeClass('new')
+	// 	}
+	// 
+	// 	if (entry.isDM) {
+	// 		jqentry.addClass('dm');
+	// 	}
+	// 
+	// 	// We only do the fetch if the mark_as_read is not specified
+	// 	if (typeof mark_as_read == 'undefined')
+	// 	{
+	// 		// The as read callback
+	// 		Spaz.DB.asyncGetAsRead(entry.id,
+	// 		function(read)
+	// 		{
+	// 			if (read)
+	// 			{
+	// 				// sch.dump("Entry " + entry.id + " is read");
+	// 				jqentry.addClass('read');
+	// 				jqentry.removeClass('new');
+	// 				$().trigger('UNREAD_COUNT_CHANGED');
+	// 			}
+	// 		});
+	// 	}
+	// 
+	// 	if (prepend) {
+	// 		$('#' + timelineid).prepend(jqentry);
+	// 	} else {
+	// 		$('#' + timelineid).append(jqentry);
+	// 	}
+	// 
+	// 
+	// 	return true;
+	// 
+	//     } else {
+	//         Spaz.dump('skipping ' + entry.id);
+	// 
+	//         return false;
+	//     }
 
 }
 
@@ -920,22 +920,13 @@ Spaz.UI.selectEntry = function(el) {
 
 
 Spaz.UI.getStatusIdFromElement = function(el) {
-    var entryId = null;
-    if (el.id.indexOf("timeline-") == 0)
-    {
-        var index = el.id.indexOf("-", "timeline-".length);
-        if (index >= 0)
-        {
-            entryId = el.id.substring(index + 1);
-        }
-    }
+	var entryId = parseInt($(el).attr('data-status-id'), 10);
 
-    //
-    if (entryId == null) {
+    if (entryId === null) {
         sch.dump("Cannot obtain entry id for entry with DOM id " + this.id);
-        return false
+        return false;
     } else {
-        return entryId
+        return entryId;
     }
 };
 
@@ -956,7 +947,7 @@ Spaz.UI.getElementFromStatusId = function(id) {
 
 Spaz.UI.markEntryAsRead = function(el) {
 
-    $(el).addClass('read');
+    $(el).removeClass('new').addClass('read');
 
     $().trigger('UNREAD_COUNT_CHANGED');
 
