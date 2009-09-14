@@ -17,10 +17,10 @@ body {
     height:100%;
     display:block;
 }
-body:not(.active){
+/*body:not(.active){
   opacity:0.75;
 }
-
+*/
 h1, h2, h3, h4, h5 {
 	padding:0;
 	margin:0;

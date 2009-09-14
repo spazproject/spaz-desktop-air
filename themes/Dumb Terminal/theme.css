@@ -14,9 +14,9 @@ body {
 	color:#009900;
 /*	background-color:#000000;*/
 }
-body:not(.active){
+/*body:not(.active){
   opacity:0.75;
-}
+}*/
 a, a:link, .clickable {
 	color:#00CC00;
 	border-bottom:1px solid #00CC00;

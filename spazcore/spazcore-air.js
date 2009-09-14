@@ -1,4 +1,4 @@
-/*********** Built 2009-09-10 15:44:50 EDT ***********/
+/*********** Built 2009-09-14 15:51:27 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -4290,7 +4290,7 @@ sc.helpers.autolinkTwitterScreenname = function(str, tpl) {
 		tpl = '<a href="http://twitter.com/#username#">@#username#</a>';
 	}
 	
-	var re_uname = /(^|\s|\(\[|,|\()@([a-zA-Z0-9_]+)([^a-zA-Z0-9_]|$)/gi;
+	var re_uname = /(^|\s|\(\[|,|\.|\()@([a-zA-Z0-9_]+)([^a-zA-Z0-9_]|$)/gi;
 	
 	var ms = [];
 	while (ms = re_uname.exec(str))

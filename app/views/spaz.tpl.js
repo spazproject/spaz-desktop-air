@@ -20,6 +20,8 @@ if (!Spaz.Templates) Spaz.Templates = {};
 Spaz.Templates.timeline_entry = function(d) {
 	
 	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
+	
+	d.SC_base_url = Spaz.Data.getBaseURL();
 
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry new ';
@@ -44,7 +46,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
 							if (d.in_reply_to_status_id) {
-	entryHTML += '				<a href="'+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
+	entryHTML += '				<a href="'+d.SC_base_url+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</a>';
 							}
 	entryHTML += '			'+d.text+'';
 	entryHTML += '		</div>';

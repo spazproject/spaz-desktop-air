@@ -16,14 +16,18 @@ $.ajaxSetup(
 
 
 
-
-Spaz.Data.getAPIURL = function(key) {
-
+Spaz.Data.getBaseURL = function() {
 	var base_url = Spaz.Prefs.get('twitter-api-base-url');
-
 	if (!base_url) {
 		base_url = 'https://twitter.com/';
 	}
+	return base_url;
+}
+
+
+Spaz.Data.getAPIURL = function(key) {
+
+	var base_url = Spaz.Data.getBaseURL();
 
 	var urls = {}
 

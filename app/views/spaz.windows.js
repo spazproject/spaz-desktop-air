@@ -17,7 +17,7 @@ Spaz.Windows.onWindowActive = function (event) {
 
 Spaz.Windows.onWindowDeactivate = function(event) {
 	Spaz.UI.hideTooltips();
-  $('body').removeClass('active');
+	$('body').removeClass('active');
 };
 
 
