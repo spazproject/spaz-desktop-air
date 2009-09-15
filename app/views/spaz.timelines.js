@@ -111,6 +111,7 @@ var FriendsTimeline = function() {
 	
 	var thisFT = this;
 	this.twit = new SpazTwit();
+	this.shurl = new SpazShortURL();
 	
 	/*
 		set up the Friends timeline
@@ -176,7 +177,6 @@ var FriendsTimeline = function() {
 				
 			};
 			
-			
 
 			/*
 				Record old scroll position
@@ -191,6 +191,19 @@ var FriendsTimeline = function() {
 			*/
 			thisFT.timeline.addItems(no_dupes);
 
+
+			/*
+				expand URLs
+			*/
+			var exp_urls = [];
+			for (var i=0; i < no_dupes.length; i++) {
+				urls = thisFT.shurl.findExpandableURLs(no_dupes[i].text);
+				if (urls) {
+					exp_urls = exp_urls.concat(urls);
+				}
+			};
+			
+			thisFT.shurl.expandURLs(exp_urls, thisFT.timeline.container);
 
 			/*
 				set new scroll position
@@ -245,7 +258,23 @@ var FriendsTimeline = function() {
 		sch.removeExtraElements('#timeline-friends div.timeline-entry.reply', Spaz.Prefs.get('timeline-maxentries-reply'));
 		sch.removeExtraElements('#timeline-friends div.timeline-entry.dm', Spaz.Prefs.get('timeline-maxentries-dm'));
 	};
+
 	
+	/*
+		handler for URL expansion
+	*/
+	this.expandURL = function(e) {
+		var tl_el = thisFT.timeline.container;
+		var data = sch.getEventData(e);
+		sch.dump('expanding…');
+		sch.dump(data);
+		tl_el.innerHTML = thisFT.shurl.replaceExpandableURL(tl_el.innerHTML, data.shorturl, data.longurl);
+	}
+
+	/*
+		listener for URL expansion
+	*/
+	sch.listen(this.timeline.container, sc.events.newExpandURLSuccess, this.expandURL);
 };
 
 FriendsTimeline.prototype = new AppTimeline();
