@@ -138,8 +138,8 @@ a:hover{
         opacity:0.75;
       }
 			#header-label:after{
-        content:' \025BC'; /* Down-pointing triangle */
-        font-size:0.5em;
+        content:' \025BE'; /* Down-pointing triangle */
+/*        font-size:0.5em;*/
 			}
 		
 		/*
