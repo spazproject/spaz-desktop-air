@@ -139,7 +139,6 @@ a:hover{
       }
 			#header-label:after{
         content:' \025BE'; /* Down-pointing triangle */
-/*        font-size:0.5em;*/
 			}
 		
 		/*
@@ -536,13 +535,63 @@ a:hover{
 			*/
 			#entrybox-popup{
 				position:absolute;
-				bottom:0;
-				left:8px;
+        left:8px;
+        right:8px;
+        bottom:58px;
+        padding:8px;
+        background:rgba(0, 0, 0, 0.9);
+        border-radius:4px;
+          -webkit-border-radius:4px;
 				color:#828282;
 				font-size:9px;
 				opacity:1;
 				z-index:100;
 			}
+				#chars-left {
+				  color:#ccc;
+					font-size:10px;
+					margin:4px 0;
+				}
+				  #chars-left-count{
+				    font-weight:bold;
+				  }
+					#chars-left-count.under {
+						color:#fff;
+					}
+					#chars-left-count.over {
+						color:#f00;
+					}
+				#irt{}
+  				#irt-dismiss{
+            position:relative;
+  					float:left;
+            width:29px;
+            height:29px;
+            margin:-8px 0 0 -4px;
+  					background:transparent url(images/close-black.png) 0 0 no-repeat;
+  					cursor:pointer;
+  					text-indent:-9999em;
+            z-index:9;
+  				}
+				  #irt-content{
+				    display:block;
+            margin:4px 4px 4px -22px;
+            padding:4px 4px 4px 22px;
+            overflow:hidden;
+            background:rgba(45, 45, 45, 0.5);
+            border-radius:8px;
+              -webkit-border-radius:8px;
+            color:#fff;
+				  }
+  					#irt-message{}
+			  #entrybox-popup input[type=button]{
+			    background:transparent url(images/panel-menu-bg.png) center center repeat-x;
+			    border:1px solid #818181;
+			    color:#fff;
+			  }
+			  #entrybox-actions{
+          margin:8px 0 0;
+        }
 
 
 			/*

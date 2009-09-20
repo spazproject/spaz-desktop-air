@@ -240,7 +240,7 @@
 					<div id="menu-friends" class="panelmenu">
 						<form onsubmit="return false;">
 							<input type="button" name="refresh-friends" value="Refresh" id="refresh-friends" title="Refresh this timeline" />
-							<input type="button" name="view-friends" value="View &#x25BE;" id="view-friends" title="Toggle between all messages and just replies/dms" />
+							<input type="button" name="view-friends" value="View &#x25BE;" id="view-friends" title="Toggle between all messages and just replies/DMs" />
 							<input type="button" name="markread-friends" value="Mark" id="markread-friends" title="Mark all as read" />
 							<input type="text" name="filter-friends" value="" id="filter-friends" title="Enter text to filter this timeline" />
 						</form>
@@ -682,7 +682,9 @@
 			<div id="entrybox-popup">
 				<div id="irt" style="display:none">
 					<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
-					<strong>Re:</strong><span id="irt-message" data-status-id="0"></span>
+					<span id="irt-content">
+  					<strong>Re:</strong> <span id="irt-message" data-status-id="0"></span>
+					</span>
 				</div>
 				<span id="chars-left">
 					<span id="chars-left-count"></span> chars left
