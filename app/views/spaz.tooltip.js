@@ -6,43 +6,32 @@ var Spaz_Tooltip_Timeout = {};
 var Spaz_Tooltip_hideTimeout = {};
 
 
-function Spaz_Tooltip(opts) {
+function Spaz_Tooltip(content, opts) {
+
+	sch.dump('OPTS:');
+	sch.dump(opts);
 	
-	this.event = opts.e;
-	this.el = opts.el;
-	this.str = opts.str;
-	this.previewurl = opts.previewurl;
-	this.reply_status_id = opts.reply_status_id;
-	this.reply_screen_name = opts.reply_screen_name;
+	this.opts = opts || {};
+	
+	this.content = content           || this.opts.content || '';
+	this.trigger = this.opts.trigger || null;
+	this.event   = this.opts.e       || null;
+	this.jqtt    = $('#tooltip');
+	
+	sch.dump('CONTENT:"'+content+'"');
+	sch.dump('OPTS:');
+	sch.dump(this.opts);
+	
 
-
-	// sch.dump('================================');
-	// sch.dump('FROM: '+this.el.outerHTML);
-	// sch.dump("opts: "+this.event);
-	// sch.dump("opts: "+this.el);
-	// sch.dump("opts: "+this.str);
-	// sch.dump("opts: "+this.previewurl);
-	// sch.dump("opts: "+this.reply_status_id);
-	// sch.dump("opts: "+this.reply_screen_name);
-	// 
 
 }
 
 
 Spaz_Tooltip.prototype.show = function() {
-
-	/*
-		Hide any open tooltips
-	*/
-	$('#tooltip').stop().hide().css('width', '').css('height', '');
-
-	/* 
-		clear any running tooltip timeouts
-	*/
-	clearTimeout(Spaz_Tooltip_Timeout);
-	clearTimeout(Spaz_Tooltip_hideTimeout);
-
-
+	
+	sch.dump('SHOW!!!');
+	
+	this.hide();
 
 	/*
 		We have to make a closure here to solve the scoping problems 
@@ -50,22 +39,22 @@ Spaz_Tooltip.prototype.show = function() {
 	*/
 	var thisTT = this;
 
-	//sch.dump('delaying tooltip "'+this.str+'" for 500 mseconds');
 	Spaz_Tooltip_Timeout = setTimeout(delayedShow, Spaz.Prefs.get('window-tooltipdelay'));
 
+	/**
+	 * a wrapped function to show the tooltip after a timeout 
+	 */
 	function delayedShow() {
-		sch.dump('showing tooltip "' + thisTT.str + '"');
-		sch.dump('reply_status_id' + thisTT.reply_status_id);
-		
+		sch.dump('showing tooltip "' + thisTT.content + '"');
 
 		if (!thisTT.event) {
-			Spaz.dump('No event found in Spaz_Tooltip.show; returning');
+			sch.error('No event found in Spaz_Tooltip.show; returning');
 			return;
 		}
 
 
 		// show the tooltip
-		$('#tooltip').css('left', thisTT.event.pageX + 10)
+		thisTT.jqtt.css('left', thisTT.event.pageX + 10)
 			.css('top', thisTT.event.pageY + 20)
 			.show()
 			.css('opacity', 0)
@@ -75,273 +64,143 @@ Spaz_Tooltip.prototype.show = function() {
 					{
 						speed: 'fast'
 					});
-		// .animate({'opacity':'0.85'}, {speed:200, queue:false});
-		$('#tooltip').children('.tooltip-msg').html(thisTT.str);
-		$('#tooltip').children('.preview').empty();
-
-		// Spaz.dump(tt[0].outerHTML);
-
-		// Reset the .preview div ID so we don't display the wrong preview
-		$('#tooltip').children('.preview').attr('id', '')
-
-		/*
-			Special support for user rollovers
-		*/
-		if ($(thisTT.el).attr('user-screen_name')) {
-
-			Spaz.dump('This is a user profile tooltip')
-
-			//var username = $(thisTT.el).text().replace(/@/, '');
-			var username = $(thisTT.el).attr('user-screen_name');
+		thisTT.jqtt.children('.tooltip-msg').html(thisTT.content);
 
 
+		var vp  = Spaz.UI.getViewport();
+		var off = thisTT.jqtt.offset();
 
-			Spaz.dump('username is ' + username)
-
-			var url = Spaz.Data.getAPIURL('user_timeline')
-			var data = {
-				'id': username,
-				'count': 1
-			}
-
-
-			var previewid = "preview-username-" + username;
-
-			Spaz.dump('previewid = ' + previewid);
-
-			$('#tooltip').children('.preview').attr('id', previewid)
-
-
-
-			$.get(url, data,
-				function(data, textStatus) {
-					sch.dump('textStatus:'+textStatus);
-					sch.dump('DATA:'+data);
-					try {
-						var tweets = JSON.parse(data);
-
-						Spaz.dump(tweets);
-
-						if (tweets.error) {
-							Spaz.dump('Error when getting preview data for tooltip');
-							$('#' + previewid).empty();
-							$('#' + previewid).append("<div class='error-description'>Could not retrieve user. Probably protected.</div>");
-							$('#' + previewid).append("<div class='error-message'>Error message from Twitter:\"" + tweets.error + "\"</div>");
-							Spaz.dump($('#tooltip')[0].outerHTML);
-						} else {
-							if (tweets[0].text) {
-
-								$('#' + previewid).empty();
-								$('#' + previewid).append("<img style='float:right' src='" + tweets[0].user.profile_image_url + "' />");
-								$('#' + previewid).append("<div><strong>" + tweets[0].user.name + " (" + tweets[0].user.screen_name + ")</strong></div>");
-								if (tweets[0].user.location) {
-									$('#' + previewid).append("<div><em>" + tweets[0].user.location + "</em></div>");
-								}
-								if (tweets[0].user.followers_count) {
-									$('#' + previewid).append("<div><strong>" + tweets[0].user.followers_count + "</strong> followers</div>");
-								}
-								if (tweets[0].user.description) {
-									$('#' + previewid).append("<div>" + tweets[0].user.description + "</div>");
-								}
-								$('#' + previewid).append('<div class="latest"><strong>Latest:</strong> ' + tweets[0].text + '</div>');
-								Spaz.dump($('#tooltip')[0].outerHTML);
-							}
-
-						}
-						
-						$('#' + previewid).fadeIn(500);
-						thisTT.resetPosition();
-						
-						Spaz.dump($('#tooltip')[0].outerHTML);
-					} catch(e) {
-						Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name
-						+ ". Error message: " + e.message)
-					}
-				})
-
-
-		/*
-			In-reply-to rollovers
-		*/
-		} else if(thisTT.reply_status_id) {
-			
-			sch.dump('This is an Reply preview tooltip');
-			var previewid = "preview-status-" + thisTT.reply_status_id;
-			sch.dump('previewid = ' + previewid);
-			$('#tooltip').children('.preview').attr('id', previewid);
-			
-			var url = Spaz.Data.getAPIURL('show');
-			var data = {
-				'id':thisTT.reply_status_id
-			}
-			
-			$.get(url, data, function(data, textStatus) {
-				try {
-					var tweet = JSON.parse(data);
-					Spaz.dump(tweet);
-
-					if (tweet.error) {
-						Spaz.dump('Error when getting preview data for tooltip');
-						$('#' + previewid).empty();
-						$('#' + previewid).append("<div class='error-description'>Could not retrieve user. Probably protected.</div>");
-						$('#' + previewid).append("<div class='error-message'>Error message from Twitter:\"" + tweets.error + "\"</div>");
-						Spaz.dump($('#tooltip')[0].outerHTML);
-					} else {
-
-						if (tweet.text) {
-
-							$('#' + previewid).empty();
-							$('#' + previewid).append("<div><strong>" + tweet.user.name + " (" + tweet.user.screen_name + ")</strong></div>");
-							$('#' + previewid).append('<div class="latest">' + tweet.text + '</div>');
-							Spaz.dump($('#tooltip')[0].outerHTML);
-						}
-					}
-					
-					$('#' + previewid).fadeIn(500);
-					thisTT.resetPosition();
-					
-					Spaz.dump($('#tooltip')[0].outerHTML);
-				} catch(e) {
-					Spaz.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name
-					+ ". Error message: " + e.message)
-				}
-				
-			});
-			
-		
-		/*
-			Preview a URL rollover
-		*/
-		} else if (thisTT.previewurl) {
-			Spaz.dump('This is an URL preview tooltip');
-
-			var previewid = "preview-link-" + sch.getTimeAsInt();
-
-			Spaz.dump('previewid = ' + previewid);
-
-			$('#tooltip').children('.preview').attr('id', previewid)
-			
-			
-			
-			
-			if (thisTT.previewurl.search(/^http:\/\//i) > -1) {
-
-				// Support for twitpic
-				var done = false;
-
-				//
-				var twitpicRE = new RegExp("^(http:\\/\\/" + "twitpic.com\\/)" + "(.+)$");
-				var twitpicMatch = thisTT.previewurl.match(twitpicRE);
-
-				// First detect if we deal with a twitpic URL
-				if (twitpicMatch != null)
-				{
-					var width = $('#tooltip').css("width");
-					var widthRE = new RegExp("^([0-9]+)px$");
-					var widthMatch = width.match(widthRE);
-
-					// Check the width of the tooltip window is like number + px because we need
-					// the value to correctly resize the image
-					if (widthMatch != null)
-					{
-						done = true;
-						width = widthMatch[1];
-						
-						var thumbnail_url = twitpicMatch[1] + "show/thumb/" + twitpicMatch[2];
-						var s = '<img src="' + thumbnail_url + '" width="' + width + '" alt="Share photos on ' +
-						'twitter with Twitpic"></img>';
-						$('#tooltip').children('.preview').empty();
-						$('#' + previewid).html(s);
-						sch.dump("HTML is " + s);
-						$('#' + previewid).fadeIn(500);
-						thisTT.resetPosition();
-
-					}
-					else
-					{
-						sch.dump("Could not find the width of the tooltip window " + width);
-					}
-				}
-
-				if (!done)
-				{
-					$.get(thisTT.previewurl,
-						function(rtext, status, xhr) {
-							// sch.dump('rtext:'+rtext);
-							var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
-
-							// alert(rtext_matches);
-							if (rtext_matches && rtext_matches[1]) {
-								var title = rtext_matches[1];
-								// sch.dump('jqpreview.innerText:'+jqpreview[0].innerText);
-								$('#tooltip').children('.preview').empty();
-								$('#' + previewid).html('<strong>Title:</strong> ' + title);
-								$('#' + previewid).fadeIn(500);
-								thisTT.resetPosition();
-							}
-						});
-				}
-			}
-
-
-		}
-
-
-		var vp = Spaz.UI.getViewport();
-		var off = $('#tooltip').offset();
-
-		// sch.dump('Viewport:')
-		// Spaz.dump(vp);
-		// sch.dump('Offset:')
-		// Spaz.dump(off);
 		// check horizontal position
-		if (vp.x + vp.cx < off.left + $('#tooltip').width()) {
-			// sch.dump('horz over')
-			$('#tooltip').css('left', parseInt($('#tooltip').css('left')) - ($('#tooltip').width() + 20));
-			if ($('#tooltip').offset().left < 5) {
-				$('#tooltip').css('left', 5);
+		if (vp.x + vp.cx < off.left + thisTT.jqtt.width()) {
+			thisTT.jqtt.css('left', parseInt(thisTT.jqtt.css('left')) - (thisTT.jqtt.width() + 20));
+			if (thisTT.jqtt.offset().left < 5) {
+				thisTT.jqtt.css('left', 5);
 			}
 		}
 
 
 		// check vertical position
-		if (vp.y + vp.cy < off.top + $('#tooltip').height()) {
-			// sch.dump('vert over');
-			$('#tooltip').css('top', parseInt($('#tooltip').css('top')) - ($('#tooltip').height() + 20));
-			if ($('#tooltip').offset().top < 5) {
-				$('#tooltip').css('top', 5);
+		if (vp.y + vp.cy < off.top + thisTT.jqtt.height()) {
+			thisTT.jqtt.css('top', parseInt(thisTT.jqtt.css('top')) - (thisTT.jqtt.height() + 20));
+			if (thisTT.jqtt.offset().top < 5) {
+				thisTT.jqtt.css('top', 5);
 			}
 		}
-
-		// sch.dump('setting tooltip hide timeout');
-		// sch.dump('Tooltip hide delay:'+Spaz.Prefs.get('window-tooltiphidedelay'));
+		
+		
 		Spaz_Tooltip_hideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.Prefs.get('window-tooltiphidedelay'));
-		// $('#tooltip').bind('mouseout', Spaz.UI.hideTooltips);
 	}
 
 }
 
 
+Spaz_Tooltip.prototype.hide    = function() {
+	/*
+		Hide any open tooltips
+	*/
+	this.jqtt.stop().hide().css('width', '').css('height', '');
+	clearTimeout(Spaz_Tooltip_Timeout);
+	clearTimeout(Spaz_Tooltip_hideTimeout);
+
+	
+}
+
+Spaz_Tooltip.prototype.showIRT = function(irt_id) {
+	var thisTT = this;
+	
+	sch.listen(this.trigger, 'get_one_status_succeeded', show);
+	
+	sch.dump('IRT_ID:'+irt_id);
+	
+	Spaz.Data.getTweet(irt_id, this.trigger);
+	
+	function show(e) {
+		
+		var d = sch.getEventData(e);
+		var content = '';
+
+		content += "<img style='float:right' src='" + d.user.profile_image_url + "' />";
+		content += "<div><strong>" + d.user.name + " (" + d.user.screen_name + ")</strong></div>";
+		content += '<div class="irt">' + sch.stripTags(d.text) + '</div>';
+		
+		thisTT.setContent(content);
+		thisTT.show();
+	}
+};
 
 
+Spaz_Tooltip.prototype.showUser = function(user_id) {
+	var thisTT = this;
+	
+	sch.listen(this.trigger, 'get_user_succeeded', show);
+	
+	Spaz.Data.getUser(user_id, this.trigger);
+	
+	function show(e) {
+		
+		var d = sch.getEventData(e);
+		
+		var content = '';
+		content += "<img style='float:right' src='" + d.profile_image_url + "' />";
+		content += "<div><strong>" + d.name + " (" + d.screen_name + ")</strong></div>";
+		if (d.location) {
+			content += "<div><em>" + d.location + "</em></div>";
+		}
+		if (d.followers_count) {
+			content += "<div><strong>" + d.followers_count + "</strong> followers</div>";
+		}
+		if (d.description) {
+			content += "<div>" + d.description + "</div>";
+		}
+		// content += '<div class="latest"><strong>Latest:</strong> ' + d.text + '</div>';
+		
+		thisTT.setContent(content);
+		thisTT.show();
+	}
+	
+}
 
+Spaz_Tooltip.prototype.showURLPreview = function(url) {
+	var display_url = sch.escape_html(url);
+	// if (display_url.length > 40) {
+	// 	display_url = display_url.substr(0,40)+'…';
+	// }
+	
+	sch.dump('showing URL preview');
+	sch.dump(url);
+	sch.dump(display_url);
+	
+	
+	var content  = '<div>'+display_url+'</div>';
+	// content += '<img src="http://images.websnapr.com/?url=';
+	// content += encodeURIComponent(url);
+	// content += '" alt="Loading thumbnail…" height="152" width="202" />';
+	this.setContent(content);
+	this.show();
+}
+
+Spaz_Tooltip.prototype.showTitle = function(title) {
+	this.setContent(title);
+	this.show();
+}
+
+Spaz_Tooltip.prototype.setTrigger = function(trigger_element) {
+	
+};
+
+Spaz_Tooltip.prototype.setContent = function(content) {
+	this.content = content;
+};
 
 /*
 	I kinda stole this from the excellent jquery.tooltip
 */
 Spaz_Tooltip.prototype.resetPosition = function() {
 	var vp = Spaz.UI.getViewport();
-	var off = $('#tooltip').offset();
+	var off = this.jqtt.offset();
 
-	// Spaz.dump(vp);
-	// Spaz.dump(off);
-	// Spaz.dump('reset width');
-	// Spaz.dump("old width: "+$('#tooltip').width());
 	var newWidth = vp.cx - off.left - 10;
-	$('#tooltip').width(newWidth);
-
-	// Spaz.dump("old width: "+newWidth);
+	this.jqtt.width(newWidth);
 };
-
 
 

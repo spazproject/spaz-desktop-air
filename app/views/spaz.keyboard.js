@@ -10,29 +10,34 @@ if (!Spaz.Keyboard) Spaz.Keyboard = {};
 
 Spaz.Keyboard.move = function(dir, selector) {
 	
-	if (!selector) {
-		selector = '';
-	}
+	sch.dump(dir);
+	sch.dump(selector);
+	
+	dir      = dir      || 'down';
+	selector = selector || '';
 	
 	Spaz.dump("selector is '" + selector+"'")
 	
 	// var timelineid = 'timeline-friends';
-	var timeline = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
-
+	var timeline       = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
 	var entry_selector = timeline.getEntrySelector();
-
-	if (!dir) { dir = 'down' }
 	
-	if (dir == 'down') {
-		var movefunc = 'nextAll';
-		var wrapselc = 'first';
-	} else if (dir == 'up') {
-		dir = 'up'
-		var movefunc = 'prevAll';
-		var wrapselc = 'last';
-	} else {
-		return false;
-	}
+	var jqall = $(entry_selector).is(':visible');
+	
+	
+	
+	
+
+	// if (dir == 'down') {
+	// 	var movefunc = 'nextAll';
+	// 	var wrapselc = 'first';
+	// } else if (dir == 'up') {
+	// 	dir = 'up'
+	// 	var movefunc = 'prevAll';
+	// 	var wrapselc = 'last';
+	// } else {
+	// 	return false;
+	// }
 	
 	// get current selected
 	var jqsel = $(entry_selector+'.ui-selected');

@@ -35,20 +35,27 @@ var TweetModel = new JazzRecord.Model({
 			thisobj = sch.clone(obj);
 			
 			if (this.tweetExists(thisobj.id)) {
+				sch.dump('Tweet '+thisobj.id+' exists');
 				return false;
 			}
 			
 			if (thisobj.SC_is_dm) {
+				sch.dump('Tweet '+thisobj.id+' is DM');
 				return false;
 			}
 			
+			sch.dump('adding user');
+			
 			var user_id = TwUserModel.findOrCreate(thisobj.user);
+			thisobj.user_id = user_id;
+			sch.dump('user_id:'+user_id);
 			delete thisobj.user;
 
 			thisobj.twitter_id = thisobj.id;
 			delete thisobj.id;
-		
-			thisobj.user_id = user_id;
+			sch.dump('userid:'+thisobj.twitter_id);
+			
+			sch.dump(thisobj);
 
 			return this.create(thisobj);
 		},

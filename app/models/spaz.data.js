@@ -514,238 +514,161 @@ Spaz.Data.onAjaxError = function(xhr,rstr) {
 
 
 
-/**
- * Starts the process of data retrieval for a section
- * @param {object} section the Spaz.Section object
- * @param {boolean} force if true, forces a reload of the section even if mincachetime has not passed
- * @returns void
- */
-Spaz.Data.getDataForTimeline = function(section, force) {
-
-	var username = Spaz.Prefs.getUser();
-	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
-		
-		$('#timeline-friends').html("<div id='not-logged-in'><div>Username and password not set.</div><input type='button' id='open-login-panel' value='Enter user/pass' /> </div>");
-		
-		$('#open-login-panel').one('click', function() {
-			$('#not-logged-in').remove();
-			Spaz.UI.showPrefs();
-			setTimeout(Spaz.UI.openLoginPanel, 500);
-		});
-		
-		sch.dump('hiding loading');
-		Spaz.UI.hideLoading();
-		return;
-	} else {
-		$('#not-logged-in').remove();
-	}
-
-	sch.dump('now:'+sch.getTimeAsInt());
-	sch.dump('then:'+section.lastcheck);
-	sch.dump('difference:'+(sch.getTimeAsInt() - section.lastcheck));
-	sch.dump('section.mincachetime:'+section.mincachetime);
-
-	if (force || (sch.getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
-		section.lastcheck = sch.getTimeAsInt();
-
-		for (var i = 0; i < section.urls.length; i++) {
-			// alert('section.urls['+i+']: '+ section.urls[i])
-			Spaz.Data.getDataForUrl(section.urls[i], section);
-			// data = data.concat(thisdata);
-		}
-	} else {
-		sch.dump('Not loading data - section.mincachetime has not expired');
-	}
-
-}
-
-
-
-
-
-Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
-
-	Spaz.Data.$ajaxQueueFinished++;
-
-	if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
-		sch.dump("Error:Timeout on "+thisurl);
-	} else {
-		sch.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-		sch.dump("STATUS:\n"+xhr.status);
-		sch.dump("DATA:\n"+xhr.responseText);
-		sch.dump("COMPLETE: " + msg);
-
-		if (xhr.status == 400) {
-			sch.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
-		}
-
-		else if (xhr.status == 401) {
-			sch.dump("ERROR: 401 error - Not Authenticated. Check your username and password.	Response from Twitter:\n"+xhr.responseText);
-			Spaz.Data.$ajaxQueueErrors.push("Not Authenticated. Check your username and password.");
-		}
-
-		else if (xhr.responseText.length < 0) {
-			sch.dump("Error:response empty from "+thisurl);
-			Spaz.Data.$ajaxQueueErrors.push("Empty response from server for "+thisurl)
-		}
-
-		try {
-			var data = sch.deJSON(xhr.responseText);
-			sch.dump(typeof(data))
-
-			if (!data) {
-				sch.dump("Error: no data returned from "+thisurl);
-			} else {
-				/* This is a little hack for summize data */
-				if (data.results) {
-					data = data.results;
-				}
-				if (data.error) {
-					sch.dump("ERROR: "+data.error+" ["+data.request+"]");
-					Spaz.Data.$ajaxQueueErrors.push("Twitter says: \""+data.error+"\"");
-				} else {
-					Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
-				}
-			}
-		} catch(e) {
-			sch.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name + ". Error message: " + e.message);
-		}
-
-		sch.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
-		sch.dump('section.urls.length:'+section.urls.length);
-		sch.dump('Spaz.Data.$ajaxQueueStorage.length:'+Spaz.Data.$ajaxQueueStorage.length);
-		sch.dump('Spaz.Data.$ajaxQueueErrors.length:'+Spaz.Data.$ajaxQueueErrors.length);
-
-	}
-
-	if (Spaz.Data.$ajaxQueueFinished >= section.urls.length) {
-		Spaz.Data.$ajaxQueueFinished = 0;
-		Spaz.UI.statusBar('Adding '+Spaz.Data.$ajaxQueueStorage.length+' entries');
-
-		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
-			time.start('addingItems');
-			for (var i in Spaz.Data.$ajaxQueueStorage) {
-				// sch.dump('URL:'+thisurl);
-				// sch.dump('section URLs:'+section.urls);
-				/*
-					Check the origin URL to see if this is a follower or someone the
-					user is following
-				*/
-				if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
-					Spaz.Data.$ajaxQueueStorage[i].is_following = true;
-				} else if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
-					Spaz.Data.$ajaxQueueStorage[i].is_follower = true;
-				}
-				
-				section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
-			}
-			time.stop('addingItems');
-		}
-
-		sch.dump('onSectionAjaxComplete cleaning up timeline');
-		section.cleanup();
-
-		sch.dump('hiding loading');
-		Spaz.UI.hideLoading();
-
-		if (Spaz.Data.$ajaxQueueErrors.length > 0) {
-			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
-			Spaz.UI.alert(errors, "Error");
-			sch.dump(errors);
-			Spaz.Data.$ajaxQueueErrors = [];
-		}
-
-		sch.dump('emptying storage');
-		Spaz.Data.$ajaxQueueStorage = [];
-	}
-}
+// /**
+//  * Starts the process of data retrieval for a section
+//  * @param {object} section the Spaz.Section object
+//  * @param {boolean} force if true, forces a reload of the section even if mincachetime has not passed
+//  * @returns void
+//  */
+// Spaz.Data.getDataForTimeline = function(section, force) {
+// 
+// 	var username = Spaz.Prefs.getUser();
+// 	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
+// 		
+// 		$('#timeline-friends').html("<div id='not-logged-in'><div>Username and password not set.</div><input type='button' id='open-login-panel' value='Enter user/pass' /> </div>");
+// 		
+// 		$('#open-login-panel').one('click', function() {
+// 			$('#not-logged-in').remove();
+// 			Spaz.UI.showPrefs();
+// 			setTimeout(Spaz.UI.openLoginPanel, 500);
+// 		});
+// 		
+// 		sch.dump('hiding loading');
+// 		Spaz.UI.hideLoading();
+// 		return;
+// 	} else {
+// 		$('#not-logged-in').remove();
+// 	}
+// 
+// 	sch.dump('now:'+sch.getTimeAsInt());
+// 	sch.dump('then:'+section.lastcheck);
+// 	sch.dump('difference:'+(sch.getTimeAsInt() - section.lastcheck));
+// 	sch.dump('section.mincachetime:'+section.mincachetime);
+// 
+// 	if (force || (sch.getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
+// 		section.lastcheck = sch.getTimeAsInt();
+// 
+// 		for (var i = 0; i < section.urls.length; i++) {
+// 			// alert('section.urls['+i+']: '+ section.urls[i])
+// 			Spaz.Data.getDataForUrl(section.urls[i], section);
+// 			// data = data.concat(thisdata);
+// 		}
+// 	} else {
+// 		sch.dump('Not loading data - section.mincachetime has not expired');
+// 	}
+// 
+// }
+// 
 
 
 
-/**
- * Retrieves data for the given URL, as part of a queue. Used by Spaz.Data.getDataForTimeline
- * @param {String} url The URL to request data from
- * @param {Object} section The Spaz.Section that is this request is getting data for
- * @returns void
- */
-Spaz.Data.getDataForUrl = function(url, section) {
 
-	sch.dump('getting:'+url);
-
-	sch.dump('section.timeline:'+section.timeline);
-
-	Spaz.UI.statusBar("Checking for new data…");
-	Spaz.UI.showLoading();
-
-	var xhr = $.ajax({
-		// mode:'queue',
-		complete:function(xhr, msg){
-			sch.dump('Getting data for url:'+url);
-			section.onAjaxComplete(url,xhr,msg);
-		},
-		error:function(xhr, msg, exc) {
-			if (xhr && xhr.responseText) {
-				sch.dump("Error:"+xhr.responseText+" from "+url);
-			} else {
-				sch.dump("Error:Unknown from "+url);
-			}
-		},
-		beforeSend:function(xhr){
-			var user = Spaz.Prefs.getUser();
-			var pass = Spaz.Prefs.getPass();
-			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-			xhr.setRequestHeader("Cookie", '');
-		},
-		processData:false,
-		type:"GET",
-		url:url,
-		data:null
-	});
-
-}
+// Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
+// 
+// 	Spaz.Data.$ajaxQueueFinished++;
+// 
+// 	if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
+// 		sch.dump("Error:Timeout on "+thisurl);
+// 	} else {
+// 		sch.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
+// 		sch.dump("STATUS:\n"+xhr.status);
+// 		sch.dump("DATA:\n"+xhr.responseText);
+// 		sch.dump("COMPLETE: " + msg);
+// 
+// 		if (xhr.status == 400) {
+// 			sch.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
+// 		}
+// 
+// 		else if (xhr.status == 401) {
+// 			sch.dump("ERROR: 401 error - Not Authenticated. Check your username and password.	Response from Twitter:\n"+xhr.responseText);
+// 			Spaz.Data.$ajaxQueueErrors.push("Not Authenticated. Check your username and password.");
+// 		}
+// 
+// 		else if (xhr.responseText.length < 0) {
+// 			sch.dump("Error:response empty from "+thisurl);
+// 			Spaz.Data.$ajaxQueueErrors.push("Empty response from server for "+thisurl)
+// 		}
+// 
+// 		try {
+// 			var data = sch.deJSON(xhr.responseText);
+// 			sch.dump(typeof(data))
+// 
+// 			if (!data) {
+// 				sch.dump("Error: no data returned from "+thisurl);
+// 			} else {
+// 				/* This is a little hack for summize data */
+// 				if (data.results) {
+// 					data = data.results;
+// 				}
+// 				if (data.error) {
+// 					sch.dump("ERROR: "+data.error+" ["+data.request+"]");
+// 					Spaz.Data.$ajaxQueueErrors.push("Twitter says: \""+data.error+"\"");
+// 				} else {
+// 					Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
+// 				}
+// 			}
+// 		} catch(e) {
+// 			sch.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name + ". Error message: " + e.message);
+// 		}
+// 
+// 		sch.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
+// 		sch.dump('section.urls.length:'+section.urls.length);
+// 		sch.dump('Spaz.Data.$ajaxQueueStorage.length:'+Spaz.Data.$ajaxQueueStorage.length);
+// 		sch.dump('Spaz.Data.$ajaxQueueErrors.length:'+Spaz.Data.$ajaxQueueErrors.length);
+// 
+// 	}
+// 
+// 	if (Spaz.Data.$ajaxQueueFinished >= section.urls.length) {
+// 		Spaz.Data.$ajaxQueueFinished = 0;
+// 		Spaz.UI.statusBar('Adding '+Spaz.Data.$ajaxQueueStorage.length+' entries');
+// 
+// 		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
+// 			time.start('addingItems');
+// 			for (var i in Spaz.Data.$ajaxQueueStorage) {
+// 				// sch.dump('URL:'+thisurl);
+// 				// sch.dump('section URLs:'+section.urls);
+// 				/*
+// 					Check the origin URL to see if this is a follower or someone the
+// 					user is following
+// 				*/
+// 				if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
+// 					Spaz.Data.$ajaxQueueStorage[i].is_following = true;
+// 				} else if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
+// 					Spaz.Data.$ajaxQueueStorage[i].is_follower = true;
+// 				}
+// 				
+// 				section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
+// 			}
+// 			time.stop('addingItems');
+// 		}
+// 
+// 		sch.dump('onSectionAjaxComplete cleaning up timeline');
+// 		section.cleanup();
+// 
+// 		sch.dump('hiding loading');
+// 		Spaz.UI.hideLoading();
+// 
+// 		if (Spaz.Data.$ajaxQueueErrors.length > 0) {
+// 			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
+// 			Spaz.UI.alert(errors, "Error");
+// 			sch.dump(errors);
+// 			Spaz.Data.$ajaxQueueErrors = [];
+// 		}
+// 
+// 		sch.dump('emptying storage');
+// 		Spaz.Data.$ajaxQueueStorage = [];
+// 	}
+// }
+// 
 
 
 
 
 
-/**
- * Retrieves data for the given URL, as part of a queue. Used by Spaz.Data.getDataForTimeline
- * @param {String} url The URL to request data from
- * @param {Object} section The Spaz.Section that is this request is getting data for
- * @returns void
- */
-Spaz.Data.searchSummize = function(query) {
-
-	var section = Spaz.Section.search;
-	var url = Spaz.Section.search[0].replace(/\{\{query\}\}/, query)
-
-	sch.dump('getting:'+url);
-
-	sch.dump('section.timeline:'+section.timeline);
-
-	Spaz.UI.statusBar("Searching for '"+query+"'…");
-	Spaz.UI.showLoading();
 
 
-	var xhr = $.ajax({
-		// mode:'queue',
 
-		complete:function(xhr, msg){
-			section.onAjaxComplete(url,xhr,msg);
-		},
-		error:function(xhr, msg, exc) {
-			if (xhr && xhr.responseText) {
-				sch.dump("Error:"+xhr.responseText+" from "+url);
-			} else {
-				sch.dump("Error:Unknown from "+url);
-			}
-		},
-		processData:false,
-		type:"GET",
-		url:url,
-		data:null
-	});
-}
+
 
 
 
@@ -1018,5 +941,71 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 
 
 
+/**
+ * @param {integer|string} user_id
+ * @param {DOMElement} target_el 
+ */
+Spaz.Data.getUser = function(user_id, target_el) {
+	
+	var userobj = null;
+	var target_el = target_el || document;
+	
+	if (sch.isString(user_id)) {
+		userobj = TwUserModel.getUser(user_id);
+	} else {
+		userobj = TwUserModel.getUserById(user_id);
+	}
+	
+	if (userobj) {
+		sch.trigger('get_user_succeeded', target_el, userobj);
+	} else {
+		var twit = new SpazTwit(null, null, {
+			'event_target':target_el
+		});
+
+		sch.listen(target_el, 'get_user_succeeded', saveUserObject);
+		twit.getUser(user_id);
+	}
+	
+	
+	function saveUserObject(e) {
+		var userobj = sch.getEventData(e);
+		TwUserModel.findOrCreate(userobj);
+		sch.unlisten(target_el, 'get_user_succeeded', saveUserObject);
+	}
+};
 
 
+
+/**
+ * @param {integer|string} user_id
+ * @param {DOMElement} target_el 
+ */
+Spaz.Data.getTweet = function(status_id, target_el) {
+	
+	var statusobj = null;
+	var target_el = target_el || document;
+	
+
+	statusobj = TweetModel.getById(status_id);
+	
+	if (statusobj) {
+		sch.dump('loaded statusobj from model');
+		sch.trigger('get_one_status_succeeded', target_el, statusobj);
+	} else {
+		sch.dump('retrieving statusobj from Twitter');
+		var twit = new SpazTwit(null, null, {
+			'event_target':target_el
+		});
+
+		sch.listen(target_el, 'get_one_status_succeeded', saveTweetObject);
+		twit.getOne(status_id);
+	}
+	
+	
+	function saveTweetObject(e) {
+		var statusobj = sch.getEventData(e);
+		TweetModel.saveTweet(statusobj);
+		sch.unlisten(target_el, 'get_one_status_succeeded', saveTweetObject);
+	}
+};

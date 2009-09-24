@@ -90,6 +90,9 @@ Spaz.initialize = function() {
 	}
 	JazzRecord.depth = 0;
 	JazzRecord.migrate();
+	JazzRecord.addIndex('tweets', 'twitter_id');
+	JazzRecord.addIndex('twusers', 'twitter_id');
+	JazzRecord.addIndex('twusers', 'screen_name');
 
 	// Docking initialization
 	sch.dump("docking initialization");

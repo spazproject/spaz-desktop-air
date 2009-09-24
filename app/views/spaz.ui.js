@@ -600,7 +600,6 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 
     var opts = {
         'el': el,
-        'str': str,
         'previewurl': previewurl,
     }
 
@@ -609,7 +608,7 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
         opts.e = event
     }
 
-    var tt = new Spaz_Tooltip(opts);
+    var tt = new Spaz_Tooltip(str, opts);
     tt.show();
 
 };

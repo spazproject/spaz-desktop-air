@@ -10,7 +10,7 @@ var SPAZ_MAKECLICKABLE_OPTS = {
  	'autolink': {
  		'type'      :'both',
  		'extra_code':'',
- 		'maxlen'    :25
+ 		'maxlen'    :100
  	},
  	'screenname': {
  		'tpl':'<span class="user-screen-name clickable" title="View user\'s profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
@@ -137,11 +137,11 @@ var FriendsTimeline = function() {
 			Spaz.UI.statusBar("Loading friends timeline");
 			Spaz.UI.showLoading();
 			
-			sch.error('REQUEST_DATA');
+			sch.dump('REQUEST_DATA');
 		},
 		'data_success': function(e, data) {
 			
-			sch.error('DATA_SUCCESS');
+			sch.dump('DATA_SUCCESS');
 			
 			data = data.reverse();
 			var no_dupes = [];
@@ -229,7 +229,7 @@ var FriendsTimeline = function() {
 			
 		},
 		'data_failure': function(e, error_obj) {
-			sch.error('DATA_FAILURE');
+			sch.dump('DATA_FAILURE');
 			var err_msg = "There was an error retrieving your timeline";
 			Spaz.UI.statusBar(err_msg);
 

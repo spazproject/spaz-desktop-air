@@ -40,113 +40,86 @@ sch.listen(document, 'update_failed', function(e) {
 Spaz.Controller.initIntercept = function() {
 
 	$('body').intercept('mouseover', {
+		
+			// '.TabbedPanelsTab':function(e) {
+			// 	var tt = new Spaz_Tooltip($(this).attr('title'), {
+			// 		'e'		:e,
+			// 	});
+			// 	tt.show();
+			// },
+		
 			'.status-action[title]':function(e) {
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'str'	:$(this).attr('title')
-					// 'previewurl':href,
+					'trigger':this
 				});
 				tt.show();
-
 			},
 			'.user-screen-name[title]':function(e) {
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:$(this).attr('title')
-					// 'previewurl':href,
+					'trigger':this
 				});
-				tt.show();
-
-				// Spaz.UI.showTooltip(this, $(this).attr('title'));
+				tt.showUser($(this).attr('user-screen_name'));
 			},
-			'a.in-reply-to':function(e) {
-				var tt = new Spaz_Tooltip({
+			'span.in-reply-to':function(e) {
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:$(this).attr('title'),
-					'reply_status_id':$(this).attr('status-id'),
-					'reply_screen_name':$(this).attr('screen-name')
+					'trigger':this
 				});
-				tt.show();
-				// Spaz.UI.showTooltip(this, $(this).attr('title'));
+				sch.dump('IN REPLY TO');
+				tt.showIRT($(this).attr('status-id'));
 			},
 			'.user-image[title]':function(e) {
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:$(this).attr('title')
-					// 'previewurl':href,
+					'trigger':this
 				});
-				tt.show();
-
-
-				// Spaz.UI.showTooltip(this, $(this).attr('title'));
+				tt.showUser($(this).attr('user-screen_name'));
 			},
-			'a.inline-link':function(e) {
+			'a[href]':function(e) {
 				var href = $(this).attr('href');
-				// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:"Open "+href+" in a browser window",
-					'previewurl':href
+					'trigger':this
 				});
-				tt.show();
-
-				// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
+				tt.showURLPreview(href);
 			},
 			'a .highlight':function(e) {
 				if ($(this).parents('a').attr('href')) {
 					var href = $(this).parents('a').attr('href');
-					var tt = new Spaz_Tooltip({
+					var tt = new Spaz_Tooltip($(this).attr('title'), {
 						'e'		:e,
-						'el'	:this,
-						'str'	:"Open "+href+" in a browser window",
-						'previewurl':href
+						'trigger':this
 					});
-					tt.show();
-					// Spaz.UI.showTooltip(this, "Open "+href+" in a browser window", href);
+					tt.showURLPreview(href);
 				}
 			},
 			'a[title]':function(e) {
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:$(this).attr('title'),
-					'reply_status_id':$(this).attr('status-id'),
-					'reply_screen_name':$(this).attr('screen-name'),
-					'previewurl':$(this).attr('href')
+					'trigger':this
 				});
 				tt.show();
-
-				// Spaz.UI.showTooltip(this, $(this).attr('title'), $(this).attr('href'));
-
 			},
 			'a[user-screen_name]':function(e) {
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:$(this).attr('title'),
-					'previewurl':$(this).attr('href')
+					'trigger':this
 				});
-				tt.show();
+				tt.showUser($(this).attr('user-screen_name'));
 			},
 			'input[title]':function(e) {
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:$(this).attr('title')
-					// 'previewurl':href,
+					'trigger':this
 				});
 				tt.show();
 			},
 			'.directory-user-followstatus':function(e) {
-				var tt = new Spaz_Tooltip({
+				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
-					'el'	:this,
-					'str'	:$(this).attr('title')
-					// 'previewurl':href,
+					'trigger':this
 				});
 				tt.show();
 			}
@@ -162,6 +135,10 @@ Spaz.Controller.initIntercept = function() {
 		})
 
 		.intercept('click', {
+			
+			// '.TabbedPanelsTab':function(e) {
+			// 	Spaz.UI.setSelectedTab(this);
+			// },
 			
 			'#tab-public':function(e) {
 				// alert('e.target');

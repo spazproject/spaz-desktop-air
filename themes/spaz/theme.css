@@ -760,11 +760,9 @@ div.timeline-entry {
 		div.timeline-entry.read.ui-selected .status-text {
 			color:#CCCCCC;
 		}
-
 		div.timeline-entry.read img.user-image {
 /*			opacity:.8;*/
 		}
-
 	/*
 		A container for the avatar image and the user's screen name
 	*/
@@ -806,6 +804,13 @@ div.timeline-entry {
 			font-family:Palatino,Georgia, "Times New Roman", Times, serif;
 			margin-bottom:4px;
 		}
+				div.status-text a:link{
+					text-overflow:ellipsis;
+                    white-space: nowrap;
+					max-width:150px;
+					overflow:hidden;
+					display:inline-block;
+				}
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
 		div.status-actions {
 			font-size:10px;
