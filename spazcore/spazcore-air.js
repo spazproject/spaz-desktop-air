@@ -1,4 +1,4 @@
-/*********** Built 2009-09-14 18:33:45 EDT ***********/
+/*********** Built 2009-09-24 16:54:50 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -5153,7 +5153,8 @@ SpazImageURL.prototype.initAPIs = function() {
 			return url;
 		},
 		'getImageUrl'     : function(id) {
-			return null;
+			var url = 'http://twitpic.com/show/large/'+id;
+			return url;
 		}
 	});
 
@@ -5165,7 +5166,8 @@ SpazImageURL.prototype.initAPIs = function() {
 			return url;
 		},
 		'getImageUrl'     : function(id) {
-			return null;
+			var url = 'http://yfrog.com/'+id+':iphone';
+			return url;
 		}
 	});
 	
@@ -5185,10 +5187,10 @@ SpazImageURL.prototype.initAPIs = function() {
 	
 	
 	this.addAPI('pikchur', {
-		'url_regex'       : /http:\/\/pikchur.com\/([a-zA-Z0-9]+)/gi,
+		'url_regex'       : /http:\/\/(?:pikchur\.com|pk\.gd)\/([a-zA-Z0-9]+)/gi,
 		'getThumbnailUrl' : function(id) {
 			// http://img.pikchur.com/pic_GPT_t.jpg
-			var url = 'http://img.pikchur.com/pic_'+id+'_t.jpg';
+			var url = 'http://img.pikchur.com/pic_'+id+'_m.jpg';
 			return url;
 		},
 		'getImageUrl'     : function(id) {
@@ -5277,13 +5279,16 @@ SpazImageURL.prototype.findServiceUrlsInString = function(str) {
 	for (key in this.apis) {
 		
 		thisapi = this.getAPI(key);
-		
+		sch.dump(key);
+		sch.dump(thisapi.url_regex);
 		while( (re_matches = thisapi.url_regex.exec(sch.trim(str))) != null) {
+			sch.dump(re_matches);
 			matches[key] = re_matches;
 			num_matches++;
 		}
 	}
-	
+	sch.dump('num_matches:'+num_matches);
+	sch.dump(matches);	
 	if (num_matches > 0) {
 		return matches;
 	} else {
@@ -5301,12 +5306,16 @@ SpazImageURL.prototype.getThumbsForMatches = function(matches) {
 	var x, service, api, thumburl, thumburls = {}, num_urls = 0;
 	
 	for (service in matches) {
+		sch.dump('SERVICE:'+service);
 		api = this.getAPI(service);
 		urls = matches[service]; // an array
-		
+		sch.dump("URLS:"+urls);
 		thumburls[urls[0]] = api.getThumbnailUrl(urls[1]);
 		num_urls++;
 	}
+
+	sch.dump('num_urls:'+num_urls);
+	sch.dump(thumburls);	
 	
 	if (num_urls > 0) {
 		return thumburls;
@@ -5330,7 +5339,68 @@ SpazImageURL.prototype.getThumbsForUrls = function(str) {
 		return null;
 	}
 	
-};/*jslint 
+};
+
+
+
+/**
+ * find the image service URLs that work with our defined APIs in a given string
+ * @param {object} matches
+ * @return {object|null} fullurl:thumburl key:val pairs
+ */
+SpazImageURL.prototype.getImagesForMatches = function(matches) {
+	var x, service, api, imageurl, imageurls = {}, num_urls = 0;
+	
+	for (service in matches) {
+		sch.dump('SERVICE:'+service);
+		api = this.getAPI(service);
+		urls = matches[service]; // an array
+		sch.dump("URLS:"+urls);
+		imageurls[urls[0]] = api.getImageUrl(urls[1]);
+		num_urls++;
+	}
+
+	sch.dump('num_urls:'+num_urls);
+	sch.dump(imageurls);	
+	
+	if (num_urls > 0) {
+		return imageurls;
+	} else {
+		return null;
+	}
+};
+
+
+/**
+ * given a string, this returns a set of key:val pairs of main url:image url
+ * for image hosting services for urls within the string
+ * @param {string} str
+ * @return {object|null} fullurl:imageurl key:val pairs
+ */
+SpazImageURL.prototype.getImagesForUrls = function(str) {
+	var matches = this.findServiceUrlsInString(str);
+	if (matches) {
+		return this.getImagesForMatches(matches);
+	} else {
+		return null;
+	}
+};
+
+
+/**
+ * given a single image hosting service URL, this returns a URL to the image itself
+ * @param {string} url
+ * @return {string|null}
+ */
+SpazImageURL.prototype.getImageForUrl = function(url) {
+	var urls = this.getImagesForUrls(url);
+	if (urls) {
+		return urls[url];
+	} else {
+		return null;
+	}
+};
+/*jslint 
 browser: true,
 nomen: false,
 debug: true,
@@ -6449,6 +6519,7 @@ var SPAZCORE_EXPANDABLE_DOMAINS = [
 	'cli.gs',
 	'ff.im',
 	'is.gd',
+	'j.mp',
 	'ow.ly',
 	'poprl.com',
 	'short.ie',
@@ -7025,6 +7096,8 @@ SpazTimeline.prototype.addItems = function(items) {
 		this.prepend(timeline_html);
 	}
 	
+	// sch.error(timeline_html);
+	
 	this.removeExtraItems();
 	
 };
@@ -7115,6 +7188,7 @@ SpazTimeline.prototype.select = function(selector, container) {
  * wrapper for prepending to timeline 
  */
 SpazTimeline.prototype.prepend = function(htmlitem) {
+	sch.error(this.timeline_container_selector);
 	jQuery(this.timeline_container_selector).prepend(htmlitem);
 };
 SpazTimeline.prototype.append = function(htmlitem) {
@@ -8133,7 +8207,8 @@ SpazTwit.prototype._processSearchItem = function(item, section_name) {
 	*/
 	item.user = {
 		'profile_image_url':item.profile_image_url,
-		'screen_name':item.from_user
+		'screen_name':item.from_user,
+		'id':item.from_user_id
 	};
 	
 	/*

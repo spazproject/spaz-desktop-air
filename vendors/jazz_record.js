@@ -296,7 +296,8 @@ JazzRecord.AirAdapter = function(A) {
     });
     JazzRecord.extend.call(this, JazzRecord.Adapter);
     this.connection = new air.SQLConnection();
-    this.dbFile = air.File.applicationDirectory.resolvePath(this.options.dbFile);
+    // this.dbFile = air.File.applicationDirectory.resolvePath(this.options.dbFile);
+    this.dbFile = air.File.applicationStorageDirectory.resolvePath(this.options.dbFile);
     this.connection.open(this.dbFile, air.SQLMode.CREATE);
     this.statement = new air.SQLStatement();
     this.statement.sqlConnection = this.connection

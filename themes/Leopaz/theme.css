@@ -535,13 +535,14 @@ a:hover{
 			*/
 			#entrybox-popup{
 				position:absolute;
-        left:8px;
-        right:8px;
-        bottom:58px;
-        padding:8px;
-        background:rgba(0, 0, 0, 0.9);
-        border-radius:4px;
-          -webkit-border-radius:4px;
+				display:none;
+				left:8px;
+				right:8px;
+				bottom:58px;
+				padding:8px;
+				background:rgba(0, 0, 0, 0.9);
+				border-radius:4px;
+				-webkit-border-radius:4px;
 				color:#828282;
 				font-size:9px;
 				opacity:1;

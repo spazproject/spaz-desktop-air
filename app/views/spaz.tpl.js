@@ -86,6 +86,8 @@ Spaz.Templates.timeline_entry = function(d) {
 						}
 	entryHTML += '	</div>';
 	entryHTML += '</div>';
+	
+	
 	return entryHTML;
 }
 

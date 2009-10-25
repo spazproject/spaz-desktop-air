@@ -922,6 +922,12 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 		case 'tab-public':
 			Spaz.Timelines.public.activate();
 			break;
+		case 'tab-favorites':
+			Spaz.Timelines.favorites.activate();
+			break;
+		case 'tab-userlists':
+			Spaz.Timelines.userlists.activate();
+			break;
 		case 'tab-user':
 			Spaz.Timelines.user.activate();
 			break;

@@ -196,6 +196,22 @@
 					<span class="tab-icon"></span>
 				</li>
 
+				<!-- FAVORITES STATUSES -->
+				<li class="TabbedPanelsTab" tabindex="3" title="Your favorites"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-favorites" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
+
+				<!-- LISTS STATUSES -->
+				<li class="TabbedPanelsTab" tabindex="3" title="Your user lists"
+					onmouseover="Spaz.UI.showTooltip(this, this.title)"
+					onmouseout="Spaz.UI.hideTooltips()"
+					id="tab-userlists" onclick="Spaz.UI.setSelectedTab(this)">
+					<span class="tab-icon"></span>
+				</li>
+
 				<!-- SEARCH -->
 				<li class="TabbedPanelsTab" tabindex="5" title="Search timeline"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
@@ -282,6 +298,38 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- FAVORITES TIMELINE -->
+				<div class="TabbedPanelsContent" id="panel-favorites">
+					<div id="menu-favorites" class="panelmenu">
+						<form onsubmit="return false;">
+							<input type="button" name="refresh-favorites" value="Refresh" id="refresh-favorites" />
+							<input type="button" name="markread-favorites" value="Mark" id="markread-favorites" title="Mark all as read" />
+							<input type="text" name="filter-favorites" value="" id="filter-favorites" title="Enter text to filter this timeline" />
+						</form>
+					</div>
+					<div id="timelinewrapper-favorites" class="timeline-wrapper">
+						<div id="timeline-favorites" class="timeline">
+						</div>
+					</div>
+				</div>
+				
+				<!-- USERLISTS TIMELINE -->
+				<div class="TabbedPanelsContent" id="panel-userlists">
+					<div id="menu-userlists" class="panelmenu">
+						<form onsubmit="return false;">
+							<input type="button" name="refresh-userlists" value="Refresh" id="refresh-userlists" />
+							<input type="button" name="markread-userlists" value="Mark" id="markread-userlists" title="Mark all as read" />
+							<input type="button" name="view-userlists" value="Lists &#x25BE;" id="view-userlists" title="Choose a list to view" />
+							<input type="text" name="filter-userlists" value="" id="filter-userlists" title="Enter text to filter this timeline" />
+						</form>
+					</div>
+					<div id="timelinewrapper-userlists" class="timeline-wrapper">
+						<div id="timeline-userlists" class="timeline">
+						</div>
+					</div>
+				</div>
+
 
 				<!-- SEARCH TIMELINE -->
 				<div class="TabbedPanelsContent" id="panel-search">
