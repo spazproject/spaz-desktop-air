@@ -792,6 +792,13 @@ div.timeline-entry {
 			margin-bottom:4px;
 			display:inline;
 		}
+			div.status-text a:link{
+				text-overflow:ellipsis;
+	            white-space: nowrap;
+				max-width:150px;
+				overflow:hidden;
+				display:inline-block;
+			}
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
 		div.status-actions {
 		  display:inline-block;

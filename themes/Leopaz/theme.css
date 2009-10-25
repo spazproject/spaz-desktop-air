@@ -895,6 +895,13 @@ div.timeline-entry:hover{
 			font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
 			margin-bottom:4px;
 		}
+			div.status-text a:link{
+				text-overflow:ellipsis;
+	            white-space: nowrap;
+				max-width:150px;
+				overflow:hidden;
+				display:inline-block;
+			}
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
 		div.status-actions{
       position:absolute;

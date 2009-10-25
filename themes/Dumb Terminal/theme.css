@@ -554,6 +554,13 @@ div.status-text:after {
 div.status-link {
 	display:none;
 }
+div.status-text a:link{
+	text-overflow:ellipsis;
+    white-space: nowrap;
+	max-width:150px;
+	overflow:hidden;
+	display:inline-block;
+}
 
 div.status-actions {
 	font-size:9px;
