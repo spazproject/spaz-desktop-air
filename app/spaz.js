@@ -273,15 +273,15 @@ Spaz.initialize = function() {
 		// get the pref
 		var service = Spaz.Prefs.get('url-shortener');
 		sch.dump("service is "+ service);
-
-        if (service == 'shortie') {
-            $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-        }
-
+	
+	        if (service == 'shortie') {
+	            $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+	        }
+	
 		// populate the dropdown
 		for (method in Spaz.Shortlink.services) {
 			sch.dump(method)
-
+	
 			if (method[0] != '$') {
 				if (method == service) {
 					$('#url-shortener').append('<option value="'+method+'" selected="selected">'+method+'</option>');
@@ -296,39 +296,42 @@ Spaz.initialize = function() {
 		// 	Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
 		// });
 		
-        $('#url-shortener').bind('change', function() {
-
+	        $('#url-shortener').bind('change', function() {
+	
 			sch.dump($('#url-shortener').val());
 			Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
-            if ($('#url-shortener').val() != 'shortie') {
-                $('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
-            } else {
-                $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-            }
+	            if ($('#url-shortener').val() != 'shortie') {
+	                $('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
+	            } else {
+	                $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+	            }
 		});
 		
-		// Spaz.dump("val:"+$('#shorten-original-link').val());
 		$('#shorten-original-link').focus();
 		$('#shorten-original-link').val('http://');
-		// Spaz.dump(air.Clipboard.generalClipboard.formats);
-		if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
-		    var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
-			if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
-				$('#shorten-original-link').val(cliptext);
-				Spaz.Shortlink.services[service](cliptext);
-			}
-			$('#shorten-original-link').select();
-		}
+
+
+		// if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
+		// 	sch.dump('Found text in clipboard');
+		// 	
+		//     var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
+		// 	if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
+		// 		sch.dump('Found url in clipboard');
+		// 		$('#shorten-original-link').val(cliptext);
+		// 		Spaz.Shortlink.services[service](cliptext);
+		// 	}
+		// 	$('#shorten-original-link').select();
+		// }
 					
 		$('#shortenLink-form').bind('submit', function() {
 	  	var service = Spaz.Prefs.get('url-shortener');
 			sch.dump("service is "+ service);
-            var custom = $('#shorten-custom-link').val();
-            if (custom != '') {
+	            var custom = $('#shorten-custom-link').val();
+	            if (custom != '') {
 			    Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
-            } else {
+	            } else {
 			    Spaz.Shortlink.services[service]($('#shorten-original-link').val());
-            }
+	            }
 		});
 		
 		// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);

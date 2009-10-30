@@ -267,8 +267,8 @@ Spaz.Controller.initIntercept = function() {
 			},
 
 			'#irt-dismiss':function(e) {
-				Spaz.UI.clearPostIRT();
-				$('#entrybox').focus();
+				Spaz.postPanel.clearPostIRT();
+				// $('#entrybox').focus();
 			},
 
 

@@ -35,6 +35,11 @@ var NEGATION_TOKEN = "not:";
  */
 var AppTimeline = function() {};
 
+
+AppTimeline.prototype.model = {
+	'items' : []
+}
+
 /**
  * This is just a wrapper to start the SpazTimeline object contained within 
  */
@@ -100,6 +105,45 @@ AppTimeline.prototype.getEntrySelector = function() {
 AppTimeline.prototype.getWrapperSelector = function() {
 	return this.timeline.timeline_container_selector.replace('timeline-', 'timelinewrapper-');
 }
+
+AppTimeline.prototype.getTimelineSelector = function() {
+	return this.timeline.timeline_container_selector;
+}
+
+AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
+	
+	var items = jQuery( this.getEntrySelector() );
+	var itemAttrs   = [];
+	var itemsSorted = [];
+	var sortedHTML  = '';
+	var sortfunc = sortfunc || function(a,b){return b.sortval - a.sortval};
+	
+	for ( i = 0; i < items.length; i++ ) {
+		var jqitem = jQuery(items[i]);
+		var attrobj = {
+			'id':jqitem.attr(idattr),
+			'sortval':jqitem.attr(sortattr)
+		};
+	    itemAttrs.push(attrobj);
+	}
+
+	itemAttrs.sort( sortfunc );
+	
+	for ( i=0;i<itemAttrs.length;i++ ) {
+		attrobj = itemAttrs[i];
+		var selector = this.getEntrySelector()+"["+idattr+"=" + attrobj['id'] + "]";
+		// sch.error(selector);
+		var itemjq = jQuery( selector );
+		// sch.error(itemjq.length);
+		var itemhtml = itemjq.get(0).outerHTML;
+		// sch.error(itemhtml);
+	    itemsSorted.push(itemhtml);
+	}
+	
+	sortedHTML = '<div>'+itemsSorted.join('')+'</div>';
+	
+	jQuery(this.getTimelineSelector()).html(sortedHTML);
+};
 
 // Spaz.uc.usernames = Spaz.Cache.getScreenNamesAsTags();
 
@@ -190,6 +234,7 @@ var FriendsTimeline = function() {
 				Add new items
 			*/
 			thisFT.timeline.addItems(no_dupes);
+			// thisFT.sortByAttribute('data-timestamp', 'data-status-id');
 
 
 			/*
