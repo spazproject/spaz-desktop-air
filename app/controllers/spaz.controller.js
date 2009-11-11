@@ -123,13 +123,11 @@ Spaz.Controller.initIntercept = function() {
 				});
 				tt.show();
 			}
+			
 		})
 
 		.intercept('mouseout', {
-			'[title]':function(e) {
-				Spaz.UI.hideTooltips();
-			},
-			'#tooltip':function(e) {
+			'*':function(e) {
 				Spaz.UI.hideTooltips();
 			}
 		})
