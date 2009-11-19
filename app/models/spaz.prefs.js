@@ -34,6 +34,14 @@ Spaz.Prefs.defaultPreferences = {
     'window-tooltipdelay': 500,
 	'window-dropshadow': true,
 
+	'notify-messages':false,
+	'notify-dms':true,
+	'notify-mentions':true,
+	'notify-totals':true,
+	'notify-searchresults':false,
+	'notify-listmessages':false,
+	
+
     // 'theme-userstylesheet':null,
     'theme-basetheme': 'spaz',
 
@@ -327,6 +335,65 @@ Spaz.Prefs.changeMethods = {
     // 		}
     // 	}
     // },
+
+
+    'notify-messages': {
+        setUI: function(value) {
+            $('#notify-messages').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('notify-messages', Boolean(Spaz.Prefs.get('notify-messages')))
+        }
+    },
+    'notify-dms': {
+        setUI: function(value) {
+            $('#notify-dms').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('notify-dms', Boolean(Spaz.Prefs.get('notify-dms')))
+        }
+    },
+    'notify-mentions': {
+        setUI: function(value) {
+            $('#notify-mentions').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('notify-mentions', Boolean(Spaz.Prefs.get('notify-mentions')))
+        }
+    },
+    'notify-totals': {
+        setUI: function(value) {
+            $('#notify-totals').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('notify-totals', Boolean(Spaz.Prefs.get('notify-totals')))
+        }
+    },
+    'notify-searchresults': {
+        setUI: function(value) {
+            $('#notify-searchresults').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('notify-searchresults', Boolean(Spaz.Prefs.get('notify-searchresults')))
+        }
+    },
+    'notify-listmessages': {
+        setUI: function(value) {
+            $('#notify-listmessages').attr('checked', value);
+        },
+        onChange: function(value) {},
+        check: function() {
+            Spaz.Prefs.set('notify-listmessages', Boolean(Spaz.Prefs.get('notify-listmessages')))
+        }
+    },
+
+
+
     'theme-basetheme': {
         setUI: function(value) {
             $('#theme-basetheme').val(value);
@@ -778,6 +845,15 @@ Spaz.Prefs.initUI = function() {
 	$('#window-dropshadow').bind('change', Spaz.Prefs.setFromUI);
 	$('#timeline-keyboardnavwrap').bind('change', Spaz.Prefs.setFromUI);
     $('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
+
+
+    $('#notify-messages').bind('change', Spaz.Prefs.setFromUI);
+    $('#notify-dms').bind('change', Spaz.Prefs.setFromUI);
+    $('#notify-mentions').bind('change', Spaz.Prefs.setFromUI);
+    $('#notify-totals').bind('change', Spaz.Prefs.setFromUI);
+    $('#notify-searchresults').bind('change', Spaz.Prefs.setFromUI);
+    $('#notify-listmessages').bind('change', Spaz.Prefs.setFromUI);
+
     $('#sound-enabled').bind('change', Spaz.Prefs.setFromUI);
     $('#wilhelm-enabled').bind('change', Spaz.Prefs.setFromUI);
     $('#checkupdate').bind('change', Spaz.Prefs.setFromUI);

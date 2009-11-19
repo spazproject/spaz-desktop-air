@@ -645,6 +645,7 @@ a, a:link, .clickable {
 		-khtml-border-radius:5px;
 		display:none;
 		min-width:100px;
+		max-width:320px;
 
 	}
 		#tooltip h3, #tooltip div {

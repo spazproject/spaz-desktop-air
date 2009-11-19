@@ -1,32 +1,6 @@
-/**
- * This is a wrapper library for the Growl notification
- * functionality enabled via the as3growl library
- */
-SpazGrowl = function(appname, iconpath) {
-	
-	if (!appname) {
-		appname = 'SpazGrowl';
-	}
-	
-	if (!iconpath) {
-		iconpath = null;
-	}
-	
-	this.app = new runtime.com.adobe.growl.Application();
-	this.app.name = appname;
-	this.app.iconPath = iconpath;
-	
-	this.service = new window.runtime.com.adobe.growl.GrowlService(this.app);
-
-	this._types = [];
-	
-	this.addNewType(SpazGrowl.NEW_MESSAGE_COUNT);
-	this.addNewType(SpazGrowl.NEW_MESSAGE);
-	this.addNewType(SpazGrowl.NEW_MESSAGE_REPLY);
-	this.addNewType(SpazGrowl.NEW_MESSAGE_DM);
-	this.addNewType(SpazGrowl.ERROR);
-};
-
+SpazGrowl = function(appname) {
+	this.appname = appname || null;
+}
 
 /**
  * constants for default notification names 
@@ -37,103 +11,87 @@ SpazGrowl.NEW_MESSAGE_REPLY = 'SpazGrowl New Reply';
 SpazGrowl.NEW_MESSAGE_DM    = 'SpazGrowl New Direct Message';
 SpazGrowl.ERROR             = 'SpazGrowl Error';
 
-
-SpazGrowl.prototype.connect = function() {
-	this.service.connect(this._types);
-};
-
-SpazGrowl.prototype.register = function() {
-	this.service.register(this._types);
-};
-
-SpazGrowl.prototype.addNewType = function(name, display_name) {
-	if (!display_name) {
-		display_name = name;
-	}
-	var nt = new window.runtime.com.adobe.growl.NotificationType();
-	nt.enabled = true;
-	nt.name = name;
-	nt.displayName = display_name;
-	this._types.push(nt);
-};
-
 /**
- *
+ * This only will work under AIR 2.0 for now 
  */
-SpazGrowl.prototype.notify = function(title, msg, img, type, onClick) { 
-	
-	this.connect();
-	this.register();
-	
-	if (!type) {
-		type = "SpazGrowl notification"
-	}
-	
-	if (!img) {
-		img = this.app.iconPath;
-	}
-	
-	// sch.dump('notification img:'+img)
+SpazGrowl.prototype.notify= function(title, message, opts) {
 
+	if (!opts) { opts = {}; }
 	
-	var n = new window.runtime.com.adobe.growl.Notification();
-	n.name  = type;
-	n.title = title;
-	n.text  = msg;
-	n.sticky= false;
+	sch.debug(title);
+	sch.debug(message);
+	sch.debug(opts);
 	
-	// sch.dump("Notification id : " + n.id);
-
-	//testing x-headers
-	var xHeaders = [new window.runtime.com.adobe.growl.Header("X-foo", "bar")];
-	n.xHeaders = xHeaders;
-	n.iconPath = img;
-
-	this.service.notify(n);
-
-	//todo: test this
-	//g.connect();
-
-	var click_event = window.runtime.com.adobe.growl.events.GrowlResponseEvent.NOTIFICATION_CLICK;
-
-	this.service.addEventListener(click_event, onNotificationClick);
+	var priority    = opts.priority    || 0;
+	var sticky      = opts.sticky      || false;
+	var imgpath     = opts.imgpath     || null;
+	var identifier  = opts.identifier  || null;
 	
-	var thisSG = this;
-	
-	function onIOError(e)
-	{
-		sch.dump("IOError");
-	}
-
-	function onNotificationClick(e)
-	{
-		sch.dump("Notification Clicked : " + e.notificationId);
+	if(air.NativeProcess.isSupported) {
+		// var exec = air.File.applicationDirectory;
+		// exec = exec.resolvePath('bin');
+		// exec = exec.resolvePath('growlnotify');
+		var exec = new air.File('/usr/local/bin/growlnotify');
+		var npsi = new air.NativeProcessStartupInfo();
+		npsi.executable = exec;
+		var args = new runtime.Vector["<String>"]();
 		
-		thisSG.service.removeEventListener( click_event, onNotificationClick );
 		
-		if (onClick) {
-			onClick(e);
+		/*
+			app name
+		*/
+		if (this.appname) {
+			args.push("-n");
+			args.push(this.appname);			
 		}
+
+		/*
+			set title
+		*/
+		args.push(title);
+		
+		/*
+			message
+		*/
+		args.push("-m");
+		args.push(message);
+		
+		/*
+			icon image path
+		*/
+		// if (imgpath) {
+		// 	args.push("--image");
+		// 	args.push( new air.File(imgpath).nativePath );
+		// } else {
+			args.push("--image");
+			args.push( air.File.applicationDirectory
+							.resolvePath('images')
+							.resolvePath('spaz-icon-alpha.png')
+							.nativePath
+			);
+		// }
+		
+		/*
+			make sticky
+		*/
+		if (sticky) {
+			args.push('-s');
+		}
+		
+		if (identifier) {
+			args.push('-d');
+			args.push(identifier);
+		}
+		
+		npsi.arguments = args;
+		
+		var np = new air.NativeProcess();
+		sch.debug(npsi.executable);
+		sch.debug(npsi.arguments);
+		np.start(npsi);
+		
+	} else {
+		sch.dump('NATIVE PROCESSES NOT SUPPORTED')
 	}
 
-	function onRegisterAndSend()
-	{
-		this.service.registerAndSend(this.app, this._types, n);
-	}
-
-	function onParseResponseClick()
-	{
-		this.service.register(this.app, this._types);
-	}
-
-	function onNotify() {
-		this.service.notify(n);
-	}
-
-	function onConnectPress()
-	{
-		this.service.connect();
-	}
-
-	
 };

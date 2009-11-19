@@ -72,7 +72,7 @@
 		/*
 			set your dump level now to get dumps asap
 		*/
-		sc.setDumpLevel(1); // 1 shows errors, nothing else
+		sc.setDumpLevel(3); // 1 shows errors, nothing else
 	</script>
 	
 
@@ -523,31 +523,7 @@
 										   </div>
 										</fieldset>
 
-										<fieldset>
-											<legend>Notifications</legend>
 
-											<div class="formrow">
-												<input type="checkbox" name="notification-popups" value="1"
-													id="window-shownotificationpopups" />
-												<label for="window-shownotificationpopups" class="checkbox">Show notifications</label>
-											</div>
-										   <div class="formrow">
-											  <label for="window-notificationmethod">Method</label>
-											  <select id="window-notificationmethod" name="window-notificationmethod">
-												 <option value="internal">Internal</option>
-												 <option value="growl" >Growl (OS X-only –&nbsp;experimental)</option>
-											  </select>
-										   </div>
-										   <div class="formrow">
-											  <label for="window-notificationposition">Position</label>
-											  <select id="window-notificationposition" name="window-notificationposition">
-												 <option value="topRight">Top-right</option>
-												 <option value="topLeft" >Top-left</option>
-												 <option value="bottomRight">Bottom-right</option>
-												 <option value="bottomLeft" >Bottom-left</option>
-											  </select>
-										   </div>
-										</fieldset>
 
 										<fieldset>
 											<legend>Other options</legend>
@@ -591,6 +567,65 @@
 
 									</div>
 								</div>
+
+								<div id="prefs-notifications-fieldset" class="CollapsiblePanel">
+									<h2 class="CollapsiblePanelTab" tabindex="0">Notifications</h2>
+									<div class="CollapsiblePanelContent">
+										
+										<div class="formrow">
+											<input type="checkbox" name="notification-popups" value="1"
+												id="window-shownotificationpopups" />
+											<label for="window-shownotificationpopups" class="checkbox">Show notifications</label>
+										</div>
+									   <div class="formrow">
+										  <label for="window-notificationmethod">Method</label>
+										  <select id="window-notificationmethod" name="window-notificationmethod">
+											 <option value="internal">Internal</option>
+											 <option value="growl" >Growl (OS X-only –&nbsp;experimental)</option>
+										  </select>
+									   </div>
+									   <div class="formrow">
+										  <label for="window-notificationposition">Position</label>
+										  <select id="window-notificationposition" name="window-notificationposition">
+											 <option value="topRight">Top-right</option>
+											 <option value="topLeft" >Top-left</option>
+											 <option value="bottomRight">Bottom-right</option>
+											 <option value="bottomLeft" >Bottom-left</option>
+										  </select>
+									   </div>
+										
+										<fieldset>
+											<legend>Show notifications for </legend>
+
+											<div class="formrow">
+												<input type="checkbox" name="notify-messages" value="1" id="notify-messages" />
+												<label for="notify-messages" class="checkbox">New messages (not @mentions or DMs)</label>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="notify-mentions" value="1" id="notify-mentions" />
+												<label for="notify-mentions" class="checkbox">@Mentions</label>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="notify-dms" value="1" id="notify-dms" />
+												<label for="notify-dms" class="checkbox">Direct messages</label>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="notify-totals" value="1" id="notify-totals" />
+												<label for="notify-totals" class="checkbox">New totals</label>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="notify-searchresults" value="1" id="notify-searchresults" />
+												<label for="notify-searchresults" class="checkbox">Search results (N/A)</label>
+											</div>
+											<div class="formrow">
+												<input type="checkbox" name="notify-listmessages" value="1" id="notify-listmessages" />
+												<label for="notify-listmessages" class="checkbox">List messages (N/A)</label>
+											</div>
+										</fieldset>
+
+									</div>
+								</div>
+
 
 								<div id="prefs-sound-fieldset" class="CollapsiblePanel">
 									<h2 class="CollapsiblePanelTab" tabindex="0">Sound</h2>

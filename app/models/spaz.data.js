@@ -109,12 +109,12 @@ Spaz.Data.verifyPassword = function() {
 
 	var xhr = $.ajax({
 		complete:Spaz.Data.onAjaxComplete,
-		error:function() {
+		error:function(xhr, rstr) {
 			// Spaz.verified = false;
 			sch.dump('verification failed');
 			Spaz.UI.statusBar("Verification failed");
 			Spaz.UI.flashStatusBar();
-			Spaz.Data.onAjaxError();
+			Spaz.Data.onAjaxError(xhr, rstr);
 		},
 		success:function(data){
 			// var json = JSON.parse(data);

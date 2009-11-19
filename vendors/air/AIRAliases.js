@@ -1,4 +1,4 @@
-/* AIRAliases.js - Revision: 1.5 */
+/* AIRAliases.js - Revision: 2.0beta */
 
 /*
 ADOBE SYSTEMS INCORPORATED
@@ -26,6 +26,8 @@ if (window.runtime)
     air.FileStream = window.runtime.flash.filesystem.FileStream;
     air.FileMode = window.runtime.flash.filesystem.FileMode;
 
+    air.StorageVolumeInfo = window.runtime.flash.filesystem.StorageVolumeInfo;
+
     // events
     air.ActivityEvent = window.runtime.flash.events.ActivityEvent;
     air.AsyncErrorEvent = window.runtime.flash.events.AsyncErrorEvent;
@@ -40,6 +42,7 @@ if (window.runtime)
     air.HTTPStatusEvent = window.runtime.flash.events.HTTPStatusEvent;
     air.IOErrorEvent = window.runtime.flash.events.IOErrorEvent;
     air.InvokeEvent = window.runtime.flash.events.InvokeEvent;
+    air.InvokeEventReason = window.runtime.flash.desktop.InvokeEventReason;
     air.NetStatusEvent = window.runtime.flash.events.NetStatusEvent;
     air.OutputProgressEvent = window.runtime.flash.events.OutputProgressEvent;
     air.ProgressEvent = window.runtime.flash.events.ProgressEvent;
@@ -47,6 +50,12 @@ if (window.runtime)
     air.StatusEvent = window.runtime.flash.events.StatusEvent;
     air.TimerEvent = window.runtime.flash.events.TimerEvent;
     air.SampleDataEvent = window.runtime.flash.events.SampleDataEvent;
+    air.DatagramSocketDataEvent = window.runtime.flash.events.DatagramSocketDataEvent;
+    air.DNSResolverEvent = window.runtime.flash.events.DNSResolverEvent;
+    air.ServerSocketConnectEvent = window.runtime.flash.events.ServerSocketConnectEvent;
+    air.StorageVolumeChangeEvent = window.runtime.flash.events.StorageVolumeChangeEvent;
+    air.NativeProcessStartEvent = window.runtime.flash.events.NativeProcessStartEvent;
+    air.NativeProcessExitEvent = window.runtime.flash.events.NativeProcessExitEvent;
     
     // native window
     air.NativeWindow = window.runtime.flash.display.NativeWindow;
@@ -102,6 +111,18 @@ if (window.runtime)
     air.SharedObject = window.runtime.flash.net.SharedObject;
     air.SharedObjectFlushStatus = window.runtime.flash.net.SharedObjectFlushStatus;
 
+    air.DatagramSocket = window.runtime.flash.net.DatagramSocket;
+    air.NetworkInfo = window.runtime.flash.net.NetworkInfo;
+    air.ServerSocket = window.runtime.flash.net.ServerSocket;
+    air.IPVersion = window.runtime.flash.net.IPVersion;
+
+    air.DNSResolver = window.runtime.flash.net.dns.DNSResolver;
+    air.ARecord = window.runtime.flash.net.dns.ARecord;
+    air.AAAARecord = window.runtime.flash.net.dns.AAAARecord;
+    air.MXRecord = window.runtime.flash.net.dns.MXRecord;
+    air.PTRRecord = window.runtime.flash.net.dns.PTRRecord;
+    air.SRVRecord = window.runtime.flash.net.dns.SRVRecord;
+
     // system
     air.Capabilities = window.runtime.flash.system.Capabilities;
     air.System = window.runtime.flash.system.System;
@@ -124,6 +145,10 @@ if (window.runtime)
     air.SystemTrayIcon = window.runtime.flash.desktop.SystemTrayIcon;
 
     air.NativeApplication = window.runtime.flash.desktop.NativeApplication;
+
+    air.NativeProcess = window.runtime.flash.desktop.NativeProcess;
+    air.NativeProcessStartupInfo = window.runtime.flash.desktop.NativeProcessStartupInfo;
+    air.URLFilePromise = window.runtime.flash.desktop.URLFilePromise;
 
     // display
     air.NativeMenu = window.runtime.flash.display.NativeMenu;

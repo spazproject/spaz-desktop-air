@@ -236,6 +236,9 @@ var FriendsTimeline = function() {
 			thisFT.timeline.addItems(no_dupes);
 			// thisFT.sortByAttribute('data-timestamp', 'data-status-id');
 
+			sch.note('notify of new entries!');
+			Spaz.UI.notifyOfNewEntries(no_dupes);
+
 
 			/*
 				expand URLs
@@ -272,6 +275,7 @@ var FriendsTimeline = function() {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
+
 		},
 		'data_failure': function(e, error_obj) {
 			sch.dump('DATA_FAILURE');

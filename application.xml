@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <application 
-	xmlns="http://ns.adobe.com/air/application/1.5">
-<!-- AIR Application Descriptor File. See
-	http://www.adobe.com/go/air_1.1_application_descriptor. -->
+	xmlns="http://ns.adobe.com/air/application/2.0beta"
+	minimumPatchLevel="0">
+<!-- AIR Application Descriptor File. See http://www.adobe.com/go/learn_air_1.0_application_descriptor_en. -->
 	<id>Spaz.AIR</id>
 	<name>Spaz</name>
 	<version>0.9.1</version>
 	<filename>Spaz</filename>
-	<description>A Twitter client</description>
+	<description>
+		<text xml:lang="en">A microblogging client for Twitter, Identi.ca, and StatusNet</text>
+	</description>
 	<copyright>Copyright Funkatron Productions</copyright>
 	<initialWindow>
 		<content>index.html</content>
@@ -20,15 +22,10 @@
 		<resizable>true</resizable>
 		<width>350</width>
 		<height>580</height>
-		<!-- The window's minimum size, specified as a width/height pair, such as "400 200". Optional. -->
 		<minSize>280 200</minSize>
-
-		<!-- The window's initial maximum size, specified as a width/height pair, such as "1600 1200". Optional. -->
-		<!-- <maxSize></maxSize> -->
 		<x>150</x>
 		<y>150</y>
 	</initialWindow>
-	<!-- <installFolder>Spaz</installFolder> -->
 	<programMenuFolder>Spaz</programMenuFolder>
 	<icon>  
 		<image128x128>images/spaz-icon-alpha.png</image128x128>
@@ -38,6 +35,7 @@
 	</icon>
 	<customUpdateUI>false</customUpdateUI>
 	<allowBrowserInvocation>false</allowBrowserInvocation>
+	<supportedProfiles>extendedDesktop</supportedProfiles>
 	<!-- <fileTypes>
 		<fileType>
 			<name>com.example</name>

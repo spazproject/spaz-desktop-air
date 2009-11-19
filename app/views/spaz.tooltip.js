@@ -170,11 +170,10 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 	sch.dump(url);
 	sch.dump(display_url);
 	
-	
 	var content  = '<div>'+display_url+'</div>';
-	// content += '<img src="http://images.websnapr.com/?url=';
-	// content += encodeURIComponent(url);
-	// content += '" alt="Loading thumbnail…" height="152" width="202" />';
+	content += '<div class="website-preview" style="overflow:hidden"><img class="website-preview-thumbnail" src="http://api.getspaz.com/url/thumb?url=';
+	content += encodeURIComponent(url);
+	content += '" alt="Loading thumbnail…" style="max-width:320px; max-height:240px; position:relative" /></div>';
 	this.setContent(content);
 	this.show();
 }

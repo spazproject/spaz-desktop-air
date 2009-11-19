@@ -1108,6 +1108,7 @@ img.tab-icon {
 	top:1px;
 	left:1px;
 	display:none;
+	max-width:320px;
 }
 #tooltip h3, #tooltip div {
 	margin: 0;

@@ -1046,14 +1046,12 @@ Spaz.UI.getNewEntryCount = function() {
 }
 
 
-Spaz.UI.notifyOfNewEntries = function() {
+Spaz.UI.notifyOfNewEntries = function(new_entries) {
 
     $().trigger('UNREAD_COUNT_CHANGED');
+    sch.debug('notifyOfNewEntries');
 
-    Spaz.dump('notifyOfNewEntries');
-
-	var new_count = Spaz.UI.getNewEntryCount();
-
+	var new_count = new_entries.length;
     if (new_count > 0) {
 
         Spaz.dump('NewEntries found!');
@@ -1061,64 +1059,85 @@ Spaz.UI.notifyOfNewEntries = function() {
 		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
 
 			if (!Spaz.Growl) {
-				Spaz.Growl = new SpazGrowl('Spaz', new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url);
+				Spaz.Growl = new SpazGrowl('Spaz');
 			}
-
-			Spaz.Growl.notify(new_count + " New Messages", "There were "+new_count+" new messages found", null, SpazGrowl.NEW_MESSAGE_COUNT, function() {
-				air.NativeApplication.nativeApplication.activate();
-			});
-
-
-			var newtweets = $(Spaz.UI.getNewEntrySelector()).not('.read');
+			
+			if (Spaz.Prefs.get('notify-totals')) {
+				Spaz.Growl.notify(new_count + " New Messages", "There were "+new_count+" new messages found", {
+					'identifier':SpazGrowl.NEW_MESSAGE_COUNT
+				});
+			}
 
 
 			if ( new_count > Spaz.Prefs.get('window-notificationmax')) {
-				newtweets = newtweets.slice(0, Spaz.Prefs.get('window-notificationmax'));
+				new_entries = new_entries.slice(0, Spaz.Prefs.get('window-notificationmax'));
 			}
 
-
-			newtweets.each( function(i) {
-
-				var screen_name = $(this).children('.entry-user-screenname').text();
-				var text = $(this).children('.entry-text').text();
-				var img = $(this).children('.entry-user-img').text();
-
-				if ( $(this).hasClass('reply') && $(this).not('.read') ) {
-					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_REPLY, function() {
-						air.NativeApplication.nativeApplication.activate();
-					});
-				} else if ( $(this).hasClass('dm') && $(this).not('.read') ) {
-					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE_DM, function() {
-						air.NativeApplication.nativeApplication.activate();
-					});
+			
+			for (var x=0; x<new_entries.length; x++) {
+				
+				var this_entry = new_entries[x];
+				var growl_opts = {};
+				
+				if (this_entry.SC_is_dm && Spaz.Prefs.get('notify-dms')) {
+					var title = "New DM from "+this_entry.sender.screen_name;
+					var text        = this_entry.SC_text_raw;
+					growl_opts.img = this_entry.sender.profile_image_url;
+					// growl_opts.identifier = SpazGrowl.NEW_MESSAGE_DM;
+					Spaz.Growl.notify(title, text, growl_opts);
 				} else {
-					Spaz.Growl.notify(screen_name, text, img, SpazGrowl.NEW_MESSAGE, function() {
-						air.NativeApplication.nativeApplication.activate();
-					});
+					if (this_entry.SC_is_reply && Spaz.Prefs.get('notify-mentions')) {
+						var title = "New @mention from "+this_entry.user.screen_name;
+						var text        = this_entry.SC_text_raw;
+						growl_opts.img = this_entry.user.profile_image_url;
+						// growl_opts.identifier = SpazGrowl.NEW_MESSAGE_REPLY;
+						Spaz.Growl.notify(title, text, growl_opts);
+					} else if (Spaz.Prefs.get('notify-messages')) {
+						var title = "New message from "+this_entry.user.screen_name;
+						var text        = this_entry.SC_text_raw;
+						growl_opts.img = this_entry.user.profile_image_url;
+						// growl_opts.identifier = SpazGrowl.NEW_MESSAGE;
+						Spaz.Growl.notify(title, text, growl_opts);
+					}
 				}
-			});
+				
+				
+			}
 
 		} else {
 
-			var newtweet = $(Spaz.UI.getNewEntrySelector()).not('.read').get(0);
-
-			// alert(newtweet.outerHTML);
+			var this_entry = new_entries[0];
 
 	        Spaz.dump('Sending notification');
 	        var resp = "";
 
-			var screen_name = $(newtweet).children('.entry-user-screenname').text();
-			var text = $(newtweet).children('.entry-text').text();
-			var img = $(newtweet).children('.entry-user-img').text();
-
+			if (this_entry.SC_is_dm) {
+				var screen_name = this_entry.sender.screen_name;
+				var text        = this_entry.SC_text_raw;
+				var img = this_entry.sender.profile_image_url;
+				// growl_opts.identifier = SpazGrowl.NEW_MESSAGE_DM;
+			} else {
+				if (this_entry.SC_is_reply) {
+					var screen_name = this_entry.user.screen_name;
+					var text        = this_entry.SC_text_raw;
+					var img = this_entry.user.profile_image_url;
+					// growl_opts.identifier = SpazGrowl.NEW_MESSAGE_REPLY;
+				} else {
+					var screen_name = this_entry.user.screen_name;
+					var text        = this_entry.SC_text_raw;
+					var img = this_entry.user.profile_image_url;
+					// growl_opts.identifier = SpazGrowl.NEW_MESSAGE;
+				}
+			}
+			
 			// alert("screen_name:"+screen_name+"\ntext:"+text+"\n img:"+img);
 
 	        if (new_count > 1) {
-	            var msg = screen_name + " (+" + (new_count - 1) + " more)";
+	            var title = screen_name + " (+" + (new_count - 1) + " more)";
 	        } else {
-	            var msg = screen_name;
+	            var title = screen_name;
 	        }
-	        Spaz.UI.notify(text, msg, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
+	        Spaz.UI.notify(text, title, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
 		}
 
         Spaz.UI.playSoundNew();
