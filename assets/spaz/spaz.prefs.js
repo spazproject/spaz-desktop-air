@@ -229,13 +229,13 @@ Spaz.Prefs.changeMethods = {
 		},
 		onChange: function(value) {},
 		check: function() {
-			if (Spaz.Prefs.get('window-notificationmethod') !== 'growl') {
+			/*
+				Force it to be "internal" because as3growl is busted
+			*/
+			if (Spaz.Prefs.get('window-notificationmethod') !== 'internal') {
 				Spaz.Prefs.set('window-notificationmethod', 'internal');
 				$('#window-notificationposition').removeAttr("disabled");
-			} else { // is growl
-				$('#window-notificationposition').attr("disabled","disabled");;
 			}
-            
         }
 	},
     'window-minimizetosystray': {

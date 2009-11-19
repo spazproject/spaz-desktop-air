@@ -29,7 +29,7 @@ Spaz.Data.getAPIURL = function(key) {
 
 	// Timeline URLs
 	urls.public_timeline	= "statuses/public_timeline.json";
-	urls.friends_timeline	= "statuses/friends_timeline.json";
+	urls.friends_timeline	= "statuses/home_timeline.json";
 	urls.user_timeline		= "statuses/user_timeline.json";
 	urls.replies_timeline	= "statuses/replies.json";
 	urls.show				= "statuses/show.json";
