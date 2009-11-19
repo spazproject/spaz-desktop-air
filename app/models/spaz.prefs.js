@@ -1060,7 +1060,7 @@ Spaz.Prefs.loadPassword = function() {
 
 Spaz.Prefs.setPrefs = function() {
     // Spaz.dump('Verifying password');
-    Spaz.Data.verifyPassword();
+    Spaz.Data.verifyCredentials();
     // Spaz.dump('saving Prefs');
     Spaz.Prefs.savePrefs();
 }

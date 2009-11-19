@@ -97,56 +97,17 @@ Spaz.Data.$ajaxQueueFinished = 0;
  * Verifies the username and password in the prefs fields against the Twitter API
  * @returns void
  */
-Spaz.Data.verifyPassword = function() {
+Spaz.Data.verifyCredentials = function() {
 
 	var user = $('#username').val();
 	var pass = $('#password').val();
 
-	sch.dump('user:'+user+' pass:********');
+	var twit = new SpazTwit(user, pass);
+	twit.verifyCredentials();
 
 	Spaz.UI.statusBar("Verifying username and password");
 	Spaz.UI.showLoading();
 
-	var xhr = $.ajax({
-		complete:Spaz.Data.onAjaxComplete,
-		error:function(xhr, rstr) {
-			// Spaz.verified = false;
-			sch.dump('verification failed');
-			Spaz.UI.statusBar("Verification failed");
-			Spaz.UI.flashStatusBar();
-			Spaz.Data.onAjaxError(xhr, rstr);
-		},
-		success:function(data){
-			// var json = JSON.parse(data);
-			// if (json.authorized) {
-				// Spaz.verified = true;
-				sch.dump('verified; setting current user');
-				Spaz.Prefs.setCurrentUser();
-				Spaz.UI.statusBar("Verification succeeded");
-				Spaz.UI.flashStatusBar();
-
-				if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
-					Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
-				}
-
-			// } else {
-				// Spaz.verified = false;
-			//	   sch.dump('verification failed');
-			//	   Spaz.UI.statusBar("Verification failed");
-			//	   Spaz.UI.flashStatusBar();
-			// }
-		},
-		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-			// cookies just get in the way.	 eliminate them.
-			xhr.setRequestHeader("Cookie", "");
-		},
-		processData:false,
-		type:"POST",
-		url:Spaz.Data.getAPIURL('verify_password'),
-	})
-
-	// sch.dump(xhr);
 
 }
 

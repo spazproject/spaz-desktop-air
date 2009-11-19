@@ -1,4 +1,4 @@
-/*********** Built 2009-09-24 16:54:50 EDT ***********/
+/*********** Built 2009-11-19 17:41:29 EST ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -4880,7 +4880,7 @@ sc.helpers.note = function(obj) {
  * helper to send a warn dump 
  */
 sc.helpers.warn = function(obj) {
-	sc.helpers.dump(obj, SPAZCORE_DUMPLEVEL_WARN);
+	sc.helpers.dump(obj, SPAZCORE_DUMPLEVEL_WARNING);
 };
 
 /**
@@ -6934,6 +6934,7 @@ var SpazTimeline = function(opts) {
 	 * @function
 	 */
 	this.refresh = function() {
+		sch.debug('Refreshing timeline');
 		thisTL.requestData.call(thisTL);
 	};
 	
@@ -6942,6 +6943,7 @@ var SpazTimeline = function(opts) {
 	 * Again, due to scope issues, we define this here to take advantage of the closure 
 	 */
 	this.onSuccess = function(e) {
+		sch.debug('onSuccess timeline');
 		var data = sc.helpers.getEventData(e);
 		thisTL.data_success.call(thisTL, e, data);
 		thisTL.startRefresher();	
@@ -6951,6 +6953,7 @@ var SpazTimeline = function(opts) {
 	 * Again, due to scope issues, we define this here to take advantage of the closure 
 	 */
 	this.onFailure = function(e) {
+		sch.debug('onFailure timeline');
 		var data = sc.helpers.getEventData(e);
 		thisTL.data_failure.call(thisTL, e, data);
 		thisTL.startRefresher();	
@@ -7007,6 +7010,7 @@ SpazTimeline.prototype._init = function(opts) {
  * call this after initialization 
  */
 SpazTimeline.prototype.start = function() {
+	sch.debug('Starting timeline');
 	this.requestData();
 };
 
@@ -7014,6 +7018,7 @@ SpazTimeline.prototype.start = function() {
  * right now this does the same as start(), but could change in the future 
  */
 SpazTimeline.prototype.refresh = function() {
+	sch.debug('Refreshing timeline (prototype)');
 	this.requestData();
 };
 
@@ -7024,6 +7029,7 @@ SpazTimeline.prototype.refresh = function() {
  * @todo needs to be written to handle async call
  */
 SpazTimeline.prototype.requestData = function() {
+	sch.debug('Requesting data timeline');
 	this.stopRefresher();
 	
 	this.stopListening();
@@ -7037,7 +7043,7 @@ SpazTimeline.prototype.requestData = function() {
 
 SpazTimeline.prototype.startListening = function() {
 	var thisTL = this;
-	sch.dump("Listening for "+thisTL.success_event);
+	sc.helpers.debug("Listening for "+thisTL.success_event);
 	sc.helpers.listen(thisTL.event_target, thisTL.success_event, thisTL.onSuccess);
 	sc.helpers.listen(thisTL.event_target, thisTL.failure_event, thisTL.onFailure);
 };
@@ -7045,19 +7051,26 @@ SpazTimeline.prototype.startListening = function() {
 
 SpazTimeline.prototype.stopListening = function() {
 	var thisTL = this;
+	sc.helpers.debug("Stopping listening for "+thisTL.success_event);
 	sc.helpers.unlisten(thisTL.event_target, thisTL.success_event, thisTL.onSuccess);
 	sc.helpers.unlisten(thisTL.event_target, thisTL.failure_event, thisTL.onFailure);
 };
 
 SpazTimeline.prototype.startRefresher = function() {
 	this.stopRefresher();
+	
+	sc.helpers.debug('Starting refresher');
 	if (this.refresh_time > 1000) { // the minimum refresh is 1000ms. Otherwise we don't auto-refresh
+		sc.helpers.debug('Refresh time is '+this.refresh_time+'ms');
 		this.refresher = setInterval(this.refresh, this.refresh_time);
+	} else {
+		sc.helpers.debug('Not starting refresher; refresh time is '+this.refresh_time+'ms');
 	}
 };
 
 
 SpazTimeline.prototype.stopRefresher = function() {
+	sc.helpers.debug('Stopping refresher');
 	clearInterval(this.refresher);
 };
 
@@ -7071,6 +7084,7 @@ SpazTimeline.prototype.stopRefresher = function() {
  * removing event listeners an stopping the refresher 
  */
 SpazTimeline.prototype.cleanup = function() {
+	sch.debug('Cleaning up timeline');
 	this.stopListening();
 	this.stopRefresher();
 };
@@ -7080,6 +7094,8 @@ SpazTimeline.prototype.cleanup = function() {
  * @param {array} items
  */
 SpazTimeline.prototype.addItems = function(items) {
+	sch.debug('Adding items to timeline');
+	
 	var items_html    = [];
 	var timeline_html = '';
 	
@@ -7096,14 +7112,13 @@ SpazTimeline.prototype.addItems = function(items) {
 		this.prepend(timeline_html);
 	}
 	
-	// sch.error(timeline_html);
-	
 	this.removeExtraItems();
 	
 };
 
 
 SpazTimeline.prototype.renderItem = function(item, templatefunc) {
+	sch.debug('Rendering item in timeline');
 	
 	var html = templatefunc(item);
 	
@@ -7113,6 +7128,8 @@ SpazTimeline.prototype.renderItem = function(item, templatefunc) {
 
 
 SpazTimeline.prototype.removeExtraItems = function() {
+	
+	sch.debug('Removing extra items in timeline');
 	
 	if (this.add_method === 'append') {
 		var remove_from_top = true;
@@ -7134,6 +7151,9 @@ SpazTimeline.prototype.removeItem = function(selector) {};
  * @return {boolean} 
  */
 SpazTimeline.prototype.itemExists = function(selector) {
+	
+	sch.debug('Checking it item ('+selector+') exists in timeline');
+	
 	var items = this.select(selector);
 	if (items.length>0) {
 		return true;
@@ -7145,11 +7165,15 @@ SpazTimeline.prototype.itemExists = function(selector) {
 
 
 SpazTimeline.prototype.hideItems = function(selector) {
+	sch.debug('Hiding items in timeline');
+	
 	this.filterItems(selector, 'blacklist');
 };
 
 
 SpazTimeline.prototype.showItems = function(selector) {
+	sch.debug('Showing items in timeline');
+	
 	this.filterItems(selector, 'whitelist');
 };
 
@@ -7165,6 +7189,9 @@ SpazTimeline.prototype.filterItems = function(selector, type) {};
  * sorts the elements in the timeline according to the sorting function 
  */
 SpazTimeline.prototype.sortItems = function(selector, sortfunc) {
+	
+	sch.debug('Sorting items in timeline');
+	
 	var items = this.select(selector);
 	items.sort(sortfunc);
 };
@@ -7188,7 +7215,6 @@ SpazTimeline.prototype.select = function(selector, container) {
  * wrapper for prepending to timeline 
  */
 SpazTimeline.prototype.prepend = function(htmlitem) {
-	sch.error(this.timeline_container_selector);
 	jQuery(this.timeline_container_selector).prepend(htmlitem);
 };
 SpazTimeline.prototype.append = function(htmlitem) {
@@ -7235,11 +7261,12 @@ var SPAZCORE_SECTION_SEARCH = 'search';
 var SPAZCORE_SECTION_USER = 'user-timeline';
 var SPAZCORE_SECTION_FRIENDLIST = 'friendslist';
 var SPAZCORE_SECTION_FOLLOWERSLIST = 'followerslist';
+var SPAZCORE_SECTION_USERLISTS = 'userlists';
 
 var SPAZCORE_SERVICE_TWITTER = 'twitter';
 var SPAZCORE_SERVICE_IDENTICA = 'identi.ca';
 var SPAZCORE_SERVICE_CUSTOM = 'custom';
-var SPAZCORE_SERVICEURL_TWITTER = 'https://twitter.com/';
+var SPAZCORE_SERVICEURL_TWITTER = 'https://api.twitter.com/1/';
 var SPAZCORE_SERVICEURL_IDENTICA = 'https://identi.ca/api/';
 
 /**
@@ -7579,16 +7606,25 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
     urls.verify_credentials = "account/verify_credentials.json";
     urls.ratelimit_status   = "account/rate_limit_status.json";
 	urls.update_profile		= "account/update_profile.json";
+	urls.saved_searches		= "saved_searches.json";
+
+    // User lists URLs
+    urls.lists              = "{{USER}}/lists.json";
+    urls.lists_list         = "{{USER}}/lists/{{SLUG}}.json";
+    urls.lists_memberships  = "{{USER}}/lists/memberships.json";
+    urls.lists_timeline     = "{{USER}}/lists/{{SLUG}}/statuses.json";
+    urls.lists_members      = "{{USER}}/{{SLUG}}/members.json";
+    urls.lists_check_member = "{{USER}}/{{SLUG}}/{{ID}}.json";
+    urls.lists_subscribers  = "{{USER}}/{{SLUG}}/subscribers.json";
+    urls.lists_check_subscriber = "{{USER}}/{{SLUG}}/subscribers/{{ID}}.json";
 
 	// search
 	if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER) {
 		urls.search				= "http://search.twitter.com/search.json";
 		urls.trends				= "http://search.twitter.com/trends.json";
-		urls.saved_searches		= "http://search.twitter.com/saved_searches.json";
 	} else {
 		urls.search				= "search.json";
 		urls.trends				= "trends.json";
-		urls.saved_searches		= "saved_searches.json";
 	}
 
     // misc
@@ -7604,7 +7640,19 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 		}
 		
 	}
-	
+
+    // Token replacement for user lists
+    if (urls[key].indexOf('{{USER}}') > - 1) {
+        if (urldata && typeof(urldata) === 'object') {
+            urls[key] = urls[key].replace('{{USER}}', urldata.user);
+        }
+    }
+
+    if (urls[key].indexOf('{{SLUG}}') > -1) {
+        if (urldata && typeof(urldata) === 'object') {
+            urls[key] = urls[key].replace('{{SLUG}}', urldata.slug);
+        }
+    }
 
     if (urls[key]) {
 	
@@ -8539,6 +8587,13 @@ SpazTwit.prototype._processItem = function(item, section_name) {
 	}
 	
 	/*
+		is an official API retweet? then add .SC_is_retweet
+	*/
+	if ( item.retweet_status ) {
+		item.SC_is_retweet = true;
+	}
+	
+	/*
 		If it comes from the replies timeline, it's a reply (aka a mention)
 	*/
 	if (section_name === SPAZCORE_SECTION_REPLIES) {
@@ -8969,11 +9024,9 @@ SpazTwit.prototype.update = function(status, source, in_reply_to_status_id) {
 SpazTwit.prototype._processUpdateReturn = function(data, finished_event) {
 	
 	/*
-		this item needs to be added to the friends + home timeline
-		so we can avoid dupes
-	*/
+		Add this to the HOME section and fire off the event when done
+	*/	
 	this._processTimeline(SPAZCORE_SECTION_HOME, [data], finished_event);
-	this._processTimeline(SPAZCORE_SECTION_FRIENDS, [data], finished_event);
 };
 
 SpazTwit.prototype.destroy = function(id) {};
@@ -9302,8 +9355,12 @@ SpazTwit.prototype.removeSavedSearch = function(search_id) {
 		'password':this.password,
 		'success_event_type':'destroy_saved_search_succeeded',
 		'failure_event_type':'destroy_saved_search_failed',
+		'data':{'id':search_id},
 		'method':'POST'
 	};
+	
+	sch.debug('opts for removeSavedSearch');
+	sch.debug(opts);
 
 	/*
 		Perform a request and get true or false back
@@ -9314,6 +9371,65 @@ SpazTwit.prototype.removeSavedSearch = function(search_id) {
 
 
 
+
+/**
+ * retrieves the list of lists 
+ */
+SpazTwit.prototype.getLists = function(user) {
+	if (!user) {
+		return false;
+	}
+
+	var data = {};
+	data['user']  = user;
+
+	var url = this.getAPIURL('lists', data);
+
+    // get the lists for the given user
+    alert(url);
+};
+
+/**
+ * retrieves a given list timeline
+ * @param {string} list 
+ */
+SpazTwit.prototype.getList = function(list) {};
+
+/**
+ * retrieves a given list's members
+ * @param {string} list 
+ */
+SpazTwit.prototype.getListMembers = function(list) {};
+
+/**
+ * create a new list
+ * @param {string} list  The list name
+ * @param {string} visibility   "public" or "private"
+ */
+SpazTwit.prototype.addList = function(list, visibility) {};
+
+/**
+ * delete a list
+ * @param {string} list  The list name 
+ */
+SpazTwit.prototype.removeList = function(list) {};
+
+/**
+ * add a user to a list
+ */
+SpazTwit.prototype.addUserToList = function(user, list) {};
+
+/**
+ * delete a user from a list 
+ */
+SpazTwit.prototype.removeUserFromList = function(user, list) {};
+
+
+
+
+/**
+ *  
+ */
 SpazTwit.prototype.triggerEvent = function(type, data) {
 	var target = this.opts.event_target || document;
 	data   = data || null;
@@ -9328,7 +9444,6 @@ SpazTwit.prototype.triggerEvent = function(type, data) {
 	}
 	
 };
-
 
 /**
  * shortcut for SpazTwit if the SpazCore libraries are being used
@@ -9464,7 +9579,8 @@ if (sc) {
 }
 * 
 * 
-*//*jslint 
+*/
+/*jslint 
 browser: true,
 nomen: false,
 debug: true,

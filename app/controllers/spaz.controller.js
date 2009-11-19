@@ -34,6 +34,28 @@ sch.listen(document, 'update_failed', function(e) {
 
 
 
+/*
+	Handle verifyCredentials
+*/
+sch.listen(document, 'verify_credentials_succeeded', function(e) {
+	sch.dump('verified; setting current user');
+	Spaz.Prefs.setCurrentUser();
+	Spaz.UI.statusBar("Verification succeeded");
+	Spaz.UI.flashStatusBar();
+
+	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+		Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
+	}
+});
+
+sch.listen(document, 'verify_credentials_failed', function(e) {
+	sch.dump('verification failed');
+	Spaz.UI.statusBar("Verification failed");
+	Spaz.UI.flashStatusBar();
+	Spaz.Data.onAjaxError(xhr, rstr);
+});
+
+
 /**
  * Event delegation handling 
  */
