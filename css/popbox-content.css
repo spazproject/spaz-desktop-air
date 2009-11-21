@@ -224,3 +224,36 @@ div.popbox-content {
 #resources li a:hover {
 	background-color:#220000;
 }
+
+
+/*
+	image uploader
+*/
+#imageupload-droplet {
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:10px;
+	border:3px solid #666;
+	background:transparent;
+	font-size:56pt;
+	width:100px;
+	height:100px;
+	text-align:center;
+}
+#imageupload-droplet:hover {
+	background:#CCFFCC;
+	cursor:pointer;
+}
+#imageupload-post-message {
+	height:4.2em;
+	font-size:9pt;
+}
+#imageupload-button {
+	font-size:11pt;
+}
+#imageupload-verification-result {
+	font-size:8pt;
+}
+	#imageupload-status-text {
+		margin-left:5px;
+	}

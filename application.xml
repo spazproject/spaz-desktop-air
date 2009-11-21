@@ -22,7 +22,7 @@
 		<resizable>true</resizable>
 		<width>350</width>
 		<height>580</height>
-		<minSize>280 200</minSize>
+		<minSize>310 200</minSize>
 		<x>150</x>
 		<y>150</y>
 	</initialWindow>

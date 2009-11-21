@@ -13,9 +13,9 @@ Spaz.Notify.iconBMP = null;
 Spaz.Notify.params = null;
 
 // Spaz.Notify.notify = function(msg) {
-// 	Spaz.dump("init notifier");
+// 	sch.debug("init notifier");
 // 	var notifier = new runtime.com.adobe.air.notification.Purr(5);
-// 	Spaz.dump('notifier init-ed')
+// 	sch.debug('notifier init-ed')
 // 
 // 	var title = "This is a title";
 // 	// var message = "This is a message";
@@ -34,7 +34,7 @@ Spaz.Notify.add  = function(message, title, where, duration, icon) {
 	message = message.replace(/&lt;/gi, '<');
 	message = message.replace(/&gt;/gi, '>');
 	
-	Spaz.dump("init notifier");
+	sch.debug("init notifier");
 	Spaz.Notify.purr = new window.runtime.com.adobe.air.notification.Purr(1);
 
 
@@ -88,15 +88,15 @@ Spaz.Notify.add  = function(message, title, where, duration, icon) {
 	// 		msgIconURL: icon
 	// 	};
 	// } else {
-	// 	Spaz.dump('title='+title+' message='+message+' where='+where+' duration='+duration+' icon'+icon);
+	// 	sch.debug('title='+title+' message='+message+' where='+where+' duration='+duration+' icon'+icon);
 	// 	Spaz.Notify.purr.addTextNotificationByParams(title, message, where, duration, null);
 	// }
 };
 
 Spaz.Notify.$add = function() {
-	Spaz.dump('$add');
+	sch.debug('$add');
 	params = Spaz.Notify.params
-	Spaz.dump('title='+params.msgTitle+' message='+params.msgBody+' where='+params.msgWhere+' duration='+params.msgDuration+' iconURL='+params.msgIconURL);
+	sch.debug('title='+params.msgTitle+' message='+params.msgBody+' where='+params.msgWhere+' duration='+params.msgDuration+' iconURL='+params.msgIconURL);
 	// n = new window.runtime.com.adobe.air.notification.Notification(params.msgTitle, params.msgBody, params.msgWhere, params.msgDuration, params.msgIcon);
 	// Spaz.Notify.purr.addNotification(n);
 	Spaz.Notify.purr.addTextNotificationByParams(params.msgTitle,
@@ -107,18 +107,18 @@ Spaz.Notify.$add = function() {
 }
 
 Spaz.Notify.loadIcon = function(url) {
-	Spaz.dump('loadIcon');
+	sch.debug('loadIcon');
 	if (url == null) {
 		url = 'images/spaz-icon-alpha.png';
 	}
-	Spaz.dump('iconURL:'+url);
+	sch.debug('iconURL:'+url);
 	var iconLoader = new air.Loader();
 	iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
 	                                        Spaz.Notify.iconLoadComplete);
 	iconLoader.load(new air.URLRequest(url));
 }
 Spaz.Notify.iconLoadComplete = function(event) {
-	Spaz.dump('iconLoadComplete');
+	sch.debug('iconLoadComplete');
 	Spaz.Notify.params.msgIcon = event.target.content;
 	Spaz.Notify.$add();
 };

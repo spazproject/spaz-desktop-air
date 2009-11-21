@@ -119,6 +119,7 @@
 	<script src="app/views/spaz.tooltip.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.menus.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.windows.js"	   type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.imageuploader.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- app model -->
 	<script src="app/models/spaz.db.js"			type="text/javascript"></script>
@@ -336,12 +337,11 @@
 
 					<div id="menu-search" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="text" name="search-for" value="" id="search-for" />
-							<input type="button" name="search-go" value="go!" id="search-go" />
-							<input type="button" name="search-go" value="save" id="search-save (NYI)" />
-							<input type="button" name="search-help" value="?" id="search-help" title="Summize Search Help" />
-							
-							<input type="button" name="search-saved" value="Saved &#x25BE;" id="search-saved" title="Saved Searches (NYI)" /> 
+							<input type="text"   name="search-for"    value=""                id="search-for"    title="Enter search"  />
+							<input type="button" name="search-go"     value="&raquo;"         id="search-go"     title="Submit Search" />
+							<input type="button" name="search-save"   value="+"               id="search-save"   title="Save Search (NYI)" />
+							<input type="button" name="search-help"   value="?"               id="search-help"   title="Search Help" />
+							<input type="button" name="search-saved"  value="Saved &#x25BE;"  id="search-saved"  title="Saved Searches (NYI)" /> 
 							<input type="button" name="search-trends" value="Trends &#x25BE;" id="search-trends" title="Trends (NYI)" /> 
 						</form>
 					</div>
@@ -1134,7 +1134,50 @@
 			</div>
 		</div>
 
-		
+
+		<!--
+			Image Upload Window
+		-->
+		<div id="imageUploadWindow" class="popbox-content-wrapper">
+			<div class="popbox-content">
+				<h1>Upload Image</h1>
+
+				<div class="content">
+
+					<div id="imageupload-droplet" title="Click to upload">&#x21E7;</div>
+
+					<form id="shortenLink-form" onsubmit="return false;">
+						<div class="formrow">
+							<label for="imageupload-file-uploader">Service</label>
+							<select id="imageupload-file-uploader" name="imageupload-file-uploader" onChange="">
+							</select>
+						</div>
+
+						<div class="formrow">
+							<label for="imageupload-file-url">File</label>
+							<input type="text" name="imageupload-file-url" id="imageupload-file-url" disabled='disabled' />
+						</div>
+						<div class="formrow">
+							<label for="imageupload-post-message">Message</label>
+							<textarea type="text" name="imageupload-post-message" id="imageupload-post-message"></textarea>
+						</div>
+
+						<div style="text-align:center">
+							<input type="button" id="imageupload-button" name="imageupload-button" value="Upload" /> 
+						</div>
+
+						<!-- <div id="extra-twitpic" class="formrow service-extras" style="text-align:center; margin-top:15px">
+							<input type="button" id="imageupload-button" name="upload" value="Upload" disabled="disabled" style="font-size:24pt" /> 
+						</div> -->
+						<div id="imageupload-verification-result" align="center">
+							<span id='imageupload-loading'></span>
+							<span id="imageupload-status-text"></span>
+						</div>
+					</form>
+					
+				</div>
+			</div>
+		</div>
 		
 
 	</div> <!-- End #container -->
@@ -1144,16 +1187,6 @@
 	</span>
 
 	<div id="spaz-dialog"></div>
-
-
-	<!-- hidden iframe for classic sandbox bridging -->
-	<!-- <iframe style="display:none" src="tpl.html"
-		sandboxRoot="http://funkatron.com/local/"
-		documentRoot="app:/sandbox/"
-		id="classicSB"
-		onload="Spaz.Sys.loadChildInterface()"></iframe> -->
-		
-	
 
 </body>
 </html>

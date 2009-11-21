@@ -1,5 +1,5 @@
 /**
- *  
+ *  opens a popbox that contains an iframe displaying the passed URL
  */
 function openPopboxURL(url) {
 	var cont_width = jQuery('#container').outerWidth();
@@ -21,7 +21,7 @@ function openPopboxURL(url) {
 
 
 /**
- *  
+ *  opens a popbox that contains the contents within the element of the passed ID
  */
 function openPopboxInline(content_id) {
 	var cont_width  = jQuery('body').outerWidth();
@@ -44,4 +44,11 @@ function openPopboxInline(content_id) {
 	jQuery('#DOMWindow').outerHeight( cont_height-30 );
 
 	return false;
+}
+
+/**
+ * closes the open popbox 
+ */
+function closePopbox() {
+	jQuery.closeDOMWindow();
 }

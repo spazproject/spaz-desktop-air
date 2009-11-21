@@ -260,11 +260,11 @@ Spaz.initialize = function() {
 	/*
 		About popbox
 	*/
-	$('#about-version').text("v"+Spaz.Sys.getVersion())
+	$('#about-version').text("v"+Spaz.Sys.getVersion());
 
 
 	/*
-		URL shortener
+		initialinze URL shortener
 	*/
 	var initUrlShortener = function() {
 		
@@ -336,9 +336,14 @@ Spaz.initialize = function() {
 		
 		// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);
 	};
-	
+
 	initUrlShortener();
 
+	/*
+		initialize Image uploader popbox
+	*/
+	var SpazImageUploader = new Spaz.ImageUploader();
+	SpazImageUploader.init();
 
 	Spaz.dump('ended document.ready()');
 }
