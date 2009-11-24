@@ -316,6 +316,10 @@ a, a:link, .clickable {
 				.TabbedPanelsContent {
 					margin:0px;
 					padding:0px;
+					-webkit-animation-name: 'revealtabcontent';
+				    -webkit-animation-duration: .3s;
+				    -webkit-animation-iteration-count: 1;
+					
 				}
 
 				/* This selector is an example of how to change the appearnce of the currently
@@ -384,6 +388,20 @@ a, a:link, .clickable {
 						right:0px;
 						bottom:0px;
 					}
+
+					@-webkit-keyframes revealtabcontent {
+
+						0% {
+							-webkit-transform: scale(4.0);
+							opacity:0.1;
+						}
+						100% {
+							-webkit-transform: scale(1.0);
+							opacity:1.0;
+						}
+
+					}
+					
 					#timelinewrapper-prefs {
 						top:0px;
 					}
@@ -676,7 +694,23 @@ div.timeline-entry {
 	clear:both;
 	overflow:hidden;
 	font-size:11px;
+	-webkit-animation-name: 'fadein';
+    -webkit-animation-duration: .4s;
+    -webkit-animation-iteration-count: 1;
 }
+
+@-webkit-keyframes 'fadein' {
+
+ 0% {
+   opacity: 0.2;
+ }
+ 100% {
+   opacity: 1.0;
+ }
+}
+
+
+
 	/*
 		Entries that are replies directed at the user
 	*/
@@ -802,11 +836,12 @@ div.timeline-entry {
 		        display: inline-block;
 		    }
 
-    		    .status-action-fav { background:url('images/status-fav-off.png'); }
-		 			div.timeline-entry.favorited .status-action-fav { background:url('images/status-fav-on.png'); }
-    		    .status-action-retweet { background:url('images/status-retweet.png'); }
-    		    .status-action-dm { background:url('images/status-dm.png'); }
-    		    .status-action-reply { background:url('images/status-reply.png'); }
+    		    .status-action-fav { background-image:url('images/status-fav-off.png'); }
+		 			div.timeline-entry.favorited .status-action-fav { background-image:url('images/status-fav-on.png'); }
+    		    .status-action-retweet { background-image:url('images/status-retweet.png'); }
+    		    .status-action-dm { background-image:url('images/status-dm.png'); }
+    		    .status-action-reply { background-image:url('images/status-reply.png'); }
+				.status-action-del { background-image:url('images/status-delete.png'); }
 
 		/* the container for the "permalink" to the post */
 		div.status-link {
@@ -1094,3 +1129,73 @@ table.data {
 }
 
 
+
+
+/* Turn on a 13x13 scrollbar */
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+}
+
+::-webkit-scrollbar-button:vertical {
+}
+
+/* Turn on single button up on top, and down on bottom */
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+    display: block;
+}
+
+/* Turn off the down area up on top, and up area on bottom */
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement {
+    display: none;
+}
+
+/* Place The scroll down button at the bottom */
+::-webkit-scrollbar-button:vertical:increment {
+    background-color: #AAA;
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Place The scroll up button at the up */
+::-webkit-scrollbar-button:vertical:decrement {
+    background-color: #AAA;
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+::-webkit-scrollbar-track:vertical {
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Top area above thumb and below up button */
+::-webkit-scrollbar-track-piece:vertical:start {
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Bottom area below thumb and down button */
+::-webkit-scrollbar-track-piece:vertical:end {
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Track below and above */
+::-webkit-scrollbar-track-piece {
+    background-color: #CCC;
+}
+
+/* The thumb itself */
+::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background-color: #999;
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Corner */
+::-webkit-scrollbar-corner:vertical {
+    background-color: black;
+}
+
+/* Resizer */
+::-webkit-scrollbar-resizer:vertical {
+    background-color: gray;
+}

@@ -141,7 +141,7 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 		var d = sch.getEventData(e);
 		
 		var content = '';
-		content += "<img style='float:right' src='" + d.profile_image_url + "' />";
+		content += "<img class='tooltop-user-image' style='max-width:48px; max-height:48px; float:right' src='" + d.profile_image_url + "' />";
 		content += "<div><strong>" + d.name + " (" + d.screen_name + ")</strong></div>";
 		if (d.location) {
 			content += "<div><em>" + d.location + "</em></div>";

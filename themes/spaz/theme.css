@@ -283,13 +283,15 @@ a, a:link, .clickable {
 						display:block;
 						background-repeat: no-repeat;
 					}
-				    #tab-friends .tab-icon { background:url('images/tab-icon-timeline.png'); }
-				    #tab-user .tab-icon { background:url('images/tab-icon-user.png'); }
-				    #tab-public .tab-icon { background:url('images/tab-icon-public.png'); }
-				    #tab-search .tab-icon { background:url('images/tab-icon-search.png'); }
-				    #tab-followerslist .tab-icon { background:url('images/tab-icon-following.png'); }
-				    #tab-followerslist .tab-icon { background:url('images/tab-icon-followers.png'); }
-				    #tab-prefs .tab-icon { background:url('images/tab-icon-prefs.png'); }
+				    #tab-friends .tab-icon { background-image:url('images/tab-icon-timeline.png'); }
+				    #tab-user .tab-icon { background-image:url('images/tab-icon-user.png'); }
+				    #tab-public .tab-icon { background-image:url('images/tab-icon-public.png'); }
+					#tab-favorites .tab-icon { background-image:url('images/tab-icon-favorites.png'); }
+				    #tab-userlists  .tab-icon { background-image:url('images/tab-icon-userlists.png'); }
+					#tab-search .tab-icon { background-image:url('images/tab-icon-search.png'); }
+				    #tab-followerslist .tab-icon { background-image:url('images/tab-icon-following.png'); }
+				    #tab-followerslist .tab-icon { background-image:url('images/tab-icon-followers.png'); }
+				    #tab-prefs .tab-icon { background-image:url('images/tab-icon-prefs.png'); }
 
 			/*
 				These are the content panels, wrapped inside a single container div
@@ -593,7 +595,7 @@ a, a:link, .clickable {
 				display:none;
 				height:10px;
 				width: 10px;
-				background:url('images/loading.gif');
+				background-image:url('images/loading.gif');
 				background-repeat: no-repeat;
 
 			}
@@ -703,7 +705,7 @@ a, a:link, .clickable {
 	Timeline entries are... entries in the timelines
 */
 div.timeline-entry {
-/*  background-color: #CCCC99;*/
+/*	background-color: #CCCC99;*/
 	padding: 10px 5px;
 	border-top-width: medium;
 	border-top-style: solid;
@@ -711,6 +713,8 @@ div.timeline-entry {
 	clear:both;
 	overflow:hidden;
 }
+
+
 	/*
 		Entries that are replies directed at the user
 	*/
@@ -824,11 +828,12 @@ div.timeline-entry {
 		        display: inline-block;
 		    }
 
-    		    .status-action-fav { background:url('images/status-fav-off.png'); }
-		 			div.timeline-entry.favorited .status-action-fav { background:url('images/status-fav-on.png'); }
-    		    .status-action-retweet { background:url('images/status-retweet.png'); }
-    		    .status-action-dm { background:url('images/status-dm.png'); }
-    		    .status-action-reply { background:url('images/status-reply.png'); }
+    		    .status-action-fav { background-image:url('images/status-fav-off.png'); }
+		 			div.timeline-entry.favorited .status-action-fav { background-image:url('images/status-fav-on.png'); }
+    		    .status-action-retweet { background-image:url('images/status-retweet.png'); }
+    		    .status-action-dm { background-image:url('images/status-dm.png'); }
+    		    .status-action-reply { background-image:url('images/status-reply.png'); }
+				.status-action-del { background-image:url('images/status-delete.png'); }
 
 		/* the container for the "permalink" to the post */
 		div.status-link {
@@ -842,7 +847,7 @@ div.timeline-entry {
 
 			/* the icon that indicates this is a protected post */
 			span.status-protected {
-				background:url('images/icon-lock.png');
+				background-image:url('images/icon-lock.png');
                 padding:0 6px; /* width doesn't matter on inline element, so use padding to force width */
                 height:12px;
 			}

@@ -54,7 +54,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '			<div class="status-actions">';
 	entryHTML += '				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 								if (d.isSent) {
-	entryHTML += '					<a title="Delete this message" class="status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'">del</a>';
+	entryHTML += '					<span title="Delete this message" class="status-action status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'"></span>';
 								}
 	entryHTML += '			</div>';
 	entryHTML += '			<div class="status-link">';
@@ -67,7 +67,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 	entryHTML += '				<span title="Send reply to this user" class="status-action status-action-reply clickable" id="status-'+d.id+'-reply" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 								if (d.isSent) {
-	entryHTML += '					<a title="Delete this message" class="status-action-del clickable" id="status-'+d.id+'-del" entry-id="'+d.id+'">del</a>';
+	entryHTML += '					<span title="Delete this message" class="status-action status-action-del clickable" id="status-'+d.id+'-del" entry-id="'+d.id+'"></span>';
 								}
 	entryHTML += '				</div>';
 	entryHTML += '				<div class="status-link">';
@@ -115,7 +115,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	entryHTML += '		<div class="status-actions">';
 	entryHTML += '			<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.sender_screen_name+'" ></span>';
 							if (d.isSent) {
-	entryHTML += '				<a title="Delete this message" class="status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'">del</a>';
+	entryHTML += '				<span title="Delete this message" class="status-action status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'"></span>';
 							}
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-link">';

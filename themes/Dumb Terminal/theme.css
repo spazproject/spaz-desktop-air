@@ -575,11 +575,12 @@ div.status-actions {
 	border-bottom:none;
 }
 
-.status-action-fav { background:url('images/status-fav-off.png'); }
-	div.timeline-entry.favorited .status-action-fav { background:url('images/status-fav-on.png'); }
-.status-action-retweet { background:url('images/status-retweet.png'); }
-.status-action-dm { background:url('images/status-dm.png'); }
-.status-action-reply { background:url('images/status-reply.png'); }
+.status-action-fav { background-image:url('images/status-fav-off.png'); }
+	div.timeline-entry.favorited .status-action-fav { background-image:url('images/status-fav-on.png'); }
+.status-action-retweet { background-image:url('images/status-retweet.png'); }
+.status-action-dm { background-image:url('images/status-dm.png'); }
+.status-action-reply { background-image:url('images/status-reply.png'); }
+.status-action-del { background-image:url('images/status-delete.png'); }
 
 div.status-actions a, div.status-link a {
 	color: #9999CC;
