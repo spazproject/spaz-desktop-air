@@ -1,1 +1,1 @@
-// Not used yet
+sch.debug('loaded spaz/theme.js');

@@ -506,8 +506,6 @@ var FavoritesTimeline = function(args) {
 				
 			};
 			
-			sch.error(no_dupes[1]);
-			
 			thisFVT.timeline.addItems(no_dupes);
 
 			/*
@@ -537,9 +535,7 @@ var FavoritesTimeline = function(args) {
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
-			sch.error(Spaz.Tpl.parse('timeline_entry', obj));
 			return Spaz.Tpl.parse('timeline_entry', obj);
-			
 		}
 	});
 	

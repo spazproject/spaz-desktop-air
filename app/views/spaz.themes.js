@@ -28,6 +28,14 @@ Spaz.Themes.init = function() {
 	$('#theme-basetheme').val(Spaz.Prefs.get('theme-basetheme'));
 	Spaz.Themes.setCurrentTheme();
 
+	// load theme JS files
+	var themeObj = Spaz.Themes.getThemeObject(Spaz.Prefs.get('theme-basetheme'));
+	if (themeObj) {
+		$('#themeinfo').attr('src', themeObj.themeinfo);
+		$('#themejs').attr('src', themeObj.themejs);
+	}
+	
+
 	// make the element to contain user CSS
 	$('head').append('<style type="text/css" media="screen" id="UserCSSOverride"></style>');
 
@@ -81,11 +89,20 @@ Spaz.Themes.loadUserStylesFromURL = function(fileurl) {
 }
 
 
+Spaz.Themes.loadThemeInfo = function(fileurl) {
+	var json = Spaz.Sys.getFileContents(fileurl);
+	if (json) {
+		return sch.deJSON(json);
+	} else {
+		return false;
+	}
+};
+
+
 
 Spaz.Themes.clearUserStyleSheet = function() {
 	Spaz.Prefs.set('theme-userstylesheet', '');
 	$('#UserCSSOverride').text('');
-	// $('#user-stylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
 }
 
 
@@ -115,7 +132,7 @@ Spaz.Themes.setCurrentTheme = function() {
 		this.src = this.src.replace(/\{theme-dir\}/, Spaz.Prefs.get('theme-basetheme'));
 	});
 
-}
+};
 
 
 Spaz.Themes.getThemePaths = function() {
@@ -143,7 +160,7 @@ Spaz.Themes.getThemePaths = function() {
 				themedir : thisthemedir.url,
 				themecss : thisthemecss.url,
 				themejs  : thisthemejs.url,
-				themeinfo: thisthemeinfo.url
+				themeinfo: Spaz.Themes.loadThemeInfo(thisthemeinfo.url)
 			}
 
 			// sanity check to make sure the themedir actually has something in it
@@ -154,20 +171,36 @@ Spaz.Themes.getThemePaths = function() {
 	}
 
 	return themes;
+};
+
+
+Spaz.Themes.setThemeInfo = function(info_obj) {
+	Spaz.Themes.themeInfo = {};
+	Spaz.Themes.themeInfo.name        = info_obj.name;
+	Spaz.Themes.themeInfo.author      = info_obj.author;
+	Spaz.Themes.themeInfo.description = info_obj.description;
+	Spaz.Themes.themeInfo.link        = info_obj.link;
 }
 
 
-
-Spaz.Themes.getPathByName = function(themename) {
-	// sch.dump('Looking for:'+themename);
-
-
+Spaz.Themes.getThemeObject = function(themename) {
 	for (i = 0; i < Spaz.Themes.themes.length; i++) {
 		// sch.dump(JSON.stringify(Spaz.Themes.themes[i]))
 		if (Spaz.Themes.themes[i].themename == themename) {
 			// sch.dump('same');
-			return Spaz.Themes.themes[i].themedir;
+			return Spaz.Themes.themes[i];
 		}
 	}
 	return false;
-}
+};
+
+
+Spaz.Themes.getPathByName = function(themename) {
+	// sch.dump('Looking for:'+themename);
+	var themeObj = Spaz.Themes.getThemeObject(themename);
+	if (themeObj) {
+		return themeObj.thisthemedir;
+	} else {
+		return false;
+	}
+};

@@ -43,6 +43,20 @@ Spaz.createUserDirs = function() {
 	sch.dump(userSoundsDir.nativePath);
 };
 
+
+/**
+ * loads the user.js file, if it exists, and injects it into the <script> tag with id='userjs' 
+ */
+Spaz.loadUserJS = function() {
+	var userjsfile = air.File.applicationStorageDirectory.resolvePath('user.js');
+	
+	if (userjsfile.exists) {
+		var userJS = Spaz.Sys.getFileContents(userjsfile.url);
+		$('#userjs').text(userJS);
+	}
+	
+};
+
 /**
  * Bootstraps the app
  */
@@ -78,7 +92,7 @@ Spaz.initialize = function() {
 	if (Spaz.Prefs.get('debug-enabled')) {
 		Spaz.Debug.insertDebugScripts();
 	}
-
+	
 	// Database initialization
 	sch.dump("database initialization");
 	Spaz.DB.init();
@@ -344,6 +358,10 @@ Spaz.initialize = function() {
 	*/
 	var SpazImageUploader = new Spaz.ImageUploader();
 	SpazImageUploader.init();
+
+	// load User JS file
+	Spaz.loadUserJS();
+
 
 	Spaz.dump('ended document.ready()');
 }

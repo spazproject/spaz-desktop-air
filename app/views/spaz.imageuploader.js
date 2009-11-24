@@ -34,7 +34,7 @@ Spaz.ImageUploader = function() {
 			populate the dropdown
 		*/
 		var labels = this.SFU.getAPILabels();
-		sch.error(labels);
+
 		for (var i=0; i < labels.length; i++) {
 			var this_service = labels[i];
 			if (this_service == thisA.service) {
