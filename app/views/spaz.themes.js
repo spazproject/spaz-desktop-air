@@ -80,7 +80,7 @@ Spaz.Themes.loadUserCSS = function() {
 
 
 Spaz.Themes.getUserCSSFile = function() {
-	return air.File.applicationStorageDirectory.resolvePath('user.css')
+	return air.File.applicationStorageDirectory.resolvePath('user.css');
 };
 
 
@@ -172,15 +172,6 @@ Spaz.Themes.getThemePaths = function() {
 
 	return themes;
 };
-
-
-Spaz.Themes.setThemeInfo = function(info_obj) {
-	Spaz.Themes.themeInfo = {};
-	Spaz.Themes.themeInfo.name        = info_obj.name;
-	Spaz.Themes.themeInfo.author      = info_obj.author;
-	Spaz.Themes.themeInfo.description = info_obj.description;
-	Spaz.Themes.themeInfo.link        = info_obj.link;
-}
 
 
 Spaz.Themes.getThemeObject = function(themename) {
