@@ -46,7 +46,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
 							if (d.in_reply_to_status_id) {
-	entryHTML += '				<span href="'+d.SC_base_url+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to clickable" status-id="'+d.in_reply_to_status_id+'" screen-name="'+d.in_reply_to_screen_name+'">Re:</span>';
+	entryHTML += '				<span href="'+d.SC_base_url+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to clickable" data-status-id="'+d.id+'" data-user-screen-name="'+d.user.screen_name+'" data-irt-status-id="'+d.in_reply_to_status_id+'" data-irt-screen-name="'+d.in_reply_to_screen_name+'">Re:</span>';
 							}
 	entryHTML += '			'+d.text+'';
 	entryHTML += '		</div>';

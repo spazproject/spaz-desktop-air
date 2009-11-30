@@ -32,7 +32,7 @@ function openPopboxInline(content_id) {
 		windowPadding: 0,
 		positionType:  'centered',
 		// fixedWindowY:  30,
-		width:         cont_width-100,
+		width:         cont_width-40,
 		height:        cont_height-100,
 		overlay:1,
 		overlayOpacity:60,

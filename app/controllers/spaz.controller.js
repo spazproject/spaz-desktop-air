@@ -89,8 +89,8 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				sch.dump('IN REPLY TO');
-				tt.showIRT($(this).attr('status-id'));
+				sch.debug('IN REPLY TO');
+				tt.showIRT($(this).attr('data-irt-status-id'));
 			},
 			'.user-image[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
@@ -328,7 +328,11 @@ Spaz.Controller.initIntercept = function() {
 				$('#filter-friends').trigger('keyup');
 			    Spaz.UI.showTab(0);
 			},
-
+			'span.in-reply-to': function(e){
+				var status_id = $(this).attr('data-status-id');
+				var irt_status_id = $(this).attr('data-irt-status-id');
+				Spaz.Conversation.build(status_id);
+			},
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
 				sch.dump('Intercepted click on <a> and sending to '+url);

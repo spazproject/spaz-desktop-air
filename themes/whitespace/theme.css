@@ -316,10 +316,10 @@ a, a:link, .clickable {
 				.TabbedPanelsContent {
 					margin:0px;
 					padding:0px;
-					-webkit-animation-name: 'revealtabcontent';
+/*					-webkit-animation-name: 'revealtabcontent';
 				    -webkit-animation-duration: .3s;
 				    -webkit-animation-iteration-count: 1;
-					
+*/					
 				}
 
 				/* This selector is an example of how to change the appearnce of the currently

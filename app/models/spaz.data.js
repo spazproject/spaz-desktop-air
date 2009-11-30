@@ -910,9 +910,10 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 
 /**
  * @param {integer|string} user_id
- * @param {DOMElement} target_el 
+ * @param {DOMElement} target_el
+ * @param {function} [onSuccess] a callback function taking one argument (the user obj)
  */
-Spaz.Data.getUser = function(user_id, target_el) {
+Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 	
 	var userobj = null;
 	var target_el = target_el || document;
@@ -924,6 +925,9 @@ Spaz.Data.getUser = function(user_id, target_el) {
 	}
 	
 	if (userobj) {
+		if (onSuccess) {
+			onSuccess(userobj);
+		}
 		sch.trigger('get_user_succeeded', target_el, userobj);
 	} else {
 		var twit = new SpazTwit(null, null, {
@@ -937,6 +941,9 @@ Spaz.Data.getUser = function(user_id, target_el) {
 	
 	function saveUserObject(e) {
 		var userobj = sch.getEventData(e);
+		if (onSuccess) {
+			onSuccess(userobj);
+		}
 		TwUserModel.findOrCreate(userobj);
 		sch.unlisten(target_el, 'get_user_succeeded', saveUserObject);
 	}
@@ -947,8 +954,9 @@ Spaz.Data.getUser = function(user_id, target_el) {
 /**
  * @param {integer|string} user_id
  * @param {DOMElement} target_el 
+ * @param {function} [onSuccess] a callback function taking one argument (the status obj)
  */
-Spaz.Data.getTweet = function(status_id, target_el) {
+Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 	
 	var statusobj = null;
 	var target_el = target_el || document;
@@ -958,6 +966,9 @@ Spaz.Data.getTweet = function(status_id, target_el) {
 	
 	if (statusobj) {
 		sch.dump('loaded statusobj from model');
+		if (onSuccess) {
+			onSuccess(statusobj);
+		}
 		sch.trigger('get_one_status_succeeded', target_el, statusobj);
 	} else {
 		sch.dump('retrieving statusobj from Twitter');
@@ -972,6 +983,9 @@ Spaz.Data.getTweet = function(status_id, target_el) {
 	
 	function saveTweetObject(e) {
 		var statusobj = sch.getEventData(e);
+		if (onSuccess) {
+			onSuccess(statusobj);
+		}
 		TweetModel.saveTweet(statusobj);
 		sch.unlisten(target_el, 'get_one_status_succeeded', saveTweetObject);
 	}
