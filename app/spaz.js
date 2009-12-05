@@ -250,7 +250,7 @@ Spaz.initialize = function() {
 		set-up usernameCompleter
 	*/
 	Spaz.uc = new usernameCompleter({
-		'usernames':Spaz.Cache.getScreenNamesAsTags(),
+		'usernames':Spaz.Autocomplete.getScreenNames(),
 		'displayDiv':'#suggestions',
 		'textarea':'#entrybox',
 		'maxMatches':15

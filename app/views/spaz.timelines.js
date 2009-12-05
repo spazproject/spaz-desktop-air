@@ -145,7 +145,7 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 	jQuery(this.getTimelineSelector()).html(sortedHTML);
 };
 
-// Spaz.uc.usernames = Spaz.Cache.getScreenNamesAsTags();
+// Spaz.uc.usernames = Spaz.Autocomplete.getScreenNames();
 
 
 /**
@@ -271,7 +271,12 @@ var FriendsTimeline = function() {
 			jQuery('#timeline-friends div.timeline-entry').removeClass('even').removeClass('odd');
 			jQuery('#timeline-friends div.timeline-entry:even').addClass('even');
 			jQuery('#timeline-friends div.timeline-entry:odd').addClass('odd');
-
+			
+			/*
+				get new set of usernames
+			*/
+			Spaz.uc.usernames = Spaz.Autocomplete.getScreenNames();
+			
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			

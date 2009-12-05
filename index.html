@@ -125,7 +125,7 @@
 	<!-- app model -->
 	<script src="app/models/spaz.db.js"			type="text/javascript"></script>
 	<script src="app/models/spaz.data.js"		type="text/javascript"></script>
-	<script src="app/models/spaz.cache.js"		type="text/javascript"></script>
+	<script src="app/models/spaz.autocomplete.js"		type="text/javascript"></script>
 	<script src="app/models/spaz.prefs.js"		type="text/javascript"></script>
 	<script src="app/models/spaz.accounts.js"	type="text/javascript"></script>
 	
@@ -808,12 +808,6 @@
 		</div>
 
 
-		<!-- suggestions popup -->
-		<div id="suggestions">
-
-		</div>
-
-
 		<!-- the context menu container -->
 		<div id="linkContextMenu" class="context-menu">
 			<ul>
@@ -897,6 +891,12 @@
 			<div class="tooltip-msg"></div>
 			<div class="preview" style='display:none; overflow:hidden; margin-top:.7em'></div>
 		</div>
+
+		<!-- suggestions popup -->
+		<div id="suggestions">
+
+		</div>
+
 
 		<!--
 			The About popup

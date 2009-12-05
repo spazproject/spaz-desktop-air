@@ -820,6 +820,14 @@ div.timeline-entry {
 		div.status-actions {
 			font-size:10px;
 			float:right;
+			opacity:0;
+			-webkit-transition-property:opacity;
+			-webkit-transition-duration:.5s;
+		}
+		
+		div.timeline-entry:hover div.status-actions,
+		div.timeline-entry.ui-selected div.status-actions {
+			opacity:1;
 		}
 		    .status-action {
 		        width:15px;
