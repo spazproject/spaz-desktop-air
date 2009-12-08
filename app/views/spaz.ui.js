@@ -1006,9 +1006,9 @@ Spaz.UI.reverseTimeline = function(timelineid) {
 
 
 Spaz.UI.getUnreadCount = function() {
-    var timelineid = Spaz.Section.friends.timeline;
+	var timelineid = Spaz.Timelines.friends.timeline.timeline_container_selector;
 
-	var selector = '#' + timelineid + ' div.timeline-entry:visible'
+	var selector = timelineid + ' div.timeline-entry:visible'
 
     // // unread count depends on whether or not we're showing everything, or just replies/dms
     // if ($('#' + timelineid).is('.dm-replies')) {

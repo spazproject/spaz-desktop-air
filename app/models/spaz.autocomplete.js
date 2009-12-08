@@ -36,7 +36,7 @@ Spaz.Autocomplete.delScreenName = function(name) {
 Spaz.Autocomplete.getScreenNames = function() {
 	Spaz.Autocomplete.screenNames = [];
 	
-	$('.user-screen-name', '#'+Spaz.Section.friends.timeline).each(function() {
+	$('.user-screen-name', Spaz.Timelines.friends.timeline.timeline_container_selector).each(function() {
 		var name = $(this).attr('user-screen_name');
 		if (Spaz.Autocomplete.screenNames.indexOf(name) == -1) {
 			Spaz.Autocomplete.screenNames.push(name);
@@ -59,7 +59,7 @@ Spaz.Autocomplete.getScreenNamesCount = function() {
 Spaz.Autocomplete.getHashTags = function() {
 	Spaz.Autocomplete.hashTags = [];
 	
-	$('.hashtag', '#'+Spaz.Section.friends.timeline).each(function() {
+	$('.hashtag', Spaz.Timelines.friends.timeline.timeline_container_selector).each(function() {
 		var hashtag = $(this).text().replace('#', '');
 		sch.debug("this hashtag:"+hashtag);
 		if (Spaz.Autocomplete.hashTags.indexOf(hashtag) == -1) {

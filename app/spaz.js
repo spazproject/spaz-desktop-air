@@ -85,8 +85,8 @@ Spaz.initialize = function() {
 	sch.dump('init prefs');
 	Spaz.Prefs.init();
 
-	sch.dump('init Sections');
-	Spaz.Section.init();
+	// sch.dump('init Sections');
+	// Spaz.Section.init();
 
 	// turn on debugging
 	if (Spaz.Prefs.get('debug-enabled')) {
