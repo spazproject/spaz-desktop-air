@@ -114,17 +114,19 @@ a, a:link, .clickable {
 
 				.window-button {
 					padding:0px 6px 2px;
-					color:#AAAAAA;
-					background-color:#404040;
+					color:#CCCCCC;
+					background-color:#606060;
 					-khtml-border-radius:5px;
 					font-size:14px;
 					cursor:pointer;
 					margin:0;
 				}
+				
+
 
 				.window-button:hover {
 					color:#FFFFFF;
-					background-color:#666666;
+					background-color:#909090;
 				}
 
 			/*
@@ -134,11 +136,27 @@ a, a:link, .clickable {
 				padding:0px 6px 2px;
 				font-size:14px;
 				color:#FFFFFF;
-				background-color:#404040;
+				background-color:#606060;
 				-khtml-border-radius:5px;
 				cursor:pointer;
 				margin:0;
+				-webkit-animation-name: pulse;
+				-webkit-animation-duration: 2s;
+				-webkit-animation-direction: alternate;
+				-webkit-animation-timing-function: ease-in-out;
+				-webkit-animation-iteration-count: 5;
 			}
+				@-webkit-keyframes pulse {
+					0% {
+						background-color: #666600;
+					}
+					50% {
+						background-color: #222200;
+					}
+					100% {
+						background-color: #606060;
+					}
+				}
 				/*
 					This puts a &raquo; after "Spaz"
 				*/

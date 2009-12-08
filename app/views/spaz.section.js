@@ -145,7 +145,7 @@ Spaz.Section.init = function() {
 
 			Spaz.UI.cleanupTimeline(this.timeline);
 
-			Spaz.Editor.initSuggestions();
+			Spaz.Autocomplete.initSuggestions();
 
 			Spaz.UI.statusBar('Done.');
 
@@ -243,7 +243,7 @@ Spaz.Section.init = function() {
 		},
 		cleanup: function(attribute) {
 			Spaz.UI.cleanupTimeline(this.timeline);
-			Spaz.Editor.initSuggestions();
+			Spaz.Autocomplete.initSuggestions();
 		},
 
 	}
@@ -675,7 +675,7 @@ Spaz.Section.init = function() {
 			);
 
 
-			Spaz.Editor.initSuggestions();
+			Spaz.Autocomplete.initSuggestions();
 		},
 
 	}

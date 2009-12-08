@@ -90,6 +90,7 @@ Spaz.initialize = function() {
 
 	// turn on debugging
 	if (Spaz.Prefs.get('debug-enabled')) {
+		sc.setDumpLevel(5);
 		Spaz.Debug.insertDebugScripts();
 	}
 	
@@ -251,6 +252,7 @@ Spaz.initialize = function() {
 	*/
 	Spaz.uc = new usernameCompleter({
 		'usernames':Spaz.Autocomplete.getScreenNames(),
+		'hashtags':Spaz.Autocomplete.getHashTags(),
 		'displayDiv':'#suggestions',
 		'textarea':'#entrybox',
 		'maxMatches':15

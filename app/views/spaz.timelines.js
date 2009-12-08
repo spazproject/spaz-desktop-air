@@ -145,8 +145,6 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 	jQuery(this.getTimelineSelector()).html(sortedHTML);
 };
 
-// Spaz.uc.usernames = Spaz.Autocomplete.getScreenNames();
-
 
 /**
  * Friends timeline def 
@@ -275,7 +273,7 @@ var FriendsTimeline = function() {
 			/*
 				get new set of usernames
 			*/
-			Spaz.uc.usernames = Spaz.Autocomplete.getScreenNames();
+			Spaz.Autocomplete.initSuggestions();
 			
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");

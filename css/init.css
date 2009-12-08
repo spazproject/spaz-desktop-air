@@ -103,14 +103,14 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	z-index:2000; /*So this is on top*/
 }
 
-#suggestions .username-match {
+#suggestions .autocomplete-match {
     padding: 4px 5px;
     cursor: pointer;
 	margin-right:5px;
 	font-size:10px;
 }
 
-#suggestions .username-match:first-child {
+#suggestions .autocomplete-match:first-child {
 	font-weight: bold;
 	text-decoration: underline;
 	color:white;

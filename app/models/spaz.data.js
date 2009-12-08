@@ -965,28 +965,30 @@ Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 	statusobj = TweetModel.getById(status_id);
 	
 	if (statusobj) {
-		sch.dump('loaded statusobj from model');
+		sch.error('loaded statusobj from model');
 		if (onSuccess) {
 			onSuccess(statusobj);
 		}
 		sch.trigger('get_one_status_succeeded', target_el, statusobj);
 	} else {
-		sch.dump('retrieving statusobj from Twitter');
+		sch.error('retrieving '+status_id+' from Twitter');
 		var twit = new SpazTwit(null, null, {
 			'event_target':target_el
 		});
 
-		sch.listen(target_el, 'get_one_status_succeeded', saveTweetObject);
-		twit.getOne(status_id);
+		// sch.listen(target_el, 'get_one_status_succeeded', saveTweetObject);
+		twit.getOne(status_id, saveTweetObject);
 	}
 	
 	
-	function saveTweetObject(e) {
-		var statusobj = sch.getEventData(e);
+	function saveTweetObject(data) {
+		sch.error('saveTweetObject');
+		sch.error(data);
+		// var statusobj = sch.getEventData(e);
 		if (onSuccess) {
-			onSuccess(statusobj);
+			onSuccess(data);
 		}
-		TweetModel.saveTweet(statusobj);
-		sch.unlisten(target_el, 'get_one_status_succeeded', saveTweetObject);
+		TweetModel.saveTweet(data);
+		// sch.unlisten(target_el, 'get_one_status_succeeded', saveTweetObject);
 	}
 };

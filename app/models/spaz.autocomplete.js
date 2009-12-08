@@ -8,12 +8,16 @@ if (!Spaz.Autocomplete) Spaz.Autocomplete = {};
 Spaz.Autocomplete.sources  = {};
 Spaz.Autocomplete.statuses = {};
 Spaz.Autocomplete.screenNames = [];
-
-// 'username':{ 'count':0 }
-// this isn't used yet, but it really should be
-Spaz.Autocomplete.screenNamesAccesses = {};
+Spaz.Autocomplete.hashTags = [];
 
 // Spaz.Autocomplete.maxScreenNames = 300;
+
+Spaz.Autocomplete.initSuggestions = function() {
+	Spaz.uc.setUsernames(Spaz.Autocomplete.getScreenNames());
+	Spaz.uc.setHashtags(Spaz.Autocomplete.getHashTags());
+};
+
+
 
 Spaz.Autocomplete.addScreenName = function(name) {
 	if (Spaz.Autocomplete.screenNames.indexOf(name) == -1) {
@@ -30,25 +34,45 @@ Spaz.Autocomplete.delScreenName = function(name) {
 };
 
 Spaz.Autocomplete.getScreenNames = function() {
-	// return Spaz.Autocomplete.screenNames;
-	
-	var screen_names = [];
+	Spaz.Autocomplete.screenNames = [];
 	
 	$('.user-screen-name', '#'+Spaz.Section.friends.timeline).each(function() {
-		name = $(this).attr('user-screen_name');
-		if (screen_names.indexOf(name) == -1) {
-			screen_names.push(name);
-			// sch.dump('Added "'+name+'". Number of screen names is '+screen_names.length);
+		var name = $(this).attr('user-screen_name');
+		if (Spaz.Autocomplete.screenNames.indexOf(name) == -1) {
+			Spaz.Autocomplete.screenNames.push(name);
 		}
 	});
 	
-	sch.error('Screen Names:')
-	sch.error(screen_names);
+	sch.debug('Screen Names:')
+	sch.debug(Spaz.Autocomplete.screenNames);
 	
-	return screen_names;
-	
-}
+	return Spaz.Autocomplete.screenNames;	
+};
+
 
 Spaz.Autocomplete.getScreenNamesCount = function() {
 	return Spaz.Autocomplete.screenNames.length;
+}
+
+
+
+Spaz.Autocomplete.getHashTags = function() {
+	Spaz.Autocomplete.hashTags = [];
+	
+	$('.hashtag', '#'+Spaz.Section.friends.timeline).each(function() {
+		var hashtag = $(this).text().replace('#', '');
+		sch.debug("this hashtag:"+hashtag);
+		if (Spaz.Autocomplete.hashTags.indexOf(hashtag) == -1) {
+			Spaz.Autocomplete.hashTags.push(hashtag);
+		}
+	});
+	
+	sch.debug('HashTags:')
+	sch.debug(Spaz.Autocomplete.hashTags);
+	
+	return Spaz.Autocomplete.hashTags;
+};
+
+Spaz.Autocomplete.getHashTagsCount = function() {
+	return Spaz.Autocomplete.hashTags.length;
 }

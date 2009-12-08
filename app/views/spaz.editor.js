@@ -59,8 +59,3 @@ Spaz.Editor.$wrap = function(open, close, selstart, selend) {
 }
 
 
-
-
-Spaz.Editor.initSuggestions = function() {
-	Spaz.uc.usernames = Spaz.Autocomplete.getScreenNames();
-};

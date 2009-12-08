@@ -9,7 +9,8 @@
 */
 
 function usernameCompleter(opts) {
-	this.usernames		= opts.usernames;
+	this.usernames		= opts.usernames  || [];
+	this.hashtags		= opts.hashtags   || [];
 	this.displayDiv		= opts.displayDiv;
 	this.textarea 		= opts.textarea;
 	this.maxMatches		= opts.maxMatches;
@@ -19,6 +20,16 @@ function usernameCompleter(opts) {
 	this.matches    	= null;
 	this.curpos			= 0;
 	this.before_cursor	= null;
+
+
+	this.setUsernames = function(usernames) {
+		this.usernames = usernames || [];
+	}
+
+	this.setHashtags = function(hashtags) {
+		this.hashtags = hashtags || [];
+	}
+
 
 	this.init = function() {
 		// sch.dump(this.displayDiv);
@@ -40,9 +51,9 @@ function usernameCompleter(opts) {
 			thisuc.before_cursor = contents.substr(0,thisuc.curpos);
 			
 			
-			if ( !thisuc.matchAgainst("((@)([a-z0-9_]+))$") // replies
-				 && !thisuc.matchAgainst("^((d )([a-z0-9_]+))$") ) { // dms
-				// sch.dump('Resetting topMatch to null');
+			if ( !thisuc.matchAgainst("((@)([a-z0-9_]+))$", 'username') // replies
+				 && !thisuc.matchAgainst("^((d )([a-z0-9_]+))$", 'username') // dms
+				 && !thisuc.matchAgainst("((#)([a-z0-9_]+))$", 'hashtag') ) { // hashtags
 				thisuc.topMatch = null;
 			}
 			
@@ -61,7 +72,7 @@ function usernameCompleter(opts) {
 			if (key == 9) { // TAB 
 				if (thisuc.topMatch) {
 					// sch.dump('topmatch! is '+thisuc.topMatch);
-					thisuc.insertUsername(thisuc.topMatch);
+					thisuc.insertMatch(thisuc.topMatch);
 					return false;	
 				}
 			}
@@ -71,30 +82,64 @@ function usernameCompleter(opts) {
 	
 	this.init();
 	
-	this.matchAgainst = function(regstr) {
+	
+	/**
+	 * @param {string} regstr a regular expression to match against
+	 * @param {string} [mode] 'username' or 'hashtag' 
+	 */
+	this.matchAgainst = function(regstr, mode) {
+		var possibilities = [], match;
+		
+		
+		if (mode !== 'hashtag') { mode = 'username' };
+		
+		sch.debug("mode:"+mode);
+		sch.debug("regstr:"+regstr);
+		
+		switch (mode) {
+			case 'username':
+				possibilities = this.usernames;
+				break;
+			case 'hashtag' :
+				possibilities = this.hashtags;
+				break;
+			default:
+				possibilities = this.usernames;
+		}
+		
+		sch.debug('possibilities:');
+		sch.debug(possibilities);
+		
+		sch.debug(this.before_cursor);
+		
+		
+		
+		if (possibilities.length < 1) {
+			return false;
+		}
+		
 		var dmrgx = new RegExp(regstr, "gim");
 		var reg_matches = dmrgx.exec(this.before_cursor);
 		if ( reg_matches ) {
-			var username = reg_matches[3];
-			this.currentStub = username;
-			// sch.dump('Looks like message to '+username);
+			match = reg_matches[3];
+			this.currentStub = match;
+			sch.dump('Looks like message to '+match);
 			
-			var matching_users = this.usernames.filter( function(val) {
-				return ( val.toLowerCase().indexOf(username.toLowerCase()) == 0 && username.length != val.length )
+			var matching_results = possibilities.filter( function(val) {
+				return ( val.toLowerCase().indexOf(match.toLowerCase()) == 0 && match.length != val.length )
 			} );
-			if (matching_users.length > 0 && matching_users.length < this.maxMatches) {
-				sch.dump('matching_users '+matching_users.toString());
+			if (matching_results.length > 0 && matching_results.length < this.maxMatches) {
+				sch.dump('matching_results '+matching_results.toString());
 				
-				this.topMatch = matching_users[0];
+				this.topMatch = matching_results[0];
 				
 				var thisuc = this; // help with scoping
-				$.each(matching_users, function() {
-					// // sch.dump('appending div title="'+this+'" class="username-match"'+this+'/div to');
-					$(thisuc.displayDiv).append('<div title="'+this+'" class="username-match">'+this+'</div>');
+				$.each(matching_results, function() {
+					$(thisuc.displayDiv).append('<div title="'+this+'" class="autocomplete-match">'+this+'</div>');
 				});
-				$(this.displayDiv+' .username-match').one('click', function() {
-					var username = $(this).attr('title');
-					thisuc.insertUsername(username);
+				$(this.displayDiv+' .autocomplete-match').one('click', function() {
+					var thismatch = $(this).attr('title');
+					thisuc.insertMatch(thismatch);
 				});
 				
 				var bottom = $('BODY').outerHeight() - $(this.textarea).offset().top;
@@ -108,14 +153,15 @@ function usernameCompleter(opts) {
 		}
 	};
 	
-	this.insertUsername = function(username) {
-		// sch.dump('inserting '+username);
-		// remove stub from username
+	/**
+	 * @param {string} match the match to insert 
+	 */
+	this.insertMatch = function(match) {
+		// remove stub from match
 		var stubRE = new RegExp(this.currentStub, 'i')
-		username = username.replace(stubRE, '');
-		// sch.dump('username is now '+username);
+		match = match.replace(stubRE, '') + ' ';
 		var oldtext = $(this.textarea).val();
-		newtext = oldtext.substr(0,this.curpos) + username + oldtext.substr(this.curpos);
+		newtext = oldtext.substr(0,this.curpos) + match + oldtext.substr(this.curpos);
 		$(this.textarea).val(newtext);
 		$(this.displayDiv).empty().hide();
 		$(this.textarea).focus();

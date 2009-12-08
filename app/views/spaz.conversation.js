@@ -9,14 +9,35 @@ Spaz.Conversation = {
 		
 		function onRetrieved(status_obj) {		
 			
-			sch.error("Retrieved "+status_obj.twitter_id);
-			sch.error('in_reply_to_status_id:'+status_obj.in_reply_to_status_id);
+			if (!status_obj.twitter_id) { // this must have been retrieved from Twitter				
+				/*
+					Save to DB via JazzRecord
+				*/
+				TweetModel.saveTweet(status_obj);
+			}
+			
+			sch.debug("Retrieved "+status_obj.twitter_id+"================================");
+			sch.debug("ID: "+status_obj.twitter_id);
+			sch.debug("IRT:"+status_obj.in_reply_to_status_id);
+			sch.debug("TXT:"+status_obj.SC_text_raw);
+			sch.debug("===================================================================");
 			
 			if (added_ids.indexOf(status_obj.twitter_id) !== -1) {
 				sch.error("This id has already been retrieved")
 				renderConversation();
 				return;
 			} else {
+				/*
+					prep for display
+				*/
+				var sui = new SpazImageURL();
+				/*
+					to ensure we don't accidentally double-encode some stuff, use SC_text_raw as our base value
+				*/
+				status_obj.SC_thumbnail_urls = sui.getThumbsForUrls(status_obj.SC_text_raw);
+				status_obj.text = sc.helpers.makeClickable(status_obj.SC_text_raw, SPAZ_MAKECLICKABLE_OPTS);
+				status_obj.text = Emoticons.SimpleSmileys.convertEmoticons(status_obj.text);
+				
 				convo_array.push(status_obj);
 				added_ids.push(status_obj.twitter_id);
 
