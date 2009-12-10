@@ -813,9 +813,12 @@ div.timeline-entry:hover{
     div.timeline-entry.read:not(.ui-selected):hover .status-text{
       color:#000;
     }
-    div.timeline-entry.read:not(.ui-selected) div.user img.user-image{
+    div.timeline-entry.read:not(.ui-selected) div.user div.user-image{
       width:24px;
       height:24px;
+      margin:0 auto;
+      background-size:24px 24px;
+        -webkit-background-size:24px 24px;
     }
     div.timeline-entry.read:not(.ui-selected) div.user div.user-screen-name{
       display:none;
@@ -865,12 +868,19 @@ div.timeline-entry:hover{
 		text-align:center;
 	}
 
-		img.user-image{
-			margin-bottom:2px;
-      /* background:#fff url(images/userimg-bg.png) center center no-repeat; */
-      background:transparent;
-      /* border:1px solid #999999; */
-			-webkit-box-shadow:0px 1px 5px #333;
+		div.user-image{
+      width:48px;
+      height:48px;
+      margin:0 auto 2px;
+      background:transparent 0 0 no-repeat;
+/*      background-image:url(images/userimg-bg.png);*/
+      background-size:48px 48px;
+        -webkit-background-size:48px 48px;
+      border-radius:4px;
+        -webkit-border-radius:4px;
+      box-shadow:0 1px 5px #333;
+  			-webkit-box-shadow:0 1px 5px #333;
+      text-indent:-9999em;
 		}
 
 		div.user-screen-name{

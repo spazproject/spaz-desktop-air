@@ -741,7 +741,7 @@ div.timeline-entry {
 			color:#CCCCCC;
 		}
 
-		div.timeline-entry.read img.user-image {
+		div.timeline-entry.read div.user-image {
 			opacity:.8;
 		}
 
@@ -759,22 +759,28 @@ div.timeline-entry {
 		font-size:11px
 	}
 
-		img.user-image {
-			border:none;
-			margin: 0;
-			padding:0;
-			background-color:#FFFFFF;
-			-webkit-box-shadow:none;
-			background-image:url('images/userimg-bg.png');
-			opacity:1;
+		div.user-image {
+			float:left;
 			width: 11px;
 			height:11px;
+			margin: 0;
+			padding:0;
+			background:#FFFFFF 0 0 no-repeat;
+/*      background-image:url(images/userimg-bg.png);*/
+			background-size:11px 11px;
+			  -webkit-background-size:11px 11px;
+			box-shadow:none;
+				-webkit-box-shadow:none;
+			border:none;
+			opacity:1;
+			text-indent:-9999em;
 		}
 
 		div.user-screen-name {
-			font-size:11px;
-			overflow:hidden;
 			display:inline;
+			margin:0 0 0 0.25em;
+			overflow:hidden;
+			font-size:11px;
 			font-weight:bold;
 		}
 

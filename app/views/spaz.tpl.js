@@ -33,7 +33,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	}
 	entryHTML += '"  data-status-id="'+d.id+'" data-user-screen_name="'+d.user.screen_name+'" data-user-id="'+d.user.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">';
-	entryHTML += '		<img class="user-image clickable" height="48" width="48" src="'+d.user.profile_image_url+'" alt="'+d.user.screen_name+'" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'" />';
+  entryHTML += '    <div class="user-image clickable" style="background-image:url('+d.user.profile_image_url+')" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
 	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
