@@ -256,12 +256,24 @@ a:hover{
           #tab-user.TabbedPanelsTabSelected                           { background-position:-31px -66px; }
           body:not(.active) #tab-user.TabbedPanelsTabSelected         { background-position:-31px -88px; }
           #tab-user.TabbedPanelsTabSelected:active                    { background-position:-31px -110px; }
-        #tab-public                                                 { background-position:-31px 0;}
-          body:not(.active) #tab-public                               { background-position:-31px -22px; }
-          #tab-public:not(.TabbedPanelsTabSelected):active            { background-position:-31px -44px; }
-          #tab-public.TabbedPanelsTabSelected                         { background-position:-31px -66px; }
-          body:not(.active) #tab-public.TabbedPanelsTabSelected       { background-position:-31px -88px; }
-          #tab-public.TabbedPanelsTabSelected:active                  { background-position:-31px -110px; }
+        #tab-favorites                                              { background-position:-31px 0; }
+          body:not(.active) #tab-favorites                            { background-position:-31px -22px; }
+          #tab-favorites:not(.TabbedPanelsTabSelected):active         { background-position:-31px -44px; }
+          #tab-favorites.TabbedPanelsTabSelected                      { background-position:-31px -66px; }
+          body:not(.active) #tab-favorites.TabbedPanelsTabSelected    { background-position:-31px -88px; }
+          #tab-favorites.TabbedPanelsTabSelected:active               { background-position:-31px -110px; }
+        #tab-userlists                                              { background-position:-62px 0; }
+          body:not(.active) #tab-userlists                            { background-position:-62px -22px; }
+          #tab-userlists:not(.TabbedPanelsTabSelected):active         { background-position:-62px -44px; }
+          #tab-userlists.TabbedPanelsTabSelected                      { background-position:-62px -66px; }
+          body:not(.active) #tab-userlists.TabbedPanelsTabSelected    { background-position:-62px -88px; }
+          #tab-userlists.TabbedPanelsTabSelected:active               { background-position:-62px -110px; }
+        #tab-public                                                 { background-position:0 0; margin-left:9px; }
+          body:not(.active) #tab-public                               { background-position:0 -22px; }
+          #tab-public:not(.TabbedPanelsTabSelected):active            { background-position:0 -44px; }
+          #tab-public.TabbedPanelsTabSelected                         { background-position:0 -66px; }
+          body:not(.active) #tab-public.TabbedPanelsTabSelected       { background-position:0 -88px; }
+          #tab-public.TabbedPanelsTabSelected:active                  { background-position:0 -110px; }
         #tab-search                                                 { background-position:-62px 0; }
           body:not(.active) #tab-search                               { background-position:-62px -22px; }
           #tab-search:not(.TabbedPanelsTabSelected):active            { background-position:-62px -44px; }
@@ -291,10 +303,14 @@ a:hover{
 					body:not(.active) .tab-icon{
 					  opacity:0.5;
 					}
-				    #tab-friends .tab-icon                              { background:url(images/tab-icon-timeline.png) 6px 3px no-repeat; }
-				    #tab-friends.TabbedPanelsTabSelected .tab-icon      { background:url(images/tab-icon-timeline-selected.png) 3px 0 no-repeat; }
-				    #tab-user .tab-icon                                 { background:url(images/tab-icon-user.png) 7px 4px no-repeat; }
+				    #tab-friends .tab-icon                              { background:url(images/tab-icon-timeline.png) 7px 3px no-repeat; }
+				    #tab-friends.TabbedPanelsTabSelected .tab-icon      { background:url(images/tab-icon-timeline-selected.png) 4px 0 no-repeat; }
+				    #tab-user .tab-icon                                 { background:url(images/tab-icon-user.png) 7px 5px no-repeat; }
 				    #tab-user.TabbedPanelsTabSelected .tab-icon         { background:url(images/tab-icon-user-selected.png) 4px 1px no-repeat; }
+				    #tab-favorites .tab-icon                            { background:url(images/tab-icon-favorites.png) 8px 4px no-repeat; }
+				    #tab-favorites.TabbedPanelsTabSelected .tab-icon    { background:url(images/tab-icon-favorites-selected.png) 5px 0 no-repeat; }
+				    #tab-userlists .tab-icon                            { background:url(images/tab-icon-userlists.png) 9px 6px no-repeat; }
+				    #tab-userlists.TabbedPanelsTabSelected .tab-icon    { background:url(images/tab-icon-userlists-selected.png) 6px 2px no-repeat; }
 				    #tab-public .tab-icon                               { background:url(images/tab-icon-public.png) 8px 3px no-repeat; }
 				    #tab-public.TabbedPanelsTabSelected .tab-icon       { background:url(images/tab-icon-public-selected.png) 5px 0 no-repeat; }
 				    #tab-search .tab-icon                               { background:url(images/tab-icon-search.png) 7px 4px no-repeat; }
