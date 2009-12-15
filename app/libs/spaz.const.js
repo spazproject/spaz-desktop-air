@@ -6,11 +6,11 @@ Spaz.Const
 if (!Spaz.Const) Spaz.Const = {};
 
 // sound properties and methods
-var SOUND_UPDATE   = 'sound-update';
-var SOUND_STARTUP  = 'sound-startup';
-var SOUND_SHUTDOWN = 'sound-shutdown';
-var SOUND_NEW      = 'sound-new';
-var SOUND_WILHELM  = 'sound-wilhelm';
+// var sound-url-update   = 'sound-update';
+// var sound-url-startup  = 'sound-startup';
+// var sound-url-shutdown = 'sound-shutdown';
+// var sound-url-new      = 'sound-new';
+// var sound-url-wilhelm  = 'sound-wilhelm';
 
 // user directories
 var USERDIR_PLUGINS = 'userplugins/';

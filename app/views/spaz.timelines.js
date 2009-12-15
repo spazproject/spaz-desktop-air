@@ -145,6 +145,9 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 	jQuery(this.getTimelineSelector()).html(sortedHTML);
 };
 
+AppTimeline.prototype.refresh = function() {
+	this.timeline.refresh();
+};
 
 /**
  * Friends timeline def 
@@ -667,7 +670,28 @@ var UserlistsTimeline = function(args) {
 	var thisUT = this;
 	
 	this.twit = new SpazTwit();
-
+	
+	this.list = {
+		'user':null,
+		'slug':null
+	};
+	
+	/**
+	 * @param {string} slug the list slug
+	 * @param {string} user the user who owns the list 
+	 */
+	this.setlist = function(slug, user) {
+		if (slug != this.list.slug || user != this.list.user) {
+			$(this.timeline.timeline_container_selector).empty();
+		}
+		
+		this.list.user = user;
+		this.list.slug = slug;
+		
+		
+		
+		this.timeline.start();
+	};
 	
 	/*
 		set up the user timeline
@@ -676,85 +700,208 @@ var UserlistsTimeline = function(args) {
 		'timeline_container_selector' :'#timeline-userlists',
 		'entry_relative_time_selector':'.status-created-at',
 		
-		'success_event':'new_userlists_timeline_data',
-		'failure_event':'error_userlists_timeline_data',
+		'success_event':'get_list_timeline_succeeded',
+		'failure_event':'get_list_timeline_failed',
 		'event_target' :document,
 		
-		'refresh_time':1000*60*30, // 30 minutes
-		'max_items':100,
+		'refresh_time':1000*60*5, // 30 minutes
+		'max_items':300,
 
 		'request_data': function() {
+
 			sc.helpers.markAllAsRead('#timeline-userlists div.timeline-entry');
-			var username = Spaz.Prefs.getUser();
-			var password = Spaz.Prefs.getPass();
-			thisUT.twit.setCredentials(username, password);
-			Spaz.UI.statusBar("Userlists not implemented");
-			// Spaz.UI.showLoading();
+						
+			if (thisUT.list.user && thisUT.list.slug) {
+				$('#timeline-userlists-full-name').text("@"+thisUT.list.user+'/'+thisUT.list.slug);
+				var username = Spaz.Prefs.getUser();
+				var password = Spaz.Prefs.getPass();
+				thisUT.twit.setCredentials(username, password);
+				thisUT.twit.getListTimeline(thisUT.list.slug, thisUT.list.user);
+				Spaz.UI.statusBar("Getting list @"+thisUT.list.user+'/'+thisUT.list.slug + "…");
+				Spaz.UI.showLoading();
+			}
+			
+			
 		},
 		'data_success': function(e, data) {
-			// data = data.reverse();
-			// var no_dupes = [];
-			// 
-			// var sui = new SpazImageURL();
-			// 
-			// for (var i=0; i < data.length; i++) {
-			// 	
-			// 	/*
-			// 		only add if it doesn't already exist
-			// 	*/
-			// 	if (jQuery('#timeline-user div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
-			// 		
-			// 		data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
-			// 		
-			// 		data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
-			// 		
-			// 		// convert emoticons
-			// 		data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
-			// 		
-			// 		no_dupes.push(data[i]);
-			// 		/*
-			// 			Save to DB via JazzRecord
-			// 		*/
-			// 		TweetModel.saveTweet(data[i]);
-			// 	}
-			// 	
-			// };
-			// 
-			// thisUT.timeline.addItems(no_dupes);
-			// 
-			// /*
-			//  reapply filtering
-			// */
-			// $('#filter-userlists').trigger('keyup');
-			// 
-			// 
-			// sc.helpers.markAllAsRead('#timeline-userlists div.timeline-entry'); // user is never "new"
-			// sc.helpers.updateRelativeTimes('#timeline-userlists a.status-created-at', 'data-created-at');
-			// jQuery('#timeline-userlists div.timeline-entry').removeClass('even').removeClass('odd');
-			// jQuery('#timeline-userlists div.timeline-entry:even').addClass('even');
-			// jQuery('#timeline-userlists div.timeline-entry:odd').addClass('odd');
-			// 
-			// Spaz.UI.hideLoading();
-			// Spaz.UI.statusBar("Ready");
+			
+			sch.debug('statuses:'+data.statuses);
+			sch.debug('user:'+data.user);
+			sch.debug('slug:'+data.slug);
+			
+			// data.statuses = data.statuses.reverse();
+			var no_dupes = [];
+			
+			var sui = new SpazImageURL();
+			
+			for (var i=0; i < data.statuses.length; i++) {
+				
+				/*
+					only add if it doesn't already exist
+				*/
+				if (jQuery('#timeline-user div.timeline-entry[data.statuses-status-id='+data.statuses[i].id+']').length<1) {
+					
+					data.statuses[i].SC_thumbnail_urls = sui.getThumbsForUrls(data.statuses[i].text);
+					
+					data.statuses[i].text = sc.helpers.makeClickable(data.statuses[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					
+					// convert emoticons
+					data.statuses[i].text = Emoticons.SimpleSmileys.convertEmoticons(data.statuses[i].text)
+					
+					no_dupes.push(data.statuses[i]);
+					/*
+						Save to DB via JazzRecord
+					*/
+					TweetModel.saveTweet(data.statuses[i]);
+				}
+				
+			};
+			
+			thisUT.timeline.addItems(no_dupes);
+			
+			/*
+			 reapply filtering
+			*/
+			$('#filter-userlists').trigger('keyup');
+			
+			
+			sc.helpers.markAllAsRead('#timeline-userlists div.timeline-entry'); // user is never "new"
+			sc.helpers.updateRelativeTimes('#timeline-userlists a.status-created-at', 'data-created-at');
+			jQuery('#timeline-userlists div.timeline-entry').removeClass('even').removeClass('odd');
+			jQuery('#timeline-userlists div.timeline-entry:even').addClass('even');
+			jQuery('#timeline-userlists div.timeline-entry:odd').addClass('odd');
+			
+			Spaz.UI.hideLoading();
+			Spaz.UI.statusBar("Ready");
 			
 		},
 		'data_failure': function(e, error_obj) {
-			// var err_msg = "There was an error retrieving the userlists timeline";
-			// Spaz.UI.statusBar(err_msg);
-			// 
-			// /*
-			// 	Update relative dates
-			// */
-			// sc.helpers.updateRelativeTimes('#timeline-userlists a.status-created-at', 'data-created-at');
-			// Spaz.UI.hideLoading();
+			var err_msg = "There was an error retrieving the userlists timeline";
+			Spaz.UI.statusBar(err_msg);
+			
+			/*
+				Update relative dates
+			*/
+			sc.helpers.updateRelativeTimes('#timeline-userlists a.status-created-at', 'data-created-at');
+			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
-			// return Spaz.Tpl.parse('timeline_entry', obj);
+			return Spaz.Tpl.parse('timeline_entry', obj);
 			
 		}
 	});
 	
 	
+	
+	this.buildListsMenu = function() {
+		var username = Spaz.Prefs.getUser();
+		var password = Spaz.Prefs.getPass();
+		thisUT.twit.setCredentials(username, password);
+		sch.error("Loading lists for  @"+username+ "…");
+		Spaz.UI.statusBar("Loading lists for  @"+username+ "…");
+		Spaz.UI.showLoading();
+		thisUT.twit.getLists(username, function(data) {
+			/*
+				build a new menu
+			*/
+			var root_container_selector = '#container';
+			var menu_id = 'lists-menu';
+			var menu_class = 'popup-menu';
+			var menu_items = [];
+			var menu_item_class = 'userlists-menu-item';
+			var menu_trigger_selector = '#view-userlists';
+			
+			// var menu_container_id  = menu_id + '-container';
+			
+			for (var i=0; i < data.lists.length; i++) {
+				var thislist = data.lists[i];
+				menu_items[i] = {
+					'label':thislist.full_name,
+					'id':'userlist-'+thislist.user.screen_name+'-'+thislist.slug, // this should be unique!
+					'attributes':{
+						'data-list-id':thislist.id,
+						'data-list-name':thislist.name,
+						'data-list-slug':thislist.slug,
+						'data-user-screen_name':thislist.user.screen_name,
+						'title':thislist.description
+					},
+					'onclick':function(e) {
+						var slug = $(this).attr('data-list-slug');
+						var user = $(this).attr('data-user-screen_name');
+						thisUT.setlist(slug, user);
+					}
+				}
+			};
+		
+			
+			/*
+				create container for menu
+			*/
+			$(root_container_selector).append('<ul id="'+menu_id+'" class="'+menu_class+'"></ul>');
+			
+			/*
+				add <li> items to menu
+			*/
+			for (var i=0; i < menu_items.length; i++) {
+
+				var jqitem = $('<li id="'+menu_items[i].id+'" class="menuitem '+menu_item_class+'">'+menu_items[i].label+'</li>');
+
+				for (var key in menu_items[i].attributes) {
+					jqitem.attr(key, menu_items[i].attributes[key]);
+				};
+
+				$('#'+menu_id).append(jqitem);
+				
+				/*
+					if onclick is defined for this item, bind it to the ID of this element
+				*/
+				if (menu_items[i].onclick) {
+					sch.error(menu_items[i].id);
+					sch.error(menu_items[i].onclick);
+					
+					$('#'+menu_items[i].id).bind('click', {'onClick':menu_items[i].onclick}, function(e) {
+						e.data.onClick.call(this, e); // 'this' refers to the clicked element
+					});
+				}
+			};
+			
+			sch.error($('#'+menu_id).get(0).innerHTML);
+			
+			/*
+				show menu on event
+			*/
+			$(menu_trigger_selector).live('click', function(e) {
+				/*
+					thank you http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another
+				*/
+				$('#'+menu_id).css('position','absolute');
+				var pos = $(this).offset();
+				var height = $(this).height();
+				var width = $(this).width();
+				$('#'+menu_id).css( { "left": (pos.left) + "px", "top":(pos.top + height) + "px" } );
+				$('#'+menu_id).show();
+				
+				$(document).one('click', function() {
+					$('#'+menu_id).hide();
+				});
+			});
+			
+			Spaz.UI.statusBar("Lists loaded for  @"+username+ "…");
+			Spaz.UI.hideLoading();
+			
+		}, function(msg) {
+			Spaz.UI.statusBar("Loading lists for  @"+username+ " failed!");
+			Spaz.UI.hideLoading();
+			
+		});
+		
+		
+	};
+
+	/*
+		build the lists menu
+	*/
+	thisUT.buildListsMenu();
 	
 };
 
@@ -999,9 +1146,17 @@ Spaz.Timelines.init = function() {
 		'search': Spaz.Timelines.search,
 		'followerslist':Spaz.Timelines.followerslist
 	}
+
+
 }
 
 Spaz.Timelines.getTimelineFromTab = function(tab) {
+	var timeline = tab.id.replace(/tab-/, '');
+	Spaz.dump('timeline for tab:' + timeline);
+	return Spaz.Timelines.map[timeline];
+};
+
+Spaz.Timelines.getTabFromTimeline = function(tab) {
 	var timeline = tab.id.replace(/tab-/, '');
 	Spaz.dump('timeline for tab:' + timeline);
 	return Spaz.Timelines.map[timeline];

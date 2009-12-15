@@ -872,8 +872,6 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 		reset=false;
 	}
 
-	sch.dump('Loading data for tab:'+tab.id);
-	sch.dump('load data for tab '+tab.id);
 	switch (tab.id) {
 		case 'tab-prefs':
 			break;

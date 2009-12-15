@@ -64,7 +64,6 @@ Spaz.Windows.onAppExit = function(event)
 	// 	return;
 	// }
 
-	$('body').fadeOut(500);
 	Spaz.Prefs.savePrefs();
 	
 	if (event) {
@@ -84,8 +83,6 @@ Spaz.Windows.onAppExit = function(event)
 
 	if (Spaz.Prefs.get('sound-enabled')) {
 		Spaz.UI.playSoundShutdown(function() {
-			// alert('from the shutdown callback!')
-			// window.NativeWindow.close();
 			air.NativeApplication.nativeApplication.exit();
 		});
 	} else {
@@ -107,6 +104,7 @@ Spaz.Windows.onWindowClose = function(event) {
 */
 Spaz.Windows.windowClose = function() {
 	Spaz.Prefs.savePrefs();
+	$('#container').addClass('animation-fadeout');
 	sch.dump('calling windowClose');
 	Spaz.Windows.windowExitCalled = true;
 	Spaz.Windows.onAppExit();

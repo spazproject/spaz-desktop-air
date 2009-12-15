@@ -170,7 +170,10 @@ Spaz.initialize = function() {
 		Spaz.Windows.windowMinimize()
 	}
 
-	$('body').fadeIn(1000);
+	/*
+		this displays the body
+	*/
+	// $('body').addClass('visible');
 
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
 

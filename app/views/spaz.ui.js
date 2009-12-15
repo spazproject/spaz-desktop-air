@@ -25,19 +25,19 @@ Spaz.UI.mainTimelineId = 'timeline-friends';
 
 Spaz.UI.playSound = function(url, callback) {
     if (!Spaz.Prefs.get('sound-enabled')) {
-        Spaz.dump('Not playing sound ' + url + '- disabled');
+        sch.error('Not playing sound ' + url + '- disabled');
         if (callback) {
-            Spaz.dump('calling callback manually');
+            sch.error('calling callback manually');
             callback();
-            Spaz.dump('ending callback');
+            sch.error('ending callback');
         } else {
-            Spaz.dump('no callback, returning');
+            sch.error('no callback, returning');
         }
         return;
     }
 
-    Spaz.dump('Spaz.UI.playSound callback:' + callback);
-    Spaz.dump("loading " + url);
+    sch.error('Spaz.UI.playSound callback:' + callback);
+    sch.error("loading " + url);
 
     var req = new air.URLRequest(url);
     var s = new air.Sound();
@@ -45,7 +45,7 @@ Spaz.UI.playSound = function(url, callback) {
     function onComplete(e) {
         var sc = s.play();
         if (sc) {
-            Spaz.dump("playing " + url);
+            sch.error("playing " + url);
             if (callback) {
                 sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
             }
@@ -53,7 +53,15 @@ Spaz.UI.playSound = function(url, callback) {
     }
 
     function onIOError(e) {
-        Spaz.dump("failed to load " + url);
+        sch.error("failed to load " + url);
+        if (callback) {
+            sch.error('calling callback manually');
+            callback();
+            sch.error('ending callback');
+        } else {
+            sch.error('no callback, returning');
+        }
+
     }
 
     s.addEventListener(air.Event.COMPLETE, onComplete);
@@ -68,28 +76,28 @@ Spaz.UI.onSoundPlaybackComplete = function(event) {
 
 
 Spaz.UI.playSoundUpdate = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_UPDATE), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-update'), callback);
 }
 
 Spaz.UI.playSoundStartup = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_STARTUP), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-startup'), callback);
 }
 
 Spaz.UI.playSoundShutdown = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_SHUTDOWN), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-shutdown'), callback);
 }
 
 Spaz.UI.playSoundNew = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_NEW), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-new'), callback);
 }
 
 Spaz.UI.playSoundWilhelm = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get(SOUND_WILHELM), callback);
+    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-wilhelm'), callback);
 }
 
 
 Spaz.UI.doWilhelm = function() {
-    Spaz.dump('Applying Flash Filter Dropshadow and Negative');
+    sch.debug('Applying Flash Filter Dropshadow and Negative');
 
 	if (Spaz.Prefs.get('window-dropshadow')) {
 	    sch.dump('Applying Flash Filter Dropshadow');
@@ -153,24 +161,24 @@ Spaz.UI.hideLoading = function() {
 
 
 Spaz.UI.showPopup = function(panelid) {
-    Spaz.dump('showing ' + panelid + '...');
+    sch.debug('showing ' + panelid + '...');
     $('#' + panelid).css('opacity', 0);
     $('#' + panelid).show();
     $('#' + panelid).fadeTo('fast', 1.0,
     function() {
-        Spaz.dump(panelid + ':fadeIn:' + 'faded in!');
-        Spaz.dump(panelid + ':display:' + $('#' + panelid).css('display'));
-        Spaz.dump(panelid + ':opacity:' + $('#' + panelid).css('opacity'));
+        sch.debug(panelid + ':fadeIn:' + 'faded in!');
+        sch.debug(panelid + ':display:' + $('#' + panelid).css('display'));
+        sch.debug(panelid + ':opacity:' + $('#' + panelid).css('opacity'));
     });
     Spaz.UI.centerPopup(panelid);
 };
 Spaz.UI.hidePopup = function(panelid) {
-    Spaz.dump('hiding ' + panelid + '...');
+    sch.debug('hiding ' + panelid + '...');
     $('#' + panelid).fadeTo('fast', 0,
     function() {
-        Spaz.dump('fadeOut:' + 'faded out!');
-        Spaz.dump('fadeOut:' + $('#' + panelid).css('display'));
-        Spaz.dump('fadeOut:' + $('#' + panelid).css('opacity'));
+        sch.debug('fadeOut:' + 'faded out!');
+        sch.debug('fadeOut:' + $('#' + panelid).css('display'));
+        sch.debug('fadeOut:' + $('#' + panelid).css('opacity'));
         $('#' + panelid).hide();
     });
 }
@@ -211,12 +219,12 @@ Spaz.UI.pageRight = function(tabEl) {
 }
 Spaz.UI.page = function(tabEl, distance) {
     panel = tabEl.id.replace(/tab/, 'panel');
-    Spaz.dump('Getting page number using \'#' + panel + ' .timeline-pager-number\'');
+    sch.debug('Getting page number using \'#' + panel + ' .timeline-pager-number\'');
     var thispage = parseInt($('#' + panel + ' .timeline-pager-number').text());
-    Spaz.dump("Current page:" + thispage);
-    Spaz.dump("Paging distance:" + distance);
+    sch.debug("Current page:" + thispage);
+    sch.debug("Paging distance:" + distance);
     var newpage = thispage + distance;
-    Spaz.dump("New page:" + newpage);
+    sch.debug("New page:" + newpage);
     if (newpage < 1) {
         return;
     }
@@ -233,7 +241,7 @@ Spaz.UI.showEntryboxTip = function() {
 Spaz.UI.showLocationOnMap = function(location) {
     if (location.length > 0) {
         var url = 'http://maps.google.com/?q=' + encodeURIComponent(location);
-        Spaz.dump("Loading " + url);
+        sch.debug("Loading " + url);
         sc.helpers.openInBrowser(url);
     }
 };
@@ -276,14 +284,14 @@ Spaz.UI.centerPopup = function(windowid) {
     }
     // jqBody.css('border', '1px solid red');
     // jqWin.css('border', '1px solid blue');
-    Spaz.dump("windowid:#" + windowid);
-    Spaz.dump("jqBody.height():" + jqBody.height());
-    Spaz.dump("jqBody.width() :" + jqBody.width());
-    Spaz.dump("jqWin.height() :" + winHeight);
-    Spaz.dump("jqWin.width()  :" + winWidth);
-    Spaz.dump("margin	 :" + jqWin.css('margin'));
-    Spaz.dump("top		 :" + jqWin.css('top'));
-    Spaz.dump("left		 :" + jqWin.css('left'));
+    sch.debug("windowid:#" + windowid);
+    sch.debug("jqBody.height():" + jqBody.height());
+    sch.debug("jqBody.width() :" + jqBody.width());
+    sch.debug("jqWin.height() :" + winHeight);
+    sch.debug("jqWin.width()  :" + winWidth);
+    sch.debug("margin	 :" + jqWin.css('margin'));
+    sch.debug("top		 :" + jqWin.css('top'));
+    sch.debug("left		 :" + jqWin.css('left'));
 
 }
 
@@ -421,7 +429,7 @@ Spaz.UI.sendUpdate = function() {
 		// 
 		//     if (entrybox.val() != '' && entrybox.val() != Spaz.Prefs.get('entryboxhint')) {
 		// 
-		//         Spaz.dump('length:' + entrybox.val().length);
+		//         sch.debug('length:' + entrybox.val().length);
 		// 
 		// var irt_id = parseInt($('#irt-message').attr('data-status-id'));
 		// 
@@ -456,21 +464,27 @@ Spaz.UI.decodeSourceLinkEntities = function(str) {
 
 
 Spaz.UI.setSelectedTab = function(tab) {
-    if (!isNaN(tab)) {
+    if (typeof tab == 'number') {
         // if a # is passed in, get the element of the corresponding tab
-        Spaz.dump('getting tab element for number ' + tab)
-        Spaz.UI.selectedTab = Spaz.UI.tabbedPanels.getTabs()[tab]
+        sch.debug('getting tab element for number ' + tab);
+        Spaz.UI.selectedTab = Spaz.UI.tabbedPanels.getTabs()[tab];
+    } else if (typeof tab == 'string') { // this is an ID
+        sch.debug('getting tab element for id ' + tab);
+		if (tab.indexOf('#') !== 0) {
+			tab = '#'+tab;
+		}
+		Spaz.UI.selectedTab = $(tab).get(0);
     } else {
-        Spaz.dump('tab element passed in ' + tab)
+        sch.debug('tab element passed in ' + tab);
         Spaz.UI.selectedTab = tab;
     }
 
-    Spaz.dump('Spaz.UI.selectedTab: ' + Spaz.UI.selectedTab.id);
+    sch.debug('Spaz.UI.selectedTab: ' + Spaz.UI.selectedTab.id);
 
-    // Spaz.dump('restarting reload timer');
+    // sch.debug('restarting reload timer');
     // Spaz.restartReloadTimer();
 
-    Spaz.Data.loadDataForTab(tab);
+    Spaz.Data.loadDataForTab(Spaz.UI.selectedTab);
 };
 
 /**
@@ -483,30 +497,30 @@ Spaz.UI.getSelectedTab = function() {
 
 
 Spaz.UI.reloadCurrentTab = function(force, reset) {
-    Spaz.dump('reloading the current tab');
+    sch.debug('reloading the current tab');
     Spaz.Data.loadDataForTab(Spaz.UI.selectedTab, force, reset);
 }
 
 
 Spaz.UI.autoReloadCurrentTab = function() {
-    Spaz.dump('auto-reloading the current tab');
+    sch.debug('auto-reloading the current tab');
     Spaz.Data.loadDataForTab(Spaz.UI.selectedTab, true);
 }
 
 Spaz.UI.clearCurrentTimeline = function() {
-    Spaz.dump('clearing the current timeline');
+    sch.debug('clearing the current timeline');
     var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
 
     // reset the lastcheck b/c some timelines will use "since" parameters
 	section.lastcheck = 0;
-	Spaz.dump('set lastcheck to 0');
+	sch.debug('set lastcheck to 0');
 	if (section.lastid) {
 		section.lastid = 0;
-		Spaz.dump('set lastid to 0');
+		sch.debug('set lastid to 0');
 	}
 	if (section.lastid_dm) {
 		section.lastid_dm = 0;
-		Spaz.dump('set lastid_dm to 0');
+		sch.debug('set lastid_dm to 0');
 	}
 
 
@@ -514,21 +528,25 @@ Spaz.UI.clearCurrentTimeline = function() {
     if (section.canclear) {
         var timelineid = section.timeline;
         $('#' + timelineid + ' .timeline-entry').remove();
-        Spaz.dump('cleared timeline #' + timelineid);
+        sch.debug('cleared timeline #' + timelineid);
     } else {
-        Spaz.dump('timeline not clearable');
+        sch.debug('timeline not clearable');
     }
 }
 
 
 Spaz.UI.markCurrentTimelineAsRead = function() {
-    Spaz.dump('clearing the current timeline');
+    sch.debug('clearing the current timeline');
     var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab);
     tl.markAsRead();
 };
 
 
 Spaz.UI.toggleTimelineFilter = function() {
+	if (!Spaz.UI.currentFriendsTimelineView) {
+		Spaz.UI.currentFriendsTimelineView = 'view-friends-menu-all';
+	}
+	
 	if (Spaz.UI.currentFriendsTimelineView !== 'view-friends-menu-all') {
 		Spaz.UI.setView('view-friends-menu-all');
 	} else {
@@ -539,13 +557,15 @@ Spaz.UI.toggleTimelineFilter = function() {
 
 Spaz.UI.setView = function(type ) {
 
+	sch.error('setView type:'+type);
+
 	if (!type) {
 		var type = Spaz.UI.currentFriendsTimelineView || 'view-friends-menu-all';
 	}
 
 	sch.dump('View type is '+type);
 
-	var container = '#' + Spaz.Section.friends.timeline;
+	var container = Spaz.Timelines.friends.timeline.timeline_container_selector;
 	
 	/*
 		clear it and add the base 'timeline' class back
@@ -617,7 +637,7 @@ Spaz.UI.hideTooltips = function() {
     // clear existing timeouts
     var tt = $('#tooltip');
 
-    Spaz.dump('clearing show and hide tooltip timeouts');
+    sch.debug('clearing show and hide tooltip timeouts');
     clearTimeout(Spaz_Tooltip_Timeout)
     clearTimeout(Spaz_Tooltip_hideTimeout);
     tt.stop();
@@ -692,7 +712,7 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 
     var el = jq[0];
 
-    Spaz.dump(el);
+    sch.debug(el);
 
     // hide any showing tooltips
     // sch.dump('hiding tooltip');
@@ -722,12 +742,12 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
 Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 	//     // alert('adding:'+entry.id)
 	//     if (entry.error) {
-	//         Spaz.dump('There was an error in the entry:' + entry.error)
+	//         sch.debug('There was an error in the entry:' + entry.error)
 	//     }
 	// 
 	//     var timelineid = section.timeline;
 	// 
-	// Spaz.dump('TIMELINE #' + timelineid + '-' + entry.id);
+	// sch.debug('TIMELINE #' + timelineid + '-' + entry.id);
 	// sch.dump('TIMELINE #' + timelineid + '-' + entry.id);
 	// 
 	// 
@@ -755,7 +775,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 	// 		entry.isSent = true;
 	// 	}
 	// 
-	// 	// Spaz.dump(entry);
+	// 	// sch.debug(entry);
 	// 
 	// 	if (!entry.user.name) {
 	// 		entry.user.name = entry.user.screen_name
@@ -881,7 +901,7 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 	// 	return true;
 	// 
 	//     } else {
-	//         Spaz.dump('skipping ' + entry.id);
+	//         sch.debug('skipping ' + entry.id);
 	// 
 	//         return false;
 	//     }
@@ -893,11 +913,11 @@ Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
 
 Spaz.UI.selectEntry = function(el) {
 
-    Spaz.dump('unselected tweets');
+    sch.debug('unselected tweets');
     $('div.timeline-entry.ui-selected').removeClass('ui-selected');
 
 
-    Spaz.dump('selecting tweet');
+    sch.debug('selecting tweet');
     $(el).addClass('ui-selected').addClass('read').each(function() {
         if (entryId = Spaz.UI.getStatusIdFromElement(this)) {
             sch.dump("Want to mark as read " + entryId);
@@ -905,8 +925,8 @@ Spaz.UI.selectEntry = function(el) {
         }
     });
 
-	Spaz.dump(el);
-    Spaz.dump('selected tweet #' + el.id + ':' + el.tagName + '.' + el.className);
+	sch.debug(el);
+    sch.debug('selected tweet #' + el.id + ':' + el.tagName + '.' + el.className);
 
     $().trigger('UNREAD_COUNT_CHANGED');
 
@@ -973,7 +993,7 @@ Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
         // } else {
         // var cells = $('#'+timelineid+' div.timeline-entry.needs-cleanup');
         // }
-        // Spaz.dump('cells length:'+cells.length);
+        // sch.debug('cells length:'+cells.length);
 
         if (reverse) {
             $(cells.sort(Spaz.UI.sortTweetElements)).prependTo('#' + timelineid);
@@ -983,7 +1003,7 @@ Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
         time.stop('sortTimeline');
 
         // time.report();
-        // Spaz.dump('done sorting');
+        // sch.debug('done sorting');
     }
 
 }
@@ -1050,7 +1070,7 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 	var new_count = new_entries.length;
     if (new_count > 0) {
 
-        Spaz.dump('NewEntries found!');
+        sch.debug('NewEntries found!');
 
 		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
 
@@ -1104,7 +1124,7 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 
 			var this_entry = new_entries[0];
 
-	        Spaz.dump('Sending notification');
+	        sch.debug('Sending notification');
 	        var resp = "";
 
 			if (this_entry.SC_is_dm) {
@@ -1140,7 +1160,7 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
         Spaz.UI.statusBar('Updates found');
 
     } else {
-        Spaz.dump('NewEntries NOT found!');
+        sch.debug('NewEntries NOT found!');
         Spaz.UI.statusBar('No new messages');
     }
 
@@ -1171,7 +1191,7 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 		}
 
     } else {
-        Spaz.dump('not showing notification popup - window-shownotificationpopups disabled');
+        sch.debug('not showing notification popup - window-shownotificationpopups disabled');
     }
 }
 
@@ -1202,10 +1222,10 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         var numentries = $('#' + timelineid + ' div.timeline-entry').length;
         time.start('sortTimeline');
         if (numentries > 1 && !skip_sort) {
-            Spaz.dump('Sorting timeline numentries:'+numentries);
+            sch.debug('Sorting timeline numentries:'+numentries);
             Spaz.UI.sortTimeline(timelineid, true);
         } else {
-            Spaz.dump('not sorting - skip_sort:'+skip_sort+' numentries:'+numentries);
+            sch.debug('not sorting - skip_sort:'+skip_sort+' numentries:'+numentries);
         }
         time.stop('sortTimeline');
         return false;
@@ -1296,7 +1316,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         if (!suppressScroll) {
             if ($("#" + timelineid + ' .timeline-entry.new:not(.read)').length > 0) {
                 // scroll to top
-                Spaz.dump('scrolling to .timeline-entry.new:not(.read) in #' + timelineid);
+                sch.debug('scrolling to .timeline-entry.new:not(.read) in #' + timelineid);
 
 				/*
 
@@ -1309,7 +1329,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                             easing: 'swing'
                         })
                     } catch(e) {
-                        Spaz.dump('Error doing scrollTo first new entry - probably switched tabs in the middle of loading. No sweat!');
+                        sch.debug('Error doing scrollTo first new entry - probably switched tabs in the middle of loading. No sweat!');
                     }
                 }
 
@@ -1340,7 +1360,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         cleanupTweets.find(".status-text").each(function(i) {
             var re = new RegExp('@' + Spaz.Prefs.getUser() + '\\b', 'i');
             if (re.test($(this).html())) {
-                // Spaz.dump("found reply in "+$(this).text());
+                // sch.debug("found reply in "+$(this).text());
                 $(this).parents('div.needs-cleanup').addClass('reply');
             }
         })
@@ -1378,7 +1398,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                 var matchArray = null;
                 while (matchArray = urlRE.exec(txt)) {
                     // sch.dump("Getting content of URL " + matchArray[1]);
-                    Spaz.dump("Getting content of URL " + matchArray[1]);
+                    sch.debug("Getting content of URL " + matchArray[1]);
 
                     // Get the URL
                     var url = matchArray[0];
@@ -1410,7 +1430,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
                     var targetURL = event.responseURL;
                     var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
                     var targetDomain = targetURL.replace(slicerRE, "$2");
-                    Spaz.dump("Got a response status event for url " + url + ": " + targetURL);
+                    sch.debug("Got a response status event for url " + url + ": " + targetURL);
                     $(divElt).find("a[href*=" + url + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
                 }
                 stream.removeEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
@@ -1420,8 +1440,8 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
             function onIOError(event) {
                 // sch.dump('onIOError');
                 var targetURL = event.responseURL;
-                Spaz.dump('Request to ' + event.responseURL + ' returned an IOErrorEvent');
-                Spaz.dump(event);
+                sch.debug('Request to ' + event.responseURL + ' returned an IOErrorEvent');
+                sch.debug(event);
                 stream.removeEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
                 stream.removeEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
             }
@@ -1474,12 +1494,12 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         Make this non-blocking
     */
     Spaz.Timers.add(function() {
-        //Spaz.dump($("#"+timelineid).html());
+        //sch.debug($("#"+timelineid).html());
         time.start('setNotificationTimeout');
         // we delay on notification of new entries because stuff gets
         // really confused and wonky if you fire it off right away
         if (!suppressNotify) {
-            Spaz.dump('Set timeout for notifications');
+            sch.debug('Set timeout for notifications');
             Spaz.UI.notifyOfNewEntries();
             // remove "new" indicators
             $("#" + Spaz.Section.friends.timeline + ' .new').removeClass('new');
@@ -1494,10 +1514,17 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 
 
 
-
+/**
+ * @param {string|number} index an integer or an ID for the tab 
+ */
 Spaz.UI.showTab = function(index) {
-    Spaz.UI.setSelectedTab(Spaz.UI.tabbedPanels.getTabs()[index]);
-    Spaz.UI.tabbedPanels.showPanel(index);
+    Spaz.UI.setSelectedTab(index);
+
+	if (typeof index === 'number') {
+	    Spaz.UI.tabbedPanels.showPanel(index);		
+	} else if (typeof index === 'string') {
+	    Spaz.UI.tabbedPanels.showPanel(index);		
+	}
 }
 
 Spaz.UI.showPrefs = function() {
@@ -1515,21 +1542,21 @@ Spaz.UI.focusHandler = function(event) {
     e = event || window.event;
     el = e.srcElement || e.target;
 
-    Spaz.dump('FOCUS name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
+    sch.debug('FOCUS name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
 
 Spaz.UI.blurHandler = function(event) {
     e = event || window.event;
     el = e.srcElement || e.target;
 
-    Spaz.dump('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
+    sch.debug('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
 
 Spaz.UI.clickHandler = function(event) {
     e = event || window.event;
     el = e.srcElement || e.target;
 
-    Spaz.dump('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
+    sch.debug('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
 
 /**

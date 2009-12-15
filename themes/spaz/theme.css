@@ -432,6 +432,13 @@ a, a:link, .clickable {
 /*							position:absolute;*/
 						}
 
+							#timeline-userlists-full-name {
+								font-size:12px;
+/*								font-variant: small-caps;*/
+								padding:3px 3px 4px;
+								background-color:#444422;
+								color:#FFFFCC;
+							}
 
 							/*
 								This is effectively dead since the Twitter API doesn't support paging anymore.
@@ -713,7 +720,37 @@ a, a:link, .clickable {
 				}
 
 
-
+	/*********************************************
+		context menus
+		- not sure that these will continue to be used, if native versions can work okay
+	*/
+	ul.popup-menu {
+		z-index: 1010;
+		font-size:10px;
+		font-weight: normal;
+		overflow: auto;
+		background-color: #FFFFFF;
+		background-color: rgba(255,255,255,.8);
+		background-repeat: repeat-x;
+		color:#333333;
+		-webkit-box-shadow:0px 0px 6px #333333;
+		padding:5px;
+		opacity:1.0;
+		-khtml-border-radius:5px;
+		margin:0;
+		list-style: none;
+		display:none;
+	}
+		ul.popup-menu li {
+			list-style: none;
+			padding:4px;
+		}
+			ul.popup-menu li:hover {
+				background-color:#333333;
+				color:#ffffff;
+				cursor: pointer;
+				-khtml-border-radius:5px;
+			}
 
 
 

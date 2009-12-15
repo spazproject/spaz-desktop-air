@@ -21,6 +21,22 @@ sch.listen(document, 'update_succeeded', function(e) {
 	sch.trigger('new_combined_timeline_data', document.getElementById('timeline-friends'), data);
 	$('#entrybox')[0].blur();
 	
+	if (data[0].text.length == 140) {
+		if (Spaz.Prefs.get('sound-enabled')) {
+			if (Spaz.Prefs.get('wilhelm-enabled')) {
+				Spaz.UI.doWilhelm();
+				Spaz.UI.statusBar("Wilhelm!");
+				Spaz.UI.playSoundWilhelm();
+			} else {
+				sch.dump('not doing Wilhelm because Wilhelm disabled');
+			}
+		} else {
+			sch.dump('not doing Wilhelm because sound disabled');
+		}
+	} else {
+		Spaz.UI.playSoundUpdate();
+		Spaz.UI.statusBar("Update succeeded");
+	}
 
 	// if (Spaz.Prefs.get('services-pingfm-enabled')) {
 	// 	Spaz.Data.updatePingFM(msg);
@@ -319,14 +335,14 @@ Spaz.Controller.initIntercept = function() {
 				var search_str = "from:"+screen_name+" OR to:"+screen_name;
 
 				$('#search-for').val(search_str);
-			    Spaz.Section.search.build();
-			    Spaz.UI.showTab(3);
+			    Spaz.Timelines.search.refresh();
+			    Spaz.UI.showTab('tab-search');
 			},
 			'#userContextMenu-filterByUser':function(e) {
 				var screen_name = $(this).attr('user-screen_name');
 				$('#filter-friends').val(screen_name);
 				$('#filter-friends').trigger('keyup');
-			    Spaz.UI.showTab(0);
+			    Spaz.UI.showTab('tab-friends');
 			},
 			'span.in-reply-to': function(e){
 				var status_id = $(this).attr('data-status-id');
@@ -349,7 +365,7 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'.hashtag':function(e) {
 				$('#search-for').val($(this).text());
-				Spaz.UI.showTab(3);
+				Spaz.UI.showTab('tab-search');
 				Spaz.Timelines.search.activate();
 			},
 			'.status-thumbnail':function(e) {
@@ -430,7 +446,7 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.Timelines.friends.filter( $(this).val() );
 			},
 			'#filter-user':function(e) {
-				Spaz.Section.user.filter( $(this).val() );
+				Spaz.Timelines.user.filter( $(this).val() );
 			},
 			'#filter-public':function(e) {
 				Spaz.Timelines.public.filter( $(this).val() );
@@ -618,9 +634,9 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	shortcut.add(Modkey+'+6', function() {
 		Spaz.UI.showTab(5);
 	})
-	// shortcut.add(Modkey+'+7', function() {
-	// 	Spaz.UI.showTab(6);
-	// })
+	shortcut.add(Modkey+'+7', function() {
+		Spaz.UI.showTab(6);
+	})
 	shortcut.add(Modkey+'+,', function() {
 		Spaz.UI.showPrefs()
 	})

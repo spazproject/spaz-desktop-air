@@ -54,11 +54,11 @@ Spaz.Prefs.defaultPreferences = {
 
     'debug-enabled': false,
 
-    SOUND_UPDATE:  '/sounds/TokyoTrainStation/CSnd.mp3',
-    SOUND_STARTUP: '/sounds/TokyoTrainStation/On.mp3',
-    SOUND_SHUTDOWN:'/sounds/TokyoTrainStation/Off.mp3',
-    SOUND_NEW:     '/sounds/TokyoTrainStation/New.mp3',
-    SOUND_WILHELM: '/sounds/wilhelm.mp3',
+    'sound-url-update':  'app:/sounds/TokyoTrainStation/CSnd.mp3',
+    'sound-url-startup': 'app:/sounds/TokyoTrainStation/On.mp3',
+    'sound-url-shutdown':'app:/sounds/TokyoTrainStation/Off.mp3',
+    'sound-url-new':     'app:/sounds/TokyoTrainStation/New.mp3',
+    'sound-url-wilhelm': 'app:/sounds/wilhelm.mp3',
 
     'timeline-scrollonupdate': false,
     'timeline-maxentries': 325,
@@ -182,14 +182,14 @@ Spaz.Prefs.changeMethods = {
             }
 
 			/*  the bending code */
-			BlenderEffect.get('app:/vendors/blender/page.pbj', function(shader) {
-				var tween = BlenderEffect.createShaderTransition(window.htmlLoader,
-						shader,
-						1200,
-						Tween.effects.elasticEase);
-				tween.hideOnFinish = false;
-				tween.start(true);
-			});
+			// BlenderEffect.get('app:/vendors/blender/page.pbj', function(shader) {
+			// 	var tween = BlenderEffect.createShaderTransition(window.htmlLoader,
+			// 			shader,
+			// 			1200,
+			// 			Tween.effects.elasticEase);
+			// 	tween.hideOnFinish = false;
+			// 	tween.start(true);
+			// });
 
             window.htmlLoader.alpha = val;
         },
@@ -946,29 +946,29 @@ Spaz.Prefs.setSoundFileLocations = function() {
 	soundFileWilhelm = soundFileWilhelm.resolvePath('usersounds/wilhelm.mp3');
 
 	if (soundFileUpdate.exists) {
-		Spaz.Prefs.preferences[SOUND_UPDATE] = soundFileUpdate.url;
+		Spaz.Prefs.preferences['sound-url-update'] = soundFileUpdate.url;
 	}
-	Spaz.dump('sound-update is: ' + Spaz.Prefs.preferences[SOUND_UPDATE]);
+	Spaz.dump('sound-url-update is: ' + Spaz.Prefs.preferences['sound-url-update']);
 
 	if (soundFileStartup.exists) {
-		Spaz.Prefs.preferences[SOUND_STARTUP] = soundFileStartup.url;
+		Spaz.Prefs.preferences['sound-url-startup'] = soundFileStartup.url;
 	}
-	Spaz.dump('sound-startup is: ' + Spaz.Prefs.preferences[SOUND_STARTUP]);
+	Spaz.dump('sound-url-startup is: ' + Spaz.Prefs.preferences['sound-url-startup']);
 
 	if (soundFileShutdown.exists) {
-		Spaz.Prefs.preferences[SOUND_SHUTDOWN] = soundFileShutdown.url;
+		Spaz.Prefs.preferences['sound-url-shutdown'] = soundFileShutdown.url;
 	}
-	Spaz.dump('sound-shutdown is: ' + Spaz.Prefs.preferences[SOUND_SHUTDOWN]);
+	Spaz.dump('sound-url-shutdown is: ' + Spaz.Prefs.preferences['sound-url-shutdown']);
 
 	if (soundFileNew.exists) {
-		Spaz.Prefs.preferences[SOUND_NEW] = soundFileNew.url;
+		Spaz.Prefs.preferences['sound-url-new'] = soundFileNew.url;
 	}
-	Spaz.dump('sound-new is: ' + Spaz.Prefs.preferences[SOUND_NEW]);
+	Spaz.dump('sound-url-new is: ' + Spaz.Prefs.preferences['sound-url-new']);
 
 	if (soundFileWilhelm.exists) {
-		Spaz.Prefs.preferences[SOUND_WILHELM] = soundFileWilhelm.url;
+		Spaz.Prefs.preferences['sound-url-wilhelm'] = soundFileWilhelm.url;
 	}
-	Spaz.dump('sound-wilhelm is: ' + Spaz.Prefs.preferences[SOUND_WILHELM]);
+	Spaz.dump('sound-url-wilhelm is: ' + Spaz.Prefs.preferences['sound-url-wilhelm']);
 };
 
 
