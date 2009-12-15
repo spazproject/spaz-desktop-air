@@ -286,11 +286,11 @@ Spaz.Data.makeFavorite = function(postid) {
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			var faved_element;
-			sch.dump(data);
+			sch.error(data);
 			Spaz.UI.statusBar('Added fav: ' + postid);
-			if (faved_element = Spaz.UI.getElementFromStatusId(postid)) {
-				$(faved_element).addClass('favorited');
-			}
+			
+			$('.timeline-entry[data-status-id='+postid+']').addClass('favorited');
+			sch.error(faved_element);
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
@@ -327,9 +327,7 @@ Spaz.Data.makeNotFavorite = function(postid) {
 			var faved_element;
 			sch.dump(data);
 			Spaz.UI.statusBar('Removed fav: ' + postid);
-			if (faved_element = Spaz.UI.getElementFromStatusId(postid)) {
-				$(faved_element).removeClass('favorited');
-			}
+			$('.timeline-entry[data-status-id='+postid+']').removeClass('favorited');
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
