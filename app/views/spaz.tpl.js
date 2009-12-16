@@ -50,6 +50,7 @@ Spaz.Templates.timeline_entry = function(d) {
 							}
 	entryHTML += '			'+d.text+'';
 	entryHTML += '		</div>';
+	entryHTML += '		<div class="status-meta">';
 						if (d.SC_is_dm) {
 	entryHTML += '			<div class="status-actions">';
 	entryHTML += '				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
@@ -58,7 +59,7 @@ Spaz.Templates.timeline_entry = function(d) {
 								}
 	entryHTML += '			</div>';
 	entryHTML += '			<div class="status-link">';
-	entryHTML += '				<!-- '+d.created_at+' -->';
+	entryHTML += '				<span data-created-at="'+d.created_at+'" class="status-created-at">'+d.created_at+'</span>';
 	entryHTML += '			</div>';
 						} else {
 	entryHTML += '			<div class="status-actions">';
@@ -84,6 +85,8 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '				</div>';
 	entryHTML += '			</div>';
 						}
+	entryHTML += '		</div><!-- end status-meta -->';
+						
 	entryHTML += '	</div>';
 	entryHTML += '</div>';
 	
@@ -101,7 +104,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry dm new" data-status-id="'+d.id+'" data-user-screen_name="'+d.sender_screen_name+'" data-user-id="'+d.sender.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">';
-	entryHTML += '		<img class="user-image clickable" height="48" width="48" src="'+d.sender.profile_image_url+'" alt="'+d.sender_screen_name+'" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'" />';
+	entryHTML += '		<div class="user-image-wrapper"><img class="user-image clickable" height="48" width="48" src="'+d.sender.profile_image_url+'" alt="'+d.sender_screen_name+'" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'" /></div>';
 	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">'+d.sender_screen_name+'</div>';
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
@@ -119,7 +122,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 							}
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-link">';
-	entryHTML += '			<!-- '+d.created_at+' -->';
+	entryHTML += '				<span data-created-at="'+d.created_at+'" class="status-created-at">'+d.created_at+'</span>';
 	entryHTML += '		</div>';
 	entryHTML += '	</div>';
 	entryHTML += '</div>';

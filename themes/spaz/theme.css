@@ -878,12 +878,23 @@ div.timeline-entry {
 					display:inline-block;
 				}
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
+
+
+		div.status-link {
+			padding:3px 0px; 
+		}
+
+
 		div.status-actions {
 			font-size:10px;
 			float:right;
 			opacity:0;
 			-webkit-transition-property:opacity;
 			-webkit-transition-duration:.5s;
+			-webkit-border-radius: .5em;
+			background-color:rgba(255,255,255,.8);
+			padding:3px 7px 3px 8px;
+
 		}
 		
 		div.timeline-entry:hover div.status-actions,
