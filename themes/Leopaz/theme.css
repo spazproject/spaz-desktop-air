@@ -822,6 +822,7 @@ div.timeline-entry:hover{
       overflow:hidden;
       opacity:0.75;
       white-space:nowrap;
+      -webkit-transition:opacity 0.125s linear;
     }
     div.timeline-entry.read:not(.ui-selected):hover div.user{
       opacity:1;
@@ -930,24 +931,21 @@ div.timeline-entry:hover{
 				display:inline-block;
 			}
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
-		div.status-actions{
+    div.status-actions{
       position:absolute;
       right:4px;
       bottom:4px;
-      display:none;
-		  background:rgba(0, 0, 0, 0.5);
-			font-size:10px;
-		  -webkit-border-radius:10px;
-		}
-		div.timeline-entry:hover div.status-actions{
-		  display:block;
-		}
-		div.timeline-entry.read div.status-actions{
-		  display:none;
-		}
-		div.timeline-entry.ui-selected div.status-actions{
-		  display:block;
-		}
+      background:rgba(0, 0, 0, 0.5);
+      border-radius:10px;
+        -webkit-border-radius:10px;
+      font-size:10px;
+      opacity:0;
+      -webkit-transition:opacity 0.125s linear;
+    }
+    div.timeline-entry:hover:not(.read) div.status-actions,
+    div.timeline-entry.ui-selected div.status-actions{
+      opacity:1;
+    }
 	    .status-action,
 	    .status-action-del{
         display:inline-block;
