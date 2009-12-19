@@ -846,14 +846,16 @@ div.timeline-entry:hover{
 		the .ui-selected class name comes from the one used by the jQuery.ui selectables plugin
 		We don't actually use that here, but it was experimented with, and may return sometime
 	*/
-	div.timeline-entry.ui-selected{
-    background:#0076df url(images/timeline-entry-selected-bg.png) 0 0 repeat-x;
-    border-top:0;
-		color:#f0f0f0;
-	}
-	body:not(.active) div.timeline-entry.ui-selected{
-    background-image:url(images/timeline-entry-selected-inactive-bg.png);
-    background-color:#7d7e7e;
+  div.timeline-entry.ui-selected{
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#337dcf), to(#0541a4));
+    border-top:1px solid #2773c8;
+    color:#f0f0f0;
+  }
+  body:not(.active) div.timeline-entry.ui-selected{
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#989797), to(#666));
+    border-top:1px solid #7f7e7e;
   }
   
 		div.timeline-entry.ui-selected div.status-link{
