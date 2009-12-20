@@ -1369,13 +1369,12 @@ table.data {
   }
   ::-webkit-scrollbar-button:vertical:start:increment,
   ::-webkit-scrollbar-button:vertical:end:decrement{
-    /* Hide down-button at top, and up-button at bottom */
-    display: none;
+    display:none;
   }
-  ::-webkit-scrollbar-button:vertical:decrement{
+  ::-webkit-scrollbar-button:vertical:start:decrement{
     background-image:url(images/scrollbar/button-vertical-top-up.png);
   }
-  ::-webkit-scrollbar-button:vertical:increment{
+  ::-webkit-scrollbar-button:vertical:end:increment{
     background-image:url(images/scrollbar/button-vertical-bottom-down.png);
   }
 ::-webkit-scrollbar-track:vertical{
@@ -1385,6 +1384,49 @@ table.data {
 ::-webkit-scrollbar-track-piece{}
   ::-webkit-scrollbar-track-piece:vertical:start{}  /* Above thumb */
   ::-webkit-scrollbar-track-piece:vertical:end{}    /* Below thumb */
+
+/* Enable for no buttons at the start, and doubled buttons at the end: * /
+::-webkit-scrollbar-button:vertical:start{
+  display:none;
+}
+::-webkit-scrollbar-track:vertical{
+  margin-top:0px;
+  background:transparent url(images/scrollbar/cap-top.png) 0 0 no-repeat;
+}
+::-webkit-scrollbar-track-piece:vertical:start{
+  margin-top:4px;
+}
+::-webkit-scrollbar-button:vertical:end:decrement{
+  display:block;
+  background-image:url(images/scrollbar/button-vertical-bottom-up.png);
+}
+::-webkit-scrollbar-button:vertical:end:increment{
+  height:16px;
+  background-image:url(images/scrollbar/button-vertical-bottom-down-square.png);
+}
+/*  */
+
+/* Enable for doubled buttons at the start and end: * /
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement{
+  display:block;
+}
+::-webkit-scrollbar-button:vertical:start:decrement{
+  height:16px;
+  background-image:url(images/scrollbar/button-vertical-top-up-square.png);
+}
+::-webkit-scrollbar-button:vertical:start:increment{
+  background-image:url(images/scrollbar/button-vertical-top-down.png);
+}
+::-webkit-scrollbar-button:vertical:end:decrement{
+  background-image:url(images/scrollbar/button-vertical-bottom-up.png);
+}
+::-webkit-scrollbar-button:vertical:end:increment{
+  height:16px;
+  background-image:url(images/scrollbar/button-vertical-bottom-down-square.png);
+}
+/* */
+
 ::-webkit-scrollbar-thumb:vertical{
   min-height:24px;
   border-width:8px 0;
