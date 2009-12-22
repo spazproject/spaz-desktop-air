@@ -1,11 +1,11 @@
-// You can add the following to your user.js file to customize the UI:
+// Add the following to your user.js file to customize the interface:
 
 
 
 /*** Scrollbars ***/
 
-// No arrows at the top, and doubled arrows at the bottom
-// $('body').addClass('scrollbar-double-end');
+// Single arrows at both the start and the end
+// $('body').addClass('scrollbar-single-both');
 
-// Doubled arrows at both the top and the bottom
+// Doubled arrows at both the start and the end
 // $('body').addClass('scrollbar-double-both');
