@@ -848,8 +848,8 @@ div.timeline-entry:hover{
 	*/
   div.timeline-entry.ui-selected{
     background:-webkit-gradient(
-      linear, left top, left bottom, from(#337dcf), to(#0541a4));
-    border-top:1px solid #2773c8;
+      linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
+    border-top:1px solid #519BD6;
     color:#f0f0f0;
   }
   body:not(.active) div.timeline-entry.ui-selected{
