@@ -584,8 +584,8 @@ a:hover{
           #irt-dismiss{
             position:relative;
             float:left;
-            width:29px;
-            height:29px;
+            width:20px;
+            height:20px;
             margin:-8px 0 0 -4px;
             background:transparent url(images/close-black.png) 0 0 no-repeat;
             cursor:pointer;
@@ -594,10 +594,10 @@ a:hover{
           }
           #irt-content{
             display:block;
-            margin:4px 4px 4px -22px;
-            padding:4px 4px 4px 22px;
+            margin:4px 4px 8px -10px;
+            padding:4px 4px 4px 10px;
             overflow:hidden;
-            background:rgba(45, 45, 45, 0.5);
+            background:rgba(255, 255, 255, 0.25);
             border-radius:8px;
               -webkit-border-radius:8px;
             color:#fff;
