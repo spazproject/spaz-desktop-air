@@ -514,7 +514,8 @@ a:hover{
 		  background-image:url(images/entry-form-inactive-bg.png);
 		}
 		  #leopaz-entryform-resize{
-		    height:10px;
+		    height:12px;
+		    background:transparent url(images/resize-ns.png) center center no-repeat;
 		    cursor:n-resize;
 		  }
 			/*
@@ -524,7 +525,7 @@ a:hover{
         position:absolute;
         left:4px;
         right:5px;
-        top:10px;
+        top:12px;
         bottom:0;
         margin:0;
         padding:5px 5px 15px 5px;
@@ -695,7 +696,7 @@ a:hover{
 			bottom:4px;
 			right:4px;
 			font-size:12px;
-			background-image:url(images/resize.png);
+			background-image:url(images/resize-sw.png);
 			text-align:center;
 			width:12px;
 			height:12px;

@@ -18,7 +18,7 @@
       $entryform        = $('#entryform'),
       entryformBottom   = parseInt($entryform.css('bottom'), 10),
       $entryboxPopup    = $('#entrybox-popup'),
-      $resize           = $('<div id="leopaz-entryform-resize">---</div>');
+      $resize           = $('<div id="leopaz-entryform-resize"></div>');
       onMouseMove = function(ev){
         var entryformHeight = nativeWindow.height - ev.pageY - entryformBottom;
         entryformHeight = Math.min(300, entryformHeight); // Set max height
