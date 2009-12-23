@@ -635,23 +635,26 @@ a:hover{
 		/*
 			The bar at the bottom of the app that displays info
 		*/
-		#statusbar{
-			position:absolute;
-			left:0;
-			right:0;
-			bottom:0;
+    #statusbar{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
       height:14px;
-			padding:7px 20px 7px 6px;
-			overflow:hidden;
+      padding:7px 20px 7px 6px;
+      overflow:hidden;
       background:transparent url(images/status-bar-bg.png) 0 0 repeat-x;
-			color:#000;
-			font-size:10px;
-			text-align:center;
-			text-shadow:0 1px 1px #fff;
-			white-space:nowrap;
-			-khtml-border-bottom-left-radius:4px;
-			-khtml-border-bottom-right-radius:4px;
-		}
+      border-bottom-left-radius:4px;
+        -webkit-border-bottom-left-radius:4px;
+      border-bottom-right-radius:4px;
+        -webkit-border-bottom-right-radius:4px;
+      color:#000;
+      cursor:default;
+      font-size:10px;
+      text-align:center;
+      text-shadow:0 1px 1px #fff;
+      white-space:nowrap;
+    }
 		body:not(.active) #statusbar{
 		  background-image:url(images/status-bar-inactive-bg.png);
 		}
@@ -732,48 +735,44 @@ a:hover{
 
 
 
-	/*********************************************
-		context menus
-		- not sure that these will continue to be used, if native versions can work okay
-	*/
-	div.context-menu {
-		position:fixed;
-		z-index: 1010;
-		font-size:10px;
-		font-weight: normal;
-		top:10px;
-		left:10px;
-		overflow: auto;
-		background-color: #FFFFFF;
-		background-color: rgba(255,255,255,.8);
-		background-repeat: repeat-x;
-		color:#333333;
-		-webkit-box-shadow:0px 0px 6px #333333;
-		display:none;
-		padding:5px;
-		opacity:1.0;
-		-khtml-border-radius:5px;
-	}
-		div.context-menu ul {
-			padding:0;
-			margin:0;
-			list-style: none;
-		}
-			div.context-menu li {
-				list-style: none;
-				padding:4px;
-			}
-				div.context-menu li:hover {
-					background-color:#333333;
-					color:#ffffff;
-					cursor: pointer;
-					-khtml-border-radius:5px;
-				}
+/*** Context/popup menus ***/
+/* (May be replaced with native OS versions in the future) */
 
-
-
-
-
+div.context-menu{
+  position:fixed;
+  display:none;
+  z-index:1010;
+}
+ul.popup-menu{
+  display:none;
+}
+div.context-menu ul,
+ul.popup-menu{
+  margin:0;
+  padding:4px 0;
+  background:#f9f9f9;
+  border:1px solid #dfdfdf;
+  border-radius:4px;
+    -webkit-border-radius:4px;
+}
+  div.context-menu ul li,
+  ul.popup-menu li{
+    margin:0;
+    padding:2px 15px 2px 20px;
+    border-top:1px solid transparent;
+    border-bottom:1px solid transparent;
+    color:#000;
+    font-size:10px;
+    list-style:none;
+  }
+  div.context-menu ul li:hover,
+  ul.popup-menu li:hover{
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#668BF4), to(#2B64F0));
+    border-top:1px solid #5C83EA;
+    border-bottom:1px solid #1D58E7;
+    color:#fff;
+  }
 
 
 
