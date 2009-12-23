@@ -549,49 +549,51 @@ a:hover{
 			/*
 				This is the counter for number of chars entered
 			*/
-			#entrybox-popup{
-				position:absolute;
-				display:none;
-				left:8px;
-				right:8px;
-				bottom:58px;
-				padding:8px;
-				background:rgba(0, 0, 0, 0.9);
-				border-radius:4px;
-				-webkit-border-radius:4px;
-				color:#828282;
-				font-size:9px;
-				opacity:1;
-				z-index:100;
-			}
-        #chars-left {
-          margin:4px 0;
+      #entrybox-popup{
+        position:absolute;
+        display:none;
+        left:0;
+        right:0;
+        bottom:55px;
+        padding:0;
+        border-width:19px 16px 21px 16px;
+        border-image:url(images/popup.png) 19 16 21 16 repeat repeat;
+          -webkit-border-image:url(images/popup.png) 19 16 21 16 repeat repeat;
+        border-radius:4px;
+          -webkit-border-radius:4px;
+        color:#828282;
+        font-size:9px;
+        opacity:1;
+        z-index:100;
+      }
+        #chars-left{
+          float:left;
           color:#999;
-          font-size:10px;
+          font-size:12px;
         }
-				  #chars-left-count{
-				    font-weight:bold;
-				  }
-					#chars-left-count.under {
-						color:#fff;
-					}
-					#chars-left-count.over {
-						color:#f00;
-					}
-				#irt{}
-  				#irt-dismiss{
+          #chars-left-count{
+            font-weight:bold;
+          }
+          #chars-left-count.under{
+            color:#fff;
+          }
+          #chars-left-count.over{
+            color:#f00;
+          }
+        #irt{}
+          #irt-dismiss{
             position:relative;
-  					float:left;
+            float:left;
             width:29px;
             height:29px;
             margin:-8px 0 0 -4px;
-  					background:transparent url(images/close-black.png) 0 0 no-repeat;
-  					cursor:pointer;
-  					text-indent:-9999em;
+            background:transparent url(images/close-black.png) 0 0 no-repeat;
+            cursor:pointer;
+            text-indent:-9999em;
             z-index:9;
-  				}
-				  #irt-content{
-				    display:block;
+          }
+          #irt-content{
+            display:block;
             margin:4px 4px 4px -22px;
             padding:4px 4px 4px 22px;
             overflow:hidden;
@@ -599,8 +601,8 @@ a:hover{
             border-radius:8px;
               -webkit-border-radius:8px;
             color:#fff;
-				  }
-  					#irt-message{}
+          }
+            #irt-message{}
         #entrybox-popup input[type=button]{
           background:transparent url(images/panel-menu-bg.png) center center repeat-x;
           border:2px solid #4f5052;
@@ -617,7 +619,7 @@ a:hover{
           border-bottom:2px solid #1d58e7;
         }
         #entrybox-actions{
-          margin:8px 0 0;
+          float:right;
         }
 
 
