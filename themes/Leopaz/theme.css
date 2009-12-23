@@ -513,23 +513,27 @@ a:hover{
 		  background-color:#e4e4e4;
 		  background-image:url(images/entry-form-inactive-bg.png);
 		}
+		  #leopaz-entryform-resize{
+		    height:10px;
+		    cursor:n-resize;
+		  }
 			/*
 				This is a Spry textarea widget
 			*/
-			#entrybox{
-				bottom:0px;
-				position:absolute;
+      #entrybox{
+        position:absolute;
+        left:4px;
+        right:5px;
+        top:10px;
+        bottom:0;
         margin:0;
-				left:4px;
-				right:5px;
-				height:42px;
-				font-size:11px;
-				overflow:auto;
-				padding:5px 5px 15px 5px;
-				text-align:left;
+        padding:5px 5px 15px 5px;
+        overflow:auto;
         background:#f0f0f0 url(images/text-input-bg.png) 0 0 no-repeat;
-        border:none;
-			}
+        border:0;
+        font-size:11px;
+        text-align:left;
+      }
 			#entrybox:focus{
 			  outline:3px solid #98bde1; /* light blue */
 			}
