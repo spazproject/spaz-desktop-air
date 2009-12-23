@@ -516,7 +516,7 @@ a:hover{
 		  #leopaz-entryform-resize{
 		    height:12px;
 		    background:transparent url(images/resize-ns.png) center center no-repeat;
-		    cursor:n-resize;
+		    cursor:ns-resize;
 		  }
 			/*
 				This is a Spry textarea widget

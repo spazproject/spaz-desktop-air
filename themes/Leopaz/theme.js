@@ -14,7 +14,8 @@
 
 // Make entrybox resizable
 (function(){
-  var $timeline         = $('#timeline-tabs-content, .TabbedPanelsContentGroup'),
+  var $body             = $('body'),
+      $timeline         = $('#timeline-tabs-content, .TabbedPanelsContentGroup'),
       $entryform        = $('#entryform'),
       entryformBottom   = parseInt($entryform.css('bottom'), 10),
       $entryboxPopup    = $('#entrybox-popup'),
@@ -27,15 +28,30 @@
         $timeline.css('bottom', entryformHeight + 28);
         $entryform.height(entryformHeight);
         $entryboxPopup.css('bottom', entryformHeight - 11);
-
-        sch.note('ev.pageY='+ev.pageY+' / entryformHeight='+entryformHeight); // FIXME: Testing; remove
+      },
+      bindMouseMove = function(){
+        sch.note('- bind mousemove'); // FIXME: Testing; remove
+        $body.mousemove(onMouseMove);
+      },
+      unbindMouseMove = function(){
+        sch.note('- unbind mousemove'); // FIXME: Testing; remove
+        $body.unbind('mousemove', onMouseMove);
       };
 
-  $resize.prependTo('#entryform').mousedown(function(ev){
-    sch.note('resize-mousedown'); // FIXME: Testing; remove
-    $resize.mousemove(onMouseMove);
-  }).bind('mouseup mouseout', function(ev){
-    sch.note('resize-mouseup'); // FIXME: Testing; remove
-    $resize.unbind('mousemove', onMouseMove);
+  $resize.prependTo($entryform).mousedown(function(ev){
+    sch.note('resize-'+ev.type); // FIXME: Testing; remove
+    bindMouseMove();
+  }).bind('mouseup', function(ev){
+    sch.note('resize-'+ev.type); // FIXME: Testing; remove
+    unbindMouseMove();
   });
+
+  $body.mouseout(function(ev){
+    if($(ev.target).is('body')){
+      unbindMouseMove();
+    }
+  }).mouseup(function(ev){
+    unbindMouseMove();
+  });
+
 })();
