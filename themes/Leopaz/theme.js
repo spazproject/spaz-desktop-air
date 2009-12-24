@@ -19,7 +19,10 @@
       $entryForm        = $('#entryform'),
       entryFormBottom   = parseInt($entryForm.css('bottom'), 10),
       $entryBoxPopup    = $('#entrybox-popup'),
-      $resize           = $('<div id="leopaz-entryform-resize"></div>');
+      $resize           = $('<div id="leopaz-entryform-resize"></div>'),
+      maxEntryFormHeight = function(){
+        return nativeWindow.height - 96;
+      },
       setEntryFormHeight = function(newHeight){
         $timeline.css('bottom', newHeight + 28);
         $entryForm.height(newHeight);
@@ -29,42 +32,39 @@
         var newHeight = nativeWindow.height - ev.pageY - entryFormBottom;
 
         // Set max height: don't overlap header
-        newHeight = Math.min(nativeWindow.height - 96, newHeight);
+        newHeight = Math.min(maxEntryFormHeight(), newHeight);
 
         // Set min height: fit at least one line of text
         newHeight = Math.max(34, newHeight);
 
         setEntryFormHeight(newHeight);
       },
-      bindMouseMove = function(){
-        sch.note('- bind mousemove'); // FIXME: Testing; remove
-        $body.mousemove(onMouseMove);
+      onMouseEnter  = function(ev){ stopResizing(); },
+      onMouseUp     = function(ev){ stopResizing(); },
+      onMouseOut    = function(ev){
+        if($(ev.target).is('body')){ stopResizing(); }
       },
-      unbindMouseMove = function(){
-        sch.note('- unbind mousemove'); // FIXME: Testing; remove
-        $body.unbind('mousemove', onMouseMove);
+      startResizing = function(){
+        $body
+          .mouseout(onMouseOut)
+          .mouseenter(onMouseEnter) // Backup for when body mouseout isn't caught
+          .mouseup(onMouseUp)
+          .mousemove(onMouseMove);
+      },
+      stopResizing = function(){
+        $body
+          .unbind('mouseout',   onMouseOut)
+          .unbind('mouseenter', onMouseEnter)
+          .unbind('mouseup',    onMouseUp)
+          .unbind('mousemove',  onMouseMove);
       };
 
-  $resize.prependTo($entryForm).mousedown(function(ev){
-    sch.note('resize-'+ev.type); // FIXME: Testing; remove
-    bindMouseMove();
-  }).bind('mouseup', function(ev){
-    sch.note('resize-'+ev.type); // FIXME: Testing; remove
-    unbindMouseMove();
-  });
-
-  $body.mouseout(function(ev){
-    if($(ev.target).is('body')){
-      unbindMouseMove();
-    }
-  }).mouseup(function(ev){
-    unbindMouseMove();
-  });
+  $resize.prependTo($entryForm)
+    .mousedown(function(ev){ startResizing(); })
+    .mouseup(function(ev){ stopResizing(); });
 
   window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, function(){
-    var max = nativeWindow.height - 96;
-    if($entryForm.height() > max){
-      setEntryFormHeight(max);
-    }
+    var max = maxEntryFormHeight();
+    if($entryForm.height() > max){ setEntryFormHeight(max); }
   });
 })();
