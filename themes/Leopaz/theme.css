@@ -1026,11 +1026,18 @@ div.timeline-entry:hover{
 			/* the text with the name of the posting source ("Foobar") */
 			.status-source-label{}
 			/* the icon that indicates this is a protected post */
-			span.status-protected{
-        height:12px;
-        padding:0 6px; /* width doesn't matter on inline element, so use padding to force width */
-				background:url('images/icon-lock.png');
-			}
+      span.status-protected{
+        display:block;
+        width:9px;
+        height:11px;
+        margin:2px 0 0;
+        background:transparent url(images/lock-black.png) 0 0 no-repeat;
+        opacity:0.75;
+      }
+      div.timeline-entry.ui-selected span.status-protected{
+        background-image:url(images/lock-white.png);
+        opacity:1;
+      }
 
 
 .followerslist-row{
