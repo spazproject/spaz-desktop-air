@@ -1,14 +1,12 @@
 @charset "UTF-8";
 @import "jquery-ui/jquery-ui.css";
 
-/*
-	Setting up some basics here
-*/
+/*** Global ***/
+
 html {
   width:100%;
   height:100%;
 }
-
 body {
   display:block;
   width:100%;
@@ -1330,14 +1328,8 @@ div.timeline-entry:hover{
 
 
 
+/*** Tables ***/
 
-
-
-
-
-/*
-	Tables should look pretty
-*/
 table.data {
 	margin-left:auto;
 	margin-right:auto;
@@ -1356,22 +1348,18 @@ table.data {
 		text-align:left;
 		padding:4px;
 	}
-
 	table.data tr {
 		border-top-style: solid;
 		border-top-width: 1px;
 	}
-
 		table.data tr:hover {
 			background:#FFFFCC;
 		}
-
 	table.data td {
 		font-size:10px;
 		padding:4px;
 		text-align:left;
 	}
-
 		table.data td.label {
 			font-weight:bold;
 			text-align:right;
@@ -1384,13 +1372,6 @@ table.data {
 
 
 
-
-
-
-
-
-
-
 /*
 	I think this is needed by some widgets. Maybe not?
 */
@@ -1400,4 +1381,119 @@ table.data {
 
 
 
+/*** Scrollbars ***/
 
+::-webkit-scrollbar{
+  width:15px;
+  height:15px;
+  background:transparent url(images/scrollbar/track.png) 0 0 repeat-y;
+}
+::-webkit-scrollbar-button:vertical{
+  display:block;
+  height:26px;
+  background:transparent -15px 0 no-repeat;
+}
+  /*
+  Disabled because the AIR 2 beta doesn't apply this selector until you hover
+  over each button:
+  body:not(.active) ::-webkit-scrollbar-button:vertical{
+    background-position:0 0;
+  }
+  */
+  ::-webkit-scrollbar-button:vertical:start{
+    display:none;
+  }
+  ::-webkit-scrollbar-button:vertical:active{
+    background-position:-30px 0;
+  }
+  ::-webkit-scrollbar-button:vertical:end:decrement{
+    background-image:url(images/scrollbar/button-vertical-bottom-up.png);
+  }
+  ::-webkit-scrollbar-button:vertical:end:increment{
+    height:16px;
+    background-image:url(images/scrollbar/button-vertical-bottom-down-square.png);
+  }
+::-webkit-scrollbar-track:vertical{
+  margin-top:0px;
+  margin-bottom:-11px;
+  background:transparent url(images/scrollbar/cap-top.png) 0 0 no-repeat;
+}
+::-webkit-scrollbar-track-piece{}
+  ::-webkit-scrollbar-track-piece:vertical:start{ /* Above thumb */
+    margin-top:4px;
+  }
+  ::-webkit-scrollbar-track-piece:vertical:end{}  /* Below thumb */
+
+/* Single buttons at the start and end: */
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:start:decrement,
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:end:increment{
+  display:block;
+  height:26px;
+}
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:start:increment,
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:end:decrement{
+  display:none;
+}
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:start:decrement{
+  background-image:url(images/scrollbar/button-vertical-top-up.png);
+}
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:end:increment{
+  background-image:url(images/scrollbar/button-vertical-bottom-down.png);
+}
+body.scrollbar-single-both ::-webkit-scrollbar-track:vertical{
+  margin-top:-11px;
+  margin-bottom:-11px;
+  background:transparent;
+}
+body.scrollbar-single-both ::-webkit-scrollbar-track-piece:vertical:start{
+  margin-top:0;
+}
+
+/* Doubled buttons at the start and end: */
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:start,
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:end{
+  display:block;
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:start:decrement{
+  height:16px;
+  background-image:url(images/scrollbar/button-vertical-top-up-square.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:start:increment{
+  background-image:url(images/scrollbar/button-vertical-top-down.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:end:decrement{
+  background-image:url(images/scrollbar/button-vertical-bottom-up.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:end:increment{
+  height:16px;
+  background-image:url(images/scrollbar/button-vertical-bottom-down-square.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-track:vertical{
+  margin-top:-11px;
+  margin-bottom:-11px;
+  background:transparent;
+}
+body.scrollbar-double-both ::-webkit-scrollbar-track-piece:vertical:start{
+  margin-top:0;
+}
+
+::-webkit-scrollbar-thumb:vertical{
+  min-height:24px;
+  border-width:8px 0;
+  -webkit-border-image:url(images/scrollbar/thumb-active.png) 8 0 8 0 stretch stretch;
+}
+/*
+Disabled because the AIR 2 beta doesn't apply this selector until you hover
+over the thumb:
+body:not(.active) ::-webkit-scrollbar-thumb:vertical{
+  -webkit-border-image:url(images/scrollbar/thumb-inactive.png) 8 0 8 0 stretch stretch;
+}
+*/
+::-webkit-scrollbar-corner:vertical{
+  background:transparent url(images/scrollbar/corner.png) 0 0 no-repeat;
+}
+/*
+::-webkit-scrollbar-resizer:vertical{
+  background:#eee;
+}
+*/
