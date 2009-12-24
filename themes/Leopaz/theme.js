@@ -1,17 +1,3 @@
-// Add the following to your user.js file to customize the interface:
-
-
-
-/*** Scrollbars ***/
-
-// Single arrows at both the start and the end
-// $('body').addClass('scrollbar-single-both');
-
-// Doubled arrows at both the start and the end
-// $('body').addClass('scrollbar-double-both');
-
-
-
 // Make #entryform resizable
 (function(){
   var $body             = $('body'),
@@ -46,7 +32,7 @@
       },
       startResizing = function(){
         $body
-          .mouseout(onMouseOut)
+          .mouseout(onMouseOut)     // Must bind this first so it runs first
           .mouseenter(onMouseEnter) // Backup for when body mouseout isn't caught
           .mouseup(onMouseUp)
           .mousemove(onMouseMove);
@@ -61,10 +47,20 @@
 
   $resize.prependTo($entryForm)
     .mousedown(function(ev){ startResizing(); })
-    .mouseup(function(ev){ stopResizing(); });
+    .mouseup(onMouseUp);
 
   window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, function(){
     var max = maxEntryFormHeight();
     if($entryForm.height() > max){ setEntryFormHeight(max); }
   });
 })();
+
+
+
+// Add the following to your user.js file to customize the interface:
+
+// Single scrollbar arrows at both the start and the end
+// $('body').addClass('scrollbar-single-both');
+
+// Double scrollbar arrows at both the start and the end
+// $('body').addClass('scrollbar-double-both');
