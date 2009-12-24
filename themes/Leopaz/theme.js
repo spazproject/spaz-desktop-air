@@ -12,22 +12,29 @@
 
 
 
-// Make entrybox resizable
+// Make #entryform resizable
 (function(){
   var $body             = $('body'),
       $timeline         = $('#timeline-tabs-content, .TabbedPanelsContentGroup'),
-      $entryform        = $('#entryform'),
-      entryformBottom   = parseInt($entryform.css('bottom'), 10),
-      $entryboxPopup    = $('#entrybox-popup'),
+      $entryForm        = $('#entryform'),
+      entryFormBottom   = parseInt($entryForm.css('bottom'), 10),
+      $entryBoxPopup    = $('#entrybox-popup'),
       $resize           = $('<div id="leopaz-entryform-resize"></div>');
+      setEntryFormHeight = function(newHeight){
+        $timeline.css('bottom', newHeight + 28);
+        $entryForm.height(newHeight);
+        $entryBoxPopup.css('bottom', newHeight - 11);
+      },
       onMouseMove = function(ev){
-        var entryformHeight = nativeWindow.height - ev.pageY - entryformBottom;
-        entryformHeight = Math.min(300, entryformHeight); // Set max height
-        entryformHeight = Math.max(33, entryformHeight);  // Set min height
+        var newHeight = nativeWindow.height - ev.pageY - entryFormBottom;
 
-        $timeline.css('bottom', entryformHeight + 28);
-        $entryform.height(entryformHeight);
-        $entryboxPopup.css('bottom', entryformHeight - 11);
+        // Set max height: don't overlap header
+        newHeight = Math.min(nativeWindow.height - 96, newHeight);
+
+        // Set min height: fit at least one line of text
+        newHeight = Math.max(34, newHeight);
+
+        setEntryFormHeight(newHeight);
       },
       bindMouseMove = function(){
         sch.note('- bind mousemove'); // FIXME: Testing; remove
@@ -38,7 +45,7 @@
         $body.unbind('mousemove', onMouseMove);
       };
 
-  $resize.prependTo($entryform).mousedown(function(ev){
+  $resize.prependTo($entryForm).mousedown(function(ev){
     sch.note('resize-'+ev.type); // FIXME: Testing; remove
     bindMouseMove();
   }).bind('mouseup', function(ev){
@@ -54,4 +61,10 @@
     unbindMouseMove();
   });
 
+  window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, function(){
+    var max = nativeWindow.height - 96;
+    if($entryForm.height() > max){
+      setEntryFormHeight(max);
+    }
+  });
 })();
