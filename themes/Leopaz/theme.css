@@ -550,10 +550,16 @@ a:hover{
         margin:0;
         padding:5px 5px 15px 5px;
         overflow:auto;
-        background:#f0f0f0 url(images/text-input-bg.png) 0 0 no-repeat;
-        border:0;
+        background:#f9f9f9 url(images/text-input-bg.png) 0 0 repeat-x;
+        border-left:1px solid #c1c1c1;
+        border-right:1px solid #c1c1c1;
+        border-top:0;
+        border-bottom:1px solid #d0d0d0;
         font-size:11px;
         text-align:left;
+      }
+      body:not(.active) #entrybox{
+        border-bottom:1px solid #e1e1e1;
       }
 			#entrybox:focus{
 			  outline:3px solid #98bde1; /* light blue */
@@ -1515,13 +1521,13 @@ body.scrollbar-double-both ::-webkit-scrollbar-track-piece:vertical:start{
 ::-webkit-scrollbar-thumb:vertical{
   min-height:24px;
   border-width:8px 0;
-  -webkit-border-image:url(images/scrollbar/thumb-active.png) 8 0 8 0 stretch stretch;
+  -webkit-border-image:url(images/scrollbar/thumb-active.png) 8 0 8 0 repeat repeat;
 }
 /*
 Disabled because the AIR 2 beta doesn't apply this selector until you hover
 over the thumb:
 body:not(.active) ::-webkit-scrollbar-thumb:vertical{
-  -webkit-border-image:url(images/scrollbar/thumb-inactive.png) 8 0 8 0 stretch stretch;
+  -webkit-border-image:url(images/scrollbar/thumb-inactive.png) 8 0 8 0 repeat repeat;
 }
 */
 ::-webkit-scrollbar-corner:vertical{
