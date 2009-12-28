@@ -63,13 +63,14 @@ a:hover{
     bottom:8px;
       /*  This effectively has 8px padding to fit the app drop shadow. Using
           all-four-sides positioning lets it expand properly on resize. */
+    border-top:1px solid rgba(204, 204, 204, 0.8);
     border-radius:4px;
       -webkit-border-radius:4px;
-	}
-	body:not(.active) #container{
-	  background-color:#d2d2d2;
-	  background-image:url(images/header-inactive-bg.png);
-	}
+  }
+  body:not(.active) #container{
+    background-color:#d2d2d2;
+    border-top-color:rgba(234, 234, 234, 0.9);
+  }
 
 
 		/*********************************************************************
@@ -91,7 +92,7 @@ a:hover{
         -webkit-border-top-left-radius:4px;
       border-top-right-radius:4px;
         -webkit-border-top-right-radius:4px;
-      border-top:1px solid #e2e2e2;
+      border-top:1px solid #e8e8e8;
       color:#fff;
       font-size:18px;
       text-align:left;
@@ -104,7 +105,7 @@ a:hover{
 			#window-buttons{
 				position:absolute;
         left:8px;
-        top:4px;
+        top:3px;
         width:35px;
         height:14px;
 			}
@@ -136,16 +137,16 @@ a:hover{
 				  left:21px;
 				  background-image:url(images/window-controls-minimize.png);
 				}
-			#header-label{
-			  display:block;
-			  width:45px;
-				margin:-2px auto 0;
-				font-size:13px;
-				font-weight:normal;
-				color:#000;
-				cursor:pointer;
-  			text-shadow:0 1px 1px #fff;
-			}
+      #header-label{
+        display:block;
+        width:45px;
+        margin:-3px auto 0;
+        font-size:13px;
+        font-weight:normal;
+        color:#000;
+        cursor:pointer;
+        text-shadow:0 1px 1px #fff;
+      }
       body:not(.active) #header-label{
         color:#717171;
       }
@@ -186,15 +187,15 @@ a:hover{
 				does not contribute anything visually to the look of the widget for our
 				default style.
 			*/
-			#timeline-tabs, .TabbedPanelsTabGroup{
-				position:absolute;
+      #timeline-tabs, .TabbedPanelsTabGroup{
+        position:absolute;
         left:8px;
         right:8px;
-        top:35px;
-				margin:0;
-				padding:0;
-			}
-			
+        top:34px;
+        margin:0;
+        padding:0;
+      }
+
 				/*				
 					From Spry CSS Notes:
 					This is the selector for the TabbedPanelsTab. This container houses
