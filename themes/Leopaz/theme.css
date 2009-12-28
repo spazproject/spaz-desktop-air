@@ -146,12 +146,12 @@ a:hover{
 				cursor:pointer;
   			text-shadow:0 1px 1px #fff;
 			}
-			body:not(.active) #header-label{
-        opacity:0.75;
+      body:not(.active) #header-label{
+        color:#717171;
       }
-			#header-label:after{
+      #header-label:after{
         content:' \025BE'; /* Down-pointing triangle */
-			}
+      }
 		
 		/*
 			The tabs group contains the tabs themselves and the content panels
@@ -681,6 +681,7 @@ a:hover{
     body:not(.active) #statusbar{
       background:-webkit-gradient(
         linear, left top, left bottom, from(#f1f1f1), to(#dfdfdf));
+      color:#414141;
     }
 			/*
 				The wrapper for the little loading animation
