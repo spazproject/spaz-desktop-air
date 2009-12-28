@@ -584,6 +584,8 @@ a:hover{
         left:0;
         right:0;
         bottom:55px;
+        max-width:300px;
+        margin:0 auto;
         padding:0;
         border-width:19px 16px 21px 16px;
         border-image:url(images/popup.png) 19 16 21 16 repeat repeat;
@@ -688,7 +690,6 @@ a:hover{
     body:not(.active) #statusbar{
       background:-webkit-gradient(
         linear, left top, left bottom, from(#f1f1f1), to(#dfdfdf));
-      color:#414141;
     }
 			/*
 				The wrapper for the little loading animation
@@ -709,7 +710,7 @@ a:hover{
 			  text-overflow:ellipsis;
 			}
       body:not(.active) #statusbar-text{
-        opacity:0.75;
+        color:#6f6f6f;
       }
 			span.statusbar-username{
 				font-weight:bold;
