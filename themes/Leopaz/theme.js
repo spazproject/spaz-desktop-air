@@ -6,6 +6,7 @@
       entryFormBottom   = parseInt($entryForm.css('bottom'), 10),
       $entryBoxPopup    = $('#entrybox-popup'),
       $resize           = $('<div id="leopaz-entryform-resize"></div>'),
+      resizing          = false,
       maxEntryFormHeight = function(){
         return nativeWindow.height - 96;
       },
@@ -15,6 +16,8 @@
         $entryBoxPopup.css('bottom', newHeight - 11);
       },
       onMouseMove = function(ev){
+        if(!resizing){ return; }
+
         var newHeight = nativeWindow.height - ev.pageY - entryFormBottom;
 
         // Set max height: don't overlap header
@@ -25,29 +28,23 @@
 
         setEntryFormHeight(newHeight);
       },
-      onMouseEnter  = function(ev){ stopResizing(); },
-      onMouseUp     = function(ev){ stopResizing(); },
+      onMouseUp     = function(ev){ resizing = false; },
+      onMouseEnter  = function(ev){ resizing = false; },
       onMouseOut    = function(ev){
-        if($(ev.target).is('body')){ stopResizing(); }
-      },
-      startResizing = function(){
-        $body
-          .mouseout(onMouseOut)     // Must bind this first so it runs first
-          .mouseenter(onMouseEnter) // Backup for when body mouseout isn't caught
-          .mouseup(onMouseUp)
-          .mousemove(onMouseMove);
-      },
-      stopResizing = function(){
-        $body
-          .unbind('mouseout',   onMouseOut)
-          .unbind('mouseenter', onMouseEnter)
-          .unbind('mouseup',    onMouseUp)
-          .unbind('mousemove',  onMouseMove);
+        if(resizing && $(ev.target).is('body')){
+          resizing = false;
+        }
       };
 
   $resize.prependTo($entryForm)
-    .mousedown(function(ev){ startResizing(); })
-    .mouseup(onMouseUp);
+    .mousedown(function(ev){
+      resizing = true;
+      $body
+        .mouseout(onMouseOut)     // Must bind this first so it runs first
+        .mouseenter(onMouseEnter) // Backup for when body mouseout isn't caught
+        .mouseup(onMouseUp)
+        .mousemove(onMouseMove);
+    }).mouseup(onMouseUp);
 
   window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, function(){
     var max = maxEntryFormHeight();
