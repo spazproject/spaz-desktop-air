@@ -1022,9 +1022,9 @@ div.timeline-entry:hover{
 		padding:0;
 		font-size:11px;
 	}
-		/*
-			This is the actual text of the posting
-		*/
+    div.status-thumbnails img{
+      margin:0 0 0.5em;
+    }
 		div.status-text{
 			font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
 			margin-bottom:4px;
