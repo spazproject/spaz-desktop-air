@@ -1174,7 +1174,10 @@ div.timeline-entry:hover{
 
 #panel-prefs .timeline-wrapper{
   background-color:#d6dde5; /* light blue */
-  border-top: 1px solid #404040;
+  border-top:1px solid #646464;
+}
+body:not(.active) #panel-prefs .timeline-wrapper{
+  border-top-color:#a9a9a9;
 }
 #prefs-form {
 	font-size:11px;
