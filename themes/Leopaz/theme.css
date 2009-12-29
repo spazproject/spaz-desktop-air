@@ -1287,8 +1287,10 @@ div.timeline-entry:hover{
                       padding-top:30px;
                       background:#fff;
                       border:2px solid #fff;
-                      -khtml-border-radius:8px;
-                      -webkit-box-shadow:2px 2px 5px #000;
+                      border-radius:8px;
+                        -webkit-border-radius:8px;
+                      box-shadow:2px 2px 5px #000;
+                        -webkit-box-shadow:2px 2px 5px #000;
                     }
                       #prefs-form legend{
                         position:absolute;
@@ -1299,19 +1301,16 @@ div.timeline-entry:hover{
                         margin:0;
                         padding:2px 8px 4px;
                         background:#d6dde5 url(images/prefs-panel-legend-bg.png) 0 0 repeat-x;
-                        -khtml-border-top-left-radius:8px;
-                        -khtml-border-top-right-radius:8px;
+                        border-top-left-radius:6px;
+                          -webkit-border-top-left-radius:6px;
+                        border-top-right-radius:6px;
+                          -webkit-border-top-right-radius:6px;
                         border-bottom:2px ridge #ebeef2;
                         font-weight:bold;
                       }
-                      /*
-                        #prefs-form legend {
-                            font-weight:bold;
-                        }
-                        */
-                        #prefs-form fieldset label {
-                            font-weight:normal;
-                        }
+                      #prefs-form fieldset label{
+                        font-weight:normal;
+                      }
 
 					/*
 						Buncha junk for various form fields, really only used in the Preferences section
