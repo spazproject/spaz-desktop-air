@@ -415,28 +415,33 @@ a:hover{
 							.panelmenu form input[type='button']:active{
 							  background-position:0 -42px;
 							}
-			        .panelmenu form input[type='text']{
-			          position:absolute;
-			          right:0;
-			          top:5px;
-                width:60px;
+              .panelmenu form input[type=text]{
+                position:absolute;
+                right:0;
+                top:5px;
+                width:80px;
                 height:19px;
-                padding:0 10px 0 20px;
-                background:transparent url(images/panel-menu-search-bg.png) 0 0 no-repeat;
-                  /* Instead of this custom background, the HTML should really use `<input type="search">` */
+                padding:0;
+                background:transparent;
                 border:0;
+                border-image:url(images/search-input.png) 0 9 0 18 repeat repeat;
+                  -webkit-border-image:url(images/search-input.png) 0 9 0 18 repeat repeat;
+                border-width:0 9px 0 18px;
                 color:#828282;
               }
-              #panel-user .panelmenu form input[type='text'],
-              #panel-public .panelmenu form input[type='text'],
-              #panel-search .panelmenu form input[type='text']{
-                width:100px;
-                background-image:url(images/panel-menu-search-wide-bg.png);
+              body:not(.active) .panelmenu form input[type=text]{
+                border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+                  -webkit-border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
               }
-          		.panelmenu form input[type='text']:focus{
-          		  color:#0f0f0f;
-                  /* TODO: Add blue glow if input[type] can't be changed to "search" */
-          		}
+              #panel-user   .panelmenu form input[type=text],
+              #panel-public .panelmenu form input[type=text],
+              #panel-search .panelmenu form input[type=text]{
+                width:120px;
+              }
+              .panelmenu form input[type='text']:focus{
+                color:#0f0f0f;
+                /* TODO: Add blue glow */
+              }
           		  div#panel-search .panelmenu form{
           		    text-align:right;
           		  }
