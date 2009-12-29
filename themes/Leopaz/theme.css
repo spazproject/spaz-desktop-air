@@ -194,6 +194,13 @@ a:hover{
         top:34px;
         margin:0;
         padding:0;
+        pointer-events:none;
+          /* Pass pointer events through this invisible wrapper to allow
+             dragging the entire header */
+      }
+      #timeline-tabs *, .TabbedPanelsTabGroup *{
+        pointer-events:auto;
+          /* Re-capture pointer events for visible controls, e.g., tabs */
       }
 
 				/*				
