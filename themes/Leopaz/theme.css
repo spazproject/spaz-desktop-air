@@ -1075,12 +1075,13 @@ div.timeline-entry:hover{
 	      .status-action:first-child{
 	        margin-left:0;
 	      }
-		    .status-action-fav      { background-image:url(images/status-fav-off.png); }
-	 			div.timeline-entry.favorited .status-action-fav{ background-image:url(images/status-fav-on.png); }
-		    .status-action-retweet  { background-image:url(images/status-retweet.png); }
-		    .status-action-dm       { background-image:url(images/status-dm.png); }
-		    .status-action-reply    { background-image:url(images/status-reply.png); }
-		    .status-action-del      { background-image:url(images/status-delete.png); text-indent:-9999em; }
+        .status-action-fav      { background-image:url(images/status-fav-off.png); }
+        div.timeline-entry.favorited .status-action-fav
+                                { background-image:url(images/status-fav-on.png); }
+        .status-action-retweet  { background-image:url(images/status-retweet.png); }
+        .status-action-dm       { background-image:url(images/status-dm.png); }
+        .status-action-reply    { background-image:url(images/status-reply.png); }
+        .status-action-del      { background-image:url(images/status-delete.png); text-indent:-9999em; }
 
 		/* the container for the "permalink" to the post */
 		div.status-link{
