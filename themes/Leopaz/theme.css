@@ -1302,6 +1302,9 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                       box-shadow:2px 2px 5px #000;
                         -webkit-box-shadow:2px 2px 5px #000;
                     }
+                      #prefs-serviceurls-fieldset fieldset{
+                        padding:8px 0 0;
+                      }
                       #prefs-form legend{
                         position:absolute;
                         top:0;
