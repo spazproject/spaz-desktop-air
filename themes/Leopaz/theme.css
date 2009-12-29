@@ -467,11 +467,11 @@ a:hover{
 						/*
 							The .timeline divs are all inside .TabbedPanelsContent divs
 						*/
-						div.timeline {
-							background:transparent url('images/dropshadow.png') 0 -3px repeat-x;
-							padding:0px;
-							margin:0px;
-						}
+            div.timeline {
+              margin:0px;
+              padding:0px;
+              background:transparent url(images/dropshadow.png) 0 -6px repeat-x;
+            }
 
 
 							/*
@@ -550,7 +550,7 @@ a:hover{
         margin:0;
         padding:5px 5px 15px 5px;
         overflow:auto;
-        background:#f9f9f9 url(images/text-input-bg.png) 0 0 repeat-x;
+        background:#f9f9f9 url(images/text-input-top-bg.png) 0 0 repeat-x;
         border-left:1px solid #c1c1c1;
         border-right:1px solid #c1c1c1;
         border-top:0;
