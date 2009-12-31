@@ -385,10 +385,10 @@ a:hover{
 					/*
 						The panelmenu appears at the top of each timeline
 					*/
-					.panelmenu{
+          .panelmenu{
             height:34px;
-            background:#000 url(images/panel-menu-bg.png) 0 0 repeat-x;
-					}
+            background:#000 url(images/panel-menu/bg.png) 0 0 repeat-x;
+          }
 						.panelmenu form{
   					  position:relative;
 							margin:0 7px 0;
@@ -400,21 +400,30 @@ a:hover{
   							font-size:10px;
                 margin:2px 0 2px;
   						}
-							.panelmenu form input[type='button']{
+              .panelmenu form input[type=button]{
                 width:48px;
                 height:21px;
-                background:transparent url(images/panel-menu-button.png) 0 0 no-repeat;
+                padding:0;
+                background:transparent;
                 border:0;
-								color:#f1f1f1;
-								-khtml-border-radius:0;
-							}
-							.panelmenu form input[type='button']:hover{
-                background-position:0 -21px;
-								color:#FFF;
-							}
-							.panelmenu form input[type='button']:active{
-							  background-position:0 -42px;
-							}
+                border-radius:0;
+                  -webkit-border-radius:0;
+                border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
+                border-width:0 2px;
+                color:#f1f1f1;
+              }
+              .panelmenu form input[type=button]:hover{
+                border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
+                /* border-image-source:url(images/panel-menu/button-hover.png); */
+                color:#fff;
+              }
+              .panelmenu form input[type=button]:active{
+                border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
+                /* border-image-source:url(images/panel-menu/button-active.png); */
+              }
               .panelmenu form input[type=text]{
                 position:absolute;
                 right:0;
@@ -452,10 +461,9 @@ a:hover{
           		  div#panel-search .panelmenu form input#search-for{
           		    text-align:left;
           		  }
-          		  div#panel-search .panelmenu form input#search-go{
-          		    width:28px;
-          		    background-image:url(images/panel-menu-button-small.png);
-          		  }
+                div#panel-search .panelmenu form input#search-go{
+                  width:28px;
+                }
           		  div#panel-search .panelmenu form input#search-help{
           		    float:left;
           		  }
@@ -647,7 +655,7 @@ a:hover{
           }
             #irt-message{}
         #entrybox-popup input[type=button]{
-          background:transparent url(images/panel-menu-bg.png) center center repeat-x;
+          background:transparent url(images/panel-menu/bg.png) center center repeat-x;
           border:2px solid #4f5052;
           color:#fff;
         }
