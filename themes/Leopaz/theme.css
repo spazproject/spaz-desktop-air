@@ -442,32 +442,25 @@ a:hover{
                 border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
                   -webkit-border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
               }
-              #panel-user   .panelmenu form input[type=text],
-              #panel-public .panelmenu form input[type=text],
-              #panel-search .panelmenu form input[type=text]{
-                width:120px;
-              }
               .panelmenu form input[type='text']:focus{
                 color:#0f0f0f;
                 /* TODO: Add blue glow */
               }
-          		  div#panel-search .panelmenu form{
-          		    text-align:right;
-          		  }
-          		  div#panel-search .panelmenu form input{
-          		    position:static;
-          		    text-align:center;
-          		  }
-          		  div#panel-search .panelmenu form input#search-for{
-          		    text-align:left;
-          		  }
-                div#panel-search .panelmenu form input#search-go{
-                  width:28px;
-                }
-          		  div#panel-search .panelmenu form input#search-help{
-          		    float:left;
-          		  }
-			        
+              #panel-user   .panelmenu form input[type=text],
+              #panel-public .panelmenu form input[type=text]{
+                width:120px;
+              }
+              #panel-search .panelmenu form input[type=text]{
+                position:static;
+                width:60px;
+              }
+              #panel-search .panelmenu form input[type=button]{
+                width:auto;
+                padding:0 4px;
+              }
+              #panel-search .panelmenu form input#search-help{
+                float:right;
+              }
 
 					/*
 						This wraps to provide scrolling for div.timeline
