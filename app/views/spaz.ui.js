@@ -142,8 +142,8 @@ Spaz.UI.resetStatusBar = function() {
 
 Spaz.UI.flashStatusBar = function() {
     for (var i = 0; i < 3; i++) {
-        $('#statusbar').fadeOut(400);
-        $('#statusbar').fadeIn(400);
+        $('#statusbar-text').fadeOut(400);
+        $('#statusbar-text').fadeIn(400);
     }
 }
 
