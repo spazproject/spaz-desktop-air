@@ -886,20 +886,16 @@ div.timeline-entry{
 div.timeline-entry:hover{
   opacity:1;
 }
-	/*
-		Entries that are replies directed at the user
-	*/
-	div.timeline-entry.reply{
-    border-top:1px solid #fdec64;
-    background:#ffffba url(images/timeline-entry-mention-bg.png) 0 0 repeat-x;
-	}
-	/*
-		Entries that are direct messages to the user
-	*/
-	div.timeline-entry.dm{
-    border-top:1px solid #f99;
-    background:#fcc url(images/timeline-entry-dm-bg.png) 0 0 repeat-x;
-	}
+  div.timeline-entry.reply{ /* Replies/mentions */
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
+    outline:1px solid #fcec8f;
+  }
+  div.timeline-entry.dm{ /* Direct messages */
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
+    outline:1px solid #ffb3b2;
+  }
 	/*
 		Entries that have been "read" (selected and then deselected)
 	*/
@@ -966,7 +962,6 @@ div.timeline-entry:hover{
       linear, left top, left bottom, from(#989797), to(#666));
     border-top:1px solid #7f7e7e;
   }
-  
 		div.timeline-entry.ui-selected div.status-link{
 			font-size:9px;
 			color:#CCCCCC;
