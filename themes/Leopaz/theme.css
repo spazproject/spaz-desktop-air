@@ -881,7 +881,7 @@ ul.popup-menu{
 */
 div.timeline-entry{
   position:relative;
-	padding:10px 5px;
+	padding:5px;
 	clear:both;
 	overflow:hidden;
 }
@@ -910,14 +910,6 @@ div.timeline-entry:hover{
 	div.timeline-entry.read:hover{
 	  opacity:1;
 	}
-		div.timeline-entry.read:not(.ui-selected) .status-text{
-      margin-top:5px; /* Show only status text */
-      margin-bottom:99px;
-		  overflow:hidden;
-			color:#999;
-			text-overflow:ellipsis;
-			white-space:nowrap;
-		}
 		div.timeline-entry.read.reply .status-text,
 		div.timeline-entry.read.dm .status-text{
 		  color:#666;
@@ -926,6 +918,7 @@ div.timeline-entry:hover{
 			color:#f0f0f0;
 		}
     div.timeline-entry.read:not(.ui-selected) div.user{
+      padding:0;
       overflow:hidden;
       opacity:0.75;
       white-space:nowrap;
@@ -934,19 +927,30 @@ div.timeline-entry:hover{
     div.timeline-entry.read:not(.ui-selected):hover div.user{
       opacity:1;
     }
-    div.timeline-entry.read:not(.ui-selected):hover .status-text{
-      color:#000;
+      div.timeline-entry.read:not(.ui-selected) div.user div.user-image{
+        width:24px;
+        height:24px;
+        margin:0 auto;
+        background-size:24px 24px;
+          -webkit-background-size:24px 24px;
+      }
+      div.timeline-entry.read:not(.ui-selected) div.user div.user-screen-name{
+        display:none;
+      }
+    div.timeline-entry.read:not(.ui-selected) div.status{
+      padding:0;
     }
-    div.timeline-entry.read:not(.ui-selected) div.user div.user-image{
-      width:24px;
-      height:24px;
-      margin:0 auto;
-      background-size:24px 24px;
-        -webkit-background-size:24px 24px;
-    }
-    div.timeline-entry.read:not(.ui-selected) div.user div.user-screen-name{
-      display:none;
-    }
+      div.timeline-entry.read:not(.ui-selected) .status-text{
+        margin-top:5px; /* Show only status text */
+        margin-bottom:99px;
+        overflow:hidden;
+        color:#999;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+      div.timeline-entry.read:not(.ui-selected):hover .status-text{
+        color:#000;
+      }
 
 	/*
 		Selected entries
@@ -984,16 +988,15 @@ div.timeline-entry:hover{
 	/*
 		A container for the avatar image and the user's screen name
 	*/
-	div.user{
-		position:relative;
-		float:left;
-		width:65px;
-		margin-right:5px;
-		overflow:visible;
-		text-align:center;
-	}
-
-		div.user-image{
+  div.user{
+    position:relative;
+    float:left;
+    width:65px;
+    padding:5px 5px 0 0;
+    overflow:visible;
+    text-align:center;
+  }
+    div.user-image{
       width:48px;
       height:48px;
       margin:0 auto 2px;
@@ -1004,10 +1007,9 @@ div.timeline-entry:hover{
       border-radius:4px;
         -webkit-border-radius:4px;
       box-shadow:0 1px 5px #333;
-  			-webkit-box-shadow:0 1px 5px #333;
+        -webkit-box-shadow:0 1px 5px #333;
       text-indent:-9999em;
-		}
-
+    }
 		div.user-screen-name{
 			font-size:10px;
 			overflow:hidden;
@@ -1019,11 +1021,22 @@ div.timeline-entry:hover{
 	/*
 		This is the container for the "status", which is the message posted + some metadata about it + some action links
 	*/
-	div.status{
-		margin:0 0 0 70px;
-		padding:0;
-		font-size:11px;
-	}
+  div.status{
+    min-height:60px; /* Pushes bg image to bottom of div.timeline-entry */
+    margin:0 0 0 70px;
+    padding:5px 0;
+    background:transparent right bottom no-repeat;
+    font-size:11px;
+  }
+  div.timeline-entry.reply div.status{
+    background-image:url(images/timeline-mention-bg.png);
+  }
+  div.timeline-entry.favorited div.status{
+    background-image:url(images/timeline-favorite-bg.png);
+  }
+  div.timeline-entry.dm div.status{
+    background-image:url(images/timeline-dm-bg.png);
+  }
     div.status-thumbnails img{
       margin:0 0 0.5em;
     }
@@ -1031,13 +1044,13 @@ div.timeline-entry:hover{
 			font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
 			margin-bottom:4px;
 		}
-			div.status-text a:link{
-				text-overflow:ellipsis;
-	            white-space: nowrap;
-				max-width:150px;
-				overflow:hidden;
-				display:inline-block;
-			}
+      div.status-text a:link{
+        display:inline-block;
+        max-width:150px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
     div.status-actions{
       position:absolute;
