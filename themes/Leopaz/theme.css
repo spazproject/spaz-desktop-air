@@ -494,7 +494,7 @@ a:hover{
                 right:8px;
                 top:96px;
                 margin:-1px 0 0;
-                padding:6px 8px;
+                padding:0 8px;
                 overflow:hidden;
                 background:-webkit-gradient(
                   linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
@@ -503,6 +503,7 @@ a:hover{
                 cursor:default;
                 font-size:11px;
                 font-weight:bold;
+                line-height:25px;
                 text-overflow:ellipsis;
                 white-space:nowrap;
               }
