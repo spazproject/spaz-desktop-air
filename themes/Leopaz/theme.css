@@ -962,6 +962,7 @@ div.timeline-entry:hover{
       linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
     border-top:1px solid #519BD6;
     color:#f0f0f0;
+    outline:0;
   }
   body:not(.active) div.timeline-entry.ui-selected{
     background:-webkit-gradient(
@@ -1029,9 +1030,15 @@ div.timeline-entry:hover{
     font-size:11px;
   }
   div.timeline-entry.reply div.status{
+    background-image:url(images/timeline-mention-bg-inset100.png);
+  }
+  div.timeline-entry.reply.ui-selected div.status{
     background-image:url(images/timeline-mention-bg.png);
   }
   div.timeline-entry.favorited div.status{
+    background-image:url(images/timeline-favorite-bg-inset100.png);
+  }
+  div.timeline-entry.favorited.ui-selected div.status{
     background-image:url(images/timeline-favorite-bg.png);
   }
   div.timeline-entry.dm div.status{
