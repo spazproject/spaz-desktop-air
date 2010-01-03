@@ -1054,8 +1054,10 @@ div.timeline-entry:hover{
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
     div.status-actions{
       position:absolute;
-      right:4px;
-      bottom:4px;
+      left:-9999em;
+      top:-9999em;
+        /*  Position out of bounds, rather than `display:none`, to hide this
+            element but still enable -webkit-transition when it reappears. */
       background:rgba(0, 0, 0, 0.5);
       border-radius:10px;
         -webkit-border-radius:10px;
@@ -1065,10 +1067,14 @@ div.timeline-entry:hover{
     }
     div.timeline-entry:hover:not(.read) div.status-actions,
     div.timeline-entry.ui-selected div.status-actions{
+      left:auto;
+      right:4px;
+      top:auto;
+      bottom:4px;
       opacity:1;
     }
-	    .status-action,
-	    .status-action-del{
+      .status-action,
+      .status-action-del{
         display:inline-block;
         width:23px;
         height:20px;
@@ -1077,7 +1083,7 @@ div.timeline-entry:hover{
         background-position:0 0;
         background-repeat:no-repeat;
         vertical-align:middle;
-	    }
+      }
 	    .status-action:hover,
 	    .status-action-del:hover{
 	      background-position:0 -20px;
