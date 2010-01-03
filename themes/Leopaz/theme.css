@@ -856,6 +856,7 @@ ul.popup-menu{
     border-radius:0;
       -webkit-border-radius:0;
     color:#000;
+    cursor:default;
     font-size:10px;
     list-style:none;
     text-decoration:none;
