@@ -473,10 +473,13 @@ a:hover{
 						right:0px;
 						bottom:0px;
 					}
-					#timelinewrapper-prefs {
-						top:0px;
-					}
-					
+          #timelinewrapper-userlists{
+            top:60px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+          }
+          #timelinewrapper-prefs{
+            top:0px;  /* No .panelmenu */
+          }
+
 						/*
 							The .timeline divs are all inside .TabbedPanelsContent divs
 						*/
@@ -485,7 +488,29 @@ a:hover{
               padding:0px;
               background:transparent url(images/dropshadow.png) 0 -6px repeat-x;
             }
-
+              #timeline-userlists-full-name{
+                position:fixed;
+                left:8px;
+                right:8px;
+                top:96px;
+                margin:-1px 0 0;
+                padding:6px 8px;
+                overflow:hidden;
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+                border-bottom:1px solid #c0c7cf;
+                color:#202020;
+                cursor:default;
+                font-size:11px;
+                font-weight:bold;
+                text-overflow:ellipsis;
+                white-space:nowrap;
+              }
+              body:not(.active) #timeline-userlists-full-name{
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#fff), to(#ededed));
+                color:#717171;
+              }
 
 							/*
 								This is effectively dead since the Twitter API doesn't support paging anymore.
