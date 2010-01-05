@@ -398,36 +398,32 @@ a:hover{
             }
   						.panelmenu form input{
   							font-size:10px;
-                margin:2px 0 2px;
+                margin:3px 0 2px;
   						}
               .panelmenu form input[type=button]{
                 width:48px;
-                height:21px;
+                height:20px;
                 padding:0;
                 background:transparent;
                 border:0;
                 border-radius:0;
                   -webkit-border-radius:0;
-                border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
-                  -webkit-border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
-                border-width:0 2px;
-                color:#f1f1f1;
-              }
-              .panelmenu form input[type=button]:hover{
-                border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
-                  -webkit-border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
-                /* border-image-source:url(images/panel-menu/button-hover.png); */
+                border-image:url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
+                border-width:0 8px;
                 color:#fff;
+                cursor:default;
+              }
+              .panelmenu form input[type=button][value=Refresh]{
+                width:55px;
               }
               .panelmenu form input[type=button]:active{
-                border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
-                  -webkit-border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
+                border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
                 /* border-image-source:url(images/panel-menu/button-active.png); */
               }
               .panelmenu form input[type=text]{
-                position:absolute;
-                right:0;
-                top:5px;
+                float:right;
                 width:80px;
                 height:19px;
                 padding:0;
@@ -451,12 +447,15 @@ a:hover{
                 width:120px;
               }
               #panel-search .panelmenu form input[type=text]{
-                position:static;
+                position:relative;
+                top:-1px;
+                float:none;
                 width:60px;
               }
               #panel-search .panelmenu form input[type=button]{
                 width:auto;
-                padding:0 4px;
+                margin-left:-2px;
+                margin-right:-2px;
               }
               #panel-search .panelmenu form input#search-help{
                 float:right;
@@ -510,6 +509,7 @@ a:hover{
               body:not(.active) #timeline-userlists-full-name{
                 background:-webkit-gradient(
                   linear, left top, left bottom, from(#fff), to(#ededed));
+                border-bottom-color:#b4b4b4;
                 color:#717171;
               }
 

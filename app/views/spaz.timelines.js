@@ -797,8 +797,8 @@ var UserlistsTimeline = function(args) {
 		var username = Spaz.Prefs.getUser();
 		var password = Spaz.Prefs.getPass();
 		thisUT.twit.setCredentials(username, password);
-		sch.error("Loading lists for  @"+username+ "…");
-		Spaz.UI.statusBar("Loading lists for  @"+username+ "…");
+		sch.error("Loading lists for @"+username+ "…");
+		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
 		Spaz.UI.showLoading();
 		thisUT.twit.getLists(username, function(data) {
 			/*
@@ -886,11 +886,11 @@ var UserlistsTimeline = function(args) {
 				});
 			});
 			
-			Spaz.UI.statusBar("Lists loaded for  @"+username+ "…");
+			Spaz.UI.statusBar("Lists loaded for @"+username+ "…");
 			Spaz.UI.hideLoading();
 			
 		}, function(msg) {
-			Spaz.UI.statusBar("Loading lists for  @"+username+ " failed!");
+			Spaz.UI.statusBar("Loading lists for @"+username+ " failed!");
 			Spaz.UI.hideLoading();
 			
 		});
