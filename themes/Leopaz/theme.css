@@ -323,22 +323,22 @@ a:hover{
 					body:not(.active) .tab-icon{
 					  opacity:0.5;
 					}
-				    #tab-friends .tab-icon                              { background:url(images/tab-icon-timeline.png) 7px 3px no-repeat; }
-				    #tab-friends.TabbedPanelsTabSelected .tab-icon      { background:url(images/tab-icon-timeline-selected.png) 4px 0 no-repeat; }
-				    #tab-user .tab-icon                                 { background:url(images/tab-icon-user.png) 7px 5px no-repeat; }
-				    #tab-user.TabbedPanelsTabSelected .tab-icon         { background:url(images/tab-icon-user-selected.png) 4px 1px no-repeat; }
-				    #tab-favorites .tab-icon                            { background:url(images/tab-icon-favorites.png) 8px 4px no-repeat; }
-				    #tab-favorites.TabbedPanelsTabSelected .tab-icon    { background:url(images/tab-icon-favorites-selected.png) 5px 0 no-repeat; }
-				    #tab-userlists .tab-icon                            { background:url(images/tab-icon-userlists.png) 9px 6px no-repeat; }
-				    #tab-userlists.TabbedPanelsTabSelected .tab-icon    { background:url(images/tab-icon-userlists-selected.png) 6px 2px no-repeat; }
-				    #tab-public .tab-icon                               { background:url(images/tab-icon-public.png) 8px 3px no-repeat; }
-				    #tab-public.TabbedPanelsTabSelected .tab-icon       { background:url(images/tab-icon-public-selected.png) 5px 0 no-repeat; }
-				    #tab-search .tab-icon                               { background:url(images/tab-icon-search.png) 7px 4px no-repeat; }
-				    #tab-search.TabbedPanelsTabSelected .tab-icon       { background:url(images/tab-icon-search-selected.png) 5px 1px no-repeat; }
-				    #tab-followerslist .tab-icon                          { background:url(images/tab-icon-following.png) 7px 5px no-repeat; }
-				    #tab-followerslist.TabbedPanelsTabSelected .tab-icon  { background:url(images/tab-icon-following-selected.png) 4px 1px no-repeat; }
-				    #tab-prefs .tab-icon                                { background:url(images/tab-icon-prefs.png) 6px 3px no-repeat; }
-				    #tab-prefs.TabbedPanelsTabSelected .tab-icon        { background:url(images/tab-icon-prefs-selected.png) 3px 0 no-repeat; }
+          #tab-friends .tab-icon                                { background:url(images/tab-icon-timeline.png) 7px 3px no-repeat; }
+          #tab-friends.TabbedPanelsTabSelected .tab-icon        { background:url(images/tab-icon-timeline-selected.png) 4px 0 no-repeat; }
+          #tab-user .tab-icon                                   { background:url(images/tab-icon-user.png) 8px 5px no-repeat; }
+          #tab-user.TabbedPanelsTabSelected .tab-icon           { background:url(images/tab-icon-user-selected.png) 5px 2px no-repeat; }
+          #tab-favorites .tab-icon                              { background:url(images/tab-icon-favorites.png) 8px 4px no-repeat; }
+          #tab-favorites.TabbedPanelsTabSelected .tab-icon      { background:url(images/tab-icon-favorites-selected.png) 5px 0 no-repeat; }
+          #tab-userlists .tab-icon                              { background:url(images/tab-icon-userlists.png) 8px 6px no-repeat; }
+          #tab-userlists.TabbedPanelsTabSelected .tab-icon      { background:url(images/tab-icon-userlists-selected.png) 5px 2px no-repeat; }
+          #tab-public .tab-icon                                 { background:url(images/tab-icon-public.png) 8px 3px no-repeat; }
+          #tab-public.TabbedPanelsTabSelected .tab-icon         { background:url(images/tab-icon-public-selected.png) 5px 0 no-repeat; }
+          #tab-search .tab-icon                                 { background:url(images/tab-icon-search.png) 7px 4px no-repeat; }
+          #tab-search.TabbedPanelsTabSelected .tab-icon         { background:url(images/tab-icon-search-selected.png) 5px 1px no-repeat; }
+          #tab-followerslist .tab-icon                          { background:url(images/tab-icon-followers.png) 6px 4px no-repeat; }
+          #tab-followerslist.TabbedPanelsTabSelected .tab-icon  { background:url(images/tab-icon-followers-selected.png) 4px 0 no-repeat; }
+          #tab-prefs .tab-icon                                  { background:url(images/tab-icon-prefs.png) 6px 3px no-repeat; }
+          #tab-prefs.TabbedPanelsTabSelected .tab-icon          { background:url(images/tab-icon-prefs-selected.png) 3px 0 no-repeat; }
 
 			/*
 				These are the content panels, wrapped inside a single container div
@@ -385,10 +385,10 @@ a:hover{
 					/*
 						The panelmenu appears at the top of each timeline
 					*/
-					.panelmenu{
+          .panelmenu{
             height:34px;
-            background:#000 url(images/panel-menu-bg.png) 0 0 repeat-x;
-					}
+            background:#000 url(images/panel-menu/bg.png) 0 0 repeat-x;
+          }
 						.panelmenu form{
   					  position:relative;
 							margin:0 7px 0;
@@ -400,61 +400,67 @@ a:hover{
   							font-size:10px;
                 margin:2px 0 2px;
   						}
-							.panelmenu form input[type='button']{
+              .panelmenu form input[type=button]{
                 width:48px;
                 height:21px;
-                background:transparent url(images/panel-menu-button.png) 0 0 no-repeat;
+                padding:0;
+                background:transparent;
                 border:0;
-								color:#f1f1f1;
-								-khtml-border-radius:0;
-							}
-							.panelmenu form input[type='button']:hover{
-                background-position:0 -21px;
-								color:#FFF;
-							}
-							.panelmenu form input[type='button']:active{
-							  background-position:0 -42px;
-							}
-			        .panelmenu form input[type='text']{
-			          position:absolute;
-			          right:0;
-			          top:5px;
-                width:60px;
+                border-radius:0;
+                  -webkit-border-radius:0;
+                border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
+                border-width:0 2px;
+                color:#f1f1f1;
+              }
+              .panelmenu form input[type=button]:hover{
+                border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
+                /* border-image-source:url(images/panel-menu/button-hover.png); */
+                color:#fff;
+              }
+              .panelmenu form input[type=button]:active{
+                border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
+                /* border-image-source:url(images/panel-menu/button-active.png); */
+              }
+              .panelmenu form input[type=text]{
+                position:absolute;
+                right:0;
+                top:5px;
+                width:80px;
                 height:19px;
-                padding:0 10px 0 20px;
-                background:transparent url(images/panel-menu-search-bg.png) 0 0 no-repeat;
-                  /* Instead of this custom background, the HTML should really use `<input type="search">` */
+                padding:0;
+                background:transparent;
                 border:0;
+                border-image:url(images/search-input.png) 0 9 0 18 repeat repeat;
+                  -webkit-border-image:url(images/search-input.png) 0 9 0 18 repeat repeat;
+                border-width:0 9px 0 18px;
                 color:#828282;
               }
-              #panel-user .panelmenu form input[type='text'],
-              #panel-public .panelmenu form input[type='text'],
-              #panel-search .panelmenu form input[type='text']{
-                width:100px;
-                background-image:url(images/panel-menu-search-wide-bg.png);
+              body:not(.active) .panelmenu form input[type=text]{
+                border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+                  -webkit-border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
               }
-          		.panelmenu form input[type='text']:focus{
-          		  color:#0f0f0f;
-                  /* TODO: Add blue glow if input[type] can't be changed to "search" */
-          		}
-          		  div#panel-search .panelmenu form{
-          		    text-align:right;
-          		  }
-          		  div#panel-search .panelmenu form input{
-          		    position:static;
-          		    text-align:center;
-          		  }
-          		  div#panel-search .panelmenu form input#search-for{
-          		    text-align:left;
-          		  }
-          		  div#panel-search .panelmenu form input#search-go{
-          		    width:28px;
-          		    background-image:url(images/panel-menu-button-small.png);
-          		  }
-          		  div#panel-search .panelmenu form input#search-help{
-          		    float:left;
-          		  }
-			        
+              .panelmenu form input[type='text']:focus{
+                color:#0f0f0f;
+                /* TODO: Add blue glow */
+              }
+              #panel-user   .panelmenu form input[type=text],
+              #panel-public .panelmenu form input[type=text]{
+                width:120px;
+              }
+              #panel-search .panelmenu form input[type=text]{
+                position:static;
+                width:60px;
+              }
+              #panel-search .panelmenu form input[type=button]{
+                width:auto;
+                padding:0 4px;
+              }
+              #panel-search .panelmenu form input#search-help{
+                float:right;
+              }
 
 					/*
 						This wraps to provide scrolling for div.timeline
@@ -604,20 +610,6 @@ a:hover{
         opacity:1;
         z-index:100;
       }
-        #chars-left{
-          float:left;
-          color:#999;
-          font-size:12px;
-        }
-          #chars-left-count{
-            font-weight:bold;
-          }
-          #chars-left-count.under{
-            color:#fff;
-          }
-          #chars-left-count.over{
-            color:#f00;
-          }
         #irt{}
           #irt-dismiss{
             position:relative;
@@ -641,24 +633,39 @@ a:hover{
             color:#fff;
           }
             #irt-message{}
-        #entrybox-popup input[type=button]{
-          background:transparent url(images/panel-menu-bg.png) center center repeat-x;
-          border:2px solid #4f5052;
-          color:#fff;
+        #chars-left{
+          float:left;
+          color:#999;
+          font-size:12px;
+          line-height:20px;
         }
-        #entrybox-popup input[type=button]:hover,
-        #entrybox-popup input[type=button]:focus,
-        #entrybox-popup input[type=button]:active{
-          background:-webkit-gradient(
-            linear, left top, left bottom, from(#668bf4), to(#2b64f0));
-          border-top:2px solid #5c83ea;
-          border-left:2px solid transparent;
-          border-right:2px solid transparent;
-          border-bottom:2px solid #1d58e7;
-        }
+          #chars-left-count{
+            font-weight:bold;
+          }
+          #chars-left-count.under{
+            color:#fff;
+          }
+          #chars-left-count.over{
+            color:#f00;
+          }
         #entrybox-actions{
           float:right;
         }
+          #entrybox-actions input[type=button]{
+            padding:0 8px;
+            background:-webkit-gradient(
+              linear, left top, left bottom, from(#333), to(#000));
+            border:1px solid #000;
+            color:#fff;
+            line-height:18px; /* = vertical border widths + #chars-left line-height */
+          }
+          #entrybox-actions input[type=button]:hover,
+          #entrybox-actions input[type=button]:focus,
+          #entrybox-actions input[type=button]:active{
+            background:-webkit-gradient(
+              linear, left top, left bottom, from(#668bf4), to(#2b64f0));
+            border-color:#5c83ea transparent #1d58e7 transparent;
+          }
 
 
 			/*
@@ -849,6 +856,7 @@ ul.popup-menu{
     border-radius:0;
       -webkit-border-radius:0;
     color:#000;
+    cursor:default;
     font-size:10px;
     list-style:none;
     text-decoration:none;
@@ -874,27 +882,23 @@ ul.popup-menu{
 */
 div.timeline-entry{
   position:relative;
-	padding:10px 5px;
+	padding:5px;
 	clear:both;
 	overflow:hidden;
 }
 div.timeline-entry:hover{
   opacity:1;
 }
-	/*
-		Entries that are replies directed at the user
-	*/
-	div.timeline-entry.reply{
-    border-top:1px solid #fdec64;
-    background:#ffffba url(images/timeline-entry-mention-bg.png) 0 0 repeat-x;
-	}
-	/*
-		Entries that are direct messages to the user
-	*/
-	div.timeline-entry.dm{
-    border-top:1px solid #f99;
-    background:#fcc url(images/timeline-entry-dm-bg.png) 0 0 repeat-x;
-	}
+  div.timeline-entry.reply{ /* Replies/mentions */
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
+    outline:1px solid #fcec8f;
+  }
+  div.timeline-entry.dm{ /* Direct messages */
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
+    outline:1px solid #ffb3b2;
+  }
 	/*
 		Entries that have been "read" (selected and then deselected)
 	*/
@@ -907,14 +911,6 @@ div.timeline-entry:hover{
 	div.timeline-entry.read:hover{
 	  opacity:1;
 	}
-		div.timeline-entry.read:not(.ui-selected) .status-text{
-      margin-top:5px; /* Show only status text */
-      margin-bottom:99px;
-		  overflow:hidden;
-			color:#999;
-			text-overflow:ellipsis;
-			white-space:nowrap;
-		}
 		div.timeline-entry.read.reply .status-text,
 		div.timeline-entry.read.dm .status-text{
 		  color:#666;
@@ -923,6 +919,7 @@ div.timeline-entry:hover{
 			color:#f0f0f0;
 		}
     div.timeline-entry.read:not(.ui-selected) div.user{
+      padding:0;
       overflow:hidden;
       opacity:0.75;
       white-space:nowrap;
@@ -931,19 +928,30 @@ div.timeline-entry:hover{
     div.timeline-entry.read:not(.ui-selected):hover div.user{
       opacity:1;
     }
-    div.timeline-entry.read:not(.ui-selected):hover .status-text{
-      color:#000;
+      div.timeline-entry.read:not(.ui-selected) div.user div.user-image{
+        width:24px;
+        height:24px;
+        margin:0 auto;
+        background-size:24px 24px;
+          -webkit-background-size:24px 24px;
+      }
+      div.timeline-entry.read:not(.ui-selected) div.user div.user-screen-name{
+        display:none;
+      }
+    div.timeline-entry.read:not(.ui-selected) div.status{
+      padding:0;
     }
-    div.timeline-entry.read:not(.ui-selected) div.user div.user-image{
-      width:24px;
-      height:24px;
-      margin:0 auto;
-      background-size:24px 24px;
-        -webkit-background-size:24px 24px;
-    }
-    div.timeline-entry.read:not(.ui-selected) div.user div.user-screen-name{
-      display:none;
-    }
+      div.timeline-entry.read:not(.ui-selected) .status-text{
+        margin-top:5px; /* Show only status text */
+        margin-bottom:99px;
+        overflow:hidden;
+        color:#999;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+      div.timeline-entry.read:not(.ui-selected):hover .status-text{
+        color:#000;
+      }
 
 	/*
 		Selected entries
@@ -955,13 +963,13 @@ div.timeline-entry:hover{
       linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
     border-top:1px solid #519BD6;
     color:#f0f0f0;
+    outline:0;
   }
   body:not(.active) div.timeline-entry.ui-selected{
     background:-webkit-gradient(
       linear, left top, left bottom, from(#989797), to(#666));
     border-top:1px solid #7f7e7e;
   }
-  
 		div.timeline-entry.ui-selected div.status-link{
 			font-size:9px;
 			color:#CCCCCC;
@@ -982,16 +990,15 @@ div.timeline-entry:hover{
 	/*
 		A container for the avatar image and the user's screen name
 	*/
-	div.user{
-		position:relative;
-		float:left;
-		width:65px;
-		margin-right:5px;
-		overflow:visible;
-		text-align:center;
-	}
-
-		div.user-image{
+  div.user{
+    position:relative;
+    float:left;
+    width:65px;
+    padding:5px 5px 0 0;
+    overflow:visible;
+    text-align:center;
+  }
+    div.user-image{
       width:48px;
       height:48px;
       margin:0 auto 2px;
@@ -1002,10 +1009,9 @@ div.timeline-entry:hover{
       border-radius:4px;
         -webkit-border-radius:4px;
       box-shadow:0 1px 5px #333;
-  			-webkit-box-shadow:0 1px 5px #333;
+        -webkit-box-shadow:0 1px 5px #333;
       text-indent:-9999em;
-		}
-
+    }
 		div.user-screen-name{
 			font-size:10px;
 			overflow:hidden;
@@ -1017,30 +1023,49 @@ div.timeline-entry:hover{
 	/*
 		This is the container for the "status", which is the message posted + some metadata about it + some action links
 	*/
-	div.status{
-		margin:0 0 0 70px;
-		padding:0;
-		font-size:11px;
-	}
-		/*
-			This is the actual text of the posting
-		*/
+  div.status{
+    min-height:60px; /* Pushes bg image to bottom of div.timeline-entry */
+    margin:0 0 0 70px;
+    padding:5px 0;
+    background:transparent right bottom no-repeat;
+    font-size:11px;
+  }
+  div.timeline-entry.reply div.status{
+    background-image:url(images/timeline-mention-bg-inset100.png);
+  }
+  div.timeline-entry.reply.ui-selected div.status{
+    background-image:url(images/timeline-mention-bg.png);
+  }
+  div.timeline-entry.favorited div.status{
+    background-image:url(images/timeline-favorite-bg-inset100.png);
+  }
+  div.timeline-entry.favorited.ui-selected div.status{
+    background-image:url(images/timeline-favorite-bg.png);
+  }
+  div.timeline-entry.dm div.status{
+    background-image:url(images/timeline-dm-bg.png);
+  }
+    div.status-thumbnails img{
+      margin:0 0 0.5em;
+    }
 		div.status-text{
 			font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
 			margin-bottom:4px;
 		}
-			div.status-text a:link{
-				text-overflow:ellipsis;
-	            white-space: nowrap;
-				max-width:150px;
-				overflow:hidden;
-				display:inline-block;
-			}
+      div.status-text a:link{
+        display:inline-block;
+        max-width:150px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
     div.status-actions{
       position:absolute;
-      right:4px;
-      bottom:4px;
+      left:-9999em;
+      top:-9999em;
+        /*  Position out of bounds, rather than `display:none`, to hide this
+            element but still enable -webkit-transition when it reappears. */
       background:rgba(0, 0, 0, 0.5);
       border-radius:10px;
         -webkit-border-radius:10px;
@@ -1050,10 +1075,14 @@ div.timeline-entry:hover{
     }
     div.timeline-entry:hover:not(.read) div.status-actions,
     div.timeline-entry.ui-selected div.status-actions{
+      left:auto;
+      right:4px;
+      top:auto;
+      bottom:4px;
       opacity:1;
     }
-	    .status-action,
-	    .status-action-del{
+      .status-action,
+      .status-action-del{
         display:inline-block;
         width:23px;
         height:20px;
@@ -1062,7 +1091,7 @@ div.timeline-entry:hover{
         background-position:0 0;
         background-repeat:no-repeat;
         vertical-align:middle;
-	    }
+      }
 	    .status-action:hover,
 	    .status-action-del:hover{
 	      background-position:0 -20px;
@@ -1070,12 +1099,13 @@ div.timeline-entry:hover{
 	      .status-action:first-child{
 	        margin-left:0;
 	      }
-		    .status-action-fav      { background-image:url(images/status-fav-off.png); }
-	 			div.timeline-entry.favorited .status-action-fav{ background-image:url(images/status-fav-on.png); }
-		    .status-action-retweet  { background-image:url(images/status-retweet.png); }
-		    .status-action-dm       { background-image:url(images/status-dm.png); }
-		    .status-action-reply    { background-image:url(images/status-reply.png); }
-		    .status-action-del      { background-image:url(images/status-delete.png); text-indent:-9999em; }
+        .status-action-fav      { background-image:url(images/status-fav-off.png); }
+        div.timeline-entry.favorited .status-action-fav
+                                { background-image:url(images/status-fav-on.png); }
+        .status-action-retweet  { background-image:url(images/status-retweet.png); }
+        .status-action-dm       { background-image:url(images/status-dm.png); }
+        .status-action-reply    { background-image:url(images/status-reply.png); }
+        .status-action-del      { background-image:url(images/status-delete.png); text-indent:-9999em; }
 
 		/* the container for the "permalink" to the post */
 		div.status-link{
@@ -1302,6 +1332,9 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                       box-shadow:2px 2px 5px #000;
                         -webkit-box-shadow:2px 2px 5px #000;
                     }
+                      #prefs-serviceurls-fieldset fieldset{
+                        padding:8px 0 0;
+                      }
                       #prefs-form legend{
                         position:absolute;
                         top:0;
