@@ -389,20 +389,20 @@ a:hover{
             height:34px;
             background:#000 url(images/panel-menu/bg.png) 0 0 repeat-x;
           }
-						.panelmenu form{
-  					  position:relative;
-							margin:0 7px 0;
-							padding:4px 0 0;
-							line-height:9px;
+            .panelmenu form{
+              position:relative;
+              margin:0 8px;
+              padding:4px 0 0;
+              line-height:9px;
               text-align:left;
             }
-  						.panelmenu form input{
-  							font-size:10px;
-                margin:3px 0 2px;
-  						}
+              .panelmenu form input{
+                font-size:10px;
+                margin:2px 0;
+              }
               .panelmenu form input[type=button]{
                 width:48px;
-                height:20px;
+                height:22px;
                 padding:0;
                 background:transparent;
                 border:0;
@@ -426,6 +426,7 @@ a:hover{
                 float:right;
                 width:80px;
                 height:19px;
+                margin-top:3px;
                 padding:0;
                 background:transparent;
                 border:0;
@@ -447,18 +448,16 @@ a:hover{
                 width:120px;
               }
               #panel-search .panelmenu form input[type=text]{
-                position:relative;
-                top:-1px;
                 float:none;
                 width:60px;
               }
               #panel-search .panelmenu form input[type=button]{
                 width:auto;
-                margin-left:-2px;
-                margin-right:-2px;
+                margin-right:-4px;
               }
               #panel-search .panelmenu form input#search-help{
                 float:right;
+                margin-right:0;
               }
 
 					/*
