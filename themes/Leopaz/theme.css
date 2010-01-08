@@ -936,9 +936,11 @@ div.timeline-entry:hover{
 	div.timeline-entry.read:hover{
 	  opacity:1;
 	}
-		div.timeline-entry.read.reply .status-text,
+		div.timeline-entry.read.reply .status-text{
+		  color:#ccbc5f;
+		}
 		div.timeline-entry.read.dm .status-text{
-		  color:#666;
+		  color:#cf9392;
 		}
 		div.timeline-entry.read.ui-selected .status-text{
 			color:#f0f0f0;
@@ -970,7 +972,6 @@ div.timeline-entry:hover{
         margin-top:5px; /* Show only status text */
         margin-bottom:99px;
         overflow:hidden;
-        color:#999;
         text-overflow:ellipsis;
         white-space:nowrap;
       }
