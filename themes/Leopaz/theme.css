@@ -349,17 +349,15 @@ a:hover{
 				default style, this container provides the background color and borders that
 				surround the content.
 			*/
-			#timeline-tabs-content,
-			.TabbedPanelsContentGroup{
-				position:absolute;
+      #timeline-tabs-content,
+      .TabbedPanelsContentGroup{
+        position:absolute;
         left:0;
-				right:0;
+        right:0;
         top:60px;
-/*        bottom:90px;*/
-				bottom:94px;
-				clear:both;
-				background-color:#FFFFFF;
-			}
+        bottom:94px;
+        clear:both;
+      }
 
 				/* This is the selector for the Content panel. The Content panel holds the
 				 * content for a single tabbed panel. For our default style, this container
@@ -460,19 +458,34 @@ a:hover{
                 margin-right:0;
               }
 
-					/*
-						This wraps to provide scrolling for div.timeline
-					*/
-					.timeline-wrapper{
-						overflow:auto;
-						position:absolute;
-						top:34px;
-						left:0px;
-						right:0px;
-						bottom:0px;
-					}
+          /*
+           This wraps to provide scrolling for div.timeline
+          */
+          .timeline-wrapper{
+            position:absolute;
+            top:34px;
+            left:0px;
+            right:0px;
+            bottom:0px;
+            overflow:auto;
+          }
+          .timeline-wrapper,
+          #timeline-tabs-content{
+            background:-webkit-gradient(
+              linear, left top, left bottom,
+              from(#49525F), to(#7C8695),
+              color-stop(0.005, #69727F), color-stop(0.99, #8C96A5));
+                /*  These `color-stop` values create top and bottom inner
+                    shadows. However, the shadow heights are percent-based;
+                    static heights would be ideal. */
+          }
           #timelinewrapper-userlists{
             top:60px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+            background:transparent;
+              /*  Show the background for `#timeline-tabs-content`, not this
+                  element. This is because `#timeline-userlists-full-name` is
+                  initially empty, which leaves the normal `.timeline-wrapper`
+                  background with a floating, clearly fake "drop shadow". */
           }
           #timelinewrapper-prefs{
             top:0px;  /* No .panelmenu */
@@ -510,6 +523,9 @@ a:hover{
                   linear, left top, left bottom, from(#fff), to(#ededed));
                 border-bottom-color:#b4b4b4;
                 color:#717171;
+              }
+              #timeline-userlists-full-name:empty{
+                border-bottom:0;
               }
 
 							/*
