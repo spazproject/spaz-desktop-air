@@ -924,18 +924,21 @@ div.timeline-entry:hover{
       linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
     outline:1px solid #ffb3b2;
   }
-	/*
-		Entries that have been "read" (selected and then deselected)
-	*/
-	div.timeline-entry.read{}
-	div.timeline-entry.read:not(.ui-selected){
+  /*
+  	Entries that have been "read" (selected and then deselected)
+  */
+  div.timeline-entry.read{}
+  div.timeline-entry.read:not(.ui-selected){
     max-height:25px;
     padding-top:5px;
     padding-bottom:5px;
   }
-	div.timeline-entry.read:hover{
-	  opacity:1;
-	}
+  div.timeline-entry.read:hover{
+    opacity:1;
+  }
+    div.timeline-entry.read .status-text{
+      color:#999;
+    }
 		div.timeline-entry.read.reply .status-text{
 		  color:#ccbc5f;
 		}
