@@ -154,8 +154,9 @@ AppTimeline.prototype.refresh = function() {
  */
 var FriendsTimeline = function() {
 	
-	var thisFT    = this,
-	    $timeline = $('#timeline-friends');
+	var thisFT           = this,
+	    $timeline        = $('#timeline-friends'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	this.shurl = new SpazShortURL();
 
@@ -237,10 +238,7 @@ var FriendsTimeline = function() {
 			/*
 				Add new items
 			*/
-			// $timeline.siblings('.loading').hide();
-			$timeline.parent().children('.loading').hide();
-				// Using `.parent().children()` because `.siblings()` kept returning
-				// an empty set. wtf.
+			$timelineWrapper.children('.loading').hide();
 			thisFT.timeline.addItems(no_dupes);
 			// thisFT.sortByAttribute('data-timestamp', 'data-status-id');
 
@@ -265,8 +263,8 @@ var FriendsTimeline = function() {
 			*/
 			var offset_after = $oldFirst.offset().top;
 			var offset_diff = Math.abs(offset_before - offset_after);
-			if ($timeline.parent().scrollTop() > 0) {
-				$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );
+			if ($timelineWrapper.scrollTop() > 0) {
+				$timelineWrapper.scrollTop( $timelineWrapper.scrollTop() + offset_diff );
 			}
 
 			/*
@@ -355,8 +353,9 @@ FriendsTimeline.prototype.reset = function() {
  */
 var PublicTimeline = function(args) {
 	
-	var thisPT    = this,
-	    $timeline = $('#timeline-public');
+	var thisPT           = this,
+	    $timeline        = $('#timeline-public'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	/*
@@ -411,7 +410,7 @@ var PublicTimeline = function(args) {
 				
 			};
 
-			$timeline.parent().children('.loading').hide();
+			$timelineWrapper.children('.loading').hide();
 			thisPT.timeline.addItems(no_dupes);
 
 			/*
@@ -461,8 +460,9 @@ PublicTimeline.prototype = new AppTimeline();
  */
 var FavoritesTimeline = function(args) {
 	
-	var thisFVT   = this,
-	    $timeline = $('#timeline-favorites');
+	var thisFVT          = this,
+	    $timeline        = $('#timeline-favorites'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	/*
@@ -520,7 +520,7 @@ var FavoritesTimeline = function(args) {
 				
 			};
 
-			$timeline.parent().children('.loading').hide();
+			$timelineW.children('.loading').hide();
 			thisFVT.timeline.addItems(no_dupes);
 
 			/*
@@ -570,8 +570,9 @@ FavoritesTimeline.prototype = new AppTimeline();
  */
 var UserTimeline = function(args) {
 	
-	var thisUT    = this,
-	    $timeline = $('#timeline-user');
+	var thisUT           = this,
+	    $timeline        = $('#timeline-user'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	/*
@@ -629,7 +630,7 @@ var UserTimeline = function(args) {
 				
 			};
 
-			$timeline.parent().children('.loading').hide();
+			$timelineWrapper.children('.loading').hide();
 			thisUT.timeline.addItems(no_dupes);
 
 			/*
@@ -679,8 +680,9 @@ UserTimeline.prototype = new AppTimeline();
  */
 var UserlistsTimeline = function(args) {
 	
-	var thisUT    = this,
-	    $timeline = $('#timeline-userlists');
+	var thisUT           = this,
+	    $timeline        = $('#timeline-userlists'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	this.list = {
@@ -724,7 +726,11 @@ var UserlistsTimeline = function(args) {
 			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
 						
 			if (thisUT.list.user && thisUT.list.slug) {
+				// Give UI feedback immediately
 				$('#timeline-userlists-full-name').text("@"+thisUT.list.user+'/'+thisUT.list.slug);
+				$timelineWrapper.children('.loading').show();
+				$timelineWrapper.children('.intro').hide();
+
 				var username = Spaz.Prefs.getUser(),
 				    password = Spaz.Prefs.getPass();
 				thisUT.twit.setCredentials(username, password);
@@ -772,7 +778,7 @@ var UserlistsTimeline = function(args) {
 				
 			};
 
-			$timeline.parent().children('.loading').hide();
+			$timelineWrapper.children('.loading, .intro').hide();
 			thisUT.timeline.addItems(no_dupes);
 
 			/*
@@ -936,8 +942,9 @@ UserlistsTimeline.prototype = new AppTimeline();
  */
 var SearchTimeline = function(args) {
 	
-	var thisST    = this,
-	    $timeline = $('#timeline-search');
+	var thisST           = this,
+	    $timeline        = $('#timeline-search'),
+	    $timelineWrapper = $timeline.parent();
 	
 	this.query = null;
 	this.lastquery = null;
@@ -961,9 +968,16 @@ var SearchTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			if (jQuery('#search-for').val().length > 0) {
-				thisST.query = jQuery('#search-for').val();
-				
+			var $searchInput = jQuery('#search-for');
+			if ($searchInput.val().length > 0) {
+				thisST.query = $searchInput.val();
+
+				// Give UI feedback immediately
+				Spaz.UI.statusBar("Searching for '" + thisST.query + "'…");
+				Spaz.UI.showLoading();
+				$timelineWrapper.children('.loading').show();
+				$timelineWrapper.children('.intro, .empty').hide();
+
 				if (!thisST.lastquery) {
 					thisST.lastquery = thisST.query;
 				} else if (thisST.lastquery != thisST.query) {
@@ -977,14 +991,12 @@ var SearchTimeline = function(args) {
 				
 				thisST.twit.search(thisST.query);
 				thisST.lastquery = thisST.query;
-				Spaz.UI.statusBar("Searching for '" + thisST.query + "'…");
-				Spaz.UI.showLoading();
 			}
 		},
 		'data_success': function(e, data) {
 			sch.dump(e);
 			var query_info = data[1];
-			data = data[0];
+			data = data[0] || [];
 			
 			data = data.reverse();
 			var no_dupes = [];
@@ -1025,6 +1037,8 @@ var SearchTimeline = function(args) {
 				
 			};
 			
+			$timelineWrapper.children('.loading, .intro').hide();
+			$timelineWrapper.children('.empty').toggle(no_dupes.length == 0);
 			if (no_dupes.length > 0) {
 				thisST.timeline.addItems(no_dupes);
 			}
@@ -1067,8 +1081,9 @@ SearchTimeline.prototype = new AppTimeline();
  */
 var FollowersTimeline = function(args) {
 	
-	var thisFLT   = this,
-	    $timeline = $('#timeline-followerslist');
+	var thisFLT          = this,
+	    $timeline        = $('#timeline-followerslist'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	/*
@@ -1116,7 +1131,7 @@ var FollowersTimeline = function(args) {
 				
 			};
 
-			$timeline.parent().children('.loading').hide();
+			$timelineWrapper.children('.loading').hide();
 			thisFLT.timeline.addItems(no_dupes);
 
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');

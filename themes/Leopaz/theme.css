@@ -48,6 +48,36 @@ a:hover{
 	background:#fff;
 }
 
+/*** Global > Animations ***/
+
+@-webkit-keyframes loading{
+  from    { -webkit-transform: rotate(0deg); }
+  8.32%   { -webkit-transform: rotate(0deg); }
+            /* Forces jump from 0deg to 30deg, not a smooth rotation */
+  8.33%   { -webkit-transform: rotate(30deg); }
+  16.65%  { -webkit-transform: rotate(30deg); }
+  16.66%  { -webkit-transform: rotate(60deg); }
+  24.99%  { -webkit-transform: rotate(60deg); }
+  25%     { -webkit-transform: rotate(90deg); }
+  33.32%  { -webkit-transform: rotate(90deg); }
+  33.33%  { -webkit-transform: rotate(120deg); }
+  41.65%  { -webkit-transform: rotate(120deg); }
+  41.66%  { -webkit-transform: rotate(150deg); }
+  49.99%  { -webkit-transform: rotate(150deg); }
+  50%     { -webkit-transform: rotate(180deg); }
+  58.32%  { -webkit-transform: rotate(180deg); }
+  58.33%  { -webkit-transform: rotate(210deg); }
+  66.65%  { -webkit-transform: rotate(210deg); }
+  66.66%  { -webkit-transform: rotate(240deg); }
+  74.99%  { -webkit-transform: rotate(240deg); }
+  75%     { -webkit-transform: rotate(270deg); }
+  83.32%  { -webkit-transform: rotate(270deg); }
+  83.33%  { -webkit-transform: rotate(300deg); }
+  91.65%  { -webkit-transform: rotate(300deg); }
+  91.66%  { -webkit-transform: rotate(330deg); }
+  99.99%  { -webkit-transform: rotate(330deg); }
+  to      { -webkit-transform: rotate(360deg); }
+}
 
 
 
@@ -574,6 +604,24 @@ a:hover{
               -webkit-animation-name:loading;
               -webkit-animation-timing-function:linear;
             }
+            #timelinewrapper-userlists div.loading,
+            #timelinewrapper-search div.loading{
+              display:none;
+            }
+            .timeline-wrapper div.intro,
+            .timeline-wrapper div.empty{
+              margin:150px 50px 0;
+              color:#fff;
+              font-size:0.75em;
+              text-align:center;
+            }
+            .timeline-wrapper div.empty{
+              display:none;
+            }
+            #timelinewrapper-userlists div.loading,
+            #timelinewrapper-userlists div.intro{
+              margin-top:125px; /* = default margin-top - #timeline-userlists-full-name line-height */
+            }
 
 		/*
 			The entryform contains the #entrybox textarea input for posts and the #updateButton
@@ -768,33 +816,6 @@ a:hover{
         -webkit-animation-iteration-count:infinite;
         -webkit-animation-name:loading;
         -webkit-animation-timing-function:linear;
-      }
-      @-webkit-keyframes loading{
-        from    { -webkit-transform: rotate(0deg); }
-        8.32%   { -webkit-transform: rotate(0deg); } /* Forces jump from 0deg to 30deg, not smooth rotate */
-        8.33%   { -webkit-transform: rotate(30deg); }
-        16.65%  { -webkit-transform: rotate(30deg); }
-        16.66%  { -webkit-transform: rotate(60deg); }
-        24.99%  { -webkit-transform: rotate(60deg); }
-        25%     { -webkit-transform: rotate(90deg); }
-        33.32%  { -webkit-transform: rotate(90deg); }
-        33.33%  { -webkit-transform: rotate(120deg); }
-        41.65%  { -webkit-transform: rotate(120deg); }
-        41.66%  { -webkit-transform: rotate(150deg); }
-        49.99%  { -webkit-transform: rotate(150deg); }
-        50%     { -webkit-transform: rotate(180deg); }
-        58.32%  { -webkit-transform: rotate(180deg); }
-        58.33%  { -webkit-transform: rotate(210deg); }
-        66.65%  { -webkit-transform: rotate(210deg); }
-        66.66%  { -webkit-transform: rotate(240deg); }
-        74.99%  { -webkit-transform: rotate(240deg); }
-        75%     { -webkit-transform: rotate(270deg); }
-        83.32%  { -webkit-transform: rotate(270deg); }
-        83.33%  { -webkit-transform: rotate(300deg); }
-        91.65%  { -webkit-transform: rotate(300deg); }
-        91.66%  { -webkit-transform: rotate(330deg); }
-        99.99%  { -webkit-transform: rotate(330deg); }
-        to      { -webkit-transform: rotate(360deg); }
       }
 			#statusbar-text{
 			  position:absolute;
