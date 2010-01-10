@@ -728,7 +728,9 @@ var UserlistsTimeline = function(args) {
 			if (thisUT.list.user && thisUT.list.slug) {
 				// Give UI feedback immediately
 				$('#timeline-userlists-full-name').text("@"+thisUT.list.user+'/'+thisUT.list.slug);
-				$timelineWrapper.children('.loading').show();
+				if($timeline.is(':empty')){
+					$timelineWrapper.children('.loading').show();
+				}
 				$timelineWrapper.children('.intro').hide();
 
 				var username = Spaz.Prefs.getUser(),
@@ -975,7 +977,9 @@ var SearchTimeline = function(args) {
 				// Give UI feedback immediately
 				Spaz.UI.statusBar("Searching for '" + thisST.query + "'…");
 				Spaz.UI.showLoading();
-				$timelineWrapper.children('.loading').show();
+				if($timeline.is(':empty')){
+					$timelineWrapper.children('.loading').show();
+				}
 				$timelineWrapper.children('.intro, .empty').hide();
 
 				if (!thisST.lastquery) {
