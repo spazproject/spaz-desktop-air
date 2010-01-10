@@ -203,9 +203,13 @@ var FriendsTimeline = function() {
 				*/
 				if (jQuery('#timeline-friends div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
+					// nl2br
+					data[i].text = sch.nl2br(data[i].text);
 					
+					// add thumbnails
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
+					// make clickable
 					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
@@ -387,6 +391,8 @@ var PublicTimeline = function(args) {
 				*/
 				if (jQuery('#timeline-public div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
+					// nl2br
+					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
@@ -495,6 +501,8 @@ var FavoritesTimeline = function(args) {
 				*/
 				if (jQuery('#timeline-favorites div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
+					// nl2br
+					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
@@ -601,6 +609,9 @@ var UserTimeline = function(args) {
 					only add if it doesn't already exist
 				*/
 				if (jQuery('#timeline-user div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+					
+					// nl2br
+					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
@@ -740,6 +751,9 @@ var UserlistsTimeline = function(args) {
 					only add if it doesn't already exist
 				*/
 				if (jQuery('#timeline-user div.timeline-entry[data.statuses-status-id='+data.statuses[i].id+']').length<1) {
+					
+					// nl2br
+					data[i].text = sch.nl2br(data[i].text);
 					
 					data.statuses[i].SC_thumbnail_urls = sui.getThumbsForUrls(data.statuses[i].text);
 					
@@ -977,6 +991,9 @@ var SearchTimeline = function(args) {
 					only add if it doesn't already exist
 				*/
 				if (jQuery('#timeline-search div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+					
+					// nl2br
+					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					

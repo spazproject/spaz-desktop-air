@@ -28,10 +28,15 @@ SpazGrowl.prototype.notify= function(title, message, opts) {
 	var identifier  = opts.identifier  || null;
 	
 	if(air.NativeProcess.isSupported) {
-		// var exec = air.File.applicationDirectory;
-		// exec = exec.resolvePath('bin');
-		// exec = exec.resolvePath('growlnotify');
-		var exec = new air.File('/usr/local/bin/growlnotify');
+		/*
+			growlnotify ships with Spaz in the bin directory
+			
+			Also, this pretty much ensures this can only work on OS X
+		*/
+		var exec = air.File.applicationDirectory;
+		exec = exec.resolvePath('bin');
+		exec = exec.resolvePath('growlnotify');
+		
 		var npsi = new air.NativeProcessStartupInfo();
 		npsi.executable = exec;
 		var args = new runtime.Vector["<String>"]();
