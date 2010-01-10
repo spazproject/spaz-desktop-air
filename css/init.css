@@ -167,3 +167,10 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	font-weight:bold;
 }
 
+/*** Timelines ***/
+
+.timeline-wrapper div.empty,
+#timelinewrapper-userlists div.loading,
+#timelinewrapper-search div.loading{
+  display:none;
+}
