@@ -520,7 +520,7 @@ var FavoritesTimeline = function(args) {
 				
 			};
 
-			$timelineW.children('.loading').hide();
+			$timelineWrapper.children('.loading').hide();
 			thisFVT.timeline.addItems(no_dupes);
 
 			/*
