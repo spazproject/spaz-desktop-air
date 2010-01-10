@@ -593,10 +593,19 @@ a:hover{
 								top:  -4px;
 								font-size:16px;
 							}
+            .timeline-wrapper div.intro,
+            .timeline-wrapper div.empty,
+            .timeline-wrapper div.loading{
+              margin:150px 50px 0;
+              color:#fff;
+              font-size:0.75em;
+              text-align:center;
+            }
             .timeline-wrapper div.loading{
               width:50px;
               height:50px;
-              margin:150px auto 0;
+              margin-left:auto;
+              margin-right:auto;
               background:transparent url(images/loading-white-50x50.png) center center no-repeat;
               text-indent:-9999em;
               -webkit-animation-duration:1s;
@@ -604,18 +613,9 @@ a:hover{
               -webkit-animation-name:loading;
               -webkit-animation-timing-function:linear;
             }
+            .timeline-wrapper div.empty,
             #timelinewrapper-userlists div.loading,
             #timelinewrapper-search div.loading{
-              display:none;
-            }
-            .timeline-wrapper div.intro,
-            .timeline-wrapper div.empty{
-              margin:150px 50px 0;
-              color:#fff;
-              font-size:0.75em;
-              text-align:center;
-            }
-            .timeline-wrapper div.empty{
               display:none;
             }
             #timelinewrapper-userlists div.loading,
