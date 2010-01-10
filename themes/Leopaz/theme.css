@@ -389,47 +389,44 @@ a:hover{
             height:34px;
             background:#000 url(images/panel-menu/bg.png) 0 0 repeat-x;
           }
-						.panelmenu form{
-  					  position:relative;
-							margin:0 7px 0;
-							padding:4px 0 0;
-							line-height:9px;
+            .panelmenu form{
+              position:relative;
+              margin:0 8px;
+              padding:4px 0 0;
+              line-height:9px;
               text-align:left;
             }
-  						.panelmenu form input{
-  							font-size:10px;
-                margin:2px 0 2px;
-  						}
+              .panelmenu form input{
+                font-size:10px;
+                margin:2px 0;
+              }
               .panelmenu form input[type=button]{
                 width:48px;
-                height:21px;
+                height:22px;
                 padding:0;
                 background:transparent;
                 border:0;
                 border-radius:0;
                   -webkit-border-radius:0;
-                border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
-                  -webkit-border-image:url(images/panel-menu/button.png) 0 2 0 2 repeat repeat;
-                border-width:0 2px;
-                color:#f1f1f1;
-              }
-              .panelmenu form input[type=button]:hover{
-                border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
-                  -webkit-border-image:url(images/panel-menu/button-hover.png) 0 2 0 2 repeat repeat;
-                /* border-image-source:url(images/panel-menu/button-hover.png); */
+                border-image:url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
+                border-width:0 8px;
                 color:#fff;
+                cursor:default;
+              }
+              .panelmenu form input[type=button][value=Refresh]{
+                width:55px;
               }
               .panelmenu form input[type=button]:active{
-                border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
-                  -webkit-border-image:url(images/panel-menu/button-active.png) 0 2 0 2 repeat repeat;
+                border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
+                  -webkit-border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
                 /* border-image-source:url(images/panel-menu/button-active.png); */
               }
               .panelmenu form input[type=text]{
-                position:absolute;
-                right:0;
-                top:5px;
+                float:right;
                 width:80px;
                 height:19px;
+                margin-top:3px;
                 padding:0;
                 background:transparent;
                 border:0;
@@ -451,15 +448,16 @@ a:hover{
                 width:120px;
               }
               #panel-search .panelmenu form input[type=text]{
-                position:static;
+                float:none;
                 width:60px;
               }
               #panel-search .panelmenu form input[type=button]{
                 width:auto;
-                padding:0 4px;
+                margin-right:-4px;
               }
               #panel-search .panelmenu form input#search-help{
                 float:right;
+                margin-right:0;
               }
 
 					/*
@@ -473,10 +471,13 @@ a:hover{
 						right:0px;
 						bottom:0px;
 					}
-					#timelinewrapper-prefs {
-						top:0px;
-					}
-					
+          #timelinewrapper-userlists{
+            top:60px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+          }
+          #timelinewrapper-prefs{
+            top:0px;  /* No .panelmenu */
+          }
+
 						/*
 							The .timeline divs are all inside .TabbedPanelsContent divs
 						*/
@@ -485,7 +486,31 @@ a:hover{
               padding:0px;
               background:transparent url(images/dropshadow.png) 0 -6px repeat-x;
             }
-
+              #timeline-userlists-full-name{
+                position:fixed;
+                left:8px;
+                right:8px;
+                top:96px;
+                margin:-1px 0 0;
+                padding:0 8px;
+                overflow:hidden;
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+                border-bottom:1px solid #c0c7cf;
+                color:#202020;
+                cursor:default;
+                font-size:11px;
+                font-weight:bold;
+                line-height:25px;
+                text-overflow:ellipsis;
+                white-space:nowrap;
+              }
+              body:not(.active) #timeline-userlists-full-name{
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#fff), to(#ededed));
+                border-bottom-color:#b4b4b4;
+                color:#717171;
+              }
 
 							/*
 								This is effectively dead since the Twitter API doesn't support paging anymore.
