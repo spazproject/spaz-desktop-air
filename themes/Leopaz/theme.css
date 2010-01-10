@@ -497,7 +497,7 @@ a:hover{
             div.timeline {
               margin:0px;
               padding:0px;
-              background:transparent url(images/dropshadow.png) 0 -6px repeat-x;
+/*              background:transparent url(images/dropshadow.png) 0 -6px repeat-x;*/
             }
               #timeline-userlists-full-name{
                 position:fixed;
@@ -563,6 +563,17 @@ a:hover{
 								top:  -4px;
 								font-size:16px;
 							}
+            .timeline-wrapper div.loading{
+              width:50px;
+              height:50px;
+              margin:150px auto 0;
+              background:transparent url(images/loading-white-50x50.png) center center no-repeat;
+              text-indent:-9999em;
+              -webkit-animation-duration:1s;
+              -webkit-animation-iteration-count:infinite;
+              -webkit-animation-name:loading;
+              -webkit-animation-timing-function:linear;
+            }
 
 		/*
 			The entryform contains the #entrybox textarea input for posts and the #updateButton

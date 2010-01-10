@@ -237,6 +237,10 @@ var FriendsTimeline = function() {
 			/*
 				Add new items
 			*/
+			// $timeline.siblings('.loading').hide();
+			$timeline.parent().children('.loading').hide();
+				// Using `.parent().children()` because `.siblings()` kept returning
+				// an empty set. wtf.
 			thisFT.timeline.addItems(no_dupes);
 			// thisFT.sortByAttribute('data-timestamp', 'data-status-id');
 
@@ -406,7 +410,8 @@ var PublicTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timeline.parent().children('.loading').hide();
 			thisPT.timeline.addItems(no_dupes);
 
 			/*
@@ -514,7 +519,8 @@ var FavoritesTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timeline.parent().children('.loading').hide();
 			thisFVT.timeline.addItems(no_dupes);
 
 			/*
@@ -622,7 +628,8 @@ var UserTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timeline.parent().children('.loading').hide();
 			thisUT.timeline.addItems(no_dupes);
 
 			/*
@@ -764,7 +771,8 @@ var UserlistsTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timeline.parent().children('.loading').hide();
 			thisUT.timeline.addItems(no_dupes);
 
 			/*
@@ -1107,7 +1115,8 @@ var FollowersTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timeline.parent().children('.loading').hide();
 			thisFLT.timeline.addItems(no_dupes);
 
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
