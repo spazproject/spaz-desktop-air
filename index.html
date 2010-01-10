@@ -369,7 +369,7 @@
 						<div id="timeline-followerslist" class="timeline directory">
 						</div>
 						<form onsubmit="return false;" class="load-more">
-							<input type="button" class="load-more" name="load-more-followers" value="load more…" id="load-more-followers" title="Load More…">
+							<input type="button" class="load-more" name="load-more-followers" value="load more…" id="load-more-followers" title="Load More…" />
 						</form>
 					</div>
 				</div>
@@ -479,7 +479,7 @@
 											</div>
 											<div class="formrow">
 												<label for="theme-basetheme">Theme</label>
-												<select id="theme-basetheme" name="base-theme" onChange="">
+												<select id="theme-basetheme" name="base-theme" onchange="">
 													<!-- stuff goes here -->
 												</select> <span class="restart-required">*</span>
 											</div>
@@ -510,7 +510,7 @@
 										   </div>
 										   <div class="formrow">
 											  <label for="dock-unreadbadgecolor">Unread badge color</label>
-											  <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
+											  <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onchange="">
 												 <option value="red">Red</option>
 												 <option value="blue">Blue</option>
 												 <option value="yellow">Yellow</option>
@@ -521,7 +521,7 @@
 										   </div>
 										   <div class="formrow">
 											  <label for="dock-unreadbadgeshape">Unread badge shape</label>
-											  <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
+											  <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onchange="">
 												 <option value="classic">Classic</option>
 												 <option value="star">Star</option>
 											  </select>
@@ -771,7 +771,7 @@
 
 
 		<!-- ENTRYFORM -->
-		<form id="entryform" onSubmit="return false;">
+		<form id="entryform" onsubmit="return false;">
 			<!-- <textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea> -->
 			<textarea id="entrybox" tabindex="1"></textarea>
 			<div id="entrybox-popup">
@@ -1110,7 +1110,7 @@
 					<form id="shortenLink-form" onsubmit="return false;">
 						<div class="formrow">
 							<label for="url-shortener">Service</label>
-							<select id="url-shortener" name="url-shortener" onChange="">
+							<select id="url-shortener" name="url-shortener" onchange="">
 								<!-- stuff goes here -->
 							</select>
 						</div>
@@ -1164,7 +1164,7 @@
 						</div>
 						<div class="formrow">
 							<label for="imageupload-post-message">Message</label>
-							<textarea type="text" name="imageupload-post-message" id="imageupload-post-message"></textarea>
+							<textarea name="imageupload-post-message" id="imageupload-post-message"></textarea>
 						</div>
 
 						<div style="text-align:center">
