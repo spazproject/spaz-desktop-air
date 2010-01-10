@@ -457,6 +457,14 @@ a, a:link, .clickable {
 								top:  -4px;
 								font-size:16px;
 							}
+					.timeline-wrapper div.intro,
+					.timeline-wrapper div.loading,
+					.timeline-wrapper div.empty{
+						margin:150px 50px 0;
+						color:#999;
+						font-size:0.75em;
+						text-align:center;
+					}
 
 		/*
 			The entryform contains the #entrybox textarea input for posts and the #updateButton
