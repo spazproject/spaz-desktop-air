@@ -813,13 +813,13 @@ a:hover{
         -webkit-animation-name:loading;
         -webkit-animation-timing-function:linear;
       }
-			#statusbar-text{
-			  position:absolute;
-			  left:8px;
-			  right:20px;
-			  overflow:hidden;
-			  text-overflow:ellipsis;
-			}
+      #statusbar-text{
+        position:absolute;
+        left:20px;
+        right:20px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
       body:not(.active) #statusbar-text{
         color:#6f6f6f;
       }
