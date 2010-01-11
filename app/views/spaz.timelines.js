@@ -762,7 +762,7 @@ var UserlistsTimeline = function(args) {
 				if ($timeline.find('div.timeline-entry[data.statuses-status-id='+data.statuses[i].id+']').length<1) {
 					
 					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
+					data.statuses[i].text = sch.nl2br(data.statuses[i].text);
 					
 					data.statuses[i].SC_thumbnail_urls = sui.getThumbsForUrls(data.statuses[i].text);
 					
