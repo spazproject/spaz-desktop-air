@@ -43,7 +43,7 @@ Spaz.Prefs.defaultPreferences = {
 	
 
     // 'theme-userstylesheet':null,
-    'theme-basetheme': 'spaz',
+    'theme-basetheme': 'Leopaz',
 
     'sound-enabled': true,
     'wilhelm-enabled': true,
