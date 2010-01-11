@@ -261,9 +261,9 @@
 					<div id="menu-friends" class="panelmenu">
 						<form onsubmit="return false;">
 							<input type="button" name="refresh-friends" value="Refresh" id="refresh-friends" title="Refresh this timeline" />
-							<input type="button" name="view-friends" value="View &#x25BE;" id="view-friends" title="Toggle between all messages and just replies/DMs" />
 							<input type="button" name="markread-friends" value="Mark" id="markread-friends" title="Mark all as read" />
-							<input type="text" name="filter-friends" value="" id="filter-friends" title="Enter text to filter this timeline" />
+							<input type="button" name="view-friends" value="View &#x25BE;" id="view-friends" title="Filter mentions, DMs, unread tweets, etc." />
+							<input type="text" name="filter-friends" value="" id="filter-friends" title="Enter text to filter this timeline" placeholder="Search" />
 						</form>
 					</div>
 					<div id="timelinewrapper-friends" class="timeline-wrapper">
@@ -279,7 +279,7 @@
 						<form onsubmit="return false;">
 							<input type="button" name="refresh-user" value="Refresh" id="refresh-user" />
 							<input type="button" name="markread-user" value="Mark" id="markread-user" title="Mark all as read" />
-							<input type="text" name="filter-user" value="" id="filter-user" title="Enter text to filter this timeline" />
+							<input type="text" name="filter-user" value="" id="filter-user" title="Enter text to filter this timeline" placeholder="Search" />
 						</form>
 					</div>
 					<div id="timelinewrapper-user" class="timeline-wrapper">
@@ -295,7 +295,7 @@
 						<form onsubmit="return false;">
 							<input type="button" name="refresh-favorites" value="Refresh" id="refresh-favorites" />
 							<input type="button" name="markread-favorites" value="Mark" id="markread-favorites" title="Mark all as read" />
-							<input type="text" name="filter-favorites" value="" id="filter-favorites" title="Enter text to filter this timeline" />
+							<input type="text" name="filter-favorites" value="" id="filter-favorites" title="Enter text to filter this timeline" placeholder="Search" />
 						</form>
 					</div>
 					<div id="timelinewrapper-favorites" class="timeline-wrapper">
@@ -311,7 +311,7 @@
 							<input type="button" name="refresh-userlists" value="Refresh" id="refresh-userlists" />
 							<input type="button" name="markread-userlists" value="Mark" id="markread-userlists" title="Mark all as read" />
 							<input type="button" name="view-userlists" value="Lists &#x25BE;" id="view-userlists" title="Choose a list to view" />
-							<input type="text" name="filter-userlists" value="" id="filter-userlists" title="Enter text to filter this timeline" />
+							<input type="text" name="filter-userlists" value="" id="filter-userlists" title="Enter text to filter this timeline" placeholder="Search" />
 						</form>
 					</div>
 					<div id="timelinewrapper-userlists" class="timeline-wrapper">
@@ -327,7 +327,7 @@
 						<form onsubmit="return false;">
 							<input type="button" name="refresh-public" value="Refresh" id="refresh-public" />
 							<input type="button" name="markread-public" value="Mark" id="markread-public" title="Mark all as read" />
-							<input type="text" name="filter-public" value="" id="filter-public" title="Enter text to filter this timeline" />
+							<input type="text" name="filter-public" value="" id="filter-public" title="Enter text to filter this timeline" placeholder="Search" />
 						</form>
 					</div>
 					<div id="timelinewrapper-public" class="timeline-wrapper">
@@ -343,7 +343,7 @@
 
 					<div id="menu-search" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="text"   name="search-for"    value=""                id="search-for"    title="Enter search"  />
+							<input type="text"   name="search-for"    value=""                id="search-for"    title="Enter search" placeholder="Search" />
 							<input type="button" name="search-go"     value="&raquo;"         id="search-go"     title="Submit Search" />
 							<input type="button" name="search-save"   value="+"               id="search-save"   title="Save Search (NYI)" />
 							<input type="button" name="search-help"   value="?"               id="search-help"   title="Search Help" />
@@ -416,7 +416,7 @@
 									</div>
 								</div>
 
-								<div id="prefs-user-fieldset" class="CollapsiblePanel">
+								<div id="prefs-services-fieldset" class="CollapsiblePanel">
 									<h2 class="CollapsiblePanelTab" tabindex="0">Other Services</h2>
 									<div class="CollapsiblePanelContent">
 
@@ -450,7 +450,7 @@
 												<input type="text" name="services-shortie-email" id="services-shortie-email" value="" />
 											</div>
 											<div class="formrow">
-												<label for="services-shortie-key">Short.ie secret key (<a href="http://short.ie/dev">Get a key</a>)</label>
+												<label for="services-shortie-secretkey">Short.ie secret key (<a href="http://short.ie/dev">Get a key</a>)</label>
 												<input type="text" name="services-shortie-secretkey" id="services-shortie-secretkey" value="" />
 											</div>
 										</fieldset>
@@ -471,20 +471,20 @@
 										<fieldset>
 											<legend>Theme</legend>
 											<div class="formrow">
-												<label for="user-stylesheet">User CSS</label>
+												<label>User CSS</label>
 												<!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
 												<input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
 												<input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
 												<!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
 											</div>
 											<div class="formrow">
-												<label for="base-theme">Theme</label>
+												<label for="theme-basetheme">Theme</label>
 												<select id="theme-basetheme" name="base-theme" onChange="">
 													<!-- stuff goes here -->
 												</select> <span class="restart-required">*</span>
 											</div>
 											<div class="formrow">
-												<label for="opacity-percentage">Opacity</label>
+												<label for="window-alpha">Opacity</label>
 												<input type="text"
 													name="opacity-percentage" id="window-alpha"
 													value="100" maxlength="3" size="3" />%
@@ -509,7 +509,7 @@
 											  <label for="dock-displayunreadbadge" class="checkbox">Display unread badge</label>
 										   </div>
 										   <div class="formrow">
-											  <label for="dock-unread-badge-color">Unread badge color</label>
+											  <label for="dock-unreadbadgecolor">Unread badge color</label>
 											  <select id="dock-unreadbadgecolor" name="dock-unread-badge-color" onChange="">
 												 <option value="red">Red</option>
 												 <option value="blue">Blue</option>
@@ -520,7 +520,7 @@
 											  </select>
 										   </div>
 										   <div class="formrow">
-											  <label for="dock-unread-badge-shape">Unread badge shape</label>
+											  <label for="dock-unreadbadgeshape">Unread badge shape</label>
 											  <select id="dock-unreadbadgeshape" name="dock-unread-badge-shape" onChange="">
 												 <option value="classic">Classic</option>
 												 <option value="star">Star</option>
@@ -670,7 +670,7 @@
 									<h2 class="CollapsiblePanelTab" tabindex="0">Networking</h2>
 									<div class="CollapsiblePanelContent">
 										<div class="formrow">
-											<label for="refresh-interval">Refresh interval</label>
+											<label for="network-refreshinterval">Refresh interval</label>
 											<input type="text" name="refresh-interval" id="network-refreshinterval"
 												value="5" maxlength="2" size="2" /> minutes
 												<span id="refreshRateInfo">
@@ -959,8 +959,8 @@
 
 					<h3>Media sets used</h3>
 					<ul>
-						<li><a class="clickable" onclick"sc.helpers.openInBrowser('http://leobolin.net/simplesmileys/')">Simple Smileys emoticons by Leo Bolin</a></li>
-						<li><a class="clickable" onclick"sc.helpers.openInBrowser('http://www.adiumxtras.com/index.php?a=xtras&xtra_id=602')">Tokyo Train Station soundset by Dominik Dimaano</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://leobolin.net/simplesmileys/')">Simple Smileys emoticons by Leo Bolin</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.adiumxtras.com/index.php?a=xtras&amp;xtra_id=602')">Tokyo Train Station soundset by Dominik Dimaano</a></li>
 					</ul>
 
 				</div>
@@ -980,9 +980,9 @@
 				<div class="content">
 					<h2>Online resources</h2>
 					<ul id="resources">
-						<li><a href="http://funkatron.com/spaziki" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaziki – The Spaz Wiki and FAQ</a></li>
-						<li><a href="http://groups.google.com/group/spaz-users/" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz-Users @ Google Groups</a></li>
-						<li><a href="http://code.google.com/p/spaz/" onClick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz Source Code Repository</a></li>
+						<li><a href="http://funkatron.com/spaziki" onclick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaziki – The Spaz Wiki and FAQ</a></li>
+						<li><a href="http://groups.google.com/group/spaz-users/" onclick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz-Users @ Google Groups</a></li>
+						<li><a href="http://code.google.com/p/spaz/" onclick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz Source Code Repository</a></li>
 					</ul>
 
 
@@ -1116,22 +1116,22 @@
 						</div>
 
 						<div class="formrow">
-							<label for="original-link">Link</label>
+							<label for="shorten-original-link">Link</label>
 							<input type="text" name="original-link" id="shorten-original-link" value="http://" />
 						</div>
 
 						<div class="formrow" id="shorten-custom-hidden" style="display: none; visibility: hidden;">
-							<label for="custom-link">Custom</label>
+							<label for="shorten-custom-link">Custom</label>
 							<input type="text" name="custom-link" id="shorten-custom-link" value="" />
 						</div>
 
 						<div class="formrow">
-							<label for="short-link">Short</label>
+							<label for="shorten-short-link">Short</label>
 							<input type="text" name="short-link" id="shorten-short-link" value="" />
 						</div>
 
 						<div class="formrow" style="text-align:right; margin-top:15px">
-							<input type="submit" id="prefs-update-button" name="update" value="Shorten &bull;" /> 
+							<input type="submit" id="shorten-button" name="update" value="Shorten &bull;" />
 						</div>
 						<div id="verification-result" align="center">&nbsp;</div>
 					</form>
@@ -1151,7 +1151,7 @@
 
 					<div id="imageupload-droplet" title="Click to upload">&#x21E7;</div>
 
-					<form id="shortenLink-form" onsubmit="return false;">
+					<form id="imageupload-form" onsubmit="return false;">
 						<div class="formrow">
 							<label for="imageupload-file-uploader">Service</label>
 							<select id="imageupload-file-uploader" name="imageupload-file-uploader" onChange="">

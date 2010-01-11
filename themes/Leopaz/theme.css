@@ -924,21 +924,26 @@ div.timeline-entry:hover{
       linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
     outline:1px solid #ffb3b2;
   }
-	/*
-		Entries that have been "read" (selected and then deselected)
-	*/
-	div.timeline-entry.read{}
-	div.timeline-entry.read:not(.ui-selected){
+  /*
+  	Entries that have been "read" (selected and then deselected)
+  */
+  div.timeline-entry.read{}
+  div.timeline-entry.read:not(.ui-selected){
     max-height:25px;
     padding-top:5px;
     padding-bottom:5px;
   }
-	div.timeline-entry.read:hover{
-	  opacity:1;
-	}
-		div.timeline-entry.read.reply .status-text,
+  div.timeline-entry.read:hover{
+    opacity:1;
+  }
+    div.timeline-entry.read .status-text{
+      color:#999;
+    }
+		div.timeline-entry.read.reply .status-text{
+		  color:#ccbc5f;
+		}
 		div.timeline-entry.read.dm .status-text{
-		  color:#666;
+		  color:#cf9392;
 		}
 		div.timeline-entry.read.ui-selected .status-text{
 			color:#f0f0f0;
@@ -970,7 +975,6 @@ div.timeline-entry:hover{
         margin-top:5px; /* Show only status text */
         margin-bottom:99px;
         overflow:hidden;
-        color:#999;
         text-overflow:ellipsis;
         white-space:nowrap;
       }
