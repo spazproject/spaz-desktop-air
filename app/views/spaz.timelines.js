@@ -176,7 +176,7 @@ var FriendsTimeline = function() {
 
 		'request_data': function() {
 			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFT.twit.setCredentials(username, password);
@@ -212,7 +212,7 @@ var FriendsTimeline = function() {
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
 					// make clickable
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -272,7 +272,7 @@ var FriendsTimeline = function() {
 			*/
 			$('#filter-friends').trigger('keyup');
 			
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
@@ -295,7 +295,7 @@ var FriendsTimeline = function() {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -373,7 +373,7 @@ var PublicTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			thisPT.twit.getPublicTimeline();
 			Spaz.UI.statusBar("Loading public timeline");
 			Spaz.UI.showLoading();
@@ -396,7 +396,7 @@ var PublicTimeline = function(args) {
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -418,8 +418,8 @@ var PublicTimeline = function(args) {
 			*/
 			$('#filter-public').trigger('keyup');
 
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry'); // public are never "new"
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // public are never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
@@ -435,7 +435,7 @@ var PublicTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -480,7 +480,7 @@ var FavoritesTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFVT.twit.setCredentials(username, password);
@@ -506,7 +506,7 @@ var FavoritesTimeline = function(args) {
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -529,8 +529,8 @@ var FavoritesTimeline = function(args) {
 			$('#filter-favorites').trigger('keyup');
 
 
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
@@ -546,7 +546,7 @@ var FavoritesTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -590,7 +590,7 @@ var UserTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisUT.twit.setCredentials(username, password);
@@ -616,7 +616,7 @@ var UserTimeline = function(args) {
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -639,8 +639,8 @@ var UserTimeline = function(args) {
 			$('#filter-user').trigger('keyup');
 
 
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
@@ -656,7 +656,7 @@ var UserTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -723,7 +723,7 @@ var UserlistsTimeline = function(args) {
 
 		'request_data': function() {
 
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 						
 			if (thisUT.list.user && thisUT.list.slug) {
 				// Give UI feedback immediately
@@ -766,7 +766,7 @@ var UserlistsTimeline = function(args) {
 					
 					data.statuses[i].SC_thumbnail_urls = sui.getThumbsForUrls(data.statuses[i].text);
 					
-					data.statuses[i].text = sc.helpers.makeClickable(data.statuses[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data.statuses[i].text = sch.makeClickable(data.statuses[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data.statuses[i].text = Emoticons.SimpleSmileys.convertEmoticons(data.statuses[i].text)
@@ -789,8 +789,8 @@ var UserlistsTimeline = function(args) {
 			$('#filter-userlists').trigger('keyup');
 			
 			
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
@@ -806,7 +806,7 @@ var UserlistsTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -991,7 +991,7 @@ var SearchTimeline = function(args) {
 				// alert(thisST.lastquery+"\n"+thisST.query);
 				
 				// clear the existing results if this is a new query
-				sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
+				sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 				
 				thisST.twit.search(thisST.query);
 				thisST.lastquery = thisST.query;
@@ -1021,7 +1021,7 @@ var SearchTimeline = function(args) {
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -1047,8 +1047,8 @@ var SearchTimeline = function(args) {
 				thisST.timeline.addItems(no_dupes);
 			}
 
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry'); // search are never "new"
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // search are never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
@@ -1063,7 +1063,7 @@ var SearchTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -1105,7 +1105,7 @@ var FollowersTimeline = function(args) {
 		'max_items':200,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFLT.twit.setCredentials(username, password);
@@ -1153,7 +1153,7 @@ var FollowersTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
