@@ -638,13 +638,14 @@ a:hover{
       border-top-color:#999;
     }
       #leopaz-entryform-resize{
-        height:11px;
+        height:6px;
         background:transparent url(images/resize-ns.png) center center no-repeat;
         border-top:1px solid #eee;
         cursor:ns-resize;
       }
       body:not(.active) #leopaz-entryform-resize{
         border-top-color:#fff;
+        opacity:0.5;
       }
 			/*
 				This is a Spry textarea widget
@@ -653,7 +654,7 @@ a:hover{
         position:absolute;
         left:4px;
         right:5px;
-        top:11px;
+        top:8px;
         bottom:0;
         margin:0;
         padding:5px 5px 15px 5px;
