@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>bootstrapper</title>
+	
+	<script src="vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		
+		var winprefs = [
+			{
+				id		: 'main',
+				height	: 350,
+				width	: 580,
+				x		: 150,
+				y		: 150,
+				userid	: 'funkatron'
+			}
+		]
+		
+		
+		var openwindows = [];
+		
+		
+		for (var i=0; i < winprefs.length; i++) {
+			var winopts = new air.NativeWindowInitOptions();
+			winopts.maximizable = true;
+			winopts.minimizable = true;
+			winopts.resizable = true;
+			winopts.systemChrome = 'none';
+			winopts.transparent = true;
+			winopts.type = air.NativeWindowType.NORMAL;
+
+			var windowBounds = new air.Rectangle(winprefs[i].x,winprefs[i].y,winprefs[i].width,winprefs[i].height); 
+
+			var newHTMLLoader = air.HTMLLoader.createRootWindow(true, winopts, true, windowBounds); 
+			newHTMLLoader.load(new air.URLRequest("index.html"));
+			
+			// map the new window's opener property to this window
+			newHTMLLoader.window.opener = window;
+			
+			openwindows.push(newHTMLLoader);
+		};
+		
+	</script>
+	
+</head>
+
+<body>
+	
+
+</body>
+</html>
