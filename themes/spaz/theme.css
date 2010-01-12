@@ -1161,6 +1161,7 @@ div.timeline-entry {
 		The update/save prefs button sits outside the panel group
 	*/
 	#prefs-update-button {
+		margin-left:0;
 		font-size:13px;
 	}
 
