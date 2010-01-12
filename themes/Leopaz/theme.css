@@ -1287,8 +1287,8 @@ body:not(.active) #panel-prefs .timeline-wrapper{
   border-top-color:#a9a9a9;
 }
 #prefs-form {
-  margin:0;
-  padding:10px 0;
+  margin:10px 1px 0;
+  padding:0 0 10px;
   font-size:11px;
 }
 
