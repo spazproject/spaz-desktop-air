@@ -154,15 +154,17 @@ AppTimeline.prototype.refresh = function() {
  */
 var FriendsTimeline = function() {
 	
-	var thisFT = this;
+	var thisFT           = this,
+	    $timeline        = $('#timeline-friends'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	this.shurl = new SpazShortURL();
-	
+
 	/*
 		set up the Friends timeline
 	*/
 	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' :'#timeline-friends',
+		'timeline_container_selector' : $timeline.selector,
 		'entry_relative_time_selector':'.status-created-at',
 		
 		'success_event':'new_combined_timeline_data',
@@ -174,7 +176,7 @@ var FriendsTimeline = function() {
 
 		'request_data': function() {
 			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
-			sc.helpers.markAllAsRead('#timeline-friends div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFT.twit.setCredentials(username, password);
@@ -201,7 +203,7 @@ var FriendsTimeline = function() {
 				/*
 					only add if it doesn't already exist
 				*/
-				if (jQuery('#timeline-friends div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
 					// nl2br
 					data[i].text = sch.nl2br(data[i].text);
@@ -210,7 +212,7 @@ var FriendsTimeline = function() {
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
 					// make clickable
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -230,20 +232,18 @@ var FriendsTimeline = function() {
 			/*
 				Record old scroll position
 			*/
-			var oldFirst  = jQuery('#timeline-friends div.timeline-entry:first');
-			var $timeline = jQuery('#timeline-friends');
-			var offset_before = oldFirst.offset().top;
-			
+			var $oldFirst     = $timeline.find('div.timeline-entry:first'),
+			    offset_before = $oldFirst.offset().top;
 
 			/*
 				Add new items
 			*/
+			$timelineWrapper.children('.loading').hide();
 			thisFT.timeline.addItems(no_dupes);
 			// thisFT.sortByAttribute('data-timestamp', 'data-status-id');
 
 			sch.note('notify of new entries!');
 			Spaz.UI.notifyOfNewEntries(no_dupes);
-
 
 			/*
 				expand URLs
@@ -261,10 +261,10 @@ var FriendsTimeline = function() {
 			/*
 				set new scroll position
 			*/
-			var offset_after = oldFirst.offset().top;
+			var offset_after = $oldFirst.offset().top;
 			var offset_diff = Math.abs(offset_before - offset_after);
-			if ($timeline.parent().scrollTop() > 0) {
-				$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );
+			if ($timelineWrapper.scrollTop() > 0) {
+				$timelineWrapper.scrollTop( $timelineWrapper.scrollTop() + offset_diff );
 			}
 
 			/*
@@ -272,10 +272,10 @@ var FriendsTimeline = function() {
 			*/
 			$('#filter-friends').trigger('keyup');
 			
-			sc.helpers.updateRelativeTimes('#timeline-friends a.status-created-at', 'data-created-at');
-			jQuery('#timeline-friends div.timeline-entry').removeClass('even').removeClass('odd');
-			jQuery('#timeline-friends div.timeline-entry:even').addClass('even');
-			jQuery('#timeline-friends div.timeline-entry:odd').addClass('odd');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
+			$timeline.find('div.timeline-entry:even').addClass('even');
+			$timeline.find('div.timeline-entry:odd').addClass('odd');
 			
 			/*
 				get new set of usernames
@@ -295,7 +295,7 @@ var FriendsTimeline = function() {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes('#timeline-friends a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -313,9 +313,9 @@ var FriendsTimeline = function() {
 		override the default method
 	*/
 	this.timeline.removeExtraItems = function() {
-		sch.removeExtraElements('#timeline-friends div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-maxentries'));
-		sch.removeExtraElements('#timeline-friends div.timeline-entry.reply', Spaz.Prefs.get('timeline-maxentries-reply'));
-		sch.removeExtraElements('#timeline-friends div.timeline-entry.dm', Spaz.Prefs.get('timeline-maxentries-dm'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-maxentries'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.reply', Spaz.Prefs.get('timeline-maxentries-reply'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.dm', Spaz.Prefs.get('timeline-maxentries-dm'));
 	};
 
 	
@@ -353,16 +353,16 @@ FriendsTimeline.prototype.reset = function() {
  */
 var PublicTimeline = function(args) {
 	
-	var thisPT = this;
-	
+	var thisPT           = this,
+	    $timeline        = $('#timeline-public'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
-
 	
 	/*
 		set up the public timeline
 	*/
 	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' :'#timeline-public',
+		'timeline_container_selector' : $timeline.selector,
 		'entry_relative_time_selector':'.status-created-at',
 		
 		'success_event':'new_public_timeline_data',
@@ -373,7 +373,7 @@ var PublicTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead('#timeline-public div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			thisPT.twit.getPublicTimeline();
 			Spaz.UI.statusBar("Loading public timeline");
 			Spaz.UI.showLoading();
@@ -389,14 +389,14 @@ var PublicTimeline = function(args) {
 				/*
 					only add if it doesn't already exist
 				*/
-				if (jQuery('#timeline-public div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
 					// nl2br
 					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -409,7 +409,8 @@ var PublicTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timelineWrapper.children('.loading').hide();
 			thisPT.timeline.addItems(no_dupes);
 
 			/*
@@ -417,12 +418,11 @@ var PublicTimeline = function(args) {
 			*/
 			$('#filter-public').trigger('keyup');
 
-
-			sc.helpers.markAllAsRead('#timeline-public div.timeline-entry'); // public are never "new"
-			sc.helpers.updateRelativeTimes('#timeline-public a.status-created-at', 'data-created-at');
-			jQuery('#timeline-public div.timeline-entry').removeClass('even').removeClass('odd');
-			jQuery('#timeline-public div.timeline-entry:even').addClass('even');
-			jQuery('#timeline-public div.timeline-entry:odd').addClass('odd');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // public are never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
+			$timeline.find('div.timeline-entry:even').addClass('even');
+			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -435,7 +435,7 @@ var PublicTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes('#timeline-public a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -460,16 +460,16 @@ PublicTimeline.prototype = new AppTimeline();
  */
 var FavoritesTimeline = function(args) {
 	
-	var thisFVT = this;
-	
+	var thisFVT          = this,
+	    $timeline        = $('#timeline-favorites'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
-
 	
 	/*
 		set up the public timeline
 	*/
 	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' :'#timeline-favorites',
+		'timeline_container_selector' : $timeline.selector,
 		'entry_relative_time_selector':'.status-created-at',
 		
 		'success_event':'new_favorites_timeline_data',
@@ -480,7 +480,7 @@ var FavoritesTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead('#timeline-favorites div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFVT.twit.setCredentials(username, password);
@@ -499,14 +499,14 @@ var FavoritesTimeline = function(args) {
 				/*
 					only add if it doesn't already exist
 				*/
-				if (jQuery('#timeline-favorites div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
 					// nl2br
 					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -519,7 +519,8 @@ var FavoritesTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timelineWrapper.children('.loading').hide();
 			thisFVT.timeline.addItems(no_dupes);
 
 			/*
@@ -528,11 +529,11 @@ var FavoritesTimeline = function(args) {
 			$('#filter-favorites').trigger('keyup');
 
 
-			sc.helpers.markAllAsRead('#timeline-favorites div.timeline-entry'); // favorites are never "new"
-			sc.helpers.updateRelativeTimes('#timeline-favorites a.status-created-at', 'data-created-at');
-			jQuery('#timeline-favorites div.timeline-entry').removeClass('even').removeClass('odd');
-			jQuery('#timeline-favorites div.timeline-entry:even').addClass('even');
-			jQuery('#timeline-favorites div.timeline-entry:odd').addClass('odd');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
+			$timeline.find('div.timeline-entry:even').addClass('even');
+			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -545,7 +546,7 @@ var FavoritesTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes('#timeline-favorites a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -569,16 +570,16 @@ FavoritesTimeline.prototype = new AppTimeline();
  */
 var UserTimeline = function(args) {
 	
-	var thisUT = this;
-	
+	var thisUT           = this,
+	    $timeline        = $('#timeline-user'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
-
 	
 	/*
 		set up the user timeline
 	*/
 	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' :'#timeline-user',
+		'timeline_container_selector' : $timeline.selector,
 		'entry_relative_time_selector':'.status-created-at',
 		
 		'success_event':'new_user_timeline_data',
@@ -589,7 +590,7 @@ var UserTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead('#timeline-user div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisUT.twit.setCredentials(username, password);
@@ -608,14 +609,14 @@ var UserTimeline = function(args) {
 				/*
 					only add if it doesn't already exist
 				*/
-				if (jQuery('#timeline-user div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
 					// nl2br
 					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -628,7 +629,8 @@ var UserTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timelineWrapper.children('.loading').hide();
 			thisUT.timeline.addItems(no_dupes);
 
 			/*
@@ -637,11 +639,11 @@ var UserTimeline = function(args) {
 			$('#filter-user').trigger('keyup');
 
 
-			sc.helpers.markAllAsRead('#timeline-user div.timeline-entry'); // user is never "new"
-			sc.helpers.updateRelativeTimes('#timeline-user a.status-created-at', 'data-created-at');
-			jQuery('#timeline-user div.timeline-entry').removeClass('even').removeClass('odd');
-			jQuery('#timeline-user div.timeline-entry:even').addClass('even');
-			jQuery('#timeline-user div.timeline-entry:odd').addClass('odd');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
+			$timeline.find('div.timeline-entry:even').addClass('even');
+			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -654,7 +656,7 @@ var UserTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes('#timeline-user a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -678,8 +680,9 @@ UserTimeline.prototype = new AppTimeline();
  */
 var UserlistsTimeline = function(args) {
 	
-	var thisUT = this;
-	
+	var thisUT           = this,
+	    $timeline        = $('#timeline-userlists'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	this.list = {
@@ -708,7 +711,7 @@ var UserlistsTimeline = function(args) {
 		set up the user timeline
 	*/
 	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' :'#timeline-userlists',
+		'timeline_container_selector' : $timeline.selector,
 		'entry_relative_time_selector':'.status-created-at',
 		
 		'success_event':'get_list_timeline_succeeded',
@@ -720,12 +723,18 @@ var UserlistsTimeline = function(args) {
 
 		'request_data': function() {
 
-			sc.helpers.markAllAsRead('#timeline-userlists div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 						
 			if (thisUT.list.user && thisUT.list.slug) {
+				// Give UI feedback immediately
 				$('#timeline-userlists-full-name').text("@"+thisUT.list.user+'/'+thisUT.list.slug);
-				var username = Spaz.Prefs.getUser();
-				var password = Spaz.Prefs.getPass();
+				if($timeline.is(':empty')){
+					$timelineWrapper.children('.loading').show();
+				}
+				$timelineWrapper.children('.intro').hide();
+
+				var username = Spaz.Prefs.getUser(),
+				    password = Spaz.Prefs.getPass();
 				thisUT.twit.setCredentials(username, password);
 				thisUT.twit.getListTimeline(thisUT.list.slug, thisUT.list.user);
 				Spaz.UI.statusBar("Getting list @"+thisUT.list.user+'/'+thisUT.list.slug + "…");
@@ -750,14 +759,14 @@ var UserlistsTimeline = function(args) {
 				/*
 					only add if it doesn't already exist
 				*/
-				if (jQuery('#timeline-user div.timeline-entry[data.statuses-status-id='+data.statuses[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data.statuses-status-id='+data.statuses[i].id+']').length<1) {
 					
 					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
+					data.statuses[i].text = sch.nl2br(data.statuses[i].text);
 					
 					data.statuses[i].SC_thumbnail_urls = sui.getThumbsForUrls(data.statuses[i].text);
 					
-					data.statuses[i].text = sc.helpers.makeClickable(data.statuses[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data.statuses[i].text = sch.makeClickable(data.statuses[i].text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data.statuses[i].text = Emoticons.SimpleSmileys.convertEmoticons(data.statuses[i].text)
@@ -770,20 +779,21 @@ var UserlistsTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timelineWrapper.children('.loading, .intro').hide();
 			thisUT.timeline.addItems(no_dupes);
-			
+
 			/*
 			 reapply filtering
 			*/
 			$('#filter-userlists').trigger('keyup');
 			
 			
-			sc.helpers.markAllAsRead('#timeline-userlists div.timeline-entry'); // user is never "new"
-			sc.helpers.updateRelativeTimes('#timeline-userlists a.status-created-at', 'data-created-at');
-			jQuery('#timeline-userlists div.timeline-entry').removeClass('even').removeClass('odd');
-			jQuery('#timeline-userlists div.timeline-entry:even').addClass('even');
-			jQuery('#timeline-userlists div.timeline-entry:odd').addClass('odd');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
+			$timeline.find('div.timeline-entry:even').addClass('even');
+			$timeline.find('div.timeline-entry:odd').addClass('odd');
 			
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -796,7 +806,7 @@ var UserlistsTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes('#timeline-userlists a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -840,8 +850,9 @@ var UserlistsTimeline = function(args) {
 						'title':thislist.description
 					},
 					'onclick':function(e) {
-						var slug = $(this).attr('data-list-slug');
-						var user = $(this).attr('data-user-screen_name');
+						var $this = $(this),
+						    slug  = $this.attr('data-list-slug'),
+						    user  = $this.attr('data-user-screen_name');
 						thisUT.setlist(slug, user);
 					}
 				}
@@ -852,6 +863,7 @@ var UserlistsTimeline = function(args) {
 				create container for menu
 			*/
 			$(root_container_selector).append('<ul id="'+menu_id+'" class="'+menu_class+'"></ul>');
+			var $menu = $('#' + menu_id);
 			
 			/*
 				add <li> items to menu
@@ -864,7 +876,7 @@ var UserlistsTimeline = function(args) {
 					jqitem.attr(key, menu_items[i].attributes[key]);
 				};
 
-				$('#'+menu_id).append(jqitem);
+				$menu.append(jqitem);
 				
 				/*
 					if onclick is defined for this item, bind it to the ID of this element
@@ -879,7 +891,7 @@ var UserlistsTimeline = function(args) {
 				}
 			};
 			
-			sch.error($('#'+menu_id).get(0).innerHTML);
+			sch.error($menu.get(0).innerHTML);
 			
 			/*
 				show menu on event
@@ -888,15 +900,18 @@ var UserlistsTimeline = function(args) {
 				/*
 					thank you http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another
 				*/
-				$('#'+menu_id).css('position','absolute');
-				var pos = $(this).offset();
-				var height = $(this).height();
-				var width = $(this).width();
-				$('#'+menu_id).css( { "left": (pos.left) + "px", "top":(pos.top + height) + "px" } );
-				$('#'+menu_id).show();
+				var $this		= $(this),
+						pos 		= $this.offset(),
+						height	= $this.height(),
+						width		= $this.width();
+				$menu.css({
+					position: 'absolute',
+					left:     pos.left + 'px',
+					top:      (pos.top + height) + 'px'
+				}).show();
 				
 				$(document).one('click', function() {
-					$('#'+menu_id).hide();
+					$menu.hide();
 				});
 			});
 			
@@ -929,7 +944,9 @@ UserlistsTimeline.prototype = new AppTimeline();
  */
 var SearchTimeline = function(args) {
 	
-	var thisST = this;
+	var thisST           = this,
+	    $timeline        = $('#timeline-search'),
+	    $timelineWrapper = $timeline.parent();
 	
 	this.query = null;
 	this.lastquery = null;
@@ -940,7 +957,7 @@ var SearchTimeline = function(args) {
 		set up the public timeline
 	*/
 	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' :'#timeline-search',
+		'timeline_container_selector' : $timeline.selector,
 		'entry_relative_time_selector':'.status-created-at',
 		
 		'success_event':'new_search_timeline_data',
@@ -953,30 +970,37 @@ var SearchTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			if (jQuery('#search-for').val().length > 0) {
-				thisST.query = jQuery('#search-for').val();
-				
+			var $searchInput = jQuery('#search-for');
+			if ($searchInput.val().length > 0) {
+				thisST.query = $searchInput.val();
+
+				// Give UI feedback immediately
+				Spaz.UI.statusBar("Searching for '" + thisST.query + "'…");
+				Spaz.UI.showLoading();
+				if($timeline.is(':empty')){
+					$timelineWrapper.children('.loading').show();
+				}
+				$timelineWrapper.children('.intro, .empty').hide();
+
 				if (!thisST.lastquery) {
 					thisST.lastquery = thisST.query;
 				} else if (thisST.lastquery != thisST.query) {
-					jQuery('#timeline-search .timeline-entry').remove();
+					$timeline.find('.timeline-entry').remove();
 				};
 				
 				// alert(thisST.lastquery+"\n"+thisST.query);
 				
 				// clear the existing results if this is a new query
-				sc.helpers.markAllAsRead('#timeline-search div.timeline-entry');
+				sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 				
 				thisST.twit.search(thisST.query);
 				thisST.lastquery = thisST.query;
-				Spaz.UI.statusBar("Searching for '" + thisST.query + "'…");
-				Spaz.UI.showLoading();
 			}
 		},
 		'data_success': function(e, data) {
 			sch.dump(e);
 			var query_info = data[1];
-			data = data[0];
+			data = data[0] || [];
 			
 			data = data.reverse();
 			var no_dupes = [];
@@ -990,14 +1014,14 @@ var SearchTimeline = function(args) {
 				/*
 					only add if it doesn't already exist
 				*/
-				if (jQuery('#timeline-search div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
 					// nl2br
 					data[i].text = sch.nl2br(data[i].text);
 					
 					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
 					
-					data[i].text = sc.helpers.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
 
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
@@ -1017,16 +1041,17 @@ var SearchTimeline = function(args) {
 				
 			};
 			
+			$timelineWrapper.children('.loading, .intro').hide();
+			$timelineWrapper.children('.empty').toggle(no_dupes.length == 0);
 			if (no_dupes.length > 0) {
 				thisST.timeline.addItems(no_dupes);
 			}
-			
 
-			sc.helpers.markAllAsRead('#timeline-search div.timeline-entry'); // search are never "new"
-			sc.helpers.updateRelativeTimes('#timeline-search a.status-created-at', 'data-created-at');
-			jQuery('#timeline-search div.timeline-entry').removeClass('even').removeClass('odd');
-			jQuery('#timeline-search div.timeline-entry:even').addClass('even');
-			jQuery('#timeline-search div.timeline-entry:odd').addClass('odd');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // search are never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
+			$timeline.find('div.timeline-entry:even').addClass('even');
+			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -1038,7 +1063,7 @@ var SearchTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes('#timeline-search a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
@@ -1060,16 +1085,16 @@ SearchTimeline.prototype = new AppTimeline();
  */
 var FollowersTimeline = function(args) {
 	
-	var thisFLT = this;
-	
+	var thisFLT          = this,
+	    $timeline        = $('#timeline-followerslist'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
-
 	
 	/*
 		set up the user timeline
 	*/
 	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' :'#timeline-followerslist',
+		'timeline_container_selector' : $timeline.selector,
 		'entry_relative_time_selector':'.status-created-at',
 		
 		'success_event':'get_followerslist_succeeded',
@@ -1080,7 +1105,7 @@ var FollowersTimeline = function(args) {
 		'max_items':200,
 
 		'request_data': function() {
-			sc.helpers.markAllAsRead('#timeline-followerslist div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFLT.twit.setCredentials(username, password);
@@ -1099,7 +1124,7 @@ var FollowersTimeline = function(args) {
 				/*
 					only add if it doesn't already exist
 				*/
-				if (jQuery('#timeline-followerslist div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 					
 					no_dupes.push(data[i]);
 					/*
@@ -1109,12 +1134,13 @@ var FollowersTimeline = function(args) {
 				}
 				
 			};
-			
+
+			$timelineWrapper.children('.loading').hide();
 			thisFLT.timeline.addItems(no_dupes);
 
-			jQuery('#timeline-followerslist div.timeline-entry').removeClass('even').removeClass('odd');
-			jQuery('#timeline-followerslist div.timeline-entry:even').addClass('even');
-			jQuery('#timeline-followerslist div.timeline-entry:odd').addClass('odd');
+			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
+			$timeline.find('div.timeline-entry:even').addClass('even');
+			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -1127,7 +1153,7 @@ var FollowersTimeline = function(args) {
 			/*
 				Update relative dates
 			*/
-			sc.helpers.updateRelativeTimes('#timeline-followerslist a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {

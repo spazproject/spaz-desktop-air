@@ -48,6 +48,36 @@ a:hover{
 	background:#fff;
 }
 
+/*** Global > Animations ***/
+
+@-webkit-keyframes loading{
+  from    { -webkit-transform: rotate(0deg); }
+  8.32%   { -webkit-transform: rotate(0deg); }
+            /* Forces jump from 0deg to 30deg, not a smooth rotation */
+  8.33%   { -webkit-transform: rotate(30deg); }
+  16.65%  { -webkit-transform: rotate(30deg); }
+  16.66%  { -webkit-transform: rotate(60deg); }
+  24.99%  { -webkit-transform: rotate(60deg); }
+  25%     { -webkit-transform: rotate(90deg); }
+  33.32%  { -webkit-transform: rotate(90deg); }
+  33.33%  { -webkit-transform: rotate(120deg); }
+  41.65%  { -webkit-transform: rotate(120deg); }
+  41.66%  { -webkit-transform: rotate(150deg); }
+  49.99%  { -webkit-transform: rotate(150deg); }
+  50%     { -webkit-transform: rotate(180deg); }
+  58.32%  { -webkit-transform: rotate(180deg); }
+  58.33%  { -webkit-transform: rotate(210deg); }
+  66.65%  { -webkit-transform: rotate(210deg); }
+  66.66%  { -webkit-transform: rotate(240deg); }
+  74.99%  { -webkit-transform: rotate(240deg); }
+  75%     { -webkit-transform: rotate(270deg); }
+  83.32%  { -webkit-transform: rotate(270deg); }
+  83.33%  { -webkit-transform: rotate(300deg); }
+  91.65%  { -webkit-transform: rotate(300deg); }
+  91.66%  { -webkit-transform: rotate(330deg); }
+  99.99%  { -webkit-transform: rotate(330deg); }
+  to      { -webkit-transform: rotate(360deg); }
+}
 
 
 
@@ -349,17 +379,15 @@ a:hover{
 				default style, this container provides the background color and borders that
 				surround the content.
 			*/
-			#timeline-tabs-content,
-			.TabbedPanelsContentGroup{
-				position:absolute;
+      #timeline-tabs-content,
+      .TabbedPanelsContentGroup{
+        position:absolute;
         left:0;
-				right:0;
+        right:0;
         top:60px;
-/*        bottom:90px;*/
-				bottom:94px;
-				clear:both;
-				background-color:#FFFFFF;
-			}
+        bottom:94px;
+        clear:both;
+      }
 
 				/* This is the selector for the Content panel. The Content panel holds the
 				 * content for a single tabbed panel. For our default style, this container
@@ -460,19 +488,34 @@ a:hover{
                 margin-right:0;
               }
 
-					/*
-						This wraps to provide scrolling for div.timeline
-					*/
-					.timeline-wrapper{
-						overflow:auto;
-						position:absolute;
-						top:34px;
-						left:0px;
-						right:0px;
-						bottom:0px;
-					}
+          /*
+           This wraps to provide scrolling for div.timeline
+          */
+          .timeline-wrapper{
+            position:absolute;
+            top:34px;
+            left:0px;
+            right:0px;
+            bottom:0px;
+            overflow:auto;
+          }
+          .timeline-wrapper,
+          #timeline-tabs-content{
+            background:-webkit-gradient(
+              linear, left top, left bottom,
+              from(#49525F), to(#7C8695),
+              color-stop(0.005, #69727F), color-stop(0.99, #8C96A5));
+                /*  These `color-stop` values create top and bottom inner
+                    shadows. However, the shadow heights are percent-based;
+                    static heights would be ideal. */
+          }
           #timelinewrapper-userlists{
             top:60px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+            background:transparent;
+              /*  Show the background for `#timeline-tabs-content`, not this
+                  element. This is because `#timeline-userlists-full-name` is
+                  initially empty, which leaves the normal `.timeline-wrapper`
+                  background with a floating, clearly fake "drop shadow". */
           }
           #timelinewrapper-prefs{
             top:0px;  /* No .panelmenu */
@@ -484,7 +527,7 @@ a:hover{
             div.timeline {
               margin:0px;
               padding:0px;
-              background:transparent url(images/dropshadow.png) 0 -6px repeat-x;
+/*              background:transparent url(images/dropshadow.png) 0 -6px repeat-x;*/
             }
               #timeline-userlists-full-name{
                 position:fixed;
@@ -510,6 +553,9 @@ a:hover{
                   linear, left top, left bottom, from(#fff), to(#ededed));
                 border-bottom-color:#b4b4b4;
                 color:#717171;
+              }
+              #timeline-userlists-full-name:empty{
+                border-bottom:0;
               }
 
 							/*
@@ -547,6 +593,30 @@ a:hover{
 								top:  -4px;
 								font-size:16px;
 							}
+            .timeline-wrapper div.intro,
+            .timeline-wrapper div.empty,
+            .timeline-wrapper div.loading{
+              margin:150px 50px 0;
+              color:#fff;
+              font-size:0.75em;
+              text-align:center;
+            }
+            .timeline-wrapper div.loading{
+              width:50px;
+              height:50px;
+              margin-left:auto;
+              margin-right:auto;
+              background:transparent url(images/loading-white-50x50.png) center center no-repeat;
+              text-indent:-9999em;
+              -webkit-animation-duration:1s;
+              -webkit-animation-iteration-count:infinite;
+              -webkit-animation-name:loading;
+              -webkit-animation-timing-function:linear;
+            }
+            #timelinewrapper-userlists div.loading,
+            #timelinewrapper-userlists div.intro{
+              margin-top:125px; /* = default margin-top - #timeline-userlists-full-name line-height */
+            }
 
 		/*
 			The entryform contains the #entrybox textarea input for posts and the #updateButton
@@ -568,13 +638,14 @@ a:hover{
       border-top-color:#999;
     }
       #leopaz-entryform-resize{
-        height:11px;
+        height:6px;
         background:transparent url(images/resize-ns.png) center center no-repeat;
         border-top:1px solid #eee;
         cursor:ns-resize;
       }
       body:not(.active) #leopaz-entryform-resize{
         border-top-color:#fff;
+        opacity:0.5;
       }
 			/*
 				This is a Spry textarea widget
@@ -583,7 +654,7 @@ a:hover{
         position:absolute;
         left:4px;
         right:5px;
-        top:11px;
+        top:8px;
         bottom:0;
         margin:0;
         padding:5px 5px 15px 5px;
@@ -742,40 +813,13 @@ a:hover{
         -webkit-animation-name:loading;
         -webkit-animation-timing-function:linear;
       }
-      @-webkit-keyframes loading{
-        from    { -webkit-transform: rotate(0deg); }
-        8.32%   { -webkit-transform: rotate(0deg); } /* Forces jump from 0deg to 30deg, not smooth rotate */
-        8.33%   { -webkit-transform: rotate(30deg); }
-        16.65%  { -webkit-transform: rotate(30deg); }
-        16.66%  { -webkit-transform: rotate(60deg); }
-        24.99%  { -webkit-transform: rotate(60deg); }
-        25%     { -webkit-transform: rotate(90deg); }
-        33.32%  { -webkit-transform: rotate(90deg); }
-        33.33%  { -webkit-transform: rotate(120deg); }
-        41.65%  { -webkit-transform: rotate(120deg); }
-        41.66%  { -webkit-transform: rotate(150deg); }
-        49.99%  { -webkit-transform: rotate(150deg); }
-        50%     { -webkit-transform: rotate(180deg); }
-        58.32%  { -webkit-transform: rotate(180deg); }
-        58.33%  { -webkit-transform: rotate(210deg); }
-        66.65%  { -webkit-transform: rotate(210deg); }
-        66.66%  { -webkit-transform: rotate(240deg); }
-        74.99%  { -webkit-transform: rotate(240deg); }
-        75%     { -webkit-transform: rotate(270deg); }
-        83.32%  { -webkit-transform: rotate(270deg); }
-        83.33%  { -webkit-transform: rotate(300deg); }
-        91.65%  { -webkit-transform: rotate(300deg); }
-        91.66%  { -webkit-transform: rotate(330deg); }
-        99.99%  { -webkit-transform: rotate(330deg); }
-        to      { -webkit-transform: rotate(360deg); }
+      #statusbar-text{
+        position:absolute;
+        left:20px;
+        right:20px;
+        overflow:hidden;
+        text-overflow:ellipsis;
       }
-			#statusbar-text{
-			  position:absolute;
-			  left:8px;
-			  right:20px;
-			  overflow:hidden;
-			  text-overflow:ellipsis;
-			}
       body:not(.active) #statusbar-text{
         color:#6f6f6f;
       }

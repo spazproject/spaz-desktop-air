@@ -267,7 +267,13 @@ border:none;
         input[type='text']#search-for {
             width:150px;
         }
-
+.timeline-wrapper div.intro,
+.timeline-wrapper div.loading,
+.timeline-wrapper div.empty{
+	margin:150px 50px 0;
+	font-size:0.75em;
+	text-align:center;
+}
 
 		/*
 			This is effectively dead since the Twitter API doesn't support paging anymore.
