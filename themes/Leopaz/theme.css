@@ -598,6 +598,7 @@ a:hover{
             .timeline-wrapper div.loading{
               margin:150px 50px 0;
               color:#fff;
+              cursor:default;
               font-size:0.75em;
               text-align:center;
             }
@@ -1452,10 +1453,9 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                         font-weight:normal;
                       }
 
-					/*
-						Buncha junk for various form fields, really only used in the Preferences section
-					*/
-          body:not(.active) #prefs-form input,
+          /*** Preferences > Controls ***/
+
+          body:not(.active) #prefs-form input:not([type=button]):not([type=submit]),
           body:not(.active) #prefs-form select{
             opacity:0.5;
           }
@@ -1469,71 +1469,106 @@ body:not(.active) #panel-prefs .timeline-wrapper{
 					#prefs-form input[type='checkbox'] {
 						vertical-align:-20%;
 					}
-					#prefs-form option {
-/*            font-family:sans-serif;*/
-						size:10px;
-					}
-					input[type='button'], input[type='submit'] {
-          	background:#d4d2d2 url(images/button-bg.png) 0 0 repeat-x;
-          	color:#000;
-          	-khtml-border-radius:0.875em;
-          	border:1px solid #7f7f7f;
-          	font-size:10px;
-          	cursor:pointer;
-          	padding:0.25em 0.75em;
+          #prefs-form option{
+            font-size:10px;
           }
-          	input[type='button']:active, input[type='submit']:active{
-          		background-color:#9a9a9b;
-          		background-position:0 -25px;
-          	}
-				  #prefs-form input[type=text],
-				  #prefs-form input[type=password]{
+          #prefs-form input[type=button],
+          #prefs-form input[type=submit]{
+            height:19px;
+            padding:0;
+            background:transparent;
+            border:0;
+            border-image:url(images/buttons/small.png) 0 9 0 9 repeat repeat;
+              -webkit-border-image:url(images/buttons/small.png) 0 9 0 9 repeat repeat;
+            border-width:0 9px;
+            color:#000;
+            font-size:10px;
+          }
+            #prefs-form input[type=button]:active,
+            #prefs-form input[type=submit]:active{
+              border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
+                -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
+            }
+            body:not(.active) #prefs-form input[type=button],
+            body:not(.active) #prefs-form input[type=submit]{
+              border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
+                -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
+              color:#999;
+            }
+          #prefs-form input[type=text],
+          #prefs-form input[type=password]{
             background: #fff url(images/text-input-bg.png) 0 0 no-repeat;
             border-top:0;
             border-left:0;
             border-right:1px solid #c3c3c3;
             border-bottom:1px solid #ddd;
           }
-                    /*
-                    input[type="text"]:focus,
-                    input[type="password"]:focus,
-                    textarea:focus {
-                        background-color:#FFFFCC;
-                    }
-                    */
-                    
-                    
-					/*
-						A few specific pref "widgets" need special formatting
-					*/
-					input[type='text']#prefs-user-stylesheet {
-						width:80px;
-					}
-					input[type='text']#network-refreshinterval {
-						width:20px;
-					}
-               input[type='text']#dock-refreshinterval {
-                  width:30px;
-               }
-					input[type='text']#window-alpha {
-						width:30px;
-						text-align:right;
-					}
-					#prefs-user-stylesheet-button,
+          /* TODO: Add glow to input[type=text]:focus */
+          input[type=text]#prefs-user-stylesheet  { width:80px; }
+          input[type=text]#network-refreshinterval{ width:20px; }
+          input[type=text]#dock-refreshinterval   { width:30px; }
+          input[type=text]#window-alpha{
+            width:30px;
+            text-align:right;
+          }
+          #prefs-user-stylesheet-button,
           #prefs-user-stylesheet-edit,
           #prefs-user-stylesheet-clear{
-            width:90px;
-						margin:0px;
-						padding:2px;
-						font-size:10px;
+            margin:2px 0 0;
+            font-size:10px;
           }
 
-	/*
-		The update/save prefs button sits outside the panel group
-	*/
-	#prefs-update-button {
-		font-size:13px;
-	}
+  /*** Preferences > Footer ***/
+
+  #prefs-form div.formrow.footer{
+    margin:0;
+    padding:20px 10px;
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#d2d2d2), to(#bdbdbd));
+    border-top:1px solid #e1e1e1;
+    border-bottom:1px solid #ababab;
+    text-align:right;
+  }
+  body:not(.active) #prefs-form div.formrow.footer{
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#e2e2e2), to(#cdcdcd));
+    border-top-color:#f1f1f1;
+    border-bottom-color:#bbb;
+  }
+  #prefs-form div.formrow.footer p.prefs-relaunch{
+    margin:0;
+  }
+  #prefs-form div.formrow.footer p.prefs-update{
+    float:right;
+    display:inline-block;
+    margin:0.5em 0 0 0.25em;
+  }
+  #prefs-form div.formrow.footer p.prefs-open-folder{
+    display:inline-block;
+    margin:0.5em 0 0;
+  }
+  #prefs-form div.formrow.footer p input[type=button]{
+    height:23px;
+    margin:0;
+    border-image:url(images/buttons/large.png) 0 11 0 11 repeat repeat;
+      -webkit-border-image:url(images/buttons/large.png) 0 11 0 11 repeat repeat;
+    border-width:0 11px;
+    font-size:12px;
+  }
+  #prefs-form div.formrow.footer p input[type=button]:active{
+    border-image:url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
+      -webkit-border-image:url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
+  }
+  body:not(.active) #prefs-form div.formrow.footer p input[type=button]{
+    border-image:url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
+      -webkit-border-image:url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
+  }
+  #prefs-form div.formrow.footer p.prefs-update input#prefs-update-button{
+    padding:0 1.25em;
+  }
+  #prefs-form div.formrow.footer p.prefs-open-folder input#prefs-open-folder{
+    font-size:10px;
+  }
 
 
 

@@ -490,7 +490,7 @@
 												<label for="theme-basetheme">Theme</label>
 												<select id="theme-basetheme" name="base-theme" onchange="">
 													<!-- stuff goes here -->
-												</select> <span class="restart-required">*</span>
+												</select> <span class="relaunch-required">*</span>
 											</div>
 											<div class="formrow">
 												<label for="window-alpha">Opacity</label>
@@ -543,27 +543,27 @@
 											<legend>Other options</legend>
 											<div class="formrow">
 												<input type="checkbox" name="markdown-enabled" value="1" id="usemarkdown" />
-												<label for="usemarkdown" class="checkbox">Parse Markdown</label> <span class="restart-required">*</span>
+												<label for="usemarkdown" class="checkbox">Parse Markdown</label> <span class="relaunch-required">*</span>
 											</div>
 											<div class="formrow">
 												<input type="checkbox" name="minimize-systray" value="1"
 													id="window-minimizetosystray" />
-												<label for="window-minimizetosystray" class="checkbox">Minimize to Systray</label> <span class="restart-required">*</span>
+												<label for="window-minimizetosystray" class="checkbox">Minimize to Systray</label> <span class="relaunch-required">*</span>
 											</div>
 											<div class="formrow">
 												<input type="checkbox" name="minimize-atstartup" value="1"
 													id="window-minimizeatstartup" />
-												<label for="window-minimizeatstartup" class="checkbox">Minimize at Startup</label> <span class="restart-required">*</span>
+												<label for="window-minimizeatstartup" class="checkbox">Minimize at Startup</label> <span class="relaunch-required">*</span>
 											</div>
 											<div class="formrow">
 												<input type="checkbox" name="minimize-background" value="1"
 													id="window-minimizeonbackground" />
-												<label for="window-minimizeonbackground" class="checkbox">Minimize in background</label> <span class="restart-required">*</span>
+												<label for="window-minimizeonbackground" class="checkbox">Minimize in background</label> <span class="relaunch-required">*</span>
 											</div>
 											<div class="formrow">
 												<input type="checkbox" name="maximize-foreground" value="1"
 													id="window-restoreonactivate" />
-												<label for="window-restoreonactivate" class="checkbox">Restore in foreground</label> <span class="restart-required">*</span>
+												<label for="window-restoreonactivate" class="checkbox">Restore in foreground</label> <span class="relaunch-required">*</span>
 											</div>
 											<div class="formrow">
 												<input type="checkbox" name="timeline-scrollonupdate" value="1"
@@ -661,14 +661,14 @@
 										<div class="formrow">
 											<input type="checkbox" name="checkupdate-enabled" value="1" id="checkupdate" />
 											<label for="checkupdate" class="checkbox">Check on startup</label>
-											<span class="restart-required">*</span>
+											<span class="relaunch-required">*</span>
 										</div>
 										<div class="formrow">
 											<input type="checkbox" name="checkupdate-testversions-enabled" value="1" id="checkupdate-testversions" />
 											<label for="checkupdate-testversions" class="checkbox">Check for test versions</label>
 										</div>
 										<div class="formrow">
-											<input type="button" name="checkupdate-button" value="Check Now &bull;"
+											<input type="button" name="checkupdate-button" value="Check Now"
 												id="prefs-checkupdate-button" onclick="Spaz.Update.go()" />
 
 										</div>
@@ -687,20 +687,20 @@
 												</span>
 										</div>
 										<div class="formrow">
-											<input type="button" name="autosetrefresh-button" value="Get rate from Twitter &bull;"
+											<input type="button" name="autosetrefresh-button" value="Get rate from Twitter"
 												id="prefs-autosetrefresh-button" />
 
 										</div>
 										<div class="formrow">
 											<input type="checkbox" name="autoadjust-refresh-interval" value="1"
 												id="network-autoadjustrefreshinterval" />
-											<label for="network-autoadjustrefreshinterval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="restart-required">*</span> -->
+											<label for="network-autoadjustrefreshinterval" class="checkbox">Auto-adjust refresh interval</label> <!-- <span class="relaunch-required">*</span> -->
 										</div>
 
 										<div class="formrow">
 											<input type="checkbox" name="handle-http-auth" value="1"
 												id="network-airhandlehttpauth" />
-											<label for="network-airhandlehttpauth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="restart-required">*</span> -->
+											<label for="network-airhandlehttpauth" class="checkbox">Enable HTTP auth handling</label> <!-- <span class="relaunch-required">*</span> -->
 										</div>
 									</div>
 								</div>
@@ -718,10 +718,10 @@
 										<div class="formrow">
 											<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
 											<label class="checkbox" for="debug-enabled">Enabled</label>
-											<span class="restart-required">*</span>
+											<span class="relaunch-required">*</span>
 										</div>
 										<div class="formrow">
-											<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
+											<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML" onclick="Spaz.Debug.dumpHTML()" />
 										</div>
 									</div>
 								</div>
@@ -758,15 +758,22 @@
 
 							</div>
 
-							<div class="formrow" style="text-align:right; margin-top:15px">
-								<div><span class="restart-required">*</span> <span class="prefs-restart-msg">restart required</span></div>
+							<div class="formrow footer">
+								<p class="prefs-relaunch">
+									<span class="relaunch-required">*</span>
+									<span class="prefs-relaunch-msg">Relaunch required</span>
+								</p>
 
-								<input type="button" id="prefs-update-button" name="update" value="Save Preferences &bull;"
-									onclick="Spaz.Prefs.setPrefs()" />
+								<p class="prefs-update">
+									<input type="button" id="prefs-update-button"
+										name="update" value="Save Preferences"
+										onclick="Spaz.Prefs.setPrefs()" />
+								</p>
 
-								<div style="margin-top:1em;">
-									<a id="prefs-open-folder" class="clickable">Open Prefs Folder</a>
-								</div>
+								<p class="prefs-open-folder">
+									<input type="button" id="prefs-open-folder"
+										value="Open Prefs Folder&hellip;" />
+								</p>
 							</div>
 
 							</form>
@@ -1140,7 +1147,7 @@
 						</div>
 
 						<div class="formrow" style="text-align:right; margin-top:15px">
-							<input type="submit" id="shorten-button" name="update" value="Shorten &bull;" />
+							<input type="submit" id="shorten-button" name="update" value="Shorten" />
 						</div>
 						<div id="verification-result" align="center">&nbsp;</div>
 					</form>
