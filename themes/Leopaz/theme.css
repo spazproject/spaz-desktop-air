@@ -1289,6 +1289,11 @@ body:not(.active) #panel-prefs .timeline-wrapper{
 #prefs-form {
   margin:10px 1px 0;
   padding:0 0 10px;
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0)),
+    color-stop(0.95, rgba(0, 0, 0, 0.125)));
+    /* Fake shadow below form */
   font-size:11px;
 }
 
