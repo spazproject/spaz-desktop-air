@@ -1,6 +1,26 @@
 var Spaz;
 if (!Spaz) Spaz = {};
 
+
+
+/*
+	for storing the current user id for this window
+*/
+Spaz.currentUserId = null;
+
+
+Spaz.setCurrentUserId = function(id) {
+	Spaz.currentUserId = id;
+}
+
+Spaz.getCurrentUserId = function() {
+	return Spaz.currentUserId;
+}
+
+
+
+
+
 // Spaz.verified = false;
 Spaz.startReloadTimer = function() {
 	var refreshInterval = Spaz.Prefs.getRefreshInterval();
@@ -84,6 +104,7 @@ Spaz.initialize = function() {
 	 **************************/
 	sch.dump('init prefs');
 	Spaz.Prefs.init();
+	return;
 
 	// sch.dump('init Sections');
 	// Spaz.Section.init();
@@ -141,10 +162,16 @@ Spaz.initialize = function() {
 	/***************************
 	 * Apply prefs
 	 **************************/
-	window.moveTo(Spaz.Prefs.get('window-x'), Spaz.Prefs.get('window-y'));
-	window.resizeTo(Spaz.Prefs.get('window-width'), Spaz.Prefs.get('window-height'));
-	$('#username').val(Spaz.Prefs.getUser());
-	$('#password').val(Spaz.Prefs.getPass());
+	// window.moveTo(Spaz.Prefs.get('window-x'), Spaz.Prefs.get('window-y'));
+	// window.resizeTo(Spaz.Prefs.get('window-width'), Spaz.Prefs.get('window-height'));
+	
+	if (Spaz.Prefs.getUser()) {
+		$('#username').val(Spaz.Prefs.getUser());
+	}
+	if (Spaz.Prefs.getPass()) {
+		$('#password').val(Spaz.Prefs.getPass());
+	}
+	
 
 	//DONE: Check for Update
 	if (Spaz.Prefs.get('checkupdate')) {
@@ -236,9 +263,10 @@ Spaz.initialize = function() {
 		Spaz.Update.go();
 	}
 
-
-	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
-		Spaz.Data.getRateLimitInfo(Spaz.Prefs.setRateLimit);
+	if (Spaz.Prefs.getUser()) {
+		if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+			Spaz.Data.getRateLimitInfo(Spaz.Prefs.setRateLimit);
+		}		
 	}
 
 

@@ -1573,7 +1573,7 @@ Spaz.UI.generateAccountsMenu = function() {
 		$('#account-list').append('<li class="account-list-item">' +
 								  '<a  class="account-item" id="account-list-item-' + accounts[i] +
 								  '">' + accounts[i] + '</a></li>');
-		if (accounts[i].toLowerCase() == Spaz.Prefs.user) {
+		if (accounts[i].toLowerCase() == Spaz.Prefs.getUser) {
 			$('#mainMenu-accountname-' + accounts[i]).addClass("selected-account");
 			$('#account-list-item-'    + accounts[i]).addClass("selected-account");
 		}
