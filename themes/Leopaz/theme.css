@@ -1570,7 +1570,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
       -webkit-border-image:url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
   }
   #prefs-form div.formrow.footer p.prefs-update input#prefs-update-button{
-    padding:0 1.25em;
+    padding:0 0.5em;
   }
   #prefs-form div.formrow.footer p.prefs-open-folder input#prefs-open-folder{
     font-size:10px;
