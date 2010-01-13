@@ -434,8 +434,6 @@ a:hover{
                 padding:0;
                 background:transparent;
                 border:0;
-                border-radius:0;
-                  -webkit-border-radius:0;
                 border-image:url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
                   -webkit-border-image:url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
                 border-width:0 8px;
@@ -753,7 +751,10 @@ a:hover{
             background:-webkit-gradient(
               linear, left top, left bottom, from(#333), to(#000));
             border:1px solid #000;
+            border-radius:9px; /* = line-height / 2 */
+              -webkit-border-radius:9px;
             color:#fff;
+            font-size:10px;
             line-height:18px; /* = vertical border widths + #chars-left line-height */
           }
           #entrybox-actions input[type=button]:hover,
