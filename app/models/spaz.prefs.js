@@ -115,7 +115,7 @@ Spaz.Prefs.defaultPreferences = {
 	Set up SpazCore prefs and accounts objects
 */
 Spaz.Prefs._prefs = new SpazPrefs(Spaz.Prefs.defaultPreferences);
-Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
+Spaz.Prefs._accounts = {}; // a placeholder where we will store the SpazAccounts obj
 Spaz.Prefs._currentUserId = null;
 
 
@@ -751,6 +751,9 @@ Spaz.Prefs.init = function() {
 
 	sch.debug('LOADING');
 	Spaz.Prefs._prefs.load();
+	
+	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
+	
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();
 	
@@ -923,14 +926,13 @@ Spaz.Prefs.setSoundFileLocations = function() {
 
 
 Spaz.Prefs.savePrefs = function() {
-	Spaz.Prefs._accounts.save();
+	sch.debug('saving prefs');
 	Spaz.Prefs._prefs.save();
 };
 
 
 Spaz.Prefs.resetPrefs = function() {
 	Spaz.Prefs._prefs.resetPrefs()
-	Spaz.Prefs._accounts.init();
 };
 
 
@@ -953,25 +955,27 @@ Spaz.Prefs.setPrefs = function() {
 }
 
 Spaz.Prefs.setCurrentUser = function() {
+	sch.error('setCurrentUser is @TODO');
+	return;
 	
-    var user = $('#username').val();
-    var pass = $('#password').val();
-	var accobj;
-
-    sch.debug('set new username and pass (' + user + ')');
-
-	if (Spaz.Prefs._currentUserId) {
-		if ( ( accobj = Spaz.Prefs._accounts.get(Spaz.Prefs._currentUserId) ) ) {
-			accobj.username = user;
-			accobj.password = pass;
-			Spaz.Prefs._accounts.update(id, accobj);
-		}
-	} else {
-		var newaccobj = Spaz.Prefs._accounts.add(user, pass, SPAZCORE_ACCOUNT_TWITTER);
-		Spaz.Prefs.setCurrentUserId(newaccobj.id);
-	}
-
-    sch.debug('saved data');
+	//     var user = $('#username').val();
+	//     var pass = $('#password').val();
+	// var accobj;
+	// 
+	//     sch.debug('set new username and pass (' + user + ')');
+	// 
+	// if (Spaz.Prefs._currentUserId) {
+	// 	if ( ( accobj = Spaz.Prefs._accounts.get(Spaz.Prefs._currentUserId) ) ) {
+	// 		accobj.username = user;
+	// 		accobj.password = pass;
+	// 		Spaz.Prefs._accounts.update(id, accobj);
+	// 	}
+	// } else {
+	// 	var newaccobj = Spaz.Prefs._accounts.add(user, pass, SPAZCORE_ACCOUNT_TWITTER);
+	// 	Spaz.Prefs.setCurrentUserId(newaccobj.id);
+	// }
+	// 
+	//     sch.debug('saved data');
 }
 
 

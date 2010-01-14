@@ -121,6 +121,7 @@
 	<script src="app/views/spaz.windows.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.imageuploader.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.conversation.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.accountprefs.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- app model -->
 	<script src="app/models/spaz.db.js"			type="text/javascript"></script>
@@ -418,13 +419,14 @@
 										<fieldset id="account-list-fieldset">
 											<legend>Account List</legend>
 											<div>
-												<select name="accounts" id="accounts" size="8">
+												<select name="account-list" id="account-list" size="8">
 												</select>
 											</div>
 											<input type="button" name="add_button" value="+" id="add_button">
 											<input type="button" name="del_button" value="-" id="del_button">
 											<input type="button" name="edit_button" value="edit" id="edit_button">
 										</fieldset>
+
 
 										<fieldset id="account-details">
 
@@ -503,6 +505,7 @@
 											<input type="button" name="cancel" value="Cancel" id="cancel">
 
 										</fieldset>
+
 									</div>
 								</div>
 
@@ -745,48 +748,6 @@
 						 </div> -->
 
 								<div id="prefs-debugging-fieldset" class="CollapsiblePanel">
-									<h2 class="CollapsiblePanelTab" tabindex="0">Debugging</h2>
-									<div class="CollapsiblePanelContent">
-										<div class="formrow">
-											<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
-											<label class="checkbox" for="debug-enabled">Enabled</label>
-											<span class="restart-required">*</span>
-										</div>
-										<div class="formrow">
-											<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML &bull;" onclick="Spaz.Debug.dumpHTML()" />
-										</div>
-									</div>
-								</div>
-
-								<div id="prefs-serviceurls-fieldset" class="CollapsiblePanel">
-									<h2 class="CollapsiblePanelTab" tabindex="0">Service URLs</h2>
-									<div class="CollapsiblePanelContent">
-										<fieldset>
-											<div class="formrow">
-												<select id="twitter-base-urls">
-													<option value="">Load settings for…</option>
-													<option value="twitter">Twitter.com</option>
-													<option value="identica">Identi.ca</option>
-												</select>
-											</div>
-
-											<div class="formrow">
-												<label for="twitter-api-base-url">Base API URL </label>
-												<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
-											</div>
-											<div class="formrow">
-												<label for="twitter-base-url">Base WWW URL </label>
-												<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
-											</div>
-										</fieldset>
-
-										<div class="formrow">
-											<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
-											<label for="twitter-disable-direct-posting" class="checkbox">Disable direct posting (will only post via <strong>Other Services</strong>)</label>
-										</div>
-
-									</div>
-								</div>
 
 							</div>
 

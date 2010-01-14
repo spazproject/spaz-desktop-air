@@ -930,7 +930,10 @@ var UserlistsTimeline = function(args) {
 	/*
 		build the lists menu
 	*/
-	thisUT.buildListsMenu();
+	if (Spaz.Prefs.getUser()) {
+		thisUT.buildListsMenu();
+	}
+	
 	
 };
 

@@ -73,7 +73,7 @@ Spaz.Conversation = {
 			
 			sc.helpers.updateRelativeTimes('#conversationWindow a.status-created-at', 'data-created-at');
 			
-			openPopboxInline('#conversationWindow');
+			Spaz.UI.openPopboxInline('#conversationWindow');
 			
 			
 		}

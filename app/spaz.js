@@ -104,6 +104,7 @@ Spaz.initialize = function() {
 	 **************************/
 	sch.dump('init prefs');
 	Spaz.Prefs.init();
+	Spaz.AccountPrefs.init();
 
 	// sch.dump('init Sections');
 	// Spaz.Section.init();
@@ -268,11 +269,11 @@ Spaz.initialize = function() {
 		}		
 	}
 
-
+	
 	Spaz.Timelines.init();
 
 
-	if (Spaz.Prefs.get('timeline-loadonstartup')) {
+	if (Spaz.Prefs.get('timeline-loadonstartup') && Spaz.Prefs.getUser()) {
 		$('#tab-friends').trigger('click');
 	}
 
