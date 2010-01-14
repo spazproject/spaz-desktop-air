@@ -33,6 +33,11 @@ a:hover{
 *:focus{
   outline:0;
 }
+input[type=text]:focus,
+input[type=password]:focus,
+#entrybox:focus{
+  outline:3px solid #98bde1; /* Light blue */
+}
 .highlight{
   border-bottom:1px dotted #884;
 }
@@ -465,9 +470,10 @@ a:hover{
                 border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
                   -webkit-border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
               }
-              .panelmenu form input[type='text']:focus{
+              .panelmenu form input[type=text]:focus{
                 color:#0f0f0f;
-                /* TODO: Add blue glow */
+                outline:0;
+                /* TODO: Add rounded blue glow */
               }
               #panel-user   .panelmenu form input[type=text],
               #panel-public .panelmenu form input[type=text]{
@@ -669,9 +675,6 @@ a:hover{
       body:not(.active) #entrybox{
         border-bottom:1px solid #e1e1e1;
       }
-			#entrybox:focus{
-			  outline:3px solid #98bde1; /* light blue */
-			}
 				/* the hint shown when the widget does not have focus */
 				.textareaHintState{
 					color:#828282;
