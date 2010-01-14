@@ -104,7 +104,6 @@ Spaz.initialize = function() {
 	 **************************/
 	sch.dump('init prefs');
 	Spaz.Prefs.init();
-	return;
 
 	// sch.dump('init Sections');
 	// Spaz.Section.init();
