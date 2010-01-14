@@ -1411,18 +1411,10 @@ body:not(.active) #panel-prefs .timeline-wrapper{
             padding:0 16px;
           }
                     
-					#prefs-form label {
-						min-width:80px;
-						text-align:left;
-						font-weight:bold;
-						display:block;
-					}
-					#prefs-form label.checkbox {
-						float: none;
-						padding:0;
-						margin:0 0 0 1px;
-						display:inline;
-					}
+          #prefs-form label{
+            display:block;
+            text-align:left;
+          }
 
                     #prefs-form fieldset{
                       position:relative;
@@ -1468,7 +1460,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
 
           /*** Preferences > Controls ***/
 
-          body:not(.active) #prefs-form input:not([type=button]):not([type=submit]),
+          body:not(.active) #prefs-form input[type=text],
           body:not(.active) #prefs-form select{
             opacity:0.5;
           }
@@ -1479,9 +1471,31 @@ body:not(.active) #panel-prefs .timeline-wrapper{
 						padding:4px;
 						width:90%;
 					}
-					#prefs-form input[type='checkbox'] {
-						vertical-align:-20%;
-					}
+          #prefs-form input[type=checkbox]{
+            display:none;
+          }
+          #prefs-form input[type=checkbox] + label{
+            display:inline-block;
+            height:auto;
+            min-height:14px;
+            padding:0 0 0 20px;
+            background:transparent url(images/checkbox.png) 0 -100px no-repeat;
+          }
+          body:not(.active) #prefs-form input[type=checkbox] + label{
+            background-position:0 0;
+          }
+          body:not(.active) #prefs-form input[type=checkbox]:checked + label{
+            background-position:0 -50px;
+          }
+          #prefs-form input[type=checkbox]:checked + label{
+            background-position:0 -150px;
+          }
+          #prefs-form input[type=checkbox] + label:hover:active{
+            background-position:0 -200px;
+          }
+          #prefs-form input[type=checkbox]:checked + label:hover:active{
+            background-position:0 -250px;
+          }
           #prefs-form option{
             font-size:10px;
           }
