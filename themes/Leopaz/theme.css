@@ -1418,9 +1418,8 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 opacity:0.5;
               }
               #prefs-form input[type=password],
-              #prefs-form input[type=text],
-              #prefs-form select{
-                width:90%;
+              #prefs-form input[type=text]{
+                width:96%;
                 padding:4px;
                 border:1px solid #666;
               }
@@ -1443,10 +1442,10 @@ body:not(.active) #panel-prefs .timeline-wrapper{
               #prefs-form input[type=checkbox]:checked + label{
                 background-position:0 -150px;
               }
-              #prefs-form input[type=checkbox] + label:hover:active{
+              #prefs-form input[type=checkbox] + label:active{
                 background-position:0 -200px;
               }
-              #prefs-form input[type=checkbox]:checked + label:hover:active{
+              #prefs-form input[type=checkbox]:checked + label:active{
                 background-position:0 -250px;
               }
               #prefs-form option{
