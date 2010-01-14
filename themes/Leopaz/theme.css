@@ -1287,7 +1287,7 @@ div.timeline-entry:hover{
 body:not(.active) #panel-prefs .timeline-wrapper{
   border-top-color:#a9a9a9;
 }
-#prefs-form {
+#prefs-form{
   margin:10px 1px 0;
   padding:0 0 10px;
   background:-webkit-gradient(
@@ -1366,184 +1366,137 @@ body:not(.active) #panel-prefs .timeline-wrapper{
           linear, left top, left bottom,
           from(#ccc), to(#e0e0e0), color-stop(0.01, #e0e0e0));
       }
-
-
-
-				/*
-					The div.formrows wrap each pref gui piece
-				*/
-				#panel-prefs div.formrow{
-					clear:both;
-					margin-bottom:5px;
-					padding:0 10px;
-				}
-          #prefs-form .CollapsiblePanelContent > div.formrow{
-            /* Form rows that aren't in fieldsets */
-            margin:0 8px;
-            padding:4px 8px;
-            background:#fff;
-            border-radius:0;
-              -webkit-border-radius:0;
+        #prefs-form fieldset{
+          margin:8px;
+          padding:0;
+          overflow:auto; /* Wrap children's margins */
+          background:-webkit-gradient(
+            linear, left top, left bottom,
+            from(#fff), to(#f0f0f0), color-stop(0.75, #fff));
+          border-radius:8px;
+            -webkit-border-radius:8px;
+          border:0;
+          box-shadow:2px 2px 5px #000;
+            -webkit-box-shadow:2px 2px 5px #000;
+        }
+          #prefs-form legend{
+            float:left;
+            width:100%;
+            margin:0 0 8px;
+            padding:4px 0;
+            background:-webkit-gradient(
+              linear, left top, left bottom, from(#fff), to(#ededed));
+            border-top-left-radius:6px;
+              -webkit-border-top-left-radius:6px;
+            border-top-right-radius:6px;
+              -webkit-border-top-right-radius:6px;
+            border-bottom:1px solid #dfdfdf;
+            color:#202020;
+            font-size:11px;
+            font-weight:bold;
+            text-indent:12px;
           }
-          #prefs-form .CollapsiblePanelContent > div.formrow:first-child{
-            margin-top:8px;
-            padding-top:8px;
-            border-top-left-radius:8px;
-            border-top-right-radius:8px;
-              -webkit-border-top-left-radius:8px;
-              -webkit-border-top-right-radius:8px;
-          }
-          #prefs-form .CollapsiblePanelContent > div.formrow:last-child{
-            margin-bottom:8px;
-            padding-bottom:8px;
-            border-bottom-left-radius:8px;
-            border-bottom-right-radius:8px;
-              -webkit-border-bottom-left-radius:8px;
-              -webkit-border-bottom-right-radius:8px;
-          }
-          #prefs-form .CollapsiblePanelContent fieldset + div.formrow{
-            /* Form rows that are siblings of fieldsets */
-            border-radius:8px;
-              -webkit-border-radius:8px;
-          }
-          #prefs-form > div.formrow{
-            /* "Save Preferences" section */
-            padding:0 16px;
-          }
-                    
-          #prefs-form label{
-            display:block;
-            text-align:left;
-          }
-
-                    #prefs-form fieldset{
-                      position:relative;
-                      display:block;
-                      margin:8px;
-                      padding-top:30px;
-                      background:-webkit-gradient(
-                        linear, left top, left bottom,
-                        from(#fff), to(#f0f0f0), color-stop(0.75, #fff));
-                      border-radius:8px;
-                        -webkit-border-radius:8px;
-                      border:0;
-                      border-top:1px solid #e0e0e0;
-                      box-shadow:2px 2px 5px #000;
-                        -webkit-box-shadow:2px 2px 5px #000;
-                    }
-                      #prefs-serviceurls-fieldset fieldset{
-                        padding:8px 0 0;
-                      }
-                      #prefs-form legend{
-                        position:absolute;
-                        top:0;
-                        left:0;
-                        right:0;
-                        display:block;
-                        margin:0;
-                        padding:4px 12px;
-                        background:-webkit-gradient(
-                          linear, left top, left bottom, from(#fff), to(#ededed));
-                        border-top-left-radius:6px;
-                          -webkit-border-top-left-radius:6px;
-                        border-top-right-radius:6px;
-                          -webkit-border-top-right-radius:6px;
-                        border-top:1px solid #fff;
-                        border-bottom:1px solid #dfdfdf;
-                        color:#202020;
-                        font-size:11px;
-                        font-weight:bold;
-                      }
-                      #prefs-form fieldset label{
-                        font-weight:normal;
-                      }
-
-          /*** Preferences > Controls ***/
-
-          body:not(.active) #prefs-form input[type=text],
-          body:not(.active) #prefs-form select{
-            opacity:0.5;
-          }
-					#prefs-form input[type='password'],
-					#prefs-form input[type='text'],
-					#prefs-form select {
-						border:1px solid #666;
-						padding:4px;
-						width:90%;
-					}
-          #prefs-form input[type=checkbox]{
-            display:none;
-          }
-          #prefs-form input[type=checkbox] + label{
-            display:inline-block;
-            height:auto;
-            min-height:14px;
-            padding:0 0 0 20px;
-            background:transparent url(images/checkbox.png) 0 -100px no-repeat;
-          }
-          body:not(.active) #prefs-form input[type=checkbox] + label{
-            background-position:0 0;
-          }
-          body:not(.active) #prefs-form input[type=checkbox]:checked + label{
-            background-position:0 -50px;
-          }
-          #prefs-form input[type=checkbox]:checked + label{
-            background-position:0 -150px;
-          }
-          #prefs-form input[type=checkbox] + label:hover:active{
-            background-position:0 -200px;
-          }
-          #prefs-form input[type=checkbox]:checked + label:hover:active{
-            background-position:0 -250px;
-          }
-          #prefs-form option{
-            font-size:10px;
-          }
-          #prefs-form input[type=button],
-          #prefs-form input[type=submit]{
-            height:19px;
-            padding:0;
-            background:transparent;
-            border:0;
-            border-image:url(images/buttons/small.png) 0 9 0 9 repeat repeat;
-              -webkit-border-image:url(images/buttons/small.png) 0 9 0 9 repeat repeat;
-            border-width:0 9px;
-            color:#000;
-            font-size:10px;
-          }
-            #prefs-form input[type=button]:active,
-            #prefs-form input[type=submit]:active{
-              border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
-                -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
+            #prefs-form div.formrow{
+              clear:both;
+              margin:8px 0;
+              padding:0 12px;
             }
-            body:not(.active) #prefs-form input[type=button],
-            body:not(.active) #prefs-form input[type=submit]{
-              border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
-                -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
-              color:#999;
+            #prefs-form div.formrow:first-child{
+              margin-top:8px;
             }
-          #prefs-form input[type=text],
-          #prefs-form input[type=password]{
-            background: #fff url(images/text-input-bg.png) 0 0 no-repeat;
-            border-top:0;
-            border-left:0;
-            border-right:1px solid #c3c3c3;
-            border-bottom:1px solid #ddd;
-          }
-          /* TODO: Add glow to input[type=text]:focus */
-          input[type=text]#prefs-user-stylesheet  { width:80px; }
-          input[type=text]#network-refreshinterval{ width:20px; }
-          input[type=text]#dock-refreshinterval   { width:30px; }
-          input[type=text]#window-alpha{
-            width:30px;
-            text-align:right;
-          }
-          #prefs-user-stylesheet-button,
-          #prefs-user-stylesheet-edit,
-          #prefs-user-stylesheet-clear{
-            margin:2px 0 0;
-            font-size:10px;
-          }
+              #prefs-form label{
+                display:block;
+              }
+              #prefs-form .relaunch-required{
+                color:#c00;
+              }
+
+              /*** Preferences > Controls ***/
+
+              body:not(.active) #prefs-form input[type=text],
+              body:not(.active) #prefs-form select{
+                opacity:0.5;
+              }
+              #prefs-form input[type=password],
+              #prefs-form input[type=text],
+              #prefs-form select{
+                width:90%;
+                padding:4px;
+                border:1px solid #666;
+              }
+              #prefs-form input[type=checkbox]{
+                display:none;
+              }
+              #prefs-form input[type=checkbox] + label{
+                display:inline-block;
+                height:auto;
+                min-height:14px;
+                padding:0 0 0 20px;
+                background:transparent url(images/checkbox.png) 0 -100px no-repeat;
+              }
+              body:not(.active) #prefs-form input[type=checkbox] + label{
+                background-position:0 0;
+              }
+              body:not(.active) #prefs-form input[type=checkbox]:checked + label{
+                background-position:0 -50px;
+              }
+              #prefs-form input[type=checkbox]:checked + label{
+                background-position:0 -150px;
+              }
+              #prefs-form input[type=checkbox] + label:hover:active{
+                background-position:0 -200px;
+              }
+              #prefs-form input[type=checkbox]:checked + label:hover:active{
+                background-position:0 -250px;
+              }
+              #prefs-form option{
+                font-size:10px;
+              }
+              #prefs-form input[type=button],
+              #prefs-form input[type=submit]{
+                height:19px;
+                padding:0;
+                background:transparent;
+                border:0;
+                border-image:url(images/buttons/small.png) 0 9 0 9 repeat repeat;
+                  -webkit-border-image:url(images/buttons/small.png) 0 9 0 9 repeat repeat;
+                border-width:0 9px;
+                color:#000;
+                font-size:10px;
+              }
+                #prefs-form input[type=button]:active,
+                #prefs-form input[type=submit]:active{
+                  border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
+                    -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
+                }
+                body:not(.active) #prefs-form input[type=button],
+                body:not(.active) #prefs-form input[type=submit]{
+                  border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
+                    -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
+                  color:#999;
+                }
+              #prefs-form input[type=text],
+              #prefs-form input[type=password]{
+                background: #fff url(images/text-input-bg.png) 0 0 no-repeat;
+                border-top:0;
+                border-left:0;
+                border-right:1px solid #c3c3c3;
+                border-bottom:1px solid #ddd;
+              }
+              /* TODO: Add glow to input[type=text]:focus */
+              input[type=text]#prefs-user-stylesheet  { width:80px; }
+              input[type=text]#network-refreshinterval{ width:20px; }
+              input[type=text]#dock-refreshinterval   { width:30px; }
+              input[type=text]#window-alpha{
+                width:30px;
+                text-align:right;
+              }
+              #prefs-user-stylesheet-button,
+              #prefs-user-stylesheet-edit,
+              #prefs-user-stylesheet-clear{
+                margin:2px 0 0;
+                font-size:10px;
+              }
 
   /*** Preferences > Footer ***/
 
