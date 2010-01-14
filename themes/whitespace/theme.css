@@ -953,7 +953,7 @@ div.timeline-entry {
 			*/
 			#prefs-form .CollapsiblePanelContent {
 				margin:   0px;
-				padding: 10px;
+				padding: 10px 10px 0;
 				border-bottom: 1px solid #CCCCCC;
 				clear:both;
 				background-color: #F0F0F0;
