@@ -58,7 +58,7 @@ input, textarea, .status-text, .status-text * {
 }
 
 
-.restart-required {
+.relaunch-required {
 	font-weight:bold;
 	color:#990000;
 }
