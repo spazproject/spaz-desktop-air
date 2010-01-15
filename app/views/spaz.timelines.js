@@ -248,15 +248,26 @@ var FriendsTimeline = function() {
 			/*
 				expand URLs
 			*/
-			var exp_urls = [];
-			for (var i=0; i < no_dupes.length; i++) {
-				urls = thisFT.shurl.findExpandableURLs(no_dupes[i].text);
+			// var exp_urls = [];
+			// for (var i=0; i < no_dupes.length; i++) {
+			// 	urls = thisFT.shurl.findExpandableURLs(no_dupes[i].text);
+			// 	if (urls) {
+			// 		exp_urls = exp_urls.concat(urls);
+			// 	}
+			// };
+			// 
+			// thisFT.shurl.expandURLs(exp_urls, thisFT.timeline.container);
+
+			$('div.timeline-entry.new div.status-text', thisFT.timeline.container).each(function(i) {
+				urls = thisFT.shurl.findExpandableURLs(this.innerHTML);
 				if (urls) {
-					exp_urls = exp_urls.concat(urls);
-				}
-			};
-			
-			thisFT.shurl.expandURLs(exp_urls, thisFT.timeline.container);
+					sch.debug(urls);
+					sch.debug(this.innerHTML);					
+					sch.listen(this, sc.events.newExpandURLSuccess, thisFT.expandURL);
+					thisFT.shurl.expandURLs(urls, this);
+				}				
+			});
+
 
 			/*
 				set new scroll position
@@ -323,11 +334,15 @@ var FriendsTimeline = function() {
 		handler for URL expansion
 	*/
 	this.expandURL = function(e) {
-		var tl_el = thisFT.timeline.container;
+		
+		var el = e.target
 		var data = sch.getEventData(e);
-		sch.dump('expanding…');
-		sch.dump(data);
-		tl_el.innerHTML = thisFT.shurl.replaceExpandableURL(tl_el.innerHTML, data.shorturl, data.longurl);
+
+		sch.unlisten(el, sc.events.newExpandURLSuccess, thisFT.expandURL);
+
+		sch.debug('expanding…');
+		sch.debug(data);
+		el.innerHTML = thisFT.shurl.replaceExpandableURL(el.innerHTML, data.shorturl, data.longurl);
 	}
 
 	/*
@@ -821,7 +836,7 @@ var UserlistsTimeline = function(args) {
 		var username = Spaz.Prefs.getUser();
 		var password = Spaz.Prefs.getPass();
 		thisUT.twit.setCredentials(username, password);
-		sch.error("Loading lists for @"+username+ "…");
+		sch.debug("Loading lists for @"+username+ "…");
 		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
 		Spaz.UI.showLoading();
 		thisUT.twit.getLists(username, function(data) {
@@ -882,8 +897,8 @@ var UserlistsTimeline = function(args) {
 					if onclick is defined for this item, bind it to the ID of this element
 				*/
 				if (menu_items[i].onclick) {
-					sch.error(menu_items[i].id);
-					sch.error(menu_items[i].onclick);
+					sch.debug(menu_items[i].id);
+					sch.debug(menu_items[i].onclick);
 					
 					$('#'+menu_items[i].id).bind('click', {'onClick':menu_items[i].onclick}, function(e) {
 						e.data.onClick.call(this, e); // 'this' refers to the clicked element
@@ -891,7 +906,7 @@ var UserlistsTimeline = function(args) {
 				}
 			};
 			
-			sch.error($menu.get(0).innerHTML);
+			sch.debug($menu.get(0).innerHTML);
 			
 			/*
 				show menu on event
