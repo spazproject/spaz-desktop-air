@@ -1,3 +1,16 @@
+// Enable double-clicking title bar to minimize
+(function(){
+  var $header = $('#header');
+  $header.dblclick(function(ev){
+    if(ev.pageY <= 30){
+      Spaz.Windows.windowMinimize();
+      ev.preventDefault();
+    }
+  });
+})();
+
+
+
 // Make #entryform resizable
 (function(){
   var $body             = $('body'),
