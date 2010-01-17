@@ -1723,3 +1723,18 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
   background:#eee;
 }
 */
+
+
+
+/*** Popboxes ***/
+
+#DOMWindowOverlay{
+  left:8px !important;
+  right:8px !important;
+  top:0 !important;
+  bottom:8px !important;
+  width:auto !important;
+  height:auto !important;
+  border-radius:4px;
+    -webkit-border-radius:4px;
+}
