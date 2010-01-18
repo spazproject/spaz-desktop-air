@@ -37,13 +37,13 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
-	entryHTML += '		<div class="status-thumbnails">';
 						if (d.SC_thumbnail_urls) {
+	entryHTML += '		<div class="status-thumbnails">';
 							for (var key in d.SC_thumbnail_urls) {
 								entryHTML += '<img class="clickable status-thumbnail" data-href="'+key+'" src="'+d.SC_thumbnail_urls[key]+'">';
 							}
-						}
 	entryHTML += '		</div>';
+						}
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
 							if (d.in_reply_to_status_id) {
 	entryHTML += '				<span href="'+d.SC_base_url+d.in_reply_to_screen_name+'/statuses/'+d.in_reply_to_status_id+'/" title="In reply to:" class="in-reply-to clickable" data-status-id="'+d.id+'" data-user-screen-name="'+d.user.screen_name+'" data-irt-status-id="'+d.in_reply_to_status_id+'" data-irt-screen-name="'+d.in_reply_to_screen_name+'">Re:</span>';
