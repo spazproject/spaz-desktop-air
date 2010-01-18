@@ -1153,6 +1153,9 @@ div.timeline-entry:hover{
         text-overflow:ellipsis;
         white-space: nowrap;
       }
+      div.timeline-entry.read:not(.ui-selected) div.status-text br{
+        display:none; /* Hide <br />s in collapsed tweets */
+      }
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
     div.status-actions{
       position:absolute;
