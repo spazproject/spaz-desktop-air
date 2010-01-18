@@ -1123,13 +1123,29 @@ div.timeline-entry:hover{
   div.timeline-entry.dm div.status{
     background-image:url(images/timeline-dm-bg.png);
   }
-    div.status-thumbnails img{
-      margin:0 0 0.5em;
+    div.timeline-entry div.status-thumbnails{
+      margin:0 0 4px;
     }
-		div.status-text{
-			font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
-			margin-bottom:4px;
-		}
+    div.timeline-entry.read:not(.ui-selected) div.status-thumbnails{
+      float:left;
+      height:24px !important;
+      margin-top:-5px;
+      margin-right:4px;
+      padding:0;
+      overflow:hidden;
+      opacity:0.75;
+      -webkit-transition:opacity 0.125s linear;
+    }
+    div.timeline-entry.read:not(.ui-selected):hover div.status-thumbnails{
+      opacity:1;
+    }
+      div.timeline-entry.read:not(.ui-selected) div.status-thumbnails img{
+        height:100%;
+      }
+    div.status-text{
+      margin-bottom:4px;
+      font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
+    }
       div.status-text a:link{
         display:inline-block;
         max-width:150px;
