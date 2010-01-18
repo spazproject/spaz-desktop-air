@@ -283,7 +283,7 @@ var FriendsTimeline = function() {
 			*/
 			$('#filter-friends').trigger('keyup');
 			
-			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' .status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
