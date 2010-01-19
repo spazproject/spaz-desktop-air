@@ -26,25 +26,35 @@ function usernameCompleter(opts) {
 		$(this.displayDiv).hide();
 	
 		$(this.textarea).bind('keyup', {'thisuc':this }, function(e) {
-			var thisuc = e.data.thisuc;	// point back to the caller obj
+
+			air.trace('clearing timeout');
+			clearTimeout(this.searchTimeout);
+
+			function search() {
+				air.trace('starting search');
+				var thisuc = e.data.thisuc;	// point back to the caller obj
 			
-			var $target  = $(e.target);
-			var curpos   = $target[0].selectionStart;
-			var contents = $target.val();
+				var $target  = $(e.target);
+				var curpos   = $target[0].selectionStart;
+				var contents = $target.val();
 		
-			/*
-				Init matches
-			*/
-			$(thisuc.displayDiv).empty().hide();
-			thisuc.curpos	   = curpos;
-			thisuc.before_cursor = contents.substr(0,thisuc.curpos);
+				/*
+					Init matches
+				*/
+				$(thisuc.displayDiv).empty().hide();
+				thisuc.curpos	   = curpos;
+				thisuc.before_cursor = contents.substr(0,thisuc.curpos);
 			
 			
-			if ( !thisuc.matchAgainst("((@)([a-z0-9_]+))$") // replies
-				 && !thisuc.matchAgainst("^((d )([a-z0-9_]+))$") ) { // dms
-				// air.trace('Resetting topMatch to null');
-				thisuc.topMatch = null;
+				if ( !thisuc.matchAgainst("((@)([a-z0-9_]+))$") // replies
+					 && !thisuc.matchAgainst("^((d )([a-z0-9_]+))$") ) { // dms
+					// air.trace('Resetting topMatch to null');
+					thisuc.topMatch = null;
+				}
 			}
+			
+			air.trace('starting timeout');
+			this.searchTimeout = setTimeout(search, 300);
 			
 		});
 		
