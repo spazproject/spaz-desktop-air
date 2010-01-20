@@ -6,9 +6,10 @@ function SpazPostPanel(opts) {
 	this.container = opts.container || document.getElementById('entryform');
 	this.textarea  = opts.textarea  || document.getElementById('entrybox');
 	this.counter   = opts.counter   || document.getElementById('chars-left-count');
-	this.irt_container = opts.irt_container || document.getElementById('irt');
-	this.irt_message = opts.irt_message || document.getElementById('irt-message');
-	this.irt_id_attr   = opts.irt_id_attr   || 'data-status-id';
+	this.counter_desc   = opts.counter_desc   || document.getElementById('chars-left-description');
+	this.irt_container  = opts.irt_container  || document.getElementById('irt');
+	this.irt_message    = opts.irt_message    || document.getElementById('irt-message');
+	this.irt_id_attr    = opts.irt_id_attr    || 'data-status-id';
 	this.menu      = opts.menu      || null;
 	this.maxlen    = opts.maxlen    || 140;
 	this.on_over   = opts.on_over   || this.on_over_default;
@@ -27,6 +28,17 @@ function SpazPostPanel(opts) {
 		var curr_count = thisPP.textarea.value.length;
 		var left = thisPP.maxlen - curr_count;
 		thisPP.counter.innerText = left.toString();
+
+		// Fix "chars left" pluralization. For speed, this uses the
+		// `counter_desc_is_singular` flag to modify the DOM only when needed,
+		// not on every update.
+		if(thisPP.counter_desc_is_singular){
+		  thisPP.counter_desc.innerText = 'chars left';
+		  thisPP.counter_desc_is_singular = false;
+		}else if(Math.abs(left) === 1){
+		  thisPP.counter_desc.innerText = 'char left';
+		  thisPP.counter_desc_is_singular = true;
+		}
 	
 	
 		var info = {
@@ -39,7 +51,7 @@ function SpazPostPanel(opts) {
 	
 		if (left < 0) {
 			thisPP.on_over.call(thisPP.textarea, info);
-		} else if (left >= 0) {
+		} else {
 			thisPP.on_under.call(thisPP.textarea, info);
 		}
 
