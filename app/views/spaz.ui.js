@@ -113,8 +113,10 @@ Spaz.UI.doWilhelm = function() {
 
 	}
 
-    $('#wilhelm').center();
-    $('#wilhelm').show(300);
+  var $wilhelm = $('#wilhelm');
+  $wilhelm.center();
+  $wilhelm.show(300);
+  $('#container').css('WebkitAnimation', 'container-pulse 0.5s ease 2');
 	setTimeout(Spaz.UI.endWilhelm, 960); // end with a timeout instead of relying on sound to finish
 };
 
