@@ -304,7 +304,7 @@ Spaz.Controller.initIntercept = function() {
 
 			'#irt-dismiss':function(e) {
 				Spaz.postPanel.clearPostIRT();
-				// $('#entrybox').focus();
+				$('#entrybox').focus();
 			},
 
 
