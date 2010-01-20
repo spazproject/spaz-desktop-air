@@ -72,7 +72,7 @@ Spaz.Templates.timeline_entry = function(d) {
 								}
 	entryHTML += '				</div>';
 	entryHTML += '				<div class="status-link">';
-	entryHTML += '					<a href="'+d.user.screen_name+'/statuses/'+d.id+'/" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
+	entryHTML += '					<a href="http://twitter.com/'+d.user.screen_name+'/statuses/'+d.id+'/" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
 									if (d.in_reply_to_status_id) {
 	entryHTML += '						<!-- <a href="/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
 									}
