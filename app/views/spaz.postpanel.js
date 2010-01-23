@@ -8,7 +8,9 @@ function SpazPostPanel(opts) {
 	this.counter   = opts.counter   || document.getElementById('chars-left-count');
 	this.counter_desc   = opts.counter_desc   || document.getElementById('chars-left-description');
 	this.irt_container  = opts.irt_container  || document.getElementById('irt');
+	this.$irt_container = jQuery(this.irt_container);
 	this.irt_message    = opts.irt_message    || document.getElementById('irt-message');
+	this.$irt_message   = jQuery(this.irt_message);
 	this.irt_id_attr    = opts.irt_id_attr    || 'data-status-id';
 	this.menu      = opts.menu      || null;
 	this.maxlen    = opts.maxlen    || 140;
@@ -125,9 +127,9 @@ SpazPostPanel.prototype.prepPhotoPost = function(url) {
 SpazPostPanel.prototype.clearPostIRT = function() {
 	this.irt_status = '';
 	this.irt_status_id = 0;
-	jQuery(this.irt_container).hide();
-	jQuery(this.irt_message).attr(this.irt_id_attr, this.irt_status_id)
-							.text(this.irt_status);
+	this.$irt_container.hide();
+	this.$irt_message.attr(this.irt_id_attr, this.irt_status_id)
+		.text(this.irt_status);
 };
 
 
@@ -145,15 +147,15 @@ SpazPostPanel.prototype.setPostIRT = function(status_id, status_text) {
 	
 	if (status_id) {
 		this.irt_status_id = status_id;
-		jQuery(this.irt_container).show();
-		jQuery(this.irt_message).attr(this.irt_id_attr, this.irt_status_id)
-								.text(this.irt_status_id);
+		this.$irt_container.show();
+		this.$irt_message.attr(this.irt_id_attr, this.irt_status_id)
+			.text(this.irt_status_id);
 
 	}
 	
 	if (status_text) {
 		this.irt_status = status_text;
-		jQuery(this.irt_message).text(this.irt_status);
+		this.$irt_message.text(this.irt_status);
 	}
 	
 };

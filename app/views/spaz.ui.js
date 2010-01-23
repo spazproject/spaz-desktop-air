@@ -628,41 +628,41 @@ Spaz.UI.setView = function(type ) {
 
 	sch.dump('View type is '+type);
 
-	var container = Spaz.Timelines.friends.timeline.timeline_container_selector;
+	var container  = Spaz.Timelines.friends.timeline.timeline_container_selector,
+	    $container = jQuery(container);
 	
 	/*
 		clear it and add the base 'timeline' class back
 	*/
-	jQuery(container).attr('class', '');
-	jQuery(container).attr('class', 'timeline');
+	$container.attr('class', '').attr('class', 'timeline');
 
 	switch(type) {
 
 		case 'view-friends-menu-all':
-			jQuery(container).addClass('filter-timeline-all');
+			$container.addClass('filter-timeline-all');
 			break;
 		case 'view-friends-menu-replies-dms':
-			jQuery(container).addClass('filter-timeline-replies-dms');
+			$container.addClass('filter-timeline-replies-dms');
 			Spaz.UI.statusBar('Hiding tweets not directed at you');
 			break;
 		case 'view-friends-menu-replies':
-			jQuery(container).addClass('filter-timeline-replies');
+			$container.addClass('filter-timeline-replies');
 			break;
 		case 'view-friends-menu-dms':
-			jQuery(container).addClass('filter-timeline-dms');
+			$container.addClass('filter-timeline-dms');
 			break;
 		case 'view-friends-menu-unread':
-			jQuery(container).addClass('filter-timeline-unread');
+			$container.addClass('filter-timeline-unread');
 			break;
 		case 'view-friends-menu-custom':
 			alert('not yet implemented');
 			break;
 		default:
-			jQuery(container).addClass('filter-timeline-all');
+			$container.addClass('filter-timeline-all');
 			break;
 	}
 
-	sch.dump(jQuery(container).attr('class'));
+	sch.dump($container.attr('class'));
 
 	Spaz.UI.currentFriendsTimelineView = type;
 
