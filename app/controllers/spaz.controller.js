@@ -199,6 +199,12 @@ Spaz.Controller.initIntercept = function() {
 			'#refresh-public':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
 			},
+			'#refresh-favorites':function(e) {
+				Spaz.UI.reloadCurrentTab(true);
+			},
+			'#refresh-userlists':function(e) {
+				Spaz.UI.reloadCurrentTab(true);
+			},
 			'#markread-friends':function(e) {
 				Spaz.UI.markCurrentTimelineAsRead();
 			},
@@ -206,6 +212,12 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.UI.markCurrentTimelineAsRead();
 			},
 			'#markread-public':function(e) {
+				Spaz.UI.markCurrentTimelineAsRead();
+			},
+			'#markread-favorites':function(e) {
+				Spaz.UI.markCurrentTimelineAsRead();
+			},
+			'#markread-userlists':function(e) {
 				Spaz.UI.markCurrentTimelineAsRead();
 			},
 			'#view-friends-menu .menuitem':function(e) {
@@ -450,6 +462,9 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'#filter-public':function(e) {
 				Spaz.Timelines.public.filter( $(this).val() );
+			},
+			'#filter-userlists':function(e) {
+				Spaz.Timelines.userlists.filter( $(this).val() );
 			}
 		})
 
