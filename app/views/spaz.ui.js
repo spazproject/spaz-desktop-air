@@ -25,19 +25,19 @@ Spaz.UI.mainTimelineId = 'timeline-friends';
 
 Spaz.UI.playSound = function(url, callback) {
     if (!Spaz.Prefs.get('sound-enabled')) {
-        sch.error('Not playing sound ' + url + '- disabled');
+        sch.debug('Not playing sound ' + url + '- disabled');
         if (callback) {
-            sch.error('calling callback manually');
+            sch.debug('calling callback manually');
             callback();
-            sch.error('ending callback');
+            sch.debug('ending callback');
         } else {
-            sch.error('no callback, returning');
+            sch.debug('no callback, returning');
         }
         return;
     }
 
-    sch.error('Spaz.UI.playSound callback:' + callback);
-    sch.error("loading " + url);
+    sch.debug('Spaz.UI.playSound callback:' + callback);
+    sch.debug("loading " + url);
 
     var req = new air.URLRequest(url);
     var s = new air.Sound();
@@ -45,7 +45,7 @@ Spaz.UI.playSound = function(url, callback) {
     function onComplete(e) {
         var sc = s.play();
         if (sc) {
-            sch.error("playing " + url);
+            sch.debug("playing " + url);
             if (callback) {
                 sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
             }
@@ -53,13 +53,13 @@ Spaz.UI.playSound = function(url, callback) {
     }
 
     function onIOError(e) {
-        sch.error("failed to load " + url);
+        sch.debug("failed to load " + url);
         if (callback) {
-            sch.error('calling callback manually');
+            sch.debug('calling callback manually');
             callback();
-            sch.error('ending callback');
+            sch.debug('ending callback');
         } else {
-            sch.error('no callback, returning');
+            sch.debug('no callback, returning');
         }
 
     }
@@ -468,20 +468,20 @@ Spaz.UI.decodeSourceLinkEntities = function(str) {
 Spaz.UI.setSelectedTab = function(tab) {
     if (typeof tab == 'number') {
         // if a # is passed in, get the element of the corresponding tab
-        sch.debug('getting tab element for number ' + tab);
+        sch.error('getting tab element for number ' + tab);
         Spaz.UI.selectedTab = Spaz.UI.tabbedPanels.getTabs()[tab];
     } else if (typeof tab == 'string') { // this is an ID
-        sch.debug('getting tab element for id ' + tab);
+        sch.error('getting tab element for id ' + tab);
 		if (tab.indexOf('#') !== 0) {
 			tab = '#'+tab;
 		}
 		Spaz.UI.selectedTab = $(tab).get(0);
     } else {
-        sch.debug('tab element passed in ' + tab);
+        sch.error('tab element passed in ' + $(tab).attr('id'));
         Spaz.UI.selectedTab = tab;
     }
 
-    sch.debug('Spaz.UI.selectedTab: ' + Spaz.UI.selectedTab.id);
+    sch.error('Spaz.UI.selectedTab: ' + Spaz.UI.selectedTab.id);
 
     // sch.debug('restarting reload timer');
     // Spaz.restartReloadTimer();
@@ -500,18 +500,18 @@ Spaz.UI.getSelectedTab = function() {
 
 Spaz.UI.reloadCurrentTab = function(force, reset) {
     sch.debug('reloading the current tab');
-    Spaz.Data.loadDataForTab(Spaz.UI.selectedTab, force, reset);
+    Spaz.Data.loadDataForTab(Spaz.UI.getSelectedTab(), force, reset);
 }
 
 
 Spaz.UI.autoReloadCurrentTab = function() {
     sch.debug('auto-reloading the current tab');
-    Spaz.Data.loadDataForTab(Spaz.UI.selectedTab, true);
+    Spaz.Data.loadDataForTab(Spaz.UI.getSelectedTab(), true);
 }
 
 Spaz.UI.clearCurrentTimeline = function() {
     sch.debug('clearing the current timeline');
-    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
+    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.getSelectedTab())
 
     // reset the lastcheck b/c some timelines will use "since" parameters
 	section.lastcheck = 0;
@@ -538,8 +538,10 @@ Spaz.UI.clearCurrentTimeline = function() {
 
 
 Spaz.UI.markCurrentTimelineAsRead = function() {
-    sch.debug('clearing the current timeline');
-    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab);
+    sch.debug('marking current timeline as read');
+	sch.debug(Spaz.UI.getSelectedTab().id);
+	
+    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.getSelectedTab());
     tl.markAsRead();
 };
 
@@ -1521,7 +1523,9 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
  */
 Spaz.UI.showTab = function(index) {
     Spaz.UI.setSelectedTab(index);
-
+	
+	sch.debug('showing tab '+index);
+	
 	if (typeof index === 'number') {
 	    Spaz.UI.tabbedPanels.showPanel(index);		
 	} else if (typeof index === 'string') {
