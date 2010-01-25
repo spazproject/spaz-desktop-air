@@ -184,7 +184,13 @@ Spaz.Controller.initIntercept = function() {
 			'#filter-friends':function(e) {
 				this.select();
 			},
+			'#filter-favorites':function(e) {
+				this.select();
+			},
 			'#filter-user':function(e) {
+				this.select();
+			},
+			'#filter-userlists':function(e) {
 				this.select();
 			},
 			'#filter-public':function(e) {
@@ -458,6 +464,9 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.Timelines.friends.filter( $(this).val() );
 			},
 			'#filter-user':function(e) {
+				Spaz.Timelines.user.filter( $(this).val() );
+			},
+			'#filter-favorites':function(e) {
 				Spaz.Timelines.user.filter( $(this).val() );
 			},
 			'#filter-public':function(e) {
