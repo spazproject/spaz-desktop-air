@@ -19,7 +19,7 @@ Spaz.Keyboard.move = function(dir, selector) {
 	Spaz.dump("selector is '" + selector+"'")
 	
 	// var timelineid = 'timeline-friends';
-	var timeline       = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
+	var timeline       = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab);
 	var entry_selector = timeline.getEntrySelector();
 	
 	var jqall = $(entry_selector).is(':visible');
