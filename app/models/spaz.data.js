@@ -851,7 +851,7 @@ Spaz.Data.uploadFile = function(opts) {
 
 
 /**
- * loads data for a particular tab (tabs are usually connected to a single Spaz.Section)
+ * loads data for a particular tab (tabs are usually connected to a single Spaz.Timeline)
  * @param {Object} tab the DOM Element of the tab
  * @param {Boolean} force if true, force a reload even if mincachetime of this tab's section has not expired
  * @param {Boolean} reset resets all lastid/mincachetime data on this section
