@@ -286,7 +286,7 @@ Spaz.Data.makeFavorite = function(postid) {
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			var faved_element;
-			sch.error(data);
+			sch.debug(data);
 			Spaz.UI.statusBar('Added fav: ' + postid);
 			
 			$('.timeline-entry[data-status-id='+postid+']').addClass('favorited');
@@ -978,13 +978,16 @@ Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 	
 	
 	function saveTweetObject(data) {
-		sch.error('saveTweetObject');
-		sch.error(data);
+		sch.error('Saving '+data.id+' to DB');
+		// sch.error(data);
 		// var statusobj = sch.getEventData(e);
+		var savedobj = TweetModel.saveTweet(data);
+		
+		
 		if (onSuccess) {
-			onSuccess(data);
+			onSuccess(savedobj);
 		}
-		TweetModel.saveTweet(data);
+		sch.trigger('get_one_status_succeeded', target_el, savedobj);
 		// sch.unlisten(target_el, 'get_one_status_succeeded', saveTweetObject);
 	}
 };
