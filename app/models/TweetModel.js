@@ -21,11 +21,16 @@ var TweetModel = new JazzRecord.Model({
 		SC_text_raw: "text",
 		SC_retrieved_unixtime: "int",
 		isSent: "bool"
+		// isRead: "bool"
 	},
 	recordMethods: {
 		send: function() {
 			//code to send tweet
-			}
+		},
+		markRead : function() {
+			this.isRead = true;
+			this.save();
+		}
 	},
 	modelMethods: {
 		saveTweet : function(obj) {
@@ -74,6 +79,10 @@ var TweetModel = new JazzRecord.Model({
 		},
 		getById : function(twitter_id) {
 			return this.findBy('twitter_id', twitter_id, 1);
+		},
+		markRead : function(twitter_id) {
+			var msg = this.getById(twitter_id);
+			msg.markRead();
 		}
 	}
 });
