@@ -245,8 +245,8 @@ var FriendsTimeline = function() {
 				Add new items
 			*/
 			$timelineWrapper.children('.loading').hide();
+			
 			thisFT.timeline.addItems(no_dupes);
-			// thisFT.sortByAttribute('data-timestamp', 'data-status-id');
 
 			sch.note('notify of new entries!');
 			Spaz.UI.notifyOfNewEntries(no_dupes);
@@ -299,6 +299,33 @@ var FriendsTimeline = function() {
 			*/
 			Spaz.Autocomplete.initSuggestions();
 			
+			/*
+				sort timeline
+			*/
+			var before = new Date();
+			
+			// don't sort if we don't have anything new!
+			if (no_dupes.length > 0) {
+				// get first of new times
+				var new_first_time = no_dupes[0].SC_created_at_unixtime;
+				// get last of new times
+				var new_last_time  = no_dupes[no_dupes.length-1].SC_created_at_unixtime;
+				// get first of OLD times
+				var old_first_time = parseInt($oldFirst.attr('data-timestamp'));
+				// sort if either first new or last new is OLDER than the first old
+				if (new_first_time < old_first_time || new_last_time < old_first_time) {
+					$('div.timeline-entry', $timeline).tsort({attr:'data-timestamp', place:'orig', order:'desc'});					
+				} else {
+					sch.error('Didn\'t resort…');
+				}
+
+			}
+			var after = new Date();
+			var total = new Date();
+			total.setTime(after.getTime() - before.getTime());
+			sch.error('Sorting took ' + total.getMilliseconds() + 'ms');				
+
+
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
