@@ -27,6 +27,7 @@
 
 			// get the pref
 			var service = Spaz.Prefs.get('url-shortener');
+			
 			air.trace("service is "+ service);
 
             if (service == 'shortie') {
@@ -79,7 +80,7 @@
 			}
 						
 			$('#shortenLink-form').bind('submit', function() {
-		  	var service = Spaz.Prefs.get('url-shortener');
+		  		var service = Spaz.Prefs.get('url-shortener');
 				air.trace("service is "+ service);
                 var custom = $('#shorten-custom-link').val();
                 if (custom != '') {
