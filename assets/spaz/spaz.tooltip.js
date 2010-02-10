@@ -265,14 +265,16 @@ Spaz_Tooltip.prototype.show = function() {
 
 				if (!done)
 				{
-					$.get(thisTT.previewurl,
+					$.get(
+						'http://api.getspaz.com/url/title',
+						{'url':thisTT.previewurl},
 						function(rtext, status, xhr) {
 							// air.trace('rtext:'+rtext);
-							var rtext_matches = rtext.match(/<title>([^<]*)<\/title>/mi);
-
 							// alert(rtext_matches);
-							if (rtext_matches && rtext_matches[1]) {
-								var title = rtext_matches[1];
+							
+							if (rtext) {
+								var response = JSON.parse(rtext);
+								var title = response.title;
 								// air.trace('jqpreview.innerText:'+jqpreview[0].innerText);
 								$('#tooltip').children('.preview').empty();
 								$('#' + previewid).html('<strong>Title:</strong> ' + title);
