@@ -47,8 +47,8 @@ Spaz.Data.getAPIURL = function(key) {
 	urls.stop_follow		= "friendships/destroy/{{ID}}.json";
 	urls.start_notifications= "notifications/follow/{{ID}}.json";
 	urls.stop_notifications = "notifications/leave/{{ID}}.json";
-	urls.favorites_create	= "favourings/create/{{ID}}.json";
-	urls.favorites_destroy	= "favourings/destroy/{{ID}}.json";
+	urls.favorites_create	= "favorites/create/{{ID}}.json";
+	urls.favorites_destroy	= "favorites/destroy/{{ID}}.json";
 	urls.verify_password	= "account/verify_credentials.json";
 	urls.ratelimit_status	= "account/rate_limit_status.json";
 
