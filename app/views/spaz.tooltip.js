@@ -26,8 +26,17 @@ function Spaz_Tooltip(content, opts) {
 
 }
 
-
-Spaz_Tooltip.prototype.show = function() {
+/**
+ * @param {object} [opts] options for showing
+ * @param {number} [opts.delay] override the default show delay (default is window-tooltip pref)
+ * @param {function} [opts.onShow] a function to call when the tooltip shows
+ */
+Spaz_Tooltip.prototype.show = function(opts) {
+	
+	opts = sch.defaults({
+		'delay':Spaz.Prefs.get('window-tooltipdelay'),
+		'onShow':null
+	}, opts);
 	
 	sch.dump('SHOW!!!');
 	
@@ -39,7 +48,7 @@ Spaz_Tooltip.prototype.show = function() {
 	*/
 	var thisTT = this;
 
-	Spaz_Tooltip_Timeout = setTimeout(delayedShow, Spaz.Prefs.get('window-tooltipdelay'));
+	Spaz_Tooltip_Timeout = setTimeout(delayedShow, opts.delay);
 
 	/**
 	 * a wrapped function to show the tooltip after a timeout 
@@ -87,6 +96,10 @@ Spaz_Tooltip.prototype.show = function() {
 			}
 		}
 		
+		
+		if (opts.onShow) {
+			opts.onShow.call();
+		}
 		
 		Spaz_Tooltip_hideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.Prefs.get('window-tooltiphidedelay'));
 	}
@@ -161,21 +174,33 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 }
 
 Spaz_Tooltip.prototype.showURLPreview = function(url) {
+	
+	var that = this;
+	
 	var display_url = sch.escape_html(url);
+	var hash = sch.MD5(url);
+	sch.error(hash);
 	// if (display_url.length > 40) {
 	// 	display_url = display_url.substr(0,40)+'…';
 	// }
 	
-	sch.dump('showing URL preview');
-	sch.dump(url);
-	sch.dump(display_url);
+	$.get('http://api.getspaz.com/url/title.json', {'url':url}, function(data){
+		if (sch.isString(data)) {
+			data = sch.deJSON(data);
+		}
+		content  = '<div class="website-popup" id="'+hash+'">';
+		content += '  <div class="website-url">'+display_url+'</div>';
+		content += '  <div class="website-title">'+data.title+'</div>';
+		// content += '<div class="website-preview" style="overflow:hidden"><img class="website-preview-thumbnail" src="http://api.getspaz.com/url/thumb?url=';
+		// content += encodeURIComponent(url);
+		// content += '" alt="Loading thumbnail…" style="max-width:320px; max-height:240px; position:relative" /></div>';
+		content += '</div>';
+		
+		that.setContent(content);
+		that.show({'delay':0});
+		
+	});
 	
-	var content  = '<div>'+display_url+'</div>';
-	content += '<div class="website-preview" style="overflow:hidden"><img class="website-preview-thumbnail" src="http://api.getspaz.com/url/thumb?url=';
-	content += encodeURIComponent(url);
-	content += '" alt="Loading thumbnail…" style="max-width:320px; max-height:240px; position:relative" /></div>';
-	this.setContent(content);
-	this.show();
 }
 
 Spaz_Tooltip.prototype.showTitle = function(title) {
