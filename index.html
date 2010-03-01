@@ -46,6 +46,7 @@
 	<script src="vendors/jquery/tag.js"								type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/jquery/jqXMLUtils.js"					type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/jquery/jquery.DOMWindow.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendors/jquery/jquery.tinysort.js" type="text/javascript" charset="utf-8"></script>
 
 
 	<!-- HTML notification library -->
@@ -843,7 +844,7 @@
 					</span>
 				</div>
 				<span id="chars-left">
-					<span id="chars-left-count"></span> chars left
+					<span id="chars-left-count"></span> <span id="chars-left-description">chars left</span>
 				</span>
 				<div id="entrybox-actions">
 					<input type="button" name="entrybox-shortenText" value="Shorten Text" id="entrybox-shortenText" />
@@ -1253,7 +1254,7 @@
 				<h1>Conversation</h1>
 
 				<div class="content">
-					<div class="timeline-conversation timeline">
+					<div id="timeline-conversation" class="timeline">
 						
 					</div>
 					

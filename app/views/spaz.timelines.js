@@ -79,7 +79,7 @@ AppTimeline.prototype.filter = function(terms) {
 				}
 			});
 		} catch(e) {
-			sch.error(e.name+":"+e.message);
+			sch.debug(e.name+":"+e.message);
 		}
 	}
 	
@@ -93,17 +93,22 @@ AppTimeline.prototype.clear = function() {
 
 AppTimeline.prototype.markAsRead = function() {
 	var entry_selector = this.getEntrySelector();
+	
+	// sch.error('Entry Selector:'+entry_selector);
+	
+	// sch.error(this.timeline);
+	
 	/* we use our own "mark as read" here because the helper version just removes the 'new' class' */
 	$(entry_selector+':visible').removeClass('new').addClass('read');
 	$().trigger('UNREAD_COUNT_CHANGED');
 };
 
 AppTimeline.prototype.getEntrySelector = function() {
-	return this.timeline.timeline_container_selector+' div.timeline-entry';
+	return this.getTimelineSelector()+' div.timeline-entry';
 }
 
 AppTimeline.prototype.getWrapperSelector = function() {
-	return this.timeline.timeline_container_selector.replace('timeline-', 'timelinewrapper-');
+	return this.getTimelineSelector().replace('timeline-', 'timelinewrapper-');
 }
 
 AppTimeline.prototype.getTimelineSelector = function() {
@@ -146,6 +151,7 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 };
 
 AppTimeline.prototype.refresh = function() {
+	sch.error('refreshing timeline');
 	this.timeline.refresh();
 };
 
@@ -239,8 +245,35 @@ var FriendsTimeline = function() {
 				Add new items
 			*/
 			$timelineWrapper.children('.loading').hide();
+			
 			thisFT.timeline.addItems(no_dupes);
-			// thisFT.sortByAttribute('data-timestamp', 'data-status-id');
+
+			/*
+				sort timeline
+			*/
+			var before = new Date();
+			
+			// don't sort if we don't have anything new!
+			if (no_dupes.length > 0) {
+				// get first of new times
+				var new_first_time = no_dupes[0].SC_created_at_unixtime;
+				// get last of new times
+				var new_last_time  = no_dupes[no_dupes.length-1].SC_created_at_unixtime;
+				// get first of OLD times
+				var old_first_time = parseInt($oldFirst.attr('data-timestamp'));
+				// sort if either first new or last new is OLDER than the first old
+				if (new_first_time < old_first_time || new_last_time < old_first_time) {
+					$('div.timeline-entry', $timeline).tsort({attr:'data-timestamp', place:'orig', order:'desc'});					
+				} else {
+					sch.error('Didn\'t resort…');
+				}
+
+			}
+			var after = new Date();
+			var total = new Date();
+			total.setTime(after.getTime() - before.getTime());
+			sch.error('Sorting took ' + total.getMilliseconds() + 'ms');				
+			
 
 			sch.note('notify of new entries!');
 			Spaz.UI.notifyOfNewEntries(no_dupes);
@@ -283,7 +316,7 @@ var FriendsTimeline = function() {
 			*/
 			$('#filter-friends').trigger('keyup');
 			
-			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.updateRelativeTimes($timeline.selector + ' .status-created-at', 'data-created-at');
 			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
 			$timeline.find('div.timeline-entry:even').addClass('even');
 			$timeline.find('div.timeline-entry:odd').addClass('odd');
@@ -353,7 +386,7 @@ var FriendsTimeline = function() {
 
 FriendsTimeline.prototype = new AppTimeline();
 
-FriendsTimeline.prototype.reset = function() {
+FriendsTimeline.prototype.reset = function() {sch.debug
 	
 }
 
@@ -694,10 +727,11 @@ UserTimeline.prototype = new AppTimeline();
  * User timeline def 
  */
 var UserlistsTimeline = function(args) {
-	
-	var thisUT           = this,
+		
+	var thisULT           = this,
 	    $timeline        = $('#timeline-userlists'),
 	    $timelineWrapper = $timeline.parent();
+	
 	this.twit = new SpazTwit();
 	
 	this.list = {
@@ -723,7 +757,7 @@ var UserlistsTimeline = function(args) {
 	};
 	
 	/*
-		set up the user timeline
+		set up the userlists timeline
 	*/
 	this.timeline  = new SpazTimeline({
 		'timeline_container_selector' : $timeline.selector,
@@ -740,9 +774,9 @@ var UserlistsTimeline = function(args) {
 
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 						
-			if (thisUT.list.user && thisUT.list.slug) {
+			if (thisULT.list.user && thisULT.list.slug) {
 				// Give UI feedback immediately
-				$('#timeline-userlists-full-name').text("@"+thisUT.list.user+'/'+thisUT.list.slug);
+				$('#timeline-userlists-full-name').text("@"+thisULT.list.user+'/'+thisULT.list.slug);
 				if($timeline.is(':empty')){
 					$timelineWrapper.children('.loading').show();
 				}
@@ -750,9 +784,9 @@ var UserlistsTimeline = function(args) {
 
 				var username = Spaz.Prefs.getUser(),
 				    password = Spaz.Prefs.getPass();
-				thisUT.twit.setCredentials(username, password);
-				thisUT.twit.getListTimeline(thisUT.list.slug, thisUT.list.user);
-				Spaz.UI.statusBar("Getting list @"+thisUT.list.user+'/'+thisUT.list.slug + "…");
+				thisULT.twit.setCredentials(username, password);
+				thisULT.twit.getListTimeline(thisULT.list.slug, thisULT.list.user);
+				Spaz.UI.statusBar("Getting list @"+thisULT.list.user+'/'+thisULT.list.slug + "…");
 				Spaz.UI.showLoading();
 			}
 			
@@ -774,7 +808,9 @@ var UserlistsTimeline = function(args) {
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data.statuses-status-id='+data.statuses[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+data.statuses[i].id+']').length<1) {
+					
+					sch.debug('div.timeline-entry[data-status-id='+data.statuses[i].id+'] does not exist… adding');
 					
 					// nl2br
 					data.statuses[i].text = sch.nl2br(data.statuses[i].text);
@@ -791,12 +827,14 @@ var UserlistsTimeline = function(args) {
 						Save to DB via JazzRecord
 					*/
 					TweetModel.saveTweet(data.statuses[i]);
+				} else {
+					sch.debug(data.statuses[i].id+' already exists');
 				}
 				
 			};
 
 			$timelineWrapper.children('.loading, .intro').hide();
-			thisUT.timeline.addItems(no_dupes);
+			thisULT.timeline.addItems(no_dupes);
 
 			/*
 			 reapply filtering
@@ -835,11 +873,11 @@ var UserlistsTimeline = function(args) {
 	this.buildListsMenu = function() {
 		var username = Spaz.Prefs.getUser();
 		var password = Spaz.Prefs.getPass();
-		thisUT.twit.setCredentials(username, password);
+		thisULT.twit.setCredentials(username, password);
 		sch.debug("Loading lists for @"+username+ "…");
 		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
 		Spaz.UI.showLoading();
-		thisUT.twit.getLists(username, function(data) {
+		thisULT.twit.getLists(username, function(data) {
 			/*
 				build a new menu
 			*/
@@ -868,7 +906,7 @@ var UserlistsTimeline = function(args) {
 						var $this = $(this),
 						    slug  = $this.attr('data-list-slug'),
 						    user  = $this.attr('data-user-screen_name');
-						thisUT.setlist(slug, user);
+						thisULT.setlist(slug, user);
 					}
 				}
 			};
@@ -945,11 +983,7 @@ var UserlistsTimeline = function(args) {
 	/*
 		build the lists menu
 	*/
-	if (Spaz.Prefs.getUser()) {
-		thisUT.buildListsMenu();
-	}
-	
-	
+	thisULT.buildListsMenu();
 };
 
 UserlistsTimeline.prototype = new AppTimeline();
@@ -1175,7 +1209,6 @@ var FollowersTimeline = function(args) {
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
-			// sch.error(obj);
 			return Spaz.Tpl.parse('followerslist_row', obj);
 			
 		}
@@ -1202,7 +1235,7 @@ Spaz.Timelines.init = function() {
 		'friends':Spaz.Timelines.friends,
 		'user':   Spaz.Timelines.user,
 		'public': Spaz.Timelines.public,
-		'userlists':   Spaz.Timelines.user,
+		'userlists':   Spaz.Timelines.userlists,
 		'favorites':   Spaz.Timelines.favorites,
 		'search': Spaz.Timelines.search,
 		'followerslist':Spaz.Timelines.followerslist
