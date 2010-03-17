@@ -1,5 +1,5 @@
 
-PurrJS = {}
+PurrJS = {};
 
  /*
 	 modal
@@ -9,7 +9,7 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 	var width  = 400;
 	var height = 300;
 	
-	var padding = 5;
+	var padding = 0;
 	
 	var farRight = air.Screen.mainScreen.bounds.right;
 	var farTop   = air.Screen.mainScreen.bounds.top;
@@ -28,7 +28,7 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 	var winBounds = new air.Rectangle(winX, winY, width, height);
 	var notifyLoader = air.HTMLLoader.createRootWindow(true, opts, false, winBounds);
 	notifyLoader.load(new air.URLRequest("app:/html/modal.html"));
-	notifyLoader.alpha = .6;
+	notifyLoader.alpha = 0.6;
 
 
 	 // air.Introspector.Console.info(notifyLoader);
@@ -49,7 +49,7 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 		opacityUp();
 		
 		function opacityUp() {
-			notifyLoader.alpha += .1;
+			notifyLoader.alpha += 0.1;
 			if (notifyLoader.alpha < 1) {
 				setTimeout(opacityUp, 30); // do again
 			}
@@ -67,7 +67,7 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 		opacityDown();
 		
 		function opacityDown() {
-			notifyLoader.alpha -= .1;
+			notifyLoader.alpha -= 0.1;
 			if (notifyLoader.alpha > 0 && opacityDown) {
 				setTimeout(opacityDown, 30); // do again
 			} else {
@@ -79,7 +79,7 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 	}
 	
 	
-}
+};
 
 
 
@@ -90,140 +90,97 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 /*
    notify
 */
-PurrJS.notify = function(title, msg, img, duration, position) {
+PurrJS.notify = function(opts) {
+	opts = sch.defaults({
+		'title':   'opts.title',
+		'message': 'opts.message',
+		'icon':    'opts.icon',
+		'duration':6000, // in ms
+		'position':'topRight',
+		'height':  160,
+		'width':   300,
+		'padding': 0,
+		'data':    null,
+		'template':null,
+		'onClick' :null,
+		'onHover' :null
+	}, opts);
+	
 	
 	/*
 	  Size of window
 	*/
-	var width  = 300;
-	var height = 75;
+	var width  = opts.width;
+	var height = opts.height;
 	
 	/*
 	  padding from screen edges
 	*/
-	var padding = 5;
+	var padding = opts.padding;
 	
 	/*
 	  get dimensions
 	*/
-	var farRight = air.Screen.mainScreen.visibleBounds.right;
-	var farTop   = air.Screen.mainScreen.visibleBounds.top;
-	var farLeft = air.Screen.mainScreen.visibleBounds.left;
-	var farBottom   = air.Screen.mainScreen.visibleBounds.bottom;
+	var farRight  = air.Screen.mainScreen.visibleBounds.right;
+	var farTop    = air.Screen.mainScreen.visibleBounds.top;
+	var farLeft   = air.Screen.mainScreen.visibleBounds.left;
+	var farBottom = air.Screen.mainScreen.visibleBounds.bottom;
 	
 	/*
 	  Calculate position
 	*/
-	switch (position) {
+	var winX, winY;
+	switch (opts.position) {
 		case 'topLeft':
-			var winX = farLeft + padding;
-			var winY = farTop + padding + 0;
+			winX = farLeft + padding;
+			winY = farTop + padding + 0;
 			break;
 
 		case 'bottomLeft':
-			var winX = farLeft + padding;
-			var winY = farBottom - height - padding - 0;
+			winX = farLeft + padding;
+			winY = farBottom - height - padding - 0;
 			break;
 		
 		case 'bottomRight':
-			var winX = farRight - width - padding;
-			var winY = farBottom - height - padding - 0;
+			winX = farRight - width - padding;
+			winY = farBottom - height - padding - 0;
 			break;
 		
 		default:
-			var winX = farRight - width - padding;
-			var winY = farTop + padding + 0;
+			winX = farRight - width - padding;
+			winY = farTop + padding + 0;
 			break;
 	}
 	sch.dump(winX+"x"+winY);
 	/*
 	  Create window
 	*/
-	var opts = new air.NativeWindowInitOptions();
-	opts.transparent = true;
-	opts.type = air.NativeWindowType.LIGHTWEIGHT;
-	opts.systemChrome = air.NativeWindowSystemChrome.NONE;
-	opts.resizable = false;
-	opts.minimizable = false;
-	opts.maximizable = false;
+	var winopts = new air.NativeWindowInitOptions();
+	winopts.transparent = true;
+	winopts.type = air.NativeWindowType.LIGHTWEIGHT;
+	winopts.systemChrome = air.NativeWindowSystemChrome.NONE;
+	winopts.resizable = false;
+	winopts.minimizable = false;
+	winopts.maximizable = false;
 	
 	var winBounds = new air.Rectangle(winX, winY, width, height);
 	
 	// window is initially not visible to keep it from stealing focus
-	var notifyLoader = air.HTMLLoader.createRootWindow(false, opts, false, winBounds);
-	var notify_url = "app:/html/notify.html?msg="+encodeURIComponent(msg)+"&title="+encodeURIComponent(title)+"&img="+encodeURIComponent(img);
-	notifyLoader.load(new air.URLRequest(notify_url));
-	notifyLoader.alpha = .6; // make the loader object transparent
+	var notifyLoader = air.HTMLLoader.createRootWindow(false, winopts, false, winBounds);
+	
+	notifyLoader.paintsDefaultBackground = false;
+	notifyLoader.alpha = 1; // make the loader object transparent
 	notifyLoader.stage.nativeWindow.alwaysInFront = true; // make the notify window a non-blocking modal
 	
+	/*
+		bind notifyLoader.window.opener to this window
+	*/
+	notifyLoader.addEventListener(air.Event.HTML_DOM_INITIALIZE, function(){
+		notifyLoader.window.opener = window;
+	});
 	
-	
-	// air.Introspector.Console.info(notifyLoader);
+	var notify_url = "html/notify.html?json="+encodeURIComponent(sch.enJSON(opts));
 
-   // notifyLoader.window.document.getElementById('msg').innerHTML = msg;
-	
-	notifyLoader.addEventListener('click', function(event) {
-		  fadeOut();
-	   }
-	);
-	
-
-	fadeIn();
-	var fadeOutTimeout = setTimeout(fadeOut, 6000);
-	
-	
-	
-	function fadeIn() {
-
-
-		notifyLoader.alpha = 0;
+	notifyLoader.load(new air.URLRequest(notify_url));
 		
-		// start
-		opacityUp();
-		notifyLoader.stage.nativeWindow.visible = true; // doing this avoids stealing focus
-		// notifyLoader.stage.nativeWindow.orderToFront(); // bring to front
-		
-		function opacityUp() {
-			// sch.dump('opacityUp');
-			if (notifyLoader) {
-				notifyLoader.alpha += .1;
-				if (notifyLoader.alpha < 1) {
-					setTimeout(opacityUp, 30); // do again
-				}
-			} else {
-				return false;
-			}
-		}
-		
-		
-	}
-	
-	function fadeOut(event) {
-		
-		clearTimeout(fadeOutTimeout);
-		
-		notifyLoader.alpha = 1;
-		
-		// start
-		opacityDown();
-		
-		function opacityDown() {
-			// sch.dump('opacityDown');
-			notifyLoader.alpha -= .1;
-			if (notifyLoader.alpha > 0 && opacityDown) {
-				setTimeout(opacityDown, 30); // do again
-			} else {
-				notifyLoader.window.nativeWindow.close();
-				notifyLoader = null;
-			}
-		}
-		
-	}
-	
-	
-}
-
-
-
-
-
+};
