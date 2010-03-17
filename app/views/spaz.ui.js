@@ -1602,11 +1602,18 @@ Spaz.UI.showTab = function(index) {
 	}
 }
 
+/**
+ * show preferences section 
+ */
 Spaz.UI.showPrefs = function() {
-    Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
-    Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
+	var tabid = 'tab-prefs';
+    Spaz.UI.setSelectedTab(tabid);
+    Spaz.UI.tabbedPanels.showPanel(tabid);
 }
 
+/**
+ * open the login panel in the prefs section 
+ */
 Spaz.UI.openLoginPanel = function() {
     Spaz.UI.prefsCPG.openPanel(0);
 };
