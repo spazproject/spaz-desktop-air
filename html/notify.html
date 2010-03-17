@@ -67,7 +67,6 @@
                 entries_html.push(entry_html);
             }
             html = entries_html.join("\n");
-            sch.error('HTML:'+html);
             $('#messages-items>.items').html(html);
         };
         
@@ -99,7 +98,6 @@
         };
         
         Notify.startTimeout = function() {
-            sch.error(Notify.content.duration);
             Notify.tout = setTimeout(Notify.hideAndClose, Notify.content.duration);
         };
         
@@ -111,7 +109,6 @@
 		    
             try {
                 var json = decodeURIComponent(Notify.gup('json'));
-                sch.error(json);
                 Notify.content = sch.deJSON(json);
 
                 Notify.setContentFromURL(Notify.content);
