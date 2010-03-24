@@ -38,8 +38,6 @@
         Notify.setContentFromURL = function(content) {
             
             var title   = sc.helpers.escape_html(content.title);
-            var message = sc.helpers.escape_html(content.message);
-            var icon    = sc.helpers.escape_html(content.icon);
 
             $('#title').html(title);
             // $('div.msg').html(message);
@@ -122,25 +120,20 @@
             });
             
             $('#container').hover(function(e) {
-                    sch.error('mouseover');
                     Notify.stopTimeout();                 
                 }, function(e) {
-                    sch.error('mouseout');
                     Notify.startTimeout();
                 }
             );
 
             window.nativeWindow.addEventListener(air.Event.ACTIVATE, function() {
-                sch.error('mouseover');
                 Notify.stopTimeout();                 
             });
             window.nativeWindow.addEventListener(air.Event.DEACTIVATE, function() {
-                sch.error('mouseout');
                 Notify.startTimeout();
             });
         	
             $("#messages-items").scrollable({'size': 1}).mousewheel();
-            sch.error($('body')[0].innerHTML);
 		});
 
 	</script>
