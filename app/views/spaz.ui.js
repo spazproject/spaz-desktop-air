@@ -67,33 +67,33 @@ Spaz.UI.playSound = function(url, callback) {
     s.addEventListener(air.Event.COMPLETE, onComplete);
     s.addEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
     s.load(req);
-}
+};
 
 
 Spaz.UI.onSoundPlaybackComplete = function(event) {
     sch.dump("The sound has finished playing.");
-}
+};
 
 
 Spaz.UI.playSoundUpdate = function(callback) {
     Spaz.UI.playSound(Spaz.Prefs.get('sound-url-update'), callback);
-}
+};
 
 Spaz.UI.playSoundStartup = function(callback) {
     Spaz.UI.playSound(Spaz.Prefs.get('sound-url-startup'), callback);
-}
+};
 
 Spaz.UI.playSoundShutdown = function(callback) {
     Spaz.UI.playSound(Spaz.Prefs.get('sound-url-shutdown'), callback);
-}
+};
 
 Spaz.UI.playSoundNew = function(callback) {
     Spaz.UI.playSound(Spaz.Prefs.get('sound-url-new'), callback);
-}
+};
 
 Spaz.UI.playSoundWilhelm = function(callback) {
     Spaz.UI.playSound(Spaz.Prefs.get('sound-url-wilhelm'), callback);
-}
+};
 
 
 Spaz.UI.doWilhelm = function() {
@@ -135,28 +135,28 @@ Spaz.UI.endWilhelm = function() {
 
 Spaz.UI.statusBar = function(txt) {
     $('#statusbar-text').html(txt);
-}
+};
 
 Spaz.UI.resetStatusBar = function() {
     $('#statusbar-text').html('Ready');
     Spaz.UI.hideLoading();
-}
+};
 
 Spaz.UI.flashStatusBar = function() {
     for (var i = 0; i < 3; i++) {
         $('#statusbar-text').fadeOut(400);
         $('#statusbar-text').fadeIn(400);
     }
-}
+};
 
 Spaz.UI.showLoading = function() {
     $('#status-text').html('Uploading image…');
     $('#loading').fadeIn(500);
-}
+};
 
 Spaz.UI.hideLoading = function() {
     $('#loading').fadeOut(500);
-}
+};
 
 
 
@@ -183,15 +183,15 @@ Spaz.UI.hidePopup = function(panelid) {
         sch.debug('fadeOut:' + $('#' + panelid).css('opacity'));
         $('#' + panelid).hide();
     });
-}
+};
 
 
 Spaz.UI.showUpdateCheck = function() {
     Spaz.UI.showPopup('updateCheckWindow');
-}
+};
 Spaz.UI.hideUpdateCheck = function() {
     Spaz.UI.hidePopup('updateCheckWindow');
-}
+};
 
 
 
@@ -267,17 +267,17 @@ Spaz.UI.uploadImage = function(imgurl) {
 }
 Spaz.UI.showCSSEdit = function() {
     this.instance = window.open('app:/html/css_edit.html', 'cssEditWin', 'height=350,width=400');
-}
+};
 
 
 
 
 Spaz.UI.pageLeft = function(tabEl) {
     Spaz.UI.page(tabEl, -1);
-}
+};
 Spaz.UI.pageRight = function(tabEl) {
     Spaz.UI.page(tabEl, 1);
-}
+};
 Spaz.UI.page = function(tabEl, distance) {
     panel = tabEl.id.replace(/tab/, 'panel');
     sch.debug('Getting page number using \'#' + panel + ' .timeline-pager-number\'');
@@ -1108,30 +1108,59 @@ Spaz.UI.getUnreadCount = function() {
 
 
 Spaz.UI.getNewEntrySelector = function() {
-    var timelineid = Spaz.Section.friends.timeline;
+    var timeline_container_selector = Spaz.Timelines.friends.timeline.timeline_container_selector;
 
     // we change the selector so that messages not showing do not trigger notifications
-    if ($('#' + timelineid).is('.dm-replies')) {
-        var selector = '#' + timelineid + ' .new.dm, #' + timelineid + ' .new.reply:visible'
+    if ($(timeline_container_selector).is('.dm-replies')) {
+        var selector = timeline_container_selector + ' .new.dm, ' + timeline_container_selector + ' .new.reply:visible'
     } else {
-        var selector = '#' + timelineid + ' .new:visible'
+        var selector = timeline_container_selector + ' .new:visible'
     }
 
     return selector;
-}
+};
 
 Spaz.UI.getNewEntryCount = function() {
     return $(Spaz.UI.getNewEntrySelector()).not('.read').length;
-}
+};
+
+Spaz.UI.getNewMentionsCount = function() {
+	return $(Spaz.UI.getNewEntrySelector()).not('.read').filter('.reply').length;
+};
+
+Spaz.UI.getNewDmsCount = function() {
+	return $(Spaz.UI.getNewEntrySelector()).not('.read').filter('.dm').length;
+};
+
+Spaz.UI.getNewRegularCount = function() {
+	return $(Spaz.UI.getNewEntrySelector()).not('.read').not('.reply').not('.dm').length;
+};
 
 
 Spaz.UI.notifyOfNewEntries = function(new_entries) {
 
+	var notify_entries = [];
+
     $().trigger('UNREAD_COUNT_CHANGED');
     sch.debug('notifyOfNewEntries');
 
+	/*
+		pare down new_entries to only what we want to be notified of
+	*/
+	for (var i=0; i < new_entries.length; i++) {
+		if (new_entries[i].SC_is_dm && Spaz.Prefs.get('notify-dms')) {
+			notify_entries.push(new_entries[i]);
+		}
+		if (new_entries[i].SC_is_reply && Spaz.Prefs.get('notify-mentions')) {
+			notify_entries.push(new_entries[i]);
+		}
+		if (Spaz.Prefs.get('notify-messages') && !new_entries[i].SC_is_dm && !new_entries[i].SC_is_reply) {
+			notify_entries.push(new_entries[i]);
+		}
+	}
+
 	var new_count = new_entries.length;
-    if (new_count > 0) {
+    if (notify_entries.length > 0) {
 
         sch.debug('NewEntries found!');
 
@@ -1184,12 +1213,25 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 			}
 
 		} else {
-
-			var this_entry = new_entries[0];
-
+			
+			var notify_data = {};
+			
+			notify_data['new_total'] = Spaz.UI.getNewEntryCount();
+			
+			notify_data['new_mentions'] = Spaz.UI.getNewMentionsCount();
+			notify_data['new_dms'] = Spaz.UI.getNewDmsCount();
+			notify_data['new_regular'] = Spaz.UI.getNewRegularCount();
+			notify_data['new_entries'] = notify_entries;
+			
+			
+			
+			// var this_entry = new_entries[0];
+			// 
 	        sch.debug('Sending notification');
 	        var resp = "";
-
+			
+			this_entry = new_entries[0];
+			
 			if (this_entry.SC_is_dm) {
 				var screen_name = this_entry.sender.screen_name;
 				var text        = this_entry.SC_text_raw;
@@ -1209,14 +1251,15 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 				}
 			}
 			
-			// alert("screen_name:"+screen_name+"\ntext:"+text+"\n img:"+img);
-
-	        if (new_count > 1) {
-	            var title = screen_name + " (+" + (new_count - 1) + " more)";
-	        } else {
-	            var title = screen_name;
-	        }
-	        Spaz.UI.notify(text, title, Spaz.Prefs.get('window-notificationposition'), Spaz.Prefs.get('window-notificationhidedelay'), img);
+			var title = 'New Messages';
+			
+	        Spaz.UI.notify({
+				'message':text,
+				'title'  :title,
+				'where'  :Spaz.Prefs.get('window-notificationposition'),
+				'icon'   :img,
+				'data'   :notify_data
+			});
 		}
 
         Spaz.UI.playSoundNew();
@@ -1238,8 +1281,24 @@ Spaz.UI.alert = function(message, title) {
 }
 
 
-Spaz.UI.notify = function(message, title, where, duration, icon, force) {
-    if (Spaz.Prefs.get('window-shownotificationpopups') || force) {
+
+
+Spaz.UI.notify = function(opts) {
+	
+	opts = sch.defaults({
+		message : 'message',
+		title   : 'title',
+		where   : null,
+		duration: Spaz.Prefs.get('window-notificationhidedelay')*1000,
+		icon    : new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url,
+		force   : false,
+		data    : null,
+		template: null,
+		onClick : null,
+		onHover : null
+	}, opts);
+	
+    if (Spaz.Prefs.get('window-shownotificationpopups') || opts.force) {
         // Spaz.Notify.add(message, title, where, duration, icon);
 
 		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
@@ -1248,9 +1307,19 @@ Spaz.UI.notify = function(message, title, where, duration, icon, force) {
 				Spaz.Growl = new SpazGrowl('Spaz', new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url);
 			}
 
-			Spaz.Growl.notify(title, message, icon);
+			Spaz.Growl.notify(opts.title, opts.message, opts.icon);
 		} else {
-			PurrJS.notify(title, message, icon, duration, where);
+			PurrJS.notify({
+				'title':   opts.title,
+				'message': opts.message,
+				'icon':    opts.icon,
+				'duration':opts.duration,
+				'where':   opts.where,
+				'data':    opts.data,
+				'template':opts.template,
+				'onClick' :opts.onClick,
+				'onHover' :opts.onHover
+			});
 		}
 
     } else {
@@ -1592,11 +1661,18 @@ Spaz.UI.showTab = function(index) {
 	}
 }
 
+/**
+ * show preferences section 
+ */
 Spaz.UI.showPrefs = function() {
-    Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.prefs.tab));
-    Spaz.UI.tabbedPanels.showPanel(Spaz.Section.prefs.tab);
+	var tabid = 'tab-prefs';
+    Spaz.UI.setSelectedTab(tabid);
+    Spaz.UI.tabbedPanels.showPanel(tabid);
 }
 
+/**
+ * open the login panel in the prefs section 
+ */
 Spaz.UI.openLoginPanel = function() {
     Spaz.UI.prefsCPG.openPanel(0);
 };
