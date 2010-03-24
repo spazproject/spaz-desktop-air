@@ -38,8 +38,8 @@ Spaz.AccountPrefs.init = function() {
 			
 			sch.debug('ADD BUTTON CLICKED');
 
-			$('#ok').unbind('click');
-			$('#cancel').unbind('click');
+			$('#save_account_button').unbind('click');
+			$('#cancel_account_button').unbind('click');
 
 			sch.debug('SHOW #account-details');
 			Spaz.UI.openPopboxInline('#account-details');
@@ -70,7 +70,7 @@ Spaz.AccountPrefs.init = function() {
 			/*
 				bind add button
 			*/
-			$('#ok').bind('click', function() {
+			$('#save_account_button').bind('click', function() {
 				var newaccid = Spaz.AccountPrefs.add(
 					$('#username').val(),
 					$('#password').val(),
@@ -92,7 +92,7 @@ Spaz.AccountPrefs.init = function() {
 			/*
 				bind cancel button
 			*/
-			$('#cancel').bind('click', function() {
+			$('#cancel_account_button').bind('click', function() {
 				Spaz.UI.closePopbox();
 			});
 		});
@@ -116,8 +116,8 @@ Spaz.AccountPrefs.init = function() {
 		*/
 		$('#edit_button').click(function() {
 
-			$('#ok').unbind('click');
-			$('#cancel').unbind('click');
+			$('#save_account_button').unbind('click');
+			$('#cancel_account_button').unbind('click');
 
 
 			var id = Spaz.AccountPrefs.getSelectedId();
@@ -153,7 +153,7 @@ Spaz.AccountPrefs.init = function() {
 				/*
 					bind save button
 				*/
-				$('#ok').click(function() {
+				$('#save_account_button').click(function() {
 					var editedaccid = Spaz.AccountPrefs.edit(
 						$('#id_edit').val(),
 						{
@@ -178,7 +178,7 @@ Spaz.AccountPrefs.init = function() {
 				/*
 					bind cancel button
 				*/
-				$('#cancel').click(function() {
+				$('#cancel_account_button').click(function() {
 					Spaz.UI.closePopbox();
 					
 				});
