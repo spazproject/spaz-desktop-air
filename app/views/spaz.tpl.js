@@ -18,7 +18,7 @@ Spaz.Tpl.parse =function(template, data) {
 if (!Spaz.Templates) Spaz.Templates = {};
 
 Spaz.Templates.timeline_entry = function(d) {
-	
+
 	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
 	
 	d.SC_base_url = Spaz.Data.getBaseURL();
@@ -30,6 +30,16 @@ Spaz.Templates.timeline_entry = function(d) {
 	}
 	if (d.SC_is_reply) {
 		entryHTML += ' reply ';
+	}
+	if (d.SC_is_retweet) {
+		entryHTML += ' retweet ';
+		d.retweeting_user = d.user;
+		d.user = d.retweeted_status.user;
+		d.id = d.retweeted_status.id;
+		d.in_reply_to_status_id = d.retweeted_status.in_reply_to_status_id;
+		d.in_reply_to_status_id = d.retweeted_status.in_reply_to_status_id;
+		d.isSent = d.isSent;
+		d.text = d.retweeted_status.text;
 	}
 	entryHTML += '"  data-status-id="'+d.id+'" data-user-screen_name="'+d.user.screen_name+'" data-user-id="'+d.user.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">';
@@ -75,6 +85,9 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '					<a href="http://twitter.com/'+d.user.screen_name+'/statuses/'+d.id+'/" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
 									if (d.in_reply_to_status_id) {
 	entryHTML += '						<!-- <a href="/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
+									}
+									if (d.retweeting_user) {
+	entryHTML += '						<span class="status-rt-by">RTed by <a href="http://twitter.com/'+d.user.screen_name+'" class="clickable">'+d.retweeting_user.screen_name+'</a></span>';
 									}
 	entryHTML += '					<span class="status-source">from';
 	entryHTML += '						<span class="status-source-label">'+d.source+'</span>';

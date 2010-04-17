@@ -223,6 +223,20 @@ var FriendsTimeline = function() {
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
 					
+					if (data[i].SC_is_retweet) {
+						// nl2br
+						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+						// add thumbnails
+						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+						// make clickable
+						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+						// convert emoticons
+						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+					}
+					
 					no_dupes.push(data[i]);
 					
 					/*
@@ -449,6 +463,20 @@ var PublicTimeline = function(args) {
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
 					
+					if (data[i].SC_is_retweet) {
+						// nl2br
+						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+						// add thumbnails
+						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+						// make clickable
+						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+						// convert emoticons
+						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+					}
+					
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
@@ -558,7 +586,21 @@ var FavoritesTimeline = function(args) {
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
-					
+
+					if (data[i].SC_is_retweet) {
+						// nl2br
+						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+						// add thumbnails
+						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+						// make clickable
+						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+						// convert emoticons
+						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+					}
+
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
@@ -668,6 +710,20 @@ var UserTimeline = function(args) {
 					
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+					
+					if (data[i].SC_is_retweet) {
+						// nl2br
+						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+						// add thumbnails
+						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+						// make clickable
+						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+						// convert emoticons
+						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+					}
 					
 					no_dupes.push(data[i]);
 					/*
@@ -821,6 +877,20 @@ var UserlistsTimeline = function(args) {
 					
 					// convert emoticons
 					data.statuses[i].text = Emoticons.SimpleSmileys.convertEmoticons(data.statuses[i].text)
+					
+					if (data[i].SC_is_retweet) {
+						// nl2br
+						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+						// add thumbnails
+						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+						// make clickable
+						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+						// convert emoticons
+						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+					}
 					
 					no_dupes.push(data.statuses[i]);
 					/*
@@ -1078,7 +1148,21 @@ var SearchTimeline = function(args) {
 
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+					
+					if (data[i].SC_is_retweet) {
+						// nl2br
+						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
 
+						// add thumbnails
+						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+						// make clickable
+						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+						// convert emoticons
+						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+					}
+					
 					// if (Spaz.Prefs.get('usemarkdown')) {
 					// 	data[i].text = md.makeHtml(data[i].text);
 					// 	data[i].text = data[i].text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
