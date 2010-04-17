@@ -91,7 +91,7 @@ SpazPostPanel.prototype.prepReply = function(username, status_id, status_text) {
 SpazPostPanel.prototype.prepRetweet = function(screenname, text) {
 	this.clearPostIRT();
 	this.textarea.focus();
-	var text = 'RT @' + screenname + ': '+text+'';
+	text = 'RT @' + screenname + ': '+text+'';
 	this.setMessageText(text);
 };
 
@@ -117,6 +117,7 @@ SpazPostPanel.prototype.prepPhotoPost = function(url) {
 	var text = url + ' ';
 
 	this.setMessageText(text);
+	return text;
 };
 
 
@@ -214,7 +215,7 @@ SpazPostPanel.prototype.shortenText = function() {
 };
 
 SpazPostPanel.prototype.shortenURLs = function() {
-	
+    
 	var thisPP = this;
 	
 	var event_target = this.textarea;
@@ -222,6 +223,9 @@ SpazPostPanel.prototype.shortenURLs = function() {
 	var surl = new SpazShortURL(this.shortlink_service);
 	
 	var longurls = sc.helpers.extractURLs(this.getMessageText());
+
+    sch.error(this.getMessageText());
+    sch.error(longurls);
 
 	/*
 		check URL lengths
