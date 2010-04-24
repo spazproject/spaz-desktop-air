@@ -18,13 +18,17 @@ Spaz.Tpl.parse =function(template, data) {
 if (!Spaz.Templates) Spaz.Templates = {};
 
 Spaz.Templates.timeline_entry = function(d) {
-
 	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
 	
 	d.SC_base_url = Spaz.Data.getBaseURL();
 
 	var entryHTML = '';
-	entryHTML += '<div class="timeline-entry new ';
+	entryHTML += '<div class="timeline-entry ';
+	if (d.read) {
+		entryHTML += ' read ';
+	} else {
+		entryHTML += ' new ';
+	}
 	if (d.favorited) {
 		entryHTML += ' favorited ';
 	}
@@ -102,7 +106,6 @@ Spaz.Templates.timeline_entry = function(d) {
 						
 	entryHTML += '	</div>';
 	entryHTML += '</div>';
-	
 	
 	return entryHTML;
 }

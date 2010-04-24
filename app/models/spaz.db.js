@@ -65,6 +65,25 @@ Spaz.DB.markEntryAsRead = function(entryId) {
 	}
 }
 
+Spaz.DB.isRead = function(entryId) {
+	var conn = getSyncConnection(air.SQLMode.READ);
+	if (conn.connected) {
+		var sql = new air.SQLStatement();
+		sql.text = "SELECT entry_id FROM read_entries WHERE entry_id=:entryId";
+		sql.parameters[":entryId"] = entryId;
+		sql.sqlConnection = conn;
+		try {
+			sql.execute();
+			return sql.getResult().data.length > 0
+		} catch (error) {
+			Spaz.dump("Failed to find out if entry is read:", error);
+			return -1;
+		}
+	}
+
+	return -1;
+}
+
 /* Check against the database if the entry should be marked as read or not. The first argument is the entry id which must
  * be an integer and the second argument is the callback function made once it has been determined if the entry should be marked as
  * read or not. The callback function takes as unique argument a boolean value which is true if the entry should be marked as read.

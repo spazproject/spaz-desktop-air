@@ -223,6 +223,9 @@ var FriendsTimeline = function() {
 					// convert emoticons
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
 					
+					// check if entry has been read
+					data[i].read = Spaz.DB.isRead(data[i].id);
+					
 					if (data[i].SC_is_retweet) {
 						// nl2br
 						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
