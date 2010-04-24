@@ -38,7 +38,7 @@ var AppTimeline = function() {};
 
 AppTimeline.prototype.model = {
 	'items' : []
-}
+};
 
 /**
  * This is just a wrapper to start the SpazTimeline object contained within 
@@ -88,32 +88,32 @@ AppTimeline.prototype.filter = function(terms) {
 AppTimeline.prototype.clear = function() {
 	var entry_selector = this.getEntrySelector();
 	$(entry_selector).remove();
-}
+};
 
 
 AppTimeline.prototype.markAsRead = function() {
 	var entry_selector = this.getEntrySelector();
-	
-	// sch.error('Entry Selector:'+entry_selector);
-	
-	// sch.error(this.timeline);
-	
+
 	/* we use our own "mark as read" here because the helper version just removes the 'new' class' */
-	$(entry_selector+':visible').removeClass('new').addClass('read');
+	$(entry_selector+':visible').removeClass('new').addClass('read').each(function(i){
+		var status_id = $(this).attr('data-status-id');
+		Spaz.DB.markEntryAsRead(status_id);
+	});
 	$().trigger('UNREAD_COUNT_CHANGED');
+	
 };
 
 AppTimeline.prototype.getEntrySelector = function() {
 	return this.getTimelineSelector()+' div.timeline-entry';
-}
+};
 
 AppTimeline.prototype.getWrapperSelector = function() {
 	return this.getTimelineSelector().replace('timeline-', 'timelinewrapper-');
-}
+};
 
 AppTimeline.prototype.getTimelineSelector = function() {
 	return this.timeline.timeline_container_selector;
-}
+};
 
 AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 	
@@ -155,6 +155,7 @@ AppTimeline.prototype.refresh = function() {
 	this.timeline.refresh();
 };
 
+
 /**
  * Friends timeline def 
  */
@@ -182,7 +183,7 @@ var FriendsTimeline = function() {
 
 		'request_data': function() {
 			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // just add .read to the entries
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFT.twit.setCredentials(username, password);
@@ -224,7 +225,9 @@ var FriendsTimeline = function() {
 					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
 					
 					// check if entry has been read
-					data[i].read = Spaz.DB.isRead(data[i].id);
+					data[i].SC_is_read = !!Spaz.DB.isRead(data[i].id);
+					
+					sch.error(data[i].SC_is_read);
 					
 					if (data[i].SC_is_retweet) {
 						// nl2br
@@ -405,7 +408,7 @@ FriendsTimeline.prototype = new AppTimeline();
 
 FriendsTimeline.prototype.reset = function() {sch.debug
 	
-}
+};
 
 
 
@@ -438,7 +441,7 @@ var PublicTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			thisPT.markAsRead($timeline.selector + ' div.timeline-entry');
 			thisPT.twit.getPublicTimeline();
 			Spaz.UI.statusBar("Loading public timeline");
 			Spaz.UI.showLoading();
@@ -559,7 +562,7 @@ var FavoritesTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFVT.twit.setCredentials(username, password);
@@ -683,7 +686,7 @@ var UserTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			thisUT.markAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisUT.twit.setCredentials(username, password);
@@ -831,7 +834,7 @@ var UserlistsTimeline = function(args) {
 
 		'request_data': function() {
 
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			thisULT.markAsRead($timeline.selector + ' div.timeline-entry');
 						
 			if (thisULT.list.user && thisULT.list.slug) {
 				// Give UI feedback immediately
@@ -1117,7 +1120,7 @@ var SearchTimeline = function(args) {
 				// alert(thisST.lastquery+"\n"+thisST.query);
 				
 				// clear the existing results if this is a new query
-				sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
+				thisST.markAsRead($timeline.selector + ' div.timeline-entry');
 				
 				thisST.twit.search(thisST.query);
 				thisST.lastquery = thisST.query;
@@ -1245,7 +1248,7 @@ var FollowersTimeline = function(args) {
 		'max_items':200,
 
 		'request_data': function() {
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
+			sch.markAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUser();
 			var password = Spaz.Prefs.getPass();
 			thisFLT.twit.setCredentials(username, password);

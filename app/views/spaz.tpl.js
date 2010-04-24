@@ -24,9 +24,11 @@ Spaz.Templates.timeline_entry = function(d) {
 
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry ';
-	if (d.read) {
+	if (d.SC_is_read) {
+		sch.debug(d.id + " is being marked as read");
 		entryHTML += ' read ';
 	} else {
+		sch.debug(d.id + " is being marked as NOT read");
 		entryHTML += ' new ';
 	}
 	if (d.favorited) {
