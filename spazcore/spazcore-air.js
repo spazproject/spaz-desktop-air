@@ -1,4 +1,4 @@
-/*********** Built 2010-04-15 19:12:12 EDT ***********/
+/*********** Built 2010-04-17 18:54:15 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -5933,7 +5933,7 @@ sc.helpers.containsScreenName = function(str, sn) {
  * find URLs within the given string 
  */
 sc.helpers.extractURLs = function(str) {
-	var wwwlinks = /(^|[\s\(:。])((http(s?):\/\/)|(www\.))(\w+[^\s\)<]+)/gi;
+	var wwwlinks = /(^|\s|\(|:)(((http(s?):\/\/)|(www\.))(\w+[^\s\)<]+))/gi;
 	var match = [];
 	var URLs = [];
 	while ( (match = wwwlinks.exec(str)) !== null ) {
@@ -6592,7 +6592,7 @@ undef: true,
 white: false,
 onevar: false 
  */
-var sc, window;
+var sc;
  
 /**
  * These are system-oriented functions, mostly utilizing AIR apis
@@ -8219,7 +8219,7 @@ undef: true,
 white: false,
 onevar: false 
  */
-var sc, Titanium, air, window, jQuery, Mojo;
+var sc, Titanium, air, jQuery, Mojo;
 
 var SPAZCORE_PREFS_TI_KEY = 'preferences_json';
 
@@ -10247,7 +10247,7 @@ undef: true,
 white: false,
 onevar: false 
  */
-var sc, jQuery, window, Mojo, use_palmhost_proxy;
+var sc, jQuery, Mojo, use_palmhost_proxy;
 
 /**
  * @depends ../helpers/string.js 
@@ -11695,7 +11695,7 @@ SpazTwit.prototype._processItem = function(item, section_name) {
 	/*
 		is an official API retweet? then add .SC_is_retweet
 	*/
-	if ( item.retweet_status ) {
+	if ( item.retweeted_status ) {
 		item.SC_is_retweet = true;
 	}
 	
@@ -13160,7 +13160,7 @@ undef: true,
 white: false,
 onevar: false 
  */
-var sc, air, window, DOMParser;
+var sc, air, DOMParser;
  
 /*
 	AIR VERSION
