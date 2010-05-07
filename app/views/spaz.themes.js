@@ -22,7 +22,7 @@ Spaz.Themes.init = function() {
 	$('link[rel*=style][title]').each(function(i){
 		var title = this.getAttribute('title');
 		$('#theme-basetheme').append('<option value="'+title+'">'+title+'</option>');
-		Spaz.dump("css:"+this.title);
+		sch.debug("css:"+this.title);
 	});
 
 	$('#theme-basetheme').val(Spaz.Prefs.get('theme-basetheme'));
@@ -51,9 +51,9 @@ Spaz.Themes.browseForUserCss = function() {
 }
 
 Spaz.Themes.userCSSSelected = function(event) {
-	Spaz.dump(event.target.url);
+	sch.debug(event.target.url);
 	var stylestr = Spaz.Themes.loadUserStylesFromURL(event.target.url)
-	Spaz.dump(stylestr);
+	sch.debug(stylestr);
 	Spaz.Themes.setUserStyleSheet(stylestr, event.target.url);
 }
 
@@ -114,13 +114,13 @@ Spaz.Themes.clearUserStyleSheet = function() {
 * By Kelvin Luck ( http://www.kelvinluck.com/ )
 **/
 Spaz.Themes.setCurrentTheme = function() {
-	Spaz.dump('current theme:' + Spaz.Prefs.get('theme-basetheme'));
+	sch.debug('current theme:' + Spaz.Prefs.get('theme-basetheme'));
 	$('link[rel*=style][title]').each(function(i) {
 		this.disabled = true;
-		Spaz.dump(this.getAttribute('title') + " is now disabled");
+		sch.debug(this.getAttribute('title') + " is now disabled");
 		if (this.getAttribute('title') == Spaz.Prefs.get('theme-basetheme')) {
 			this.disabled = false;
-			Spaz.dump(this.getAttribute('title') + " is now enabled");
+			sch.debug(this.getAttribute('title') + " is now enabled");
 		}
 	});
 

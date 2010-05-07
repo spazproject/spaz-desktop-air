@@ -11,13 +11,13 @@ if (!Spaz.Menus) Spaz.Menus = {};
 
 Spaz.Menus.initAll = function() {
 	//For application menu (on MAC OS X)
-	// Spaz.dump('Init Native Menus');
+	// sch.debug('Init Native Menus');
 	// if(air.NativeApplication.supportsMenu){
-	// 	Spaz.dump('Native Menus for OS X');
+	// 	sch.debug('Native Menus for OS X');
 	// 	air.NativeApplication.nativeApplication.menu = Spaz.Menus.createRootMenu('OSX');
 	// } else {
-	// 	Spaz.dump('Native Menus in Windows not supported');
-	// 	// Spaz.dump('Creating Windows root menu');
+	// 	sch.debug('Native Menus in Windows not supported');
+	// 	// sch.debug('Creating Windows root menu');
 	// 	// window.nativeWindow.menu = Spaz.Menus.createRootMenu();
 	// }
 	
@@ -33,7 +33,7 @@ Spaz.Menus.initAll = function() {
 	
 	// dock/systray icon menus
 	if(air.NativeApplication.supportsDockIcon){ // dock on OS X
-		Spaz.dump('Dock Menus for OS X');
+		sch.debug('Dock Menus for OS X');
 		// var iconLoader = new air.Loader();
 		//         iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
 		//                                                 Spaz.Menus.iconLoadComplete, false, 0, true);
@@ -42,7 +42,7 @@ Spaz.Menus.initAll = function() {
 
 
     } else if(air.NativeApplication.supportsSystemTrayIcon) { // system tray on windows
-		Spaz.dump('Making Windows system tray menu')
+		sch.debug('Making Windows system tray menu')
 	    // air.NativeApplication.nativeApplication.icon.tooltip = "Spaz loves you";
 	    air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 		// 	    var systrayIconLoader = new air.Loader();
@@ -56,7 +56,7 @@ Spaz.Menus.initAll = function() {
 		// 	    air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Menus.onSystrayClick);
 	}
 	
-	Spaz.dump('Create Native context Menus');
+	sch.debug('Create Native context Menus');
 	Spaz.Menus.contextMenu = Spaz.Menus.createRootMenu();
 };
 
@@ -64,19 +64,19 @@ Spaz.Menus.initAll = function() {
 Spaz.Menus.onSystrayClick = function(event) {
 	Spaz.Windows.windowRestore();
 	// // TODO replace this with call to Spaz.Windows.windowRestore()
-	// Spaz.dump('clicked on systray');
-	// Spaz.dump(nativeWindow.displayState);
-	// Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
+	// sch.debug('clicked on systray');
+	// sch.debug(nativeWindow.displayState);
+	// sch.debug('id:'+air.NativeApplication.nativeApplication.id);
 	// 
 	// if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	// 	Spaz.dump('restoring window');
+	// 	sch.debug('restoring window');
 	//  		nativeWindow.restore();
 	//  	}
-	//  	Spaz.dump('activating application');
+	//  	sch.debug('activating application');
 	//  	air.NativeApplication.nativeApplication.activate() // bug fix by Mako
-	// Spaz.dump('activating window');
+	// sch.debug('activating window');
 	// nativeWindow.activate();
-	// Spaz.dump('ordering-to-front window');
+	// sch.debug('ordering-to-front window');
 	// nativeWindow.orderToFront();
 }
 
@@ -86,57 +86,57 @@ Spaz.Menus.iconLoadComplete = function(event) {
 }
 
 Spaz.Menus.displayContextMenu = function(event) {
-	Spaz.dump('showing context menu');
+	sch.debug('showing context menu');
 	Spaz.Menus.contextMenu.display(window.nativeWindow.stage, event.clientX, event.clientY);
 };
 
 
 //Reports the chosen menu command
 Spaz.Menus.itemSelected = function(event){
-	Spaz.dump("Selected item: " + event.target.label);
-	Spaz.dump('event.target.name:' + event.target.name);
+	sch.debug("Selected item: " + event.target.label);
+	sch.debug('event.target.name:' + event.target.name);
 	
 	if (event.target.name == "exit") {
-		Spaz.dump('Calling Spaz.Windows.onWindowClose');
+		sch.debug('Calling Spaz.Windows.onWindowClose');
 		Spaz.Windows.onWindowClose();
 	}
 	
 	
 	else if (event.target.name == "reload") {
-		Spaz.dump('Calling Spaz.Menu.menuReload');
+		sch.debug('Calling Spaz.Menu.menuReload');
 		Spaz.Menu.menuReload();
 	}
 
 	else if (event.target.name == "clear") {
-		Spaz.dump('Calling Spaz.Menu.menuClearTimeline');
+		sch.debug('Calling Spaz.Menu.menuClearTimeline');
 		Spaz.Menu.menuClearTimeline();
 	}
 
 	else if (event.target.name == "prefs") {
-		Spaz.dump('Calling Spaz.Menu.menuPrefs');
+		sch.debug('Calling Spaz.Menu.menuPrefs');
 		Spaz.Menu.menuPrefs();
 	}
 	
 	else if (event.target.name == "about") {
-		Spaz.dump('Calling Spaz.Menu.menuAbout');
+		sch.debug('Calling Spaz.Menu.menuAbout');
 		Spaz.Menu.menuAbout();
 	}
 	
 	else if (event.target.name == "feedback") {
-		Spaz.dump('Calling Spaz.Menu.menuFeedback');
+		sch.debug('Calling Spaz.Menu.menuFeedback');
 		Spaz.Menu.menuFeedback('spaz');
 	}
 	else if (event.target.name == "check") {
-		Spaz.dump('Calling Spaz.Update.updater.checkForUpdate');
+		sch.debug('Calling Spaz.Update.updater.checkForUpdate');
 		Spaz.Update.updater.checkForUpdate();
 	}
 	else if (event.target.name == "help") {
-		Spaz.dump('Calling Spaz.Menu.menuHelp');
+		sch.debug('Calling Spaz.Menu.menuHelp');
 		Spaz.Menu.menuHelp();
 	}
 	
   	else {
-		Spaz.dump('No matching call for this menu item');
+		sch.debug('No matching call for this menu item');
 	}
 	
 	
@@ -180,15 +180,15 @@ Spaz.Menus.createRootMenu = function(type){
 	// 
 	// 	for(var i = 0; i < titleMenu.items.length; i++){
 	// 		item = titleMenu.items[i];
-	// 		Spaz.dump(i+":"+item.label);
+	// 		sch.debug(i+":"+item.label);
 	// 	}
 	// 	for(var i = 0; i < viewMenu.items.length; i++){
 	// 		item = viewMenu.items[i];
-	// 		Spaz.dump(i+":"+item.label);
+	// 		sch.debug(i+":"+item.label);
 	// 	}
 	// 	for(var i = 0; i < helpMenu.items.length; i++){
 	// 		item = helpMenu.items[i];
-	// 		Spaz.dump(i+":"+item.label);
+	// 		sch.debug(i+":"+item.label);
 	// 	}
 	// 	
 	// 	// remove existing item from menu 0, position 0 (generated "About" item)		
@@ -207,7 +207,7 @@ Spaz.Menus.createRootMenu = function(type){
 	// 	titleMenu.addItemAt(prefsItem, 2);
 		
 	// } else {
-		// Spaz.dump('creating new menu for Windows')
+		// sch.debug('creating new menu for Windows')
 		// var menu = new air.NativeMenu();
 		// 
 		// var miExit = new air.NativeMenuItem("Quit Spaz");
@@ -234,7 +234,7 @@ Spaz.Menus.createFileMenu = function(){
 	// 
 	// for(var i = 0; i < menu.items.length; i++){
 	// 	item = menu.items[i];
-	// 	Spaz.dump('adding listener to '+item.name)
+	// 	sch.debug('adding listener to '+item.name)
 	// 	item.addEventListener(air.Event.SELECT,function(event) {
 	// 		Spaz.Menus.itemSelected(event);
 	// 	}, false, 0, true);
@@ -252,7 +252,7 @@ Spaz.Menus.createEditMenu = function(){
 	// menu.addItem(new air.NativeMenuItem("Paste"));
 	// for(var i = 0; i < menu.items.length; i++){
 	// 	item = menu.items[i];
-	// 	Spaz.dump('adding listener to '+item.name)
+	// 	sch.debug('adding listener to '+item.name)
 	// 	item.addEventListener(air.Event.SELECT,function(event) {
 	// 		Spaz.Menus.itemSelected(event);
 	// 	}, false, 0, true);
@@ -270,7 +270,7 @@ Spaz.Menus.createViewMenu = function(){
 	// var miReload = new air.NativeMenuItem("Reload current timeline");
 	// miReload.name = 'reload';
 	// if (air.NativeWindow.supportsMenu) {
-	// 	Spaz.dump('adding runtime.flash.ui.Keyboard.CONTROL modifier');
+	// 	sch.debug('adding runtime.flash.ui.Keyboard.CONTROL modifier');
 	// 	// miReload.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.CONTROL);
 	// }
 	// miReload.mnemonicIndex = 0;
@@ -279,7 +279,7 @@ Spaz.Menus.createViewMenu = function(){
 	// var miClear = new air.NativeMenuItem("Clear current timeline");
 	// miClear.name = 'clear';
 	// if (air.NativeWindow.supportsMenu) {
-	// 	Spaz.dump('adding runtime.flash.ui.Keyboard.CONTROL modifier');
+	// 	sch.debug('adding runtime.flash.ui.Keyboard.CONTROL modifier');
 	// 	// miClear.keyEquivalentModifiers = new Array(runtime.flash.ui.Keyboard.CONTROL);
 	// }
 	// miClear.mnemonicIndex = 0;
@@ -288,7 +288,7 @@ Spaz.Menus.createViewMenu = function(){
 	// var miPrefs = new air.NativeMenuItem("Preferences…");
 	// miPrefs.name = 'prefs';
 	// if (air.NativeWindow.supportsMenu) {
-	// 	Spaz.dump('adding runtime.flash.ui.Keyboard.CONTROL modifier');
+	// 	sch.debug('adding runtime.flash.ui.Keyboard.CONTROL modifier');
 	// 	// miPrefs.keyEquivalentModifiers = new Array(air.Keyboard.CONTROL);
 	// }
 	// // miPrefs.keyEquivalentModifiers = new Array(air.Keyboard.COMMAND);
@@ -303,7 +303,7 @@ Spaz.Menus.createViewMenu = function(){
 	// 
 	// for(var i = 0; i < menu.items.length; i++){
 	// 	item = menu.items[i];
-	// 	Spaz.dump('adding listener to '+item.name)
+	// 	sch.debug('adding listener to '+item.name)
 	// 	item.addEventListener(air.Event.SELECT,function(event) {
 	// 		Spaz.Menus.itemSelected(event);
 	// 	}, false, 0, true);
@@ -339,7 +339,7 @@ Spaz.Menus.createHelpMenu = function(){
 	// 
 	// for(var i = 0; i < menu.items.length; i++){
 	// 	item = menu.items[i];
-	// 	Spaz.dump('adding listener to '+item.name)
+	// 	sch.debug('adding listener to '+item.name)
 	// 	item.addEventListener(air.Event.SELECT,function(event) {
 	// 		Spaz.Menus.itemSelected(event);
 	// 	}, false, 0, true);
@@ -361,20 +361,20 @@ Spaz.Menus.setSystrayTooltip = function(msg){
 
 // Handlers
 Spaz.Menus.menuReload = function() {
-	// Spaz.dump('in Spaz.Menu.menuReload');
+	// sch.debug('in Spaz.Menu.menuReload');
 	// Spaz.UI.reloadCurrentTab();
 	// Spaz.restartReloadTimer();
 };
 
 Spaz.Menus.menuClearTimeline = function() {
-	// Spaz.dump('in Spaz.Menu.menuClearTimeline');
+	// sch.debug('in Spaz.Menu.menuClearTimeline');
 	// Spaz.UI.clearCurrentTimeline();
 	// Spaz.UI.reloadCurrentTab();
 	// Spaz.restartReloadTimer();
 };
 
 Spaz.Menus.menuPrefs  = function() {
-	// Spaz.dump('in Spaz.Menu.menuPrefs');
+	// sch.debug('in Spaz.Menu.menuPrefs');
 	// Spaz.UI.setSelectedTab(document.getElementById('tab-prefs'));
 	// Spaz.UI.tabbedPanels.showPanel('tab-prefs');
 };

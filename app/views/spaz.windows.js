@@ -9,7 +9,7 @@ Spaz.Windows.windowExitCalled = false;
 
 
 Spaz.Windows.onWindowActive = function (event) {
-	Spaz.dump('Window ACTIVE');
+	sch.debug('Window ACTIVE');
   // if ($('body').focus()) {}
   $('body').addClass('active');
 }
@@ -31,24 +31,24 @@ Spaz.Windows.windowMinimize = function() {
 
 
 Spaz.Windows.windowRestore = function() {
-	Spaz.dump('restoring window');
-	Spaz.dump('current window state:'+window.nativeWindow.displayState);
-	//Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
+	sch.debug('restoring window');
+	sch.debug('current window state:'+window.nativeWindow.displayState);
+	//sch.debug('id:'+air.NativeApplication.nativeApplication.id);
 
 
 	// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	// 	Spaz.dump('restoring window');
+	// 	sch.debug('restoring window');
 	//  		nativeWindow.restore();
 	//  	}
-	Spaz.dump('restoring window');
+	sch.debug('restoring window');
 	window.nativeWindow.restore();
 
-	Spaz.dump('activating window');
+	sch.debug('activating window');
 	window.nativeWindow.activate();
-	// Spaz.dump('ordering-to-front window');
+	// sch.debug('ordering-to-front window');
 	// window.nativeWindow.orderToFront();
 	if (air.NativeApplication) {
-		Spaz.dump('activating application');
+		sch.debug('activating application');
 		air.NativeApplication.nativeApplication.activate();
 	}
 };
@@ -113,7 +113,7 @@ Spaz.Windows.windowClose = function() {
 
 Spaz.Windows.makeSystrayIcon = function() {
 	if(air.NativeApplication.supportsSystemTrayIcon) { // system tray on windows
-		Spaz.dump('Making Windows system tray menu')
+		sch.debug('Making Windows system tray menu')
 		air.NativeApplication.nativeApplication.icon.tooltip = "Spaz loves you";
 		// air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 		var systrayIconLoader = new air.Loader();
@@ -128,19 +128,19 @@ Spaz.Windows.makeSystrayIcon = function() {
 Spaz.Windows.onSystrayClick = function(event) {
 	Spaz.Windows.windowRestore();
 	// // TODO replace this with call to Spaz.Windows.windowRestore()
-	// Spaz.dump('clicked on systray');
-	// Spaz.dump(nativeWindow.displayState);
-	// Spaz.dump('id:'+air.NativeApplication.nativeApplication.id);
+	// sch.debug('clicked on systray');
+	// sch.debug(nativeWindow.displayState);
+	// sch.debug('id:'+air.NativeApplication.nativeApplication.id);
 	// 
 	// if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	// 	Spaz.dump('restoring window');
+	// 	sch.debug('restoring window');
 	//  		nativeWindow.restore();
 	//  	}
-	//  	Spaz.dump('activating application');
+	//  	sch.debug('activating application');
 	//  	air.NativeApplication.nativeApplication.activate() // bug fix by Mako
-	// Spaz.dump('activating window');
+	// sch.debug('activating window');
 	// nativeWindow.activate();
-	// Spaz.dump('ordering-to-front window');
+	// sch.debug('ordering-to-front window');
 	// nativeWindow.orderToFront();
 }
 
@@ -158,11 +158,11 @@ Spaz.Windows.openHTMLUtilityWindow = function(url) {
 }
 
 Spaz.Windows.makeWindowVisible = function(){
-	Spaz.dump("making window visible");
+	sch.debug("making window visible");
 	window.nativeWindow.visible = true;
 }
 Spaz.Windows.makeWindowHidden = function(){
-	Spaz.dump("making window hidden");
+	sch.debug("making window hidden");
 	window.nativeWindow.visible = false;
 }
 Spaz.Windows.setWindowOpacity = function(percentage) {

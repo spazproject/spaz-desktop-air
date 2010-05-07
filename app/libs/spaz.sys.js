@@ -41,7 +41,7 @@ Spaz.Sys.isLinux = function() {
 
 
 Spaz.Sys.initNetworkConnectivityCheck = function() {
-	Spaz.dump('initNetworkConnectivityCheck disabled');
+	sch.debug('initNetworkConnectivityCheck disabled');
 
 	// var monitor;
 	// 
@@ -53,14 +53,14 @@ Spaz.Sys.initNetworkConnectivityCheck = function() {
 	// monitor.start();
 	// 
 	// function announceStatus(e) {
-	// 	Spaz.dump("Network status change. Current status: " + monitor.available);
+	// 	sch.debug("Network status change. Current status: " + monitor.available);
 	// 	sch.dump("Network status change. Current status: " + monitor.available);
 	// }
 };
 
 
 Spaz.Sys.initMemcheck = function() {
-	Spaz.dump('Memcheck disabled');
+	sch.debug('Memcheck disabled');
 
 	// t = new air.Timer(15*1000, 0);
 	// t.addEventListener(air.TimerEvent.TIMER, memCheckGC);
@@ -70,7 +70,7 @@ Spaz.Sys.initMemcheck = function() {
 	// 
 	// function memCheckGC(e) {
 	// 	// sch.dump("memcheck event");
-	// 	Spaz.dump("air.System.totalMemory:"+air.System.totalMemory);
+	// 	sch.debug("air.System.totalMemory:"+air.System.totalMemory);
 	// 	// air.System.gc();
 	// 	// sch.dump("post mem:"+air.System.totalMemory);
 	// }
@@ -102,7 +102,7 @@ Spaz.Sys.getClipboardText = function() {
 }
 
 Spaz.Sys.setClipboardText = function(text) {
-	Spaz.dump('Copying "' + text + '" to clipboard');
+	sch.debug('Copying "' + text + '" to clipboard');
 	air.Clipboard.generalClipboard.clear();
 	air.Clipboard.generalClipboard.setData(air.ClipboardFormats.TEXT_FORMAT,text,false);
 }
@@ -132,7 +132,7 @@ Spaz.Sys.setFileContents = function(path, content, serialize) {
 		content = JSON.stringify(content);
 	}
 	
-	Spaz.dump('setFileContents for '+path+ ' to "' +content+ '"');
+	sch.debug('setFileContents for '+path+ ' to "' +content+ '"');
 	
 	var f = new air.File(path);
 	var fs = new air.FileStream();
@@ -143,14 +143,14 @@ Spaz.Sys.setFileContents = function(path, content, serialize) {
 
 
 
-Spaz.Sys.sc.helpers.openInBrowser = function(url) {
-	Spaz.dump('opening '+url);
+Spaz.Sys.openInBrowser = function(url) {
+	sch.debug('opening '+url);
 	var request = new air.URLRequest(url);
 	try {            
 	    air.navigateToURL(request);
 	}
 	catch (e) {
-	    Spaz.dump(e.errorMsg)
+	    sch.debug(e.errorMsg)
 	}
 };
 
@@ -163,7 +163,7 @@ Spaz.Sys.openAppStorageFolder = function() {
 
 Spaz.Sys.loadChildInterface = function() {
 	Spaz.Sys.ClassicSB = $("#classicSB")[0].contentWindow.childSandboxBridge;
-	// Spaz.dump(classicSB)
+	// sch.debug(classicSB)
 	// eval = Spaz.Sys.ClassicSB.eval;
 	
 	// eval('alert("Funky!")');

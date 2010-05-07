@@ -22,7 +22,7 @@ Spaz.Autocomplete.initSuggestions = function() {
 Spaz.Autocomplete.addScreenName = function(name) {
 	if (Spaz.Autocomplete.screenNames.indexOf(name) == -1) {
 		Spaz.Autocomplete.screenNames.push(name)
-		Spaz.dump('Added "'+name.toLowerCase()+'". Number of screen names is '+Spaz.Autocomplete.getScreenNamesCount());
+		sch.debug('Added "'+name.toLowerCase()+'". Number of screen names is '+Spaz.Autocomplete.getScreenNamesCount());
 	}
 };
 

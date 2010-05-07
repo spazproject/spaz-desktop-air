@@ -16,7 +16,7 @@ Spaz.Accounts.checkForFirstTimeUse = function() {
     if (Spaz.DB.getUserCount() == 0) {
         sch.dump("Attempting to add initial user: " + Spaz.Prefs.user);
         if (!Spaz.Accounts.addUser(Spaz.Prefs.user)) {
-            Spaz.dump("Failed to add first time user " + Spaz.Prefs.user);
+            sch.debug("Failed to add first time user " + Spaz.Prefs.user);
         }
     }
 }
@@ -81,7 +81,7 @@ Spaz.Accounts.switchAccount = function(username) {
  */
 Spaz.Accounts.saveAccountPassword = function(username, pw) {
 	if (accountName && pw) {
-		Spaz.dump('saving password for account ' + username);
+		sch.debug('saving password for account ' + username);
 		var bytes = new air.ByteArray();
 		bytes.writeUTFBytes(pw);
 		air.EncryptedLocalStore.setItem(ELS_KEY_PW + username.toLowerCase(), bytes);
@@ -94,12 +94,12 @@ Spaz.Accounts.saveAccountPassword = function(username, pw) {
  * @returns The password, or false if unable to retreive.
  */
 Spaz.Accounts.loadAccountPassword = function(username) {
-	Spaz.dump('loading password for account ' + username);
+	sch.debug('loading password for account ' + username);
     var storedValue = air.EncryptedLocalStore.getItem(ELS_KEY_PW + username.toLowerCase());
     if (storedValue) {
         return storedValue.readUTFBytes(storedValue.length);
     } else {
-        Spaz.dump('Password for account ' + username + ' COULD NOT BE LOADED');
+        sch.debug('Password for account ' + username + ' COULD NOT BE LOADED');
         return false;
     }
 };

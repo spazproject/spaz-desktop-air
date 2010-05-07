@@ -239,8 +239,8 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
  * @returns void
  */
 Spaz.Data.destroyStatus = function(postid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	Spaz.UI.showLoading();
 
@@ -275,8 +275,8 @@ Spaz.Data.destroyStatus = function(postid) {
  * @returns void
  */
 Spaz.Data.makeFavorite = function(postid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	Spaz.UI.statusBar('Adding fav: ' + postid);
 	Spaz.UI.showLoading();
@@ -314,8 +314,8 @@ Spaz.Data.makeFavorite = function(postid) {
  * @returns void
  */
 Spaz.Data.makeNotFavorite = function(postid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	Spaz.UI.statusBar('Removing fav: ' + postid);
 	Spaz.UI.showLoading();
@@ -351,8 +351,8 @@ Spaz.Data.makeNotFavorite = function(postid) {
  * @returns void
  */
 Spaz.Data.followUser = function(userid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	sch.dump('user:'+user+' pass:********');
 
@@ -391,8 +391,8 @@ Spaz.Data.followUser = function(userid) {
  */
 Spaz.Data.stopFollowingUser = function(userid) {
 
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	sch.dump('user:'+user+' pass:********');
 
@@ -481,7 +481,7 @@ Spaz.Data.onAjaxError = function(xhr,rstr) {
 //  */
 // Spaz.Data.getDataForTimeline = function(section, force) {
 // 
-// 	var username = Spaz.Prefs.getUser();
+// 	var username = Spaz.Prefs.getUsername();
 // 	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
 // 		
 // 		$('#timeline-friends').html("<div id='not-logged-in'><div>Username and password not set.</div><input type='button' id='open-login-panel' value='Enter user/pass' /> </div>");
@@ -702,8 +702,8 @@ Spaz.Data.updatePingFM = function(msg) {
 
 
 Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	if (!user || !pass) {
 		sch.dump('Dropping out of getRateLimitInfo because user or pass is not set');

@@ -4,7 +4,7 @@ if (!Spaz) Spaz = {};
 // Spaz.verified = false;
 Spaz.startReloadTimer = function() {
 	var refreshInterval = Spaz.Prefs.getRefreshInterval();
-	Spaz.dump('started timer with refresh of ' + refreshInterval + ' msecs');
+	sch.debug('started timer with refresh of ' + refreshInterval + ' msecs');
 	reloadID = window.setInterval(Spaz.UI.autoReloadCurrentTab, refreshInterval);
 	return reloadID;
 }
@@ -13,12 +13,12 @@ Spaz.startReloadTimer = function() {
 Spaz.stopReloadTimer = function() {
 	if (reloadID) {
 		window.clearInterval(reloadID);
-		Spaz.dump('stopped timer');
+		sch.debug('stopped timer');
 	}
 }
 
 Spaz.restartReloadTimer = function() {
-	Spaz.dump('trying to restart timer');
+	sch.debug('trying to restart timer');
 	Spaz.stopReloadTimer();
 	Spaz.startReloadTimer();
 }
@@ -143,14 +143,14 @@ Spaz.initialize = function() {
 	 **************************/
 	window.moveTo(Spaz.Prefs.get('window-x'), Spaz.Prefs.get('window-y'));
 	window.resizeTo(Spaz.Prefs.get('window-width'), Spaz.Prefs.get('window-height'));
-	$('#username').val(Spaz.Prefs.getUser());
-	$('#password').val(Spaz.Prefs.getPass());
+	$('#username').val(Spaz.Prefs.getUsername());
+	$('#password').val(Spaz.Prefs.getPassword());
 
 	//DONE: Check for Update
 	if (Spaz.Prefs.get('checkupdate')) {
-		Spaz.dump('Starting check for update');
+		sch.debug('Starting check for update');
 		// Spaz.Update.updater.checkForUpdate();
-		Spaz.dump('Ending check for update');
+		sch.debug('Ending check for update');
 	}
 
 
@@ -159,10 +159,10 @@ Spaz.initialize = function() {
 	 * Other stuff to do when document is ready
 	 ***********************/
 	Spaz.UI.playSoundStartup();
-	Spaz.dump('Played startup sound');
+	sch.debug('Played startup sound');
 
 	Spaz.Windows.makeWindowVisible();
-	Spaz.dump('Made window visible');
+	sch.debug('Made window visible');
 
 	window.nativeWindow.visible = true;
 
@@ -205,7 +205,7 @@ Spaz.initialize = function() {
 	$('.TabbedPanelsTab').each(function(i) {
 		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL+' + (parseInt(i) + 1) + '</strong>';
 	});
-	Spaz.dump('Set shortcut info in tab titles');
+	sch.debug('Set shortcut info in tab titles');
 
 
 	/*
@@ -268,7 +268,7 @@ Spaz.initialize = function() {
 		on_submit:function() {
 			this.disable();
 			var status = sch.trim(this.getMessageText());
-			var twit = new SpazTwit(Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+			var twit = new SpazTwit(Spaz.Prefs.getUsername(), Spaz.Prefs.getPassword());
 			var source = Spaz.Prefs.get('twitter-source');
 			var irt_id = this.irt_status_id;
 			twit.update(status, source, irt_id);
@@ -368,5 +368,5 @@ Spaz.initialize = function() {
 	Spaz.loadUserJS();
 
 
-	Spaz.dump('ended document.ready()');
+	sch.debug('ended document.ready()');
 }

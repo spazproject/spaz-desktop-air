@@ -145,7 +145,7 @@ function getSyncConnection(mode) {
 		conn.open(spazDB, mode);
 		return conn;
 	} catch (error)	{
-		Spaz.dump("Failed to open database in sync mode:", error);
+		sch.debug("Failed to open database in sync mode:", error);
 		return false;
 	}
 };
@@ -167,7 +167,7 @@ Spaz.DB.getUserCount = function() {
 			sql.execute();
 			return sql.getResult().data[0]["count(*)"];
 		} catch (error) {
-			Spaz.dump("Failed to retrieve user count:", error);
+			sch.debug("Failed to retrieve user count:", error);
 			return -1;
 		}
 	}
@@ -197,7 +197,7 @@ Spaz.DB.getUserList = function() {
 			}
 			return list;
 		} catch (error) {
-			Spaz.dump("Failed to retrieve user list:", error);
+			sch.debug("Failed to retrieve user list:", error);
 			return null;
 		}
 	}
@@ -225,7 +225,7 @@ Spaz.DB.maintainUser = function(action, username) {
 			sql.text = "DELETE FROM users WHERE name=:name";
 			break;
 		default:
-			Spaz.dump("Invalid action (" + action + ") sent to Spaz.DB.maintainUser");
+			sch.debug("Invalid action (" + action + ") sent to Spaz.DB.maintainUser");
 			sql.text = "this will fail";
 		}
 
@@ -235,7 +235,7 @@ Spaz.DB.maintainUser = function(action, username) {
 			sql.execute();
 			return true;
 		} catch (error) {
-			Spaz.dump("Failed to " + action + " user " +  username + ":", error);
+			sch.debug("Failed to " + action + " user " +  username + ":", error);
 			return false;
 		}
 	}

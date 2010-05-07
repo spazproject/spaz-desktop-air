@@ -561,23 +561,23 @@ Spaz.Controller.initIntercept = function() {
  * Sets up keyboard event handlers 
  */
 Spaz.Controller.setKeyboardShortcuts = function() {
-	Spaz.dump("Setting Shortcuts=================================================");
-    Spaz.dump("os: " + air.Capabilities['os']);
+	sch.debug("Setting Shortcuts=================================================");
+    sch.debug("os: " + air.Capabilities['os']);
 
 	var Modkey = 'Meta';
 
 	if (air.Capabilities['os'].search(/Windows/i) != -1) {
-		Spaz.dump('THIS IS WINDOWS');
+		sch.debug('THIS IS WINDOWS');
 		Modkey = 'Ctrl';
 	} else if (air.Capabilities['os'].search(/Linux/i) != -1) { // thx agolna
-		Spaz.dump('THIS IS LINUX');
+		sch.debug('THIS IS LINUX');
 		Modkey = 'Ctrl';
 	} else if (air.Capabilities['os'].search(/Mac/i) != -1) {
-		Spaz.dump('THIS IS MACOS');
+		sch.debug('THIS IS MACOS');
 		Modkey = 'Meta';
 	}
 
-	Spaz.dump('Modkey is '+Modkey);
+	sch.debug('Modkey is '+Modkey);
 
   shortcut.add(Modkey+Spaz.Prefs.get('key-newEntry'), function() {
    $('#entrybox').focus();
@@ -620,12 +620,12 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	});
 
 	shortcut.add(Modkey+Spaz.Prefs.get('key-reply'), function() {
-			Spaz.dump('getting screenname from current selection');
+			sch.debug('getting screenname from current selection');
 			var screenname = $('div.ui-selected .user-screen-name').text();
 			var irt_id = $('div.ui-selected .entry-id').text().replace(/(\[|\])/g, '');
 
 			if (screenname) {
-				Spaz.dump('username for reply is:'+screenname);
+				sch.debug('username for reply is:'+screenname);
 				// var username = '';
 				Spaz.postPanel.prepReply(screenname, irt_id);
 			}

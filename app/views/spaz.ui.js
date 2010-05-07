@@ -237,7 +237,7 @@ Spaz.UI.setCurrentPage = function(tabEl, newpage) {
     $('#' + panel + ' .timeline-pager-number').html(newpage);
 };
 Spaz.UI.showEntryboxTip = function() {
-    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUser() + '</span>. Type your message and press ENTER to send');
+    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '</span>. Type your message and press ENTER to send');
 }
 
 Spaz.UI.showLocationOnMap = function(location) {
@@ -437,9 +437,9 @@ Spaz.UI.sendUpdate = function() {
 		// 
 		// if (!Spaz.Prefs.get('twitter-disable-direct-posting')) {
 		// 	if ( irt_id > 0 ) {
-		// 		Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass(), irt_id);
+		// 		Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUsername(), Spaz.Prefs.getPassword(), irt_id);
 		// 	} else {
-		// 		Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUser(), Spaz.Prefs.getPass());
+		// 		Spaz.Data.update(entrybox.val(), Spaz.Prefs.getUsername(), Spaz.Prefs.getPassword());
 		// 	}
 		// } else if (Spaz.Prefs.get('services-pingfm-enabled')) {
 		// 	Spaz.Data.updatePingFM( entrybox.val() );
@@ -1431,7 +1431,7 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         time.start('highlightReplies');
         // highlight all messages that mention @username
         cleanupTweets.find(".status-text").each(function(i) {
-            var re = new RegExp('@' + Spaz.Prefs.getUser() + '\\b', 'i');
+            var re = new RegExp('@' + Spaz.Prefs.getUsername() + '\\b', 'i');
             if (re.test($(this).html())) {
                 // sch.debug("found reply in "+$(this).text());
                 $(this).parents('div.needs-cleanup').addClass('reply');

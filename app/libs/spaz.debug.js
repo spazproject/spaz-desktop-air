@@ -57,7 +57,7 @@ Spaz.Debug.logToFile = function(msg) {
 
 
 // alias
-Spaz.dump = function(msg, type) {
+sch.debug = function(msg, type) {
 	Spaz.Debug.dump(msg, type);
 }
 
@@ -79,28 +79,28 @@ Spaz.Debug.dumpHTML = function() {
 		docsDir.browseForSave("Save HTML As");
 		docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
 	} catch (error) {
-		Spaz.dump("Failed:"+error.message, 'error');
+		sch.debug("Failed:"+error.message, 'error');
 	}
 };
 
 Spaz.Debug.dumpHTMLSelectListener = function(event) {
 	var newFile = event.target;
-	Spaz.dump('got newFile '+newFile.url);
+	sch.debug('got newFile '+newFile.url);
 	
 	var html = $('html')[0].outerHTML;
 	html = html.replace(/app:\/\//, '');
 	html = html.replace(/onclick="Spaz\.UI\.setSelectedTab\(this\)"/, '');
 	
-	Spaz.dump('got html '.html);
+	sch.debug('got html '.html);
 
 	var stream = new air.FileStream();
-	Spaz.dump('made stream ');
+	sch.debug('made stream ');
 	stream.open(newFile, air.FileMode.UPDATE);
-	Spaz.dump('opened stream '+newFile.url);
+	sch.debug('opened stream '+newFile.url);
 	stream.writeUTFBytes(html);
-	Spaz.dump('write utfbytes '+html);
+	sch.debug('write utfbytes '+html);
 	stream.close();
-	Spaz.dump('close stream')
+	sch.debug('close stream')
 
 }
 

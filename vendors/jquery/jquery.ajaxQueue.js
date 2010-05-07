@@ -55,7 +55,7 @@ $(function(){
 	
 	$.ajax = function(settings) {
 				
-		Spaz.dump(settings.mode + ": " + settings.url);
+		sch.debug(settings.mode + ": " + settings.url);
 		
 		// create settings for compatibility with ajaxSetup
 		settings = jQuery.extend(settings, jQuery.extend({}, jQuery.ajaxSettings, settings));
