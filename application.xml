@@ -5,7 +5,7 @@
 <!-- AIR Application Descriptor File. See http://www.adobe.com/go/learn_air_1.0_application_descriptor_en. -->
 	<id>Spaz.AIR</id>
 	<name>Spaz</name>
-	<version>0.9.1.666</version>
+	<version>0.9.2.666</version>
 	<filename>Spaz</filename>
 	<description>
 		<text xml:lang="en">A microblogging client for Twitter, Identi.ca, and StatusNet</text>

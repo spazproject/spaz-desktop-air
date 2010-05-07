@@ -165,8 +165,22 @@ Spaz.Windows.makeWindowHidden = function(){
 	sch.debug("making window hidden");
 	window.nativeWindow.visible = false;
 }
-Spaz.Windows.setWindowOpacity = function(percentage) {
-	var val  = parseInt(percentage)/100;
+Spaz.Windows.setWindowOpacity = function(value) {
+    percentage = parseInt(value);
+    if (isNaN(percentage)) {
+        percentage = 100;
+    }
+    if (percentage < 25) {
+        percentage = 25;
+    }
+    var val = parseInt(percentage) / 100;
+    if (isNaN(val)) {
+        val = 1;
+    } else if (val >= 1) {
+        val = 1;
+    } else if (val <= 0) {
+        val = 1;
+    }
 	window.htmlLoader.alpha = val;
 }
 Spaz.Windows.windowMove = function(){
@@ -200,4 +214,40 @@ Spaz.Windows.onWindowResize = function() {
 Spaz.Windows.onWindowMove = function() {
 	Spaz.Prefs.set('window-x', nativeWindow.x);
 	Spaz.Prefs.set('window-y', nativeWindow.y);	
+};
+
+/**
+ * turns the drop shadow on if passed truthy val, else turns it off
+ * @param {Boolean} state true or false 
+ */
+Spaz.Windows.enableDropShadow = function(state) {
+	if (state) { // && !Spaz.Sys.isLinux()) {
+	    window.htmlLoader.filters = window.runtime.Array(
+			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
+	    );
+	} else {
+		window.htmlLoader.filters = null;
+	}
+};
+
+
+/**
+ * turns on restore on activate if passed truthy val, else turns it off
+ * @param {Boolean} state true or false 
+ */
+Spaz.Windows.enableRestoreOnActivate = function(state) {
+	if (state) {
+		air.NativeApplication.nativeApplication.addEventListener('activate', Spaz.Windows.windowRestore);
+	} else {
+		air.NativeApplication.nativeApplication.removeEventListener('activate', Spaz.Windows.windowRestore);
+	}
+};
+
+
+Spaz.Windows.enableMinimizeOnBackground = function(state) {
+	if (state) {
+		air.NativeApplication.nativeApplication.addEventListener('deactivate', Spaz.Windows.windowMinimize);
+	} else {
+		air.NativeApplication.nativeApplication.removeEventListener('deactivate', Spaz.Windows.windowMinimize);
+	}
 };

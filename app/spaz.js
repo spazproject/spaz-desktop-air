@@ -57,12 +57,17 @@ Spaz.loadUserJS = function() {
 	
 };
 
+
 /**
  * Bootstraps the app
  */
 Spaz.initialize = function() {
 
-	sch.dump('root init begin');
+
+
+	sch.debug('root init begin');
+
+	air.NativeApplication.nativeApplication.autoExit = true;
 	
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
@@ -103,12 +108,13 @@ Spaz.initialize = function() {
 	sch.dump("docking initialization");
 	Spaz.Dock.init();
 
-	air.NativeApplication.nativeApplication.autoExit = true;
-
+	
+	
 	window.htmlLoader.manageCookies = false;
 	window.htmlLoader.paintsDefaultBackground = false;
 	window.htmlLoader.cacheResponse = true;
 	window.htmlLoader.useCache = true;
+	window.htmlLoader.authenticate = Spaz.Prefs.get('network-airhandlehttpauth');
 	Spaz.Sys.initUserAgentString();
 
 	air.URLRequestDefaults.manageCookies = false;
@@ -155,10 +161,15 @@ Spaz.initialize = function() {
 	sch.debug('Made window visible');
 
 	window.nativeWindow.visible = true;
-
+	Spaz.Windows.setWindowOpacity(Spaz.Prefs.get('window-alpha'));
+	Spaz.Windows.enableDropShadow(Spaz.Prefs.get('window-dropshadow'));	
+	Spaz.Windows.enableRestoreOnActivate(Spaz.Prefs.get('window-restoreonactivate'));
+	Spaz.Windows.enableMinimizeOnBackground(Spaz.Prefs.get('window-minimizeonbackground'));
+	
 	if (Spaz.Prefs.get('window-minimizeatstartup')) {
 		Spaz.Windows.windowMinimize()
 	}
+	
 
 	/*
 		this displays the body
@@ -167,12 +178,10 @@ Spaz.initialize = function() {
 
 	Spaz.UI.tabbedPanels = new Spry.Widget.TabbedPanels("tabs");
 
-	Spaz.UI.prefsCPG = new Spry.Widget.CollapsiblePanelGroup("prefsCPG",
-	{
+	Spaz.UI.prefsCPG = new Spry.Widget.CollapsiblePanelGroup("prefsCPG", {
 		contentIsOpen: false,
 		duration: 200
-	}
-	);
+	});
 
 	$('#header-label').menu({
 			copyClassAttr: true,
@@ -302,10 +311,6 @@ Spaz.initialize = function() {
 			}
 		}
 		
-		// $('#url-shortener').bind('change', function() {
-		// 	sch.dump($('#url-shortener').val());
-		// 	Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
-		// });
 		
 	        $('#url-shortener').bind('change', function() {
 	
@@ -320,20 +325,6 @@ Spaz.initialize = function() {
 		
 		$('#shorten-original-link').focus();
 		$('#shorten-original-link').val('http://');
-
-
-		// if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
-		// 	sch.dump('Found text in clipboard');
-		// 	
-		//     var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
-		// 	if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field
-		// 		sch.dump('Found url in clipboard');
-		// 		$('#shorten-original-link').val(cliptext);
-		// 		Spaz.Shortlink.services[service](cliptext);
-		// 	}
-		// 	$('#shorten-original-link').select();
-		// }
-					
 		$('#shortenLink-form').bind('submit', function() {
 	  	var service = Spaz.Prefs.get('url-shortener');
 			sch.dump("service is "+ service);
@@ -361,4 +352,4 @@ Spaz.initialize = function() {
 
 
 	sch.debug('ended document.ready()');
-}
+};

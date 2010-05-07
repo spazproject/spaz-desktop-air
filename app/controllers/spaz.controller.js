@@ -72,6 +72,24 @@ sch.listen(document, 'verify_credentials_failed', function(e) {
 });
 
 
+/*
+	handle account switching
+*/
+sch.listen(document, 'account_switched', function(e) {
+	
+	Spaz.Timelines.resetTimelines();
+	
+	sch.dump('switching accounts');
+	Spaz.UI.statusBar('Changed account to ' +
+					Spaz.Prefs.getUsername() +
+					"@" +
+					Spaz.Prefs.getAccountType());
+	Spaz.UI.flashStatusBar();
+	
+	
+});
+
+
 /**
  * Event delegation handling 
  */

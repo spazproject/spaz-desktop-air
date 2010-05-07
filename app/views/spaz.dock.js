@@ -34,6 +34,9 @@ Spaz.Dock.init = function() {
    // Save for later use
    Spaz.Dock.icon = air.NativeApplication.nativeApplication.icon;
 
+	Spaz.Dock.setColor(Spaz.Prefs.get('dock-unreadbadgecolor'));
+	Spaz.Dock.setShape(Spaz.Prefs.get('dock-unreadbadgeshape'));
+
    //
    Spaz.Dock.sync();
 }

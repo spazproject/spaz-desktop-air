@@ -166,24 +166,7 @@ Spaz.Prefs.changeMethods = {
         },
         onChange: function(value) {
             //alert(percentage+"%");
-            percentage = parseInt(value);
-            if (isNaN(percentage)) {
-                percentage = 100;
-            }
-            if (percentage < 25) {
-                percentage = 25;
-            }
-            var val = parseInt(percentage) / 100;
-            if (isNaN(val)) {
-                val = 1;
-            } else if (val >= 1) {
-                val = 1;
-            } else if (val <= 0) {
-                val = 1;
-            }
-
-
-            window.htmlLoader.alpha = val;
+            Spaz.Windows.setWindowOpacity(value);
         },
         check: function() {
             var val = Spaz.Prefs.get('window-alpha');
@@ -261,13 +244,7 @@ Spaz.Prefs.changeMethods = {
             $('#window-minimizeonbackground').attr('checked', value);
         },
         onChange: function(value) {
-            if (value) {
-               air.NativeApplication.nativeApplication.addEventListener('deactivate',
-                   function() {
-                       //window.nativeWindow.minimize();
-                       Spaz.Windows.windowMinimize();
-                   })
-            }
+			Spaz.Windows.enableMinimizeOnBackground(value);
         },
         check: function() {
             Spaz.Prefs.set('window-minimizeonbackground', Boolean(Spaz.Prefs.get('window-minimizeonbackground')))
@@ -278,13 +255,7 @@ Spaz.Prefs.changeMethods = {
             $('#window-restoreonactivate').attr('checked', value);
         },
         onChange: function(value) {
-            if (value) {
-                air.NativeApplication.nativeApplication.addEventListener('activate',
-                function() {
-                    //window.nativeWindow.restore();
-                    Spaz.Windows.windowRestore();
-                })
-            }
+			Spaz.Windows.enableRestoreOnActivate(value);
         },
         check: function() {
             Spaz.Prefs.set('window-restoreonactivate', Boolean(Spaz.Prefs.get('window-restoreonactivate')))
@@ -295,14 +266,8 @@ Spaz.Prefs.changeMethods = {
             $('#window-dropshadow').attr('checked', value);
         },
         onChange: function(value) {
-            if (value) { // && !Spaz.Sys.isLinux()) {
-			    window.htmlLoader.filters = window.runtime.Array(
-			    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
-			    );
-            } else {
-			    window.htmlLoader.filters = null;
-			}
-        },
+			Spaz.Windows.enableDropShadow(value);
+		},
         check: function() {
             Spaz.Prefs.set('window-dropshadow', Boolean(Spaz.Prefs.get('window-dropshadow')))
         }
@@ -595,10 +560,7 @@ Spaz.Prefs.changeMethods = {
         setUI: function(value) {
             $('#network-autoadjustrefreshinterval').attr('checked', value);
         },
-        onChange: function(value) {
-            sch.debug('Setting Auto Adjust Refresh Interval to ' + value)
-            window.htmlLoader.authenticate = value;
-        },
+        onChange: function(value) {},
         check: function() {
             Spaz.Prefs.set('network-autoadjustrefreshinterval', Boolean(Spaz.Prefs.get('network-autoadjustrefreshinterval')))
         }
@@ -608,7 +570,7 @@ Spaz.Prefs.changeMethods = {
             $('#network-airhandlehttpauth').attr('checked', value);
         },
         onChange: function(value) {
-            sch.debug('Setting HTTPAuth handling to ' + value)
+            sch.debug('Setting HTTPAuth handling to ' + value);
             window.htmlLoader.authenticate = value;
         },
         check: function() {
@@ -721,7 +683,7 @@ Spaz.Prefs.changeMethods = {
             return value;
         }
     },
-   'dock-unreadbadgecolor': {
+    'dock-unreadbadgecolor': {
        setUI: function(value) {
            $('#dock-unreadbadgecolor').val(value);
        },
@@ -729,6 +691,7 @@ Spaz.Prefs.changeMethods = {
            Spaz.Dock.setColor(value);
        }
    },
+
    'dock-unreadbadgeshape': {
        setUI: function(value) {
            $('#dock-unreadbadgeshape').val(value);
@@ -737,6 +700,7 @@ Spaz.Prefs.changeMethods = {
            Spaz.Dock.setShape(value);
        }
    }
+
 };
 
 
@@ -754,9 +718,7 @@ Spaz.Prefs.init = function() {
 	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
 	
 	sch.error('THIS IS THE USERNAME:');
-	sch.error(sch.enJSON(Spaz.Prefs._accounts._accounts));
-	sch.error(Spaz.Prefs.getCurrentAccount());
-	sch.error(Spaz.Prefs.getUsername());
+	sch.error(Spaz.Prefs.getUsername()+'@'+Spaz.prefs.getAccountType());
 	
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();

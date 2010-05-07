@@ -296,7 +296,7 @@ Spaz.UI.setCurrentPage = function(tabEl, newpage) {
     $('#' + panel + ' .timeline-pager-number').html(newpage);
 };
 Spaz.UI.showEntryboxTip = function() {
-    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '</span>. Type your message and press ENTER to send');
+    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '@'+Spaz.Prefs.getAccountType()+'</span>. ENTER sends.');
 }
 
 Spaz.UI.showLocationOnMap = function(location) {

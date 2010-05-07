@@ -26,7 +26,7 @@ Spaz.AccountPrefs.init = function(){
 			if (account_id != Spaz.Prefs.getCurrentUserId()) {
 				Spaz.Prefs.setCurrentUserId(account_id);
 				var account = Spaz.Prefs.getCurrentAccount();
-				$(document).trigger('account_changed', [account]);
+				sch.trigger('account_switched', document, account);
 			}
 			sch.debug(Spaz.Prefs.getUsername());
 		});
