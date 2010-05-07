@@ -718,7 +718,7 @@ Spaz.Prefs.init = function() {
 	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
 	
 	sch.error('THIS IS THE USERNAME:');
-	sch.error(Spaz.Prefs.getUsername()+'@'+Spaz.prefs.getAccountType());
+	sch.error(Spaz.Prefs.getUsername()+'@'+Spaz.Prefs.getAccountType());
 	
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();
