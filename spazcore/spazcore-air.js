@@ -1,4 +1,4 @@
-/*********** Built 2010-04-17 18:54:15 EDT ***********/
+/*********** Built 2010-05-07 17:50:19 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -4547,11 +4547,6 @@ onevar: false
  */
 var sc;
  
-/**
- * a constant that defines the attribute where we'll store extra data in the event 
- */
-var SPAZCORE_EVENTDATA_ATTRIBUTE = 'sc_data';
-
 
 /**
  * add an event listener to a target (element, window, etc). Uses target.addEventListener
@@ -4565,29 +4560,18 @@ var SPAZCORE_EVENTDATA_ATTRIBUTE = 'sc_data';
  * @function
  */
 sc.helpers.addListener = function(target, event_type, handler, scope, use_capture) {
-
-	sch.dump('listening for '+event_type);
-	sch.dump('on target nodeName:'+target.nodeName);
-	
-	if (use_capture !== true) {
-		use_capture = false;
-	}
-	
-	
 	
 	if (scope) {
-		
-		var __handler = _.bind(handler, scope);
-		target.addEventListener(event_type, __handler, use_capture);
-		return __handler;
-		
-	} else {
-		
-		target.addEventListener(event_type, handler, use_capture);
-		return handler;
-
+		sch.warn('scope no longer supported! use a closure or reference "scope" in your event handler');
+	}
+	if (use_capture) {
+		sch.warn('use_capture no longer supported!');
 	}
 	
+	sch.error('listening for '+event_type);
+	sch.error('on target nodeName:'+target.nodeName);
+	
+	jQuery(target).bind(event_type, handler);
 	
 };
 
@@ -4606,14 +4590,14 @@ sc.helpers.addListener = function(target, event_type, handler, scope, use_captur
  */
 sc.helpers.removeListener = function(target, event_type, handler, use_capture) {
 
-	sch.dump('removing listener for '+event_type);
-	sch.dump('on target nodeName:'+target.nodeName);
+	sch.error('removing listener for '+event_type);
+	sch.error('on target nodeName:'+target.nodeName);
 
-	if (use_capture !== true) {
-		use_capture = false;
+	if (use_capture) {
+		sch.warn('use_capture no longer supported!');
 	}
 	
-	target.removeEventListener(event_type, handler, use_capture);
+	jQuery(target).unbind(event_type, handler);
 };
 
 /**
@@ -4626,28 +4610,14 @@ sc.helpers.removeListener = function(target, event_type, handler, use_capture) {
  */
 sc.helpers.addDelegatedListener = function(base_target, selector, event_type, handler, scope) {
 	
-	sch.dump('listening for '+event_type);
-	sch.dump('on target nodeName:'+target.nodeName);
-	sch.dump('for selector:'+selector);
+	sch.warn('scope no longer supported! use a closure or reference "scope" in your event handler');
 	
-	if (use_capture !== true) {
-		use_capture = false;
-	}
+	sch.debug('listening for '+event_type);
+	sch.debug('on target nodeName:'+target.nodeName);
+	sch.debug('for selector:'+selector);
 	
-	
-	
-	if (scope) {
-		
-		var __handler = _.bind(handler, scope);
-		target.addEventListener(event_type, __handler, use_capture);
-		return __handler;
-		
-	} else {
-		
-		target.addEventListener(event_type, handler, use_capture);
-		return handler;
+	jQuery(base_target).delegate(selector, event_type, handler);
 
-	}
 	
 };
 
@@ -4657,9 +4627,11 @@ sc.helpers.addDelegatedListener = function(base_target, selector, event_type, ha
  * @param {string} event_type The event type 
  * @param {Function} handler a method that will take the event as a param, and "this" refers to target
  * @param {Object} [scope] the scope to execute the handler
- * @param {Boolean} [use_capture] Describe this parameter
  */
-sc.helpers.removeDelegatedListener = function(base_target, selector, event_type, handler, scope, use_capture) {
+sc.helpers.removeDelegatedListener = function(base_target, selector, event_type, handler, scope) {
+	sch.warn('scope no longer supported! use a closure or reference "scope" in your event handler');
+	
+	jQuery(base_target).delegate(selector, event_type, handler);
 	
 };
 
@@ -4668,35 +4640,37 @@ sc.helpers.removeDelegatedListener = function(base_target, selector, event_type,
  * 
  * @param {string}  event_type
  * @param {DOMElement}  target   the target for the event (element, window, etc)
- * @param {object}  data     data to pass with event
+ * @param {object}  data     data to pass with event. it is always passed as the second parameter to the handler (after the event object)
  * @param {boolean} bubble   whether the event should bubble or not. defaults to true
  * @function
  */
 sc.helpers.triggerCustomEvent = function(event_type, target, data, bubble) {
 	
-	sch.dump('triggering '+event_type);
-	sch.dump('on target nodeName:'+target.nodeName);
+	sch.error('triggering '+event_type);
+	sch.error('on target nodeName:'+target.nodeName);
+	sch.error('event data:');
+	// sch.error(sch.enJSON(data));
 	
-	if (bubble !== false) {
-		bubble = true;
+	if (bubble) {
+		sch.warn('bubble is no longer supported!');
 	}
-
-	var ev = document.createEvent("Events"); // use the Events event module
-
-	ev.initEvent(event_type, bubble, true);
-
-	ev[SPAZCORE_EVENTDATA_ATTRIBUTE] = data;
-
-	target.dispatchEvent(ev);
+	
+	if (data) {
+		data = [data];
+	}
+	
+	jQuery(target).trigger(event_type, data);
 	
 };
 
 /**
  * retrieves the data added to this event object
  * @param {DOMEvent} event_obj 
+ * @deprecated
  */
 sc.helpers.getEventData = function(event_obj) {
-	return event_obj[SPAZCORE_EVENTDATA_ATTRIBUTE];
+	sch.error('getEventData is DEPRECATED. Use second param on event handler');
+	return null;
 };
 
 /**
@@ -4715,13 +4689,13 @@ sc.helpers.unlisten = sc.helpers.removeListener;
  * Alias for sc.helpers.addDelegatedListener
  * @function 
  */
-sc.helpers.live = sc.helpers.addDelegatedListener;
+sc.helpers.delegate = sc.helpers.addDelegatedListener;
 
 /**
  * Alias for sc.helpers.removeDelegatedListener
  * @function 
  */
-sc.helpers.die = sc.helpers.removeDelegatedListener;
+sc.helpers.undelegate = sc.helpers.removeDelegatedListener;
 
 
 /**
@@ -7395,8 +7369,8 @@ SpazFileUploader.prototype.getAPIs = function() {
 
 	var apis = {
 	    'drippic' : {
-			'upload_url' : 'http://drippic.millwoodonline.co.uk/drippic/upload',
-		    'post_url'   : 'http://drippic.millwoodonline.co.uk/drippic/upload/tweet',
+			'upload_url' : 'http://drippic.com/drippic/upload',
+		    'post_url'   : 'http://drippic.com/drippic/upload/tweet',
 			'processResult': function(event, apiobj) {
 				var loader = event.target;
 				
@@ -7775,6 +7749,18 @@ function SpazImageURL(args) {
  * Creates the initial default set of API descriptions 
  */
 SpazImageURL.prototype.initAPIs = function() {
+  this.addAPI('drippic', {
+		'url_regex'       : new RegExp("http://drippic.com/([a-zA-Z0-9]+)", "gi"),
+		'getThumbnailUrl' : function(id) {
+			var url = 'http://drippic.com/drippic/show/thumb/'+id;
+			return url;
+		},
+		'getImageUrl'     : function(id) {
+			var url = 'http://drippic.com/drippic/show/full/'+id;
+			return url;
+		}
+	});
+  
 	this.addAPI('twitpic', {
 		'url_regex'       : new RegExp("http://twitpic.com/([a-zA-Z0-9]+)", "gi"),
 		'getThumbnailUrl' : function(id) {
@@ -9661,9 +9647,8 @@ var SpazTimeline = function(opts) {
 	/**
 	 * Again, due to scope issues, we define this here to take advantage of the closure 
 	 */
-	this.onSuccess = function(e) {
+	this.onSuccess = function(e, data) {
 		sch.debug('onSuccess timeline');
-		var data = sc.helpers.getEventData(e);
 		thisTL.data_success.call(thisTL, e, data);
 		thisTL.startRefresher();	
 	};
@@ -9671,9 +9656,8 @@ var SpazTimeline = function(opts) {
 	/**
 	 * Again, due to scope issues, we define this here to take advantage of the closure 
 	 */
-	this.onFailure = function(e) {
+	this.onFailure = function(e, data) {
 		sch.debug('onFailure timeline');
-		var data = sc.helpers.getEventData(e);
 		thisTL.data_failure.call(thisTL, e, data);
 		thisTL.startRefresher();	
 	};
@@ -9781,8 +9765,8 @@ SpazTimeline.prototype.startListening = function() {
 SpazTimeline.prototype.stopListening = function() {
 	var thisTL = this;
 	sc.helpers.debug("Stopping listening for "+thisTL.success_event);
-	sc.helpers.unlisten(thisTL.event_target, thisTL.success_event, thisTL.onSuccess);
-	sc.helpers.unlisten(thisTL.event_target, thisTL.failure_event, thisTL.onFailure);
+	sc.helpers.unlisten(thisTL.event_target, thisTL.success_event);
+	sc.helpers.unlisten(thisTL.event_target, thisTL.failure_event);
 };
 
 SpazTimeline.prototype.startRefresher = function() {
@@ -10343,10 +10327,11 @@ function SpazTwit(username, password, opts) {
 	this.username = username;
 	this.password = password;
 	
-	this.opts            = opts || {};
-	this.opts.event_mode = this.opts.event_mode || 'DOM';
-	this.opts.event_target = this.opts.event_target || document;
-	this.opts.timeout    = this.opts.timeout || this.DEFAULT_TIMEOUT; // 60 seconds default
+	this.opts                = opts || {};
+	this.opts.event_mode     = this.opts.event_mode || 'DOM';
+	this.opts.event_target   = this.opts.event_target || document;
+	this.opts.timeout        = this.opts.timeout || this.DEFAULT_TIMEOUT; // 60 seconds default
+	this.opts.oauth_consumer = this.opts.oauth_consumer || null;
 	
 	this.setSource('SpazCore');
 	
@@ -10578,6 +10563,11 @@ SpazTwit.prototype.setCredentials= function(username, password) {
 };
 
 
+SpazTwit.prototype.setOAuthConsumer = function(consumer) {
+	this.opts.oauth_consumer = consumer;
+};
+
+
 /**
  * set the source string we will pass on updates
  * 
@@ -10643,13 +10633,17 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
     urls.lists_subscribers  = "{{USER}}/{{SLUG}}/subscribers.json";
     urls.lists_check_subscriber = "{{USER}}/{{SLUG}}/subscribers/{{ID}}.json";
 
+	//trends
+	urls.trends				= "trends.json";
+	urls.trends_current		= "trends/current.json";
+	urls.trends_daily		= "trends/daily.json";
+	urls.trends_weekly		= "trends/weekly.json";
+
 	// search
 	if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER) {
 		urls.search				= "http://search.twitter.com/search.json";
-		urls.trends				= "http://search.twitter.com/trends.json";
 	} else {
 		urls.search				= "search.json";
-		urls.trends				= "trends.json";
 	}
 
     // misc
@@ -11044,7 +11038,7 @@ SpazTwit.prototype.getSentDirectMessages = function(since_id, page, onSuccess, o
 
 SpazTwit.prototype.getUserTimeline = function(id, count, page, onSuccess, onFailure) {
 	if (!id) {
-		return false;
+		return;
 	}
 	if (!page) { page = null;}
 	if (!count) { count = 10;}
@@ -11485,7 +11479,14 @@ SpazTwit.prototype._getTimeline = function(opts) {
         },
         'beforeSend':function(xhr){
 			sc.helpers.dump("beforesend");
-			if (opts.username && opts.password) {
+			if (stwit.opts.oauth_consumer) {
+				var authHeader = consumer.getAuthHeader({
+					'method'    : opts.method,
+					'url'       : opts.url,
+					'parameters': stwit._convertParamsForOAuth(opts.data)
+				});
+				xhr.setRequestHeader('Authorization', authHeader);
+			} else if (opts.username && opts.password) {
 				xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(opts.username + ":" + opts.password));
 			}
         },
@@ -11496,6 +11497,19 @@ SpazTwit.prototype._getTimeline = function(opts) {
 	});
 	
 	return xhr;
+};
+
+/**
+ * converts jq_style ajax params into the format used by the oAuth lib
+ * @param {object} jq_style key/val params
+ * @returns {array} array based params 
+ */
+SpazTwit.prototype._convertParamsForOAuth = function(jq_style) {
+	var params = [];
+	for (var key in jq_style) {
+		params.push([ key, jq_style[key] ]);
+	}
+	return params;
 };
 
 
@@ -11905,7 +11919,14 @@ SpazTwit.prototype._callMethod = function(opts) {
 	    },
 	    'beforeSend':function(xhr){
 			sc.helpers.dump(opts.url + ' beforesend');
-			if (opts.username && opts.password) {
+			if (stwit.opts.oauth_consumer) {
+				var authHeader = consumer.getAuthHeader({
+					'method'    : opts.method,
+					'url'       : opts.url,
+					'parameters': this._convertParamsForOAuth(opts.data)
+				});
+				xhr.setRequestHeader('Authorization', authHeader);
+			} else if (opts.username && opts.password) {
 				xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(opts.username + ":" + opts.password));
 			}
 	    },
@@ -12551,7 +12572,7 @@ SpazTwit.prototype.removeSavedSearch = function(search_id, onSuccess, onFailure)
  */
 SpazTwit.prototype.getLists = function(user, onSuccess, onFailure) {
 	if (!user && !this.username) {
-		return false;
+		return;
 	} else if (!user) {
 	    user = this.username;
 	}
@@ -12648,7 +12669,7 @@ SpazTwit.prototype._processList = function(item, section_name) {
 SpazTwit.prototype.getListInfo = function(list, user, onSuccess, onFailure) {
 	if (!user && !this.username) {
 		sch.error('must pass a username or have one set to get list');
-		return false;
+		return;
 	}
 	
 	user = user || this.username;
@@ -12683,7 +12704,7 @@ SpazTwit.prototype.getListInfo = function(list, user, onSuccess, onFailure) {
 SpazTwit.prototype.getListTimeline = function(list, user, onSuccess, onFailure) {
 	if (!user && !this.username) {
 		sch.error('must pass a username or have one set to get list');
-		return false;
+		return;
 	}
 	
 	user = user || this.username;
@@ -12743,7 +12764,7 @@ SpazTwit.prototype._processListTimeline = function(data, opts, processing_opts) 
 SpazTwit.prototype.getListMembers = function(list, user) {
 	if (!user && !this.username) {
 		sch.error('must pass a username or have one set to get list');
-		return false;
+		return;
 	}
 	
 	user = user || this.username;
@@ -12777,25 +12798,123 @@ SpazTwit.prototype.getListMembers = function(list, user) {
  * @param {string} [description]  The list description
  */
 SpazTwit.prototype.addList = function(list, visibility, description) {
+	var data = {};
+	data['name'] = list;
+	data['mode'] = visibility;
+	data['description'] = description;
 	
+	var url = this.getAPIURL('lists', {
+		'user': this.username
+	});
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'success_event_type':'create_list_succeeded',
+		'failure_event_type':'create_list_failed',
+		'data':data
+	};
+	
+	var xhr = this._callMethod(opts);
 };
 
 /**
  * delete a list
  * @param {string} list  The list name 
  */
-SpazTwit.prototype.removeList = function(list, user) {};
+SpazTwit.prototype.removeList = function(list, user) {
+	
+	if (!user && !this.username) {
+		sch.error('must pass a username or have one set to remove list');
+		return;
+	}
+	
+	user = user || this.username;
+	
+	var url = this.getAPIURL('lists_list', {
+		'user': user,
+		'slug':list
+	});
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'success_event_type':'create_list_succeeded',
+		'failure_event_type':'create_list_failed',
+		'method':'DELETE'
+	};
+	
+	var xhr = this._callMethod(opts);
+};
 
 /**
  * add a user to a list
  */
-SpazTwit.prototype.addUserToList = function(user, list, list_user) {};
+SpazTwit.prototype.addUserToList = function(user, list, list_user) {
+	var data = {};
+	data['list_id'] = list;
+	data['id'] = list_user;
+	
+	
+	if (!user && !this.username) {
+		sch.error('must pass a username or have one set to add a user to a list');
+		return;
+	}
+	
+	user = user || this.username;
+	
+	var url = this.getAPIURL('lists_members', {
+		'user': user,
+		'slug': list
+	});
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'success_event_type':'create_list_succeeded',
+		'failure_event_type':'create_list_failed',
+		'data':data
+	};
+	
+	var xhr = this._callMethod(opts);
+};
 
 /**
  * delete a user from a list 
  */
-SpazTwit.prototype.removeUserFromList = function(user, list, list_user) {};
-
+SpazTwit.prototype.removeUserFromList = function(user, list, list_user) {
+	var data = {};
+	data['list_id'] = list;
+	data['id'] = list_user;
+	
+	
+	if (!user && !this.username) {
+		sch.error('must pass a username or have one set to remove a user from a list');
+		return;
+	}
+	
+	user = user || this.username;
+	
+	var url = this.getAPIURL('lists_members', {
+		'user': user,
+		'slug': list
+	});
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'success_event_type':'create_list_succeeded',
+		'failure_event_type':'create_list_failed',
+		'data':data,
+		'method':'DELETE'
+	};
+	
+	var xhr = this._callMethod(opts);
+};
 
 
 

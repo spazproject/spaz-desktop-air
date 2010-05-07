@@ -45,7 +45,7 @@ var TweetModel = new JazzRecord.Model({
 			}
 			
 			if (thisobj.SC_is_dm) {
-				sch.error('Tweet '+thisobj.id+' is DM');
+				sch.debug('Tweet '+thisobj.id+' is DM');
 				return false;
 			}
 			

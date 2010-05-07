@@ -127,9 +127,8 @@ Spaz_Tooltip.prototype.showIRT = function(irt_id) {
 	
 	Spaz.Data.getTweet(irt_id, this.trigger);
 	
-	function show(e) {
+	function show(e, d) {
 		
-		var d = sch.getEventData(e);
 		var content = '';
 
 		content += "<img style='float:right' src='" + d.user.profile_image_url + "' />";
@@ -149,9 +148,7 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 	
 	Spaz.Data.getUser(user_id, this.trigger);
 	
-	function show(e) {
-		
-		var d = sch.getEventData(e);
+	function show(e, d) {
 		
 		var content = '';
 		content += "<img class='tooltop-user-image' style='max-width:48px; max-height:48px; float:right' src='" + d.profile_image_url + "' />";

@@ -244,11 +244,10 @@ SpazPostPanel.prototype.shortenURLs = function() {
 		return;
 	}
 	
-	function onShortURLSuccess(e) {
+	function onShortURLSuccess(e, data) {
 		Spaz.UI.statusBar('URLs shortened');
 		Spaz.UI.hideLoading();		
 		
-		var data = sch.getEventData(e);
 		var newtext = sc.helpers.replaceMultiple(thisPP.getMessageText(), data);
 		thisPP.setMessageText(newtext); 
 		thisPP.updateCharCount();

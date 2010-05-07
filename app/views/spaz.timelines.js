@@ -228,7 +228,7 @@ var FriendsTimeline = function() {
 					// check if entry has been read
 					data[i].SC_is_read = !!Spaz.DB.isRead(data[i].id);
 					
-					sch.error(data[i].SC_is_read);
+					sch.debug(i +' is ' + data[i].SC_is_read);
 					
 					if (data[i].SC_is_retweet) {
 						// nl2br
@@ -316,7 +316,7 @@ var FriendsTimeline = function() {
 				urls = thisFT.shurl.findExpandableURLs(this.innerHTML);
 				if (urls) {
 					sch.debug(urls);
-					sch.debug(this.innerHTML);					
+					sch.debug(this.innerHTML);
 					sch.listen(this, sc.events.newExpandURLSuccess, thisFT.expandURL);
 					thisFT.shurl.expandURLs(urls, this);
 				}				
@@ -387,11 +387,9 @@ var FriendsTimeline = function() {
 	/*
 		handler for URL expansion
 	*/
-	this.expandURL = function(e) {
+	this.expandURL = function(e, data) {
 		
 		var el = e.target;
-		var data = sch.getEventData(e);
-
 		sch.unlisten(el, sc.events.newExpandURLSuccess, thisFT.expandURL);
 
 		sch.debug('expanding…');

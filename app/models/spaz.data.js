@@ -935,8 +935,7 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 	}
 	
 	
-	function saveUserObject(e) {
-		var userobj = sch.getEventData(e);
+	function saveUserObject(e, data) {
 		if (onSuccess) {
 			onSuccess(userobj);
 		}

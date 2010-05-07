@@ -14,10 +14,9 @@ if (!Spaz.Controller) Spaz.Controller = {};
 /**
  * listen for new posting responses 
  */
-sch.listen(document, 'update_succeeded', function(e) {
+sch.listen(document, 'update_succeeded', function(e, data) {
 	Spaz.postPanel.reset();
 	Spaz.postPanel.enable();
-	var data = sch.getEventData(e);
 	sch.trigger('new_combined_timeline_data', document.getElementById('timeline-friends'), data);
 	$('#entrybox')[0].blur();
 	
