@@ -143,7 +143,7 @@ Spaz.Sys.setFileContents = function(path, content, serialize) {
 
 
 
-Spaz.Sys.sc.helpers.openInBrowser = function(url) {
+Spaz.Sys.openInBrowser = function(url) {
 	Spaz.dump('opening '+url);
 	var request = new air.URLRequest(url);
 	try {            
