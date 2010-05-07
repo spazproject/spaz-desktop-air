@@ -1339,8 +1339,8 @@ Spaz.Timelines.init = function() {
 		'public': Spaz.Timelines.public,
 		'userlists':   Spaz.Timelines.userlists,
 		'favorites':   Spaz.Timelines.favorites,
-		'search': Spaz.Timelines.search,
-		'followerslist':Spaz.Timelines.followerslist
+		'search': Spaz.Timelines.search//,
+		// 'followerslist':Spaz.Timelines.followerslist
 	}
 
 
@@ -1360,8 +1360,15 @@ Spaz.Timelines.getTabFromTimeline = function(tab) {
 
 
 Spaz.Timelines.resetTimelines = function() {
-	Spaz.Timelines.init();
+	/*
+		remove all timeline event listeners
+	*/
+	for (var key in Spaz.Timelines.map) {
+		sch.error(key);
+		Spaz.Timelines.map[key].timeline.stopListening();
+	}
 	
+	Spaz.Timelines.init();
 	
 	
 	/*
