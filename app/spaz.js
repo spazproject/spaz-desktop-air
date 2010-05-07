@@ -67,23 +67,13 @@ Spaz.initialize = function() {
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
 
-	// if (Spaz.Sys.isLinux()) {
-	// 	$('body').show();
-	// 	$('body').css('opacity', 1);
-	// 	$('#container').css('-khtml-border-radius','0'); /* this is webkit-specific and gives us rounded corners*/
-	// 	$('#container').css('top',   '0px;'); /* This has an effective 8px padding to show us the app dropshadow */
-	// 	$('#container').css('left',  '0px;'); /* using all-four-sides positioning lets it expand properly on resizing */
-	// 	$('#container').css('bottom','0px;');
-	// 	$('#container').css('right', '0px;');
-	// }
-
-	// alert("OS:"+air.Capabilities.os);
 
 	/***************************
 	 * Load prefs
 	 **************************/
 	sch.dump('init prefs');
 	Spaz.Prefs.init();
+	Spaz.AccountPrefs.init();
 
 	// sch.dump('init Sections');
 	// Spaz.Section.init();
@@ -236,16 +226,17 @@ Spaz.initialize = function() {
 		Spaz.Update.go();
 	}
 
-
-	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
-		Spaz.Data.getRateLimitInfo(Spaz.Prefs.setRateLimit);
+	if (Spaz.Prefs.getUsername()) {
+		if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+			Spaz.Data.getRateLimitInfo(Spaz.Prefs.setRateLimit);
+		}		
 	}
 
-
+	
 	Spaz.Timelines.init();
 
 
-	if (Spaz.Prefs.get('timeline-loadonstartup')) {
+	if (Spaz.Prefs.get('timeline-loadonstartup') && Spaz.Prefs.getUsername()) {
 		$('#tab-friends').trigger('click');
 	}
 
@@ -269,6 +260,7 @@ Spaz.initialize = function() {
 			this.disable();
 			var status = sch.trim(this.getMessageText());
 			var twit = new SpazTwit(Spaz.Prefs.getUsername(), Spaz.Prefs.getPassword());
+			twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			var source = Spaz.Prefs.get('twitter-source');
 			var irt_id = this.irt_status_id;
 			twit.update(status, source, irt_id);

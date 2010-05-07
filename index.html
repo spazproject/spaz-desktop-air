@@ -124,6 +124,7 @@
 	<script src="app/views/spaz.windows.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.imageuploader.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.conversation.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.accountprefs.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- app model -->
 	<script src="app/models/spaz.db.js"			type="text/javascript"></script>
@@ -415,8 +416,29 @@
 											<strong>Accounts</strong>
 										</h2>
 										<div class="CollapsiblePanelContent">
+											
+											<fieldset id="account-list-fieldset">
+												<legend>Account List</legend>
+												<div class="formrow">
+													<select name="account-list" id="account-list" size="8">
+													</select>
+												</div>
+
+												<div class="formrow">
+													<input type="button" name="add_button" value="+" id="add_button">
+													<input type="button" name="del_button" value="-" id="del_button">
+													<input type="button" name="edit_button" value="edit" id="edit_button">
+												</div>
+											</fieldset>
+											
+											
+											
 											<fieldset id="account-details">
-												<legend>Primary Account</legend>
+												
+												<!-- a place to store the ID we're editing -->
+												<input type="hidden" name="id_edit" value="" id="id_edit">
+												
+												<legend>Account Details</legend>
 												<div class="formrow">
 													<label for="username">Username</label>
 													<input type="text" name="username" id="username" value="" />
@@ -425,64 +447,86 @@
 													<label for="password">Password</label>
 													<input type="password" name="password" id="password" value="" />
 												</div>
+												
+												<div class="formrow">
+													<label for="account-type">Type</label>
+													<select name="account-type" id="account-type">
+														<option value="twitter">Twitter</option>
+														<option value="identi.ca">identi.ca</option>
+														<option value="StatusNet">StatusNet</option>
+														<option value="wordpress.com">Wordpress</option>
+														<option value="tumblr">Tumblr</option>
+														<option value="custom">Custom…</option>
+													</select>
+												</div>
+												
+												<div class="formrow" id='twitter-api-base-url-row'>
+													<label for="twitter-api-base-url">Base API URL </label>
+													<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
+												</div>
+												
+												<div class="formrow">
+													<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
+													<label for="twitter-disable-direct-posting" class="checkbox">
+														Disable direct posting (will only post via <strong>Other Services</strong>)
+													</label>
+												</div>
+												
+												<fieldset>
+													<legend>Ping.FM</legend>
+													<div class="formrow">
+														<label for="services-pingfm-userappkey">
+															Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)
+														</label>
+														<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
+													</div>
+													<!-- <div class="formrow">
+														<label for="base-theme">Update type</label>
+														<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
+															<option value="default">default</option>
+															<option value="microblog">microblog</option>
+															<option value="status">status</option>
+														</select>
+													</div> -->
+													<div class="formrow">
+														<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
+														<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
+													</div>
+													<div class="formrow">
+														<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
+														<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
+													</div>
+												</fieldset>
+												<fieldset>
+													<legend>Short.ie API</legend>
+													<div class="formrow">
+														<label for="services-shortie-email">Short.ie email address</label>
+														<input type="text" name="services-shortie-email" id="services-shortie-email" value="" />
+													</div>
+													<div class="formrow">
+														<label for="services-shortie-secretkey">
+															Short.ie secret key (<a href="http://short.ie/dev">Get a key</a>)
+														</label>
+														<input type="text" name="services-shortie-secretkey" id="services-shortie-secretkey" value="" />
+													</div>
+												</fieldset>
+												<fieldset>
+													<legend>Image Hosting</legend>
+													<div class="formrow">
+														<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
+														<label for="services-twitpic-sharepassword" class="checkbox">
+															Don't warn about password sharing
+														</label>
+													</div>
+												</fieldset>
+
+                                                <input type="button" name="save_account_button" value="Save" id="save_account_button">
+                                                <input type="button" name="cancel_account_button" value="Cancel" id="cancel_account_button">
+												
 											</fieldset>
 										</div>
 									</div>
 
-									<div id="prefs-services-fieldset" class="CollapsiblePanel">
-										<h2 class="CollapsiblePanelTab" tabindex="0">
-											<strong>Other Services</strong>
-										</h2>
-										<div class="CollapsiblePanelContent">
-											<fieldset>
-												<legend>Ping.FM</legend>
-												<div class="formrow">
-													<label for="services-pingfm-userappkey">
-														Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)
-													</label>
-													<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
-												</div>
-												<!-- <div class="formrow">
-													<label for="base-theme">Update type</label>
-													<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
-														<option value="default">default</option>
-														<option value="microblog">microblog</option>
-														<option value="status">status</option>
-													</select>
-												</div> -->
-												<div class="formrow">
-													<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
-													<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
-												</div>
-												<div class="formrow">
-													<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
-													<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
-												</div>
-											</fieldset>
-											<fieldset>
-												<legend>Short.ie API</legend>
-												<div class="formrow">
-													<label for="services-shortie-email">Short.ie email address</label>
-													<input type="text" name="services-shortie-email" id="services-shortie-email" value="" />
-												</div>
-												<div class="formrow">
-													<label for="services-shortie-secretkey">
-														Short.ie secret key (<a href="http://short.ie/dev">Get a key</a>)
-													</label>
-													<input type="text" name="services-shortie-secretkey" id="services-shortie-secretkey" value="" />
-												</div>
-											</fieldset>
-											<fieldset>
-												<legend>Image Hosting</legend>
-												<div class="formrow">
-													<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
-													<label for="services-twitpic-sharepassword" class="checkbox">
-														Don't warn about password sharing
-													</label>
-												</div>
-											</fieldset>
-										</div>
-									</div>
 
 									<div id="prefs-style-fieldset" class="CollapsiblePanel">
 										<h2 class="CollapsiblePanelTab" tabindex="0">
@@ -759,38 +803,7 @@
 										</div>
 									</div>
 
-									<div id="prefs-serviceurls-fieldset" class="CollapsiblePanel">
-										<h2 class="CollapsiblePanelTab" tabindex="0">
-											<strong>Service URLs</strong>
-										</h2>
-										<div class="CollapsiblePanelContent">
-											<fieldset>
-												<div class="formrow">
-													<select id="twitter-base-urls">
-														<option value="">Load settings for…</option>
-														<option value="twitter">Twitter.com</option>
-														<option value="identica">Identi.ca</option>
-													</select>
-												</div>
-												<div class="formrow">
-													<label for="twitter-api-base-url">Base API URL</label>
-													<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
-												</div>
-												<div class="formrow">
-													<label for="twitter-base-url">Base WWW URL</label>
-													<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
-												</div>
-											</fieldset>
-											<fieldset>
-												<div class="formrow">
-													<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
-													<label for="twitter-disable-direct-posting" class="checkbox">
-														Disable direct posting (will only post via <strong>Other Services</strong>)
-													</label>
-												</div>
-											</fieldset>
-										</div>
-									</div>
+
 
 								</div> <!-- div#prefsCPG -->
 

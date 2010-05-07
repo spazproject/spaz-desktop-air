@@ -12,7 +12,7 @@
 	</description>
 	<copyright>Copyright Funkatron Productions</copyright>
 	<initialWindow>
-		<content>bootstrap.html</content>
+		<content>index.html</content>
 		<title>Spaz</title>
 		<systemChrome>none</systemChrome>
 		<transparent>true</transparent>

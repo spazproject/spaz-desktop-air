@@ -215,7 +215,7 @@ Spaz.ImageUploader = function() {
 					sch.debug(mediaurl);
 					thisA.prepPhotoPost(mediaurl);
 					$('#imageupload-status-text').html('Complete');
-					closePopbox();
+					Spaz.UI.closePopbox();
 				} 
 				else
 				{

@@ -194,18 +194,77 @@ Spaz.UI.hideUpdateCheck = function() {
 };
 
 
+
+
+
+/**
+ *  opens a popbox that contains an iframe displaying the passed URL
+ */
+Spaz.UI.openPopboxURL = function(url) {
+	var cont_width = jQuery('#container').outerWidth();
+	jQuery.openDOMWindow({ 
+		windowSource:  'iframe',
+        windowSourceURL:url,
+		windowPadding: 0,
+		positionType:  'centered',
+		width:         cont_width-30,
+		height:'300',
+		overlay:1,
+		overlayOpacity:60,
+		overlayColor:'#000'
+    });
+
+	
+	jQuery('#DOMWindow').outerWidth( cont_width-30 );
+}
+
+
+/**
+ *  opens a popbox that contains the contents within the element of the passed ID
+ */
+Spaz.UI.openPopboxInline = function(content_id) {
+	var cont_width  = jQuery('body').outerWidth();
+	var cont_height = jQuery('body').outerHeight();
+	jQuery.openDOMWindow({ 
+		// windowSource:  'inline',
+        windowSourceID: content_id,
+		windowPadding: 0,
+		positionType:  'centered',
+		// fixedWindowY:  30,
+		width:         cont_width-40,
+		height:        cont_height-100,
+		overlay:1,
+		overlayOpacity:60,
+		overlayColor:'#000',
+		
+    });
+
+	jQuery('#DOMWindow').outerWidth( cont_width -30 );
+	jQuery('#DOMWindow').outerHeight( cont_height-30 );
+
+	return false;
+}
+
+/**
+ * closes the open popbox 
+ */
+Spaz.UI.closePopbox = function() {
+	jQuery.closeDOMWindow();
+}
+
+
 Spaz.UI.showAbout = function() {
-    openPopboxInline('#aboutWindow');
-};
+    Spaz.UI.openPopboxInline('#aboutWindow');
+}
 Spaz.UI.showHelp = function() {
-    openPopboxInline('#helpWindow');
-};
+    Spaz.UI.openPopboxInline('#helpWindow');
+}
 Spaz.UI.showShortLink = function() {
-    openPopboxInline('#shortLinkWindow');
-};
+    Spaz.UI.openPopboxInline('#shortLinkWindow');
+}
 Spaz.UI.uploadImage = function(imgurl) {
-	openPopboxInline('#imageUploadWindow');
-};
+	Spaz.UI.openPopboxInline('#imageUploadWindow');
+}
 Spaz.UI.showCSSEdit = function() {
     this.instance = window.open('app:/html/css_edit.html', 'cssEditWin', 'height=350,width=400');
 };
@@ -1655,7 +1714,7 @@ Spaz.UI.generateAccountsMenu = function() {
 		$('#account-list').append('<li class="account-list-item">' +
 								  '<a  class="account-item" id="account-list-item-' + accounts[i] +
 								  '">' + accounts[i] + '</a></li>');
-		if (accounts[i].toLowerCase() == Spaz.Prefs.user) {
+		if (accounts[i].toLowerCase() == Spaz.Prefs.getUsername) {
 			$('#mainMenu-accountname-' + accounts[i]).addClass("selected-account");
 			$('#account-list-item-'    + accounts[i]).addClass("selected-account");
 		}

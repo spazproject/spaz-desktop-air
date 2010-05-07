@@ -9,42 +9,102 @@
 	
 	<script src="vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	
+	<script src="spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script type="text/javascript" charset="utf-8">
 		
-		var winprefs = [
-			{
-				id		: 'main',
-				height	: 350,
-				width	: 580,
+		sc.setDumpLevel(5);
+		
+		var WinManager = function() {
+			
+			var defaults = {
+				id		: sch.UUID(),
+				width	: 350,
+				height	: 580,
 				x		: 150,
 				y		: 150,
-				userid	: 'funkatron'
+				inituserid	: null
+			};
+			
+
+			this.winSettings = [];
+			
+			this.openWindows = [];
+			
+			this.prefs = {};
+			
+			this.init = function() {
+				// this.prefs = new SpazPrefs();
+			};
+			
+			this.buildWindows = function() {
+
+			};
+			
+			this.openWindow = function(opts) {
+				
+				sch.debug(defaults);
+				opts = sch.defaults(defaults);
+				sch.debug(opts);
+				
+				var winopts = new air.NativeWindowInitOptions();
+				winopts.maximizable = true;
+				winopts.minimizable = true;
+				winopts.resizable = true;
+				winopts.systemChrome = 'none';
+				winopts.transparent = true;
+				winopts.type = air.NativeWindowType.NORMAL;
+				
+				air.trace(sch.enJSON([opts.x,opts.y,opts.width,opts.height]));
+				
+				var windowBounds = new air.Rectangle(opts.x,opts.y,opts.width,opts.height); 
+
+				var newHTMLLoader = air.HTMLLoader.createRootWindow(true, winopts, true, windowBounds); 
+
+				// map the new window's opener property to this window
+				newHTMLLoader.window.opener = window;
+
+				newHTMLLoader.window._spazwin = {
+					'id':opts.id,
+					'inituserid':opts.inituserid,
+					'winMan':this
+				}
+
+				newHTMLLoader.load(new air.URLRequest("index.html"));
+
+				this.openWindows.push(newHTMLLoader);
+			};
+			
+			this.closeWindow = function(id) {
+				
+			};
+			
+			this.addNewWindow = function(opts) {
+				opts = sch.defaults(this.defaults);
+				this.winSettings.push(opts);
+			};
+			
+			this.loadWinPrefs = function() {
+				
+			};
+			
+			this.saveWinPrefs = function() {
+				
+			};
+			
+			this.getSettingsForWin = function(id) {
+				for (var i=0; i < this.winSettings.length; i++) {
+					if (this.winSettings[i].id === id) {
+						return this.winSettings[i]
+					}
+				};
+				return null;
 			}
-		]
-		
-		
-		var openwindows = [];
-		
-		
-		for (var i=0; i < winprefs.length; i++) {
-			var winopts = new air.NativeWindowInitOptions();
-			winopts.maximizable = true;
-			winopts.minimizable = true;
-			winopts.resizable = true;
-			winopts.systemChrome = 'none';
-			winopts.transparent = true;
-			winopts.type = air.NativeWindowType.NORMAL;
-
-			var windowBounds = new air.Rectangle(winprefs[i].x,winprefs[i].y,winprefs[i].width,winprefs[i].height); 
-
-			var newHTMLLoader = air.HTMLLoader.createRootWindow(true, winopts, true, windowBounds); 
-			newHTMLLoader.load(new air.URLRequest("index.html"));
 			
-			// map the new window's opener property to this window
-			newHTMLLoader.window.opener = window;
-			
-			openwindows.push(newHTMLLoader);
-		};
+		}
+		
+		var winMan = new WinManager();
+		winMan.openWindow();
 		
 	</script>
 	

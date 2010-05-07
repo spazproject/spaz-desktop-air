@@ -45,7 +45,7 @@ Spaz.Conversation = {
 			
 			
 			if (added_ids.indexOf(status_obj.twitter_id) !== -1) {
-				sch.debug("This id has already been retrieved")
+				sch.debug("This id has already been retrieved");
 				renderConversation();
 				return;
 			} else {
@@ -98,9 +98,7 @@ Spaz.Conversation = {
 			};
 						
 			sc.helpers.updateRelativeTimes('a.status-created-at', 'data-created-at');
-			
-			// openPopboxInline('#conversationWindow');			
-			
+						
 		}
 		
 	}

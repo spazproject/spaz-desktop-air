@@ -162,8 +162,8 @@ AppTimeline.prototype.refresh = function() {
 var FriendsTimeline = function() {
 	
 	var thisFT           = this,
-	    $timeline        = $('#timeline-friends'),
-	    $timelineWrapper = $timeline.parent();
+	$timeline        = $('#timeline-friends'),
+	$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	this.shurl = new SpazShortURL();
 
@@ -1060,7 +1060,6 @@ var UserlistsTimeline = function(args) {
 		build the lists menu
 	*/
 	thisULT.buildListsMenu();
-	
 };
 
 UserlistsTimeline.prototype = new AppTimeline();
