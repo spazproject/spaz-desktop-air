@@ -116,7 +116,6 @@ Spaz.Prefs.defaultPreferences = {
 */
 Spaz.Prefs._prefs = new SpazPrefs(Spaz.Prefs.defaultPreferences);
 Spaz.Prefs._accounts = {}; // a placeholder where we will store the SpazAccounts obj
-Spaz.Prefs._currentUserId = null;
 
 
 // this maps methods to pref keys that should be
@@ -738,7 +737,7 @@ Spaz.Prefs.changeMethods = {
            Spaz.Dock.setShape(value);
        }
    }
-}
+};
 
 
 
@@ -754,12 +753,17 @@ Spaz.Prefs.init = function() {
 	
 	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
 	
+	sch.error('THIS IS THE USERNAME:');
+	sch.error(sch.enJSON(Spaz.Prefs._accounts._accounts));
+	sch.error(Spaz.Prefs.getCurrentAccount());
+	sch.error(Spaz.Prefs.getUsername());
+	
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();
 	
 	sch.debug('INIT UI');
     Spaz.Prefs.initUI();
-}
+};
 
 
 
@@ -777,9 +781,9 @@ Spaz.Prefs.initUI = function() {
                 Spaz.Prefs.changeMethods[pkey].onChange(Spaz.Prefs.get(pkey));
             }
         }
-        $('#username').val(Spaz.Prefs.getUser());
+        $('#username').val(Spaz.Prefs.getUsername());
         //sch.debug('set #username val to'+$('#username').val());
-        $('#password').val(Spaz.Prefs.getPass());
+        $('#password').val(Spaz.Prefs.getPassword());
     }
 
 
@@ -942,6 +946,7 @@ Spaz.Prefs.get = function(key) {
 
 
 Spaz.Prefs.set = function(key, value) {
+	sch.error("setting "+key+" to "+value+" ("+typeof value+")");
 	return Spaz.Prefs._prefs.set(key, value);
 };
 
@@ -976,13 +981,23 @@ Spaz.Prefs.setCurrentUser = function() {
 	// }
 	// 
 	//     sch.debug('saved data');
+};
+
+
+
+Spaz.Prefs.getUserAccount = function(id) {
+	return Spaz.Prefs._accounts.get(id);
 }
+
 
 
 Spaz.Prefs.setCurrentUserId = function(id) {
-	Spaz.Prefs._currentUserId = id;
 	Spaz.Prefs.set('current-user-id', id);
-}
+};
+
+Spaz.Prefs.getCurrentUserId = function() {
+	return Spaz.Prefs.getCurrentAccountId();
+};
 
 
 Spaz.Prefs.setHandleHTTPAuth = function(state) {
@@ -1068,9 +1083,9 @@ Spaz.Prefs.setRateLimit = function(rateinfo, data) {
 
 
 
-Spaz.Prefs.getUser = function() {
-	if (Spaz.Prefs._currentUserId) {
-		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs._currentUserId);
+Spaz.Prefs.getUsername = function() {
+	if (Spaz.Prefs.getCurrentAccountId()) {
+		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
 		if (accobj) {
 			return accobj.username;
 		} else {
@@ -1080,11 +1095,11 @@ Spaz.Prefs.getUser = function() {
 		return null;
 	}
 	
-}
+};
 
-Spaz.Prefs.getPass = function() {
-	if (Spaz.Prefs._currentUserId) {
-		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs._currentUserId);
+Spaz.Prefs.getPassword = function() {
+	if (Spaz.Prefs.getCurrentAccountId()) {
+		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
 		if (accobj) {
 			return accobj.password;
 		} else {
@@ -1094,9 +1109,37 @@ Spaz.Prefs.getPass = function() {
 		return null;
 	}
 
+};
+
+
+Spaz.Prefs.getAccountType = function() {
+	if (Spaz.Prefs.getCurrentAccountId()) {
+		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
+		if (accobj) {
+			return accobj.type;
+		} else {
+			return null;
+		}
+	} else {
+		return null;
+	}
+
+};
+
+
+Spaz.Prefs.getCurrentAccount = function() {
+	if (Spaz.Prefs.getCurrentAccountId()) {
+		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
+		return accobj;
+	} else {
+		return null;
+	}
+};
+
+
+Spaz.Prefs.getCurrentAccountId = function() {
+	return Spaz.Prefs.get('current-user-id');
 }
-
-
 
 
 Spaz.Prefs.getRefreshInterval = function() {

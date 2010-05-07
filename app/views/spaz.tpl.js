@@ -18,7 +18,7 @@ Spaz.Tpl.parse =function(template, data) {
 if (!Spaz.Templates) Spaz.Templates = {};
 
 Spaz.Templates.timeline_entry = function(d) {
-	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
+	d.isSent = (d.user.screen_name.toLowerCase() === Spaz.Prefs.getUsername().toLowerCase());
 	
 	d.SC_base_url = Spaz.Data.getBaseURL();
 
@@ -115,7 +115,7 @@ Spaz.Templates.timeline_entry = function(d) {
 
 Spaz.Templates.timeline_entry_dm = function(d) {
 	
-	d.isSent = (d.sender_screen_name.toLowerCase() === Spaz.Prefs.getUser().toLowerCase());
+	d.isSent = (d.sender_screen_name.toLowerCase() === Spaz.Prefs.getUsername().toLowerCase());
 	
 	// sch.dump(sch.enJSON(d));
 

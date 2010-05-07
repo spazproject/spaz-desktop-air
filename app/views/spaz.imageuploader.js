@@ -187,8 +187,8 @@ Spaz.ImageUploader = function() {
 		// upload the file
 		Spaz.Data.uploadFile({
 			'extra'  :{
-				"username": Spaz.Prefs.getUser(),
-				"password": Spaz.Prefs.getPass(),
+				"username": Spaz.Prefs.getUsername(),
+				"password": Spaz.Prefs.getPassword(),
 				"source"  : Spaz.Prefs.get('twitter-source'),
 				"message" : $('#imageupload-post-message').val()
 			},

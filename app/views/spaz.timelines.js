@@ -184,8 +184,8 @@ var FriendsTimeline = function() {
 		'request_data': function() {
 			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // just add .read to the entries
-			var username = Spaz.Prefs.getUser();
-			var password = Spaz.Prefs.getPass();
+			var username = Spaz.Prefs.getUsername();
+			var password = Spaz.Prefs.getPassword();
 			thisFT.twit.setCredentials(username, password);
 			thisFT.twit.getCombinedTimeline();
 			Spaz.UI.statusBar("Loading friends timeline");
@@ -563,8 +563,8 @@ var FavoritesTimeline = function(args) {
 
 		'request_data': function() {
 			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
-			var username = Spaz.Prefs.getUser();
-			var password = Spaz.Prefs.getPass();
+			var username = Spaz.Prefs.getUsername();
+			var password = Spaz.Prefs.getPassword();
 			thisFVT.twit.setCredentials(username, password);
 			thisFVT.twit.getFavorites();
 			Spaz.UI.statusBar("Loading favorites timeline");
@@ -687,8 +687,8 @@ var UserTimeline = function(args) {
 
 		'request_data': function() {
 			thisUT.markAsRead($timeline.selector + ' div.timeline-entry');
-			var username = Spaz.Prefs.getUser();
-			var password = Spaz.Prefs.getPass();
+			var username = Spaz.Prefs.getUsername();
+			var password = Spaz.Prefs.getPassword();
 			thisUT.twit.setCredentials(username, password);
 			thisUT.twit.getUserTimeline(username);
 			Spaz.UI.statusBar("Loading user timeline");
@@ -844,8 +844,8 @@ var UserlistsTimeline = function(args) {
 				}
 				$timelineWrapper.children('.intro').hide();
 
-				var username = Spaz.Prefs.getUser(),
-				    password = Spaz.Prefs.getPass();
+				var username = Spaz.Prefs.getUsername(),
+				    password = Spaz.Prefs.getPassword();
 				thisULT.twit.setCredentials(username, password);
 				thisULT.twit.getListTimeline(thisULT.list.slug, thisULT.list.user);
 				Spaz.UI.statusBar("Getting list @"+thisULT.list.user+'/'+thisULT.list.slug + "…");
@@ -947,8 +947,8 @@ var UserlistsTimeline = function(args) {
 	
 	
 	this.buildListsMenu = function() {
-		var username = Spaz.Prefs.getUser();
-		var password = Spaz.Prefs.getPass();
+		var username = Spaz.Prefs.getUsername();
+		var password = Spaz.Prefs.getPassword();
 		thisULT.twit.setCredentials(username, password);
 		sch.debug("Loading lists for @"+username+ "…");
 		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
@@ -1248,8 +1248,8 @@ var FollowersTimeline = function(args) {
 
 		'request_data': function() {
 			sch.markAsRead($timeline.selector + ' div.timeline-entry');
-			var username = Spaz.Prefs.getUser();
-			var password = Spaz.Prefs.getPass();
+			var username = Spaz.Prefs.getUsername();
+			var password = Spaz.Prefs.getPassword();
 			thisFLT.twit.setCredentials(username, password);
 			thisFLT.twit.getFollowersList();
 			Spaz.UI.statusBar("Loading followerslist");
