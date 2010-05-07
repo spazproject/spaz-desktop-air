@@ -2,7 +2,7 @@ Spaz.Conversation = {
 	
 	'initWindow' : function() {
 		var container = $('#timeline-conversation');
-		openPopboxInline('#conversationWindow');
+		Spaz.UI.openPopboxInline('#conversationWindow');
 		container.html('Loading…');		
 	},
 	
