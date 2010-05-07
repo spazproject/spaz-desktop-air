@@ -51,16 +51,6 @@ Spaz.Debug.logToFile = function(msg) {
 }
 
 
-// Spaz.Debug.dump = function(msg, type) {
-// 
-// }
-
-
-// alias
-sch.debug = function(msg, type) {
-	Spaz.Debug.dump(msg, type);
-}
-
 
 Spaz.Debug.showProps = function(obj, objName) {
 	sch.dump('dumping '+objName);
