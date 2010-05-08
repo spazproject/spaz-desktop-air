@@ -37,14 +37,14 @@ var AppTimeline = function() {};
 
 
 AppTimeline.prototype.model = {
-	'items' : []
+    'items' : []
 };
 
 /**
  * This is just a wrapper to start the SpazTimeline object contained within 
  */
 AppTimeline.prototype.activate = function() {
-	this.timeline.start();
+    this.timeline.start();
 };
 
 /**
@@ -52,71 +52,71 @@ AppTimeline.prototype.activate = function() {
  * @param {string} terms 
  */
 AppTimeline.prototype.filter = function(terms) {
-	var entry_selector = this.getEntrySelector();
-	sch.dump(entry_selector);
-	var jqentries = jQuery(entry_selector);
-	jqentries.removeClass('hidden');
-	
-	if (terms) {
-		try {
-			var negate = false;
-			if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
-				negate = true;
-				terms  = terms.slice(NEGATION_TOKEN.length);
-			}
-			var filter_re = new RegExp(sch.trim(terms), "i");
-			sch.dump(filter_re.toString());
-			jqentries.each(function(i) {
-				var jqthis = jQuery(this);
-				if (negate) {
-					if ( jqthis.text().search(filter_re) > -1 ) {
-						jqthis.addClass('hidden');
-					}
-				} else {
-					if ( jqthis.text().search(filter_re) === -1 ) {
-						jqthis.addClass('hidden');
-					}
-				}
-			});
-		} catch(e) {
-			sch.debug(e.name+":"+e.message);
-		}
-	}
-	
+    var entry_selector = this.getEntrySelector();
+    sch.dump(entry_selector);
+    var jqentries = jQuery(entry_selector);
+    jqentries.removeClass('hidden');
+
+    if (terms) {
+        try {
+            var negate = false;
+            if (terms.substring(0, NEGATION_TOKEN.length).toLowerCase() === NEGATION_TOKEN) {
+                negate = true;
+                terms  = terms.slice(NEGATION_TOKEN.length);
+            }
+            var filter_re = new RegExp(sch.trim(terms), "i");
+            sch.dump(filter_re.toString());
+            jqentries.each(function(i) {
+                    var jqthis = jQuery(this);
+                    if (negate) {
+                    if ( jqthis.text().search(filter_re) > -1 ) {
+                    jqthis.addClass('hidden');
+                    }
+                    } else {
+                    if ( jqthis.text().search(filter_re) === -1 ) {
+                    jqthis.addClass('hidden');
+                    }
+                    }
+                    });
+        } catch(e) {
+            sch.debug(e.name+":"+e.message);
+        }
+    }
+
 };
 
 AppTimeline.prototype.clear = function() {
-	var entry_selector = this.getEntrySelector();
-	$(entry_selector).remove();
+    var entry_selector = this.getEntrySelector();
+    $(entry_selector).remove();
 };
 
 
 AppTimeline.prototype.markAsRead = function() {
-	var entry_selector = this.getEntrySelector();
+    var entry_selector = this.getEntrySelector();
 
 	/* we use our own "mark as read" here because the helper version just removes the 'new' class' */
 	$(entry_selector+':visible').removeClass('new').addClass('read').each(function(i){
-		var status_id = $(this).attr('data-status-id');
-		Spaz.DB.markEntryAsRead(status_id);
-	});
+			var status_id = $(this).attr('data-status-id');
+			Spaz.DB.markEntryAsRead(status_id);
+			});
 	$().trigger('UNREAD_COUNT_CHANGED');
-	
+
 };
 
 AppTimeline.prototype.getEntrySelector = function() {
-	return this.getTimelineSelector()+' div.timeline-entry';
+    return this.getTimelineSelector()+' div.timeline-entry';
 };
 
 AppTimeline.prototype.getWrapperSelector = function() {
-	return this.getTimelineSelector().replace('timeline-', 'timelinewrapper-');
+    return this.getTimelineSelector().replace('timeline-', 'timelinewrapper-');
 };
 
 AppTimeline.prototype.getTimelineSelector = function() {
-	return this.timeline.timeline_container_selector;
+    return this.timeline.timeline_container_selector;
 };
 
 AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
-	
+
 	var items = jQuery( this.getEntrySelector() );
 	var itemAttrs	= [];
 	var itemsSorted = [];
@@ -151,8 +151,8 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 };
 
 AppTimeline.prototype.refresh = function() {
-	sch.error('refreshing timeline');
-	this.timeline.refresh();
+    sch.error('refreshing timeline');
+    this.timeline.refresh();
 };
 
 
@@ -160,10 +160,10 @@ AppTimeline.prototype.refresh = function() {
  * Friends timeline def 
  */
 var FriendsTimeline = function() {
-	
+
 	var thisFT			 = this,
-	$timeline		 = $('#timeline-friends'),
-	$timelineWrapper = $timeline.parent();
+		$timeline		 = $('#timeline-friends'),
+		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	this.shurl = new SpazShortURL();
 
@@ -394,9 +394,9 @@ var FriendsTimeline = function() {
 		override the default method
 	*/
 	this.timeline.removeExtraItems = function() {
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-maxentries'));
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.reply', Spaz.Prefs.get('timeline-maxentries-reply'));
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.dm', Spaz.Prefs.get('timeline-maxentries-dm'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-home-pager-count'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.reply', Spaz.Prefs.get('timeline-replies-pager-count'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.dm', Spaz.Prefs.get('timeline-direct-pager-count'));
 	};
 
 	
@@ -422,8 +422,8 @@ var FriendsTimeline = function() {
 FriendsTimeline.prototype = new AppTimeline();
 
 FriendsTimeline.prototype.reset = function() {
-	sch.debug('reset friends timeline');
-	
+    sch.debug('reset friends timeline');
+
 };
 
 
@@ -436,113 +436,113 @@ FriendsTimeline.prototype.reset = function() {
  * Public timeline def 
  */
 var PublicTimeline = function(args) {
-	
-	var thisPT			 = this,
-		$timeline		 = $('#timeline-public'),
-		$timelineWrapper = $timeline.parent();
-	this.twit = new SpazTwit();
-	
-	/*
-		set up the public timeline
-	*/
-	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' : $timeline.selector,
-		'entry_relative_time_selector':'.status-created-at',
-		
-		'success_event':'new_public_timeline_data',
-		'failure_event':'error_public_timeline_data',
-		'event_target' :document,
-		
-		'refresh_time':1000*60*30, // 30 minutes
-		'max_items':100,
 
-		'request_data': function() {
-			thisPT.markAsRead($timeline.selector + ' div.timeline-entry');
-			thisPT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
-			thisPT.twit.getPublicTimeline();
-			Spaz.UI.statusBar("Loading public timeline");
-			Spaz.UI.showLoading();
-		},
-		'data_success': function(e, data) {
-			data = data.reverse();
-			var no_dupes = [];
-			
-			var sui = new SpazImageURL();
-			
-			for (var i=0; i < data.length; i++) {
-				
-				/*
-					only add if it doesn't already exist
-				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
-					
-					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
-					
-					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
-					
-					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
-					
-					// convert emoticons
-					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
-					
-					if (data[i].SC_is_retweet) {
-						// nl2br
-						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+    var thisPT           = this,
+        $timeline        = $('#timeline-public'),
+        $timelineWrapper = $timeline.parent();
+    this.twit = new SpazTwit();
 
-						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+    /*
+       set up the public timeline
+       */
+    this.timeline  = new SpazTimeline({
+            'timeline_container_selector' : $timeline.selector,
+            'entry_relative_time_selector':'.status-created-at',
 
-						// make clickable
-						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+            'success_event':'new_public_timeline_data',
+            'failure_event':'error_public_timeline_data',
+            'event_target' :document,
 
-						// convert emoticons
-						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
-					}
-					
-					no_dupes.push(data[i]);
-					/*
-						Save to DB via JazzRecord
-					*/
-					TweetModel.saveTweet(data[i]);
-				}
-				
-			};
+            'refresh_time':1000*60*30, // 30 minutes
+            'max_items':100,
 
-			$timelineWrapper.children('.loading').hide();
-			thisPT.timeline.addItems(no_dupes);
+            'request_data': function() {
+            thisPT.markAsRead($timeline.selector + ' div.timeline-entry');
+            thisPT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+            thisPT.twit.getPublicTimeline();
+            Spaz.UI.statusBar("Loading public timeline");
+            Spaz.UI.showLoading();
+            },
+            'data_success': function(e, data) {
+            data = data.reverse();
+            var no_dupes = [];
 
-			/*
-			 reapply filtering
-			*/
-			$('#filter-public').trigger('keyup');
+            var sui = new SpazImageURL();
 
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // public are never "new"
-			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+            for (var i=0; i < data.length; i++) {
 
-			Spaz.UI.hideLoading();
-			Spaz.UI.statusBar("Ready");
-			
-		},
-		'data_failure': function(e, error_obj) {
-			var err_msg = "There was an error retrieving the public timeline";
-			Spaz.UI.statusBar(err_msg);
+                /*
+                   only add if it doesn't already exist
+                   */
+                if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 
-			/*
-				Update relative dates
-			*/
-			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			Spaz.UI.hideLoading();
-		},
-		'renderer': function(obj) {
-			return Spaz.Tpl.parse('timeline_entry', obj);
-			
-		}
-	});
-	
+                    // nl2br
+                    data[i].text = sch.nl2br(data[i].text);
 
-	
-	
+                    data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+
+                    data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+
+                    // convert emoticons
+                    data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+
+                        if (data[i].SC_is_retweet) {
+                            // nl2br
+                            data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+                            // add thumbnails
+                            data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+                            // make clickable
+                            data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+                            // convert emoticons
+                            data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+                        }
+
+                    no_dupes.push(data[i]);
+                    /*
+                       Save to DB via JazzRecord
+                       */
+                    TweetModel.saveTweet(data[i]);
+                }
+
+            };
+
+            $timelineWrapper.children('.loading').hide();
+            thisPT.timeline.addItems(no_dupes);
+
+            /*
+               reapply filtering
+               */
+            $('#filter-public').trigger('keyup');
+
+            sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // public are never "new"
+            sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+
+            Spaz.UI.hideLoading();
+            Spaz.UI.statusBar("Ready");
+
+            },
+            'data_failure': function(e, error_obj) {
+                var err_msg = "There was an error retrieving the public timeline";
+                Spaz.UI.statusBar(err_msg);
+
+                /*
+                   Update relative dates
+                   */
+                sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+                Spaz.UI.hideLoading();
+            },
+            'renderer': function(obj) {
+                return Spaz.Tpl.parse('timeline_entry', obj);
+
+            }
+    });
+
+
+
+
 };
 
 PublicTimeline.prototype = new AppTimeline();
@@ -555,116 +555,116 @@ PublicTimeline.prototype = new AppTimeline();
  * Public timeline def 
  */
 var FavoritesTimeline = function(args) {
-	
-	var thisFVT			 = this,
-		$timeline		 = $('#timeline-favorites'),
-		$timelineWrapper = $timeline.parent();
-	this.twit = new SpazTwit();
-	
-	/*
-		set up the public timeline
-	*/
-	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' : $timeline.selector,
-		'entry_relative_time_selector':'.status-created-at',
-		
-		'success_event':'new_favorites_timeline_data',
-		'failure_event':'error_favorites_timeline_data',
-		'event_target' :document,
-		
-		'refresh_time':1000*60*30, // 30 minutes
-		'max_items':100,
 
-		'request_data': function() {
-			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
-			var username = Spaz.Prefs.getUsername();
-			var password = Spaz.Prefs.getPassword();
-			thisFVT.twit.setCredentials(username, password);
-			thisFVT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
-			thisFVT.twit.getFavorites();
-			Spaz.UI.statusBar("Loading favorites timeline");
-			Spaz.UI.showLoading();
-		},
-		'data_success': function(e, data) {
-			data = data.reverse();
-			var no_dupes = [];
-			
-			var sui = new SpazImageURL();
-			
-			for (var i=0; i < data.length; i++) {
-				
-				/*
-					only add if it doesn't already exist
-				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
-					
-					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
-					
-					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
-					
-					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
-					
-					// convert emoticons
-					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+    var thisFVT          = this,
+        $timeline        = $('#timeline-favorites'),
+        $timelineWrapper = $timeline.parent();
+    this.twit = new SpazTwit();
 
-					if (data[i].SC_is_retweet) {
-						// nl2br
-						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+    /*
+       set up the public timeline
+       */
+    this.timeline  = new SpazTimeline({
+            'timeline_container_selector' : $timeline.selector,
+            'entry_relative_time_selector':'.status-created-at',
 
-						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+            'success_event':'new_favorites_timeline_data',
+            'failure_event':'error_favorites_timeline_data',
+            'event_target' :document,
 
-						// make clickable
-						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+            'refresh_time':1000*60*30, // 30 minutes
+            'max_items':100,
 
-						// convert emoticons
-						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
-					}
+            'request_data': function() {
+            thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
+            var username = Spaz.Prefs.getUsername();
+            var password = Spaz.Prefs.getPassword();
+            thisFVT.twit.setCredentials(username, password);
+            thisFVT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+            thisFVT.twit.getFavorites();
+            Spaz.UI.statusBar("Loading favorites timeline");
+            Spaz.UI.showLoading();
+            },
+            'data_success': function(e, data) {
+                data = data.reverse();
+                var no_dupes = [];
 
-					no_dupes.push(data[i]);
-					/*
-						Save to DB via JazzRecord
-					*/
-					TweetModel.saveTweet(data[i]);
-				}
-				
-			};
+                var sui = new SpazImageURL();
 
-			$timelineWrapper.children('.loading').hide();
-			thisFVT.timeline.addItems(no_dupes);
+                for (var i=0; i < data.length; i++) {
 
-			/*
-			 reapply filtering
-			*/
-			$('#filter-favorites').trigger('keyup');
+                    /*
+                       only add if it doesn't already exist
+                       */
+                    if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+
+                        // nl2br
+                        data[i].text = sch.nl2br(data[i].text);
+
+                        data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+
+                        data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+
+                        // convert emoticons
+                        data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+
+                            if (data[i].SC_is_retweet) {
+                                // nl2br
+                                data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+                                // add thumbnails
+                                data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+                                // make clickable
+                                data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+                                // convert emoticons
+                                data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+                            }
+
+                        no_dupes.push(data[i]);
+                        /*
+                           Save to DB via JazzRecord
+                           */
+                        TweetModel.saveTweet(data[i]);
+                    }
+
+                };
+
+                $timelineWrapper.children('.loading').hide();
+                thisFVT.timeline.addItems(no_dupes);
+
+                /*
+                   reapply filtering
+                   */
+                $('#filter-favorites').trigger('keyup');
 
 
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
-			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+                sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
+                sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 
-			Spaz.UI.hideLoading();
-			Spaz.UI.statusBar("Ready");
-			
-		},
-		'data_failure': function(e, error_obj) {
-			var err_msg = "There was an error retrieving the favorites timeline";
-			Spaz.UI.statusBar(err_msg);
+                Spaz.UI.hideLoading();
+                Spaz.UI.statusBar("Ready");
 
-			/*
-				Update relative dates
-			*/
-			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			Spaz.UI.hideLoading();
-		},
-		'renderer': function(obj) {
-			return Spaz.Tpl.parse('timeline_entry', obj);
-		}
-	});
-	
+            },
+            'data_failure': function(e, error_obj) {
+                var err_msg = "There was an error retrieving the favorites timeline";
+                Spaz.UI.statusBar(err_msg);
 
-	
-	
+                /*
+                   Update relative dates
+                   */
+                sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+                Spaz.UI.hideLoading();
+            },
+            'renderer': function(obj) {
+                return Spaz.Tpl.parse('timeline_entry', obj);
+            }
+    });
+
+
+
+
 };
 
 FavoritesTimeline.prototype = new AppTimeline();
@@ -677,7 +677,7 @@ FavoritesTimeline.prototype = new AppTimeline();
  * User timeline def 
  */
 var UserTimeline = function(args) {
-	
+
 	var thisUT			 = this,
 		$timeline		 = $('#timeline-user'),
 		$timelineWrapper = $timeline.parent();
@@ -805,8 +805,8 @@ UserTimeline.prototype = new AppTimeline();
  * User timeline def 
  */
 var UserlistsTimeline = function(args) {
-		
-	var thisULT			  = this,
+
+	var thisULT			 = this,
 		$timeline		 = $('#timeline-userlists'),
 		$timelineWrapper = $timeline.parent();
 	
@@ -1090,7 +1090,7 @@ UserlistsTimeline.prototype = new AppTimeline();
  * Search timeline def 
  */
 var SearchTimeline = function(args) {
-	
+
 	var thisST			 = this,
 		$timeline		 = $('#timeline-search'),
 		$timelineWrapper = $timeline.parent();
@@ -1247,7 +1247,7 @@ SearchTimeline.prototype = new AppTimeline();
  * Followers/following timeline def 
  */
 var FollowersTimeline = function(args) {
-	
+
 	var thisFLT			 = this,
 		$timeline		 = $('#timeline-followerslist'),
 		$timelineWrapper = $timeline.parent();
@@ -1334,8 +1334,8 @@ Spaz.Timelines.init = function() {
 	Spaz.Timelines.friends	 = new FriendsTimeline();
 	Spaz.Timelines.user		 = new UserTimeline();
 	Spaz.Timelines.public	 = new PublicTimeline();
-	Spaz.Timelines.favorites	= new FavoritesTimeline();
-	Spaz.Timelines.userlists	= new UserlistsTimeline();
+	Spaz.Timelines.favorites = new FavoritesTimeline();
+	Spaz.Timelines.userlists = new UserlistsTimeline();
 	Spaz.Timelines.search	 = new SearchTimeline();
 	Spaz.Timelines.followers = new FollowersTimeline();
 	
@@ -1353,34 +1353,34 @@ Spaz.Timelines.init = function() {
 }
 
 Spaz.Timelines.getTimelineFromTab = function(tab) {
-	var timeline = tab.id.replace(/tab-/, '');
-	sch.debug('timeline for tab:' + timeline);
-	return Spaz.Timelines.map[timeline];
+    var timeline = tab.id.replace(/tab-/, '');
+    sch.debug('timeline for tab:' + timeline);
+    return Spaz.Timelines.map[timeline];
 };
 
 Spaz.Timelines.getTabFromTimeline = function(tab) {
-	var timeline = tab.id.replace(/tab-/, '');
-	sch.debug('timeline for tab:' + timeline);
-	return Spaz.Timelines.map[timeline];
+    var timeline = tab.id.replace(/tab-/, '');
+    sch.debug('timeline for tab:' + timeline);
+    return Spaz.Timelines.map[timeline];
 };
 
 
 Spaz.Timelines.resetTimelines = function() {
-	/*
-		remove all timeline event listeners
-	*/
-	for (var key in Spaz.Timelines.map) {
-		sch.error(key);
-		Spaz.Timelines.map[key].timeline.stopListening();
-	}
-	
-	Spaz.Timelines.init();
-	
-	
-	/*
-		clear timeline entries inside the timelines
-	*/
-	$('div.timeline-entry').remove();
-	
+    /*
+       remove all timeline event listeners
+       */
+    for (var key in Spaz.Timelines.map) {
+        sch.error(key);
+        Spaz.Timelines.map[key].timeline.stopListening();
+    }
+
+    Spaz.Timelines.init();
+
+
+    /*
+       clear timeline entries inside the timelines
+       */
+    $('div.timeline-entry').remove();
+
 }
 

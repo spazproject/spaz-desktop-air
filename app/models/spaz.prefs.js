@@ -2,8 +2,8 @@ var Spaz;
 if (!Spaz) { Spaz = {}; };
 
 /***********
-Spaz.Prefs
-************/
+  Spaz.Prefs
+ ************/
 if (!Spaz.Prefs) Spaz.Prefs = {};
 
 
@@ -39,7 +39,7 @@ Spaz.Prefs.defaultPreferences = {
 	'notify-totals':true,
 	'notify-searchresults':false,
 	'notify-listmessages':false,
-	
+
 
 	// 'theme-userstylesheet':null,
 	'theme-basetheme': 'Leopaz',
@@ -126,214 +126,214 @@ Spaz.Prefs.defaultPreferences = {
 // this maps methods to pref keys that should be
 // called when they are changed
 /*
-	the methods:
-	setUI: sets the exposed prefs UI for this preference
-	onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
-	check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
-	setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
+   the methods:
+setUI: sets the exposed prefs UI for this preference
+onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
+check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
+setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
 */
 Spaz.Prefs.changeMethods = {
 	'usemarkdown': {
-		setUI: function(value) {
-			$('#usemarkdown').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#usemarkdown').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 	'window-x': {
-		setUI: function(value) {},
-		onSet: function(key, value) {
-			return parseInt(value, 10) || 50;
-		},
-		onGet: function(key, value) {
-			return parseInt(value, 10) || 50;
-		}
+setUI: function(value) {},
+	   onSet: function(key, value) {
+		   return parseInt(value, 10) || 50;
+	   },
+onGet: function(key, value) {
+		   return parseInt(value, 10) || 50;
+	   }
 	},
 	'window-y': {
-		setUI: function(value) {},
-		onSet: function(key, value) {
-			return parseInt(value, 10) || 50;
-		},
-		onGet: function(key, value) {
-			return parseInt(value, 10) || 50;
-		}
+setUI: function(value) {},
+	   onSet: function(key, value) {
+		   return parseInt(value, 10) || 50;
+	   },
+onGet: function(key, value) {
+		   return parseInt(value, 10) || 50;
+	   }
 	},
 	'window-width': {
-		setUI: function(value) {},
-		onChange: function(value) {},
-		check: function() {}
+setUI: function(value) {},
+	   onChange: function(value) {},
+	   check: function() {}
 	},
 	'window-height': {
-		setUI: function(value) {},
-		onSet: function(key, value) {
-			return parseInt(value, 10);
-		},
-		onGet: function(key, value) {
-			return parseInt(value, 10);
-		}
+setUI: function(value) {},
+	   onSet: function(key, value) {
+		   return parseInt(value, 10);
+	   },
+onGet: function(key, value) {
+		   return parseInt(value, 10);
+	   }
 	},
 	'window-alpha': {
-		setUI: function(value) {
-			$('#window-alpha').val(parseInt(value, 10));
-		},
-		onChange: function(value) {
-			//alert(percentage+"%");
-			Spaz.Windows.setWindowOpacity(value);
-		},
-		onGet: function(key, value) {
-			if (value > 100) {
-				value = 100;
-			} else if (value < 10) {
-				value = 10;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (value > 100) {
-				value = 100;
-			} else if (value < 10) {
-				value = 10;
-			}
-			return value;
-		}
+setUI: function(value) {
+		   $('#window-alpha').val(parseInt(value, 10));
+	   },
+onChange: function(value) {
+			  //alert(percentage+"%");
+			  Spaz.Windows.setWindowOpacity(value);
+		  },
+onGet: function(key, value) {
+		   if (value > 100) {
+			   value = 100;
+		   } else if (value < 10) {
+			   value = 10;
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (value > 100) {
+			   value = 100;
+		   } else if (value < 10) {
+			   value = 10;
+		   }
+		   return value;
+	   }
 	},
 	'window-hideafterdelay': {
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'window-restoreonupdates': {
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'window-shownotificationpopups': {
-		setUI: function(value) {
-			$('#window-shownotificationpopups').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#window-shownotificationpopups').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'window-notificationposition': {
-		setUI: function(value) {
-			$('#window-notificationposition').val(value);
-		}
+setUI: function(value) {
+		   $('#window-notificationposition').val(value);
+	   }
 	},
 	'window-notificationmethod': {
-		setUI: function(value) {
-			$('#window-notificationmethod').val(value);
-		},
-		onGet: function(key, value) {
-			if (value !== 'growl') {
-				return 'internal';
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (value !== 'growl') {
-				return 'internal';
-			}
-			return value;
-		},
-		check: function() {
-			if (Spaz.Prefs.get('window-notificationmethod') !== 'growl') {
-				Spaz.Prefs.set('window-notificationmethod', 'internal');
-				$('#window-notificationposition').removeAttr("disabled");
-			} else { // is growl
-				$('#window-notificationposition').attr("disabled","disabled");;
-			}
+setUI: function(value) {
+		   $('#window-notificationmethod').val(value);
+	   },
+onGet: function(key, value) {
+		   if (value !== 'growl') {
+			   return 'internal';
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (value !== 'growl') {
+			   return 'internal';
+		   }
+		   return value;
+	   },
+check: function() {
+		   if (Spaz.Prefs.get('window-notificationmethod') !== 'growl') {
+			   Spaz.Prefs.set('window-notificationmethod', 'internal');
+			   $('#window-notificationposition').removeAttr("disabled");
+		   } else { // is growl
+			   $('#window-notificationposition').attr("disabled","disabled");;
+		   }
 
-		}
+	   }
 	},
 	'window-minimizetosystray': {
-		setUI: function(value) {
-			$('#window-minimizetosystray').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#window-minimizetosystray').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'window-minimizeatstartup': {
-		setUI: function(value) {
-			$('#window-minimizeatstartup').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#window-minimizeatstartup').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'window-minimizeonbackground': {
-		setUI: function(value) {
-			$('#window-minimizeonbackground').attr('checked', value);
-		},
-		onChange: function(value) {
-			Spaz.Windows.enableMinimizeOnBackground(value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#window-minimizeonbackground').attr('checked', value);
+	   },
+onChange: function(value) {
+			  Spaz.Windows.enableMinimizeOnBackground(value);
+		  },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'window-restoreonactivate': {
-		setUI: function(value) {
-			$('#window-restoreonactivate').attr('checked', value);
-		},
-		onChange: function(value) {
-			Spaz.Windows.enableRestoreOnActivate(value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#window-restoreonactivate').attr('checked', value);
+	   },
+onChange: function(value) {
+			  Spaz.Windows.enableRestoreOnActivate(value);
+		  },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'window-dropshadow': {
-		setUI: function(value) {
-			$('#window-dropshadow').attr('checked', value);
-		},
-		onChange: function(value) {
-			Spaz.Windows.enableDropShadow(value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#window-dropshadow').attr('checked', value);
+	   },
+onChange: function(value) {
+			  Spaz.Windows.enableDropShadow(value);
+		  },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'timeline-keyboardnavwrap': {
-		setUI: function(value) {
-			$('#timeline-keyboardnavwrap').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#timeline-keyboardnavwrap').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 	// 'theme-userstylesheet':{
@@ -349,380 +349,380 @@ Spaz.Prefs.changeMethods = {
 
 
 	'notify-messages': {
-		setUI: function(value) {
-			$('#notify-messages').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#notify-messages').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'notify-dms': {
-		setUI: function(value) {
-			$('#notify-dms').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#notify-dms').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'notify-mentions': {
-		setUI: function(value) {
-			$('#notify-mentions').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#notify-mentions').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'notify-totals': {
-		setUI: function(value) {
-			$('#notify-totals').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#notify-totals').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'notify-searchresults': {
-		setUI: function(value) {
-			$('#notify-searchresults').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#notify-searchresults').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'notify-listmessages': {
-		setUI: function(value) {
-			$('#notify-listmessages').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#notify-listmessages').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 
 
 	'theme-basetheme': {
-		setUI: function(value) {
-			$('#theme-basetheme').val(value);
-		},
-		onChange: function(value) {
-			Spaz.Themes.setCurrentTheme();
-		}
+setUI: function(value) {
+		   $('#theme-basetheme').val(value);
+	   },
+onChange: function(value) {
+			  Spaz.Themes.setCurrentTheme();
+		  }
 	},
 
 	'sound-enabled': {
-		setUI: function(value) {
-			$('#sound-enabled').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#sound-enabled').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 	'wilhelm-enabled': {
-		setUI: function(value) {
-			$('#wilhelm-enabled').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#wilhelm-enabled').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 	'twitter-base-urls': {
-		setUI: function(value) {
-			$('#twitter-base-urls').val(value);
-		},
-		onChange: function(value) {
-			if (value) {
+setUI: function(value) {
+		   $('#twitter-base-urls').val(value);
+	   },
+onChange: function(value) {
+			  if (value) {
 
-				switch (value) {
+				  switch (value) {
 
-				case 'identica':
-					var baseurl = 'http://identi.ca/';
-					var apiurl = 'http://identi.ca/api/';
-					break;
+					  case 'identica':
+						  var baseurl = 'http://identi.ca/';
+						  var apiurl = 'http://identi.ca/api/';
+						  break;
 
-				default:
-					var baseurl = 'http://twitter.com/';
-					var apiurl = 'https://twitter.com/';
-					break;
-				}
-				Spaz.Prefs.set('twitter-api-base-url', apiurl);
-				Spaz.Prefs.changeMethods['twitter-api-base-url'].setUI(apiurl);
-				Spaz.Prefs.set('twitter-base-url', baseurl);
-				Spaz.Prefs.changeMethods['twitter-base-url'].setUI(baseurl);
-			}
-		}
+					  default:
+						  var baseurl = 'http://twitter.com/';
+						  var apiurl = 'https://twitter.com/';
+						  break;
+				  }
+				  Spaz.Prefs.set('twitter-api-base-url', apiurl);
+				  Spaz.Prefs.changeMethods['twitter-api-base-url'].setUI(apiurl);
+				  Spaz.Prefs.set('twitter-base-url', baseurl);
+				  Spaz.Prefs.changeMethods['twitter-base-url'].setUI(baseurl);
+			  }
+		  }
 	},
 	'twitter-api-base-url': {
-		setUI: function(value) {
-			sch.debug('value:' + value);
-			$('#twitter-api-base-url').val(value);
-		}
+setUI: function(value) {
+		   sch.debug('value:' + value);
+		   $('#twitter-api-base-url').val(value);
+	   }
 	},
 	'twitter-base-url': {
-		setUI: function(value) {
-			sch.debug('value:' + value);
-			$('#twitter-base-url').val(value);
-		}
+setUI: function(value) {
+		   sch.debug('value:' + value);
+		   $('#twitter-base-url').val(value);
+	   }
 
 	},
 
 	'twitter-disable-direct-posting': {
-		setUI: function(value) {
-			$('#twitter-disable-direct-posting').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#twitter-disable-direct-posting').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 	'services-shortie-secretkey': {
-		setUI: function(value) {
-			if (value || value == '') {
-				$('#services-shortie-secretkey').val(value);
-				sch.debug('Shortie secretkey set...');
-			} else {
-				$('#services-shortie-secretkey').attr('value', '');
-				sch.debug('Shortie secret key');
-			}
-		},
-		onGet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		}
+setUI: function(value) {
+		   if (value || value == '') {
+			   $('#services-shortie-secretkey').val(value);
+			   sch.debug('Shortie secretkey set...');
+		   } else {
+			   $('#services-shortie-secretkey').attr('value', '');
+			   sch.debug('Shortie secret key');
+		   }
+	   },
+onGet: function(key, value) {
+		   if (!value) {
+			   return null;
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (!value) {
+			   return null;
+		   }
+		   return value;
+	   }
 	},
 
 
 	'services-shortie-email': {
-		setUI: function(value) {
-			if (value && value !== '') {
-				$('#services-shortie-email').val(value);
-				sch.debug('Shortie email set...');
-			} else {
-				$('#services-shortie-email').attr('value', '');
-				sch.debug('Shortie secret key');
-			}
-		},
-		onGet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		}
+setUI: function(value) {
+		   if (value && value !== '') {
+			   $('#services-shortie-email').val(value);
+			   sch.debug('Shortie email set...');
+		   } else {
+			   $('#services-shortie-email').attr('value', '');
+			   sch.debug('Shortie secret key');
+		   }
+	   },
+onGet: function(key, value) {
+		   if (!value) {
+			   return null;
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (!value) {
+			   return null;
+		   }
+		   return value;
+	   }
 	},
 
 	'services-pingfm-userappkey': {
-		setUI: function(value) {
-			sch.debug('value:' + value);
+setUI: function(value) {
+		   sch.debug('value:' + value);
 
-			if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
-				$('#services-pingfm-userappkey').val(value);
-				sch.debug('Valid Ping.fm API key');
-			} else {
-				sch.debug('invalid!');
-				$('#services-pingfm-userappkey').attr('value', '');
-				sch.debug('Invalid Ping.fm API key');
-				// $('#services-pingfm-userappkey').val();
-			}
-		},
-		onGet: function(key, value) {
-			if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
-				return value;
-			}
-			return null;
-		},
-		onSet: function(key, value) {
-			if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
-				return value;
-			}
-			sch.warn('invalid pingfm api key');
-			return null;
-		}
+		   if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
+			   $('#services-pingfm-userappkey').val(value);
+			   sch.debug('Valid Ping.fm API key');
+		   } else {
+			   sch.debug('invalid!');
+			   $('#services-pingfm-userappkey').attr('value', '');
+			   sch.debug('Invalid Ping.fm API key');
+			   // $('#services-pingfm-userappkey').val();
+		   }
+	   },
+onGet: function(key, value) {
+		   if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
+			   return value;
+		   }
+		   return null;
+	   },
+onSet: function(key, value) {
+		   if (value && value.match(/[a-f0-9]{32}-[0-9]{10}/i)) {
+			   return value;
+		   }
+		   sch.warn('invalid pingfm api key');
+		   return null;
+	   }
 	},
 	'services-pingfm-enabled': {
-		setUI: function(value) {
-			$('#services-pingfm-enabled').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#services-pingfm-enabled').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'services-pingfm-sendreplies': {
-		setUI: function(value) {
-			$('#services-pingfm-sendreplies').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#services-pingfm-sendreplies').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 
 	'services-twitpic-sharepassword': {
-		setUI: function(value) {
-			$('#services-twitpic-sharepassword').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#services-twitpic-sharepassword').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 
 	'network-refreshinterval': {
-		setUI: function(value) {
-			$('#network-refreshinterval').val(parseInt(value, 10) / 60000);
+setUI: function(value) {
+		   $('#network-refreshinterval').val(parseInt(value, 10) / 60000);
 
-			var minutes = parseInt(value, 10) / 60000;
-			var refperhour = 60 / minutes;
-			var numreqs = Math.ceil(refperhour * 3);
+		   var minutes = parseInt(value, 10) / 60000;
+		   var refperhour = 60 / minutes;
+		   var numreqs = Math.ceil(refperhour * 3);
 
-			$('#refreshRateInfoValue').text(numreqs.toString())
-		},
-		onGet: function(key, value) {
-			if (value < 2 * 60000) {
-				value = 2 * 60000;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (value < 2 * 60000) {
-				value = 2 * 60000;
-			}
-			return value;
-		},
-		setFromUI: function(value) {
-			return value * 60000;
-		}
+		   $('#refreshRateInfoValue').text(numreqs.toString())
+	   },
+onGet: function(key, value) {
+		   if (value < 2 * 60000) {
+			   value = 2 * 60000;
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (value < 2 * 60000) {
+			   value = 2 * 60000;
+		   }
+		   return value;
+	   },
+setFromUI: function(value) {
+			   return value * 60000;
+		   }
 	},
 	'network-autoadjustrefreshinterval': {
-		setUI: function(value) {
-			$('#network-autoadjustrefreshinterval').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#network-autoadjustrefreshinterval').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'network-airhandlehttpauth': {
-		setUI: function(value) {
-			$('#network-airhandlehttpauth').attr('checked', value);
-		},
-		onChange: function(value) {
-			sch.debug('Setting HTTPAuth handling to ' + value);
-			window.htmlLoader.authenticate = value;
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#network-airhandlehttpauth').attr('checked', value);
+	   },
+onChange: function(value) {
+			  sch.debug('Setting HTTPAuth handling to ' + value);
+			  window.htmlLoader.authenticate = value;
+		  },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 
 	'timeline-maxentries': {
-		onGet: function(key, value) {
-			if (value < 300) {
-				value = 300;
-			}
-			if (value > 1000) {
-				value = 1000;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (value < 300) {
-				value = 300;
-			}
-			if (value > 1000) {
-				value = 1000;
-			}
-			return value;
-		}
+onGet: function(key, value) {
+		   if (value < 300) {
+			   value = 300;
+		   }
+		   if (value > 1000) {
+			   value = 1000;
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (value < 300) {
+			   value = 300;
+		   }
+		   if (value > 1000) {
+			   value = 1000;
+		   }
+		   return value;
+	   }
 	},
 	'timeline-scrollonupdate': {
-		setUI: function(value) {
-			$('#timeline-scrollonupdate').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#timeline-scrollonupdate').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 	'checkupdate': {
-		setUI: function(value) {
-			$('#checkupdate').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#checkupdate').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 	'checkupdate-testversions': {
-		setUI: function(value) {
-			$('#checkupdate-testversions').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#checkupdate-testversions').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 
@@ -736,96 +736,96 @@ Spaz.Prefs.changeMethods = {
 	//	}
 	// },
 	'debug-enabled': {
-		setUI: function(value) {
-			$('#debug-enabled').attr('checked', value);
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		}
+setUI: function(value) {
+		   $('#debug-enabled').attr('checked', value);
+	   },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   }
 	},
 
 	'screennames-cache-max': {
-		onGet: function(key, value) {
-			if (value < 150) {
-				value = 150;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (value < 150) {
-				value = 150;
-			}
-			return value;
-		}
+onGet: function(key, value) {
+		   if (value < 150) {
+			   value = 150;
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (value < 150) {
+			   value = 150;
+		   }
+		   return value;
+	   }
 	},
 
 	'dock-refreshinterval': {
-		setUI: function(value) {
-			$('#dock-refreshinterval').val(value);
-		},
-		onChange: function(value) {
-			Spaz.Dock.sync();
-		},
-		onGet: function(key, value) {
-			if (value < 200) {
-				value = 200;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (value < 200) {
-				value = 200;
-			}
-			return value;
-		},
-		setFromUI: function(value) {
-			return value;
-		}
+setUI: function(value) {
+		   $('#dock-refreshinterval').val(value);
+	   },
+onChange: function(value) {
+			  Spaz.Dock.sync();
+		  },
+onGet: function(key, value) {
+		   if (value < 200) {
+			   value = 200;
+		   }
+		   return value;
+	   },
+onSet: function(key, value) {
+		   if (value < 200) {
+			   value = 200;
+		   }
+		   return value;
+	   },
+setFromUI: function(value) {
+			   return value;
+		   }
 	},
 	'dock-displayunreadbadge': {
-		setUI: function(value) {
-			$('#dock-displayunreadbadge').attr('checked', value);
-		},
-		onChange: function(value) {
-			Spaz.Dock.sync();
-		},
-		onGet: function(key, value) {
-			return !!value;
-		},
-		onSet: function(key, value) {
-			return !!value;
-		},
-		setFromUI: function(value) {
-			return value;
-		}
+setUI: function(value) {
+		   $('#dock-displayunreadbadge').attr('checked', value);
+	   },
+onChange: function(value) {
+			  Spaz.Dock.sync();
+		  },
+onGet: function(key, value) {
+		   return !!value;
+	   },
+onSet: function(key, value) {
+		   return !!value;
+	   },
+setFromUI: function(value) {
+			   return value;
+		   }
 	},
 	'dock-unreadbadgecolor': {
-	   setUI: function(value) {
+setUI: function(value) {
 		   $('#dock-unreadbadgecolor').val(value);
 	   },
-	   onChange: function(value) {
-		   Spaz.Dock.setColor(value);
-	   }
-   },
+onChange: function(value) {
+			  Spaz.Dock.setColor(value);
+		  }
+	},
 
-   'dock-unreadbadgeshape': {
-	   setUI: function(value) {
+	'dock-unreadbadgeshape': {
+setUI: function(value) {
 		   $('#dock-unreadbadgeshape').val(value);
 	   },
-	   onChange: function(value) {
-		   Spaz.Dock.setShape(value);
-	   }
-   }
+onChange: function(value) {
+			  Spaz.Dock.setShape(value);
+		  }
+	}
 
 };
 
 
 /*
-	Set up SpazCore prefs and accounts objects
-*/
+   Set up SpazCore prefs and accounts objects
+   */
 Spaz.Prefs._prefs = new SpazPrefs(Spaz.Prefs.defaultPreferences, null, Spaz.Prefs.changeMethods);
 Spaz.Prefs._accounts = {}; // a placeholder where we will store the SpazAccounts obj
 
@@ -838,15 +838,15 @@ Spaz.Prefs.init = function() {
 
 	sch.debug('LOADING');
 	Spaz.Prefs._prefs.load();
-	
+
 	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
-	
+
 	sch.error('THIS IS THE USERNAME:');
 	sch.error(Spaz.Prefs.getUsername()+'@'+Spaz.Prefs.getAccountType());
-	
+
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();
-	
+
 	sch.debug('INIT UI');
 	Spaz.Prefs.initUI();
 };
@@ -930,17 +930,17 @@ Spaz.Prefs.setFromUI = function(event) {
 	// sch.debug('event.srcElement.id='+event.srcElement);
 	var id = event.srcElement.id
 
-	sch.debug("setFromUI - " + id)
+		sch.debug("setFromUI - " + id)
 
-	if (event.srcElement.tagName == "INPUT" && event.srcElement.type == "checkbox") {
-		if ($('#' + id).attr('checked')) {
-			var val = true;
+		if (event.srcElement.tagName == "INPUT" && event.srcElement.type == "checkbox") {
+			if ($('#' + id).attr('checked')) {
+				var val = true;
+			} else {
+				var val = false;
+			}
 		} else {
-			var val = false;
+			var val = $('#' + id).val();
 		}
-	} else {
-		var val = $('#' + id).val();
-	}
 
 	// rewrite the incoming value if needed
 	if (Spaz.Prefs.changeMethods[id] && Spaz.Prefs.changeMethods[id].setFromUI) {
@@ -1048,7 +1048,7 @@ Spaz.Prefs.setPrefs = function() {
 Spaz.Prefs.setCurrentUser = function() {
 	sch.error('setCurrentUser is @TODO');
 	return;
-	
+
 	//	   var user = $('#username').val();
 	//	   var pass = $('#password').val();
 	// var accobj;
@@ -1090,7 +1090,7 @@ Spaz.Prefs.setHandleHTTPAuth = function(state) {
 	sch.debug(state);
 	if (state) {
 		Spaz.Prefs.handleHTTPAuth = 1
-		window.htmlLoader.shouldAuthenticate = true;
+			window.htmlLoader.shouldAuthenticate = true;
 	} else {
 		Spaz.Prefs.handleHTTPAuth = 0;
 		window.htmlLoader.shouldAuthenticate = false;
@@ -1180,7 +1180,7 @@ Spaz.Prefs.getUsername = function() {
 	} else {
 		return null;
 	}
-	
+
 };
 
 Spaz.Prefs.getPassword = function() {
