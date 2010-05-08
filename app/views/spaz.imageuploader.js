@@ -24,11 +24,11 @@ Spaz.ImageUploader = function() {
 		// get the pref
 		thisA.service = Spaz.Prefs.get('file-uploader');
 		thisA.service_url = thisA.SFU.apis[thisA.service].upload_url;
-		sch.dump("service is "+ thisA.service);
-		sch.dump("service url "+ thisA.service_url);
+		sch.debug("service is "+ thisA.service);
+		sch.debug("service url "+ thisA.service_url);
 
 		var sharepass = Spaz.Prefs.get('services-twitpic-sharepassword');
-		sch.dump("sharepass is "+ sharepass);
+		sch.debug("sharepass is "+ sharepass);
 		
 		/*
 			populate the dropdown
@@ -57,13 +57,14 @@ Spaz.ImageUploader = function() {
 		/*
 			bind service dropdown
 		*/
-		$('#file-uploader').bind('change', function() {
-			thisA.service = $('#imageupload-file-uploader').val()
+		$('#imageupload-file-uploader').bind('change', function() {
+		    alert('changed');
+			thisA.service = $('#imageupload-file-uploader').val();
 			Spaz.Prefs.set('file-uploader', thisA.service);
 			
 			thisA.service_url = thisA.SFU.apis[thisA.service].upload_url;
-			sch.dump("service is "+ thisA.service);
-			sch.dump("service url "+ thisA.service_url);
+			sch.debug("service is "+ thisA.service);
+			sch.debug("service url "+ thisA.service_url);
 			
 			$('.service-extras', thisA.container).fadeOut();
 			$('#imageupload-extra-'+thisA.service).fadeIn();
@@ -83,7 +84,7 @@ Spaz.ImageUploader = function() {
 			}
 			
 			// var service = Spaz.Prefs.get('file-uploader');
-			// sch.dump("service is "+ service);
+			// sch.debug("service is "+ service);
 			// Spaz.Upload[service]($('#shorten-original-link').val());
 		});
 		
@@ -92,10 +93,10 @@ Spaz.ImageUploader = function() {
 			if ($('#imageupload-post-message').val().length>110) {
 				$('#imageupload-post-message').val( $('#imageupload-post-message').val().substr(0,110) );
 			}
-			sch.dump($('#imageupload-post-message').val().length);
-		})
+			sch.debug($('#imageupload-post-message').val().length);
+		});
 				
-		// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);
+		// sch.debug(air.NativeApplication.nativeApplication.spazPrefs);
 	};
 
 
@@ -108,7 +109,7 @@ Spaz.ImageUploader = function() {
 
 		userFile.addEventListener(air.Event.SELECT, function(event) {
 
-			sch.dump('Chosen file: '+event.target.url);
+			sch.debug('Chosen file: '+event.target.url);
 
 			if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
 				if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
@@ -118,10 +119,11 @@ Spaz.ImageUploader = function() {
 
 			if (event.target.url.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
-				return;
+				return false;
 			}
 			thisA.handleDrop(event.target.url);
-		})
+			return true;
+		});
 	};
 
 
@@ -164,29 +166,29 @@ Spaz.ImageUploader = function() {
 
 		var fileUrl = event.dataTransfer.getData("text/uri-list");
 
-		sch.dump(fileUrl);
+		sch.debug(fileUrl);
 
 		if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 			alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
-			return;
+			return false;
 		}
 		thisA.handleDrop(fileUrl);
-		return;
+		return true;
 	};
 
 	/*
 		Upload the dragged image to the service
 	*/
 	this.uploadDraggedImage = function(fileUrl) {
-		sch.dump(fileUrl);
+		sch.debug(fileUrl);
 
 		Spaz.UI.showLoading();
 
 		// upload the file
 		Spaz.Data.uploadFile({
 			'extra'  :{
-				"username": Spaz.Prefs.getUser(),
-				"password": Spaz.Prefs.getPass(),
+				"username": Spaz.Prefs.getUsername(),
+				"password": Spaz.Prefs.getPassword(),
 				"source"  : Spaz.Prefs.get('twitter-source'),
 				"message" : $('#imageupload-post-message').val()
 			},
@@ -197,34 +199,34 @@ Spaz.ImageUploader = function() {
 				Spaz.UI.hideLoading();
 
 				var loader = event.target;
-			    sch.dump(loader.data);
+			    sch.debug(loader.data);
 
 				var parser=new DOMParser();
 				xmldoc = parser.parseFromString(loader.data,"text/xml");
 
 				//var mediaurl = $(xmldoc).find('mediaurl').text();
-				//sch.dump(mediaurl);
+				//sch.debug(mediaurl);
 				//prepPhotoPost(mediaurl);
 				//$('#status-text').html('Complete');
 				var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
 				if (rspAttr.getNamedItem("stat").nodeValue == 'ok')
 				{
 					var mediaurl = $(xmldoc).find('mediaurl').text();
-					sch.dump(mediaurl);
+					sch.debug(mediaurl);
 					thisA.prepPhotoPost(mediaurl);
 					$('#imageupload-status-text').html('Complete');
-					closePopbox();
+					Spaz.UI.closePopbox();
 				} 
 				else
 				{
 					var errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
-					sch.dump(errAttributes);
+					sch.debug(errAttributes);
 					errMsg = errAttributes.getNamedItem("msg").nodeValue;
-					sch.dump(errMsg);
+					sch.debug(errMsg);
 					$('#imageupload-status-text').html(errMsg);
 				} 
 			}
 		});
 	};
-}
+};
 

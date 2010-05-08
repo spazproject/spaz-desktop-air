@@ -66,10 +66,10 @@
                 }
 			});
 			
-			// Spaz.dump("val:"+$('#shorten-original-link').val());
+			// sch.debug("val:"+$('#shorten-original-link').val());
 			$('#shorten-original-link').focus();
 			$('#shorten-original-link').val('http://');
-			// Spaz.dump(air.Clipboard.generalClipboard.formats);
+			// sch.debug(air.Clipboard.generalClipboard.formats);
 			if(air.Clipboard.generalClipboard.hasFormat(air.ClipboardFormats.TEXT_FORMAT)) {
 			    var cliptext = air.Clipboard.generalClipboard.getData(air.ClipboardFormats.TEXT_FORMAT);
 				if (/^https?:\/\//.test(cliptext)) { // if it starts with http://, we assume this is an URL and put it in the form field

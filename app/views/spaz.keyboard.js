@@ -16,10 +16,10 @@ Spaz.Keyboard.move = function(dir, selector) {
 	dir      = dir      || 'down';
 	selector = selector || '';
 	
-	Spaz.dump("selector is '" + selector+"'")
+	sch.debug("selector is '" + selector+"'")
 	
 	// var timelineid = 'timeline-friends';
-	var timeline       = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab)
+	var timeline       = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab);
 	var entry_selector = timeline.getEntrySelector();
 	
 	var jqall = $(entry_selector).is(':visible');
@@ -69,7 +69,7 @@ Spaz.Keyboard.move = function(dir, selector) {
 
 Spaz.Keyboard.moveSelect = function(jqelement, timeline) {	
 	
-	Spaz.dump('Moving to new selected item');
+	sch.debug('Moving to new selected item');
 	var wrapper_selector = timeline.getWrapperSelector();
 	var entry_selector   = timeline.getEntrySelector();
 	
@@ -147,16 +147,16 @@ Spaz.Keyboard.keyboardHandler = function(event) {
 	// 
 	// // debugging
 	// if (e.srcElement.id == 'home') {
-	// 	Spaz.dump('keyboard Event =================');
-	// 	Spaz.dump("keyIdentifier:"+ e.keyIdentifier);
-	// 	Spaz.dump("KeyCode:" + e.keyCode);
-	// 	Spaz.dump("which:"+ e.which);
-	// 	Spaz.dump("type:"+ e.type);
-	// 	Spaz.dump("shift:"+ e.shiftKey);
-	// 	Spaz.dump("ctrl:"+ e.ctrlKey);
-	// 	Spaz.dump("alt:"+ e.altKey);
-	// 	Spaz.dump("meta:"+ e.metaKey);
-	// 	Spaz.dump("src:"+ e.srcElement.id);
+	// 	sch.debug('keyboard Event =================');
+	// 	sch.debug("keyIdentifier:"+ e.keyIdentifier);
+	// 	sch.debug("KeyCode:" + e.keyCode);
+	// 	sch.debug("which:"+ e.which);
+	// 	sch.debug("type:"+ e.type);
+	// 	sch.debug("shift:"+ e.shiftKey);
+	// 	sch.debug("ctrl:"+ e.ctrlKey);
+	// 	sch.debug("alt:"+ e.altKey);
+	// 	sch.debug("meta:"+ e.metaKey);
+	// 	sch.debug("src:"+ e.srcElement.id);
 	// }
 	// 
 	// 

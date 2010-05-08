@@ -37,7 +37,7 @@ Spaz.Cache.buildScreenNameCache = function() {
 Spaz.Cache.addScreenName = function(name) {
 	if (Spaz.Cache.screenNames.indexOf(name) == -1) {
 		Spaz.Cache.screenNames.push(name)
-		Spaz.dump('Added "'+name.toLowerCase()+'". Number of screen names is '+Spaz.Cache.getScreenNamesCount());
+		sch.debug('Added "'+name.toLowerCase()+'". Number of screen names is '+Spaz.Cache.getScreenNamesCount());
 	}
 };
 
@@ -91,17 +91,17 @@ Spaz.Cache.getScreenNamesAsTags = function() {
  * sources cache
  */
 Spaz.Cache.getSource = function(key) {
-	// Spaz.dump('SOURCE CACHE: looking for ' + key);
+	// sch.debug('SOURCE CACHE: looking for ' + key);
 	if (Spaz.Cache.sources[key]) {
-		// Spaz.dump('SOURCE CACHE: val for ' + key + ' is ' + Spaz.Cache.sources[key]);
+		// sch.debug('SOURCE CACHE: val for ' + key + ' is ' + Spaz.Cache.sources[key]);
 		return Spaz.Cache.sources[key];
 	}
 	return false;
 };
 Spaz.Cache.setSource = function(key, val) {
-	// Spaz.dump('SOURCE CACHE: setting ' + key + ' to ' + val);
+	// sch.debug('SOURCE CACHE: setting ' + key + ' to ' + val);
 	Spaz.Cache.sources[key]=val;
-	Spaz.dump("Added to SOURCE CACHE; length:"+Spaz.Cache.sourcesSize());
+	sch.debug("Added to SOURCE CACHE; length:"+Spaz.Cache.sourcesSize());
 };
 Spaz.Cache.sourcesSize = function() {
 	var x = 0;
@@ -112,7 +112,7 @@ Spaz.Cache.sourcesSize = function() {
 };
 Spaz.Cache.sourcesClear = function() {
 	Spaz.Cache.sources = {}
-	Spaz.dump('Cleared sources cache');
+	sch.debug('Cleared sources cache');
 };
 Spaz.Cache.sourcesDump = function() {
 	var str = '';
@@ -127,17 +127,17 @@ Spaz.Cache.sourcesDump = function() {
  * statuses cache
  */
 Spaz.Cache.getStatus = function(key) {
-	// Spaz.dump('STATUS CACHE: looking for ' + key);
+	// sch.debug('STATUS CACHE: looking for ' + key);
 	if (Spaz.Cache.statuses[key]) {
-		// Spaz.dump('STATUS CACHE: val for ' + key + ' is ' + Spaz.Cache.statuses[key]);
+		// sch.debug('STATUS CACHE: val for ' + key + ' is ' + Spaz.Cache.statuses[key]);
 		return Spaz.Cache.statuses[key];
 	}
 	return false;
 };
 Spaz.Cache.setStatus = function(key, val) {
-	// Spaz.dump('STATUS CACHE: setting ' + key + ' to ' + val);
+	// sch.debug('STATUS CACHE: setting ' + key + ' to ' + val);
 	Spaz.Cache.statuses[key]=val;
-	Spaz.dump("Added to STATUS CACHE; length:"+Spaz.Cache.statusesSize());
+	sch.debug("Added to STATUS CACHE; length:"+Spaz.Cache.statusesSize());
 };
 Spaz.Cache.statusesSize = function() {
 	var x = 0;
@@ -148,7 +148,7 @@ Spaz.Cache.statusesSize = function() {
 };
 Spaz.Cache.statusesClear = function() {
 	Spaz.Cache.statuses = {}
-	Spaz.dump('Cleared satuses cache');
+	sch.debug('Cleared satuses cache');
 }
 Spaz.Cache.statusesDump = function() {
 	var str = '';

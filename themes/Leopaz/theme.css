@@ -42,15 +42,13 @@ input[type=password]:focus,
   border-bottom:1px dotted #884;
 }
 
-/*
-	the .even and .odd classes are really only used in the timelines, but 
-	they're useful and probably could be reused elsewhere.
-*/
-.odd{
-	background:#f1f5fa;
+/*** Global > Zebra striping ***/
+
+div.timeline-entry:nth-child(odd){
+  background:#f1f5fa;
 }
-.even{
-	background:#fff;
+div.timeline-entry:nth-child(even){
+  background:#fff;
 }
 
 /*** Global > Animations ***/
@@ -1123,19 +1121,38 @@ div.timeline-entry:hover{
   div.timeline-entry.dm div.status{
     background-image:url(images/timeline-dm-bg.png);
   }
-    div.status-thumbnails img{
-      margin:0 0 0.5em;
+    div.timeline-entry div.status-thumbnails{
+      margin:0 0 4px;
     }
-		div.status-text{
-			font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
-			margin-bottom:4px;
-		}
+    div.timeline-entry.read:not(.ui-selected) div.status-thumbnails{
+      float:left;
+      height:24px !important;
+      margin-top:-5px;
+      margin-right:4px;
+      padding:0;
+      overflow:hidden;
+      opacity:0.75;
+      -webkit-transition:opacity 0.125s linear;
+    }
+    div.timeline-entry.read:not(.ui-selected):hover div.status-thumbnails{
+      opacity:1;
+    }
+      div.timeline-entry.read:not(.ui-selected) div.status-thumbnails img{
+        height:100%;
+      }
+    div.status-text{
+      margin-bottom:4px;
+      font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
+    }
       div.status-text a:link{
         display:inline-block;
         max-width:150px;
         overflow:hidden;
         text-overflow:ellipsis;
         white-space: nowrap;
+      }
+      div.timeline-entry.read:not(.ui-selected) div.status-text br{
+        display:none; /* Hide <br />s in collapsed tweets */
       }
 		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
     div.status-actions{
@@ -1412,6 +1429,13 @@ body:not(.active) #panel-prefs .timeline-wrapper{
               }
               #prefs-form .relaunch-required{
                 color:#c00;
+              }
+              #prefs-form #account-list-fieldset div.formrow.cta{
+                padding:33px 0;
+                text-align:center;
+              }
+              #prefs-form #account-list-fieldset select#account-list{
+                width:100%;
               }
 
               /*** Preferences > Controls ***/

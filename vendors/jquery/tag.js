@@ -146,7 +146,7 @@
 					tagMatches.css('max-height', 200);
 					tagMatches.css('top', tagsElm.offset().top - tagMatches.height() - 10);
 					// if (tagMatches.position().top < 10) {
-					//	Spaz.dump('setting tagMatches top to 10')
+					//	sch.debug('setting tagMatches top to 10')
 					//	tagMatches.css('top', 10);
 					// }
 					
@@ -155,13 +155,13 @@
 
 
 					
-					Spaz.dump('tagMatches Position and Offset');
-					Spaz.dump(tagMatches.position());
-					Spaz.dump(tagMatches.offset());
+					sch.debug('tagMatches Position and Offset');
+					sch.debug(tagMatches.position());
+					sch.debug(tagMatches.offset());
 
-					Spaz.dump('tagsElm Position and Offset');
-					Spaz.dump(tagsElm.position());
-					Spaz.dump(tagsElm.offset());
+					sch.debug('tagsElm Position and Offset');
+					sch.debug(tagsElm.position());
+					sch.debug(tagsElm.offset());
 
 					
 
@@ -291,11 +291,11 @@
 			});
 
 			// replace with jQuery version
-			Spaz.dump('binding click to tagmatches')
-			Spaz.dump(tagMatches);
+			sch.debug('binding click to tagmatches')
+			sch.debug(tagMatches);
 			// tagMatches = $(tagMatches).click(function (ev) {
-			// 	Spaz.dump('clicked on Tag')
-			// 	Spaz.dump(ev);
+			// 	sch.debug('clicked on Tag')
+			// 	sch.debug(ev);
 			// 	if (ev.target.nodeName == settings.tagWrap.toUpperCase() && $(ev.target).is('._tag_suggestion')) {
 			// 		chooseTag(ev.target.innerHTML);
 			// 	}				 

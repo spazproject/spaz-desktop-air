@@ -17,31 +17,31 @@ Spaz.DB.init = function() {
 
 	// The initializer
 	var initListener = function() {
-		sch.dump("Creating read_entries table if necessary : " + conn.connected);
+		sch.debug("Creating read_entries table if necessary : " + conn.connected);
 		var create = new air.SQLStatement();
 		create.text =
 		"CREATE TABLE IF NOT EXISTS read_entries (entry_id INTEGER PRIMARY KEY)";
 		create.sqlConnection = conn;
 		create.execute();
 
-		sch.dump("Creating users table if necessary : " + conn.connected);
+		sch.debug("Creating users table if necessary : " + conn.connected);
 		var create2 = new air.SQLStatement();
 		create2.text =
 		"CREATE TABLE IF NOT EXISTS users (name TEXT PRIMARY KEY)";
 		create2.sqlConnection = conn;
 		create2.execute();
 
-		Spaz.Accounts.checkForFirstTimeUse();
-		Spaz.UI.generateAccountsMenu();
+		// Spaz.Accounts.checkForFirstTimeUse();
+		// Spaz.UI.generateAccountsMenu();
 	};
 	conn.addEventListener(air.SQLEvent.OPEN, initListener);
 
-	sch.dump("Opening database");
+	sch.debug("Opening database");
 	conn.openAsync(spazDB);
 
 	// Save connection for later reuse, for now I am supposing that a conn is thread safe...
 	Spaz.DB.conn = conn;
-}
+};
 
 /**
  * Mark an entry as read using the provided entry id. The entry id must be
@@ -54,16 +54,51 @@ Spaz.DB.markEntryAsRead = function(entryId) {
 		// We insert the value only if it does not exist already (otherwise will have an SQL error due to the existing PK)
 		Spaz.DB.asyncGetAsRead(entryId, function(read) {
 			if (!read) {
-				// sch.dump("Marking as read entry " + entryId);
+				sch.debug("Marking as read entry " + entryId);
 				var markAsReadSt = new air.SQLStatement();
 				markAsReadSt.text = "INSERT INTO read_entries (entry_id) VALUES (:entryId)";
 				markAsReadSt.parameters[":entryId"] = entryId;
 				markAsReadSt.sqlConnection = conn;
-				markAsReadSt.execute();
+				try {
+					markAsReadSt.execute();
+				} catch (error) {
+					sch.error("Failed to mark '"+entryId+"' as read:", error);
+					sch.error(error.message);
+					sch.error(error.details);
+				}
 			}
 		});
 	}
-}
+};
+
+Spaz.DB.isRead = function(entryId) {
+	var conn = getSyncConnection(air.SQLMode.READ);
+	if (conn.connected) {
+		var stmt = new air.SQLStatement();
+		stmt.text = "SELECT entry_id FROM read_entries WHERE entry_id=:entryId";
+		stmt.parameters[":entryId"] = entryId;
+		stmt.sqlConnection = conn;
+		try {			
+			stmt.execute();
+			var result = stmt.getResult(); // we can't read the result until we assign it to a var
+			sch.debug(JSON.stringify(result));
+			if (result.data) {
+				sch.debug(JSON.stringify(result.data));
+				return result.data.length > 0;
+			} else {
+				return false;
+			}
+		} catch (error) {
+			sch.error("Failed to find out if entry '"+entryId+"' is read:", error);
+			sch.error(error.message);
+			sch.error(error.details);
+			return false; // we return 0, assuming it is not read
+		}
+	}
+
+	sch.error('Could not connect');
+	return -1;
+};
 
 /* Check against the database if the entry should be marked as read or not. The first argument is the entry id which must
  * be an integer and the second argument is the callback function made once it has been determined if the entry should be marked as
@@ -73,18 +108,18 @@ Spaz.DB.asyncGetAsRead = function(entryId, callback) {
 	var conn = Spaz.DB.conn;
 	if (conn.connected)
 	{
-		// sch.dump("Read read entry status " + entryId);
+		sch.debug("Read read entry status " + entryId);
 		var markAsReadSt = new air.SQLStatement();
 		var callbackAdapter = function(event) {
 			markAsReadSt.removeEventListener(air.SQLEvent.RESULT, callbackAdapter);
 			markAsReadSt.removeEventListener(air.SQLErrorEvent.ERROR, errorHandler);
 			var read =  markAsReadSt.getResult().data != null;
-			// sch.dump("Entry status of " + entryId + " read=" + read);
+			sch.debug("Entry status of " + entryId + " read=" + read);
 
 			callback.call(this, read);
 		};
 		var errorHandler = function(event) {
-			sch.dump("Async get read for entry id " + entryId + " failed " + event.error);
+			sch.debug("Async get read for entry id " + entryId + " failed " + event.error);
 		};
 		markAsReadSt.addEventListener(air.SQLEvent.RESULT, callbackAdapter);
 		markAsReadSt.addEventListener(air.SQLErrorEvent.ERROR, errorHandler);
@@ -93,7 +128,7 @@ Spaz.DB.asyncGetAsRead = function(entryId, callback) {
 		markAsReadSt.sqlConnection = conn;
 		markAsReadSt.execute();
 	}
-}
+};
 
 /**
  * Open a database in synchronous mode and return the SQLConnection
@@ -110,10 +145,10 @@ function getSyncConnection(mode) {
 		conn.open(spazDB, mode);
 		return conn;
 	} catch (error)	{
-		Spaz.dump("Failed to open database in sync mode:", error);
+		sch.debug("Failed to open database in sync mode:", error);
 		return false;
 	}
-}
+};
 
 /**
  * How many users are registered with Spaz? Uses a synchronous database
@@ -132,13 +167,13 @@ Spaz.DB.getUserCount = function() {
 			sql.execute();
 			return sql.getResult().data[0]["count(*)"];
 		} catch (error) {
-			Spaz.dump("Failed to retrieve user count:", error);
+			sch.debug("Failed to retrieve user count:", error);
 			return -1;
 		}
 	}
 
 	return -1;
-}
+};
 
 /**
  * Get a list of all users registered with Spaz. Uses a synchronous
@@ -162,13 +197,13 @@ Spaz.DB.getUserList = function() {
 			}
 			return list;
 		} catch (error) {
-			Spaz.dump("Failed to retrieve user list:", error);
+			sch.debug("Failed to retrieve user list:", error);
 			return null;
 		}
 	}
 
 	return null;
-}
+};
 
 /**
  * Add/remove a user from the table of registered users.
@@ -190,7 +225,7 @@ Spaz.DB.maintainUser = function(action, username) {
 			sql.text = "DELETE FROM users WHERE name=:name";
 			break;
 		default:
-			Spaz.dump("Invalid action (" + action + ") sent to Spaz.DB.maintainUser");
+			sch.debug("Invalid action (" + action + ") sent to Spaz.DB.maintainUser");
 			sql.text = "this will fail";
 		}
 
@@ -200,10 +235,10 @@ Spaz.DB.maintainUser = function(action, username) {
 			sql.execute();
 			return true;
 		} catch (error) {
-			Spaz.dump("Failed to " + action + " user " +  username + ":", error);
+			sch.debug("Failed to " + action + " user " +  username + ":", error);
 			return false;
 		}
 	}
 
 	return false;
-}
+};

@@ -239,8 +239,8 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
  * @returns void
  */
 Spaz.Data.destroyStatus = function(postid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	Spaz.UI.showLoading();
 
@@ -275,8 +275,8 @@ Spaz.Data.destroyStatus = function(postid) {
  * @returns void
  */
 Spaz.Data.makeFavorite = function(postid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	Spaz.UI.statusBar('Adding fav: ' + postid);
 	Spaz.UI.showLoading();
@@ -286,7 +286,7 @@ Spaz.Data.makeFavorite = function(postid) {
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			var faved_element;
-			sch.error(data);
+			sch.debug(data);
 			Spaz.UI.statusBar('Added fav: ' + postid);
 			
 			$('.timeline-entry[data-status-id='+postid+']').addClass('favorited');
@@ -314,8 +314,8 @@ Spaz.Data.makeFavorite = function(postid) {
  * @returns void
  */
 Spaz.Data.makeNotFavorite = function(postid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	Spaz.UI.statusBar('Removing fav: ' + postid);
 	Spaz.UI.showLoading();
@@ -351,8 +351,8 @@ Spaz.Data.makeNotFavorite = function(postid) {
  * @returns void
  */
 Spaz.Data.followUser = function(userid) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	sch.dump('user:'+user+' pass:********');
 
@@ -391,8 +391,8 @@ Spaz.Data.followUser = function(userid) {
  */
 Spaz.Data.stopFollowingUser = function(userid) {
 
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	sch.dump('user:'+user+' pass:********');
 
@@ -481,7 +481,7 @@ Spaz.Data.onAjaxError = function(xhr,rstr) {
 //  */
 // Spaz.Data.getDataForTimeline = function(section, force) {
 // 
-// 	var username = Spaz.Prefs.getUser();
+// 	var username = Spaz.Prefs.getUsername();
 // 	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
 // 		
 // 		$('#timeline-friends').html("<div id='not-logged-in'><div>Username and password not set.</div><input type='button' id='open-login-panel' value='Enter user/pass' /> </div>");
@@ -702,8 +702,8 @@ Spaz.Data.updatePingFM = function(msg) {
 
 
 Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
-	var user = Spaz.Prefs.getUser();
-	var pass = Spaz.Prefs.getPass();
+	var user = Spaz.Prefs.getUsername();
+	var pass = Spaz.Prefs.getPassword();
 
 	if (!user || !pass) {
 		sch.dump('Dropping out of getRateLimitInfo because user or pass is not set');
@@ -851,7 +851,7 @@ Spaz.Data.uploadFile = function(opts) {
 
 
 /**
- * loads data for a particular tab (tabs are usually connected to a single Spaz.Section)
+ * loads data for a particular tab (tabs are usually connected to a single Spaz.Timeline)
  * @param {Object} tab the DOM Element of the tab
  * @param {Boolean} force if true, force a reload even if mincachetime of this tab's section has not expired
  * @param {Boolean} reset resets all lastid/mincachetime data on this section
@@ -935,8 +935,7 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 	}
 	
 	
-	function saveUserObject(e) {
-		var userobj = sch.getEventData(e);
+	function saveUserObject(e, data) {
 		if (onSuccess) {
 			onSuccess(userobj);
 		}
@@ -978,13 +977,16 @@ Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 	
 	
 	function saveTweetObject(data) {
-		sch.error('saveTweetObject');
-		sch.error(data);
+		sch.error('Saving '+data.id+' to DB');
+		// sch.error(data);
 		// var statusobj = sch.getEventData(e);
+		var savedobj = TweetModel.saveTweet(data);
+		
+		
 		if (onSuccess) {
-			onSuccess(data);
+			onSuccess(savedobj);
 		}
-		TweetModel.saveTweet(data);
+		sch.trigger('get_one_status_succeeded', target_el, savedobj);
 		// sch.unlisten(target_el, 'get_one_status_succeeded', saveTweetObject);
 	}
 };

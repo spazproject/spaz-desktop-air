@@ -7,110 +7,342 @@
 
 	<title>notify</title>
 	
-	<script src="app:/vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+    <script src="app:/vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	
-	<script src="app:/vendors/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../vendors/jquery/jquery-1.3.2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../vendors/jquery/jquery.tools.min.js" type="text/javascript" charset="utf-8"></script>
 	
-	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
 	
 	
 	
 	<script type="text/javascript" charset="utf-8">
 
-		// see http://www.netlobo.com/url_query_string_javascript.html
-		function gup( name )
-		{
-			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-			var regexS = "[\\?&]"+name+"=([^&#]*)";
-			var regex = new RegExp( regexS );
-			var results = regex.exec( window.location.href );
-			if( results == null )
-			  return "";
-			else
-			  return results[1];
-		}
+        var Notify = {};
+        Notify.tout = null;
+        Notify.content = null;
+        
+        // see http://www.netlobo.com/url_query_string_javascript.html
+        Notify.gup = function( name )
+        {
+            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+            var regexS = "[\\?&]"+name+"=([^&#]*)";
+            var regex = new RegExp( regexS );
+            var results = regex.exec( window.location.href );
+            if( results == null )
+                return "";
+            else
+                return results[1];
+        };
+        
+        Notify.setContentFromURL = function(content) {
+            
+            var title   = sc.helpers.escape_html(content.title);
 
-		function setContentFromURL() {
-			var title = sc.helpers.escape_html(decodeURIComponent(gup('title')));
-			var msg   = sc.helpers.escape_html(decodeURIComponent(gup('msg')));
-			var img   = sc.helpers.escape_html(decodeURIComponent(gup('img')));
-			
-			$('#title').html(title)
-			$('#msg').html(msg);
-			$('#icon').attr('src', img);
-		}
-
+            $('#title').html(title);
+            // $('div.msg').html(message);
+            // $('div.icon').css('background-image', 'url('+icon+')');
+            $('#counts-regular>.value').text(content.data.new_regular);
+            $('#counts-mentions>.value').text(content.data.new_mentions);
+            $('#counts-dms>.value').text(content.data.new_dms);
+            
+            var entry        = null;
+            var entry_html   = '';
+            var entries_html = [];
+            var html = '';
+            var img_url;
+            for (var i=0; i < content.data.new_entries.length; i++) {
+                entry = content.data.new_entries[i];
+                
+                
+                if (entry.SC_is_dm) {
+                    img_url = entry.sender.profile_image_url;
+                } else {
+                    img_url = entry.user.profile_image_url;
+                }
+                entry_html = '<div class="item"><div class="icon" style="background-image:url('+img_url+')"></div><div class="msg">'+entry.SC_text_raw+'</div></div>';
+                
+                entries_html.push(entry_html);
+            }
+            html = entries_html.join("\n");
+            $('#messages-items>.items').html(html);
+        };
+        
+        Notify.showWin = function() {
+            window.htmlLoader.stage.nativeWindow.visible = true;
+            $('#container').fadeIn(200, function() {
+                Notify.startTimeout();
+            });
+        };
+        
+        Notify.hideWin = function(onDone) {
+            $('#container').fadeOut(200, function() {
+                window.htmlLoader.stage.nativeWindow.visible = false;
+                if (onDone) {
+                    onDone();
+                }
+            });
+        };
+        
+        
+        Notify.closeWin = function() {
+            window.htmlLoader.window.nativeWindow.close();
+            // window.htmlLoader = null;         
+        };
+        
+        
+        Notify.hideAndClose = function() {
+            Notify.hideWin(Notify.closeWin);
+        };
+        
+        Notify.startTimeout = function() {
+            Notify.tout = setTimeout(Notify.hideAndClose, Notify.content.duration);
+        };
+        
+        Notify.stopTimeout = function() {
+            clearTimeout(Notify.tout);
+        };
 		
 		$().ready( function() {
-			setContentFromURL();			
+		    
+            try {
+                var json = decodeURIComponent(Notify.gup('json'));
+                Notify.content = sch.deJSON(json);
+
+                Notify.setContentFromURL(Notify.content);
+            } catch(e) {
+                sch.error("An exception occurred. Error name: " + e.name + ". Error message: " + e.message);
+            }
+            Notify.showWin();
+            
+            $('#button-close').bind('click', function() {
+                Notify.hideAndClose();
+            });
+            
+            $('#container').hover(function(e) {
+                    Notify.stopTimeout();                 
+                }, function(e) {
+                    Notify.startTimeout();
+                }
+            );
+
+            window.nativeWindow.addEventListener(air.Event.ACTIVATE, function() {
+                Notify.stopTimeout();                 
+            });
+            window.nativeWindow.addEventListener(air.Event.DEACTIVATE, function() {
+                Notify.startTimeout();
+            });
+        	
+            $("#messages-items").scrollable({'size': 1}).mousewheel();
 		});
 
 	</script>
 	
 	<style type="text/css" media="screen">
-		html {
-			width: 100%;
-			height:100%;
-		}
-
-		body {
+		body.notify {
 			font-family:Tahoma, Arial, Helvetica, sans-serif;
-			margin: 0px;
-			padding:0px;
-			width:  100%;
-			height: 100%;
-			display:block;
+/*          padding:0px;*/
 			-webkit-user-select:none; /*This has to be done to avoid stealing focus*/
 		}
 		
 		#container {
 			font-size:10pt;
 			border:10px solid transparent;
+			padding:10px;
 			color:#fff;
 			background-color: rgba(0,0,0,.8);
 			overflow:hidden;
-			-khtml-border-radius:15px; /* this is webkit-specific and gives us rounded corners*/
-			top:	0px; /* This has an effective 8px padding to show us the app dropshadow */
-			left:	0px; /* using all-four-sides positioning lets it expand properly on resizing */
-			bottom:	0px;
-			right:	0px;
+			border-radius:4px;
+            -webkit-border-radius:10px;
+			top:	12px;
+			left:	12px;
+			bottom:	12px;
+			right:	12px;
 			position: fixed;
 		}
-		
-		#icon {
-			position:absolute;
-			width: 48px;
-			height:48px;
-			top:   0px;
-			left:  0px;
+
+		#container:hover {
+			background-color: rgba(64,32,32,.8);
 		}
-		
+
+
+        #button-close {
+            position:absolute;
+            top:  0px;
+            right:0px;
+            background-color:rgba(64,64,64,.8);;
+            border:2px solid rgba(255,255,255,.8);
+            color:#FFF;
+            font-size:10pt;
+            border-radius:8px;
+			-webkit-border-radius:12px;
+			padding:1px 5px 2px;
+			cursor:pointer;
+			opacity:1;
+        }
+        #button-close:hover {
+            opacity:1;
+            background-color:rgba(0,0,0,1);;
+            border:2px solid rgba(255,255,255,1);
+        }
+
 		#title {
 			position:absolute;
-			font-size:13px;
+			font-size:12pt;
 			font-weight: bold;
-			left:57px;
+			left: 0px;
 			top: -2px;
 			white-space: nowrap;
 		}
+
 		
-		#msg {
-			position:absolute;
-			font-size:11px;
-			left:57px;
-			top: 15px;
+		#messages {
+		    position:absolute;
+		    top:22px;
+		    left:0px;
+		    right:5px;
+		    padding:5px;
+		    max-height:64px;
+		    overflow:visible;
 		}
+		    #messages-items {
+		        overflow:visible;
+		        height:48px;
+		        width:250px;
+		    }
+		    
+    		    #messages-items>div.items {
+    		        width:20000em;
+    		        position:relative;
+    		    }
+    		    
+        		    div.item {
+                        float:left; 
+                        height:64px;
+                        width:245px;
+                        margin-right:10px;
+                        overflow:visible;
+                    }
+                        div.item.active{
+                            background:blue;
+                        }
+                
+                        div.icon {
+                			float:left;
+                            width: 48px;
+                            height:48px;
+                            top:   0px;
+                            left:  0px;
+                            background:url(http://a1.twimg.com/profile_images/227846424/1382184741_e16416a45b_b_bigger.jpg) 0 0 no-repeat;
+                            background-size:48px 48px;
+                            -webkit-background-size:48px 48px;
+                            border-radius:4px;
+                            -webkit-border-radius:4px;
+                            box-shadow:0 1px 5px #333;
+                            -webkit-box-shadow:0 1px 5px #333;
+                        }
+		
+                		div.msg {
+                			position:relative;
+                            left:6px;
+                            top:0px;
+                			font-size:11px;
+                		}
+		
+		    #messages-nav {
+		        position:absolute;
+		        bottom:5px;
+		        right :0px;
+		    }
+		        a.nav {
+		            background-color:rgba(0,0,0,.8);;
+		            border:2px solid rgba(128,128,128,.8);
+		            color:#FFF;
+		            font-size:10pt;
+		            border-radius:8px;
+        			-webkit-border-radius:8px;
+        			padding:0 5px 2px;
+        			cursor:pointer;
+        			opacity:.5;
+		        }
+		        a.nav:hover {
+		            opacity:1;
+		            background-color:rgba(0,0,0,1);
+                    border:2px solid rgba(255,255,255,1);
+                    
+		        }
+		        
+		        a.nav.disabled {
+		            visibility: hidden;
+		        }
+                
+                
+
+		
+		#counts {
+			position:absolute;
+			font-size:12px;
+			left: 0;
+			right:0;
+			top: 95px;
+		}
+		
+    		#counts>.row {
+    			background-color:rgba(96,96,96,.8);
+    			white-space: nowrap;
+    			padding:3px;
+    			border-radius:5px;
+    			-webkit-border-radius:10px;
+
+    		    display:inline-block;
+    		    width:28%;
+    		    text-align:center;
+    		}
+    		#counts>.row>.label, #counts>.row>.value {
+    		    display:inline-block;
+    /*          width:50%;*/
+    		}
+    		#counts>.row>.label {
+    		    text-align:right;
+    		    font-weight:bold;
+    		}
+    		#counts>.row>.value {
+    	        text-align:left;
+    	    }
+
 	</style>
 	
 </head>
 
-<body>
+<body class='notify'>
 	
-	<div id="container">
-		<img id="icon" />
-		<div id="title"></div>
-		<div id="msg"></div>
-	</div>
-
+    <div id="container">
+        <div id="button-close">X</div>
+        <div id="title">New Messages</div>
+        <div id="messages">
+            <div id="messages-items">
+                <div class="items">
+                </div>
+            </div>
+            <div id="messages-nav">
+                <a class="nav prev">&laquo;</a> 
+                <a class="nav next">&raquo;</a>
+            </div>
+        </div>
+        <div id="counts">
+            <div class="row" id="counts-regular">
+                <div class="label">Msgs:</div>
+                <div class="value">50</div>
+            </div>
+            <div class="row" id="counts-mentions">
+                <div class="label">@s:</div>
+                <div class="value">20</div>
+            </div>
+            <div class="row" id="counts-dms">
+                <div class="label">DMs:</div>
+                <div class="value">20</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

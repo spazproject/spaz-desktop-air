@@ -6,9 +6,12 @@ function SpazPostPanel(opts) {
 	this.container = opts.container || document.getElementById('entryform');
 	this.textarea  = opts.textarea  || document.getElementById('entrybox');
 	this.counter   = opts.counter   || document.getElementById('chars-left-count');
-	this.irt_container = opts.irt_container || document.getElementById('irt');
-	this.irt_message = opts.irt_message || document.getElementById('irt-message');
-	this.irt_id_attr   = opts.irt_id_attr   || 'data-status-id';
+	this.counter_desc   = opts.counter_desc   || document.getElementById('chars-left-description');
+	this.irt_container  = opts.irt_container  || document.getElementById('irt');
+	this.$irt_container = jQuery(this.irt_container);
+	this.irt_message    = opts.irt_message    || document.getElementById('irt-message');
+	this.$irt_message   = jQuery(this.irt_message);
+	this.irt_id_attr    = opts.irt_id_attr    || 'data-status-id';
 	this.menu      = opts.menu      || null;
 	this.maxlen    = opts.maxlen    || 140;
 	this.on_over   = opts.on_over   || this.on_over_default;
@@ -27,6 +30,17 @@ function SpazPostPanel(opts) {
 		var curr_count = thisPP.textarea.value.length;
 		var left = thisPP.maxlen - curr_count;
 		thisPP.counter.innerText = left.toString();
+
+		// Fix "chars left" pluralization. For speed, this uses the
+		// `counter_desc_is_singular` flag to modify the DOM only when needed,
+		// not on every update.
+		if(thisPP.counter_desc_is_singular){
+		  thisPP.counter_desc.innerText = 'chars left';
+		  thisPP.counter_desc_is_singular = false;
+		}else if(Math.abs(left) === 1){
+		  thisPP.counter_desc.innerText = 'char left';
+		  thisPP.counter_desc_is_singular = true;
+		}
 	
 	
 		var info = {
@@ -39,7 +53,7 @@ function SpazPostPanel(opts) {
 	
 		if (left < 0) {
 			thisPP.on_over.call(thisPP.textarea, info);
-		} else if (left >= 0) {
+		} else {
 			thisPP.on_under.call(thisPP.textarea, info);
 		}
 
@@ -79,7 +93,7 @@ SpazPostPanel.prototype.prepReply = function(username, status_id, status_text) {
 SpazPostPanel.prototype.prepRetweet = function(screenname, text) {
 	this.clearPostIRT();
 	this.textarea.focus();
-	var text = 'RT @' + screenname + ': '+text+'';
+	text = 'RT @' + screenname + ': '+text+'';
 	this.setMessageText(text);
 };
 
@@ -105,6 +119,7 @@ SpazPostPanel.prototype.prepPhotoPost = function(url) {
 	var text = url + ' ';
 
 	this.setMessageText(text);
+	return text;
 };
 
 
@@ -112,9 +127,9 @@ SpazPostPanel.prototype.prepPhotoPost = function(url) {
 SpazPostPanel.prototype.clearPostIRT = function() {
 	this.irt_status = '';
 	this.irt_status_id = 0;
-	jQuery(this.irt_container).hide();
-	jQuery(this.irt_message).attr(this.irt_id_attr, this.irt_status_id)
-							.text(this.irt_status);
+	this.$irt_container.hide();
+	this.$irt_message.attr(this.irt_id_attr, this.irt_status_id)
+		.text(this.irt_status);
 };
 
 
@@ -132,15 +147,15 @@ SpazPostPanel.prototype.setPostIRT = function(status_id, status_text) {
 	
 	if (status_id) {
 		this.irt_status_id = status_id;
-		jQuery(this.irt_container).show();
-		jQuery(this.irt_message).attr(this.irt_id_attr, this.irt_status_id)
-								.text(this.irt_status_id);
+		this.$irt_container.show();
+		this.$irt_message.attr(this.irt_id_attr, this.irt_status_id)
+			.text(this.irt_status_id);
 
 	}
 	
 	if (status_text) {
 		this.irt_status = status_text;
-		jQuery(this.irt_message).text(this.irt_status);
+		this.$irt_message.text(this.irt_status);
 	}
 	
 };
@@ -202,7 +217,7 @@ SpazPostPanel.prototype.shortenText = function() {
 };
 
 SpazPostPanel.prototype.shortenURLs = function() {
-	
+    
 	var thisPP = this;
 	
 	var event_target = this.textarea;
@@ -210,6 +225,9 @@ SpazPostPanel.prototype.shortenURLs = function() {
 	var surl = new SpazShortURL(this.shortlink_service);
 	
 	var longurls = sc.helpers.extractURLs(this.getMessageText());
+
+    sch.error(this.getMessageText());
+    sch.error(longurls);
 
 	/*
 		check URL lengths
@@ -228,11 +246,10 @@ SpazPostPanel.prototype.shortenURLs = function() {
 		return;
 	}
 	
-	function onShortURLSuccess(e) {
+	function onShortURLSuccess(e, data) {
 		Spaz.UI.statusBar('URLs shortened');
 		Spaz.UI.hideLoading();		
 		
-		var data = sch.getEventData(e);
 		var newtext = sc.helpers.replaceMultiple(thisPP.getMessageText(), data);
 		thisPP.setMessageText(newtext); 
 		thisPP.updateCharCount();
