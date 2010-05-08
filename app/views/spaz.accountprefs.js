@@ -11,7 +11,15 @@ Spaz.AccountPrefs.init = function(){
 	this.checkboxes = ['twitter-disable-direct-posting', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
 	
 	
-	var that = this;
+	var that = this,
+			$accountList    = $('#account-list'),
+			$accountDetails = $('#account-details'),
+			$idEdit         = $('#id_edit'),
+			$username       = $('#username'),
+			$password       = $('#password'),
+			$accountType    = $('#account-type'),
+			$saveAccountButton    = $('#save_account_button'),
+			$cancelAccountButton  = $('#cancel_account_button');
 	
 	
 	
@@ -20,7 +28,7 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind click on account
 		 */
-		$('#account-list').change(function(e){
+		$accountList.change(function(e){
 			var account_id = $(this).val();
 			if (account_id != Spaz.Prefs.getCurrentUserId()) {
 				Spaz.Prefs.setCurrentUserId(account_id);
@@ -34,25 +42,25 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind [+] button to popup
 		 */
-		$('.add-button').click(function(){
+		$('.add-account').click(function(){
 		
 			sch.debug('ADD BUTTON CLICKED');
 			
-			$('#save_account_button').unbind('click');
-			$('#cancel_account_button').unbind('click');
+			$saveAccountButton.unbind('click');
+			$cancelAccountButton.unbind('click');
 			
 			sch.debug('SHOW #account-details');
 			Spaz.UI.openPopboxInline('#account-details');
 			
-			sch.debug($('#account-details').get(0).outerHTML);
+			sch.debug($accountDetails.get(0).outerHTML);
 			
 			/*
 			 populate form
 			 */
-			$('#id_edit').val('');
-			$('#username').val('');
-			$('#password').val('');
-			$('#account-type').val(SPAZCORE_ACCOUNT_TWITTER);
+			$idEdit.val('');
+			$username.val('');
+			$password.val('');
+			$accountType.val(SPAZCORE_ACCOUNT_TWITTER);
 			
 			/*
 			 populate meta
@@ -69,8 +77,8 @@ Spaz.AccountPrefs.init = function(){
 			/*
 			 bind save button
 			 */
-			$('#save_account_button').bind('click', function(){
-				var newaccid = Spaz.AccountPrefs.add($('#username').val(), $('#password').val(), $('#account-type').val()).id;
+			$saveAccountButton.click(function(){
+				var newaccid = Spaz.AccountPrefs.add($username.val(), $password.val(), $accountType.val()).id;
 				var val;
 				for (var i = 0; i < that.metavals.length; i++) {
 					if (that.checkboxes.indexOf(that.metavals[i]) !== -1) { // is a checkbox
@@ -89,7 +97,7 @@ Spaz.AccountPrefs.init = function(){
 			/*
 			 bind cancel button
 			 */
-			$('#cancel_account_button').bind('click', function(){
+			$cancelAccountButton.click(function(){
 				Spaz.UI.closePopbox();
 			});
 		});
@@ -97,7 +105,7 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind the [-] button
 		 */
-		$('#del-button').click(function(){
+		$('#del-account').click(function(){
 			var id = Spaz.AccountPrefs.getSelectedId();
 			if (id) {
 				var deleted = that.spaz_acc.remove(id);
@@ -113,10 +121,10 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind the [edit] button to modal
 		 */
-		$('#edit-button').click(function(){
+		$('#edit-account').click(function(){
 		
-			$('#save_account_button').unbind('click');
-			$('#cancel_account_button').unbind('click');
+			$saveAccountButton.unbind('click');
+			$cancelAccountButton.unbind('click');
 			
 			
 			var id = Spaz.AccountPrefs.getSelectedId();
@@ -129,10 +137,10 @@ Spaz.AccountPrefs.init = function(){
 				/*
 				 populate form
 				 */
-				$('#id_edit').val(editing.id);
-				$('#username').val(editing.username);
-				$('#password').val(editing.password);
-				$('#account-type').val(editing.type);
+				$idEdit.val(editing.id);
+				$username.val(editing.username);
+				$password.val(editing.password);
+				$accountType.val(editing.type);
 				
 				/*
 				 populate meta
@@ -152,15 +160,15 @@ Spaz.AccountPrefs.init = function(){
 				/*
 				 bind save button
 				 */
-				$('#save_account_button').click(function(){
-					var editedaccid = Spaz.AccountPrefs.edit($('#id_edit').val(), {
-						'username': $('#username').val(),
-						'password': $('#password').val(),
-						'type': $('#account-type').val()
+				$saveAccountButton.click(function(){
+					var editedaccid = Spaz.AccountPrefs.edit($idEdit.val(), {
+						'username': $username.val(),
+						'password': $password.val(),
+						'type': $accountType.val()
 					}).id;
 					
 					var val;
-					for (var i = 0; i < that.metavals.length; i++) {
+					for (var i = 0, iMax = that.metavals.length; i < iMax; i++) {
 						if (that.checkboxes.indexOf(that.metavals[i]) !== -1) {
 							val = !!($('#' + that.metavals[i] + ':checked').length) || false;
 						}
@@ -176,7 +184,7 @@ Spaz.AccountPrefs.init = function(){
 				/*
 				 bind cancel button
 				 */
-				$('#cancel_account_button').click(function(){
+				$cancelAccountButton.click(function(){
 					Spaz.UI.closePopbox();
 					
 				});
@@ -193,13 +201,8 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 if "custom" is set for type, showthe api-base-url row
 		 */
-		$('#account-type').change(function(){
-			if ($('#account-type').val() === 'custom') {
-				$("#twitter-api-base-url-row").show();
-			}
-			else {
-				$('#twitter-api-base-url-row').hide();
-			}
+		$accountType.change(function(){
+			$('#twitter-api-base-url-row').toggle($accountType.val() === 'custom');
 		});
 		
 		
@@ -210,14 +213,22 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 Load data into GUI
 		 */
-		for (var i = 0; i < Spaz.AccountPrefs.spaz_acc._accounts.length; i++) {
-			var thisacc = Spaz.AccountPrefs.spaz_acc._accounts[i];
-			var html = "<option value='" + thisacc.id + "'>" + thisacc.username + "@" + thisacc.type + "</option>";
-			$('#account-list').append(html);
-		};
+		$accountList.append((function(){
+			var accts = Spaz.AccountPrefs.spaz_acc._accounts, acct,
+					options = [];
+			for(var i = 0, iMax = accts.length; i < iMax; i++){
+				acct = accts[i];
+				options.push([
+					"<option value='", acct.id, "'>",
+						acct.username, "@", acct.type,
+					"</option>"
+				].join(''));
+			}
+			return options.join('');
+		})());
 
 		// Clean up UI
-		$('#account-details').hide();
+		$accountDetails.hide();
 		$('#twitter-api-base-url-row').hide();
 		Spaz.AccountPrefs.toggleCTA();
 		
@@ -264,11 +275,5 @@ Spaz.AccountPrefs.toggleCTA = function(){
 
 
 Spaz.AccountPrefs.getSelectedId = function(){
-	var val = $("#account-list").val();
-	if (val) {
-		return val;
-	}
-	else {
-		return null;
-	}
+	return $('#account-list').val() || null;
 };
