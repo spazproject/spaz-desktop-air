@@ -31,8 +31,8 @@ Spaz.DB.init = function() {
 		create2.sqlConnection = conn;
 		create2.execute();
 
-		Spaz.Accounts.checkForFirstTimeUse();
-		Spaz.UI.generateAccountsMenu();
+		// Spaz.Accounts.checkForFirstTimeUse();
+		// Spaz.UI.generateAccountsMenu();
 	};
 	conn.addEventListener(air.SQLEvent.OPEN, initListener);
 
