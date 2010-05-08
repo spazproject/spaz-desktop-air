@@ -69,6 +69,17 @@ Spaz.Prefs.defaultPreferences = {
 	'timeline-dm-getcount': 10,
 	'timeline-keyboardnavwrap': false,
 
+	'timeline-home-pager-count-max': 200, //max allowed by twitter api
+	'timeline-home-pager-count': 50, //setting via adjustable prefs
+	'timeline-direct-pager-count-max': 200,
+	'timeline-direct-pager-count': 25,
+	'timeline-replies-pager-count-max': 200,
+	'timeline-replies-pager-count': 25,
+	'timeline-user-pager-count-max': 200,
+	'timeline-user-pager-count': 50,
+	'timeline-search-pager-count-max': 100,
+	'timeline-search-pager-count': 50,
+
 	'screennames-cache-max': 150,
 
 	'checkupdate': true,
