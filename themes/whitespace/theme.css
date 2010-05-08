@@ -32,17 +32,13 @@ a, a:link, .clickable {
 	cursor:pointer;
 }
 
-/*
-	the .even and .odd classes are really only used in the timelines, but 
-	they're usedful and probably could be reused elsewhere.
-*/
-.odd {
+div.timeline-entry:nth-child(odd){
 	background-color: #FFFFFF;
 	border-top-color: transparent;
 	background-image: transparent;
 	background-repeat: repeat-x;
 }
-.even {
+div.timeline-entry:nth-child(even){
 	background-color: #FFFFFF;
 	border-top-color: transparent;
 	background-image: transparent;

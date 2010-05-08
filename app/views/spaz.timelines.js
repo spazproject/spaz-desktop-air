@@ -338,9 +338,6 @@ var FriendsTimeline = function() {
 			$('#filter-friends').trigger('keyup');
 			
 			sch.updateRelativeTimes($timeline.selector + ' .status-created-at', 'data-created-at');
-			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
-			$timeline.find('div.timeline-entry:even').addClass('even');
-			$timeline.find('div.timeline-entry:odd').addClass('odd');
 			
 			/*
 				get new set of usernames
@@ -503,9 +500,6 @@ var PublicTimeline = function(args) {
 
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // public are never "new"
 			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
-			$timeline.find('div.timeline-entry:even').addClass('even');
-			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -629,9 +623,6 @@ var FavoritesTimeline = function(args) {
 
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
 			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
-			$timeline.find('div.timeline-entry:even').addClass('even');
-			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -753,9 +744,6 @@ var UserTimeline = function(args) {
 
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
 			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
-			$timeline.find('div.timeline-entry:even').addClass('even');
-			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -923,9 +911,6 @@ var UserlistsTimeline = function(args) {
 			
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // user is never "new"
 			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
-			$timeline.find('div.timeline-entry:even').addClass('even');
-			$timeline.find('div.timeline-entry:odd').addClass('odd');
 			
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -1200,9 +1185,6 @@ var SearchTimeline = function(args) {
 
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // search are never "new"
 			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
-			$timeline.find('div.timeline-entry:even').addClass('even');
-			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
@@ -1289,10 +1271,6 @@ var FollowersTimeline = function(args) {
 
 			$timelineWrapper.children('.loading').hide();
 			thisFLT.timeline.addItems(no_dupes);
-
-			$timeline.find('div.timeline-entry').removeClass('even').removeClass('odd');
-			$timeline.find('div.timeline-entry:even').addClass('even');
-			$timeline.find('div.timeline-entry:odd').addClass('odd');
 
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");

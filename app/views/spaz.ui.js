@@ -1413,32 +1413,16 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
         Make this non-blocking
     */
     Spaz.Timers.add(function() {
-        time.start('removeEvenOdd-convertPostTimes');
-
-        $("#" + timelineid + ' .timeline-entry').removeClass('even').removeClass('odd');
+        time.start('convertPostTimes');
 
         $("#" + timelineid + ' a.status-created-at').each(function(i) {
             $(this).text(sch.get_relative_time($(this).attr('data-created-at')));
         });
-        time.stop('removeEvenOdd-convertPostTimes');
+        time.stop('convertPostTimes');
         return false;
     });
 
 
-
-    /*
-        Make this non-blocking
-    */
-    Spaz.Timers.add(function() {
-        time.start('applyEvenOdd');
-        // apply even class
-        $("#" + timelineid + ' .timeline-entry:nth-child(even)').addClass('even');
-
-        // apply odd class
-        $("#" + timelineid + ' .timeline-entry:nth-child(odd)').addClass('odd');
-        time.stop('applyEvenOdd');
-        return false;
-    });
 
     /*
         Make this non-blocking

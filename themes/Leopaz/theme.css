@@ -42,15 +42,13 @@ input[type=password]:focus,
   border-bottom:1px dotted #884;
 }
 
-/*
-	the .even and .odd classes are really only used in the timelines, but 
-	they're useful and probably could be reused elsewhere.
-*/
-.odd{
-	background:#f1f5fa;
+/*** Global > Zebra striping ***/
+
+div.timeline-entry:nth-child(odd){
+  background:#f1f5fa;
 }
-.even{
-	background:#fff;
+div.timeline-entry:nth-child(even){
+  background:#fff;
 }
 
 /*** Global > Animations ***/
