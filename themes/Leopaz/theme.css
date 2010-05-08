@@ -1761,4 +1761,39 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
   height:auto !important;
   border-radius:4px;
     -webkit-border-radius:4px;
+  opacity:0.5 !important;
+}
+#DOMWindow{
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(91, 91, 91, 0.9)), to(rgba(40, 40, 40, 0.9)),
+    color-stop(0.05, rgba(65, 65, 65, 0.9)),
+    color-stop(0.05, rgba(52, 52, 52, 0.9))
+    ) !important;
+  border:2px solid rgba(60, 60, 60, 0.9) !important;
+  border-bottom-color:rgba(0, 0, 0, 0.9) !important;
+  border-radius:4px;
+    -webkit-border-radius:4px;
+}
+div#popbox-content-conversation{
+  background:transparent;
+  font-family:inherit;
+}
+div#popbox-content-conversation h1{
+  background:transparent;
+  border-top:1px solid rgba(255, 255, 255, 0.25);
+  border-radius:3px;
+    -webkit-border-radius:3px;
+  font-size:14px;
+  font-weight:normal;
+}
+div#popbox-content-conversation #timeline-conversation{
+  max-height:340px;
+  overflow:auto;
+  border:2px solid rgba(255, 255, 255, 0.25);
+  border-top:2px solid #000;
+  border-left:2px solid #000;
+}
+div#popbox-content-conversation #timeline-conversation div.timeline-entry{
+  outline:0;
 }
