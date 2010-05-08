@@ -17,7 +17,6 @@ Spaz.AccountPrefs.init = function(){
 	
 	$().ready(function(){
 	
-	
 		/*
 		 bind click on account
 		 */
@@ -35,7 +34,7 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind [+] button to popup
 		 */
-		$('#add_button').click(function(){
+		$('.add-button').click(function(){
 		
 			sch.debug('ADD BUTTON CLICKED');
 			
@@ -98,11 +97,12 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind the [-] button
 		 */
-		$('#del_button').click(function(){
+		$('#del-button').click(function(){
 			var id = Spaz.AccountPrefs.getSelectedId();
 			if (id) {
 				var deleted = that.spaz_acc.remove(id);
 				$('option[value="' + id + '"]').remove();
+				Spaz.AccountPrefs.toggleCTA();
 			}
 			else {
 				sch.error('Nothing selected to delete');
@@ -113,7 +113,7 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind the [edit] button to modal
 		 */
-		$('#edit_button').click(function(){
+		$('#edit-button').click(function(){
 		
 			$('#save_account_button').unbind('click');
 			$('#cancel_account_button').unbind('click');
@@ -215,16 +215,11 @@ Spaz.AccountPrefs.init = function(){
 			var html = "<option value='" + thisacc.id + "'>" + thisacc.username + "@" + thisacc.type + "</option>";
 			$('#account-list').append(html);
 		};
-		
-		
-		
-		
-		/*
-		 hide some junk
-		 */
+
+		// Clean up UI
 		$('#account-details').hide();
 		$('#twitter-api-base-url-row').hide();
-		
+		Spaz.AccountPrefs.toggleCTA();
 		
 	});
 	
@@ -240,6 +235,7 @@ Spaz.AccountPrefs.add = function(username, password, type){
 	sch.debug(newacct);
 	var html = "<option value='" + newacct.id + "'>" + newacct.username + "@" + newacct.type + "</option>";
 	$('#account-list').append(html);
+	Spaz.AccountPrefs.toggleCTA();
 	sch.debug("Added:");
 	sch.debug(newacct);
 	return newacct;
@@ -252,6 +248,17 @@ Spaz.AccountPrefs.edit = function(id, acctobj){
 	sch.debug("Edited:");
 	sch.debug(savedacct);
 	return savedacct;
+};
+
+Spaz.AccountPrefs.toggleCTA = function(){
+  // Show the special CTA if this is a new Spaz user
+
+  // var anyAccts = Spaz.DB.getUserCount() <= 0,
+  var anyAccts  = !!$('#account-list option')[0], // at least one
+      $fieldset = $('#account-list-fieldset');
+  $fieldset.find('div.formrow.cta').toggle(!anyAccts);
+  $fieldset.find('div.formrow:not(.cta)').toggle(anyAccts);
+    // `.siblings()` didn't chain properly here for some reason.
 };
 
 

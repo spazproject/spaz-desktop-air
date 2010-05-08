@@ -1432,6 +1432,13 @@ body:not(.active) #panel-prefs .timeline-wrapper{
               #prefs-form .relaunch-required{
                 color:#c00;
               }
+              #prefs-form #account-list-fieldset div.formrow.cta{
+                padding:33px 0;
+                text-align:center;
+              }
+              #prefs-form #account-list-fieldset select#account-list{
+                width:100%;
+              }
 
               /*** Preferences > Controls ***/
 

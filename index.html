@@ -420,16 +420,20 @@
 										<div class="CollapsiblePanelContent">
 											
 											<fieldset id="account-list-fieldset">
-												<legend>Account List</legend>
+												<div class="formrow cta">
+													<input type="button" class="add-button"
+														name="add-button" value="Set up your account" />
+												</div>
+
 												<div class="formrow">
-													<select name="account-list" id="account-list" size="8">
+													<select name="account-list" id="account-list" size="4">
 													</select>
 												</div>
 
 												<div class="formrow">
-													<input type="button" name="add_button" value="+" id="add_button">
-													<input type="button" name="del_button" value="-" id="del_button">
-													<input type="button" name="edit_button" value="edit" id="edit_button">
+													<input type="button" name="add-button" value="+" class="add-button">
+													<input type="button" name="del-button" value="-" id="del-button">
+													<input type="button" name="edit-button" value="edit" id="edit-button">
 												</div>
 											</fieldset>
 											
@@ -666,7 +670,7 @@
 												</div>
 											</fieldset>
 											<fieldset>
-												<legend>Show notifications for </legend>
+												<legend>Show notifications for</legend>
 												<div class="formrow">
 													<input type="checkbox" name="notify-messages" value="1" id="notify-messages" />
 													<label for="notify-messages" class="checkbox">
