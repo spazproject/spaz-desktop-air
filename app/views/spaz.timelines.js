@@ -7,17 +7,17 @@ if (!Spaz.Timelines) Spaz.Timelines = {};
  * options used for makeClickable calls 
  */
 var SPAZ_MAKECLICKABLE_OPTS = {
- 	'autolink': {
- 		'type'      :'both',
- 		'extra_code':'',
- 		'maxlen'    :100
- 	},
- 	'screenname': {
- 		'tpl':'<span class="user-screen-name clickable" title="View user\'s profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
- 	},
- 	'hashtag': {
- 		'tpl':'<span class="hashtag clickable" title="Search for this hashtag" data-hashtag="#hashtag_enc#">##hashtag#</span>' // should contain macros '#hashtag#' and '#hashtag_enc#'
- 	}
+	'autolink': {
+		'type'		:'both',
+		'extra_code':'',
+		'maxlen'	:100
+	},
+	'screenname': {
+		'tpl':'<span class="user-screen-name clickable" title="View user\'s profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
+	},
+	'hashtag': {
+		'tpl':'<span class="hashtag clickable" title="Search for this hashtag" data-hashtag="#hashtag_enc#">##hashtag#</span>' // should contain macros '#hashtag#' and '#hashtag_enc#'
+	}
 };
 
 //'';
@@ -118,9 +118,9 @@ AppTimeline.prototype.getTimelineSelector = function() {
 AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 	
 	var items = jQuery( this.getEntrySelector() );
-	var itemAttrs   = [];
+	var itemAttrs	= [];
 	var itemsSorted = [];
-	var sortedHTML  = '';
+	var sortedHTML	= '';
 	var sortfunc = sortfunc || function(a,b){return b.sortval - a.sortval;};
 	
 	for ( i = 0; i < items.length; i++ ) {
@@ -129,7 +129,7 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 			'id':jqitem.attr(idattr),
 			'sortval':jqitem.attr(sortattr)
 		};
-	    itemAttrs.push(attrobj);
+		itemAttrs.push(attrobj);
 	}
 
 	itemAttrs.sort( sortfunc );
@@ -142,7 +142,7 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 		// sch.error(itemjq.length);
 		var itemhtml = itemjq.get(0).outerHTML;
 		// sch.error(itemhtml);
-	    itemsSorted.push(itemhtml);
+		itemsSorted.push(itemhtml);
 	}
 	
 	sortedHTML = '<div>'+itemsSorted.join('')+'</div>';
@@ -161,11 +161,17 @@ AppTimeline.prototype.refresh = function() {
  */
 var FriendsTimeline = function() {
 	
-	var thisFT           = this,
-	$timeline        = $('#timeline-friends'),
+	var thisFT			 = this,
+	$timeline		 = $('#timeline-friends'),
 	$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	this.shurl = new SpazShortURL();
+
+	var maxFT = {
+		'home': Spaz.Prefs.get('timeline-home-pager-count-max'),
+		'direct': Spaz.Prefs.get('timeline-direct-pager-count-max'),
+		'replies': Spaz.Prefs.get('timeline-replies-pager-count-max')
+	};
 
 	/*
 		set up the Friends timeline
@@ -179,16 +185,29 @@ var FriendsTimeline = function() {
 		'event_target' :document,
 		
 		'refresh_time':Spaz.Prefs.get('network-refreshinterval'),
-		'max_items':300,
+		'max_items': (maxFT.home + maxFT.direct + maxFT.replies),
 
 		'request_data': function() {
 			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // just add .read to the entries
 			var username = Spaz.Prefs.getUsername();
 			var password = Spaz.Prefs.getPassword();
+
+			var count = {
+				'home': Spaz.Prefs.get('timeline-home-pager-count'),
+				'direct': Spaz.Prefs.get('timeline-direct-pager-count'),
+				'replies': Spaz.Prefs.get('timeline-replies-pager-count')
+			};
+
+			var com_opts = {
+				'home_count': (count.home > maxFT.home ? maxFT.home : count.home),
+				'dm_count': (count.direct > maxFT.direct ? maxFT.direct : count.direct),
+				'replies_count': (count.replies > maxFT.replies ? maxFT.replies : count.replies)
+			};
+
 			thisFT.twit.setCredentials(username, password);
 			thisFT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
-			thisFT.twit.getCombinedTimeline();
+			thisFT.twit.getCombinedTimeline(com_opts);
 			Spaz.UI.statusBar("Loading friends timeline");
 			Spaz.UI.showLoading();
 			
@@ -259,8 +278,8 @@ var FriendsTimeline = function() {
 			/*
 				Record old scroll position
 			*/
-			var $oldFirst     = $timeline.find('div.timeline-entry:first'),
-			    offset_before = $oldFirst.offset().top;
+			var $oldFirst	  = $timeline.find('div.timeline-entry:first'),
+				offset_before = $oldFirst.offset().top;
 
 			/*
 				Add new items
@@ -304,10 +323,10 @@ var FriendsTimeline = function() {
 			*/
 			// var exp_urls = [];
 			// for (var i=0; i < no_dupes.length; i++) {
-			// 	urls = thisFT.shurl.findExpandableURLs(no_dupes[i].text);
-			// 	if (urls) {
-			// 		exp_urls = exp_urls.concat(urls);
-			// 	}
+			//	urls = thisFT.shurl.findExpandableURLs(no_dupes[i].text);
+			//	if (urls) {
+			//		exp_urls = exp_urls.concat(urls);
+			//	}
 			// };
 			// 
 			// thisFT.shurl.expandURLs(exp_urls, thisFT.timeline.container);
@@ -418,9 +437,9 @@ FriendsTimeline.prototype.reset = function() {
  */
 var PublicTimeline = function(args) {
 	
-	var thisPT           = this,
-	    $timeline        = $('#timeline-public'),
-	    $timelineWrapper = $timeline.parent();
+	var thisPT			 = this,
+		$timeline		 = $('#timeline-public'),
+		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	/*
@@ -537,9 +556,9 @@ PublicTimeline.prototype = new AppTimeline();
  */
 var FavoritesTimeline = function(args) {
 	
-	var thisFVT          = this,
-	    $timeline        = $('#timeline-favorites'),
-	    $timelineWrapper = $timeline.parent();
+	var thisFVT			 = this,
+		$timeline		 = $('#timeline-favorites'),
+		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	/*
@@ -659,11 +678,13 @@ FavoritesTimeline.prototype = new AppTimeline();
  */
 var UserTimeline = function(args) {
 	
-	var thisUT           = this,
-	    $timeline        = $('#timeline-user'),
-	    $timelineWrapper = $timeline.parent();
+	var thisUT			 = this,
+		$timeline		 = $('#timeline-user'),
+		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
-	
+
+	var maxUT = Spaz.Prefs.get('timeline-user-pager-count-max');
+
 	/*
 		set up the user timeline
 	*/
@@ -676,14 +697,19 @@ var UserTimeline = function(args) {
 		'event_target' :document,
 		
 		'refresh_time':1000*60*30, // 30 minutes
-		'max_items':100,
+		'max_items': maxUT,
 
 		'request_data': function() {
 			thisUT.markAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUsername();
 			var password = Spaz.Prefs.getPassword();
+
+			var countmax = thisUT.timeline.max_items;
+			var count = Spaz.Prefs.get('timeline-user-pager-count');
+			count = (count > maxUT ? maxUT : count);
+
 			thisUT.twit.setCredentials(username, password);
-			thisUT.twit.getUserTimeline(username);
+			thisUT.twit.getUserTimeline(username, count);
 			Spaz.UI.statusBar("Loading user timeline");
 			Spaz.UI.showLoading();
 		},
@@ -780,9 +806,9 @@ UserTimeline.prototype = new AppTimeline();
  */
 var UserlistsTimeline = function(args) {
 		
-	var thisULT           = this,
-	    $timeline        = $('#timeline-userlists'),
-	    $timelineWrapper = $timeline.parent();
+	var thisULT			  = this,
+		$timeline		 = $('#timeline-userlists'),
+		$timelineWrapper = $timeline.parent();
 	
 	this.twit = new SpazTwit();
 	
@@ -835,7 +861,7 @@ var UserlistsTimeline = function(args) {
 				$timelineWrapper.children('.intro').hide();
 
 				var username = Spaz.Prefs.getUsername(),
-				    password = Spaz.Prefs.getPassword();
+					password = Spaz.Prefs.getPassword();
 				thisULT.twit.setCredentials(username, password);
 				thisULT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 				thisULT.twit.getListTimeline(thisULT.list.slug, thisULT.list.user);
@@ -973,8 +999,8 @@ var UserlistsTimeline = function(args) {
 					},
 					'onclick':function(e) {
 						var $this = $(this),
-						    slug  = $this.attr('data-list-slug'),
-						    user  = $this.attr('data-user-screen_name');
+							slug  = $this.attr('data-list-slug'),
+							user  = $this.attr('data-user-screen_name');
 						thisULT.setlist(slug, user);
 					}
 				}
@@ -1023,13 +1049,13 @@ var UserlistsTimeline = function(args) {
 					thank you http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another
 				*/
 				var $this		= $(this),
-						pos 		= $this.offset(),
+						pos			= $this.offset(),
 						height	= $this.height(),
 						width		= $this.width();
 				$menu.css({
 					position: 'absolute',
-					left:     pos.left + 'px',
-					top:      (pos.top + height) + 'px'
+					left:	  pos.left + 'px',
+					top:	  (pos.top + height) + 'px'
 				}).show();
 				
 				$(document).one('click', function() {
@@ -1065,15 +1091,16 @@ UserlistsTimeline.prototype = new AppTimeline();
  */
 var SearchTimeline = function(args) {
 	
-	var thisST           = this,
-	    $timeline        = $('#timeline-search'),
-	    $timelineWrapper = $timeline.parent();
+	var thisST			 = this,
+		$timeline		 = $('#timeline-search'),
+		$timelineWrapper = $timeline.parent();
 	
 	this.query = null;
 	this.lastquery = null;
 	
 	this.twit = new SpazTwit();
 	
+	var maxST = Spaz.Prefs.get('timeline-search-pager-count-max');
 	/*
 		set up the public timeline
 	*/
@@ -1088,10 +1115,13 @@ var SearchTimeline = function(args) {
 		
 		
 		'refresh_time':1000*60*15, // 15 minutes
-		'max_items':100,
+		'max_items': maxST,
 
 		'request_data': function() {
 			var $searchInput = jQuery('#search-for');
+			var count = Spaz.Prefs.get('timeline-search-pager-count');
+			count = (count > maxST ? maxST : count);
+
 			if ($searchInput.val().length > 0) {
 				thisST.query = $searchInput.val();
 
@@ -1115,7 +1145,7 @@ var SearchTimeline = function(args) {
 				thisST.markAsRead($timeline.selector + ' div.timeline-entry');
 				
 				twitST.setBaseURLByService(Spaz.Prefs.getAccountType());
-				thisST.twit.search(thisST.query);
+				thisST.twit.search(thisST.query, null, count);
 				thisST.lastquery = thisST.query;
 			}
 		},
@@ -1163,8 +1193,8 @@ var SearchTimeline = function(args) {
 					}
 					
 					// if (Spaz.Prefs.get('usemarkdown')) {
-					// 	data[i].text = md.makeHtml(data[i].text);
-					// 	data[i].text = data[i].text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
+					//	data[i].text = md.makeHtml(data[i].text);
+					//	data[i].text = data[i].text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
 					// }
 					
 					no_dupes.push(data[i]);
@@ -1218,9 +1248,9 @@ SearchTimeline.prototype = new AppTimeline();
  */
 var FollowersTimeline = function(args) {
 	
-	var thisFLT          = this,
-	    $timeline        = $('#timeline-followerslist'),
-	    $timelineWrapper = $timeline.parent();
+	var thisFLT			 = this,
+		$timeline		 = $('#timeline-followerslist'),
+		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
 	/*
@@ -1301,17 +1331,17 @@ FollowersTimeline.prototype = new AppTimeline();
  * Initialize the timelines 
  */
 Spaz.Timelines.init = function() {
-	Spaz.Timelines.friends   = new FriendsTimeline();
-	Spaz.Timelines.user      = new UserTimeline();
-	Spaz.Timelines.public    = new PublicTimeline();
-	Spaz.Timelines.favorites    = new FavoritesTimeline();
-	Spaz.Timelines.userlists    = new UserlistsTimeline();
-	Spaz.Timelines.search    = new SearchTimeline();
+	Spaz.Timelines.friends	 = new FriendsTimeline();
+	Spaz.Timelines.user		 = new UserTimeline();
+	Spaz.Timelines.public	 = new PublicTimeline();
+	Spaz.Timelines.favorites	= new FavoritesTimeline();
+	Spaz.Timelines.userlists	= new UserlistsTimeline();
+	Spaz.Timelines.search	 = new SearchTimeline();
 	Spaz.Timelines.followers = new FollowersTimeline();
 	
 	Spaz.Timelines.map = {
 		'friends':Spaz.Timelines.friends,
-		'user':   Spaz.Timelines.user,
+		'user':	  Spaz.Timelines.user,
 		'public': Spaz.Timelines.public,
 		'userlists':   Spaz.Timelines.userlists,
 		'favorites':   Spaz.Timelines.favorites,
