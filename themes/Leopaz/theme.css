@@ -1124,6 +1124,10 @@ div.timeline-entry:hover{
     div.timeline-entry div.status-thumbnails{
       margin:0 0 4px;
     }
+    div.timeline-entry div.status-thumbnails img{
+      border-radius:4px;
+        -webkit-border-radius:4px;
+    }
     div.timeline-entry.read:not(.ui-selected) div.status-thumbnails{
       float:left;
       height:24px !important;
