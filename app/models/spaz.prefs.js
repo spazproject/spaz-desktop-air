@@ -2,8 +2,8 @@ var Spaz;
 if (!Spaz) { Spaz = {}; };
 
 /***********
-  Spaz.Prefs
- ************/
+ Spaz.Prefs
+************/
 if (!Spaz.Prefs) Spaz.Prefs = {};
 
 
@@ -119,11 +119,11 @@ Spaz.Prefs.defaultPreferences = {
 // this maps methods to pref keys that should be
 // called when they are changed
 /*
-   the methods:
-   setUI: sets the exposed prefs UI for this preference
-   onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
-   check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
-   setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
+	the methods:
+	setUI: sets the exposed prefs UI for this preference
+	onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
+	check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
+	setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
 */
 Spaz.Prefs.changeMethods = {
 	'usemarkdown': {
@@ -536,15 +536,15 @@ Spaz.Prefs.changeMethods = {
 
 				switch (value) {
 
-					case 'identica':
-						var baseurl = 'http://identi.ca/';
-						var apiurl = 'http://identi.ca/api/';
-						break;
+				case 'identica':
+					var baseurl = 'http://identi.ca/';
+					var apiurl = 'http://identi.ca/api/';
+					break;
 
-					default:
-						var baseurl = 'http://twitter.com/';
-						var apiurl = 'https://twitter.com/';
-						break;
+				default:
+					var baseurl = 'http://twitter.com/';
+					var apiurl = 'https://twitter.com/';
+					break;
 				}
 				Spaz.Prefs.set('twitter-api-base-url', apiurl);
 				Spaz.Prefs.changeMethods['twitter-api-base-url'].setUI(apiurl);
