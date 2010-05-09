@@ -335,7 +335,62 @@ onSet: function(key, value) {
 		   return !!value;
 	   }
 	},
-
+	'timeline-home-pager-count': {
+setUI: function(value) {},
+onGet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   },
+onSet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   }
+	},
+	'timeline-direct-pager-count': {
+setUI: function(value) {},
+onGet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   },
+onSet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   }
+	},
+	'timeline-replies-pager-count': {
+setUI: function(value) {},
+onGet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   },
+onSet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   }
+	},
+	'timeline-user-pager-count': {
+setUI: function(value) {},
+onGet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   },
+onSet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   }
+	},
+	'timeline-search-pager-count': {
+setUI: function(value) {},
+onGet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   },
+onSet: function(key, value) {
+		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+		   return parseInt(value) < max ? parseInt(value) : max;
+	   }
+	},
+	
 	// 'theme-userstylesheet':{
 	//	setUI: function(value){
 	//		$('#theme-userstylesheet').val(Spaz.Prefs.get('theme-userstylesheet'));
