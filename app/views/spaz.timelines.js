@@ -872,33 +872,33 @@ var UserlistsTimeline = function(args) {
 			// data.statuses = data.statuses.reverse();
 			var no_dupes = [];
 			
-			var sui = new SpazImageURL();
+			var sui = new SpazImageURL(),
+				status;
 			
-			for (var i=0; i < data.statuses.length; i++) {
+			for (var i = 0, iMax = data.statuses.length; i < iMax; i++) {
+				status = data.statuses[i];
 				
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data.statuses[i].id+']').length<1) {
-					
-					sch.debug('div.timeline-entry[data-status-id='+data.statuses[i].id+'] does not exist… adding');
+				if ($timeline.find('div.timeline-entry[data-status-id='+status.id+']').length<1) {
+					sch.debug('div.timeline-entry[data-status-id='+status.id+'] does not exist… adding');
 					
 					// nl2br
-					data.statuses[i].text = sch.nl2br(data.statuses[i].text);
-					
-					data.statuses[i].SC_thumbnail_urls = sui.getThumbsForUrls(data.statuses[i].text);
-					
-					data.statuses[i].text = sch.makeClickable(data.statuses[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					status.text = sch.nl2br(status.text);
+					status.SC_thumbnail_urls = sui.getThumbsForUrls(status.text);
+					status.text = sch.makeClickable(status.text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
 					data.statuses[i].text = Emoticons.SimpleSmileys.convertEmoticons(data.statuses[i].text);
+					status.text = Emoticons.SimpleSmileys.convertEmoticons(status.text);
 					
-					if (data[i].SC_is_retweet) {
+					if (status.SC_is_retweet) {
 						// nl2br
 						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
 
 						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+						status.SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
 
 						// make clickable
 						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
@@ -907,13 +907,13 @@ var UserlistsTimeline = function(args) {
 						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text);
 					}
 					
-					no_dupes.push(data.statuses[i]);
+					no_dupes.push(status);
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(data.statuses[i]);
+					TweetModel.saveTweet(status);
 				} else {
-					sch.debug(data.statuses[i].id+' already exists');
+					sch.debug(status.id+' already exists');
 				}
 				
 			};
