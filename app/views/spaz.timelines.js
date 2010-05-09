@@ -338,7 +338,7 @@ var FriendsTimeline = function() {
 					sch.debug(this.innerHTML);
 					sch.listen(this, sc.events.newExpandURLSuccess, thisFT.expandURL);
 					thisFT.shurl.expandURLs(urls, this);
-				}				
+				}
 			});
 
 
@@ -394,9 +394,9 @@ var FriendsTimeline = function() {
 		override the default method
 	*/
 	this.timeline.removeExtraItems = function() {
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-maxentries'));
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.reply', Spaz.Prefs.get('timeline-maxentries-reply'));
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.dm', Spaz.Prefs.get('timeline-maxentries-dm'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-home-pager-count'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.reply', Spaz.Prefs.get('timeline-replies-pager-count'));
+		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.dm', Spaz.Prefs.get('timeline-direct-pager-count'));
 	};
 
 	
