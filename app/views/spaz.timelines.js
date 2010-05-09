@@ -1137,7 +1137,7 @@ var SearchTimeline = function(args) {
 				// clear the existing results if this is a new query
 				thisST.markAsRead($timeline.selector + ' div.timeline-entry');
 				
-				twitST.setBaseURLByService(Spaz.Prefs.getAccountType());
+				thisST.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 				thisST.twit.search(thisST.query, null, count);
 				thisST.lastquery = thisST.query;
 			}
