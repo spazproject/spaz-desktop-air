@@ -912,7 +912,7 @@ Spaz.Prefs.init = function() {
 
 
 Spaz.Prefs.initUI = function() {
-	for (pkey in Spaz.Prefs.preferences) {
+	for (pkey in Spaz.Prefs._prefs._prefs) {
 		//sch.debug(pkey);
 		if (Spaz.Prefs.changeMethods[pkey]) {
 			if (Spaz.Prefs.changeMethods[pkey].setUI) {
