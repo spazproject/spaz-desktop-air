@@ -849,6 +849,8 @@ Spaz.Prefs.init = function() {
 	
 	sch.debug('INIT UI');
 	Spaz.Prefs.initUI();
+
+	$('#container').addClass(Spaz.Prefs.getUsername() + "-at-" + Spaz.Prefs.getAccountType());
 };
 
 

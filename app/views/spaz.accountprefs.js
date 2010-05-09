@@ -221,7 +221,9 @@ Spaz.AccountPrefs.init = function(){
 			for(var i = 0, iMax = accts.length; i < iMax; i++){
 				acct = accts[i];
 				options.push([
-					"<option value='", acct.id, "'>",
+					"<option",
+					    (acct.username == Spaz.Prefs.getUsername() && acct.type == Spaz.Prefs.getAccountType())?' selected':'',
+					    " value='", acct.id, "'>",
 						acct.username, "@", acct.type,
 					"</option>"
 				].join(''));
