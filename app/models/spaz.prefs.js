@@ -63,7 +63,7 @@ Spaz.Prefs.defaultPreferences = {
 	'timeline-maxentries': 325,
 	'timeline-maxentries-dm': 25,
 	'timeline-maxentries-reply': 50,
-	'timeline-loadonstartup': true,
+	'timeline-loadonswitch': true,
 	'timeline-friends-getcount': 40,
 	'timeline-replies-getcount': 20,
 	'timeline-dm-getcount': 10,
@@ -850,7 +850,6 @@ Spaz.Prefs.init = function() {
 	sch.debug('INIT UI');
 	Spaz.Prefs.initUI();
 
-	$('#container').addClass(Spaz.Prefs.getUsername() + "-at-" + Spaz.Prefs.getAccountType());
 };
 
 
