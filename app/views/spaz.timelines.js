@@ -338,7 +338,7 @@ var FriendsTimeline = function() {
 					sch.debug(this.innerHTML);
 					sch.listen(this, sc.events.newExpandURLSuccess, thisFT.expandURL);
 					thisFT.shurl.expandURLs(urls, this);
-				}				
+				}
 			});
 
 

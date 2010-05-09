@@ -60,13 +60,7 @@ Spaz.Prefs.defaultPreferences = {
 	'sound-url-wilhelm': 'app:/sounds/wilhelm.mp3',
 
 	'timeline-scrollonupdate': false,
-	'timeline-maxentries': 325,
-	'timeline-maxentries-dm': 25,
-	'timeline-maxentries-reply': 50,
 	'timeline-loadonstartup': true,
-	'timeline-friends-getcount': 40,
-	'timeline-replies-getcount': 20,
-	'timeline-dm-getcount': 10,
 	'timeline-keyboardnavwrap': false,
 
 	'timeline-home-pager-count-max': 200, //max allowed by twitter api
@@ -336,7 +330,17 @@ onSet: function(key, value) {
 	   }
 	},
 	'timeline-home-pager-count': {
-setUI: function(value) {},
+setUI: function(value) {
+		   var max = Spaz.Prefs.defaultPreferences['timeline-home-pager-count-max'];
+		   var sel = $('#timeline-home-pager-count');
+		   if (sel.children().length == 0) {
+				var i = 0;
+				while ((i+=10) <= max) {
+						sel.append('<option value="' + i + '">' + i + '</option>');
+				}
+		   }
+		   sel.val(value);
+	   },
 onGet: function(key, value) {
 		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
 		   return parseInt(value) < max ? parseInt(value) : max;
@@ -347,7 +351,17 @@ onSet: function(key, value) {
 	   }
 	},
 	'timeline-direct-pager-count': {
-setUI: function(value) {},
+setUI: function(value) {
+		   var max = Spaz.Prefs.defaultPreferences['timeline-direct-pager-count-max'];
+		   var sel = $('#timeline-direct-pager-count');
+		   if (sel.children().length == 0) {
+				var i = 0;
+				while ((i+=10) <= max) {
+						sel.append('<option value="' + i + '">' + i + '</option>');
+				}
+		   }
+		   sel.val(value);
+	   },
 onGet: function(key, value) {
 		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
 		   return parseInt(value) < max ? parseInt(value) : max;
@@ -358,7 +372,17 @@ onSet: function(key, value) {
 	   }
 	},
 	'timeline-replies-pager-count': {
-setUI: function(value) {},
+setUI: function(value) {
+		   var max = Spaz.Prefs.defaultPreferences['timeline-replies-pager-count-max'];
+		   var sel = $('#timeline-replies-pager-count');
+		   if (sel.children().length == 0) {
+				var i = 0;
+				while ((i+=10) <= max) {
+						sel.append('<option value="' + i + '">' + i + '</option>');
+				}
+		   }
+		   sel.val(value);
+	   },
 onGet: function(key, value) {
 		   var max = Spaz.Prefs.defaultPreferences[key + '-max'];
 		   return parseInt(value) < max ? parseInt(value) : max;
@@ -944,6 +968,9 @@ Spaz.Prefs.initUI = function() {
 	$('#timeline-keyboardnavwrap').bind('change', Spaz.Prefs.setFromUI);
 	$('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
 
+	$('#timeline-home-pager-count').bind('change', Spaz.Prefs.setFromUI);
+	$('#timeline-direct-pager-count').bind('change', Spaz.Prefs.setFromUI);
+	$('#timeline-replies-pager-count').bind('change', Spaz.Prefs.setFromUI);
 
 	$('#notify-messages').bind('change', Spaz.Prefs.setFromUI);
 	$('#notify-dms').bind('change', Spaz.Prefs.setFromUI);
