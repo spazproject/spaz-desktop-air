@@ -31,9 +31,11 @@ Spaz.AccountPrefs.init = function(){
 		$accountList.change(function(e){
 			var account_id = $(this).val();
 			if (account_id != Spaz.Prefs.getCurrentUserId()) {
+			    	$('#container').removeClass(Spaz.Prefs.getUsername() + "-at-" + Spaz.Prefs.getAccountType());
 				Spaz.Prefs.setCurrentUserId(account_id);
 				var account = Spaz.Prefs.getCurrentAccount();
 				sch.trigger('account_switched', document, account);
+				$('#container').addClass(Spaz.Prefs.getUsername() + "-at-" + Spaz.Prefs.getAccountType());
 			}
 			sch.debug(Spaz.Prefs.getUsername());
 		});
