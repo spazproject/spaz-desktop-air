@@ -654,7 +654,7 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 
 
 	// ****************************************
-	// tabs shortcuts
+	// Tabs shortcuts
 	// ****************************************
 	shortcut.add(Modkey+'+1', function() {
 		Spaz.UI.showTab(0);
@@ -736,10 +736,9 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 			propagate:false
 	});
 
-
-	/*
-		Search box submit on Enter
-	*/
+	// ****************************************
+	// Search box
+	// ****************************************
 	shortcut.add('Enter', function() {
 			Spaz.Timelines.search.activate();
 		}, {
@@ -748,7 +747,7 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	});
 
 	// ****************************************
-	// editor shortcuts
+	// Editor shortcuts
 	// ****************************************
 	shortcut.add(Modkey+'+B', function() {
 			Spaz.Editor.bold();
@@ -781,10 +780,9 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 			propagate:false
 	});
 
-
-	/*
-		Username/password prefs -> save
-	*/
+	// ****************************************
+	// Username/password prefs -> save
+	// ****************************************
 	shortcut.add('Enter', function() {
 			Spaz.Prefs.setPrefs();
 		}, {
@@ -796,6 +794,15 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 		}, {
 			target:$('#password')[0],
 			propagate:false
+	});
+
+	// ****************************************
+	// Popboxes
+	// ****************************************
+	shortcut.add('esc', function(){
+		if(!!$('#DOMWindow:visible')[0]){
+			$.closeDOMWindow();
+		}
 	});
 
 };
