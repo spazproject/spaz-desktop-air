@@ -92,9 +92,9 @@ AppTimeline.prototype.markAsRead = function() {
 
 	/* we use our own "mark as read" here because the helper version just removes the 'new' class' */
 	$(entry_selector+':visible').removeClass('new').addClass('read').each(function(i){
-			var status_id = $(this).attr('data-status-id');
-			Spaz.DB.markEntryAsRead(status_id);
-			});
+		var status_id = $(this).attr('data-status-id');
+		Spaz.DB.markEntryAsRead(status_id);
+	});
 	$().trigger('UNREAD_COUNT_CHANGED');
 
 };
@@ -348,7 +348,7 @@ var FriendsTimeline = function() {
 			}
 
 			/*
-			 reapply filtering
+				reapply filtering
 			*/
 			$('#filter-friends').trigger('keyup');
 			
@@ -458,8 +458,8 @@ var PublicTimeline = function(args) {
 			thisPT.twit.getPublicTimeline();
 			Spaz.UI.statusBar("Loading public timeline");
 			Spaz.UI.showLoading();
-			},
-			'data_success': function(e, data) {
+		},
+		'data_success': function(e, data) {
 			data = data.reverse();
 			var no_dupes = [];
 
@@ -468,8 +468,8 @@ var PublicTimeline = function(args) {
 			for (var i=0; i < data.length; i++) {
 
 				/*
-				   only add if it doesn't already exist
-				   */
+					only add if it doesn't already exist
+				 */
 				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 
 					// nl2br
@@ -498,8 +498,8 @@ var PublicTimeline = function(args) {
 
 					no_dupes.push(data[i]);
 					/*
-					   Save to DB via JazzRecord
-					   */
+						Save to DB via JazzRecord
+					 */
 					TweetModel.saveTweet(data[i]);
 				}
 
@@ -509,8 +509,8 @@ var PublicTimeline = function(args) {
 			thisPT.timeline.addItems(no_dupes);
 
 			/*
-			   reapply filtering
-			   */
+				reapply filtering
+			 */
 			$('#filter-public').trigger('keyup');
 
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // public are never "new"
@@ -525,8 +525,8 @@ var PublicTimeline = function(args) {
 				Spaz.UI.statusBar(err_msg);
 
 				/*
-				   Update relative dates
-				   */
+					Update relative dates
+				 */
 				sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 				Spaz.UI.hideLoading();
 			},
@@ -558,20 +558,20 @@ var FavoritesTimeline = function(args) {
 	this.twit = new SpazTwit();
 
 	/*
-	   set up the public timeline
-	   */
+		set up the public timeline
+	 */
 	this.timeline  = new SpazTimeline({
-			'timeline_container_selector' : $timeline.selector,
-			'entry_relative_time_selector':'.status-created-at',
+		'timeline_container_selector' : $timeline.selector,
+		'entry_relative_time_selector':'.status-created-at',
 
-			'success_event':'new_favorites_timeline_data',
-			'failure_event':'error_favorites_timeline_data',
-			'event_target' :document,
+		'success_event':'new_favorites_timeline_data',
+		'failure_event':'error_favorites_timeline_data',
+		'event_target' :document,
 
-			'refresh_time':1000*60*30, // 30 minutes
-			'max_items':100,
+		'refresh_time':1000*60*30, // 30 minutes
+		'max_items':100,
 
-			'request_data': function() {
+		'request_data': function() {
 			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
 			var username = Spaz.Prefs.getUsername();
 			var password = Spaz.Prefs.getPassword();
@@ -580,82 +580,82 @@ var FavoritesTimeline = function(args) {
 			thisFVT.twit.getFavorites();
 			Spaz.UI.statusBar("Loading favorites timeline");
 			Spaz.UI.showLoading();
-			},
-			'data_success': function(e, data) {
-				data = data.reverse();
-				var no_dupes = [];
+		},
+		'data_success': function(e, data) {
+			data = data.reverse();
+			var no_dupes = [];
 
-				var sui = new SpazImageURL();
+			var sui = new SpazImageURL();
 
-				for (var i=0; i < data.length; i++) {
+			for (var i=0; i < data.length; i++) {
 
+				/*
+					only add if it doesn't already exist
+				 */
+				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+
+					// nl2br
+					data[i].text = sch.nl2br(data[i].text);
+
+					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+
+					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+
+					// convert emoticons
+					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
+
+						if (data[i].SC_is_retweet) {
+							// nl2br
+							data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+
+							// add thumbnails
+							data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+
+							// make clickable
+							data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+
+							// convert emoticons
+							data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
+						}
+
+					no_dupes.push(data[i]);
 					/*
-					   only add if it doesn't already exist
-					   */
-					if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+						Save to DB via JazzRecord
+					 */
+					TweetModel.saveTweet(data[i]);
+				}
 
-						// nl2br
-						data[i].text = sch.nl2br(data[i].text);
+			};
 
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+			$timelineWrapper.children('.loading').hide();
+			thisFVT.timeline.addItems(no_dupes);
 
-						data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
-
-						// convert emoticons
-						data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text)
-
-							if (data[i].SC_is_retweet) {
-								// nl2br
-								data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
-
-								// add thumbnails
-								data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
-
-								// make clickable
-								data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
-
-								// convert emoticons
-								data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text)
-							}
-
-						no_dupes.push(data[i]);
-						/*
-						   Save to DB via JazzRecord
-						   */
-						TweetModel.saveTweet(data[i]);
-					}
-
-				};
-
-				$timelineWrapper.children('.loading').hide();
-				thisFVT.timeline.addItems(no_dupes);
-
-				/*
-				   reapply filtering
-				   */
-				$('#filter-favorites').trigger('keyup');
+			/*
+				reapply filtering
+			 */
+			$('#filter-favorites').trigger('keyup');
 
 
-				sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
-				sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // favorites are never "new"
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
 
-				Spaz.UI.hideLoading();
-				Spaz.UI.statusBar("Ready");
+			Spaz.UI.hideLoading();
+			Spaz.UI.statusBar("Ready");
 
-			},
-			'data_failure': function(e, error_obj) {
-				var err_msg = "There was an error retrieving the favorites timeline";
-				Spaz.UI.statusBar(err_msg);
+		},
+		'data_failure': function(e, error_obj) {
+			var err_msg = "There was an error retrieving the favorites timeline";
+			Spaz.UI.statusBar(err_msg);
 
-				/*
-				   Update relative dates
-				   */
-				sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-				Spaz.UI.hideLoading();
-			},
-			'renderer': function(obj) {
-				return Spaz.Tpl.parse('timeline_entry', obj);
-			}
+			/*
+				Update relative dates
+			 */
+			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
+			Spaz.UI.hideLoading();
+		},
+		'renderer': function(obj) {
+			return Spaz.Tpl.parse('timeline_entry', obj);
+		}
 	});
 };
 
@@ -1040,10 +1040,10 @@ var UserlistsTimeline = function(args) {
 				/*
 					thank you http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another
 				*/
-				var $this		= $(this),
-						pos			= $this.offset(),
-						height	= $this.height(),
-						width		= $this.width();
+				var $this	= $(this),
+					pos		= $this.offset(),
+					height	= $this.height(),
+					width	= $this.width();
 				$menu.css({
 					position: 'absolute',
 					left:	  pos.left + 'px',
@@ -1333,7 +1333,7 @@ Spaz.Timelines.init = function() {
 	
 	Spaz.Timelines.map = {
 		'friends':Spaz.Timelines.friends,
-		'user':	  Spaz.Timelines.user,
+		'user':   Spaz.Timelines.user,
 		'public': Spaz.Timelines.public,
 		'userlists':   Spaz.Timelines.userlists,
 		'favorites':   Spaz.Timelines.favorites,
@@ -1359,8 +1359,8 @@ Spaz.Timelines.getTabFromTimeline = function(tab) {
 
 Spaz.Timelines.resetTimelines = function() {
 	/*
-	   remove all timeline event listeners
-	   */
+		remove all timeline event listeners
+	 */
 	for (var key in Spaz.Timelines.map) {
 		sch.error(key);
 		Spaz.Timelines.map[key].timeline.stopListening();
@@ -1370,8 +1370,8 @@ Spaz.Timelines.resetTimelines = function() {
 
 
 	/*
-	   clear timeline entries inside the timelines
-	   */
+		clear timeline entries inside the timelines
+	 */
 	$('div.timeline-entry').remove();
 
 }

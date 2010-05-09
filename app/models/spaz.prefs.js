@@ -901,11 +901,10 @@ Spaz.Prefs.changeMethods = {
 
 
 /*
-   Set up SpazCore prefs and accounts objects
-   */
+ * Set up SpazCore prefs and accounts objects
+ */
 Spaz.Prefs._prefs = new SpazPrefs(Spaz.Prefs.defaultPreferences, null, Spaz.Prefs.changeMethods);
 Spaz.Prefs._accounts = {}; // a placeholder where we will store the SpazAccounts obj
-
 
 
 /**
@@ -1010,17 +1009,17 @@ Spaz.Prefs.setFromUI = function(event) {
 	// sch.debug('event.srcElement.id='+event.srcElement);
 	var id = event.srcElement.id
 
-		sch.debug("setFromUI - " + id)
+	sch.debug("setFromUI - " + id)
 
-		if (event.srcElement.tagName == "INPUT" && event.srcElement.type == "checkbox") {
-			if ($('#' + id).attr('checked')) {
-				var val = true;
-			} else {
-				var val = false;
-			}
+	if (event.srcElement.tagName == "INPUT" && event.srcElement.type == "checkbox") {
+		if ($('#' + id).attr('checked')) {
+			var val = true;
 		} else {
-			var val = $('#' + id).val();
+			var val = false;
 		}
+	} else {
+		var val = $('#' + id).val();
+	}
 
 	// rewrite the incoming value if needed
 	if (Spaz.Prefs.changeMethods[id] && Spaz.Prefs.changeMethods[id].setFromUI) {
@@ -1170,7 +1169,7 @@ Spaz.Prefs.setHandleHTTPAuth = function(state) {
 	sch.debug(state);
 	if (state) {
 		Spaz.Prefs.handleHTTPAuth = 1
-			window.htmlLoader.shouldAuthenticate = true;
+		window.htmlLoader.shouldAuthenticate = true;
 	} else {
 		Spaz.Prefs.handleHTTPAuth = 0;
 		window.htmlLoader.shouldAuthenticate = false;
@@ -1300,6 +1299,7 @@ Spaz.Prefs.getCurrentAccount = function() {
 	} else {
 		return null;
 	}
+
 };
 
 
@@ -1330,3 +1330,4 @@ Spaz.Prefs.getHandleHTTPAuth = function() {
 Spaz.Prefs.getToggleKey = function() {
 	return Spaz.Prefs.get('key-toggle');
 }
+
