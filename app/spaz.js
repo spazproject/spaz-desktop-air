@@ -235,18 +235,12 @@ Spaz.initialize = function() {
 		Spaz.Update.go();
 	}
 
-	if (Spaz.Prefs.getUsername()) {
-		if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
-			Spaz.Data.getRateLimitInfo(Spaz.Prefs.setRateLimit);
-		}		
-	}
-
-	
-	Spaz.Timelines.init();
-
-
-	if (Spaz.Prefs.get('timeline-loadonstartup') && Spaz.Prefs.getUsername()) {
-		$('#tab-friends').trigger('click');
+	/*
+		if we have a username and password set, trigger an "account_switched" event
+		to kick things off
+	*/
+	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getAccountType()) {
+		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
 	}
 
 

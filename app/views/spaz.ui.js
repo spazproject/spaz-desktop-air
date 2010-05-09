@@ -160,8 +160,6 @@ Spaz.UI.hideLoading = function() {
 
 
 
-
-
 Spaz.UI.showPopup = function(panelid) {
     sch.debug('showing ' + panelid + '...');
     $('#' + panelid).css('opacity', 0);
@@ -1027,7 +1025,7 @@ Spaz.UI.markEntryAsRead = function(el) {
 
     $(el).removeClass('new').addClass('read');
 
-    $().trigger('UNREAD_COUNT_CHANGED');
+    $(document).trigger('UNREAD_COUNT_CHANGED');
 
 }
 

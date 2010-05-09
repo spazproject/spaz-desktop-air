@@ -36,12 +36,14 @@ Spaz.Autocomplete.delScreenName = function(name) {
 Spaz.Autocomplete.getScreenNames = function() {
 	Spaz.Autocomplete.screenNames = [];
 	
-	$('.user-screen-name', Spaz.Timelines.friends.timeline.timeline_container_selector).each(function() {
-		var name = $(this).attr('user-screen_name');
-		if (Spaz.Autocomplete.screenNames.indexOf(name) == -1) {
-			Spaz.Autocomplete.screenNames.push(name);
-		}
-	});
+	if (Spaz.Timelines.friends) {
+		$('.user-screen-name', Spaz.Timelines.friends.timeline.timeline_container_selector).each(function() {
+			var name = $(this).attr('user-screen_name');
+			if (Spaz.Autocomplete.screenNames.indexOf(name) == -1) {
+				Spaz.Autocomplete.screenNames.push(name);
+			}
+		});
+	}
 	
 	sch.debug('Screen Names:')
 	sch.debug(Spaz.Autocomplete.screenNames);
@@ -59,14 +61,16 @@ Spaz.Autocomplete.getScreenNamesCount = function() {
 Spaz.Autocomplete.getHashTags = function() {
 	Spaz.Autocomplete.hashTags = [];
 	
-	$('.hashtag', Spaz.Timelines.friends.timeline.timeline_container_selector).each(function() {
-		var hashtag = $(this).text().replace('#', '');
-		sch.debug("this hashtag:"+hashtag);
-		if (Spaz.Autocomplete.hashTags.indexOf(hashtag) == -1) {
-			Spaz.Autocomplete.hashTags.push(hashtag);
-		}
-	});
-	
+	if (Spaz.Timelines.friends) {		
+		$('.hashtag', Spaz.Timelines.friends.timeline.timeline_container_selector).each(function() {
+			var hashtag = $(this).text().replace('#', '');
+			sch.debug("this hashtag:"+hashtag);
+			if (Spaz.Autocomplete.hashTags.indexOf(hashtag) == -1) {
+				Spaz.Autocomplete.hashTags.push(hashtag);
+			}
+		});
+	}
+
 	sch.debug('HashTags:')
 	sch.debug(Spaz.Autocomplete.hashTags);
 	

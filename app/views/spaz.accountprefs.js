@@ -30,14 +30,7 @@ Spaz.AccountPrefs.init = function(){
 		 */
 		$accountList.change(function(e){
 			var account_id = $(this).val();
-			if (account_id != Spaz.Prefs.getCurrentUserId()) {
-				$('#container').removeClass(Spaz.Prefs.getUsername() + "-at-" + Spaz.Prefs.getAccountType());
-				Spaz.Prefs.setCurrentUserId(account_id);
-				var account = Spaz.Prefs.getCurrentAccount();
-				sch.trigger('account_switched', document, account);
-				$('#container').addClass(Spaz.Prefs.getUsername() + "-at-" + Spaz.Prefs.getAccountType());
-			}
-			sch.debug(Spaz.Prefs.getUsername());
+			Spaz.AccountPrefs.setAccount(account_id);
 		});
 		
 		
@@ -243,7 +236,16 @@ Spaz.AccountPrefs.init = function(){
 };
 
 
+Spaz.AccountPrefs.setAccount = function(account_id) {
 
+	if (account_id != Spaz.Prefs.getCurrentUserId()) {
+		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
+		
+		Spaz.Prefs.setCurrentUserId(account_id);
+						
+		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
+	}
+};
 
 Spaz.AccountPrefs.add = function(username, password, type){
 	var newacct = Spaz.AccountPrefs.spaz_acc.add(username, password, type);

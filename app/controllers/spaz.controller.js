@@ -71,21 +71,52 @@ sch.listen(document, 'verify_credentials_failed', function(e) {
 });
 
 
+
 /*
-	handle account switching
+	right before we switch an account…
 */
-sch.listen(document, 'account_switched', function(e) {
-	
-	Spaz.Timelines.resetTimelines();
-	
+sch.listen(document, 'before_account_switched', function(e, account) {
+	sch.dump('about to switch accounts');
+	var old_acct_class = account.username + "-at-" + account.type;
+	$('#container').removeClass(old_acct_class);
+});
+
+/*
+	after we switch an account…
+*/
+sch.listen(document, 'account_switched', function(e, account) {
+
+	function rateLimitsSet() {
+		Spaz.Timelines.resetTimelines();
+		
+		var new_acct_class = Spaz.Prefs.getUsername() + "-at-" + Spaz.Prefs.getAccountType();
+		$('#container').addClass(new_acct_class);
+
+
+		Spaz.UI.statusBar('Changed account to ' +
+						Spaz.Prefs.getUsername() +
+						"@" +
+						Spaz.Prefs.getAccountType());
+		Spaz.UI.flashStatusBar();
+
+		if (Spaz.Prefs.get('timeline-loadonswitch')) {
+			$('#tab-friends').trigger('click');
+		}
+	}
+
+
 	sch.dump('switching accounts');
-	Spaz.UI.statusBar('Changed account to ' +
-					Spaz.Prefs.getUsername() +
-					"@" +
-					Spaz.Prefs.getAccountType());
-	Spaz.UI.flashStatusBar();
+	Spaz.UI.statusBar('Switching accounts…');
 	
-	
+	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+		Spaz.Data.getRateLimitInfo(function(json, cbdata) {
+			Spaz.Prefs.setRateLimit(json, cbdata);
+			rateLimitsSet();
+		});
+	} else {
+		rateLimitsSet();
+	}
+
 });
 
 
