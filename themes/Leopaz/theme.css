@@ -479,11 +479,16 @@ div.timeline-entry:nth-child(even){
               }
               #panel-search .panelmenu form input[type=text]{
                 float:none;
-                width:60px;
+                width:90px;
               }
               #panel-search .panelmenu form input[type=button]{
                 width:auto;
                 margin-right:-4px;
+              }
+              #panel-search .panelmenu form input#search-go{
+                display:none;
+                  /*  Allows for making the text input wider. Hit Enter to
+                      search instead. */
               }
               #panel-search .panelmenu form input#search-help{
                 float:right;
