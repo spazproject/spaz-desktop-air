@@ -40,7 +40,6 @@ Spaz.Prefs.defaultPreferences = {
 	'notify-searchresults':false,
 	'notify-listmessages':false,
 
-
 	// 'theme-userstylesheet':null,
 	'theme-basetheme': 'Leopaz',
 
@@ -121,10 +120,10 @@ Spaz.Prefs.defaultPreferences = {
 // called when they are changed
 /*
    the methods:
-setUI: sets the exposed prefs UI for this preference
-onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
-check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
-setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
+   setUI: sets the exposed prefs UI for this preference
+   onChange: things to execute when the value of this pref changes (like, say, changing the opacity of the window)
+   check: make sure the current value is a "sane" one, within reasonable limits or a proper boolean, etc
+   setFromUI: converts the UI value into the internally stored value, if needed (say, minutes into microseconds)
 */
 Spaz.Prefs.changeMethods = {
 	'usemarkdown': {
@@ -832,7 +831,7 @@ Spaz.Prefs.changeMethods = {
 			}
 			return value;
 		},
-	onSet: function(key, value) {
+		onSet: function(key, value) {
 			if (value < 150) {
 				value = 150;
 			}
@@ -871,7 +870,7 @@ Spaz.Prefs.changeMethods = {
 			Spaz.Dock.sync();
 		},
 		onGet: function(key, value) {
-		   return !!value;
+			return !!value;
 		},
 		onSet: function(key, value) {
 			return !!value;
