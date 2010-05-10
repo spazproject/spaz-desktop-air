@@ -976,6 +976,13 @@ div.timeline-entry:hover{
       linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
     outline:1px solid #ffb3b2;
   }
+  div.timeline-entry.retweet .status-text{
+    background:transparent url(images/retweeted.png) 0 1px no-repeat;
+    text-indent:24px;
+  }
+  div.timeline-entry.retweet .status-text *{
+    text-indent:0;
+  }
   /*
   	Entries that have been "read" (selected and then deselected)
   */
