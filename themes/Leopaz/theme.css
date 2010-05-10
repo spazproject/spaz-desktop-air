@@ -977,7 +977,7 @@ div.timeline-entry:hover{
     outline:1px solid #ffb3b2;
   }
   div.timeline-entry.retweet .status-text{
-    background:transparent url(images/retweeted.png) 0 1px no-repeat;
+    background:transparent url(images/retweeted.png) 0 0 no-repeat;
     text-indent:24px;
   }
   div.timeline-entry.retweet .status-text *{
