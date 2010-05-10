@@ -1,6 +1,6 @@
-var Spaz; if (!Spaz) Spaz = {};
+var Spaz; if (!Spaz){ Spaz = {}; }
 
-if (!Spaz.Timelines) Spaz.Timelines = {};
+if (!Spaz.Timelines){ Spaz.Timelines = {}; }
 
 
 /**
@@ -113,33 +113,39 @@ AppTimeline.prototype.getTimelineSelector = function() {
 
 AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 
-	var items = jQuery( this.getEntrySelector() );
-	var itemAttrs	= [];
-	var itemsSorted = [];
-	var sortedHTML	= '';
+	var items = jQuery( this.getEntrySelector() ),
+		itemAttrs	= [],
+		itemsSorted = [],
+		sortedHTML	= '';
 	sortfunc = sortfunc || function(a,b){return b.sortval - a.sortval;};
-	
-	for ( i = 0; i < items.length; i++ ) {
-		var jqitem = jQuery(items[i]);
-		var attrobj = {
-			'id':jqitem.attr(idattr),
-			'sortval':jqitem.attr(sortattr)
-		};
-		itemAttrs.push(attrobj);
-	}
+
+	(function(){
+		var $item, attrobj;
+		for ( i = 0; i < items.length; i++ ) {
+			$item = jQuery(items[i]);
+			attrobj = {
+				id:			$item.attr(idattr),
+				sortval:	$item.attr(sortattr)
+			};
+			itemAttrs.push(attrobj);
+		}
+	})();
 
 	itemAttrs.sort( sortfunc );
-	
-	for ( i=0;i<itemAttrs.length;i++ ) {
-		attrobj = itemAttrs[i];
-		var selector = this.getEntrySelector()+"["+idattr+"=" + attrobj['id'] + "]";
-		// sch.error(selector);
-		var itemjq = jQuery( selector );
-		// sch.error(itemjq.length);
-		var itemhtml = itemjq.get(0).outerHTML;
-		// sch.error(itemhtml);
-		itemsSorted.push(itemhtml);
-	}
+
+	(function(){
+		var attrobj, selector, $item, itemHTML;
+		for ( i=0;i<itemAttrs.length;i++ ) {
+			attrobj = itemAttrs[i];
+			selector = this.getEntrySelector()+"["+idattr+"=" + attrobj.id + "]";
+			// sch.error(selector);
+			$item = jQuery(selector);
+			// sch.error($item.length);
+			itemHTML = $item.get(0).outerHTML;
+			// sch.error(itemHTML);
+			itemsSorted.push(itemHTML);
+		}
+	})();
 	
 	sortedHTML = '<div>'+itemsSorted.join('')+'</div>';
 	
@@ -268,7 +274,7 @@ var FriendsTimeline = function() {
 					
 				}
 				
-			};
+			}
 			
 
 			/*
@@ -328,7 +334,7 @@ var FriendsTimeline = function() {
 			// thisFT.shurl.expandURLs(exp_urls, thisFT.timeline.container);
 
 			$('div.timeline-entry.new div.status-text', thisFT.timeline.container).each(function(i) {
-				urls = thisFT.shurl.findExpandableURLs(this.innerHTML);
+				var urls = thisFT.shurl.findExpandableURLs(this.innerHTML);
 				if (urls) {
 					sch.debug(urls);
 					sch.debug(this.innerHTML);
@@ -469,7 +475,7 @@ var PublicTimeline = function(args) {
 
 				/*
 					only add if it doesn't already exist
-			   	*/
+				*/
 				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
 
 					// nl2br
@@ -499,11 +505,11 @@ var PublicTimeline = function(args) {
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
-				   	*/
+					*/
 					TweetModel.saveTweet(data[i]);
 				}
 
-			};
+			}
 
 			$timelineWrapper.children('.loading').hide();
 			thisPT.timeline.addItems(no_dupes);
@@ -621,11 +627,11 @@ var FavoritesTimeline = function(args) {
 					no_dupes.push(data[i]);
 					/*
 						Save to DB via JazzRecord
-			   		*/
+					*/
 					TweetModel.saveTweet(data[i]);
 				}
 
-			};
+			}
 
 			$timelineWrapper.children('.loading').hide();
 			thisFVT.timeline.addItems(no_dupes);
@@ -749,7 +755,7 @@ var UserTimeline = function(args) {
 					TweetModel.saveTweet(data[i]);
 				}
 				
-			};
+			}
 
 			$timelineWrapper.children('.loading').hide();
 			thisUT.timeline.addItems(no_dupes);
@@ -916,7 +922,7 @@ var UserlistsTimeline = function(args) {
 					sch.debug(status.id+' already exists');
 				}
 				
-			};
+			}
 
 			$timelineWrapper.children('.loading, .intro').hide();
 			thisULT.timeline.addItems(no_dupes);
@@ -997,7 +1003,7 @@ var UserlistsTimeline = function(args) {
 						thisULT.setlist(slug, user);
 					}
 				};
-			};
+			}
 		
 			
 			/*
@@ -1011,26 +1017,30 @@ var UserlistsTimeline = function(args) {
 			*/
 			for (i=0; i < menu_items.length; i++) {
 
-				var jqitem = $('<li id="'+menu_items[i].id+'" class="menuitem '+menu_item_class+'">'+menu_items[i].label+'</li>');
+				var menuItem = menu_items[i],
+					menuItemAttributes = menuItem.attributes,
+					jqitem = $('<li id="'+menuItem.id+'" class="menuitem '+menu_item_class+'">'+menuItem.label+'</li>');
 
-				for (var key in menu_items[i].attributes) {
-					jqitem.attr(key, menu_items[i].attributes[key]);
-				};
+				for (var key in menuItemAttributes) {
+					if(menuItemAttributes.hasOwnProperty(key)){
+						jqitem.attr(key, menuItemAttributes[key]);
+					}
+				}
 
 				$menu.append(jqitem);
 				
 				/*
 					if onclick is defined for this item, bind it to the ID of this element
 				*/
-				if (menu_items[i].onclick) {
-					sch.debug(menu_items[i].id);
-					sch.debug(menu_items[i].onclick);
+				if (menuItem.onclick) {
+					sch.debug(menuItem.id);
+					sch.debug(menuItem.onclick);
 					
-					$('#'+menu_items[i].id).bind('click', {'onClick':menu_items[i].onclick}, function(e) {
+					$('#'+menuItem.id).bind('click', {'onClick':menuItem.onclick}, function(e) {
 						e.data.onClick.call(this, e); // 'this' refers to the clicked element
 					});
 				}
-			};
+			}
 			
 			sch.debug($menu.get(0).innerHTML);
 			
@@ -1130,7 +1140,7 @@ var SearchTimeline = function(args) {
 					thisST.lastquery = thisST.query;
 				} else if (thisST.lastquery != thisST.query) {
 					$timeline.find('.timeline-entry').remove();
-				};
+				}
 				
 				// alert(thisST.lastquery+"\n"+thisST.query);
 				
@@ -1198,10 +1208,10 @@ var SearchTimeline = function(args) {
 					TweetModel.saveTweet(data[i]);
 				}
 				
-			};
+			}
 			
 			$timelineWrapper.children('.loading, .intro').hide();
-			$timelineWrapper.children('.empty').toggle(no_dupes.length == 0);
+			$timelineWrapper.children('.empty').toggle(no_dupes.length === 0);
 			if (no_dupes.length > 0) {
 				thisST.timeline.addItems(no_dupes);
 			}
@@ -1290,7 +1300,7 @@ var FollowersTimeline = function(args) {
 					TwUserModel.findOrCreate(data[i]);
 				}
 				
-			};
+			}
 
 			$timelineWrapper.children('.loading').hide();
 			thisFLT.timeline.addItems(no_dupes);
@@ -1326,24 +1336,25 @@ FollowersTimeline.prototype = new AppTimeline();
 Spaz.Timelines.init = function() {
 	Spaz.Timelines.friends	 = new FriendsTimeline();
 	Spaz.Timelines.user		 = new UserTimeline();
-	Spaz.Timelines.public	 = new PublicTimeline();
+	Spaz.Timelines['public'] = new PublicTimeline();
+		// `public` is a reserved keyword
 	Spaz.Timelines.favorites = new FavoritesTimeline();
 	Spaz.Timelines.userlists = new UserlistsTimeline();
 	Spaz.Timelines.search	 = new SearchTimeline();
 	Spaz.Timelines.followers = new FollowersTimeline();
 	
 	Spaz.Timelines.map = {
-		'friends':Spaz.Timelines.friends,
-		'user':   Spaz.Timelines.user,
-		'public': Spaz.Timelines.public,
-		'userlists':   Spaz.Timelines.userlists,
-		'favorites':   Spaz.Timelines.favorites,
-		'search': Spaz.Timelines.search//,
-		// 'followerslist':Spaz.Timelines.followerslist
-	}
+		friends:	Spaz.Timelines.friends,
+		user:		Spaz.Timelines.user,
+		'public':	Spaz.Timelines['public'],
+		userlists:	Spaz.Timelines.userlists,
+		favorites:	Spaz.Timelines.favorites,
+		search:		Spaz.Timelines.search//,
+		// followerslist: Spaz.Timelines.followerslist
+	};
 
 
-}
+};
 
 Spaz.Timelines.getTimelineFromTab = function(tab) {
 	var timeline = tab.id.replace(/tab-/, '');
@@ -1362,10 +1373,14 @@ Spaz.Timelines.resetTimelines = function() {
 	/*
 		remove all timeline event listeners
 	*/
-	if (Spaz.Timelines.map !== undefined) {
-		for (var key in Spaz.Timelines.map) {
-			sch.error(key);
-			Spaz.Timelines.map[key].timeline.stopListening();
+	var timelinesMap = Spaz.Timelines.map;
+
+	if (typeof timelinesMap !== 'undefined') {
+		for (var key in timelinesMap) {
+			if(timelinesMap.hasOwnProperty(key)){
+				sch.error(key);
+				timelinesMap[key].timeline.stopListening();
+			}
 		}
 	}
 
@@ -1377,5 +1392,5 @@ Spaz.Timelines.resetTimelines = function() {
 	*/
 	$('div.timeline-entry').remove();
 
-}
+};
 
