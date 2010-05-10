@@ -120,8 +120,8 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 	sortfunc = sortfunc || function(a,b){return b.sortval - a.sortval;};
 
 	(function(){
-		var $item, attrobj;
-		for ( i = 0; i < items.length; i++ ) {
+		var i, iMax, $item, attrobj;
+		for (i = 0, iMax = items.length; i < iMax; i++){
 			$item = jQuery(items[i]);
 			attrobj = {
 				id:			$item.attr(idattr),
@@ -134,8 +134,8 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 	itemAttrs.sort( sortfunc );
 
 	(function(){
-		var attrobj, selector, $item, itemHTML;
-		for ( i=0;i<itemAttrs.length;i++ ) {
+		var i, iMax, attrobj, selector, $item, itemHTML;
+		for (i = 0, iMax = itemAttrs.length; i < iMax; i++){
 			attrobj = itemAttrs[i];
 			selector = this.getEntrySelector()+"["+idattr+"=" + attrobj.id + "]";
 			// sch.error(selector);
@@ -220,57 +220,59 @@ var FriendsTimeline = function() {
 			sch.dump('DATA_SUCCESS');
 			
 			data = data.reverse();
-			var no_dupes = [];
+			var i, iMax,
+				no_dupes = [],
+				sui = new SpazImageURL(),
+				dataItem;
 
 			sch.dump(data);
 			
-			
-			var sui = new SpazImageURL();
-			
-			for (var i=0; i < data.length; i++) {
+			for (i = 0, iMax = data.length; i < iMax; i++){
+				dataItem = data[i];
 				sch.dump(i);
+
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
 					
 					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
+					dataItem.text = sch.nl2br(dataItem.text);
 					
 					// add thumbnails
-					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.text);
 					
 					// make clickable
-					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					dataItem.text = sch.makeClickable(dataItem.text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
-					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text);
+					dataItem.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.text);
 					
 					// check if entry has been read
-					data[i].SC_is_read = !!Spaz.DB.isRead(data[i].id);
+					dataItem.SC_is_read = !!Spaz.DB.isRead(dataItem.id);
 					
-					sch.debug(i +' is ' + data[i].SC_is_read);
+					sch.debug(i +' is ' + dataItem.SC_is_read);
 					
-					if (data[i].SC_is_retweet) {
+					if (dataItem.SC_is_retweet) {
 						// nl2br
-						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = sch.nl2br(dataItem.retweeted_status.text);
 
 						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+						dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.retweeted_status.text);
 
 						// make clickable
-						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+						dataItem.retweeted_status.text = sch.makeClickable(dataItem.retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
 
 						// convert emoticons
-						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.retweeted_status.text);
 					}
 					
-					no_dupes.push(data[i]);
+					no_dupes.push(dataItem);
 					
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(data[i]);
+					TweetModel.saveTweet(dataItem);
 					
 				}
 				
@@ -396,9 +398,10 @@ var FriendsTimeline = function() {
 		override the default method
 	*/
 	this.timeline.removeExtraItems = function() {
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-home-pager-count'));
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.reply', Spaz.Prefs.get('timeline-replies-pager-count'));
-		sch.removeExtraElements($timeline.selector + ' div.timeline-entry.dm', Spaz.Prefs.get('timeline-direct-pager-count'));
+		var sel = $timeline.selector;
+		sch.removeExtraElements(sel + ' div.timeline-entry:not(.reply):not(.dm)', Spaz.Prefs.get('timeline-home-pager-count'));
+		sch.removeExtraElements(sel + ' div.timeline-entry.reply', Spaz.Prefs.get('timeline-replies-pager-count'));
+		sch.removeExtraElements(sel + ' div.timeline-entry.dm', Spaz.Prefs.get('timeline-direct-pager-count'));
 	};
 
 	
@@ -467,46 +470,48 @@ var PublicTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			data = data.reverse();
-			var no_dupes = [];
+			var i, iMax,
+				no_dupes = [],
+				sui = new SpazImageURL(),
+				dataItem; // "datum"?
 
-			var sui = new SpazImageURL();
-
-			for (var i=0; i < data.length; i++) {
+			for (i = 0, iMax = data.length; i < iMax; i++){
+				dataItem = data[i];
 
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
 
 					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
+					dataItem.text = sch.nl2br(dataItem.text);
 
-					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.text);
 
-					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					dataItem.text = sch.makeClickable(dataItem.text, SPAZ_MAKECLICKABLE_OPTS);
 
 					// convert emoticons
-					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text);
+					dataItem.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.text);
 					
-					if (data[i].SC_is_retweet) {
+					if (dataItem.SC_is_retweet) {
 						// nl2br
-						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = sch.nl2br(dataItem.retweeted_status.text);
 
 						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+						dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.retweeted_status.text);
 
 						// make clickable
-						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+						dataItem.retweeted_status.text = sch.makeClickable(dataItem.retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
 
 						// convert emoticons
-						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.retweeted_status.text);
 					}
 
-					no_dupes.push(data[i]);
+					no_dupes.push(dataItem);
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(data[i]);
+					TweetModel.saveTweet(dataItem);
 				}
 
 			}
@@ -589,46 +594,48 @@ var FavoritesTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			data = data.reverse();
-			var no_dupes = [];
+			var i, iMax,
+				no_dupes = [],
+				sui = new SpazImageURL(),
+				dataItem;
 
-			var sui = new SpazImageURL();
-
-			for (var i=0; i < data.length; i++) {
+			for (i = 0, iMax = data.length; i < iMax; i++){
+				dataItem = data[i];
 
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
 
 					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
+					dataItem.text = sch.nl2br(dataItem.text);
 
-					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.text);
 
-					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					dataItem.text = sch.makeClickable(dataItem.text, SPAZ_MAKECLICKABLE_OPTS);
 
 					// convert emoticons
-					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text);
+					dataItem.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.text);
 
-					if (data[i].SC_is_retweet) {
+					if (dataItem.SC_is_retweet) {
 						// nl2br
-						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = sch.nl2br(dataItem.retweeted_status.text);
 
 						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+						dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.retweeted_status.text);
 
 						// make clickable
-						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+						dataItem.retweeted_status.text = sch.makeClickable(dataItem.retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
 
 						// convert emoticons
-						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.retweeted_status.text);
 					}
 
-					no_dupes.push(data[i]);
+					no_dupes.push(dataItem);
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(data[i]);
+					TweetModel.saveTweet(dataItem);
 				}
 
 			}
@@ -713,46 +720,48 @@ var UserTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			data = data.reverse();
-			var no_dupes = [];
+			var i, iMax,
+				no_dupes = [],
+				sui = new SpazImageURL(),
+				dataItem;
 			
-			var sui = new SpazImageURL();
-			
-			for (var i=0; i < data.length; i++) {
+			for (i = 0, iMax = data.length; i < iMax; i++){
+				dataItem = data[i];
 				
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
 					
 					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
+					dataItem.text = sch.nl2br(dataItem.text);
 					
-					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.text);
 					
-					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					dataItem.text = sch.makeClickable(dataItem.text, SPAZ_MAKECLICKABLE_OPTS);
 					
 					// convert emoticons
-					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text);
+					dataItem.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.text);
 					
-					if (data[i].SC_is_retweet) {
+					if (dataItem.SC_is_retweet) {
 						// nl2br
-						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = sch.nl2br(dataItem.retweeted_status.text);
 
 						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+						dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.retweeted_status.text);
 
 						// make clickable
-						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+						dataItem.retweeted_status.text = sch.makeClickable(dataItem.retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
 
 						// convert emoticons
-						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.retweeted_status.text);
 					}
 					
-					no_dupes.push(data[i]);
+					no_dupes.push(dataItem);
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(data[i]);
+					TweetModel.saveTweet(dataItem);
 				}
 				
 			}
@@ -973,18 +982,18 @@ var UserlistsTimeline = function(args) {
 			/*
 				build a new menu
 			*/
-			var root_container_selector = '#container';
-			var menu_id = 'lists-menu';
-			var menu_class = 'popup-menu';
-			var menu_items = [];
-			var menu_item_class = 'userlists-menu-item';
-			var menu_trigger_selector = '#view-userlists';
-			var i=0;
+			var i, iMax,
+				root_container_selector = '#container',
+				menu_id = 'lists-menu',
+				menu_class = 'popup-menu',
+				menu_items = [],
+				menu_item_class = 'userlists-menu-item',
+				menu_trigger_selector = '#view-userlists';
 			
 			// if it exists, remove
 			$('#'+menu_id).remove();
 			
-			for (i=0; i < data.lists.length; i++) {
+			for (i = 0, iMax = data.lists.length; i < iMax; i++){
 				var thislist = data.lists[i];
 				menu_items[i] = {
 					'label':thislist.full_name,
@@ -1015,7 +1024,7 @@ var UserlistsTimeline = function(args) {
 			/*
 				add <li> items to menu
 			*/
-			for (i=0; i < menu_items.length; i++) {
+			for (i = 0, iMax = menu_items.length; i < iMax; i++){
 
 				var menuItem = menu_items[i],
 					menuItemAttributes = menuItem.attributes,
@@ -1158,54 +1167,55 @@ var SearchTimeline = function(args) {
 			data = data[0] || [];
 			
 			data = data.reverse();
-			var no_dupes = [];
-			var md = new Showdown.converter();
+			var i, iMax,
+				no_dupes = [],
+				md = new Showdown.converter(),
+				sui = new SpazImageURL(),
+				dataItem;
 			
-			
-			var sui = new SpazImageURL();
-			
-			for (var i=0; i < data.length; i++) {
+			for (i = 0, iMax = data.length; i < iMax; i++){
+				dataItem = data[i];
 				
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
 					
 					// nl2br
-					data[i].text = sch.nl2br(data[i].text);
+					dataItem.text = sch.nl2br(dataItem.text);
 					
-					data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].text);
+					dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.text);
 					
-					data[i].text = sch.makeClickable(data[i].text, SPAZ_MAKECLICKABLE_OPTS);
+					dataItem.text = sch.makeClickable(dataItem.text, SPAZ_MAKECLICKABLE_OPTS);
 
 					// convert emoticons
-					data[i].text = Emoticons.SimpleSmileys.convertEmoticons(data[i].text);
+					dataItem.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.text);
 					
-					if (data[i].SC_is_retweet) {
+					if (dataItem.SC_is_retweet) {
 						// nl2br
-						data[i].retweeted_status.text = sch.nl2br(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = sch.nl2br(dataItem.retweeted_status.text);
 
 						// add thumbnails
-						data[i].SC_thumbnail_urls = sui.getThumbsForUrls(data[i].retweeted_status.text);
+						dataItem.SC_thumbnail_urls = sui.getThumbsForUrls(dataItem.retweeted_status.text);
 
 						// make clickable
-						data[i].retweeted_status.text = sch.makeClickable(data[i].retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
+						dataItem.retweeted_status.text = sch.makeClickable(dataItem.retweeted_status.text, SPAZ_MAKECLICKABLE_OPTS);
 
 						// convert emoticons
-						data[i].retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(data[i].retweeted_status.text);
+						dataItem.retweeted_status.text = Emoticons.SimpleSmileys.convertEmoticons(dataItem.retweeted_status.text);
 					}
 					
 					// if (Spaz.Prefs.get('usemarkdown')) {
-					//	data[i].text = md.makeHtml(data[i].text);
-					//	data[i].text = data[i].text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
+					//	dataItem.text = md.makeHtml(dataItem.text);
+					//	dataItem.text = dataItem.text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
 					// }
 					
-					no_dupes.push(data[i]);
+					no_dupes.push(dataItem);
 					
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(data[i]);
+					TweetModel.saveTweet(dataItem);
 				}
 				
 			}
@@ -1284,20 +1294,23 @@ var FollowersTimeline = function(args) {
 			// alert('got follower data');
 			data = data.reverse();
 			
-			var no_dupes = [];
+			var i, iMax,
+				no_dupes = [],
+				dataItem;
 			
-			for (var i=0; i < data.length; i++) {
+			for (i = 0, iMax = data.length; i < iMax; i++){
+				dataItem = data[i];
 				
 				/*
 					only add if it doesn't already exist
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+data[i].id+']').length<1) {
+				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
 					
-					no_dupes.push(data[i]);
+					no_dupes.push(dataItem);
 					/*
 						Save to DB via JazzRecord
 					*/
-					TwUserModel.findOrCreate(data[i]);
+					TwUserModel.findOrCreate(dataItem);
 				}
 				
 			}
