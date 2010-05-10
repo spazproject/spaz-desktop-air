@@ -231,6 +231,9 @@ var FriendsTimeline = function() {
 				dataItem = data[i];
 				sch.dump(i);
 
+				if (dataItem.SC_is_retweet) {
+					dataItem.id = dataItem.retweeted_status.id;
+				}
 				/*
 					only add if it doesn't already exist
 				*/
