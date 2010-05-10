@@ -2,7 +2,7 @@ var Spaz;
 if (!Spaz) { Spaz = {}; };
 
 /***********
-Spaz.Prefs
+ Spaz.Prefs
 ************/
 if (!Spaz.Prefs) Spaz.Prefs = {};
 
@@ -39,7 +39,6 @@ Spaz.Prefs.defaultPreferences = {
 	'notify-totals':true,
 	'notify-searchresults':false,
 	'notify-listmessages':false,
-	
 
 	// 'theme-userstylesheet':null,
 	'theme-basetheme': 'Leopaz',
@@ -257,8 +256,7 @@ Spaz.Prefs.changeMethods = {
 			} else { // is growl
 				$('#window-notificationposition').attr("disabled","disabled");;
 			}
-
-		}
+	   }
 	},
 	'window-minimizetosystray': {
 		setUI: function(value) {
@@ -333,6 +331,95 @@ Spaz.Prefs.changeMethods = {
 		},
 		onSet: function(key, value) {
 			return !!value;
+		}
+	},
+	'timeline-home-pager-count': {
+		setUI: function(value) {
+			var max = Spaz.Prefs.defaultPreferences['timeline-home-pager-count-max'];
+			var sel = $('#timeline-home-pager-count');
+			if (sel.children().length == 0) {
+				var i = 0;
+				while ((i+=10) <= max) {
+					sel.append('<option value="' + i + '">' + i + '</option>');
+				}
+			}
+			sel.val(value);
+		},
+		onGet: function(key, value) {
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		},
+		onSet: function(key, value) {
+			Spaz.Timelines.friends.twit.data[SPAZCORE_SECTION_HOME].lastid = 1;
+			Spaz.Timelines.friends.twit.data[SPAZCORE_SECTION_FRIENDS].lastid = 1;
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		}
+	},
+	'timeline-direct-pager-count': {
+		setUI: function(value) {
+			var max = Spaz.Prefs.defaultPreferences['timeline-direct-pager-count-max'];
+			var sel = $('#timeline-direct-pager-count');
+			if (sel.children().length == 0) {
+				var i = 0;
+				while ((i+=10) <= max) {
+					sel.append('<option value="' + i + '">' + i + '</option>');
+				}
+			}
+			sel.val(value);
+		},
+		onGet: function(key, value) {
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		},
+		onSet: function(key, value) {
+			Spaz.Timelines.friends.twit.data[SPAZCORE_SECTION_DMS].lastid = 1;
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		}
+	},
+	'timeline-replies-pager-count': {
+		setUI: function(value) {
+			var max = Spaz.Prefs.defaultPreferences['timeline-replies-pager-count-max'];
+			var sel = $('#timeline-replies-pager-count');
+			if (sel.children().length == 0) {
+				var i = 0;
+				while ((i+=10) <= max) {
+					sel.append('<option value="' + i + '">' + i + '</option>');
+				}
+			}
+			sel.val(value);
+		},
+		onGet: function(key, value) {
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		},
+		onSet: function(key, value) {
+			Spaz.Timelines.friends.twit.data[SPAZCORE_SECTION_REPLIES].lastid = 1;
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		}
+	},
+	'timeline-user-pager-count': {
+		setUI: function(value) {},
+		onGet: function(key, value) {
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		},
+		onSet: function(key, value) {
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		}
+	},
+	'timeline-search-pager-count': {
+		setUI: function(value) {},
+		onGet: function(key, value) {
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
+		},
+		onSet: function(key, value) {
+			var max = Spaz.Prefs.defaultPreferences[key + '-max'];
+			return parseInt(value) < max ? parseInt(value) : max;
 		}
 	},
 
@@ -803,32 +890,31 @@ Spaz.Prefs.changeMethods = {
 		}
 	},
 	'dock-unreadbadgecolor': {
-	   setUI: function(value) {
-		   $('#dock-unreadbadgecolor').val(value);
-	   },
-	   onChange: function(value) {
-		   Spaz.Dock.setColor(value);
-	   }
-   },
+		setUI: function(value) {
+			$('#dock-unreadbadgecolor').val(value);
+		},
+		onChange: function(value) {
+			Spaz.Dock.setColor(value);
+		}
+	},
 
-   'dock-unreadbadgeshape': {
-	   setUI: function(value) {
-		   $('#dock-unreadbadgeshape').val(value);
-	   },
-	   onChange: function(value) {
-		   Spaz.Dock.setShape(value);
-	   }
-   }
+	'dock-unreadbadgeshape': {
+		setUI: function(value) {
+			$('#dock-unreadbadgeshape').val(value);
+		},
+		onChange: function(value) {
+			Spaz.Dock.setShape(value);
+		}
+	}
 
 };
 
 
 /*
-	Set up SpazCore prefs and accounts objects
-*/
+ * Set up SpazCore prefs and accounts objects
+ */
 Spaz.Prefs._prefs = new SpazPrefs(Spaz.Prefs.defaultPreferences, null, Spaz.Prefs.changeMethods);
 Spaz.Prefs._accounts = {}; // a placeholder where we will store the SpazAccounts obj
-
 
 
 /**
@@ -838,15 +924,15 @@ Spaz.Prefs.init = function() {
 
 	sch.debug('LOADING');
 	Spaz.Prefs._prefs.load();
-	
+
 	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
-	
+
 	sch.error('THIS IS THE USERNAME:');
 	sch.error(Spaz.Prefs.getUsername()+'@'+Spaz.Prefs.getAccountType());
-	
+
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();
-	
+
 	sch.debug('INIT UI');
 	Spaz.Prefs.initUI();
 
@@ -858,7 +944,7 @@ Spaz.Prefs.init = function() {
 
 
 Spaz.Prefs.initUI = function() {
-	for (pkey in Spaz.Prefs.preferences) {
+	for (pkey in Spaz.Prefs._prefs._prefs) {
 		//sch.debug(pkey);
 		if (Spaz.Prefs.changeMethods[pkey]) {
 			if (Spaz.Prefs.changeMethods[pkey].setUI) {
@@ -890,6 +976,9 @@ Spaz.Prefs.initUI = function() {
 	$('#timeline-keyboardnavwrap').bind('change', Spaz.Prefs.setFromUI);
 	$('#theme-basetheme').bind('change', Spaz.Prefs.setFromUI);
 
+	$('#timeline-home-pager-count').bind('change', Spaz.Prefs.setFromUI);
+	$('#timeline-direct-pager-count').bind('change', Spaz.Prefs.setFromUI);
+	$('#timeline-replies-pager-count').bind('change', Spaz.Prefs.setFromUI);
 
 	$('#notify-messages').bind('change', Spaz.Prefs.setFromUI);
 	$('#notify-dms').bind('change', Spaz.Prefs.setFromUI);
@@ -1049,7 +1138,7 @@ Spaz.Prefs.setPrefs = function() {
 Spaz.Prefs.setCurrentUser = function() {
 	sch.error('setCurrentUser is @TODO');
 	return;
-	
+
 	//	   var user = $('#username').val();
 	//	   var pass = $('#password').val();
 	// var accobj;
@@ -1181,7 +1270,7 @@ Spaz.Prefs.getUsername = function() {
 	} else {
 		return null;
 	}
-	
+
 };
 
 Spaz.Prefs.getPassword = function() {
@@ -1221,6 +1310,7 @@ Spaz.Prefs.getCurrentAccount = function() {
 	} else {
 		return null;
 	}
+
 };
 
 
@@ -1251,3 +1341,4 @@ Spaz.Prefs.getHandleHTTPAuth = function() {
 Spaz.Prefs.getToggleKey = function() {
 	return Spaz.Prefs.get('key-toggle');
 }
+

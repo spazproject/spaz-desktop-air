@@ -1376,17 +1376,17 @@ Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, s
 			switch (type) {
 				case 'reply':
 					var tweets  = $(tl_selector).is('reply');
-					var prefkey = "timeline-maxentries-reply";
+					var prefkey = "timeline-replies-pager-count";
 					break;
 
 				case 'dm':
 					var tweets  = $(tl_selector).is('dm');
-					var prefkey = "timeline-maxentries-dm";
+					var prefkey = "timeline-direct-pager-count";
 					break;
 
 				default:
 					var tweets  = $(tl_selector).not('.reply, .dm');
-					var prefkey = "timeline-maxentries";
+					var prefkey = "timeline-home-pager-count";
 			}
 
 			var numEntries = tweets.length
