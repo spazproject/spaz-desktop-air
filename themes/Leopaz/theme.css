@@ -856,34 +856,48 @@ div.timeline-entry:nth-child(even){
 
 
 
-	/*
-		Tooltips, those little popup messages that appear when you float over links and some other junk
-	*/
-	#tooltip {
-		background-color: rgba(0,0,0,.8);
-		color:#FFFFFF;
-		font-size:10px;
-		padding:5px !important;
-		border:0px solid black;
-		opacity:1.0;
-		position:fixed;
-		z-index:1000;
-		top:1px;
-		left:1px;
-		-khtml-border-radius:5px;
-		display:none;
-		min-width:100px;
-		max-width:320px;
-
-	}
-		#tooltip h3, #tooltip div {
-			margin:0;
-			font-weight:normal;
-			font-size:inherit;
-		}
-		  #tooltip div.latest{
-		    margin:1em 0 0;
-		  }
+  /*
+    Tooltips, those little popup messages that appear when you float over links and some other junk
+  */
+  #tooltip {
+    position:fixed;
+    display:none;
+    min-width:100px;
+    max-width:320px;
+    background:-webkit-gradient(
+      linear, left top, left bottom,
+      from(rgba(91, 91, 91, 0.9)), to(rgba(40, 40, 40, 0.9)),
+      color-stop(0.5, rgba(65, 65, 65, 0.9)),
+      color-stop(0.5, rgba(52, 52, 52, 0.9))
+      );
+    border:1px solid rgba(60, 60, 60, 0.9);
+    border-bottom-color:rgba(0, 0, 0, 0.9);
+    border-radius:4px;
+      -webkit-border-radius:4px;
+    color:#fff;
+    font-size:10px;
+    opacity:1;
+    z-index:1000;
+  }
+    #tooltip > :first-child{
+      padding:5px;
+      border-top:1px solid rgba(255, 255, 255, 0.25);
+      border-radius:3px;
+        -webkit-border-radius:3px;
+    }
+    #tooltip h3, #tooltip div {
+      margin:0;
+      font-weight:normal;
+      font-size:inherit;
+    }
+      #tooltip div.latest{
+        margin:1em 0 0;
+      }
+      #tooltip .tooltip-user-image{
+        margin:0 0 0 10px;
+        border-radius:4px;
+          -webkit-border-radius:4px;
+      }
 
 
 
