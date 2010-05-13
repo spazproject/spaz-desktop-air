@@ -689,27 +689,38 @@ div.timeline-entry:nth-child(even){
 					color:#000000;
 				}
 			
-			/*
-				This is the counter for number of chars entered
-			*/
+      /*
+        Shows the number of characters entered, and the tweet being replied
+        to, if any
+      */
       #entrybox-popup{
         position:absolute;
         display:none;
-        left:0;
-        right:0;
-        bottom:55px;
+        left:1px;
+        right:1px;
+        bottom:65px;
         max-width:300px;
         margin:0 auto;
         padding:0;
-        border-width:19px 16px 21px 16px;
-        border-image:url(images/popup.png) 19 16 21 16 repeat repeat;
-          -webkit-border-image:url(images/popup.png) 19 16 21 16 repeat repeat;
+        background:-webkit-gradient(
+          linear, left top, left bottom,
+          from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
+          color-stop(0.5, rgba(49, 49, 49, 0.95)),
+          color-stop(0.5, rgba(33, 33, 33, 0.95))
+          );
+        border:1px solid rgba(37, 37, 37, 0.95);
         border-radius:4px;
           -webkit-border-radius:4px;
-        color:#828282;
         font-size:9px;
         opacity:1;
         z-index:100;
+      }
+      #entrybox-popup > :first-child{
+        overflow:hidden;
+        padding:10px;
+        border:1px solid rgba(255, 255, 255, 0.15);
+        border-radius:3px;
+          -webkit-border-radius:3px;
       }
         #irt{}
           #irt-dismiss{
@@ -726,9 +737,11 @@ div.timeline-entry:nth-child(even){
           #irt-content{
             display:block;
             margin:4px 4px 8px -10px;
-            padding:4px 4px 4px 10px;
+            padding:4px 4px 5px 10px;
             overflow:hidden;
-            background:rgba(255, 255, 255, 0.25);
+            background:-webkit-gradient(
+              linear, left top, left bottom, from(#a2a2a2), to(#636363));
+            border-top:1px solid #c4c4c4;
             border-radius:8px;
               -webkit-border-radius:8px;
             color:#fff;
@@ -736,7 +749,7 @@ div.timeline-entry:nth-child(even){
             #irt-message{}
         #chars-left{
           float:left;
-          color:#999;
+          color:#c0c0c0;
           font-size:12px;
           line-height:20px;
         }
@@ -754,8 +767,9 @@ div.timeline-entry:nth-child(even){
         }
           #entrybox-actions input[type=button]{
             padding:0 8px;
-            background:-webkit-gradient(
-              linear, left top, left bottom, from(#333), to(#000));
+            background:-webkit-gradient(linear,
+              left top, left bottom,
+              from(rgba(0, 0, 0, 0.25)), to(rgba(0, 0, 0, 0.5)));
             border:1px solid #000;
             border-radius:9px; /* = line-height / 2 */
               -webkit-border-radius:9px;
@@ -866,12 +880,11 @@ div.timeline-entry:nth-child(even){
     max-width:320px;
     background:-webkit-gradient(
       linear, left top, left bottom,
-      from(rgba(91, 91, 91, 0.9)), to(rgba(40, 40, 40, 0.9)),
-      color-stop(0.5, rgba(65, 65, 65, 0.9)),
-      color-stop(0.5, rgba(52, 52, 52, 0.9))
+      from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
+      color-stop(0.5, rgba(49, 49, 49, 0.95)),
+      color-stop(0.5, rgba(33, 33, 33, 0.95))
       );
-    border:1px solid rgba(60, 60, 60, 0.9);
-    border-bottom-color:rgba(0, 0, 0, 0.9);
+    border:1px solid rgba(37, 37, 37, 0.95);
     border-radius:4px;
       -webkit-border-radius:4px;
     color:#fff;
@@ -881,7 +894,7 @@ div.timeline-entry:nth-child(even){
   }
     #tooltip > :first-child{
       padding:5px;
-      border-top:1px solid rgba(255, 255, 255, 0.25);
+      border:1px solid rgba(255, 255, 255, 0.15);
       border-radius:3px;
         -webkit-border-radius:3px;
     }

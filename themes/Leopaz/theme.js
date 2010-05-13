@@ -26,7 +26,7 @@
       setEntryFormHeight = function(newHeight){
         $timeline.css('bottom', newHeight + 28);
         $entryForm.height(newHeight);
-        $entryBoxPopup.css('bottom', newHeight - 11);
+        $entryBoxPopup.css('bottom', newHeight - 1);
       },
       onMouseMove = function(ev){
         if(!resizing){ return; }

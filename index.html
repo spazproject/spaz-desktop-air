@@ -862,18 +862,20 @@
 			<!-- <textarea id="entrybox" onfocus='Spaz.UI.showEntryboxTip()' onblur='Spaz.UI.resetStatusBar(); $("body").focus(); return false;' tabindex="0"></textarea> -->
 			<textarea id="entrybox" tabindex="1"></textarea>
 			<div id="entrybox-popup">
-				<div id="irt" style="display:none">
-					<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
-					<span id="irt-content">
-					<strong>Re:</strong> <span id="irt-message" data-status-id="0"></span>
+				<div class="entrybox-popup-content">
+					<div id="irt" style="display:none">
+						<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
+						<span id="irt-content">
+						<strong>Re:</strong> <span id="irt-message" data-status-id="0"></span>
+						</span>
+					</div>
+					<span id="chars-left">
+						<span id="chars-left-count"></span> <span id="chars-left-description">chars left</span>
 					</span>
-				</div>
-				<span id="chars-left">
-					<span id="chars-left-count"></span> <span id="chars-left-description">chars left</span>
-				</span>
-				<div id="entrybox-actions">
-					<input type="button" name="entrybox-shortenText" value="Shorten Text" id="entrybox-shortenText" />
-					<input type="button" name="entrybox-shortenURLs" value="Shorten URLs" id="entrybox-shortenURLs" />
+					<div id="entrybox-actions">
+						<input type="button" name="entrybox-shortenText" value="Shorten Text" id="entrybox-shortenText" />
+						<input type="button" name="entrybox-shortenURLs" value="Shorten URLs" id="entrybox-shortenURLs" />
+					</div>
 				</div>
 			</div>
 			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" />
