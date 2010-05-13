@@ -187,7 +187,9 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 		}
 		content  = '<div class="website-popup" id="'+hash+'">';
 		content += '  <div class="website-url">'+display_url+'</div>';
-		content += '  <div class="website-title">'+data.title+'</div>';
+		if(data.title){
+			content += '  <div class="website-title">'+data.title+'</div>';
+		}
 		// content += '<div class="website-preview" style="overflow:hidden"><img class="website-preview-thumbnail" src="http://api.getspaz.com/url/thumb?url=';
 		// content += encodeURIComponent(url);
 		// content += '" alt="Loading thumbnail…" style="max-width:320px; max-height:240px; position:relative" /></div>';
