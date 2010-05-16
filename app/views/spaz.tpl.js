@@ -89,11 +89,11 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '				</div>';
 	entryHTML += '				<div class="status-link">';
 	entryHTML += '					<a href="http://twitter.com/'+d.user.screen_name+'/statuses/'+d.id+'/" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
-									if (d.in_reply_to_status_id) {
-	entryHTML += '						<!-- <a href="/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
-									}
+	// 								if (d.in_reply_to_status_id) {
+	// entryHTML += '						<!-- <a href="/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
+	// 								}
 									if (d.retweeting_user) {
-	entryHTML += '						<span class="status-rt-by">RTed by <a href="http://twitter.com/'+d.user.screen_name+'" class="clickable">'+d.retweeting_user.screen_name+'</a></span>';
+	entryHTML += '						<span class="status-rt-by">RTed by <a href="http://twitter.com/'+d.retweeting_user.screen_name+'" class="clickable">'+d.retweeting_user.screen_name+'</a></span>';
 									}
 	entryHTML += '					<span class="status-source">from';
 	entryHTML += '						<span class="status-source-label">'+d.source+'</span>';
