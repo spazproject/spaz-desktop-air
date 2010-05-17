@@ -49,14 +49,14 @@ Spaz.Templates.timeline_entry = function(d) {
 	}
 	entryHTML += '"  data-status-id="'+d.id+'" data-user-screen_name="'+d.user.screen_name+'" data-user-id="'+d.user.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">';
-	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.user.profile_image_url+')" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
-	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
+	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.user.profile_image_url+')" title="View profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
+	entryHTML += '		<div class="user-screen-name clickable" title="View profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
 						if (d.SC_thumbnail_urls) {
 	entryHTML += '		<div class="status-thumbnails">';
 							for (var key in d.SC_thumbnail_urls) {
-								entryHTML += '<img class="clickable status-thumbnail" data-href="'+key+'" src="'+d.SC_thumbnail_urls[key]+'">';
+								entryHTML += '<img class="clickable status-thumbnail" title="View full version" data-href="'+key+'" src="'+d.SC_thumbnail_urls[key]+'">';
 							}
 	entryHTML += '		</div>';
 						}
@@ -69,9 +69,9 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '		<div class="status-meta">';
 						if (d.SC_is_dm) {
 	entryHTML += '			<div class="status-actions">';
-	entryHTML += '				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
+	entryHTML += '				<span title="Send direct message to '+d.user.screen_name+'" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 								if (d.isSent) {
-	entryHTML += '					<span title="Delete this message" class="status-action status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'"></span>';
+	entryHTML += '					<span title="Delete" class="status-action status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'"></span>';
 								}
 	entryHTML += '			</div>';
 	entryHTML += '			<div class="status-link">';
@@ -79,12 +79,12 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '			</div>';
 						} else {
 	entryHTML += '			<div class="status-actions">';
-	entryHTML += '				<span title="Make this message a favorite" class="status-action status-action-fav clickable" id="status-'+d.id+'-fav" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
-	entryHTML += '				<span title="Retweet this message" class="status-action status-action-retweet clickable" id="status-'+d.id+'-retweet" entry-id="'+d.id+'" timeline-id="'+d.timelineid+'" user-screen_name="'+d.user.screen_name+'" ></span>';
-	entryHTML += '				<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
-	entryHTML += '				<span title="Send reply to this user" class="status-action status-action-reply clickable" id="status-'+d.id+'-reply" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
+	entryHTML += '				<span title="Retweet" class="status-action status-action-retweet clickable" id="status-'+d.id+'-retweet" entry-id="'+d.id+'" timeline-id="'+d.timelineid+'" user-screen_name="'+d.user.screen_name+'" ></span>';
+	entryHTML += '				<span title="'+(d.favorited ? 'Remove favorite' : 'Add favorite')+'" class="status-action status-action-fav clickable" id="status-'+d.id+'-fav" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
+	entryHTML += '				<span title="Send direct message to '+d.user.screen_name+'" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
+	entryHTML += '				<span title="Reply to '+d.user.screen_name+'" class="status-action status-action-reply clickable" id="status-'+d.id+'-reply" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 								if (d.isSent) {
-	entryHTML += '					<span title="Delete this message" class="status-action status-action-del clickable" id="status-'+d.id+'-del" entry-id="'+d.id+'"></span>';
+	entryHTML += '					<span title="Delete" class="status-action status-action-del clickable" id="status-'+d.id+'-del" entry-id="'+d.id+'"></span>';
 								}
 	entryHTML += '				</div>';
 	entryHTML += '				<div class="status-link">';
@@ -122,8 +122,8 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	var entryHTML = '';
 	entryHTML += '<div class="timeline-entry dm new" data-status-id="'+d.id+'" data-user-screen_name="'+d.sender_screen_name+'" data-user-id="'+d.sender.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">';
-	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.sender.profile_image_url+')" title="View user\'s profile" user-id="'+d.sender.id+'" user-screen_name="'+d.sender.screen_name+'">'+d.sender.screen_name+'</div>';
-	entryHTML += '		<div class="user-screen-name clickable" title="View user\'s profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">'+d.sender_screen_name+'</div>';
+	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.sender.profile_image_url+')" title="View profile" user-id="'+d.sender.id+'" user-screen_name="'+d.sender.screen_name+'">'+d.sender.screen_name+'</div>';
+	entryHTML += '		<div class="user-screen-name clickable" title="View profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">'+d.sender_screen_name+'</div>';
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
 	entryHTML += '		<div class="status-text" id="status-text-'+d.id+'">';
@@ -134,13 +134,13 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-thumbnails"></div>';
 	entryHTML += '		<div class="status-actions">';
-	entryHTML += '			<span title="Send direct message to this user" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.sender_screen_name+'" ></span>';
+	entryHTML += '			<span title="Send direct message to '+d.sender_screen_name+'" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.sender_screen_name+'" ></span>';
 							if (d.isSent) {
-	entryHTML += '				<span title="Delete this message" class="status-action status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'"></span>';
+	entryHTML += '				<span title="Delete" class="status-action status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'"></span>';
 							}
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-link">';
-	entryHTML += '				<span data-created-at="'+d.created_at+'" class="status-created-at">'+d.created_at+'</span>';
+	entryHTML += '			<span data-created-at="'+d.created_at+'" class="status-created-at">'+d.created_at+'</span>';
 	entryHTML += '		</div>';
 	entryHTML += '	</div>';
 	entryHTML += '</div>';
@@ -163,12 +163,12 @@ Spaz.Templates.followerslist_row = function(d) {
 	// entryHTML += '			>?</span>';
 	// 					}
 	entryHTML += '	<div class="directory-user">';
-	entryHTML += '		<img src="'+d.profile_image_url+'" class="user-image" user-screen_name="'+d.screen_name+'" title="View user\'s profile" />';
+	entryHTML += '		<img src="'+d.profile_image_url+'" class="user-image" user-screen_name="'+d.screen_name+'" title="View profile" />';
 	entryHTML += '		<div class="directory-user-name">';
 							if (d.name && d.name != d.screen_name) {
-	entryHTML += '				<div class="name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.name+'</a></div>';
+	entryHTML += '				<div class="name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View profile">'+d.name+'</a></div>';
 							}
-	entryHTML += '			<div class="screen-name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View user\'s profile">'+d.screen_name+'</a></div>';
+	entryHTML += '			<div class="screen-name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View profile">'+d.screen_name+'</a></div>';
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="directory-user-info">';
 							if (d.location) {

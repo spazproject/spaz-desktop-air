@@ -876,8 +876,7 @@ div.timeline-entry:nth-child(even){
   #tooltip {
     position:fixed;
     display:none;
-    min-width:100px;
-    max-width:320px;
+    max-width:300px;
     background:-webkit-gradient(
       linear, left top, left bottom,
       from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
@@ -907,6 +906,7 @@ div.timeline-entry:nth-child(even){
         margin:1em 0 0;
       }
       #tooltip .tooltip-user-image{
+        float:right;
         margin:0 0 0 10px;
         border-radius:4px;
           -webkit-border-radius:4px;
