@@ -79,8 +79,10 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '			</div>';
 						} else {
 	entryHTML += '			<div class="status-actions">';
-	entryHTML += '				<span title="Retweet" class="status-action status-action-retweet clickable" id="status-'+d.id+'-retweet" entry-id="'+d.id+'" timeline-id="'+d.timelineid+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 	entryHTML += '				<span title="'+(d.favorited ? 'Remove favorite' : 'Add favorite')+'" class="status-action status-action-fav clickable" id="status-'+d.id+'-fav" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
+								if (!d.isSent){
+	entryHTML += '					<span title="Retweet" class="status-action status-action-retweet clickable" id="status-'+d.id+'-retweet" entry-id="'+d.id+'" timeline-id="'+d.timelineid+'" user-screen_name="'+d.user.screen_name+'" ></span>';
+								}
 	entryHTML += '				<span title="Send direct message to '+d.user.screen_name+'" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 	entryHTML += '				<span title="Reply to '+d.user.screen_name+'" class="status-action status-action-reply clickable" id="status-'+d.id+'-reply" entry-id="'+d.id+'" user-screen_name="'+d.user.screen_name+'" ></span>';
 								if (d.isSent) {
