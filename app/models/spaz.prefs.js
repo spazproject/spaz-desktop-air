@@ -1260,13 +1260,10 @@ Spaz.Prefs.setRateLimit = function(rateinfo, data) {
 
 
 Spaz.Prefs.getUsername = function() {
-	if (Spaz.Prefs.getCurrentAccountId()) {
-		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
-		if (accobj) {
-			return accobj.username;
-		} else {
-			return null;
-		}
+	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
+	if (currentAccountId) {
+		var accobj = Spaz.Prefs._accounts.get(currentAccountId);
+		return !!accobj ? accobj.username : null;
 	} else {
 		return null;
 	}
@@ -1274,13 +1271,10 @@ Spaz.Prefs.getUsername = function() {
 };
 
 Spaz.Prefs.getPassword = function() {
-	if (Spaz.Prefs.getCurrentAccountId()) {
-		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
-		if (accobj) {
-			return accobj.password;
-		} else {
-			return null;
-		}
+	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
+	if (currentAccountId) {
+		var accobj = Spaz.Prefs._accounts.get(currentAccountId);
+		return !!accobj ? accobj.password : null;
 	} else {
 		return null;
 	}
@@ -1289,13 +1283,10 @@ Spaz.Prefs.getPassword = function() {
 
 
 Spaz.Prefs.getAccountType = function() {
-	if (Spaz.Prefs.getCurrentAccountId()) {
-		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
-		if (accobj) {
-			return accobj.type;
-		} else {
-			return null;
-		}
+	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
+	if (currentAccountId) {
+		var accobj = Spaz.Prefs._accounts.get(currentAccountId);
+		return !!accobj ? accobj.type : null;
 	} else {
 		return null;
 	}
@@ -1304,9 +1295,9 @@ Spaz.Prefs.getAccountType = function() {
 
 
 Spaz.Prefs.getCurrentAccount = function() {
-	if (Spaz.Prefs.getCurrentAccountId()) {
-		var accobj = Spaz.Prefs._accounts.get(Spaz.Prefs.getCurrentAccountId());
-		return accobj;
+	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
+	if (currentAccountId) {
+		return Spaz.Prefs._accounts.get(currentAccountId);
 	} else {
 		return null;
 	}

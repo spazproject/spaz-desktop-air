@@ -77,8 +77,12 @@ sch.listen(document, 'verify_credentials_failed', function(e) {
 */
 sch.listen(document, 'before_account_switched', function(e, account) {
 	sch.dump('about to switch accounts');
-	var old_acct_class = account.username + "-at-" + account.type;
-	$('#container').removeClass(old_acct_class);
+	if(account){
+		// `account` may be null if this is your first account, or your
+		// prefs are in a broken state.
+		var old_acct_class = account.username + '-at-' + account.type;
+		$('#container').removeClass(old_acct_class);
+	}
 });
 
 /*

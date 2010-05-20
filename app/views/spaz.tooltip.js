@@ -131,7 +131,7 @@ Spaz_Tooltip.prototype.showIRT = function(irt_id) {
 		
 		var content = '';
 
-		content += "<img style='float:right' src='" + d.user.profile_image_url + "' />";
+		content += "<img class='tooltip-user-image' src='" + d.user.profile_image_url + "' />";
 		content += "<div><strong>" + d.user.name + " (" + d.user.screen_name + ")</strong></div>";
 		content += '<div class="irt">' + sch.stripTags(d.text) + '</div>';
 		
@@ -151,13 +151,13 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 	function show(e, d) {
 		
 		var content = '';
-		content += "<img class='tooltip-user-image' style='max-width:48px; max-height:48px; float:right' src='" + d.profile_image_url + "' />";
+		content += "<img class='tooltip-user-image' src='" + d.profile_image_url + "' />";
 		content += "<div><strong>" + d.name + " (" + d.screen_name + ")</strong></div>";
 		if (d.location) {
 			content += "<div><em>" + d.location + "</em></div>";
 		}
 		if (d.followers_count) {
-			content += "<div><strong>" + d.followers_count + "</strong> followers</div>";
+			content += "<div><strong>" + d.followers_count + '</strong> follower'+(d.followers_count==1 ? '' : 's')+'</div>';
 		}
 		if (d.description) {
 			content += "<div>" + d.description + "</div>";
