@@ -910,6 +910,8 @@ div.timeline-entry:nth-child(even){
         margin:0 0 0 10px;
         border-radius:4px;
           -webkit-border-radius:4px;
+	      width: 24px;
+	      height:24px;
       }
 
 

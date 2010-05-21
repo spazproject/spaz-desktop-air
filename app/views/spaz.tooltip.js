@@ -22,9 +22,19 @@ function Spaz_Tooltip(content, opts) {
 	sch.dump('OPTS:');
 	sch.dump(this.opts);
 	
-
+	/*
+	   append code if missing
+	*/
+    if (this.jqtt.length < 1) {
+        jQuery('#container').append(this.basetpl);
+    }
 
 }
+
+Spaz_Tooltip.prototype.basetpl = '<div id="tooltip"> \
+	<div class="tooltip-msg"></div> \
+	<div class="preview" style="display:none; overflow:hidden; margin-top:.7em"></div> \
+</div>';
 
 /**
  * @param {object} [opts] options for showing
@@ -32,15 +42,23 @@ function Spaz_Tooltip(content, opts) {
  * @param {function} [opts.onShow] a function to call when the tooltip shows
  */
 Spaz_Tooltip.prototype.show = function(opts) {
-	
+
 	opts = sch.defaults({
 		'delay':Spaz.Prefs.get('window-tooltipdelay'),
-		'onShow':null
+		'onShow':null,
+		'uuid':sch.UUID
 	}, opts);
+	
+	if (!this.uuid) {
+	    this.setUUID(opts.uuid);
+	}
+	
+	
 	
 	sch.dump('SHOW!!!');
 	
 	this.hide();
+	
 
 	/*
 		We have to make a closure here to solve the scoping problems 
@@ -64,6 +82,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 
 		// show the tooltip
 		thisTT.jqtt.css('left', thisTT.event.pageX + 10)
+		    .attr('title', thisTT.uuid) // assign uuid
 			.css('top', thisTT.event.pageY + 20)
 			.show()
 			.css('opacity', 0)
@@ -81,7 +100,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 
 		// check horizontal position
 		if (vp.x + vp.cx < off.left + thisTT.jqtt.width()) {
-			thisTT.jqtt.css('left', parseInt(thisTT.jqtt.css('left')) - (thisTT.jqtt.width() + 20));
+			thisTT.jqtt.css('left', parseInt(thisTT.jqtt.css('left'), 10) - (thisTT.jqtt.width() + 20));
 			if (thisTT.jqtt.offset().left < 5) {
 				thisTT.jqtt.css('left', 5);
 			}
@@ -90,7 +109,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 
 		// check vertical position
 		if (vp.y + vp.cy < off.top + thisTT.jqtt.height()) {
-			thisTT.jqtt.css('top', parseInt(thisTT.jqtt.css('top')) - (thisTT.jqtt.height() + 20));
+			thisTT.jqtt.css('top', parseInt(thisTT.jqtt.css('top'), 10) - (thisTT.jqtt.height() + 20));
 			if (thisTT.jqtt.offset().top < 5) {
 				thisTT.jqtt.css('top', 5);
 			}
@@ -104,7 +123,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 		Spaz_Tooltip_hideTimeout = setTimeout(Spaz.UI.hideTooltips, Spaz.Prefs.get('window-tooltiphidedelay'));
 	}
 
-}
+};
 
 
 Spaz_Tooltip.prototype.hide    = function() {
@@ -113,43 +132,60 @@ Spaz_Tooltip.prototype.hide    = function() {
 	*/
 	this.jqtt.stop().hide().css('width', '').css('height', '');
 	clearTimeout(Spaz_Tooltip_Timeout);
-	clearTimeout(Spaz_Tooltip_hideTimeout);
+	clearTimeout(Spaz_Tooltip_hideTimeout);	
+};
 
-	
-}
 
 Spaz_Tooltip.prototype.showIRT = function(irt_id) {
 	var thisTT = this;
-	
-	sch.listen(this.trigger, 'get_one_status_succeeded', show);
-	
-	sch.dump('IRT_ID:'+irt_id);
-	
-	Spaz.Data.getTweet(irt_id, this.trigger);
-	
-	function show(e, d) {
-		
-		var content = '';
 
-		content += "<img class='tooltip-user-image' src='" + d.user.profile_image_url + "' />";
-		content += "<div><strong>" + d.user.name + " (" + d.user.screen_name + ")</strong></div>";
-		content += '<div class="irt">' + sch.stripTags(d.text) + '</div>';
-		
-		thisTT.setContent(content);
-		thisTT.show();
-	}
+	var uuid = sch.UUID();
+	this.setUUID(uuid);
+	
+	var content = '';
+    content += "<div class='irt-preview-container' id='"+uuid+"'>";
+	content += "  <img class='tooltip-user-image' />";
+	content += "  <div><strong class='user-name'>In reply to…</strong></div>";
+	content += '  <div class="irt"></div>';
+	content += "</div>";
+	this.setContent(content);
+	this.show();
+
+	sch.listen(this.trigger, 'get_one_status_succeeded', function(e, d) {
+		    sch.error('resetting content');
+		    content = '';
+		    content += "<div class='irt-preview-container' id='"+uuid+"'>";
+        	content += "  <img class='tooltip-user-image' src='"+d.user.profile_image_url+"' />";
+        	content += "  <div><strong class='user-name'>"+d.user.name + " (" + d.user.screen_name + ")"+"</strong></div>";
+        	content += '  <div class="irt">'+sch.stripTags(d.text)+'</div>';
+        	content += "</div>";
+		    thisTT.setContent(content, uuid);
+		}
+	);	
+	Spaz.Data.getTweet(irt_id, this.trigger);
 };
+
+
+
+
 
 
 Spaz_Tooltip.prototype.showUser = function(user_id) {
 	var thisTT = this;
 	
-	sch.listen(this.trigger, 'get_user_succeeded', show);
+	var content = '';
 	
-	Spaz.Data.getUser(user_id, this.trigger);
+	content += "Getting user data…";
+
+	var uuid = sch.UUID();
+	this.setUUID(uuid);
+
+	thisTT.setContent(content);
+	thisTT.show();
 	
-	function show(e, d) {
-		
+	
+	sch.listen(this.trigger, 'get_user_succeeded', function(e, d){
+	    
 		var content = '';
 		content += "<img class='tooltip-user-image' src='" + d.profile_image_url + "' />";
 		content += "<div><strong>" + d.name + " (" + d.screen_name + ")</strong></div>";
@@ -162,57 +198,87 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 		if (d.description) {
 			content += "<div>" + d.description + "</div>";
 		}
-		// content += '<div class="latest"><strong>Latest:</strong> ' + d.text + '</div>';
+
+		thisTT.setContent(content, uuid);
 		
-		thisTT.setContent(content);
-		thisTT.show();
-	}
+	    
+	});
 	
-}
+	Spaz.Data.getUser(user_id, this.trigger);
+};
 
 Spaz_Tooltip.prototype.showURLPreview = function(url) {
 	
-	var that = this;
+	var thisTT = this;
 	
 	var display_url = sch.escape_html(url);
-	var hash = sch.MD5(url);
-	sch.error(hash);
-	// if (display_url.length > 40) {
-	// 	display_url = display_url.substr(0,40)+'…';
-	// }
+	var uuid = sch.UUID();
+	this.setUUID(uuid);
+	
+    if (display_url.length > 40) {
+        display_url = display_url.substr(0,40)+'…';
+    }
+	
+	var content  = '<div class="website-popup" id="'+uuid+'">';
+	content += '  <div class="website-url">'+display_url+'</div>';
+	content += '  <div class="website-title"></div>';
+	content += '</div>';
+	this.setContent(content);
+	this.show();
 	
 	$.get('http://api.getspaz.com/url/title.json', {'url':url}, function(data){
 		if (sch.isString(data)) {
 			data = sch.deJSON(data);
 		}
-		content  = '<div class="website-popup" id="'+hash+'">';
-		content += '  <div class="website-url">'+display_url+'</div>';
-		if(data.title){
-			content += '  <div class="website-title">'+data.title+'</div>';
-		}
-		// content += '<div class="website-preview" style="overflow:hidden"><img class="website-preview-thumbnail" src="http://api.getspaz.com/url/thumb?url=';
-		// content += encodeURIComponent(url);
-		// content += '" alt="Loading thumbnail…" style="max-width:320px; max-height:240px; position:relative" /></div>';
-		content += '</div>';
-		
-		that.setContent(content);
-		that.show({'delay':0});
-		
+    	var content  = '<div class="website-popup" id="'+uuid+'">';
+    	content += '  <div class="website-url">'+display_url+'</div>';
+    	content += '  <div class="website-title">'+data.title+'</div>';
+    	content += '</div>';
+    	thisTT.setContent(content, uuid);
 	});
 	
-}
+	
+};
 
 Spaz_Tooltip.prototype.showTitle = function(title) {
-	this.setContent(title);
+    
+    var uuid = sch.UUID();
+	this.setUUID(uuid);
+	
+	this.setContent(title, uuid);
 	this.show();
-}
+};
 
 Spaz_Tooltip.prototype.setTrigger = function(trigger_element) {
 	
 };
 
-Spaz_Tooltip.prototype.setContent = function(content) {
-	this.content = content;
+Spaz_Tooltip.prototype.setContent = function(content, uuid) {
+    
+    
+    sch.error('setContent for '+ uuid + " to " + this.uuid);
+    sch.error(this.jqtt.attr('title'));
+    if (uuid && this.uuid && (this.uuid != uuid || this.jqtt.attr('title') !== uuid)) {
+        sch.error('UUID did not match, not updating');
+        return;
+    } else {
+        this.content = content;
+
+    	if (this.jqtt) {
+    	    this.jqtt.children('.tooltip-msg').html(this.content);
+    	}
+    }
+};
+
+Spaz_Tooltip.prototype.setUUID = function(uuid) {
+    this.uuid = uuid;
+    if (this.jqtt) {
+        this.jqtt.attr('title', uuid);
+    }
+};
+
+Spaz_Tooltip.prototype.getUUID = function() {
+    return this.uuid;
 };
 
 /*
