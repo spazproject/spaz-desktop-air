@@ -1816,8 +1816,8 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
     color-stop(0.05, rgba(33, 33, 33, 0.95))
     ) !important;
   border:1px solid rgba(37, 37, 37, 0.95) !important;
-  border-radius:4px;
-    -webkit-border-radius:4px;
+  border-radius:8px;
+    -webkit-border-radius:8px;
 }
 
 /*** Popboxes > Conversation ***/
@@ -1829,22 +1829,25 @@ div#popbox-content-conversation{
 div#popbox-content-conversation h1{
   background:transparent;
   border-top:1px solid rgba(255, 255, 255, 0.15);
-  border-radius:3px;
-    -webkit-border-radius:3px;
+  border-radius:7px; /* = #DOMWindow border-radius - 1 */
+    -webkit-border-radius:7px;
   font-size:14px;
   font-weight:normal;
   text-align:center;
 }
 div#popbox-content-conversation h1 .closeDOMWindow{
   position:absolute;
-  left:10px;
-  top:13px;
+  left:14px;
+  top:12px;
   display:block;
   width:14px;
   height:15px;
   background:transparent url(images/close-white-small.png) 0 0 no-repeat;
   cursor:pointer;
   text-indent:-9999em;
+}
+div#popbox-content-conversation div.content{
+  padding:3px;
 }
 div#popbox-content-conversation #timeline-conversation{
   max-height:340px;
