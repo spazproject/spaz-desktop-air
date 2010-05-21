@@ -937,9 +937,9 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 	
 	function saveUserObject(e, data) {
 		if (onSuccess) {
-			onSuccess(userobj);
+			onSuccess(data);
 		}
-		TwUserModel.findOrCreate(userobj);
+		TwUserModel.findOrCreate(data);
 		sch.unlisten(target_el, 'get_user_succeeded', saveUserObject);
 	}
 };

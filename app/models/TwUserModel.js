@@ -84,7 +84,7 @@ var TwUserModel = new JazzRecord.Model({
 		findOrCreate: function(userobj) {
 			var user_id;
 			
-			sch.dump(userobj);
+			sch.error(userobj);
 			
 			user_id = this.userExistsId(userobj.id, true);
 			
