@@ -285,8 +285,12 @@ var FriendsTimeline = function() {
 			/*
 				Record old scroll position
 			*/
-			var $oldFirst	  = $timeline.find('div.timeline-entry:first'),
-				offset_before = $oldFirst.offset().top;
+			var $oldFirst, offset_before;
+			$oldFirst	  = $timeline.find('div.timeline-entry:first');
+			if ($oldFirst.length > 0) {
+			    offset_before = $oldFirst.offset().top;
+			}
+				
 
 			/*
 				Add new items
@@ -352,10 +356,12 @@ var FriendsTimeline = function() {
 			/*
 				set new scroll position
 			*/
-			var offset_after = $oldFirst.offset().top;
-			var offset_diff = Math.abs(offset_before - offset_after);
-			if ($timelineWrapper.scrollTop() > 0) {
-				$timelineWrapper.scrollTop( $timelineWrapper.scrollTop() + offset_diff );
+			if (offset_before) {
+			    var offset_after = $oldFirst.offset().top;
+    			var offset_diff = Math.abs(offset_before - offset_after);
+    			if ($timelineWrapper.scrollTop() > 0) {
+    				$timelineWrapper.scrollTop( $timelineWrapper.scrollTop() + offset_diff );
+    			}
 			}
 
 			/*

@@ -245,7 +245,8 @@ Spaz.Data.destroyStatus = function(postid) {
 	Spaz.UI.showLoading();
 
 	var xhr = $.ajax({
-		complete:Spaz.Data.onAjaxComplete,
+		dataType:'text',
+        complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
 			sch.dump(data);
@@ -282,6 +283,7 @@ Spaz.Data.makeFavorite = function(postid) {
 	Spaz.UI.showLoading();
 
 	var xhr = $.ajax({
+		dataType:'text',
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
@@ -321,6 +323,7 @@ Spaz.Data.makeNotFavorite = function(postid) {
 	Spaz.UI.showLoading();
 
 	var xhr = $.ajax({
+		dataType:'text',
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
@@ -360,6 +363,7 @@ Spaz.Data.followUser = function(userid) {
 	Spaz.UI.showLoading();
 
 	var xhr = $.ajax({
+		dataType:'text',
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
@@ -400,6 +404,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	Spaz.UI.showLoading();
 
 	var xhr = $.ajax({
+		dataType:'text',
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
@@ -714,6 +719,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 	Spaz.UI.statusBar('Asking Twitter for rate limit info…');
 
 	var xhr = $.ajax({
+	    dataType:'text',
 		complete:Spaz.Data.onAjaxComplete,
 		error:Spaz.Data.onAjaxError,
 		success:function(data){
