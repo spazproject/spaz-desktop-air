@@ -14,8 +14,6 @@ div.popbox-content {
   position:relative;
   margin:0px;
   padding:0px;
-  background-color: #FFFF9B;
-  background-image: url('../images/popbox-img/body-bg.png');
   background-repeat:repeat-x;
   background-position: center bottom;
   background-size:100% 100%;
@@ -24,27 +22,27 @@ div.popbox-content {
   font-size:.8em;
   pointer-events:auto;
 }
-	div.popbox-content h1 {
-		background-color:#222222;
-		color:#FFFFFF;
-		padding:10px;
-		margin:0px;
-		-webkit-box-shadow:0px 0px 6px #333333;
-		font-size:1.5em;
-		top:0px;
-		background-image: url('../images/spaz-icon-alpha.png');
-		background-repeat: no-repeat;
-		background-position: 90% 40%;
-		overflow:hidden;
-	}
-	div.popbox-content div.content {
-		padding:5px 10px;
-		bottom:0px;
-		top:0px;
-		overflow:auto;
-		position:relative;
-		height:100%;
-	}
+  div.popbox-content h1{
+    top:0px;
+    overflow:hidden;
+    margin:0px;
+    padding:10px;
+    background:#222 url(../images/spaz-icon-alpha.png) 90% 40% no-repeat;
+    box-shadow:0 0 6px #333;
+      -webkit-box-shadow:0 0 6px #333;
+    color:#fff;
+    font-size:1.5em;
+  }
+  div.popbox-content div.content{
+    position:relative;
+    top:0px;
+    bottom:0px;
+    overflow:auto;
+    height:100%;
+    padding:5px 10px;
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#fff), to(#ffffa9));
+  }
 		div.popbox-content *:focus {
 		    outline:none;
 		}

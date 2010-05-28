@@ -1807,6 +1807,17 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
     -webkit-border-radius:4px;
 }
 
+/*** Popboxes > General ***/
+
+div.popbox-content.general{
+  overflow:auto;
+  max-height:380px;
+  background:transparent;
+  border:5px solid rgba(0, 0, 0, 0.5);
+  border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
 /*** Popboxes > Conversation ***/
 
 div#popbox-content-conversation{
