@@ -193,6 +193,24 @@ Spaz.UI.hideUpdateCheck = function() {
 
 
 
+/**
+ *  Wrapper for `jQuery.openDOMWindow` that wipes out appearance defaults.
+ *  These should be handled via CSS instead.
+ */
+Spaz.UI.openDOMWindow = function(options){
+	return jQuery.openDOMWindow($.extend({
+		borderColor:    null,
+		borderSize:     null,
+		height:         null,
+		overlayColor:   null,
+		overlayOpacity: null,
+		width:          null,
+		windowBGColor:  null,
+		windowBGImage:  null
+	}, options));
+};
+
+
 
 
 /**
@@ -200,7 +218,7 @@ Spaz.UI.hideUpdateCheck = function() {
  */
 Spaz.UI.openPopboxURL = function(url) {
 	var cont_width = jQuery('#container').outerWidth();
-	jQuery.openDOMWindow({ 
+	Spaz.UI.openDOMWindow({
 		windowSource:  'iframe',
         windowSourceURL:url,
 		windowPadding: 0,
@@ -221,9 +239,10 @@ Spaz.UI.openPopboxURL = function(url) {
  *  opens a popbox that contains the contents within the element of the passed ID
  */
 Spaz.UI.openPopboxInline = function(content_id) {
-	var cont_width  = jQuery('body').outerWidth();
-	var cont_height = jQuery('body').outerHeight();
-	jQuery.openDOMWindow({ 
+	var $body       = jQuery('body'),
+	    cont_width  = $body.outerWidth(),
+	    cont_height = $body.outerHeight();
+	Spaz.UI.openDOMWindow({
 		// windowSource:  'inline',
         windowSourceID: content_id,
 		windowPadding: 0,

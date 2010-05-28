@@ -1798,33 +1798,29 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
 /*** Popboxes ***/
 
 #DOMWindowOverlay{
+  /* Using lots of `!important` to override the JS plugin. */
   left:8px !important;
   right:8px !important;
   top:0 !important;
   bottom:8px !important;
-  width:auto !important;
-  height:auto !important;
   border-radius:4px;
     -webkit-border-radius:4px;
-  opacity:0.5 !important;
-}
-#DOMWindow{
-  background:-webkit-gradient(
-    linear, left top, left bottom,
-    from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
-    color-stop(0.05, rgba(49, 49, 49, 0.95)),
-    color-stop(0.05, rgba(33, 33, 33, 0.95))
-    ) !important;
-  border:1px solid rgba(37, 37, 37, 0.95) !important;
-  border-radius:8px;
-    -webkit-border-radius:8px;
 }
 
 /*** Popboxes > Conversation ***/
 
 div#popbox-content-conversation{
-  background:transparent;
-  font-family:inherit;
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
+    color-stop(0.5, rgba(49, 49, 49, 0.95)),
+    color-stop(0.5, rgba(33, 33, 33, 0.95))
+    ) repeat-x;
+  background-size:100% 42px;
+    -webkit-background-size:100% 42px;
+  border:1px solid rgba(37, 37, 37, 0.95);
+  border-radius:7px;
+    -webkit-border-radius:7px;
 }
 div#popbox-content-conversation h1{
   background:transparent;
@@ -1848,6 +1844,11 @@ div#popbox-content-conversation h1 .closeDOMWindow{
 }
 div#popbox-content-conversation div.content{
   padding:3px;
+  background:rgba(38, 38, 38, 0.95);
+  border-bottom-left-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+  border-bottom-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
 }
 div#popbox-content-conversation #timeline-conversation{
   max-height:340px;
@@ -1855,6 +1856,8 @@ div#popbox-content-conversation #timeline-conversation{
   border:2px solid rgba(255, 255, 255, 0.25);
   border-top:2px solid #000;
   border-left:2px solid #000;
+  border-radius:2px;
+    -webkit-border-radius:2px;
 }
 div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   outline:0;

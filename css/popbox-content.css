@@ -1,40 +1,29 @@
-#DOMWindow {
-/*	-webkit-border-radius:2px;*/
-	border:6px solid #333 !important;
-	max-height:400px;
-	background-image: url('../images/popbox-img/body-bg.png');
-	background-repeat: repeat-x;
-	background-position: center bottom;
-	-webkit-background-size:100% 100%;
-	
+#DOMWindow{
+  /* Intentionally bare-bones. Style `div.popbox-content-wrapper` instead. */
+  max-width:500px;
+  max-height:400px;
+  pointer-events:none;
 }
-
-div.popbox-content-wrapper {
-	display:none;
+#DOMWindowOverlay{
+  background:rgba(0, 0, 0, 0.5);
 }
-
-
-
- 
-/*
-	This stuff is used across all popboxes
-*/
+div.popbox-content-wrapper{
+  display:none;
+}
 div.popbox-content {
-	padding:0px;
-	margin:0px;
-	font-family:Tahoma, Arial, Helvetica, sans-serif;
-	background-color: #FFFF9B;
-	background-image: url('../images/popbox-img/body-bg.png');
-	background-repeat:repeat-x;
-	background-position: center bottom;
-	-webkit-background-size:100% 100%;	
-	font-size:.8em;
-	color:#444444;
-	position:relative;
+  position:relative;
+  margin:0px;
+  padding:0px;
+  background-color: #FFFF9B;
+  background-image: url('../images/popbox-img/body-bg.png');
+  background-repeat:repeat-x;
+  background-position: center bottom;
+  background-size:100% 100%;
+    -webkit-background-size:100% 100%;
+  color:#444444;
+  font-size:.8em;
+  pointer-events:auto;
 }
-
-
-
 	div.popbox-content h1 {
 		background-color:#222222;
 		color:#FFFFFF;
@@ -48,8 +37,6 @@ div.popbox-content {
 		background-position: 90% 40%;
 		overflow:hidden;
 	}
-
-
 	div.popbox-content div.content {
 		padding:5px 10px;
 		bottom:0px;
@@ -58,32 +45,26 @@ div.popbox-content {
 		position:relative;
 		height:100%;
 	}
-	
 		div.popbox-content *:focus {
 		    outline:none;
 		}
-
 		div.popbox-content a:link, div.popbox-content .clickable {
 		    color:#000099;
 		    cursor:pointer;
 		}
-
-
 		div.popbox-content h2,div.popbox-content h3 {
 			text-shadow: #999999 0px 1px 2px;
 		}
-
 		div.popbox-content h2 {
 			margin:0px;
 			font-size:1.2em;
 		}
-
-
 		div.popbox-content div.formrow {
 			white-space: nowrap;
 			clear:both;
 			margin-bottom:5px;
 		}
+
 
 
 /*
@@ -150,7 +131,6 @@ div.popbox-content {
 			-khtml-border-radius:.5em;
 			padding:5px;
 		}
-
 		div.popbox-content #sysinfo td {
 			font-size:12px;
 			padding:2px;
@@ -164,6 +144,7 @@ div.popbox-content {
 			padding:2px;
 			text-align:left;
 		}
+
 
 
 /*
@@ -188,6 +169,9 @@ div.popbox-content {
 			display:block;
 			/*-khtml-border-radius:5px;*/
 		}
+
+
+
 /*
 			The wrapper for the little loading animation
 */
@@ -198,6 +182,7 @@ div.popbox-content {
 			background:url('../images/popbox-img/loading.gif');
 			background-repeat: no-repeat;
 		}
+
 
 
 /*
@@ -224,6 +209,7 @@ div.popbox-content {
 #resources li a:hover {
 	background-color:#220000;
 }
+
 
 
 /*
