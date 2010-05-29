@@ -28,11 +28,16 @@ div.popbox-content {
     margin:0px;
     padding:10px;
     background:#222 url(../images/spaz-icon-alpha.png) 90% 40% no-repeat;
+    border-top:1px solid #222;
+    border-bottom:1px solid #222;
     box-shadow:0 0 6px #333;
       -webkit-box-shadow:0 0 6px #333;
     color:#fff;
     font-size:1.5em;
   }
+    div.popbox-content h1 .closeDOMWindow{
+      display:none;
+    }
   div.popbox-content div.content{
     position:relative;
     top:0px;

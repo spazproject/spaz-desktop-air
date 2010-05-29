@@ -199,14 +199,17 @@ Spaz.UI.hideUpdateCheck = function() {
  */
 Spaz.UI.openDOMWindow = function(options){
 	return jQuery.openDOMWindow($.extend({
+		width:          null,
+		height:         null,
 		borderColor:    null,
 		borderSize:     null,
-		height:         null,
+		overlay:        1,
 		overlayColor:   null,
 		overlayOpacity: null,
-		width:          null,
+		positionType:   'centered',
 		windowBGColor:  null,
-		windowBGImage:  null
+		windowBGImage:  null,
+		windowPadding:  0
 	}, options));
 };
 
@@ -219,18 +222,12 @@ Spaz.UI.openDOMWindow = function(options){
 Spaz.UI.openPopboxURL = function(url) {
 	var cont_width = jQuery('#container').outerWidth();
 	Spaz.UI.openDOMWindow({
-		windowSource:  'iframe',
-        windowSourceURL:url,
-		windowPadding: 0,
-		positionType:  'centered',
-		width:         cont_width-30,
-		height:'300',
-		overlay:1,
-		overlayOpacity:60,
-		overlayColor:'#000'
+		windowSource:    'iframe',
+		windowSourceURL: url,
+		width:           cont_width - 30,
+		height:          300
     });
 
-	
 	jQuery('#DOMWindow').outerWidth( cont_width-30 );
 }
 
@@ -240,24 +237,19 @@ Spaz.UI.openPopboxURL = function(url) {
  */
 Spaz.UI.openPopboxInline = function(content_id) {
 	var $body       = jQuery('body'),
+		$domWindow  = jQuery('#DOMWindow'),
 	    cont_width  = $body.outerWidth(),
 	    cont_height = $body.outerHeight();
 	Spaz.UI.openDOMWindow({
-		// windowSource:  'inline',
-        windowSourceID: content_id,
-		windowPadding: 0,
-		positionType:  'centered',
-		// fixedWindowY:  30,
-		width:         cont_width-40,
-		height:        cont_height-100,
-		overlay:1,
-		overlayOpacity:60,
-		overlayColor:'#000',
-		
+		// windowSource:   'inline',
+		windowSourceID: content_id,
+		// fixedWindowY:   30,
+		width:          cont_width - 40,
+		height:         cont_height - 100
     });
 
-	jQuery('#DOMWindow').outerWidth( cont_width -30 );
-	jQuery('#DOMWindow').outerHeight( cont_height-30 );
+	$domWindow.outerWidth(cont_width - 30);
+	$domWindow.outerHeight(cont_height - 30);
 
 	return false;
 }

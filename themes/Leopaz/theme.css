@@ -1803,6 +1803,8 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
   right:8px !important;
   top:0 !important;
   bottom:8px !important;
+  width:auto !important;
+  height:auto !important;
   border-radius:4px;
     -webkit-border-radius:4px;
 }
@@ -1812,10 +1814,46 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
 div.popbox-content.general{
   overflow:auto;
   max-height:380px;
-  background:transparent;
-  border:5px solid rgba(0, 0, 0, 0.5);
-  border-radius:5px;
-    -webkit-border-radius:5px;
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 1)),
+    color-stop(0.5, rgba(49, 49, 49, 0.95)),
+    color-stop(0.5, rgba(33, 33, 33, 0.95))
+    ) no-repeat;
+  background-size:100% 3.5em;
+    -webkit-background-size:100% 3.5em;
+  border:1px solid rgba(37, 37, 37, 0.95);
+  border-radius:4px;
+    -webkit-border-radius:4px;
+}
+div.popbox-content.general h1{
+  padding:10px;
+  background-color:transparent;
+  background-position:145% 40%;
+  border-top:1px solid rgba(255, 255, 255, 0.15);
+  border-bottom:1px solid rgba(38, 38, 38, 1);
+  border-radius:3px;
+    -webkit-border-radius:3px;
+  text-align:center;
+}
+div.popbox-content.general h1 .closeDOMWindow{
+  position:absolute;
+  left:14px;
+  top:15px;
+  display:block;
+  width:14px;
+  height:15px;
+  background:transparent url(images/close-white-small.png) 0 0 no-repeat;
+  cursor:pointer;
+  text-indent:-9999em;
+}
+div.popbox-content.general div.content{
+  max-height:295px;
+  padding:15px;
+  border:5px solid rgba(38, 38, 38, 1);
+    /*  The border is opaque because, when translucent, the border corners
+        overlap and still turn opaque. */
+  border-top:0;
 }
 
 /*** Popboxes > Conversation ***/
