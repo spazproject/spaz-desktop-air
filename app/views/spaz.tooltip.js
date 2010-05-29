@@ -171,9 +171,8 @@ Spaz_Tooltip.prototype.showIRT = function(irt_id) {
 
 
 Spaz_Tooltip.prototype.showUser = function(user_id) {
-	var thisTT = this;
-	
-	var content = '';
+	var thisTT = this,
+	    content = '';
 	
 	content += "Getting user data…";
 
@@ -183,7 +182,6 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 	thisTT.setContent(content);
 	thisTT.show();
 	
-	
 	sch.listen(this.trigger, 'get_user_succeeded', function(e, d){
 	    
 		var content = '';
@@ -192,16 +190,24 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 		if (d.location) {
 			content += "<div><em>" + d.location + "</em></div>";
 		}
-		if (d.followers_count) {
-			content += "<div><strong>" + d.followers_count + '</strong> follower'+(d.followers_count==1 ? '' : 's')+'</div>';
+		if (d.friends_count || d.followers_count) {
+			content += '<div>';
+			if (d.friends_count) {
+				content += '<strong>' + d.friends_count + '</strong> ' +
+					'friend' + (d.friends_count === 1 ? '' : 's');
+			}
+			if (d.followers_count) {
+				if (d.friends_count) { content += ' / '; }
+				content += '<strong>' + d.followers_count + '</strong> ' +
+					'follower' + (d.followers_count === 1 ? '' : 's');
+			}
+			content += '</div>';
 		}
 		if (d.description) {
 			content += "<div>" + d.description + "</div>";
 		}
 
 		thisTT.setContent(content, uuid);
-		
-	    
 	});
 	
 	Spaz.Data.getUser(user_id, this.trigger);
