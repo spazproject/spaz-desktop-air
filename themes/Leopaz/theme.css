@@ -889,7 +889,6 @@ div.timeline-entry:nth-child(even){
     color:#fff;
     font-size:10px;
     opacity:1;
-    z-index:1000;
   }
     #tooltip > :first-child{
       padding:5px;

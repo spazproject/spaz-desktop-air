@@ -163,6 +163,9 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 	font-size:10pt;
 }
 
+#tooltip{
+  z-index:10002; /* = #DOMWindow z-index + 1 */
+}
 #tooltip img {
 /*    max-width: 73px;
     max-height: 73px;*/
