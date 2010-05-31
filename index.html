@@ -437,95 +437,103 @@
 											
 											
 											<fieldset id="account-details">
+												<div class="popbox-content" id="popbox-content-account-details">
+													<h1>
+														Account Details
+														<span class="closeDOMWindow">close</span>
+													</h1>
+													<div class="content">
+														<!-- a place to store the ID we're editing -->
+														<input type="hidden" name="id_edit" value="" id="id_edit" />
 												
-												<!-- a place to store the ID we're editing -->
-												<input type="hidden" name="id_edit" value="" id="id_edit">
+														<div class="formrow">
+															<label for="username">Username</label>
+															<input type="text" name="username" id="username" value="" />
+														</div>
+														<div class="formrow">
+															<label for="password">Password</label>
+															<input type="password" name="password" id="password" value="" />
+														</div>
 												
-												<legend>Account Details</legend>
-												<div class="formrow">
-													<label for="username">Username</label>
-													<input type="text" name="username" id="username" value="" />
-												</div>
-												<div class="formrow">
-													<label for="password">Password</label>
-													<input type="password" name="password" id="password" value="" />
-												</div>
+														<div class="formrow">
+															<label for="account-type">Type</label>
+															<select name="account-type" id="account-type">
+																<option value="twitter">Twitter</option>
+																<option value="identi.ca">identi.ca</option>
+																<option value="StatusNet">StatusNet</option>
+																<option value="wordpress.com">Wordpress</option>
+																<option value="tumblr">Tumblr</option>
+																<option value="custom">Custom…</option>
+															</select>
+														</div>
 												
-												<div class="formrow">
-													<label for="account-type">Type</label>
-													<select name="account-type" id="account-type">
-														<option value="twitter">Twitter</option>
-														<option value="identi.ca">identi.ca</option>
-														<option value="StatusNet">StatusNet</option>
-														<option value="wordpress.com">Wordpress</option>
-														<option value="tumblr">Tumblr</option>
-														<option value="custom">Custom…</option>
-													</select>
-												</div>
+														<div class="formrow" id='twitter-api-base-url-row'>
+															<label for="twitter-api-base-url">Base API URL </label>
+															<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
+														</div>
 												
-												<div class="formrow" id='twitter-api-base-url-row'>
-													<label for="twitter-api-base-url">Base API URL </label>
-													<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
-												</div>
+														<div class="formrow">
+															<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
+															<label for="twitter-disable-direct-posting" class="checkbox">
+																Disable direct posting (will only post via <strong>Other Services</strong>)
+															</label>
+														</div>
 												
-												<div class="formrow">
-													<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
-													<label for="twitter-disable-direct-posting" class="checkbox">
-														Disable direct posting (will only post via <strong>Other Services</strong>)
-													</label>
-												</div>
-												
-												<fieldset>
-													<legend>Ping.FM</legend>
-													<div class="formrow">
-														<label for="services-pingfm-userappkey">
-															Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)
-														</label>
-														<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
-													</div>
-													<!-- <div class="formrow">
-														<label for="base-theme">Update type</label>
-														<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
-															<option value="default">default</option>
-															<option value="microblog">microblog</option>
-															<option value="status">status</option>
-														</select>
-													</div> -->
-													<div class="formrow">
-														<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
-														<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
-													</div>
-													<div class="formrow">
-														<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
-														<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
-													</div>
-												</fieldset>
-												<fieldset>
-													<legend>Short.ie API</legend>
-													<div class="formrow">
-														<label for="services-shortie-email">Short.ie email address</label>
-														<input type="text" name="services-shortie-email" id="services-shortie-email" value="" />
-													</div>
-													<div class="formrow">
-														<label for="services-shortie-secretkey">
-															Short.ie secret key (<a href="http://short.ie/dev">Get a key</a>)
-														</label>
-														<input type="text" name="services-shortie-secretkey" id="services-shortie-secretkey" value="" />
-													</div>
-												</fieldset>
-												<fieldset>
-													<legend>Image Hosting</legend>
-													<div class="formrow">
-														<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
-														<label for="services-twitpic-sharepassword" class="checkbox">
-															Don't warn about password sharing
-														</label>
-													</div>
-												</fieldset>
+														<fieldset>
+															<legend>Ping.FM</legend>
+															<div class="formrow">
+																<label for="services-pingfm-userappkey">
+																	Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)
+																</label>
+																<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
+															</div>
+															<!-- <div class="formrow">
+																<label for="base-theme">Update type</label>
+																<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
+																	<option value="default">default</option>
+																	<option value="microblog">microblog</option>
+																	<option value="status">status</option>
+																</select>
+															</div> -->
+															<div class="formrow">
+																<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
+																<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
+															</div>
+															<div class="formrow">
+																<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
+																<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
+															</div>
+														</fieldset>
+														<fieldset>
+															<legend>Short.ie API</legend>
+															<div class="formrow">
+																<label for="services-shortie-email">Short.ie email address</label>
+																<input type="text" name="services-shortie-email" id="services-shortie-email" value="" />
+															</div>
+															<div class="formrow">
+																<label for="services-shortie-secretkey">
+																	Short.ie secret key (<a href="http://short.ie/dev">Get a key</a>)
+																</label>
+																<input type="text" name="services-shortie-secretkey" id="services-shortie-secretkey" value="" />
+															</div>
+														</fieldset>
+														<fieldset>
+															<legend>Image Hosting</legend>
+															<div class="formrow">
+																<input type="checkbox" name="services-twitpic-sharepassword" id="services-twitpic-sharepassword" value="1" />
+																<label for="services-twitpic-sharepassword" class="checkbox">
+																	Don't warn about password sharing
+																</label>
+															</div>
+														</fieldset>
+													</div> <!-- div.content -->
 
-                                                <input type="button" name="save_account_button" value="Save" id="save_account_button">
-                                                <input type="button" name="cancel_account_button" value="Cancel" id="cancel_account_button">
-												
+													<div class="submit">
+														<input type="button" name="save_account_button" value="Save" id="save_account_button">
+														<input type="button" name="cancel_account_button" value="Cancel" id="cancel_account_button">
+													</div>
+
+												</div> <!-- div#popbox-content-account-details -->
 											</fieldset>
 										</div>
 									</div>
@@ -989,7 +997,7 @@
 			The About popup
 		-->
 		<div class="popbox-content-wrapper" id="aboutWindow">
-			<div class="popbox-content general" id="popbox-content-about">
+			<div class="popbox-content info" id="popbox-content-about">
 				<h1>About <span class="closeDOMWindow">close</span></h1>
 				<div class="content">
 					<h2>A microblogging client for Twitter, Identi.ca and Laconica</h2>
@@ -1059,7 +1067,7 @@
 			The Help popup
 		-->
 		<div class="popbox-content-wrapper" id="helpWindow">
-			<div class="popbox-content general" id="popbox-content-help">
+			<div class="popbox-content info" id="popbox-content-help">
 
 				<h1>Help <span class="closeDOMWindow">close</span></h1>
 
@@ -1189,7 +1197,7 @@
 			Short Link Window
 		-->
 		<div class="popbox-content-wrapper" id="shortLinkWindow">
-			<div class="popbox-content general" id="popbox-content-short-link">
+			<div class="popbox-content" id="popbox-content-short-link">
 				<h1>Shorten Link <span class="closeDOMWindow">close</span></h1>
 
 				<div class="content">
@@ -1230,7 +1238,7 @@
 			Image Upload Window
 		-->
 		<div class="popbox-content-wrapper" id="imageUploadWindow">
-			<div class="popbox-content general" id="popbox-content-image-upload">
+			<div class="popbox-content" id="popbox-content-image-upload">
 				<h1>Upload Image <span class="closeDOMWindow">close</span></h1>
 
 				<div class="content">

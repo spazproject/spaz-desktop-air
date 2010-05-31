@@ -10,18 +10,15 @@ Spaz.AccountPrefs.init = function(){
 	
 	this.checkboxes = ['twitter-disable-direct-posting', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
 	
-	
 	var that = this,
-			$accountList    = $('#account-list'),
-			$accountDetails = $('#account-details'),
-			$idEdit         = $('#id_edit'),
-			$username       = $('#username'),
-			$password       = $('#password'),
-			$accountType    = $('#account-type'),
-			$saveAccountButton    = $('#save_account_button'),
-			$cancelAccountButton  = $('#cancel_account_button');
-	
-	
+	    $accountList    = $('#account-list'),
+	    $accountDetails = $('#account-details'),
+	    $idEdit         = $('#id_edit'),
+	    $username       = $('#username'),
+	    $password       = $('#password'),
+	    $accountType    = $('#account-type'),
+	    $saveAccountButton    = $('#save_account_button'),
+	    $cancelAccountButton  = $('#cancel_account_button');
 	
 	$().ready(function(){
 	

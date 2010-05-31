@@ -1807,10 +1807,7 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
   border-radius:4px;
     -webkit-border-radius:4px;
 }
-
-/*** Popboxes > General ***/
-
-div.popbox-content.general{
+div.popbox-content{
   overflow:auto;
   max-height:380px;
   background:-webkit-gradient(
@@ -1819,26 +1816,25 @@ div.popbox-content.general{
     color-stop(0.5, rgba(49, 49, 49, 0.95)),
     color-stop(0.5, rgba(33, 33, 33, 0.95))
     ) no-repeat;
-  background-size:100% 3.5em;
-    -webkit-background-size:100% 3.5em;
+  background-size:100% 40px;
+    -webkit-background-size:100% 40px;
   border:1px solid rgba(37, 37, 37, 0.95);
   border-radius:4px;
     -webkit-border-radius:4px;
 }
-div.popbox-content.general h1{
-  padding:10px;
-  background-color:transparent;
-  background-position:145% 40%;
+div.popbox-content h1{
+  background:transparent;
   border-top:1px solid rgba(255, 255, 255, 0.15);
-  border-bottom:1px solid rgba(38, 38, 38, 1);
-  border-radius:3px;
-    -webkit-border-radius:3px;
+  border-radius:7px; /* = #DOMWindow border-radius - 1 */
+    -webkit-border-radius:7px;
+  font-size:14px;
+  font-weight:normal;
   text-align:center;
 }
-div.popbox-content.general h1 .closeDOMWindow{
+div.popbox-content h1 .closeDOMWindow{
   position:absolute;
-  left:14px;
-  top:15px;
+  left:15px;
+  top:12px;
   display:block;
   width:14px;
   height:15px;
@@ -1846,13 +1842,43 @@ div.popbox-content.general h1 .closeDOMWindow{
   cursor:pointer;
   text-indent:-9999em;
 }
-div.popbox-content.general div.content{
+div.popbox-content div.content{
   max-height:295px;
-  padding:15px;
+/*  padding:15px;*/
   border:5px solid rgba(38, 38, 38, 1);
     /*  The border is opaque because, when translucent, the border corners
         overlap and still turn opaque. */
   border-top:0;
+}
+div.popbox-content div.content{}
+
+/*** Popboxes > Info ***/
+
+div.popbox-content.info h1{
+  padding:10px;
+  background:transparent url(../../../images/spaz-icon-alpha.png) 145% 40% no-repeat;
+  border-top:1px solid rgba(255, 255, 255, 0.15);
+  border-bottom:1px solid rgba(38, 38, 38, 1);
+  border-radius:3px;
+    -webkit-border-radius:3px;
+  text-align:center;
+}
+div.popbox-content.info div.content{
+  padding:15px;
+}
+
+/*** Popboxes > Account details ***/
+
+div#popbox-content-account-details div.content{
+  max-height:285px;
+}
+div#popbox-content-account-details div.submit{
+  overflow:hidden;
+  padding:0 0 5px;
+  background:rgba(38, 38, 38, 1); /* = border-color */
+}
+div#popbox-content-account-details div.submit input{
+  float:right;
 }
 
 /*** Popboxes > Conversation ***/
@@ -1870,36 +1896,17 @@ div#popbox-content-conversation{
   border-radius:7px;
     -webkit-border-radius:7px;
 }
-div#popbox-content-conversation h1{
-  background:transparent;
-  border-top:1px solid rgba(255, 255, 255, 0.15);
-  border-radius:7px; /* = #DOMWindow border-radius - 1 */
-    -webkit-border-radius:7px;
-  font-size:14px;
-  font-weight:normal;
-  text-align:center;
-}
-div#popbox-content-conversation h1 .closeDOMWindow{
-  position:absolute;
-  left:14px;
-  top:12px;
-  display:block;
-  width:14px;
-  height:15px;
-  background:transparent url(images/close-white-small.png) 0 0 no-repeat;
-  cursor:pointer;
-  text-indent:-9999em;
-}
 div#popbox-content-conversation div.content{
   padding:3px;
   background:rgba(38, 38, 38, 0.95);
+  border:0;
   border-bottom-left-radius:6px;
     -webkit-border-bottom-left-radius:6px;
   border-bottom-right-radius:6px;
     -webkit-border-bottom-right-radius:6px;
 }
 div#popbox-content-conversation #timeline-conversation{
-  max-height:340px;
+/*  max-height:340px;*/
   overflow:auto;
   border:2px solid rgba(255, 255, 255, 0.25);
   border-top:2px solid #000;
