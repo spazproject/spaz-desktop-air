@@ -37,6 +37,7 @@ input[type=text]:focus,
 input[type=password]:focus,
 #entrybox:focus{
   outline:3px solid #98bde1; /* Light blue */
+    /* TODO: Change to glow when Adobe AIR supports `box-shadow` */
 }
 .highlight{
   border-bottom:1px dotted #884;
@@ -1419,9 +1420,10 @@ body:not(.active) #panel-prefs .timeline-wrapper{
         }
 
       /*
-        The panel that actually contains stuff
+        Form content -- fieldsets, legends, and controls. `div.prefs` affects
+        both the primary prefs form and the form popbox(es).
       */
-      #prefs-form .CollapsiblePanelContent {
+      div.prefs #prefs-form .CollapsiblePanelContent{
         clear:both;
         margin:0;
         padding:0;
@@ -1430,7 +1432,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
           linear, left top, left bottom,
           from(#ccc), to(#e0e0e0), color-stop(0.01, #e0e0e0));
       }
-        #prefs-form fieldset{
+        div.prefs fieldset{
           margin:8px;
           padding:0;
           overflow:auto; /* Wrap children's margins */
@@ -1443,7 +1445,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
           box-shadow:2px 2px 5px #000;
             -webkit-box-shadow:2px 2px 5px #000;
         }
-          #prefs-form legend{
+          div.prefs legend{
             float:left;
             width:100%;
             margin:0 0 8px;
@@ -1460,70 +1462,72 @@ body:not(.active) #panel-prefs .timeline-wrapper{
             font-weight:bold;
             text-indent:12px;
           }
-            #prefs-form div.formrow{
+            div.prefs div.formrow{
               clear:both;
               margin:8px 0;
               padding:0 12px;
             }
-            #prefs-form div.formrow:first-child{
-              margin-top:8px;
-            }
-              #prefs-form label{
+              div.prefs label{
                 display:block;
               }
-              #prefs-form .relaunch-required{
+              div.prefs .relaunch-required{
                 color:#c00;
               }
-              #prefs-form #account-list-fieldset div.formrow.cta{
+              div.prefs #account-list-fieldset div.formrow.cta{
                 padding:33px 0;
                 text-align:center;
               }
-              #prefs-form #account-list-fieldset select#account-list{
+              div.prefs #account-list-fieldset select#account-list{
                 width:100%;
               }
 
               /*** Preferences > Controls ***/
 
-              body:not(.active) #prefs-form input[type=text],
-              body:not(.active) #prefs-form select{
+              body:not(.active) div.prefs input[type=text],
+              body:not(.active) div.prefs input[type=password],
+              body:not(.active) div.prefs select{
                 opacity:0.5;
               }
-              #prefs-form input[type=password],
-              #prefs-form input[type=text]{
+              div.prefs input[type=text],
+              div.prefs input[type=password]{
                 width:96%;
                 padding:4px;
-                border:1px solid #666;
+                background: #fff url(images/text-input-bg.png) 0 0 no-repeat;
+                border-top:0;
+                border-left:0;
+                border-right:1px solid #c3c3c3;
+                border-bottom:1px solid #ddd;
               }
-              #prefs-form input[type=checkbox]{
+              div.prefs input[type=checkbox]{
                 display:none;
               }
-              #prefs-form input[type=checkbox] + label{
+              div.prefs input[type=checkbox] + label{
                 display:inline-block;
                 height:auto;
                 min-height:14px;
                 padding:0 0 0 20px;
                 background:transparent url(images/checkbox.png) 0 -100px no-repeat;
               }
-              body:not(.active) #prefs-form input[type=checkbox] + label{
+              body:not(.active) div.prefs input[type=checkbox] + label{
                 background-position:0 0;
               }
-              body:not(.active) #prefs-form input[type=checkbox]:checked + label{
+              body:not(.active) div.prefs input[type=checkbox]:checked + label{
                 background-position:0 -50px;
               }
-              #prefs-form input[type=checkbox]:checked + label{
+              div.prefs input[type=checkbox]:checked + label{
                 background-position:0 -150px;
               }
-              #prefs-form input[type=checkbox] + label:active{
+              div.prefs input[type=checkbox] + label:active{
                 background-position:0 -200px;
               }
-              #prefs-form input[type=checkbox]:checked + label:active{
+              div.prefs input[type=checkbox]:checked + label:active{
                 background-position:0 -250px;
               }
-              #prefs-form option{
+              div.prefs option{
                 font-size:10px;
               }
-              #prefs-form input[type=button],
-              #prefs-form input[type=submit]{
+              div.prefs input[type=button],
+              div.prefs input[type=submit]{
                 height:19px;
                 padding:0;
                 background:transparent;
@@ -1534,26 +1538,17 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 color:#000;
                 font-size:10px;
               }
-                #prefs-form input[type=button]:active,
-                #prefs-form input[type=submit]:active{
+                div.prefs input[type=button]:active,
+                div.prefs input[type=submit]:active{
                   border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
                     -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
                 }
-                body:not(.active) #prefs-form input[type=button],
-                body:not(.active) #prefs-form input[type=submit]{
+                body:not(.active) div.prefs input[type=button],
+                body:not(.active) div.prefs input[type=submit]{
                   border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                     -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                   color:#999;
                 }
-              #prefs-form input[type=text],
-              #prefs-form input[type=password]{
-                background: #fff url(images/text-input-bg.png) 0 0 no-repeat;
-                border-top:0;
-                border-left:0;
-                border-right:1px solid #c3c3c3;
-                border-bottom:1px solid #ddd;
-              }
-              /* TODO: Add glow to input[type=text]:focus */
               input[type=text]#prefs-user-stylesheet  { width:80px; }
               input[type=text]#network-refreshinterval{ width:20px; }
               input[type=text]#dock-refreshinterval   { width:30px; }
@@ -1812,21 +1807,22 @@ div.popbox-content{
   max-height:380px;
   background:-webkit-gradient(
     linear, left top, left bottom,
-    from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 1)),
+    from(rgba(117, 117, 117, 0.95)), to(rgb(38, 38, 38)),
     color-stop(0.5, rgba(49, 49, 49, 0.95)),
     color-stop(0.5, rgba(33, 33, 33, 0.95))
     ) no-repeat;
   background-size:100% 40px;
     -webkit-background-size:100% 40px;
   border:1px solid rgba(37, 37, 37, 0.95);
-  border-radius:4px;
-    -webkit-border-radius:4px;
+  border-radius:7px;
+    -webkit-border-radius:7px;
 }
 div.popbox-content h1{
   background:transparent;
   border-top:1px solid rgba(255, 255, 255, 0.15);
-  border-radius:7px; /* = #DOMWindow border-radius - 1 */
-    -webkit-border-radius:7px;
+  border-radius:6px; /* = div.popbox-content border-radius - 1 */
+    -webkit-border-radius:6px;
+  cursor:default;
   font-size:14px;
   font-weight:normal;
   text-align:center;
@@ -1845,12 +1841,11 @@ div.popbox-content h1 .closeDOMWindow{
 div.popbox-content div.content{
   max-height:295px;
 /*  padding:15px;*/
-  border:5px solid rgba(38, 38, 38, 1);
+  border:3px solid rgb(38, 38, 38);
     /*  The border is opaque because, when translucent, the border corners
         overlap and still turn opaque. */
   border-top:0;
 }
-div.popbox-content div.content{}
 
 /*** Popboxes > Info ***/
 
@@ -1858,9 +1853,7 @@ div.popbox-content.info h1{
   padding:10px;
   background:transparent url(../../../images/spaz-icon-alpha.png) 145% 40% no-repeat;
   border-top:1px solid rgba(255, 255, 255, 0.15);
-  border-bottom:1px solid rgba(38, 38, 38, 1);
-  border-radius:3px;
-    -webkit-border-radius:3px;
+  border-bottom:1px solid rgb(38, 38, 38);
   text-align:center;
 }
 div.popbox-content.info div.content{
@@ -1869,16 +1862,84 @@ div.popbox-content.info div.content{
 
 /*** Popboxes > Account details ***/
 
+div#popbox-content-account-details{
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
+    color-stop(0.5, rgba(49, 49, 49, 0.95)),
+    color-stop(0.5, rgba(33, 33, 33, 0.95))
+    ) no-repeat;
+}
+div#popbox-content-account-details h1{
+  border-bottom-color:rgba(38, 38, 38, 0.95);
+}
 div#popbox-content-account-details div.content{
+  overflow-x:hidden;
   max-height:285px;
+  padding:0 12px;
+  background:#e0e0e0;
+  border-color:rgba(38, 38, 38, 0.95);
+  border-top:0;
+  border-bottom:0;
+  font-size:11px;
+}
+div#popbox-content-account-details div.content div.formrow{
+  white-space:normal;
+}
+div#popbox-content-account-details div.content > div.formrow{
+  padding:0;
+}
+div#popbox-content-account-details div.content fieldset{
+  margin-left:0;
+  margin-right:0;
+  padding:0;
+}
+div#popbox-content-account-details div.content label + input[type=text],
+div#popbox-content-account-details div.content label + input[type=password]{
+  display:block;
 }
 div#popbox-content-account-details div.submit{
   overflow:hidden;
-  padding:0 0 5px;
-  background:rgba(38, 38, 38, 1); /* = border-color */
+  padding:8px 3px;
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(38, 38, 38, 0.95)), to(rgba(0, 0, 0, 0.95)),
+    color-stop(0.5, rgba(19, 19, 19, 0.95)),
+    color-stop(0.5, rgba(0, 0, 0, 0.95))
+    ) no-repeat;
+  border-bottom-left-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+  border-bottom-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
 }
 div#popbox-content-account-details div.submit input{
   float:right;
+  height:auto;
+  margin:0 0 0 3px;
+  padding:3px 16px;
+  background:-webkit-gradient(
+    linear, left top, left bottom, from(#828282), to(#333));
+  border-image:none;
+    -webkit-border-image:none;
+  border-radius:1em;
+    -webkit-border-radius:1em;
+  color:#fff;
+  font-size:10px;
+  line-height:15px;
+}
+div#popbox-content-account-details div.submit input[id=save_account_button]{
+  /*  Using an attribute selector, not `#`, to match specificity of `:hover`,
+      etc. selectors below. */
+  background:-webkit-gradient(
+    linear, left top, left bottom, from(#a2a2a2), to(#636363));
+  font-size:12px;
+}
+div#popbox-content-account-details div.submit input:hover,
+div#popbox-content-account-details div.submit input:focus,
+div#popbox-content-account-details div.submit input:active{
+  background:-webkit-gradient(
+    linear, left top, left bottom, from(#668bf4), to(#2b64f0));
+  border-color:#5c83ea transparent #1d58e7 transparent;
 }
 
 /*** Popboxes > Conversation ***/
@@ -1893,8 +1954,6 @@ div#popbox-content-conversation{
   background-size:100% 42px;
     -webkit-background-size:100% 42px;
   border:1px solid rgba(37, 37, 37, 0.95);
-  border-radius:7px;
-    -webkit-border-radius:7px;
 }
 div#popbox-content-conversation div.content{
   padding:3px;
