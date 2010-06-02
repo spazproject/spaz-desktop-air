@@ -45,10 +45,12 @@ input[type=password]:focus,
 
 /*** Global > Zebra striping ***/
 
-div.timeline-entry:nth-child(odd){
+div.timeline-entry:nth-child(odd),
+select[size] option:nth-child(odd){
   background:#f1f5fa;
 }
-div.timeline-entry:nth-child(even){
+div.timeline-entry:nth-child(even),
+select[size] option:nth-child(even){
   background:#fff;
 }
 
@@ -1483,18 +1485,21 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 height:18px;
                   /* Clips the extra pixel from the border between buttons */
               }
-                div.prefs #account-list-fieldset input[name=add-account]{
+                div.prefs #account-list-fieldset div.formrow.controls input[name=add-account]{
                   margin-right:0;
                   padding:0 6px 0 1px;
                   border-right-width:0;
                 }
-                div.prefs #account-list-fieldset input[name=del-account]{
+                div.prefs #account-list-fieldset div.formrow.controls input[name=del-account]{
                   margin-left:-4px;
                   padding:0 1px 0 6px;
                   border-left-width:1px;
                 }
-              div.prefs #account-list-fieldset select#account-list{
+              div.prefs #account-list-fieldset select{
                 width:100%;
+                border-color:rgba(0, 0, 0, 0.25);
+                border-radius:2px;
+                  -webkit-border-radius:2px;
               }
 
               /*** Preferences > Controls ***/
