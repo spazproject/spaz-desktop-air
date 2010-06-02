@@ -1458,6 +1458,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
               -webkit-border-top-right-radius:6px;
             border-bottom:1px solid #dfdfdf;
             color:#202020;
+            cursor:default;
             font-size:11px;
             font-weight:bold;
             text-indent:12px;
@@ -1477,6 +1478,21 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 padding:33px 0;
                 text-align:center;
               }
+              div.prefs #account-list-fieldset div.formrow.controls{
+                overflow:hidden;
+                height:18px;
+                  /* Clips the extra pixel from the border between buttons */
+              }
+                div.prefs #account-list-fieldset input[name=add-account]{
+                  margin-right:0;
+                  padding:0 6px 0 1px;
+                  border-right-width:0;
+                }
+                div.prefs #account-list-fieldset input[name=del-account]{
+                  margin-left:-4px;
+                  padding:0 1px 0 6px;
+                  border-left-width:1px;
+                }
               div.prefs #account-list-fieldset select#account-list{
                 width:100%;
               }
