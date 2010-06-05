@@ -212,9 +212,9 @@ Spaz.AccountPrefs.init = function(){
 				acct = accts[i];
 				options.push(
 					'<option' +
-						(acct.username === Spaz.Prefs.getUsername() &&
+						((acct.username === Spaz.Prefs.getUsername() &&
 							acct.type === Spaz.Prefs.getAccountType()) ?
-							' selected' : '' +
+							' selected' : '') +
 					    ' value="' + acct.id + '">' +
 						acct.username + '@' + acct.type +
 					'</option>'
