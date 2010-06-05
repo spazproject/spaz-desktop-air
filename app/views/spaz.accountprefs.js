@@ -267,14 +267,14 @@ Spaz.AccountPrefs.edit = function(id, acctobj){
 };
 
 Spaz.AccountPrefs.toggleCTA = function(){
-  // Show the special CTA if this is a new Spaz user
+	// Show the special CTA if this is a new Spaz user
 
-  // var anyAccts = Spaz.DB.getUserCount() <= 0,
-  var anyAccts  = !!$('#account-list option')[0], // at least one
-      $fieldset = $('#account-list-fieldset');
-  $fieldset.find('div.formrow.cta').toggle(!anyAccts);
-  $fieldset.find('div.formrow:not(.cta)').toggle(anyAccts);
-    // `.siblings()` didn't chain properly here for some reason.
+	// var anyAccts = Spaz.DB.getUserCount() <= 0,
+	var anyAccts  = Spaz.AccountPrefs.spaz_acc.getAll().length > 0,
+	    $fieldset = $('#account-list-fieldset');
+	$fieldset.find('div.formrow.cta').toggle(!anyAccts);
+	$fieldset.find('div.formrow:not(.cta)').toggle(anyAccts);
+		// `.siblings()` didn't chain properly here for some reason.
 };
 
 

@@ -295,8 +295,7 @@ var FriendsTimeline = function() {
 			/*
 				Add new items
 			*/
-			$timelineWrapper.children('.loading').hide();
-			
+			$timelineWrapper.children('.loading, .empty').hide();
 			thisFT.timeline.addItems(no_dupes);
 
 			/*

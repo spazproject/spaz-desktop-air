@@ -270,6 +270,14 @@ Spaz.initialize = function() {
 		}
 	});
 
+	/*
+		Set up timeline calls to action
+	*/
+	if(Spaz.AccountPrefs.spaz_acc.getAll().length === 0){
+		var $timelineFriends = $('#timelinewrapper-friends');
+		$timelineFriends.children('.loading').hide();
+		$timelineFriends.children('.empty').show();
+	}
 
 	/*
 		About popbox
