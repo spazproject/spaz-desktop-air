@@ -221,13 +221,13 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 	var uuid = sch.UUID();
 	this.setUUID(uuid);
 	
-    if (display_url.length > 40) {
-        display_url = display_url.substr(0,40)+'…';
-    }
+	if (display_url.length > 40) {
+		display_url = display_url.substr(0,40)+'…';
+	}
 	
-	var content  = '<div class="website-popup" id="'+uuid+'">';
-	content += '  <div class="website-url">'+display_url+'</div>';
+	var content = '<div class="website-popup" id="'+uuid+'">';
 	content += '  <div class="website-title"></div>';
+	content += '  <div class="website-url">'+display_url+'</div>';
 	content += '</div>';
 	this.setContent(content);
 	this.show();
@@ -236,11 +236,11 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 		if (sch.isString(data)) {
 			data = sch.deJSON(data);
 		}
-    	var content  = '<div class="website-popup" id="'+uuid+'">';
-    	content += '  <div class="website-url">'+display_url+'</div>';
-    	content += '  <div class="website-title">'+data.title+'</div>';
-    	content += '</div>';
-    	thisTT.setContent(content, uuid);
+		var content = '<div class="website-popup" id="'+uuid+'">';
+		content += '  <div class="website-title">'+data.title+'</div>';
+		content += '  <div class="website-url">'+display_url+'</div>';
+		content += '</div>';
+		thisTT.setContent(content, uuid);
 	});
 	
 	

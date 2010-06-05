@@ -915,6 +915,12 @@ select[size] option:nth-child(even){
         border-radius:4px;
           -webkit-border-radius:4px;
       }
+      #tooltip .website-title{
+        margin:0 0 1em;
+      }
+      #tooltip .website-title:empty{
+        margin:0;
+      }
 
 
 
