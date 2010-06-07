@@ -1500,6 +1500,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 border-color:rgba(0, 0, 0, 0.25);
                 border-radius:2px;
                   -webkit-border-radius:2px;
+                  overflow:auto;
               }
 
               /*** Preferences > Controls ***/
