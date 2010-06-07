@@ -1,4 +1,4 @@
-/*********** Built 2010-05-27 00:05:43 EDT ***********/
+/*********** Built 2010-06-06 16:57:31 PDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -7080,8 +7080,6 @@ SpazAccounts.prototype.load	= function() {
  * saves the accounts array to the prefs obj 
  */
 SpazAccounts.prototype.save	= function() {
-	
-	
 	this.prefs.set(this.prefskey, sch.enJSON(this._accounts));
 	sch.debug('saved users to "'+this.prefskey+'" pref');
 	for (var x in this._accounts) {
@@ -7094,7 +7092,6 @@ SpazAccounts.prototype.save	= function() {
 	sch.debug('ALL PREFS:');
 	sch.debug(sch.enJSON(this.prefs._prefs));
 
-	
 };
 
 /**
@@ -7182,12 +7179,13 @@ SpazAccounts.prototype.add = function(username, password, type) {
  * @param {string} id the UUID of the account to delete 
  */
 SpazAccounts.prototype.remove = function(id) {
-	sch.debug("Deleting '"+id+"'…");
+	sch.error("Deleting '"+id+"'…");
 	
 	var index = this._findUserIndex(id);
 	if (index !== false) {
 		var deleted = this._accounts.splice(index, 1);
 		sch.debug("Deleted account '"+deleted[0].id+"'");
+		this.save();
 		return deleted[0];
 	} else {
 		sch.error("Could not find this id to delete: '"+id+"'");
@@ -10427,6 +10425,10 @@ var SPAZCORE_SERVICEURL_WORDPRESS_TWITTER = 'https://twitter-api.wordpress.com/'
  * 'create_block_failed'
  * 'destroy_block_succeeded'
  * 'destroy_block_failed'
+ * 'follow_succeeded'
+ * 'follow_failed'
+ * 'unfollow_succeeded'
+ * 'unfollow_failed'
  * 
  * 
  * @param username string
@@ -10548,6 +10550,7 @@ SpazTwit.prototype.initializeData = function() {
 	this.data[SPAZCORE_SECTION_COMBINED] = {
 		'items':   [],
 		'newitems':[],
+		'updates' :[],
 		'max':400,
 		'min_age':5*60
 	};
@@ -10618,6 +10621,48 @@ SpazTwit.prototype.combinedTimelineHasErrors = function() {
 	}
 };
 
+/**
+ * Checks to see if the combined timeline contains sent updates
+ * @return {boolean}
+ */
+SpazTwit.prototype.combinedTimelineHasUpdates = function() {
+	return this.data[SPAZCORE_SECTION_COMBINED].updates.length > 0;
+};
+
+/**
+ * Adds ids of array of statuses to updates
+ */
+SpazTwit.prototype.combinedTimelineAddUpdates = function(items) {
+	if (items.id) {
+		items = [items];
+	}
+	var i;
+	for (i in items) {
+		this.data[SPAZCORE_SECTION_COMBINED].updates.push(items[i].id);
+	}
+};
+
+/**
+ * Removes the update items from combined newitems
+ */
+SpazTwit.prototype.combinedNewItemsRemoveUpdates = function() {
+	if (!this.combinedTimelineHasUpdates()) {
+		return;
+	}
+	var data = this.data[SPAZCORE_SECTION_COMBINED],
+		iStr = ':' + data.updates.join(':') + ':',
+		news = data.newitems,
+		keep = [],
+		i;
+
+	for (i in news) {
+		if (!RegExp(':' + news[i].id + ':').test(iStr)) {
+			keep.push(news[i]);
+		}
+	}
+	data.newitems = keep;
+	data.updates  = [];
+};
 
 
 /**
@@ -10701,50 +10746,50 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 
 
     // Timeline URLs
-    urls.public_timeline    = "statuses/public_timeline.json";
-    urls.friends_timeline   = "statuses/friends_timeline.json";
-    urls.home_timeline		= "statuses/home_timeline.json";
-    urls.user_timeline      = "statuses/user_timeline.json";
-    urls.replies_timeline   = "statuses/replies.json";
-    urls.show				= "statuses/show/{{ID}}.json";
-    urls.favorites          = "favorites.json";
-    urls.user_favorites     = "favorites/{{ID}}.json"; // use this to retrieve favs of a user other than yourself
-    urls.dm_timeline        = "direct_messages.json";
-    urls.dm_sent            = "direct_messages/sent.json";
-    urls.friendslist        = "statuses/friends.json";
-    urls.followerslist      = "statuses/followers.json";
-    urls.show_user			= "users/show/{{ID}}.json";
-    urls.featuredlist       = "statuses/featured.json";
+	urls.public_timeline    = "statuses/public_timeline.json";
+	urls.friends_timeline   = "statuses/friends_timeline.json";
+	urls.home_timeline		= "statuses/home_timeline.json";
+	urls.user_timeline      = "statuses/user_timeline.json";
+	urls.replies_timeline   = "statuses/replies.json";
+	urls.show				= "statuses/show/{{ID}}.json";
+	urls.favorites          = "favorites.json";
+	urls.user_favorites     = "favorites/{{ID}}.json"; // use this to retrieve favs of a user other than yourself
+	urls.dm_timeline        = "direct_messages.json";
+	urls.dm_sent            = "direct_messages/sent.json";
+	urls.friendslist        = "statuses/friends.json";
+	urls.followerslist      = "statuses/followers.json";
+	urls.show_user			= "users/show/{{ID}}.json";
+	urls.featuredlist       = "statuses/featured.json";
 
-    // Action URLs
-    urls.update           	= "statuses/update.json";
-    urls.destroy_status   	= "statuses/destroy/{{ID}}.json";
-    urls.friendship_create  = "friendships/create/{{ID}}.json";
-    urls.friendship_destroy	= "friendships/destroy/{{ID}}.json";
-    urls.block_create		= "blocks/create/{{ID}}.json";
-    urls.block_destroy		= "blocks/destroy/{{ID}}.json";
-    urls.start_notifications= "notifications/follow/{{ID}}.json";
-    urls.stop_notifications = "notifications/leave/{{ID}}.json";
-    urls.favorites_create 	= "favorites/create/{{ID}}.json";
-    urls.favorites_destroy	= "favorites/destroy/{{ID}}.json";
-    urls.saved_searches_create 	= "saved_searches/create.json";
-    urls.saved_searches_destroy	= "saved_searches/destroy/{{ID}}.json";
-    urls.verify_credentials = "account/verify_credentials.json";
-    urls.ratelimit_status   = "account/rate_limit_status.json";
+	// Action URLs
+	urls.update           	= "statuses/update.json";
+	urls.destroy_status   	= "statuses/destroy/{{ID}}.json";
+	urls.friendship_create  = "friendships/create/{{ID}}.json";
+	urls.friendship_destroy	= "friendships/destroy/{{ID}}.json";
+	urls.block_create		= "blocks/create/{{ID}}.json";
+	urls.block_destroy		= "blocks/destroy/{{ID}}.json";
+	urls.follow             = "notifications/follow/{{ID}}.json";
+	urls.unfollow			= "notifications/leave/{{ID}}.json";
+	urls.favorites_create 	= "favorites/create/{{ID}}.json";
+	urls.favorites_destroy	= "favorites/destroy/{{ID}}.json";
+	urls.saved_searches_create 	= "saved_searches/create.json";
+	urls.saved_searches_destroy	= "saved_searches/destroy/{{ID}}.json";
+	urls.verify_credentials = "account/verify_credentials.json";
+	urls.ratelimit_status   = "account/rate_limit_status.json";
 	urls.update_profile		= "account/update_profile.json";
 	urls.saved_searches		= "saved_searches.json";
 	urls.report_spam		= "report_spam.json";
 
     // User lists URLs
-    urls.lists              = "{{USER}}/lists.json";
-    urls.lists_list         = "{{USER}}/lists/{{SLUG}}.json";
-    urls.lists_memberships  = "{{USER}}/lists/memberships.json";
-    urls.lists_timeline     = "{{USER}}/lists/{{SLUG}}/statuses.json";
-    urls.lists_members      = "{{USER}}/{{SLUG}}/members.json";
-    urls.lists_check_member = "{{USER}}/{{SLUG}}/members/{{ID}}.json";
-    urls.lists_subscribers  = "{{USER}}/{{SLUG}}/subscribers.json";
-    urls.lists_check_subscriber = "{{USER}}/{{SLUG}}/subscribers/{{ID}}.json";
-    urls.lists_subscriptions = "{{USER}}/lists/subscriptions.json";
+	urls.lists              = "{{USER}}/lists.json";
+	urls.lists_list         = "{{USER}}/lists/{{SLUG}}.json";
+	urls.lists_memberships  = "{{USER}}/lists/memberships.json";
+	urls.lists_timeline     = "{{USER}}/lists/{{SLUG}}/statuses.json";
+	urls.lists_members      = "{{USER}}/{{SLUG}}/members.json";
+	urls.lists_check_member = "{{USER}}/{{SLUG}}/members/{{ID}}.json";
+	urls.lists_subscribers  = "{{USER}}/{{SLUG}}/subscribers.json";
+	urls.lists_check_subscriber = "{{USER}}/{{SLUG}}/subscribers/{{ID}}.json";
+	urls.lists_subscriptions = "{{USER}}/lists/subscriptions.json";
 
 	//trends
 	urls.trends				= "trends.json";
@@ -10766,9 +10811,9 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 		urls.search				= "search.json";
 	}
 
-    // misc
-    urls.test 			  	= "help/test.json";
-    urls.downtime_schedule	= "help/downtime_schedule.json";
+	// misc
+	urls.test 			  	= "help/test.json";
+	urls.downtime_schedule	= "help/downtime_schedule.json";
 
 	
 	if (urls[key].indexOf('{{ID}}') > -1) {
@@ -10916,7 +10961,11 @@ SpazTwit.prototype.getHomeTimeline = function(since_id, count, page, processing_
 	}
 	
 	var data = {};
-	data['since_id'] = since_id;
+	if (since_id < -1) {
+		data['max_id'] = Math.abs(since_id);
+	} else {
+		data['since_id'] = since_id;
+	}
 	data['count']	 = count;
 	if (page) {
 		data['page'] = page;
@@ -11029,7 +11078,11 @@ SpazTwit.prototype.getReplies = function(since_id, count, page, processing_opts,
 	
 	
 	var data = {};
-	data['since_id'] = since_id;
+	if (since_id < -1) {
+		data['max_id'] = Math.abs(since_id);
+	} else {
+		data['since_id'] = since_id;
+	}
 	if (page) {
 		data['page'] = page;
 	}
@@ -11084,7 +11137,11 @@ SpazTwit.prototype.getDirectMessages = function(since_id, count, page, processin
 	}
 	
 	var data = {};
-	data['since_id'] = since_id;
+	if (since_id < -1) {
+		data['max_id'] = Math.abs(since_id);
+	} else {
+		data['since_id'] = since_id;
+	}
 	if (page) {
 		data['page'] = page;
 	}
@@ -11157,17 +11214,32 @@ SpazTwit.prototype.getSent = function(since_id, count, page, onSuccess, onFailur
 SpazTwit.prototype.getSentDirectMessages = function(since_id, page, onSuccess, onFailure) {};
 
 SpazTwit.prototype.getUserTimeline = function(id, count, page, onSuccess, onFailure) {
-	if (!id) {
+
+	var opts = sch.defaults({
+		'id': id,
+		'since_id': null,
+		'count': count || 10,
+		'page': page || null,
+		'onSuccess': onSuccess,
+		'onFailure': onFailure
+	}, id);
+
+	if (!opts.id || 'object' === typeof opts.id) {
 		return;
 	}
-	if (!page) { page = null;}
-	if (!count) { count = 10;}
-	
+
 	var data = {};
-	data['id']  = id;
-	data['count']	 = count;
-	if (page) {
-		data['page'] = page;
+	data['id']    = opts.id;
+	data['count'] = opts.count;
+	if (opts.since_id) {
+		if (opts.since_id < -1) {
+			data['max_id'] = Math.abs(opts.since_id);
+		} else {
+			data['since_id'] = opts.since_id;
+		}
+	}
+	if (opts.page) {
+		data['page'] = opts.page;
 	}
 	
 	
@@ -11178,8 +11250,8 @@ SpazTwit.prototype.getUserTimeline = function(id, count, page, onSuccess, onFail
 		'username':this.username,
 		'password':this.password,
 		'process_callback'	: this._processUserTimeline,
-		'success_callback':onSuccess,
-		'failure_callback':onFailure,
+		'success_callback':opts.onSuccess,
+		'failure_callback':opts.onFailure,
 		'success_event_type': 'new_user_timeline_data',
 		'failure_event_type': 'error_user_timeline_data'
 	});
@@ -11643,7 +11715,7 @@ SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, pr
 	
 	if (!processing_opts) { processing_opts = {}; }
 
-	if (!section_name === SPAZCORE_SECTION_USER) { // the user timeline section isn't persistent
+	if (section_name !== SPAZCORE_SECTION_USER) { // the user timeline section isn't persistent
 		/*
 			reset .newitems data properties
 		*/
@@ -11679,10 +11751,17 @@ SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, pr
 			
 		} else { // this is a "normal" timeline that we want to be persistent
 			
-			// set lastid
-			var lastid = ret_items[ret_items.length-1].id;
-			this.data[section_name].lastid = lastid;
-			sc.helpers.dump('this.data['+section_name+'].lastid:'+this.data[section_name].lastid);
+			if (opts.is_update_item) {
+				/*
+					we do not want this to be the lastid, instead remember it in combined.updates
+				*/
+				this.combinedTimelineAddUpdates(ret_items);
+			} else {
+				// set lastid
+				var lastid = ret_items[ret_items.length-1].id;
+				this.data[section_name].lastid = lastid;
+				sc.helpers.dump('this.data['+section_name+'].lastid:'+this.data[section_name].lastid);
+			}
 
 			// add new items to data.newitems array
 			this.data[section_name].newitems = ret_items;
@@ -11739,6 +11818,11 @@ SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, pr
 	if (this.combinedTimelineFinished()) {
 		
 		/*
+			Remove those updates from combined newitems
+		*/
+		this.combinedNewItemsRemoveUpdates();
+
+		/*
 			we do this stuff here to avoid processing repeatedly
 		*/
 		
@@ -11779,9 +11863,8 @@ SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, pr
  */
 SpazTwit.prototype._addToSectionItems = function(section_name, arr, sortfunc) {
 	// concat new items onto data.items array
-	this.data[section_name].items = this.data[section_name].items.concat(arr);
-
-	this._cleanupItemArray(this.data[section_name].items, this.data[section_name].max, sortfunc);
+	var data = this.data[section_name];
+	data.items = this._cleanupItemArray(data.items.concat(arr), null, sortfunc);
 };
 
 /**
@@ -12278,8 +12361,53 @@ SpazTwit.prototype.unblock = function(user_id, onSuccess, onFailure) {
 
 };
 
-SpazTwit.prototype.follow = function(user_id, onSuccess, onFailure) {}; // to add notification
-SpazTwit.prototype.unfollow = function(user_id, onSuccess, onFailure) {}; // to remove notification
+SpazTwit.prototype.follow = function(user_id, onSuccess, onFailure) { // to add notification
+	var data = {};
+	data['id'] = user_id;
+	
+	var url = this.getAPIURL('follow', data);
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'success_event_type':'follow_succeeded',
+		'failure_event_type':'follow_failed',
+		'success_callback':onSuccess,
+		'failure_callback':onFailure,
+		'data':data
+	};
+
+	/*
+		Perform a request and get true or false back
+	*/
+	var xhr = this._callMethod(opts);
+    
+};
+
+SpazTwit.prototype.unfollow = function(user_id, onSuccess, onFailure) { // to remove notification
+	var data = {};
+	data['id'] = user_id;
+	
+	var url = this.getAPIURL('unfollow', data);
+	
+	var opts = {
+		'url':url,
+		'username':this.username,
+		'password':this.password,
+		'success_event_type':'unfollow_succeeded',
+		'failure_event_type':'unfollow_failed',
+		'success_callback':onSuccess,
+		'failure_callback':onFailure,
+		'data':data
+	};
+
+	/*
+		Perform a request and get true or false back
+	*/
+	var xhr = this._callMethod(opts);
+    
+};
 
 
 SpazTwit.prototype.update = function(status, source, in_reply_to_status_id, onSuccess, onFailure) {
@@ -12325,6 +12453,7 @@ SpazTwit.prototype._processUpdateReturn = function(data, opts) {
 	/*
 		Add this to the HOME section and fire off the event when done
 	*/	
+	opts.is_update_item = true;
 	this._processTimeline(SPAZCORE_SECTION_HOME, [data], opts);
 };
 
@@ -12877,7 +13006,7 @@ SpazTwit.prototype.getLists = function(user, onSuccess, onFailure) {
 		'method':'GET'
 	};
 
-	var xhr = this._getTimeline(opts);
+	var xhr = this._callMethod(opts);
 };
 
 
@@ -13574,7 +13703,8 @@ if (sc) {
 }
 * 
 * 
-*//*jslint 
+*/
+/*jslint 
 browser: true,
 nomen: false,
 debug: true,
