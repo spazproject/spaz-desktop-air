@@ -476,8 +476,9 @@ select[size] option:nth-child(even){
                 outline:0;
                 /* TODO: Add rounded blue glow */
               }
-              #panel-user   .panelmenu form input[type=text],
-              #panel-public .panelmenu form input[type=text]{
+              #panel-user       .panelmenu form input[type=text],
+              #panel-favorites  .panelmenu form input[type=text],
+              #panel-public     .panelmenu form input[type=text]{
                 width:120px;
               }
               #panel-search .panelmenu form input[type=text]{
