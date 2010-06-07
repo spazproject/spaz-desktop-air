@@ -264,9 +264,7 @@ Spaz.Data.destroyStatus = function(postid) {
 		data:'&id='+postid,
 		url:Spaz.Data.getAPIURL('destroy_status').replace(/{{ID}}/, postid),
 	});
-
-	// sch.dump(xhr);
-}
+};
 
 
 
@@ -361,30 +359,23 @@ Spaz.Data.followUser = function(userid) {
 
 	Spaz.UI.statusBar('Start following: ' + userid)
 	Spaz.UI.showLoading();
-
-	var xhr = $.ajax({
-		dataType:'text',
-		complete:Spaz.Data.onAjaxComplete,
-		error:Spaz.Data.onAjaxError,
-		success:function(data){
-			sch.dump(data);
-			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
-			Spaz.UI.reloadCurrentTab();
+	
+	var twit = new SpazTwit(user, pass);
+	
+	twit.follow(
+		userid,
+		function(data) {
+			sch.error(data);
 			Spaz.UI.statusBar("Now following " + userid);
+			Spaz.UI.hideLoading();
 		},
-		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-			// cookies just get in the way.	 eliminate them
-			xhr.setRequestHeader("Cookie", "");
-			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
-		},
-		processData:false,
-		type:"POST",
-		data:'&id='+userid,
-		url:Spaz.Data.getAPIURL('follow').replace(/{{ID}}/, userid),
-	});
+		function(xhr, msg, exc) {
+			sch.error(msg);
+			Spaz.UI.statusBar("Following failed " + userid);
+			Spaz.UI.hideLoading();
+		}
+	);
 
-	// sch.dump(xhr);
 };
 
 
@@ -403,29 +394,22 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	Spaz.UI.statusBar('Stop following: ' + userid)
 	Spaz.UI.showLoading();
 
-	var xhr = $.ajax({
-		dataType:'text',
-		complete:Spaz.Data.onAjaxComplete,
-		error:Spaz.Data.onAjaxError,
-		success:function(data){
-			sch.dump(data);
-			Spaz.UI.setSelectedTab(document.getElementById(Spaz.Section.friends.tab));
-			Spaz.UI.reloadCurrentTab();
-			Spaz.UI.statusBar("No longer following " + userid);
+	var twit = new SpazTwit(user, pass);
+	
+	twit.unfollow(
+		userid,
+		function(data) {
+			sch.error(data);
+			Spaz.UI.statusBar("Stopped following " + userid);
+			Spaz.UI.hideLoading();
 		},
-		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-			// cookies just get in the way.	 eliminate them
-			xhr.setRequestHeader("Cookie", "");
-			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
-		},
-		processData:false,
-		type:"POST",
-		data:'&id='+userid,
-		url:Spaz.Data.getAPIURL('stop_follow').replace(/{{ID}}/, userid),
-	});
+		function(xhr, msg, exc) {
+			sch.error(msg)
+			Spaz.UI.statusBar("Unfollow failed for " + userid);
+			Spaz.UI.hideLoading();
+		}
+	);
 
-	// sch.dump(xhr);
 };
 
 
