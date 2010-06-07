@@ -57,10 +57,12 @@ means themes must set display:block on the <body> element */
 
 /* selectable settings */
 * {
-	-webkit-user-select:none;
+  user-select:none;
+    -webkit-user-select:none;
 }
 input, textarea, .status-text, .status-text * {
-	-webkit-user-select:text;
+  user-select:none;
+    -webkit-user-select:text;
 }
 
 
@@ -179,6 +181,7 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 /*** Timelines ***/
 
 .timeline-wrapper div.empty,
+.timeline-wrapper div.new-user,
 #timelinewrapper-userlists div.loading,
 #timelinewrapper-search div.loading{
   display:none;

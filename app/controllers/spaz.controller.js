@@ -44,7 +44,7 @@ sch.listen(document, 'update_succeeded', function(e, data) {
 });
 sch.listen(document, 'update_failed', function(e) {
 	Spaz.postPanel.enable();
-	Spaz.UI.statusBar('Posting to twitter failed!');
+	Spaz.UI.statusBar('Posting failed!');
 });
 
 

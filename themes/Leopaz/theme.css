@@ -520,32 +520,6 @@ select[size] option:nth-child(even){
                     shadows. However, the shadow heights are percent-based;
                     static heights would be ideal. */
           }
-          #timelinewrapper-friends div.empty{
-            display:none;
-          }
-          #timelinewrapper-friends div.empty .add-account{
-            display:block;
-            width:130px;
-            height:48px;
-            margin:0 auto;
-            border-image:url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
-              -webkit-border-image:url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
-            border-width:0 10px 0 36px;
-            color:#000;
-            font-size:12px;
-            line-height:46px;
-          }
-          #timelinewrapper-friends div.empty .add-account:active{
-            border-image:url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
-              -webkit-border-image:url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
-/*            border-image-source:url(images/buttons/large-prefs-active.png);*/
-          }
-          body:not(.active) #timelinewrapper-friends div.empty .add-account{
-            border-image:url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
-              -webkit-border-image:url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
-/*            border-image-source:url(images/buttons/large-prefs-disabled.png);*/
-            color:#909090;
-          }
           #timelinewrapper-userlists{
             top:60px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
             background:transparent;
@@ -630,9 +604,10 @@ select[size] option:nth-child(even){
 								top:  -4px;
 								font-size:16px;
 							}
-            .timeline-wrapper div.intro,
             .timeline-wrapper div.empty,
-            .timeline-wrapper div.loading{
+            .timeline-wrapper div.intro,
+            .timeline-wrapper div.loading,
+            .timeline-wrapper div.new-user{
               margin:150px 50px 0;
               color:#fff;
               cursor:default;
@@ -653,7 +628,33 @@ select[size] option:nth-child(even){
             }
             #timelinewrapper-userlists div.loading,
             #timelinewrapper-userlists div.intro{
-              margin-top:125px; /* = default margin-top - #timeline-userlists-full-name line-height */
+              margin-top:124px; /* = default margin-top - #timeline-userlists-full-name line-height */
+            }
+            .timeline-wrapper div.new-user{
+              display:none;
+            }
+            .timeline-wrapper div.new-user .add-account{
+              display:block;
+              width:130px;
+              height:48px;
+              margin:0 auto;
+              border-image:url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
+                -webkit-border-image:url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
+              border-width:0 10px 0 36px;
+              color:#000;
+              font-size:12px;
+              line-height:46px;
+            }
+            .timeline-wrapper div.new-user .add-account:active{
+              border-image:url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
+                -webkit-border-image:url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
+/*              border-image-source:url(images/buttons/large-prefs-active.png);*/
+            }
+            body:not(.active) .timeline-wrapper div.new-user .add-account{
+              border-image:url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
+                -webkit-border-image:url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
+/*              border-image-source:url(images/buttons/large-prefs-disabled.png);*/
+              color:#909090;
             }
 
 		/*

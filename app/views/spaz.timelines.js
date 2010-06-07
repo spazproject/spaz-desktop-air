@@ -295,7 +295,7 @@ var FriendsTimeline = function() {
 			/*
 				Add new items
 			*/
-			$timelineWrapper.children('.loading, .empty').hide();
+			$timelineWrapper.children('.loading, .new-user').hide();
 			thisFT.timeline.addItems(no_dupes);
 
 			/*
@@ -648,7 +648,7 @@ var FavoritesTimeline = function(args) {
 
 			}
 
-			$timelineWrapper.children('.loading').hide();
+			$timelineWrapper.children('.loading, .new-user').hide();
 			thisFVT.timeline.addItems(no_dupes);
 
 			/*
@@ -774,7 +774,7 @@ var UserTimeline = function(args) {
 				
 			}
 
-			$timelineWrapper.children('.loading').hide();
+			$timelineWrapper.children('.loading, .new-user').hide();
 			thisUT.timeline.addItems(no_dupes);
 
 			/*
@@ -941,7 +941,7 @@ var UserlistsTimeline = function(args) {
 				
 			}
 
-			$timelineWrapper.children('.loading, .intro').hide();
+			$timelineWrapper.children('.loading, .new-user, .intro').hide();
 			thisULT.timeline.addItems(no_dupes);
 
 			/*
@@ -1323,7 +1323,7 @@ var FollowersTimeline = function(args) {
 				
 			}
 
-			$timelineWrapper.children('.loading').hide();
+			$timelineWrapper.children('.loading, .new-user').hide();
 			thisFLT.timeline.addItems(no_dupes);
 
 			Spaz.UI.hideLoading();

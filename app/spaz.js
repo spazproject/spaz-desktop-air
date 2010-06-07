@@ -274,9 +274,16 @@ Spaz.initialize = function() {
 		Set up timeline calls to action
 	*/
 	if(Spaz.AccountPrefs.spaz_acc.getAll().length === 0){
-		var $timelineFriends = $('#timelinewrapper-friends');
-		$timelineFriends.children('.loading').hide();
-		$timelineFriends.children('.empty').show();
+		(function(){
+			var $timelines = $(
+			    	'#timelinewrapper-friends, ' +
+			    	'#timelinewrapper-user, ' +
+			    	'#timelinewrapper-favorites, ' +
+			    	'#timelinewrapper-userlists, ' +
+			    	'#timelinewrapper-followerslist');
+			$timelines.children('.loading').hide();
+			$timelines.children('.new-user').show();
+		})();
 	}
 
 	/*
