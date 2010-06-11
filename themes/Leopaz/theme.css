@@ -626,8 +626,9 @@ select[size] option:nth-child(even){
               -webkit-animation-name:loading;
               -webkit-animation-timing-function:linear;
             }
+            #timelinewrapper-userlists div.intro,
             #timelinewrapper-userlists div.loading,
-            #timelinewrapper-userlists div.intro{
+            #timelinewrapper-userlists div.new-user{
               margin-top:124px; /* = default margin-top - #timeline-userlists-full-name line-height */
             }
             .timeline-wrapper div.new-user{
@@ -1511,7 +1512,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 color:#c00;
               }
               div.prefs #account-list-fieldset div.formrow.cta{
-                padding:33px 0;
+                padding:76px 0;
                 text-align:center;
               }
               div.prefs #account-list-fieldset div.formrow.controls{
@@ -1534,7 +1535,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 border-color:rgba(0, 0, 0, 0.25);
                 border-radius:2px;
                   -webkit-border-radius:2px;
-                  overflow:auto;
+                overflow:auto;
               }
 
               /*** Preferences > Controls ***/
@@ -1953,6 +1954,10 @@ div#popbox-content-account-details div.content fieldset{
 div#popbox-content-account-details div.content label + input[type=text],
 div#popbox-content-account-details div.content label + input[type=password]{
   display:block;
+}
+div#popbox-content-account-details div.content input#username,
+div#popbox-content-account-details div.content input#password{
+  font-size:16px;
 }
 div#popbox-content-account-details div.submit{
   overflow:hidden;

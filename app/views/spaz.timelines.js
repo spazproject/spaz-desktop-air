@@ -1389,6 +1389,29 @@ Spaz.Timelines.getTabFromTimeline = function(tab) {
 	return Spaz.Timelines.map[timeline];
 };
 
+Spaz.Timelines.toggleNewUserCTAs = function(){
+	var anyAccts = Spaz.AccountPrefs.spaz_acc.getAll().length > 0,
+	    $timelines = $(
+	    	'#timelinewrapper-friends, ' +
+	    	'#timelinewrapper-user, ' +
+	    	'#timelinewrapper-favorites, ' +
+	    	'#timelinewrapper-userlists, ' +
+	    	'#timelinewrapper-followerslist');
+	$timelines.each(function(){
+		// Timelines that require user interaction first (e.g., choose a
+		// list, enter a search query) should show the intro by default.
+		// Otherwise, show the loading indicator by default.
+
+		var $timeline = $(this),
+		    $intro = $timeline.children('.intro');
+		if(!!$intro[0]){
+			$intro.toggle(anyAccts);
+		}else{
+			$timeline.children('.loading').toggle(anyAccts);
+		}
+		$timeline.children('.new-user').toggle(!anyAccts);
+	});
+};
 
 Spaz.Timelines.resetTimelines = function() {
 	/*

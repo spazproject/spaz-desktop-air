@@ -273,18 +273,7 @@ Spaz.initialize = function() {
 	/*
 		Set up timeline calls to action
 	*/
-	if(Spaz.AccountPrefs.spaz_acc.getAll().length === 0){
-		(function(){
-			var $timelines = $(
-			    	'#timelinewrapper-friends, ' +
-			    	'#timelinewrapper-user, ' +
-			    	'#timelinewrapper-favorites, ' +
-			    	'#timelinewrapper-userlists, ' +
-			    	'#timelinewrapper-followerslist');
-			$timelines.children('.loading').hide();
-			$timelines.children('.new-user').show();
-		})();
-	}
+	Spaz.Timelines.toggleNewUserCTAs();
 
 	/*
 		About popbox

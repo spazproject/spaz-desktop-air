@@ -103,6 +103,7 @@ Spaz.AccountPrefs.init = function(){
 				var deleted = that.spaz_acc.remove(id);
 				$('option[value="' + id + '"]').remove();
 				Spaz.AccountPrefs.toggleCTA();
+				Spaz.Timelines.toggleNewUserCTAs();
 			}
 			else {
 				sch.error('Nothing selected to delete');
@@ -252,6 +253,7 @@ Spaz.AccountPrefs.add = function(username, password, type){
 	var html = "<option value='" + newacct.id + "'>" + newacct.username + "@" + newacct.type + "</option>";
 	$('#account-list').append(html);
 	Spaz.AccountPrefs.toggleCTA();
+	Spaz.Timelines.toggleNewUserCTAs();
 	sch.debug("Added:");
 	sch.debug(newacct);
 	return newacct;
