@@ -1396,6 +1396,7 @@ Spaz.Timelines.toggleNewUserCTAs = function(){
 	    	'#timelinewrapper-user, ' +
 	    	'#timelinewrapper-favorites, ' +
 	    	'#timelinewrapper-userlists, ' +
+	    	'#timelinewrapper-public, ' +
 	    	'#timelinewrapper-followerslist');
 	$timelines.each(function(){
 		// Timelines that require user interaction first (e.g., choose a
