@@ -50,7 +50,7 @@ Spaz.AccountPrefs.init = function(){
 			 populate form
 			 */
 			$idEdit.val('');
-			$username.val('');
+			$username.val('').focus();
 			$password.val('');
 			$accountType.val(SPAZCORE_ACCOUNT_TWITTER);
 			
@@ -127,12 +127,11 @@ Spaz.AccountPrefs.init = function(){
 				
 				Spaz.UI.openPopboxInline('#account-details');
 				
-				
 				/*
 				 populate form
 				 */
 				$idEdit.val(editing.id);
-				$username.val(editing.username);
+				$username.val(editing.username).focus();
 				$password.val(editing.password);
 				$accountType.val(editing.type);
 				
