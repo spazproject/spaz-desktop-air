@@ -97,6 +97,9 @@ Spaz.Prefs.defaultPreferences = {
 
 	'services-shortie-email': '',
 	'services-shortie-secretkey' : '',
+    
+	'services-bitly-login': '',
+	'services-bitly-apikey' : '',
 
 	'twitter-api-base-url': 'https://twitter.com/',
 	'twitter-base-url': 'http://twitter.com/',
@@ -637,6 +640,55 @@ Spaz.Prefs.changeMethods = {
 			return value;
 		}
 	},
+    
+	'services-bitly-login': {
+		setUI: function(value) {
+			if (value || value == '') {
+				$('#services-bitly-login').val(value);
+				sch.debug('Bit.ly login set...');
+			} else {
+				$('#services-bitly-login').attr('value', '');
+				sch.debug('Bit.ly login');
+			}
+		},
+		onGet: function(key, value) {
+			if (!value) {
+				return null;
+			}
+			return value;
+		},
+		onSet: function(key, value) {
+			if (!value) {
+				return null;
+			}
+			return value;
+		}
+	},
+
+
+	'services-bitly-apikey': {
+		setUI: function(value) {
+			if (value && value !== '') {
+				$('#services-bitly-apikey').val(value);
+				sch.debug('Bit.ly API key set...');
+			} else {
+				$('#services-bitly-apikey').attr('value', '');
+				sch.debug('Bit.ly API key');
+			}
+		},
+		onGet: function(key, value) {
+			if (!value) {
+				return null;
+			}
+			return value;
+		},
+		onSet: function(key, value) {
+			if (!value) {
+				return null;
+			}
+			return value;
+		}
+	},
 
 	'services-pingfm-userappkey': {
 		setUI: function(value) {
@@ -1007,6 +1059,8 @@ Spaz.Prefs.initUI = function() {
 	$('#services-pingfm-sendreplies').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-shortie-email').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-shortie-secretkey').bind('change', Spaz.Prefs.setFromUI);
+	$('#services-bitly-login').bind('change', Spaz.Prefs.setFromUI);
+	$('#services-bitly-apikey').bind('change', Spaz.Prefs.setFromUI);
 	$('#dock-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
 	$('#dock-displayunreadbadge').bind('change', Spaz.Prefs.setFromUI);
 	$('#dock-unreadbadgecolor').bind('change', Spaz.Prefs.setFromUI);
