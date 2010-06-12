@@ -277,10 +277,8 @@ SpazPostPanel.prototype.shortenURLs = function() {
 		'apiopts': {
 			'version':'2.0.1',
 			'format':'json',
-			'login':'spazcore',
-			'apiKey':'R_f3b86681a63a6bbefc7d8949fd915f1d',
-            'x_login': Spaz.Prefs.get('services-bitly-login'),
-            'x_apiKey': Spaz.Prefs.get('services-bitly-apikey')
+			'login':Spaz.Prefs.get('services-bitly-login') || 'spazcore',
+			'apiKey':Spaz.Prefs.get('services-bitly-apikey') || 'R_f3b86681a63a6bbefc7d8949fd915f1d'
 		}
 	});
 };
