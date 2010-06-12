@@ -818,26 +818,34 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	// ****************************************
 	// Username/password prefs -> save
 	// ****************************************
-	shortcut.add('Enter', function() {
-			Spaz.Prefs.setPrefs();
-		}, {
-			target:$('#username')[0],
-			propagate:false
-	});
-	shortcut.add('Enter', function() {
-			Spaz.Prefs.setPrefs();
-		}, {
-			target:$('#password')[0],
-			propagate:false
-	});
+	(function(){
+		var callback = function(){
+			var accountID;
+			if($('#username').val() !== '' && $('#password').val() !== ''){
+				Spaz.Prefs.setPrefs();
+				$('#save_account_button').click();
+					// TODO: Nasty. Don't just trigger a click, as this just
+					// creates a chain with points of failure. Instead,
+					// extract that button's click handler to a separate
+					// function, and call it here.
+				Spaz.UI.closePopbox();
+			}
+		};
+		shortcut.add('Enter', callback, {
+			target:    $('#username')[0],
+			propagate: false
+		});
+		shortcut.add('Enter', callback, {
+			target:    $('#password')[0],
+			propagate: false
+		});
+	})();
 
 	// ****************************************
 	// Popboxes
 	// ****************************************
 	shortcut.add('esc', function(){
-		if(!!$('#DOMWindow:visible')[0]){
-			$.closeDOMWindow();
-		}
+		Spaz.UI.closePopbox();
 	});
 
 };
