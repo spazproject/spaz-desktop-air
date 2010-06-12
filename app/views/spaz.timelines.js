@@ -1229,10 +1229,10 @@ var SearchTimeline = function(args) {
 			}
 			
 			$timelineWrapper.children('.loading, .intro').hide();
-			$timelineWrapper.children('.empty').toggle(no_dupes.length === 0);
 			if (no_dupes.length > 0) {
 				thisST.timeline.addItems(no_dupes);
 			}
+			$timelineWrapper.children('.empty').toggle($timeline.is(':empty'));
 
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // search are never "new"
 			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
