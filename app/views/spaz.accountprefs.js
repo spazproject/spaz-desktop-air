@@ -81,8 +81,9 @@ Spaz.AccountPrefs.init = function(){
 					}
 					that.spaz_acc.setMeta(newaccid, that.metavals[i], val);
 				};
-				
-				
+
+				$accountList.val(newaccid);
+				Spaz.AccountPrefs.setAccount(newaccid);
 				Spaz.UI.closePopbox();
 			});
 			
