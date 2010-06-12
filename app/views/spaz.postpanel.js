@@ -271,13 +271,16 @@ SpazPostPanel.prototype.shortenURLs = function() {
 
 	Spaz.UI.statusBar('Shortening URLs in message');
 	Spaz.UI.showLoading();
+    
 	surl.shorten(reallylongurls, {
 		'event_target':event_target,
 		'apiopts': {
 			'version':'2.0.1',
 			'format':'json',
 			'login':'spazcore',
-			'apiKey':'R_f3b86681a63a6bbefc7d8949fd915f1d'
+			'apiKey':'R_f3b86681a63a6bbefc7d8949fd915f1d',
+            'x_login': Spaz.Prefs.get('services-bitly-login'),
+            'x_apiKey': Spaz.Prefs.get('services-bitly-apikey')
 		}
 	});
 };
