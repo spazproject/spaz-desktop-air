@@ -23,7 +23,12 @@ Spaz.AccountPrefs.init = function(){
 	
 	$().ready(function(){
 
-		// TODO: Improve styling of current account
+		/*
+		 bind click on list to deselect
+		 */
+		$accountList.click(function(){
+			Spaz.AccountPrefs.deselectAccounts();
+		});
 
 		/*
 		 bind click on account
@@ -238,7 +243,7 @@ Spaz.AccountPrefs.init = function(){
 		})());
 		$accountList.
 			children('li[data-account-id="' + Spaz.Prefs.getCurrentUserId() + '"]').
-			addClass('selected');
+			addClass('current');
 
 		// Clean up UI
 		$accountDetails.hide();
@@ -254,7 +259,7 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
 
 		$('#current-account-id').val(account_id);
-		Spaz.AccountPrefs.unselectAccounts(account_id);
+		Spaz.AccountPrefs.deselectAccounts();
 		$('#account-list li[data-account-id="' + account_id + '"]').
 			addClass('current').siblings().removeClass('current');
 		Spaz.Prefs.setCurrentUserId(account_id);
@@ -318,7 +323,7 @@ Spaz.AccountPrefs.selectAccount = function(acctID){
 	}
 };
 
-Spaz.AccountPrefs.unselectAccounts = function(){
+Spaz.AccountPrefs.deselectAccounts = function(){
 	$('#account-list li.selected').removeClass('selected');
 };
 

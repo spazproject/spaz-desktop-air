@@ -1563,19 +1563,22 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                   linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
                 border-top-color:#519BD6;
               }
-              div.prefs ul#account-list li.current{
-                font-weight:bold;
-                /* TODO: Improve */
-              }
-              div.prefs ul#account-list li span.clickable{
+              div.prefs ul#account-list li span{
                 display:block;
-                padding:0.5em;
+                padding:6px 0 8px 28px;
                 color:#000;
                 cursor:default;
               }
-              div.prefs ul#account-list li.selected span.clickable{
+              div.prefs ul#account-list li.current span{
+                background:transparent url(images/accounts-current.png)
+                  10px 8px no-repeat;
+              }
+              div.prefs ul#account-list li.selected span{
                 color:#f0f0f0;
                 font-weight:bold;
+              }
+              div.prefs ul#account-list li.current.selected span{
+                background-position:10px -32px;
               }
 
               /*** Preferences > Controls ***/
