@@ -1644,7 +1644,9 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                     -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
                 }
                 body:not(.active) div.prefs input[type=button],
-                body:not(.active) div.prefs input[type=submit]{
+                body:not(.active) div.prefs input[type=submit],
+                div.prefs input[type=button][disabled],
+                div.prefs input[type=submit][disabled]{
                   border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                     -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                   color:#999;

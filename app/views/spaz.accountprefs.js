@@ -241,9 +241,15 @@ Spaz.AccountPrefs.init = function(){
 			}
 			return listItems.join('');
 		})());
-		$accountList.
-			children('li[data-account-id="' + Spaz.Prefs.getCurrentUserId() + '"]').
-			addClass('current');
+		(function(){
+			var currentUserId = Spaz.Prefs.getCurrentUserId();
+			if(currentUserId){
+				$accountList.
+					children('li[data-account-id="' + currentUserId + '"]').
+					addClass('current');
+				Spaz.AccountPrefs.selectAccount(currentUserId);
+			}
+		})();
 
 		// Clean up UI
 		$accountDetails.hide();
@@ -321,10 +327,13 @@ Spaz.AccountPrefs.selectAccount = function(acctID){
 	if(!$li.is('.selected')){
 		$li.addClass('selected').siblings().removeClass('selected');
 	}
+	$('#edit-account, #del-account, #switch-account').removeAttr('disabled');
 };
 
 Spaz.AccountPrefs.deselectAccounts = function(){
 	$('#account-list li.selected').removeClass('selected');
+	$('#edit-account, #del-account, #switch-account').
+		attr('disabled', 'disabled');
 };
 
 Spaz.AccountPrefs.getSelectedAccountId = function(){
