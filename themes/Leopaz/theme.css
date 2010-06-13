@@ -46,12 +46,10 @@ input[type=password]:focus,
 /*** Global > Zebra striping ***/
 
 div.timeline-entry:nth-child(odd),
-select[size] option:nth-child(odd),
 ul#account-list li:nth-child(odd){
   background:#f1f5fa;
 }
 div.timeline-entry:nth-child(even),
-select[size] option:nth-child(even),
 ul#account-list li:nth-child(even){
   background:#fff;
 }
