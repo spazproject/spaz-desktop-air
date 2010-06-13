@@ -1122,7 +1122,7 @@ div.timeline-entry:hover{
   body:not(.active) div.timeline-entry.ui-selected{
     background:-webkit-gradient(
       linear, left top, left bottom, from(#989797), to(#666));
-    border-top:1px solid #7f7e7e;
+    border-top-color:#7f7e7e;
   }
 		div.timeline-entry.ui-selected div.status-link{
 			font-size:9px;
@@ -1560,6 +1560,11 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 background:-webkit-gradient(
                   linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
                 border-top-color:#519BD6;
+              }
+              body:not(.active) ul#account-list li.selected{
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#989797), to(#666));
+                border-top-color:#7f7e7e;
               }
               div.prefs ul#account-list li span{
                 display:block;
