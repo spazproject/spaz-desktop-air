@@ -71,6 +71,7 @@ Spaz.AccountPrefs.init = function(){
 			 */
 			$saveAccountButton.click(function(){
 				var auth  = new SpazAuth($accountType.val());
+				
 				if (auth.authorize($username.val(), $password.val())) { // check credentials first
 					var newaccid = Spaz.AccountPrefs.add($username.val(), auth.save(), $accountType.val()).id;
 					var val;
