@@ -23,7 +23,6 @@ Spaz.AccountPrefs.init = function(){
 	
 	$().ready(function(){
 
-		// TODO: Allow double-clicking an account to switch to it
 		// TODO: Improve styling of current account
 
 		/*
@@ -35,6 +34,17 @@ Spaz.AccountPrefs.init = function(){
 			// (i.e., active).
 			var acctID = $(this).attr('data-account-id');
 			Spaz.AccountPrefs.selectAccount(acctID);
+		});
+
+		/*
+		 bind double-click on account
+		 */
+		$accountList.delegate('li[data-account-id]', 'dblclick', function(){
+			// Double-clicking an account should make it the current account.
+			var acctID = Spaz.AccountPrefs.getSelectedAccountId();
+			if(acctID){
+				Spaz.AccountPrefs.setAccount(acctID);
+			}
 		});
 
 		/*
