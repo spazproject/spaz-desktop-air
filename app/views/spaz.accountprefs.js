@@ -273,7 +273,6 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
 
 		$('#current-account-id').val(account_id);
-		Spaz.AccountPrefs.deselectAccounts();
 		$('#account-list li[data-account-id="' + account_id + '"]').
 			addClass('current').siblings().removeClass('current');
 		Spaz.Prefs.setCurrentUserId(account_id);
