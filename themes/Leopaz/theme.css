@@ -614,7 +614,8 @@ ul#account-list li:nth-child(even){
               font-size:0.75em;
               text-align:center;
             }
-            .timeline-wrapper div.loading{
+            .timeline-wrapper div.loading,
+            div#popbox-content-conversation div.loading{
               width:50px;
               height:50px;
               margin-left:auto;
@@ -2073,8 +2074,20 @@ div#popbox-content-conversation{
     -webkit-background-size:100% 42px;
   border:1px solid rgba(38, 38, 38, 0.95);
 }
+div#popbox-content-conversation div.loading{
+  /* See also `.timeline-wrapper div.loading` */
+  margin:20px auto;
+}
 div#popbox-content-conversation div.content{
   padding:0;
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(#49525F), to(#7C8695),
+    color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+      /* See also `.timeline-wrapper`; `color-stop` values differ slightly. */
+      /* These `color-stop` values create top and bottom inner
+         shadows. However, the shadow heights are percent-based;
+         static heights would be ideal. */
   border:3px solid rgb(38, 38, 38);
   border-top:0;
 }
