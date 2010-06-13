@@ -7,7 +7,7 @@ Spaz.startReloadTimer = function() {
 	sch.debug('started timer with refresh of ' + refreshInterval + ' msecs');
 	reloadID = window.setInterval(Spaz.UI.autoReloadCurrentTab, refreshInterval);
 	return reloadID;
-}
+};
 
 
 Spaz.stopReloadTimer = function() {
@@ -15,37 +15,37 @@ Spaz.stopReloadTimer = function() {
 		window.clearInterval(reloadID);
 		sch.debug('stopped timer');
 	}
-}
+};
 
 Spaz.restartReloadTimer = function() {
 	sch.debug('trying to restart timer');
 	Spaz.stopReloadTimer();
 	Spaz.startReloadTimer();
-}
+};
 
 Spaz.createUserDirs = function() {
 	var appStore = air.File.applicationStorageDirectory;
 	var userThemesDir = appStore.resolvePath(USERDIR_THEMES);
-	userThemesDir.createDirectory()
+	userThemesDir.createDirectory();
 
 	var userPluginsDir = appStore.resolvePath(USERDIR_PLUGINS);
-	userPluginsDir.createDirectory()
+	userPluginsDir.createDirectory();
 
 	var userSmileysDir = appStore.resolvePath(USERDIR_SMILEYS);
-	userSmileysDir.createDirectory()
+	userSmileysDir.createDirectory();
 
 	var userSoundsDir = appStore.resolvePath(USERDIR_SOUND);
-	userSoundsDir.createDirectory()
+	userSoundsDir.createDirectory();
 
-	sch.dump(userThemesDir.nativePath);
-	sch.dump(userPluginsDir.nativePath);
-	sch.dump(userSmileysDir.nativePath);
-	sch.dump(userSoundsDir.nativePath);
+	sch.debug(userThemesDir.nativePath);
+	sch.debug(userPluginsDir.nativePath);
+	sch.debug(userSmileysDir.nativePath);
+	sch.debug(userSoundsDir.nativePath);
 };
 
 
 /**
- * loads the user.js file, if it exists, and injects it into the <script> tag with id='userjs' 
+ * loads the user.js file, if it exists, and injects it into the script tag with id='userjs' 
  */
 Spaz.loadUserJS = function() {
 	var userjsfile = air.File.applicationStorageDirectory.resolvePath('user.js');
@@ -58,12 +58,21 @@ Spaz.loadUserJS = function() {
 };
 
 
+
+Spaz.loadOAuthServices = function() {
+	SpazAuth.addService(SPAZCORE_ACCOUNT_TWITTER, {
+        authType: SPAZCORE_AUTHTYPE_OAUTH,
+        consumerKey: SPAZCORE_CONSUMERKEY_TWITTER,
+        consumerSecret: SPAZCORE_CONSUMERSECRET_TWITTER,
+        accessURL: 'https://twitter.com/oauth/access_token'
+    });
+}
+
+
 /**
  * Bootstraps the app
  */
 Spaz.initialize = function() {
-
-
 
 	sch.debug('root init begin');
 
@@ -76,11 +85,12 @@ Spaz.initialize = function() {
 	/***************************
 	 * Load prefs
 	 **************************/
-	sch.dump('init prefs');
+	sch.debug('init prefs');
+	Spaz.loadOAuthServices();
 	Spaz.Prefs.init();
 	Spaz.AccountPrefs.init();
 
-	// sch.dump('init Sections');
+	// sch.debug('init Sections');
 	// Spaz.Section.init();
 
 	// turn on debugging
@@ -90,10 +100,10 @@ Spaz.initialize = function() {
 	}
 	
 	// Database initialization
-	sch.dump("database initialization");
+	sch.debug("database initialization");
 	Spaz.DB.init();
 	
-	sch.dump('JazzRecord initialization');
+	sch.debug('JazzRecord initialization');
 	JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db"});
 	if (Spaz.Prefs.get('debug-enabled')) {
 		JazzRecord.debug = true;
@@ -105,7 +115,7 @@ Spaz.initialize = function() {
 	JazzRecord.addIndex('twusers', 'screen_name');
 
 	// Docking initialization
-	sch.dump("docking initialization");
+	sch.debug("docking initialization");
 	Spaz.Dock.init();
 
 	
@@ -122,7 +132,7 @@ Spaz.initialize = function() {
 	air.URLRequestDefaults.useCache = true;
 
 
-	Spaz.Windows.makeSystrayIcon()
+	Spaz.Windows.makeSystrayIcon();
 
 
 	// ***************************************************************
@@ -140,7 +150,7 @@ Spaz.initialize = function() {
 	window.moveTo(Spaz.Prefs.get('window-x'), Spaz.Prefs.get('window-y'));
 	window.resizeTo(Spaz.Prefs.get('window-width'), Spaz.Prefs.get('window-height'));
 	$('#username').val(Spaz.Prefs.getUsername());
-	$('#password').val(Spaz.Prefs.getPassword());
+	// $('#password').val(Spaz.Prefs.getPassword());
 
 	//DONE: Check for Update
 	if (Spaz.Prefs.get('checkupdate')) {
@@ -162,12 +172,12 @@ Spaz.initialize = function() {
 
 	window.nativeWindow.visible = true;
 	Spaz.Windows.setWindowOpacity(Spaz.Prefs.get('window-alpha'));
-	Spaz.Windows.enableDropShadow(Spaz.Prefs.get('window-dropshadow'));	
+	Spaz.Windows.enableDropShadow(Spaz.Prefs.get('window-dropshadow')); 
 	Spaz.Windows.enableRestoreOnActivate(Spaz.Prefs.get('window-restoreonactivate'));
 	Spaz.Windows.enableMinimizeOnBackground(Spaz.Prefs.get('window-minimizeonbackground'));
 	
 	if (Spaz.Prefs.get('window-minimizeatstartup')) {
-		Spaz.Windows.windowMinimize()
+		Spaz.Windows.windowMinimize();
 	}
 	
 
@@ -202,7 +212,7 @@ Spaz.initialize = function() {
 	// $('.panelmenu form input[title="filter"]').hint();
 
 	$('.TabbedPanelsTab').each(function(i) {
-		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL+' + (parseInt(i) + 1) + '</strong>';
+		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL+' + (parseInt(i, 10) + 1) + '</strong>';
 	});
 	sch.debug('Set shortcut info in tab titles');
 
@@ -253,7 +263,7 @@ Spaz.initialize = function() {
 		'displayDiv':'#suggestions',
 		'textarea':'#entrybox',
 		'maxMatches':15
-	})
+	});
 	
 	/*
 		set-up post panel
@@ -262,7 +272,8 @@ Spaz.initialize = function() {
 		on_submit:function() {
 			this.disable();
 			var status = sch.trim(this.getMessageText());
-			var twit = new SpazTwit(Spaz.Prefs.getUsername(), Spaz.Prefs.getPassword());
+			var auth = Spaz.Prefs.getAuthObject();	
+			var twit = new SpazTwit({'auth':auth});
 			twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			var source = Spaz.Prefs.get('twitter-source');
 			var irt_id = this.irt_status_id;
@@ -290,15 +301,15 @@ Spaz.initialize = function() {
 		
 		// get the pref
 		var service = Spaz.Prefs.get('url-shortener');
-		sch.dump("service is "+ service);
+		sch.debug("service is "+ service);
 	
-	        if (service == 'shortie') {
-	            $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-	        }
+			if (service == 'shortie') {
+				$('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+			}
 	
 		// populate the dropdown
 		for (method in Spaz.Shortlink.services) {
-			sch.dump(method)
+			sch.debug(method);
 	
 			if (method[0] != '$') {
 				if (method == service) {
@@ -310,31 +321,31 @@ Spaz.initialize = function() {
 		}
 		
 		
-	        $('#url-shortener').bind('change', function() {
+		$('#url-shortener').bind('change', function() {
 	
-			sch.dump($('#url-shortener').val());
+			sch.debug($('#url-shortener').val());
 			Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
-	            if ($('#url-shortener').val() != 'shortie') {
-	                $('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
-	            } else {
-	                $('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-	            }
+			if ($('#url-shortener').val() != 'shortie') {
+				$('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
+			} else {
+				$('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
+			}
 		});
 		
 		$('#shorten-original-link').focus();
 		$('#shorten-original-link').val('http://');
 		$('#shortenLink-form').bind('submit', function() {
-	  	var service = Spaz.Prefs.get('url-shortener');
-			sch.dump("service is "+ service);
-	            var custom = $('#shorten-custom-link').val();
-	            if (custom != '') {
-			    Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
-	            } else {
-			    Spaz.Shortlink.services[service]($('#shorten-original-link').val());
-	            }
+		var service = Spaz.Prefs.get('url-shortener');
+			sch.debug("service is "+ service);
+				var custom = $('#shorten-custom-link').val();
+				if (custom != '') {
+				Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
+				} else {
+				Spaz.Shortlink.services[service]($('#shorten-original-link').val());
+				}
 		});
 		
-		// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);
+		// sch.debug(air.NativeApplication.nativeApplication.spazPrefs);
 	};
 
 	initUrlShortener();

@@ -192,8 +192,6 @@ var FriendsTimeline = function() {
 		'request_data': function() {
 			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // just add .read to the entries
-			var username = Spaz.Prefs.getUsername();
-			var password = Spaz.Prefs.getPassword();
 
 			var count = {
 				'home': Spaz.Prefs.get('timeline-home-pager-count'),
@@ -206,8 +204,11 @@ var FriendsTimeline = function() {
 				'dm_count': (count.direct > maxFT.direct ? maxFT.direct : count.direct),
 				'replies_count': (count.replies > maxFT.replies ? maxFT.replies : count.replies)
 			};
-
-			thisFT.twit.setCredentials(username, password);
+			
+			
+			thisFT.twit.setCredentials(Spaz.Prefs.getAuthObject());
+			sch.error('thisFT.twit.username:'+thisFT.twit.username);
+			sch.error('thisFT.twit.auth:'+sch.enJSON(thisFT.twit.auth));
 			thisFT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			thisFT.twit.getCombinedTimeline(com_opts);
 			Spaz.UI.statusBar("Loading friends timeline");
@@ -592,9 +593,7 @@ var FavoritesTimeline = function(args) {
 
 		'request_data': function() {
 			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
-			var username = Spaz.Prefs.getUsername();
-			var password = Spaz.Prefs.getPassword();
-			thisFVT.twit.setCredentials(username, password);
+			thisFVT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			thisFVT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			thisFVT.twit.getFavorites();
 			Spaz.UI.statusBar("Loading favorites timeline");
@@ -714,14 +713,14 @@ var UserTimeline = function(args) {
 
 		'request_data': function() {
 			thisUT.markAsRead($timeline.selector + ' div.timeline-entry');
-			var username = Spaz.Prefs.getUsername();
-			var password = Spaz.Prefs.getPassword();
 
 			var countmax = thisUT.timeline.max_items;
 			var count = Spaz.Prefs.get('timeline-user-pager-count');
 			count = (count > maxUT ? maxUT : count);
 
-			thisUT.twit.setCredentials(username, password);
+			thisUT.twit.setCredentials(Spaz.Prefs.getAuthObject());
+			var username = Spaz.Prefs.getUsername();
+			sch.error('username in UserTimeline is '+username);
 			thisUT.twit.getUserTimeline(username, count);
 			Spaz.UI.statusBar("Loading user timeline");
 			Spaz.UI.showLoading();
@@ -875,9 +874,7 @@ var UserlistsTimeline = function(args) {
 				}
 				$timelineWrapper.children('.intro').hide();
 
-				var username = Spaz.Prefs.getUsername(),
-					password = Spaz.Prefs.getPassword();
-				thisULT.twit.setCredentials(username, password);
+				thisULT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 				thisULT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 				thisULT.twit.getListTimeline(thisULT.list.slug, thisULT.list.user);
 				Spaz.UI.statusBar("Getting list @"+thisULT.list.user+'/'+thisULT.list.slug + "…");
@@ -976,9 +973,10 @@ var UserlistsTimeline = function(args) {
 	
 	
 	this.buildListsMenu = function() {
+		var auth = Spaz.Prefs.getAuthObject();
 		var username = Spaz.Prefs.getUsername();
-		var password = Spaz.Prefs.getPassword();
-		thisULT.twit.setCredentials(username, password);
+		thisULT.twit.setCredentials(auth);
+		sch.error('settoing base URL');
 		thisULT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 		sch.debug("Loading lists for @"+username+ "…");
 		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
@@ -1290,9 +1288,7 @@ var FollowersTimeline = function(args) {
 
 		'request_data': function() {
 			sch.markAsRead($timeline.selector + ' div.timeline-entry');
-			var username = Spaz.Prefs.getUsername();
-			var password = Spaz.Prefs.getPassword();
-			thisFLT.twit.setCredentials(username, password);
+			thisFLT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			thisFLT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			thisFLT.twit.getFollowersList();
 			Spaz.UI.statusBar("Loading followerslist");

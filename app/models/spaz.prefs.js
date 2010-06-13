@@ -1008,7 +1008,7 @@ Spaz.Prefs.initUI = function() {
 		}
 		$('#username').val(Spaz.Prefs.getUsername());
 		//sch.debug('set #username val to'+$('#username').val());
-		$('#password').val(Spaz.Prefs.getPassword());
+		// $('#password').val(Spaz.Prefs.getPassword());
 	}
 
 
@@ -1290,7 +1290,7 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 
 
 Spaz.Prefs.setRateLimit = function(rateinfo, data) {
-	sch.debug(JSON.stringify(rateinfo));
+	sch.error(JSON.stringify(rateinfo));
 
 	var limit = rateinfo.hourly_limit;
 	var per_min = Math.ceil((60 / (limit / 3)));
@@ -1312,7 +1312,9 @@ Spaz.Prefs.setRateLimit = function(rateinfo, data) {
 
 
 
-
+/**
+ * retrieves the username for the current account 
+ */
 Spaz.Prefs.getUsername = function() {
 	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
 	if (currentAccountId) {
@@ -1324,18 +1326,46 @@ Spaz.Prefs.getUsername = function() {
 
 };
 
+/**
+ * DEPRECATED; calls Spaz.Prefs.getAuthKey
+ */
 Spaz.Prefs.getPassword = function() {
+	sch.error('Spaz.Prefs.getPassword is deprecated; use Spaz.Prefs.getAuthKey');
+	return Spaz.Prefs.getAuthKey();
+};
+
+/**
+ * Returns the current account's auth key 
+ */
+Spaz.Prefs.getAuthKey = function() {
 	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
+	sch.error('getAuthKey currentAccountId:'+currentAccountId);
 	if (currentAccountId) {
 		var accobj = Spaz.Prefs._accounts.get(currentAccountId);
-		return !!accobj ? accobj.password : null;
+		return !!accobj ? accobj.auth : null;
+	} else {
+		return null;
+	}	
+};
+
+/**
+ * Returns a SpazAuth object based on the current user's type and auth key 
+ */
+Spaz.Prefs.getAuthObject = function() {
+	var authkey = Spaz.Prefs.getAuthKey();
+	sch.error('getAuthObject authkey:'+authkey);
+	if (authkey) {
+		var auth = new SpazAuth(Spaz.Prefs.getAccountType());
+		auth.load(authkey);
+		return auth;
 	} else {
 		return null;
 	}
+}
 
-};
-
-
+/**
+ * Returns the current account's type 
+ */
 Spaz.Prefs.getAccountType = function() {
 	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
 	if (currentAccountId) {
@@ -1347,7 +1377,9 @@ Spaz.Prefs.getAccountType = function() {
 
 };
 
-
+/**
+ * Returns the current account object
+ */
 Spaz.Prefs.getCurrentAccount = function() {
 	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
 	if (currentAccountId) {

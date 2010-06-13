@@ -70,21 +70,33 @@ Spaz.AccountPrefs.init = function(){
 			 bind save button
 			 */
 			$saveAccountButton.click(function(){
-				var newaccid = Spaz.AccountPrefs.add($username.val(), $password.val(), $accountType.val()).id;
-				var val;
-				for (var i = 0; i < that.metavals.length; i++) {
-					if (that.checkboxes.indexOf(that.metavals[i]) !== -1) { // is a checkbox
-						val = !!($('#' + that.metavals[i] + ':checked').length) || false;
-					}
-					else {
-						val = $('#' + that.metavals[i]).val();
-					}
-					that.spaz_acc.setMeta(newaccid, that.metavals[i], val);
-				};
+				var auth  = new SpazAuth($accountType.val());
+				if (auth.authorize($username.val(), $password.val())) { // check credentials first
+					var newaccid = Spaz.AccountPrefs.add($username.val(), auth.save(), $accountType.val()).id;
+					var val;
+					
+					for (var i = 0; i < that.metavals.length; i++) {
+						if (that.checkboxes.indexOf(that.metavals[i]) !== -1) { // is a checkbox
+							val = !!($('#' + that.metavals[i] + ':checked').length) || false;
+						}
+						else {
+							val = $('#' + that.metavals[i]).val();
+						}
+						that.spaz_acc.setMeta(newaccid, that.metavals[i], val);
+					};
 
-				$accountList.val(newaccid);
-				Spaz.AccountPrefs.setAccount(newaccid);
-				Spaz.UI.closePopbox();
+					$accountList.val(newaccid);
+					Spaz.AccountPrefs.setAccount(newaccid);
+					Spaz.UI.closePopbox();
+					
+				} else { // failed!!
+					
+					Spaz.UI.statusBar('Authoriztion failed!');
+					Spaz.UI.flashStatusBar();
+					
+				}
+				
+				
 			});
 			
 			/*

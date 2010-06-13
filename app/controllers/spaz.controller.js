@@ -76,7 +76,8 @@ sch.listen(document, 'verify_credentials_failed', function(e) {
 	right before we switch an account…
 */
 sch.listen(document, 'before_account_switched', function(e, account) {
-	sch.dump('about to switch accounts');
+	sch.error('about to switch accounts');
+	sch.error('account:'+sch.enJSON(account));
 	if(account){
 		// `account` may be null if this is your first account, or your
 		// prefs are in a broken state.
@@ -89,7 +90,8 @@ sch.listen(document, 'before_account_switched', function(e, account) {
 	after we switch an account…
 */
 sch.listen(document, 'account_switched', function(e, account) {
-
+	sch.error('switched accounts');
+	sch.error('account:'+sch.enJSON(account));
 	function rateLimitsSet() {
 		Spaz.Timelines.resetTimelines();
 		
@@ -114,6 +116,8 @@ sch.listen(document, 'account_switched', function(e, account) {
 	
 	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
 		Spaz.Data.getRateLimitInfo(function(json, cbdata) {
+			sch.error(json);
+			sch.error(cbdata);
 			Spaz.Prefs.setRateLimit(json, cbdata);
 			rateLimitsSet();
 		});

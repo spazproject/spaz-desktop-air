@@ -184,6 +184,8 @@ Spaz.ImageUploader = function() {
 
 		Spaz.UI.showLoading();
 
+		alert('This is NOT gonna work until rewritten for oAuth');
+
 		// upload the file
 		Spaz.Data.uploadFile({
 			'extra'  :{
