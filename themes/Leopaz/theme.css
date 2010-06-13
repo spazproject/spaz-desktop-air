@@ -1534,7 +1534,7 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 }
               div.prefs ul#account-list{
                 width:100%;
-                height:171px;
+                height:143px;
                 overflow:auto;
                 margin:0;
                 padding:0;
@@ -1543,13 +1543,39 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                   -webkit-border-radius:2px;
                 list-style:none;
               }
+              div.prefs ul#account-list li{
+                border-top:1px solid transparent;
+              }
+              div.prefs ul#account-list li:first-child{
+                border-top-left-radius:1px;
+                  -webkit-border-top-left-radius:1px;
+                border-top-right-radius:1px;
+                  -webkit-border-top-right-radius:1px;
+              }
+              div.prefs ul#account-list li:last-child{
+                border-bottom-left-radius:1px;
+                  -webkit-border-bottom-left-radius:1px;
+                border-bottom-right-radius:1px;
+                  -webkit-border-bottom-right-radius:1px;
+              }
               div.prefs ul#account-list li.selected{
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
+                border-top-color:#519BD6;
+              }
+              div.prefs ul#account-list li.current{
                 font-weight:bold;
+                /* TODO: Improve */
               }
               div.prefs ul#account-list li span.clickable{
                 display:block;
                 padding:0.5em;
                 color:#000;
+                cursor:default;
+              }
+              div.prefs ul#account-list li.selected span.clickable{
+                color:#f0f0f0;
+                font-weight:bold;
               }
 
               /*** Preferences > Controls ***/

@@ -22,17 +22,21 @@ Spaz.AccountPrefs.init = function(){
 	    $cancelAccountButton  = $('#cancel_account_button');
 	
 	$().ready(function(){
-	
+
+		// TODO: Allow double-clicking an account to switch to it
+		// TODO: Improve styling of current account
+
 		/*
 		 bind click on account
 		 */
 		$accountList.delegate('li[data-account-id]', 'click', function(e){
+			// Clicking an account should only update the view to show it as
+			// *selected*, but should not update the model to make it *current*
+			// (i.e., active).
 			var acctID = $(this).attr('data-account-id');
-			Spaz.AccountPrefs.setAccount(acctID);
-				// TODO: Clicking the list item should only select it. Create and
-				// delegate to some new control that's for switching accounts.
+			Spaz.AccountPrefs.selectAccount(acctID);
 		});
-		
+
 		/*
 		 bind [+] button to popup
 		 */
@@ -100,10 +104,11 @@ Spaz.AccountPrefs.init = function(){
 		 bind the [-] button
 		 */
 		$('#del-account').click(function(){
-			var id = Spaz.AccountPrefs.getSelectedId();
+			var id = Spaz.AccountPrefs.getSelectedAccountId();
 			if (id) {
 				var deleted = that.spaz_acc.remove(id);
 				$accountList.children('li[data-account-id="' + id + '"]').remove();
+				// TODO: Switch to first account
 				Spaz.AccountPrefs.toggleCTA();
 				Spaz.Timelines.toggleNewUserCTAs();
 			}
@@ -117,12 +122,13 @@ Spaz.AccountPrefs.init = function(){
 		 bind the [edit] button to modal
 		 */
 		$('#edit-account').click(function(){
-		
+			if(!Spaz.AccountPrefs.getSelectedAccountId()){ return; }
+
 			$saveAccountButton.unbind('click');
 			$cancelAccountButton.unbind('click');
 			
 			
-			var id = Spaz.AccountPrefs.getSelectedId();
+			var id = Spaz.AccountPrefs.getSelectedAccountId();
 			if (id) {
 				var editing = that.spaz_acc.get(id);
 				
@@ -180,16 +186,22 @@ Spaz.AccountPrefs.init = function(){
 				 */
 				$cancelAccountButton.click(function(){
 					Spaz.UI.closePopbox();
-					
 				});
-				
-				
-			}
-			else {
+
+			} else {
 				sch.error('Nothing selected to edit');
 			}
-			
-			
+
+		});
+
+		/*
+		 bind the [switch] button
+		 */
+		$('#switch-account').click(function(){
+			var acctID = Spaz.AccountPrefs.getSelectedAccountId();
+			if(acctID){
+				Spaz.AccountPrefs.setAccount(acctID);
+			}
 		});
 		
 		/*
@@ -198,12 +210,10 @@ Spaz.AccountPrefs.init = function(){
 		$accountType.change(function(){
 			$('#twitter-api-base-url-row').toggle($accountType.val() === 'custom');
 		});
-		
-		
+
 		sch.debug('LOADED USERS:');
 		sch.debug(sch.enJSON(Spaz.AccountPrefs.spaz_acc._accounts));
-		
-		
+
 		/*
 		 Load data into GUI
 		 */
@@ -217,28 +227,26 @@ Spaz.AccountPrefs.init = function(){
 			return listItems.join('');
 		})());
 		$accountList.
-			children('li[data-account-id="' + Spaz.AccountPrefs.getSelectedId() + '"]').
+			children('li[data-account-id="' + Spaz.Prefs.getCurrentUserId() + '"]').
 			addClass('selected');
 
 		// Clean up UI
 		$accountDetails.hide();
 		$('#twitter-api-base-url-row').hide();
 		Spaz.AccountPrefs.toggleCTA();
-		
-	});
-	
-	
-	
-};
 
+	});
+
+};
 
 Spaz.AccountPrefs.setAccount = function(account_id) {
 	if (account_id != Spaz.Prefs.getCurrentUserId()) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
 
 		$('#current-account-id').val(account_id);
+		Spaz.AccountPrefs.unselectAccounts(account_id);
 		$('#account-list li[data-account-id="' + account_id + '"]').
-			addClass('selected').siblings().removeClass('selected');
+			addClass('current').siblings().removeClass('current');
 		Spaz.Prefs.setCurrentUserId(account_id);
 						
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
@@ -260,7 +268,7 @@ Spaz.AccountPrefs.add = function(username, password, type){
 Spaz.AccountPrefs.edit = function(id, acctobj){
 	var savedacct = Spaz.AccountPrefs.spaz_acc.update(id, acctobj);
 	sch.debug(savedacct);
-	$('#account-list li[data-account-id="' + savedacct.id + '"]').
+	$('#account-list li[data-account-id="' + savedacct.id + '"] span').
 		html(savedacct.username + "@" + savedacct.type);
 	sch.debug("Edited:");
 	sch.debug(savedacct);
@@ -290,6 +298,20 @@ Spaz.AccountPrefs.toggleCTA = function(){
 		// broken by old jquery.moreSelectors.js plugin?
 };
 
-Spaz.AccountPrefs.getSelectedId = function(){
-	return $('#current-account-id').val() || null;
+Spaz.AccountPrefs.selectAccount = function(acctID){
+	// Updates the view to reflect the selected account. Does *not* change the
+	// current (i.e., active) account.
+
+	var $li = $('#account-list li[data-account-id="' + acctID + '"]');
+	if(!$li.is('.selected')){
+		$li.addClass('selected').siblings().removeClass('selected');
+	}
+};
+
+Spaz.AccountPrefs.unselectAccounts = function(){
+	$('#account-list li.selected').removeClass('selected');
+};
+
+Spaz.AccountPrefs.getSelectedAccountId = function(){
+	return $('#account-list li.selected').attr('data-account-id');
 };
