@@ -56,7 +56,7 @@ ul#account-list li:nth-child(even){
 
 /*** Global > Animations ***/
 
-@-webkit-keyframes loading{
+@-webkit-keyframes discrete-spinner{
   from    { -webkit-transform: rotate(0deg); }
   8.32%   { -webkit-transform: rotate(0deg); }
             /* Forces jump from 0deg to 30deg, not a smooth rotation */
@@ -623,7 +623,7 @@ ul#account-list li:nth-child(even){
               text-indent:-9999em;
               -webkit-animation-duration:1s;
               -webkit-animation-iteration-count:infinite;
-              -webkit-animation-name:loading;
+              -webkit-animation-name:discrete-spinner;
               -webkit-animation-timing-function:linear;
             }
             #timelinewrapper-userlists div.intro,
@@ -864,7 +864,7 @@ ul#account-list li:nth-child(even){
         background:transparent url(images/loading-16x16.png) 0 0 no-repeat;
         -webkit-animation-duration:1s;
         -webkit-animation-iteration-count:infinite;
-        -webkit-animation-name:loading;
+        -webkit-animation-name:discrete-spinner;
         -webkit-animation-timing-function:linear;
       }
       #statusbar-text{

@@ -97,38 +97,36 @@ Spaz.UI.playSoundWilhelm = function(callback) {
 
 
 Spaz.UI.doWilhelm = function() {
-    sch.debug('Applying Flash Filter Dropshadow and Negative');
+	sch.debug('Applying Flash Filter Dropshadow and Negative');
 
 	if (Spaz.Prefs.get('window-dropshadow')) {
-	    sch.dump('Applying Flash Filter Dropshadow');
+		sch.dump('Applying Flash Filter Dropshadow');
 
-	    window.htmlLoader.filters = window.runtime.Array(
-	    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
-	    	new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-	    );
+		window.htmlLoader.filters = window.runtime.Array(
+			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
+			new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+		);
 	} else {
 		window.htmlLoader.filters = window.runtime.Array(
-	    	new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-	    );
-
+			new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+		);
 	}
 
-  var $wilhelm = $('#wilhelm');
-  $wilhelm.center();
-  $wilhelm.show(300);
-  $('#container').css('WebkitAnimation', 'container-pulse 0.5s ease 2');
+	var $wilhelm = $('#wilhelm');
+	$wilhelm.center();
+	$wilhelm.show(300);
 	setTimeout(Spaz.UI.endWilhelm, 960); // end with a timeout instead of relying on sound to finish
 };
 
 Spaz.UI.endWilhelm = function() {
 	if (Spaz.Prefs.get('window-dropshadow')) {
-	    sch.dump('Applying Flash Filter Dropshadow');
+		sch.dump('Applying Flash Filter Dropshadow');
 
-	    window.htmlLoader.filters = window.runtime.Array(
-	    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
-	    );
+		window.htmlLoader.filters = window.runtime.Array(
+			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
+		);
 	}
-    $('#wilhelm').hide();
+	$('#wilhelm').hide();
 };
 
 
