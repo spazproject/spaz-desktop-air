@@ -11,12 +11,13 @@ Spaz.AccountPrefs.init = function(){
 	this.checkboxes = ['twitter-disable-direct-posting', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
 	
 	var that = this,
-	    $accountList    = $('#account-list'),
-	    $accountDetails = $('#account-details'),
-	    $idEdit         = $('#id_edit'),
-	    $username       = $('#username'),
-	    $password       = $('#password'),
-	    $accountType    = $('#account-type'),
+	    $accountList          = $('#account-list'),
+	    $accountDetails       = $('#account-details'),
+	    $currentAccountID     = $('#current-account-id'),
+	    $idEdit               = $('#id_edit'),
+	    $username             = $('#username'),
+	    $password             = $('#password'),
+	    $accountType          = $('#account-type'),
 	    $saveAccountButton    = $('#save_account_button'),
 	    $cancelAccountButton  = $('#cancel_account_button');
 	
@@ -25,11 +26,12 @@ Spaz.AccountPrefs.init = function(){
 		/*
 		 bind click on account
 		 */
-		$accountList.change(function(e){
-			var account_id = $(this).val();
-			Spaz.AccountPrefs.setAccount(account_id);
+		$accountList.delegate('li[data-account-id]', 'click', function(e){
+			var acctID = $(this).attr('data-account-id');
+			Spaz.AccountPrefs.setAccount(acctID);
+				// TODO: Clicking the list item should only select it. Create and
+				// delegate to some new control that's for switching accounts.
 		});
-		
 		
 		/*
 		 bind [+] button to popup
@@ -82,7 +84,6 @@ Spaz.AccountPrefs.init = function(){
 					that.spaz_acc.setMeta(newaccid, that.metavals[i], val);
 				};
 
-				$accountList.val(newaccid);
 				Spaz.AccountPrefs.setAccount(newaccid);
 				Spaz.UI.closePopbox();
 			});
@@ -102,7 +103,7 @@ Spaz.AccountPrefs.init = function(){
 			var id = Spaz.AccountPrefs.getSelectedId();
 			if (id) {
 				var deleted = that.spaz_acc.remove(id);
-				$('option[value="' + id + '"]').remove();
+				$accountList.children('li[data-account-id="' + id + '"]').remove();
 				Spaz.AccountPrefs.toggleCTA();
 				Spaz.Timelines.toggleNewUserCTAs();
 			}
@@ -208,21 +209,16 @@ Spaz.AccountPrefs.init = function(){
 		 */
 		$accountList.append((function(){
 			var accts = Spaz.AccountPrefs.spaz_acc._accounts, acct,
-			    options = [];
+			    listItems = [];
 			for(var i = 0, iMax = accts.length; i < iMax; i++){
 				acct = accts[i];
-				options.push(
-					'<option' +
-						((acct.username === Spaz.Prefs.getUsername() &&
-							acct.type === Spaz.Prefs.getAccountType()) ?
-							' selected' : '') +
-					    ' value="' + acct.id + '">' +
-						acct.username + '@' + acct.type +
-					'</option>'
-				);
+				listItems.push(Spaz.AccountPrefs.getAccountListItemHTML(acct));
 			}
-			return options.join('');
+			return listItems.join('');
 		})());
+		$accountList.
+			children('li[data-account-id="' + Spaz.AccountPrefs.getSelectedId() + '"]').
+			addClass('selected');
 
 		// Clean up UI
 		$accountDetails.hide();
@@ -237,10 +233,12 @@ Spaz.AccountPrefs.init = function(){
 
 
 Spaz.AccountPrefs.setAccount = function(account_id) {
-
 	if (account_id != Spaz.Prefs.getCurrentUserId()) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
-		
+
+		$('#current-account-id').val(account_id);
+		$('#account-list li[data-account-id="' + account_id + '"]').
+			addClass('selected').siblings().removeClass('selected');
 		Spaz.Prefs.setCurrentUserId(account_id);
 						
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
@@ -250,8 +248,8 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 Spaz.AccountPrefs.add = function(username, password, type){
 	var newacct = Spaz.AccountPrefs.spaz_acc.add(username, password, type);
 	sch.debug(newacct);
-	var html = "<option value='" + newacct.id + "'>" + newacct.username + "@" + newacct.type + "</option>";
-	$('#account-list').append(html);
+	$('#account-list').append(
+		Spaz.AccountPrefs.getAccountListItemHTML(newacct));
 	Spaz.AccountPrefs.toggleCTA();
 	Spaz.Timelines.toggleNewUserCTAs();
 	sch.debug("Added:");
@@ -262,10 +260,22 @@ Spaz.AccountPrefs.add = function(username, password, type){
 Spaz.AccountPrefs.edit = function(id, acctobj){
 	var savedacct = Spaz.AccountPrefs.spaz_acc.update(id, acctobj);
 	sch.debug(savedacct);
-	$('#account-list option[value="' + savedacct.id + '"]').html(savedacct.username + "@" + savedacct.type);
+	$('#account-list li[data-account-id="' + savedacct.id + '"]').
+		html(savedacct.username + "@" + savedacct.type);
 	sch.debug("Edited:");
 	sch.debug(savedacct);
 	return savedacct;
+};
+
+Spaz.AccountPrefs.getAccountListItemHTML = function(account){
+	// `account`: SpazAccounts instance
+	return (
+		'<li data-account-id="' + account.id + '">' +
+			'<span class="clickable">' +
+				account.username + '@' + account.type +
+			'</span>' +
+		'</li>'
+	);
 };
 
 Spaz.AccountPrefs.toggleCTA = function(){
@@ -276,11 +286,10 @@ Spaz.AccountPrefs.toggleCTA = function(){
 	    $fieldset = $('#account-list-fieldset');
 	$fieldset.find('div.formrow.cta').toggle(!anyAccts);
 	$fieldset.find('div.formrow:not(.cta)').toggle(anyAccts);
-		// `.siblings()` didn't chain properly here for some reason.
+		// `.siblings()` didn't chain properly here for some reason. Possibly
+		// broken by old jquery.moreSelectors.js plugin?
 };
 
-
-
 Spaz.AccountPrefs.getSelectedId = function(){
-	return $('#account-list').val() || null;
+	return $('#current-account-id').val() || null;
 };
