@@ -13,7 +13,6 @@ Spaz.AccountPrefs.init = function(){
 	var that = this,
 	    $accountList          = $('#account-list'),
 	    $accountDetails       = $('#account-details'),
-	    $currentAccountID     = $('#current-account-id'),
 	    $idEdit               = $('#id_edit'),
 	    $username             = $('#username'),
 	    $password             = $('#password'),
@@ -119,11 +118,20 @@ Spaz.AccountPrefs.init = function(){
 		 bind the [-] button
 		 */
 		$('#del-account').click(function(){
-			var id = Spaz.AccountPrefs.getSelectedAccountId();
+			var id = Spaz.AccountPrefs.getSelectedAccountId(),
+			    firstAccount;
 			if (id) {
 				var deleted = that.spaz_acc.remove(id);
 				$accountList.children('li[data-account-id="' + id + '"]').remove();
-				// TODO: Switch to first account
+
+				// Deleted the active account; switch to another one
+				if(id === deleted.id){
+					firstAccount = Spaz.AccountPrefs.spaz_acc._accounts[0];
+					if(firstAccount){
+						Spaz.AccountPrefs.setAccount(firstAccount.id);
+					}
+				}
+
 				Spaz.AccountPrefs.toggleCTA();
 				Spaz.Timelines.toggleNewUserCTAs();
 			}
