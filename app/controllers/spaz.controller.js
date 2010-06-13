@@ -450,10 +450,13 @@ Spaz.Controller.initIntercept = function() {
 				var entryid = $(this).attr('entry-id');
 				var element = Spaz.UI.getElementFromStatusId(entryid);
 				if ($(element).hasClass('favorited')) {
-					Spaz.Data.makeNotFavorite(entryid);
-				}
-				else {
-					Spaz.Data.makeFavorite(entryid);
+					Spaz.Data.makeNotFavorite(entryid, function() {
+						Spaz.UI.markNotFavorite(entryid);
+					});
+				} else {
+					Spaz.Data.makeFavorite(entryid, function() {
+						Spaz.UI.markFavorite(entryid);
+					});
 				}
 			},
 			'.status-action-retweet':function(e) {
@@ -470,7 +473,15 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.postPanel.prepReply(tweetobj.user.screen_name, tweetobj.twitter_id, tweetobj.SC_text_raw);
 			},
 			'.status-action-del':function(e) {
-				Spaz.Data.destroyStatus($(this).attr('entry-id'));
+				if ($(this).hasClass('dm')) {
+					Spaz.Data.destroyDirectMessage($(this).attr('entry-id'), function() {
+						Spaz.UI.removeEntry($(this).attr('entry-id'), true);
+					});
+				} else {
+					Spaz.Data.destroyStatus($(this).attr('entry-id'), function() {
+						Spaz.UI.removeEntry($(this).attr('entry-id'), false);
+					});
+				}
 			},
 			'.directory-action-follow':function(e) {
 				Spaz.Data.followUser($(this).attr('user-screen_name'));

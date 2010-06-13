@@ -106,127 +106,8 @@ Spaz.Data.verifyCredentials = function() {
 	Spaz.UI.statusBar("Verifying username and password");
 	Spaz.UI.showLoading();
 
-
 };
 
-
-
-
-/**
- * send a status update to Twitter
- * @param {String} msg the message to be posted
- * @param {String} username the username
- * @param {String} password the password
- * @returns void
- */
-Spaz.Data.update = function(msg, username, password, irt_id) {
-// 	var user = username;
-// 	var pass = password;
-// 
-// 	sch.dump('user:'+user+' pass:********');
-// 
-// 	Spaz.UI.statusBar("Sending update");
-// 	Spaz.UI.showLoading();
-// 
-// 	$('#entrybox').attr('disabled', true);
-// 	$('#updateButton').attr('disabled', true);
-// 	var oldButtonLabel = $('#updateButton').val();
-// 	$('#updateButton').val('Sending...');
-// 
-// 	var update_data = "&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg);
-// 	if (irt_id) {
-// 		update_data = update_data+"&in_reply_to_status_id="+irt_id;
-// 	}
-// 
-// 	var xhr = $.ajax({
-// 		timeout:1000*40, // updates can take longer, so we double the standard timeout
-// 		complete:Spaz.Data.onAjaxComplete,
-// 		error:function(xhr, rstr){
-// 			sch.dump("ERROR");
-// 			$('#entrybox').attr('disabled', false);
-// 			$('#updateButton').attr('disabled', false);
-// 			$('#updateButton').val(oldButtonLabel);
-// 
-// 			if (xhr.readyState < 3) {
-// 				sch.dump("Update ERROR: Server did not confirm update");
-// 				Spaz.UI.statusBar("ERROR: Server did not confirm update")
-// 				return;
-// 			}
-// 
-// 			if (xhr.status != 200) { // sanity check
-// 				sch.dump("ERROR: " + rstr);
-// 				Spaz.UI.statusBar("ERROR: Server could not post update");
-// 				Spaz.UI.flashStatusBar();
-// 			} else {
-// 
-// 			}
-// 		},
-// 		success:function(data){
-// 			sch.dump('SUCCESS:'+data);
-// 			$('#entrybox').attr('disabled', false);
-// 			$('#updateButton').attr('disabled', false);
-// 			$('#entrybox').val('');
-// 			sch.dump('Emptied #entrybox');
-// 			$('#updateButton').val(oldButtonLabel);
-// 			sch.dump('reset #updateButton label');
-// 			if (msg.length == 140) {
-// 				if (Spaz.Prefs.get('sound-enabled')) {
-// 					if (Spaz.Prefs.get('wilhelm-enabled')) {
-// 						Spaz.UI.doWilhelm();
-// 						Spaz.UI.statusBar("Wilhelm!");
-// 						Spaz.UI.playSoundWilhelm();
-// 					} else {
-// 						sch.dump('not doing Wilhelm because Wilhelm disabled');
-// 					}
-// 				} else {
-// 					sch.dump('not doing Wilhelm because sound disabled');
-// 				}
-// 			} else {
-// 				Spaz.UI.playSoundUpdate();
-// 				Spaz.UI.statusBar("Update succeeded");
-// 			}
-// 			var entry = JSON.parse(data);
-// 
-// 			// We mark it as read in the db
-// 			Spaz.DB.markEntryAsRead(entry.id);
-// 
-// 			// Prepend this to the timeline (don't scroll to top)
-// 			Spaz.UI.addItemToTimeline(entry, Spaz.Section.friends, true, true);
-// 
-// 			/*
-// 				cleanup, but suppress the notifications by passing "true" as 2nd param
-// 				surpress scrollTo with 3rd param
-// 				don't sort with 4th param
-// 			*/
-// 			Spaz.UI.cleanupTimeline(Spaz.Section.friends.timeline, true, true, true);
-// 
-// 			Spaz.UI.entryBox.reset();
-// 			Spaz.UI.clearPostIRT();
-// 			sch.dump('reset entryBox (Spry)');
-// 			$('#entrybox')[0].blur();
-// 			sch.dump('Blurred entryBox (DOM)');
-// 
-// 			if (Spaz.Prefs.get('services-pingfm-enabled')) {
-// 				Spaz.Data.updatePingFM(msg);
-// 			}
-// 
-// 			//Spaz.loadUserTimelineData('tab-user');
-// 		},
-// 		beforeSend:function(xhr){
-// 			xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-// 			// cookies just get in the way.	 eliminate them
-// 			xhr.setRequestHeader("Cookie", '');
-// 			// have to kill referer header to post
-// 		},
-// 		processData:false,
-// 		type:"POST",
-// 		url:Spaz.Data.getAPIURL('update'),
-// 		data:update_data,
-// //		data:"&status="+encodeURIComponent(msg),
-// 	});
-// 
-// 	// sch.dump(xhr);
-};
 
 
 
@@ -236,35 +117,72 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
  * @param {Number} postid the id of the post to delete
  * @returns void
  */
-Spaz.Data.destroyStatus = function(postid) {
+Spaz.Data.destroyStatus = function(postid, onSuccess, onFailure) {
 	
-	sch.error('Spaz.Data.destroyStatus must be rewritten to use SpazTwit!!');
-		// 
-		// var user = Spaz.Prefs.getUsername();
-		// var pass = Spaz.Prefs.getPassword();
-		// 
-		// Spaz.UI.showLoading();
-		// 
-		// var xhr = $.ajax({
-		// 	dataType:'text',
-		//         complete:Spaz.Data.onAjaxComplete,
-		// 	error:Spaz.Data.onAjaxError,
-		// 	success:function(data){
-		// 		sch.dump(data);
-		// 		Spaz.UI.statusBar("Status deleted");
-		// 		//Spaz.Data.loadUserTimelineData('tab-user');
-		// 	},
-		// 	beforeSend:function(xhr){
-		// 		xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-		// 		// cookies just get in the way.	 eliminate them
-		// 		xhr.setRequestHeader("Cookie", "");
-		// 		xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
-		// 	},
-		// 	processData:false,
-		// 	type:"POST",
-		// 	data:'&id='+postid,
-		// 	url:Spaz.Data.getAPIURL('destroy_status').replace('{{ID}}', postid)
-		// });
+	var auth = Spaz.Prefs.getAuthObject();
+
+	sch.debug('auth:'+auth);
+
+	Spaz.UI.statusBar('Deleting post: ' + postid);
+	Spaz.UI.showLoading();
+
+	var twit = new SpazTwit({'auth':auth});
+	
+	twit.destroy(
+		postid,
+		function(data) {
+			Spaz.UI.statusBar("Deleted post " + postid);
+			Spaz.UI.hideLoading();
+			if (onSuccess) {
+				onSuccess(data);
+			}
+		},
+		function(xhr, msg, exc) {
+			sch.error(msg);
+			Spaz.UI.statusBar("Deleting post " + postid + " failed!");
+			Spaz.UI.hideLoading();
+			if (onFailure) {
+				onFailure();
+			}
+		}
+	);
+};
+
+
+/**
+ * Deletes the given DM
+ * @param {Number} postid the id of the post to delete
+ * @returns void
+ */
+Spaz.Data.destroyDirectMessage = function(postid, onSuccess, onFailure) {
+	
+	var auth = Spaz.Prefs.getAuthObject();
+
+	sch.debug('auth:'+auth);
+
+	Spaz.UI.statusBar('Deleting DM: ' + postid);
+	Spaz.UI.showLoading();
+
+	var twit = new SpazTwit({'auth':auth});
+	
+	twit.destroyDirectMessage(
+		postid,
+		function(data) {
+			Spaz.UI.statusBar("Deleted DM " + postid);
+			Spaz.UI.hideLoading();
+			if (onSuccess) {
+				onSuccess(data);
+			}
+		},
+		function(xhr, msg, exc) {
+			sch.error(msg);
+			Spaz.UI.statusBar("Deleting DM " + postid + " failed!");
+			Spaz.UI.hideLoading();
+			if (onFailure) {
+				onFailure();
+			}
+		}
+	);
 };
 
 
@@ -274,10 +192,38 @@ Spaz.Data.destroyStatus = function(postid) {
  * @param {Number} postid the id of the post to favorite
  * @returns void
  */
-Spaz.Data.makeFavorite = function(postid) {
+Spaz.Data.makeFavorite = function(postid, onSuccess, onFailure) {
 	
-	sch.error('Spaz.Data.makeFavorite must be rewritten to use SpazTwit!!');
+	var auth = Spaz.Prefs.getAuthObject();
+
+	sch.debug('auth:'+auth);
+
+	Spaz.UI.statusBar('Adding fav: ' + postid);
+	Spaz.UI.showLoading();
+
+	var twit = new SpazTwit({'auth':auth});
 	
+	twit.favorite(
+		postid,
+		function(data) {
+			var faved_element;
+			sch.debug(data);
+			Spaz.UI.statusBar('Added fav: ' + postid);
+			Spaz.UI.hideLoading();
+			if (onSuccess) {
+				onSuccess();
+			}
+		},
+		function(xhr, msg, exc) {
+			sch.error(msg);
+			Spaz.UI.statusBar("Adding fav " + postid + " failed!");
+			Spaz.UI.hideLoading();
+			if (onFailure) {
+				onFailure();
+			}
+		}
+	);
+
 	// var user = Spaz.Prefs.getUsername();
 	// var pass = Spaz.Prefs.getPassword();
 	// 
@@ -317,9 +263,37 @@ Spaz.Data.makeFavorite = function(postid) {
  * @param {Number} postid the id of the post to un-favorite
  * @returns void
  */
-Spaz.Data.makeNotFavorite = function(postid) {
+Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
 
-	sch.error('Spaz.Data.makeNotFavorite must be rewritten to use SpazTwit!!');
+	var auth = Spaz.Prefs.getAuthObject();
+
+	sch.debug('auth:'+auth);
+
+	Spaz.UI.statusBar('Removing fav: ' + postid);
+	Spaz.UI.showLoading();
+
+	var twit = new SpazTwit({'auth':auth});
+	
+	twit.unfavorite(
+		postid,
+		function(data) {
+			var faved_element;
+			sch.debug(data);
+			Spaz.UI.statusBar('Removed fav: ' + postid);
+			Spaz.UI.hideLoading();
+			if (onSuccess) {
+				onSuccess();
+			}
+		},
+		function(xhr, msg, exc) {
+			sch.error(msg);
+			Spaz.UI.statusBar("Removing fav " + postid + " failed!");
+			Spaz.UI.hideLoading();
+			if (onFailure) {
+				onFailure();
+			}
+		}
+	);
 
 	// var user = Spaz.Prefs.getUsername();
 	// var pass = Spaz.Prefs.getPassword();
@@ -465,153 +439,6 @@ Spaz.Data.onAjaxError = function(xhr,rstr) {
 
 
 
-// /**
-//  * Starts the process of data retrieval for a section
-//  * @param {object} section the Spaz.Section object
-//  * @param {boolean} force if true, forces a reload of the section even if mincachetime has not passed
-//  * @returns void
-//  */
-// Spaz.Data.getDataForTimeline = function(section, force) {
-// 
-// 	var username = Spaz.Prefs.getUsername();
-// 	if (!username || username == 'null' || username == 'undefined' || username == 'false') {
-// 		
-// 		$('#timeline-friends').html("<div id='not-logged-in'><div>Username and password not set.</div><input type='button' id='open-login-panel' value='Enter user/pass' /> </div>");
-// 		
-// 		$('#open-login-panel').one('click', function() {
-// 			$('#not-logged-in').remove();
-// 			Spaz.UI.showPrefs();
-// 			setTimeout(Spaz.UI.openLoginPanel, 500);
-// 		});
-// 		
-// 		sch.dump('hiding loading');
-// 		Spaz.UI.hideLoading();
-// 		return;
-// 	} else {
-// 		$('#not-logged-in').remove();
-// 	}
-// 
-// 	sch.dump('now:'+sch.getTimeAsInt());
-// 	sch.dump('then:'+section.lastcheck);
-// 	sch.dump('difference:'+(sch.getTimeAsInt() - section.lastcheck));
-// 	sch.dump('section.mincachetime:'+section.mincachetime);
-// 
-// 	if (force || (sch.getTimeAsInt() - section.lastcheck) > section.mincachetime ) {
-// 		section.lastcheck = sch.getTimeAsInt();
-// 
-// 		for (var i = 0; i < section.urls.length; i++) {
-// 			// alert('section.urls['+i+']: '+ section.urls[i])
-// 			Spaz.Data.getDataForUrl(section.urls[i], section);
-// 			// data = data.concat(thisdata);
-// 		}
-// 	} else {
-// 		sch.dump('Not loading data - section.mincachetime has not expired');
-// 	}
-// 
-// }
-// 
-
-
-
-
-// Spaz.Data.onSectionAjaxComplete = function(section, thisurl, xhr, msg) {
-// 
-// 	Spaz.Data.$ajaxQueueFinished++;
-// 
-// 	if (xhr.readyState < 3) { // XHR is not yet ready. don't try to access response headers
-// 		sch.dump("Error:Timeout on "+thisurl);
-// 	} else {
-// 		sch.dump("HEADERS:\n"+xhr.getAllResponseHeaders());
-// 		sch.dump("STATUS:\n"+xhr.status);
-// 		sch.dump("DATA:\n"+xhr.responseText);
-// 		sch.dump("COMPLETE: " + msg);
-// 
-// 		if (xhr.status == 400) {
-// 			sch.dump("ERROR: 400 error - Exceeded request limit. Response from Twitter:\n"+xhr.responseText);
-// 		}
-// 
-// 		else if (xhr.status == 401) {
-// 			sch.dump("ERROR: 401 error - Not Authenticated. Check your username and password.	Response from Twitter:\n"+xhr.responseText);
-// 			Spaz.Data.$ajaxQueueErrors.push("Not Authenticated. Check your username and password.");
-// 		}
-// 
-// 		else if (xhr.responseText.length < 0) {
-// 			sch.dump("Error:response empty from "+thisurl);
-// 			Spaz.Data.$ajaxQueueErrors.push("Empty response from server for "+thisurl)
-// 		}
-// 
-// 		try {
-// 			var data = sch.deJSON(xhr.responseText);
-// 			sch.dump(typeof(data))
-// 
-// 			if (!data) {
-// 				sch.dump("Error: no data returned from "+thisurl);
-// 			} else {
-// 				/* This is a little hack for summize data */
-// 				if (data.results) {
-// 					data = data.results;
-// 				}
-// 				if (data.error) {
-// 					sch.dump("ERROR: "+data.error+" ["+data.request+"]");
-// 					Spaz.Data.$ajaxQueueErrors.push("Twitter says: \""+data.error+"\"");
-// 				} else {
-// 					Spaz.Data.$ajaxQueueStorage = Spaz.Data.$ajaxQueueStorage.concat(data);
-// 				}
-// 			}
-// 		} catch(e) {
-// 			sch.dump("An exception occurred when eval'ing the returned data. Error name: " + e.name + ". Error message: " + e.message);
-// 		}
-// 
-// 		sch.dump('Spaz.Data.$ajaxQueueFinished:'+Spaz.Data.$ajaxQueueFinished);
-// 		sch.dump('section.urls.length:'+section.urls.length);
-// 		sch.dump('Spaz.Data.$ajaxQueueStorage.length:'+Spaz.Data.$ajaxQueueStorage.length);
-// 		sch.dump('Spaz.Data.$ajaxQueueErrors.length:'+Spaz.Data.$ajaxQueueErrors.length);
-// 
-// 	}
-// 
-// 	if (Spaz.Data.$ajaxQueueFinished >= section.urls.length) {
-// 		Spaz.Data.$ajaxQueueFinished = 0;
-// 		Spaz.UI.statusBar('Adding '+Spaz.Data.$ajaxQueueStorage.length+' entries');
-// 
-// 		if (Spaz.Data.$ajaxQueueStorage.length > 0) {
-// 			time.start('addingItems');
-// 			for (var i in Spaz.Data.$ajaxQueueStorage) {
-// 				// sch.dump('URL:'+thisurl);
-// 				// sch.dump('section URLs:'+section.urls);
-// 				/*
-// 					Check the origin URL to see if this is a follower or someone the
-// 					user is following
-// 				*/
-// 				if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
-// 					Spaz.Data.$ajaxQueueStorage[i].is_following = true;
-// 				} else if (thisurl == Spaz.Data.getAPIURL('followerslist')) {
-// 					Spaz.Data.$ajaxQueueStorage[i].is_follower = true;
-// 				}
-// 				
-// 				section.addItem(Spaz.Data.$ajaxQueueStorage[i]);
-// 			}
-// 			time.stop('addingItems');
-// 		}
-// 
-// 		sch.dump('onSectionAjaxComplete cleaning up timeline');
-// 		section.cleanup();
-// 
-// 		sch.dump('hiding loading');
-// 		Spaz.UI.hideLoading();
-// 
-// 		if (Spaz.Data.$ajaxQueueErrors.length > 0) {
-// 			var errors = Spaz.Data.$ajaxQueueErrors.join("\n");
-// 			Spaz.UI.alert(errors, "Error");
-// 			sch.dump(errors);
-// 			Spaz.Data.$ajaxQueueErrors = [];
-// 		}
-// 
-// 		sch.dump('emptying storage');
-// 		Spaz.Data.$ajaxQueueStorage = [];
-// 	}
-// }
-// 
-
 
 
 
@@ -717,41 +544,6 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 		}
 	);
 
-
-	// var user = Spaz.Prefs.getUsername();
-	// var pass = Spaz.Prefs.getPassword();
-	// 
-	// if (!user || !pass) {
-	// 	sch.dump('Dropping out of getRateLimitInfo because user or pass is not set');
-	// 	return false;
-	// }
-	// 
-	// Spaz.UI.showLoading();
-	// Spaz.UI.statusBar('Asking Twitter for rate limit info…');
-	// 
-	// var xhr = $.ajax({
-	//     dataType:'text',
-	// 	complete:Spaz.Data.onAjaxComplete,
-	// 	error:Spaz.Data.onAjaxError,
-	// 	success:function(data){
-	// 		sch.dump(data);
-	// 
-	// 		json = JSON.parse(data);
-	// 
-	// 		if (callback) {
-	// 			callback(json, cbdata);
-	// 		}
-	// 	},
-	// 	beforeSend:function(xhr){
-	// 		xhr.setRequestHeader("Authorization", "Basic " + sc.helpers.Base64.encode(user + ":" + pass));
-	// 		xhr.setRequestHeader("Cookie", "");
-	// 		xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
-	// 	},
-	// 	processData:false,
-	// 	type:"GET",
-	// 	url:Spaz.Data.getAPIURL('ratelimit_status')
-	// });
-	// return true;
 };
 
 
@@ -944,6 +736,7 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 		sch.trigger('get_user_succeeded', target_el, userobj);
 	} else {
 		var twit = new SpazTwit({
+			'auth':Spaz.Prefs.getAuthObject(),
 			'event_target':target_el
 		});
 
@@ -985,6 +778,7 @@ Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 	} else {
 		sch.error('retrieving '+status_id+' from Twitter');
 		var twit = new SpazTwit({
+			'auth':Spaz.Prefs.getAuthObject(),
 			'event_target':target_el
 		});
 

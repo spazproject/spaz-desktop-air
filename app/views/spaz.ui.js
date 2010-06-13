@@ -1022,7 +1022,7 @@ Spaz.UI.getStatusIdFromElement = function(el) {
 	this returns the first matching element that contains the given id
 */
 Spaz.UI.getElementFromStatusId = function(id) {
-	var element = $('.entry-id:contains('+id+')').parent().get()[0];
+	var element = $('div.timeline-entry[data-status-id="'+id+'"]').get()[0];
 	if (element) {
 		sch.dump(element.id);
 		return element
@@ -1041,6 +1041,25 @@ Spaz.UI.markEntryAsRead = function(el) {
 }
 
 
+Spaz.UI.removeEntry = function(id, is_dm) {
+	is_dm = !!is_dm;
+	
+	if (is_dm) {
+		$('div.dm.timeline-entry[data-status-id="'+id+'"]').remove();
+	} else {
+		$('div.timeline-entry[data-status-id="'+id+'"]').not('.dm').remove();
+	}
+	
+}
+
+
+Spaz.UI.markFavorite = function(postid) {
+	$('.timeline-entry[data-status-id='+postid+']').addClass('favorited');
+};
+
+Spaz.UI.markNotFavorite = function(postid) {
+	$('.timeline-entry[data-status-id='+postid+']').removeClass('favorited');
+};
 
 
 Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {

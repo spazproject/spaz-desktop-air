@@ -138,7 +138,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	entryHTML += '		<div class="status-actions">';
 	entryHTML += '			<span title="Send direct message to '+d.sender_screen_name+'" class="status-action status-action-dm clickable" id="status-'+d.id+'-dm" id="'+d.id+'" user-screen_name="'+d.sender_screen_name+'" ></span>';
 							if (d.isSent) {
-	entryHTML += '				<span title="Delete" class="status-action status-action-del clickable" id="status-'+d.id+'-del" id="'+d.id+'"></span>';
+	entryHTML += '				<span title="Delete" class="status-action status-action-del clickable" id="status-'+d.id+'-del" entry-id="'+d.id+'"></span>';
 							}
 	entryHTML += '		</div>';
 	entryHTML += '		<div class="status-link">';
