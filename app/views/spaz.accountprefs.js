@@ -11,26 +11,46 @@ Spaz.AccountPrefs.init = function(){
 	this.checkboxes = ['twitter-disable-direct-posting', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
 	
 	var that = this,
-	    $accountList    = $('#account-list'),
-	    $accountDetails = $('#account-details'),
-	    $idEdit         = $('#id_edit'),
-	    $username       = $('#username'),
-	    $password       = $('#password'),
-	    $accountType    = $('#account-type'),
+	    $accountList          = $('#account-list'),
+	    $accountDetails       = $('#account-details'),
+	    $idEdit               = $('#id_edit'),
+	    $username             = $('#username'),
+	    $password             = $('#password'),
+	    $accountType          = $('#account-type'),
 	    $saveAccountButton    = $('#save_account_button'),
 	    $cancelAccountButton  = $('#cancel_account_button');
 	
 	$().ready(function(){
-	
+
+		/*
+		 bind click on list to deselect
+		 */
+		$accountList.click(function(){
+			Spaz.AccountPrefs.deselectAccounts();
+		});
+
 		/*
 		 bind click on account
 		 */
-		$accountList.change(function(e){
-			var account_id = $(this).val();
-			Spaz.AccountPrefs.setAccount(account_id);
+		$accountList.delegate('li[data-account-id]', 'click', function(e){
+			// Clicking an account should only update the view to show it as
+			// *selected*, but should not update the model to make it *current*
+			// (i.e., active).
+			var acctID = $(this).attr('data-account-id');
+			Spaz.AccountPrefs.selectAccount(acctID);
 		});
-		
-		
+
+		/*
+		 bind double-click on account
+		 */
+		$accountList.delegate('li[data-account-id]', 'dblclick', function(){
+			// Double-clicking an account should make it the current account.
+			var acctID = Spaz.AccountPrefs.getSelectedAccountId();
+			if(acctID){
+				Spaz.AccountPrefs.setAccount(acctID);
+			}
+		});
+
 		/*
 		 bind [+] button to popup
 		 */
@@ -82,7 +102,6 @@ Spaz.AccountPrefs.init = function(){
 					that.spaz_acc.setMeta(newaccid, that.metavals[i], val);
 				};
 
-				$accountList.val(newaccid);
 				Spaz.AccountPrefs.setAccount(newaccid);
 				Spaz.UI.closePopbox();
 			});
@@ -99,10 +118,20 @@ Spaz.AccountPrefs.init = function(){
 		 bind the [-] button
 		 */
 		$('#del-account').click(function(){
-			var id = Spaz.AccountPrefs.getSelectedId();
+			var id = Spaz.AccountPrefs.getSelectedAccountId(),
+			    firstAccount;
 			if (id) {
 				var deleted = that.spaz_acc.remove(id);
-				$('option[value="' + id + '"]').remove();
+				$accountList.children('li[data-account-id="' + id + '"]').remove();
+
+				// Deleted the active account; switch to another one
+				if(id === deleted.id){
+					firstAccount = Spaz.AccountPrefs.spaz_acc._accounts[0];
+					if(firstAccount){
+						Spaz.AccountPrefs.setAccount(firstAccount.id);
+					}
+				}
+
 				Spaz.AccountPrefs.toggleCTA();
 				Spaz.Timelines.toggleNewUserCTAs();
 			}
@@ -116,12 +145,13 @@ Spaz.AccountPrefs.init = function(){
 		 bind the [edit] button to modal
 		 */
 		$('#edit-account').click(function(){
-		
+			if(!Spaz.AccountPrefs.getSelectedAccountId()){ return; }
+
 			$saveAccountButton.unbind('click');
 			$cancelAccountButton.unbind('click');
 			
 			
-			var id = Spaz.AccountPrefs.getSelectedId();
+			var id = Spaz.AccountPrefs.getSelectedAccountId();
 			if (id) {
 				var editing = that.spaz_acc.get(id);
 				
@@ -179,16 +209,22 @@ Spaz.AccountPrefs.init = function(){
 				 */
 				$cancelAccountButton.click(function(){
 					Spaz.UI.closePopbox();
-					
 				});
-				
-				
-			}
-			else {
+
+			} else {
 				sch.error('Nothing selected to edit');
 			}
-			
-			
+
+		});
+
+		/*
+		 bind the [switch] button
+		 */
+		$('#switch-account').click(function(){
+			var acctID = Spaz.AccountPrefs.getSelectedAccountId();
+			if(acctID){
+				Spaz.AccountPrefs.setAccount(acctID);
+			}
 		});
 		
 		/*
@@ -197,50 +233,49 @@ Spaz.AccountPrefs.init = function(){
 		$accountType.change(function(){
 			$('#twitter-api-base-url-row').toggle($accountType.val() === 'custom');
 		});
-		
-		
+
 		sch.debug('LOADED USERS:');
 		sch.debug(sch.enJSON(Spaz.AccountPrefs.spaz_acc._accounts));
-		
-		
+
 		/*
 		 Load data into GUI
 		 */
 		$accountList.append((function(){
 			var accts = Spaz.AccountPrefs.spaz_acc._accounts, acct,
-			    options = [];
+			    listItems = [];
 			for(var i = 0, iMax = accts.length; i < iMax; i++){
 				acct = accts[i];
-				options.push(
-					'<option' +
-						((acct.username === Spaz.Prefs.getUsername() &&
-							acct.type === Spaz.Prefs.getAccountType()) ?
-							' selected' : '') +
-					    ' value="' + acct.id + '">' +
-						acct.username + '@' + acct.type +
-					'</option>'
-				);
+				listItems.push(Spaz.AccountPrefs.getAccountListItemHTML(acct));
 			}
-			return options.join('');
+			return listItems.join('');
 		})());
+		(function(){
+			var currentUserId = Spaz.Prefs.getCurrentUserId();
+			if(currentUserId){
+				$accountList.
+					children('li[data-account-id="' + currentUserId + '"]').
+					addClass('current');
+				Spaz.AccountPrefs.selectAccount(currentUserId);
+			}
+		})();
 
 		// Clean up UI
 		$accountDetails.hide();
 		$('#twitter-api-base-url-row').hide();
 		Spaz.AccountPrefs.toggleCTA();
-		
+
 	});
-	
-	
-	
+
 };
 
-
 Spaz.AccountPrefs.setAccount = function(account_id) {
-
 	if (account_id != Spaz.Prefs.getCurrentUserId()) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
-		
+
+		$('#current-account-id').val(account_id);
+		Spaz.AccountPrefs.deselectAccounts();
+		$('#account-list li[data-account-id="' + account_id + '"]').
+			addClass('current').siblings().removeClass('current');
 		Spaz.Prefs.setCurrentUserId(account_id);
 						
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
@@ -250,8 +285,8 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 Spaz.AccountPrefs.add = function(username, password, type){
 	var newacct = Spaz.AccountPrefs.spaz_acc.add(username, password, type);
 	sch.debug(newacct);
-	var html = "<option value='" + newacct.id + "'>" + newacct.username + "@" + newacct.type + "</option>";
-	$('#account-list').append(html);
+	$('#account-list').append(
+		Spaz.AccountPrefs.getAccountListItemHTML(newacct));
 	Spaz.AccountPrefs.toggleCTA();
 	Spaz.Timelines.toggleNewUserCTAs();
 	sch.debug("Added:");
@@ -262,10 +297,22 @@ Spaz.AccountPrefs.add = function(username, password, type){
 Spaz.AccountPrefs.edit = function(id, acctobj){
 	var savedacct = Spaz.AccountPrefs.spaz_acc.update(id, acctobj);
 	sch.debug(savedacct);
-	$('#account-list option[value="' + savedacct.id + '"]').html(savedacct.username + "@" + savedacct.type);
+	$('#account-list li[data-account-id="' + savedacct.id + '"] span').
+		html(savedacct.username + "@" + savedacct.type);
 	sch.debug("Edited:");
 	sch.debug(savedacct);
 	return savedacct;
+};
+
+Spaz.AccountPrefs.getAccountListItemHTML = function(account){
+	// `account`: SpazAccounts instance
+	return (
+		'<li data-account-id="' + account.id + '">' +
+			'<span class="clickable">' +
+				account.username + '@' + account.type +
+			'</span>' +
+		'</li>'
+	);
 };
 
 Spaz.AccountPrefs.toggleCTA = function(){
@@ -276,11 +323,27 @@ Spaz.AccountPrefs.toggleCTA = function(){
 	    $fieldset = $('#account-list-fieldset');
 	$fieldset.find('div.formrow.cta').toggle(!anyAccts);
 	$fieldset.find('div.formrow:not(.cta)').toggle(anyAccts);
-		// `.siblings()` didn't chain properly here for some reason.
+		// `.siblings()` didn't chain properly here for some reason. Possibly
+		// broken by old jquery.moreSelectors.js plugin?
 };
 
+Spaz.AccountPrefs.selectAccount = function(acctID){
+	// Updates the view to reflect the selected account. Does *not* change the
+	// current (i.e., active) account.
 
+	var $li = $('#account-list li[data-account-id="' + acctID + '"]');
+	if(!$li.is('.selected')){
+		$li.addClass('selected').siblings().removeClass('selected');
+	}
+	$('#edit-account, #del-account, #switch-account').removeAttr('disabled');
+};
 
-Spaz.AccountPrefs.getSelectedId = function(){
-	return $('#account-list').val() || null;
+Spaz.AccountPrefs.deselectAccounts = function(){
+	$('#account-list li.selected').removeClass('selected');
+	$('#edit-account, #del-account, #switch-account').
+		attr('disabled', 'disabled');
+};
+
+Spaz.AccountPrefs.getSelectedAccountId = function(){
+	return $('#account-list li.selected').attr('data-account-id');
 };

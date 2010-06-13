@@ -46,11 +46,13 @@ input[type=password]:focus,
 /*** Global > Zebra striping ***/
 
 div.timeline-entry:nth-child(odd),
-select[size] option:nth-child(odd){
+select[size] option:nth-child(odd),
+ul#account-list li:nth-child(odd){
   background:#f1f5fa;
 }
 div.timeline-entry:nth-child(even),
-select[size] option:nth-child(even){
+select[size] option:nth-child(even),
+ul#account-list li:nth-child(even){
   background:#fff;
 }
 
@@ -1530,12 +1532,53 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                   padding:0 1px 0 6px;
                   border-left-width:1px;
                 }
-              div.prefs #account-list-fieldset select{
+              div.prefs ul#account-list{
                 width:100%;
-                border-color:rgba(0, 0, 0, 0.25);
+                height:143px;
+                overflow:auto;
+                margin:0;
+                padding:0;
+                border:1px solid rgba(0, 0, 0, 0.25);
                 border-radius:2px;
                   -webkit-border-radius:2px;
-                overflow:auto;
+                list-style:none;
+              }
+              div.prefs ul#account-list li{
+                border-top:1px solid transparent;
+              }
+              div.prefs ul#account-list li:first-child{
+                border-top-left-radius:1px;
+                  -webkit-border-top-left-radius:1px;
+                border-top-right-radius:1px;
+                  -webkit-border-top-right-radius:1px;
+              }
+              div.prefs ul#account-list li:last-child{
+                border-bottom-left-radius:1px;
+                  -webkit-border-bottom-left-radius:1px;
+                border-bottom-right-radius:1px;
+                  -webkit-border-bottom-right-radius:1px;
+              }
+              div.prefs ul#account-list li.selected{
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
+                border-top-color:#519BD6;
+              }
+              div.prefs ul#account-list li span{
+                display:block;
+                padding:6px 0 8px 28px;
+                color:#000;
+                cursor:default;
+              }
+              div.prefs ul#account-list li.current span{
+                background:transparent url(images/accounts-current.png)
+                  10px 8px no-repeat;
+              }
+              div.prefs ul#account-list li.selected span{
+                color:#f0f0f0;
+                font-weight:bold;
+              }
+              div.prefs ul#account-list li.current.selected span{
+                background-position:10px -32px;
               }
 
               /*** Preferences > Controls ***/
@@ -1601,7 +1644,9 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                     -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
                 }
                 body:not(.active) div.prefs input[type=button],
-                body:not(.active) div.prefs input[type=submit]{
+                body:not(.active) div.prefs input[type=submit],
+                div.prefs input[type=button][disabled],
+                div.prefs input[type=submit][disabled]{
                   border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                     -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                   color:#999;
