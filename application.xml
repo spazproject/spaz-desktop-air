@@ -2,7 +2,7 @@
 <application xmlns="http://ns.adobe.com/air/application/2.0">
 	<id>Spaz.AIR</id>
 	<name>Spaz</name>
-	<version>0.9.3.666</version>
+	<version>0.9.4.666</version>
 	<filename>Spaz</filename>
 	<description>
 		<text xml:lang="en">A microblogging client for Twitter, Identi.ca, and StatusNet</text>
