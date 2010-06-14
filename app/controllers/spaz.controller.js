@@ -837,7 +837,6 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 		var callback = function(){
 			var accountID;
 			if($('#username').val() !== '' && $('#password').val() !== ''){
-				Spaz.Prefs.setPrefs();
 				$('#save_account_button').click();
 					// TODO: Nasty. Don't just trigger a click, as this just
 					// creates a chain with points of failure. Instead,
