@@ -473,6 +473,7 @@ var PublicTimeline = function(args) {
 		'request_data': function() {
 			thisPT.markAsRead($timeline.selector + ' div.timeline-entry');
 			thisPT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+			thisPT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			thisPT.twit.getPublicTimeline();
 			Spaz.UI.statusBar("Loading public timeline");
 			Spaz.UI.showLoading();
@@ -1163,6 +1164,9 @@ var SearchTimeline = function(args) {
 				thisST.markAsRead($timeline.selector + ' div.timeline-entry');
 				
 				thisST.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+        		var auth = Spaz.Prefs.getAuthObject();
+        		var username = Spaz.Prefs.getUsername();
+        		thisST.twit.setCredentials(auth);
 				thisST.twit.search(thisST.query, null, count);
 				thisST.lastquery = thisST.query;
 			}
