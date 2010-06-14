@@ -3,7 +3,7 @@ Spaz.Conversation = {
 	'initWindow' : function() {
 		var container = $('#timeline-conversation');
 		Spaz.UI.openPopboxInline('#conversationWindow');
-		container.html('Loading…');		
+		container.html('<div class="loading">Loading…</div>');
 	},
 	
 	'build' : function(base_id) {
@@ -96,9 +96,8 @@ Spaz.Conversation = {
 				var status_html  = Spaz.Templates.timeline_entry(status_obj);
 				container.append(status_html);
 			};
-						
+
 			sc.helpers.updateRelativeTimes('a.status-created-at', 'data-created-at');
-						
 		}
 		
 	}

@@ -46,17 +46,17 @@ input[type=password]:focus,
 /*** Global > Zebra striping ***/
 
 div.timeline-entry:nth-child(odd),
-select[size] option:nth-child(odd){
+ul#account-list li:nth-child(odd){
   background:#f1f5fa;
 }
 div.timeline-entry:nth-child(even),
-select[size] option:nth-child(even){
+ul#account-list li:nth-child(even){
   background:#fff;
 }
 
 /*** Global > Animations ***/
 
-@-webkit-keyframes loading{
+@-webkit-keyframes discrete-spinner{
   from    { -webkit-transform: rotate(0deg); }
   8.32%   { -webkit-transform: rotate(0deg); }
             /* Forces jump from 0deg to 30deg, not a smooth rotation */
@@ -614,7 +614,8 @@ select[size] option:nth-child(even){
               font-size:0.75em;
               text-align:center;
             }
-            .timeline-wrapper div.loading{
+            .timeline-wrapper div.loading,
+            div#popbox-content-conversation div.loading{
               width:50px;
               height:50px;
               margin-left:auto;
@@ -623,7 +624,7 @@ select[size] option:nth-child(even){
               text-indent:-9999em;
               -webkit-animation-duration:1s;
               -webkit-animation-iteration-count:infinite;
-              -webkit-animation-name:loading;
+              -webkit-animation-name:discrete-spinner;
               -webkit-animation-timing-function:linear;
             }
             #timelinewrapper-userlists div.intro,
@@ -740,7 +741,7 @@ select[size] option:nth-child(even){
           color-stop(0.5, rgba(49, 49, 49, 0.95)),
           color-stop(0.5, rgba(33, 33, 33, 0.95))
           );
-        border:1px solid rgba(37, 37, 37, 0.95);
+        border:1px solid rgba(38, 38, 38, 0.95);
         border-radius:4px;
           -webkit-border-radius:4px;
         font-size:9px;
@@ -864,7 +865,7 @@ select[size] option:nth-child(even){
         background:transparent url(images/loading-16x16.png) 0 0 no-repeat;
         -webkit-animation-duration:1s;
         -webkit-animation-iteration-count:infinite;
-        -webkit-animation-name:loading;
+        -webkit-animation-name:discrete-spinner;
         -webkit-animation-timing-function:linear;
       }
       #statusbar-text{
@@ -915,7 +916,7 @@ select[size] option:nth-child(even){
       color-stop(0.5, rgba(49, 49, 49, 0.95)),
       color-stop(0.5, rgba(33, 33, 33, 0.95))
       );
-    border:1px solid rgba(37, 37, 37, 0.95);
+    border:1px solid rgba(38, 38, 38, 0.95);
     border-radius:4px;
       -webkit-border-radius:4px;
     color:#fff;
@@ -1122,7 +1123,7 @@ div.timeline-entry:hover{
   body:not(.active) div.timeline-entry.ui-selected{
     background:-webkit-gradient(
       linear, left top, left bottom, from(#989797), to(#666));
-    border-top:1px solid #7f7e7e;
+    border-top-color:#7f7e7e;
   }
 		div.timeline-entry.ui-selected div.status-link{
 			font-size:9px;
@@ -1530,12 +1531,58 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                   padding:0 1px 0 6px;
                   border-left-width:1px;
                 }
-              div.prefs #account-list-fieldset select{
+              div.prefs ul#account-list{
                 width:100%;
-                border-color:rgba(0, 0, 0, 0.25);
+                height:143px;
+                overflow:auto;
+                margin:0;
+                padding:0;
+                border:1px solid rgba(0, 0, 0, 0.25);
                 border-radius:2px;
                   -webkit-border-radius:2px;
-                overflow:auto;
+                list-style:none;
+              }
+              div.prefs ul#account-list li{
+                border-top:1px solid transparent;
+              }
+              div.prefs ul#account-list li:first-child{
+                border-top-left-radius:1px;
+                  -webkit-border-top-left-radius:1px;
+                border-top-right-radius:1px;
+                  -webkit-border-top-right-radius:1px;
+              }
+              div.prefs ul#account-list li:last-child{
+                border-bottom-left-radius:1px;
+                  -webkit-border-bottom-left-radius:1px;
+                border-bottom-right-radius:1px;
+                  -webkit-border-bottom-right-radius:1px;
+              }
+              div.prefs ul#account-list li.selected{
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
+                border-top-color:#519BD6;
+              }
+              body:not(.active) ul#account-list li.selected{
+                background:-webkit-gradient(
+                  linear, left top, left bottom, from(#989797), to(#666));
+                border-top-color:#7f7e7e;
+              }
+              div.prefs ul#account-list li span{
+                display:block;
+                padding:6px 0 8px 28px;
+                color:#000;
+                cursor:default;
+              }
+              div.prefs ul#account-list li.current span{
+                background:transparent url(images/accounts-current.png)
+                  10px 8px no-repeat;
+              }
+              div.prefs ul#account-list li.selected span{
+                color:#f0f0f0;
+                font-weight:bold;
+              }
+              div.prefs ul#account-list li.current.selected span{
+                background-position:10px -32px;
               }
 
               /*** Preferences > Controls ***/
@@ -1601,7 +1648,9 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                     -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
                 }
                 body:not(.active) div.prefs input[type=button],
-                body:not(.active) div.prefs input[type=submit]{
+                body:not(.active) div.prefs input[type=submit],
+                div.prefs input[type=button][disabled],
+                div.prefs input[type=submit][disabled]{
                   border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                     -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                   color:#999;
@@ -1870,9 +1919,15 @@ div.popbox-content{
     ) no-repeat;
   background-size:100% 40px;
     -webkit-background-size:100% 40px;
-  border:1px solid rgba(37, 37, 37, 0.95);
-  border-radius:7px;
-    -webkit-border-radius:7px;
+  border:1px solid rgba(38, 38, 38, 0.95);
+  border-top-left-radius:7px;
+    -webkit-border-top-left-radius:7px;
+  border-top-right-radius:7px;
+    -webkit-border-top-right-radius:7px;
+  border-bottom-left-radius:4px;
+    -webkit-border-bottom-left-radius:4px;
+  border-bottom-right-radius:4px;
+    -webkit-border-bottom-right-radius:4px;
 }
 div.popbox-content h1{
   background:transparent;
@@ -1897,7 +1952,6 @@ div.popbox-content h1 .closeDOMWindow{
 }
 div.popbox-content div.content{
   max-height:295px;
-/*  padding:15px;*/
   border:3px solid rgb(38, 38, 38);
     /*  The border is opaque because, when translucent, the border corners
         overlap and still turn opaque. */
@@ -1926,6 +1980,10 @@ div#popbox-content-account-details{
     color-stop(0.5, rgba(49, 49, 49, 0.95)),
     color-stop(0.5, rgba(33, 33, 33, 0.95))
     ) no-repeat;
+  border-bottom-left-radius:7px;
+    -webkit-border-bottom-left-radius:7px;
+  border-bottom-right-radius:7px;
+    -webkit-border-bottom-right-radius:7px;
 }
 div#popbox-content-account-details h1{
   border-bottom-color:rgba(38, 38, 38, 0.95);
@@ -2014,25 +2072,27 @@ div#popbox-content-conversation{
     ) repeat-x;
   background-size:100% 42px;
     -webkit-background-size:100% 42px;
-  border:1px solid rgba(37, 37, 37, 0.95);
+  border:1px solid rgba(38, 38, 38, 0.95);
+}
+div#popbox-content-conversation div.loading{
+  /* See also `.timeline-wrapper div.loading` */
+  margin:20px auto;
 }
 div#popbox-content-conversation div.content{
-  padding:3px;
-  background:rgba(38, 38, 38, 0.95);
-  border:0;
-  border-bottom-left-radius:6px;
-    -webkit-border-bottom-left-radius:6px;
-  border-bottom-right-radius:6px;
-    -webkit-border-bottom-right-radius:6px;
+  padding:0;
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(#49525F), to(#7C8695),
+    color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+      /* See also `.timeline-wrapper`; `color-stop` values differ slightly. */
+      /* These `color-stop` values create top and bottom inner
+         shadows. However, the shadow heights are percent-based;
+         static heights would be ideal. */
+  border:3px solid rgb(38, 38, 38);
+  border-top:0;
 }
 div#popbox-content-conversation #timeline-conversation{
-/*  max-height:340px;*/
   overflow:auto;
-  border:2px solid rgba(255, 255, 255, 0.25);
-  border-top:2px solid #000;
-  border-left:2px solid #000;
-  border-radius:2px;
-    -webkit-border-radius:2px;
 }
 div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   outline:0;

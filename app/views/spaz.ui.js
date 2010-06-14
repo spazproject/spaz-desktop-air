@@ -97,38 +97,36 @@ Spaz.UI.playSoundWilhelm = function(callback) {
 
 
 Spaz.UI.doWilhelm = function() {
-    sch.debug('Applying Flash Filter Dropshadow and Negative');
+	sch.debug('Applying Flash Filter Dropshadow and Negative');
 
 	if (Spaz.Prefs.get('window-dropshadow')) {
-	    sch.dump('Applying Flash Filter Dropshadow');
+		sch.dump('Applying Flash Filter Dropshadow');
 
-	    window.htmlLoader.filters = window.runtime.Array(
-	    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
-	    	new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-	    );
+		window.htmlLoader.filters = window.runtime.Array(
+			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
+			new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+		);
 	} else {
 		window.htmlLoader.filters = window.runtime.Array(
-	    	new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-	    );
-
+			new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
+		);
 	}
 
-  var $wilhelm = $('#wilhelm');
-  $wilhelm.center();
-  $wilhelm.show(300);
-  $('#container').css('WebkitAnimation', 'container-pulse 0.5s ease 2');
+	var $wilhelm = $('#wilhelm');
+	$wilhelm.center();
+	$wilhelm.show(300);
 	setTimeout(Spaz.UI.endWilhelm, 960); // end with a timeout instead of relying on sound to finish
 };
 
 Spaz.UI.endWilhelm = function() {
 	if (Spaz.Prefs.get('window-dropshadow')) {
-	    sch.dump('Applying Flash Filter Dropshadow');
+		sch.dump('Applying Flash Filter Dropshadow');
 
-	    window.htmlLoader.filters = window.runtime.Array(
-	    	new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
-	    );
+		window.htmlLoader.filters = window.runtime.Array(
+			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
+		);
 	}
-    $('#wilhelm').hide();
+	$('#wilhelm').hide();
 };
 
 
@@ -1716,36 +1714,36 @@ Spaz.UI.clickHandler = function(event) {
  * Generates the Account (user) selection menu.
  * @returns void
  */
-Spaz.UI.generateAccountsMenu = function() {
-	var accounts = Spaz.DB.getUserList();
-
-	for (i = 0; i < accounts.length; i++) {
-		$('#mainMenu-account-list').append('<li class="menuitem">' +
-										   '<a  class="mainMenu-account" id="mainMenu-accountname-' + accounts[i] +
-										   '">' + accounts[i] + '</a></li>');
-		$('#account-list').append('<li class="account-list-item">' +
-								  '<a  class="account-item" id="account-list-item-' + accounts[i] +
-								  '">' + accounts[i] + '</a></li>');
-		if (accounts[i].toLowerCase() == Spaz.Prefs.getUsername) {
-			$('#mainMenu-accountname-' + accounts[i]).addClass("selected-account");
-			$('#account-list-item-'    + accounts[i]).addClass("selected-account");
-		}
-	}
-
-	// $('#account-details').hide();
-
-	/**
-	 * Repeating this code block here makes the previously generated menu items
-	 * appear -- but I don't understand why.
-	 */
-	$('#header-label').menu({
-			copyClassAttr: true,
-			addExpando: true,
-			onClick: $.Menu.closeAll
-		},
-		'#mainMenuRoot'
-	);
-}
+// Spaz.UI.generateAccountsMenu = function() {
+// 	var accounts = Spaz.DB.getUserList();
+//
+// 	for (i = 0; i < accounts.length; i++) {
+// 		$('#mainMenu-account-list').append('<li class="menuitem">' +
+// 										   '<a  class="mainMenu-account" id="mainMenu-accountname-' + accounts[i] +
+// 										   '">' + accounts[i] + '</a></li>');
+// 		$('#account-list').append('<li class="account-list-item">' +
+// 								  '<a  class="account-item" id="account-list-item-' + accounts[i] +
+// 								  '">' + accounts[i] + '</a></li>');
+// 		if (accounts[i].toLowerCase() == Spaz.Prefs.getUsername) {
+// 			$('#mainMenu-accountname-' + accounts[i]).addClass("selected-account");
+// 			$('#account-list-item-'    + accounts[i]).addClass("selected-account");
+// 		}
+// 	}
+//
+// 	// $('#account-details').hide();
+//
+// 	/**
+// 	 * Repeating this code block here makes the previously generated menu items
+// 	 * appear -- but I don't understand why.
+// 	 */
+// 	$('#header-label').menu({
+// 			copyClassAttr: true,
+// 			addExpando: true,
+// 			onClick: $.Menu.closeAll
+// 		},
+// 		'#mainMenuRoot'
+// 	);
+// }
 
 Spaz.UI.accountMaintenance = function(imgurl) {
 	var url = 'app:/html/accounts.html';

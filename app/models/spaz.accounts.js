@@ -1,3 +1,10 @@
+/*
+	WE ARE BASICALLY NOT GONNA USE THIS ANYMORE. OKAY? OKAY.
+*/
+
+
+
+
 if (!Spaz.Accounts) Spaz.Accounts = {};
 
 var ELS_KEY_PW = 'twitter_password_';

@@ -22,13 +22,6 @@ means themes must set display:block on the <body> element */
 			opacity:1.0;
 		}
 	}
-	@-webkit-keyframes container-pulse{ /* For use with the Wilhelm. */
-		0%    { -webkit-transform:scale(1); }
-		50%   { -webkit-transform:scale(0.75); }
-		100%  { -webkit-transform:scale(1); }
-	}
-
-
 
 	#container.animation-fadeout {
 		-webkit-animation-name: body-fade-out;
