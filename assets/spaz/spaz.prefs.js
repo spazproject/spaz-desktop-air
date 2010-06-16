@@ -9,6 +9,9 @@ if (!Spaz.Prefs) Spaz.Prefs = {};
 
 
 Spaz.Prefs.defaultPreferences = {
+	
+	'auth-pickle': '',
+	
     'usemarkdown': true,
 
     'window-x': 50,
