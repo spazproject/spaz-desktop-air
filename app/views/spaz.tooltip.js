@@ -79,43 +79,40 @@ Spaz_Tooltip.prototype.show = function(opts) {
 			return;
 		}
 
-
 		// show the tooltip
-		thisTT.jqtt.css('left', thisTT.event.pageX + 10)
-		    .attr('title', thisTT.uuid) // assign uuid
-			.css('top', thisTT.event.pageY + 20)
+		thisTT.jqtt
+			.attr('title', thisTT.uuid) // assign uuid
+			.css({ left: thisTT.event.pageX, top: thisTT.event.pageY + 10 })
 			.show()
 			.css('opacity', 0)
-			.animate({
-						'opacity': '1.0'
-					},
-					{
-						speed: 'fast'
-					});
+			.animate({ opacity: 1 }, { speed: 'fast' });
 		thisTT.jqtt.children('.tooltip-msg').html(thisTT.content);
 
+		var vp  = Spaz.UI.getViewport(),
+		    off = thisTT.jqtt.offset();
 
-		var vp  = Spaz.UI.getViewport();
-		var off = thisTT.jqtt.offset();
+		(function(){
+			var w, h;
 
-		// check horizontal position
-		if (vp.x + vp.cx < off.left + thisTT.jqtt.width()) {
-			thisTT.jqtt.css('left', parseInt(thisTT.jqtt.css('left'), 10) - (thisTT.jqtt.width() + 20));
-			if (thisTT.jqtt.offset().left < 5) {
-				thisTT.jqtt.css('left', 5);
+			// Keep horizontal position in bounds
+			w = thisTT.jqtt.width();
+			if (vp.x + vp.cx < off.left + w) {
+				thisTT.jqtt.css('left', parseInt(thisTT.jqtt.css('left'), 10) - (w + 20));
+				if (thisTT.jqtt.offset().left < 5) {
+					thisTT.jqtt.css('left', 5);
+				}
 			}
-		}
 
-
-		// check vertical position
-		if (vp.y + vp.cy < off.top + thisTT.jqtt.height()) {
-			thisTT.jqtt.css('top', parseInt(thisTT.jqtt.css('top'), 10) - (thisTT.jqtt.height() + 20));
-			if (thisTT.jqtt.offset().top < 5) {
-				thisTT.jqtt.css('top', 5);
+			// Keep vertical position in bounds
+			h = thisTT.jqtt.height(); // May have changed in the last block
+			if (vp.y + vp.cy < off.top + h) {
+				thisTT.jqtt.css('top', parseInt(thisTT.jqtt.css('top'), 10) - (h + 20));
+				if (thisTT.jqtt.offset().top < 5) {
+					thisTT.jqtt.css('top', 5);
+				}
 			}
-		}
-		
-		
+		})();
+
 		if (opts.onShow) {
 			opts.onShow.call();
 		}
