@@ -72,6 +72,9 @@ Spaz.AccountPrefs.init = function(){
 			$idEdit.val('');
 			$username.val('').focus();
 			$password.val('');
+			if($password.is(':hidden')){
+				$password.add($password.siblings()).show();
+			}
 			$accountType.val(SPAZCORE_ACCOUNT_TWITTER);
 			
 			/*
@@ -174,7 +177,15 @@ Spaz.AccountPrefs.init = function(){
 				$idEdit.val(editing.id);
 				$username.val(editing.username).focus();
 				$password.val(editing.password);
-				$accountType.val(editing.type);
+				$accountType.val(editing.type).change((function(){
+					// Run `fn` immediately, then bind it as a callback
+					function fn(){
+						var isOauth = ($accountType.val() === SPAZCORE_ACCOUNT_TWITTER);
+						$password.add($password.siblings()).toggle(!isOauth);
+					}
+					fn();
+					return fn;
+				})());
 				
 				/*
 				 populate meta
