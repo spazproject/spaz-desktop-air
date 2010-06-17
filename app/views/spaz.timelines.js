@@ -1061,27 +1061,42 @@ var UserlistsTimeline = function(args) {
 			sch.debug($menu.get(0).innerHTML);
 			
 			/*
-				show menu on event
+				bind menu toggling handlers
 			*/
-			$(menu_trigger_selector).live('click', function(e) {
+			(function(){
 				/*
 					thank you http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another
 				*/
-				var $this	= $(this),
-					pos		= $this.offset(),
-					height	= $this.height(),
-					width	= $this.width();
-				$menu.css({
-					position: 'absolute',
-					left:	  pos.left + 'px',
-					top:	  (pos.top + height) + 'px'
-				}).show();
-				
-				$(document).one('click', function() {
-					$menu.hide();
+				var $document = $(document);
+
+				function showMenu(e){
+					var $this = $(e.target),
+					    pos   = $this.offset();
+					$menu.css({
+						position: 'absolute',
+						left:     pos.left + 'px',
+						top:      (pos.top + $this.height()) + 'px'
+					}).show();
+				}
+				function hideMenu(e){ $menu.hide(); }
+				function toggleMenu(e){
+					if($menu.is(':visible')){
+						hideMenu(e);
+					}else{
+						showMenu(e);
+					}
+				}
+
+				$(menu_trigger_selector).live('click', function(e){
+					toggleMenu(e);
+					$document.one('click', function(e){
+						if(!$(e.target).is(menu_trigger_selector)){
+							hideMenu(e);
+						}
+					});
 				});
-			});
-			
+			})();
+
 			Spaz.UI.statusBar("Lists loaded for @"+username+ "…");
 			Spaz.UI.hideLoading();
 			
