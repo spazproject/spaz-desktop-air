@@ -1259,6 +1259,129 @@ var SearchTimeline = function(args) {
 			
 		}
 	});
+
+	this.buildSavedSearchesMenu = function(){
+		// TODO: Fix all the duplication with `this.buildListsMenu`
+
+		var auth     = Spaz.Prefs.getAuthObject(),
+		    username = Spaz.Prefs.getUsername();
+		thisST.twit.setCredentials(auth);
+		thisST.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+		sch.debug('Loading saved searches for @'+username+'…');
+		Spaz.UI.statusBar('Loading saved searches for @'+username+'…');
+		Spaz.UI.showLoading();
+
+		function onGetSavedSearchesSuccess(data){
+			var i, iMax, key,
+			    rootContainerSelector = '#container',
+			    $menu,
+			    menuId = 'saved-searches-menu',
+			    menuClass = 'popup-menu',
+			    menuItem, menuItems = [], $menuItem,
+			    menuItemClass = 'saved-searches-menu-item',
+			    menuItemAttributes,
+			    menuTriggerSelector = '#search-saved',
+			    search;
+
+			// If the menu exists, remove it
+			$('#' + menuId).remove();
+
+			// Collect menu data
+			for(i = 0, iMax = data.length; i < iMax; i++){
+				search = data[i];
+				menuItems[i] = {
+					label: search.name,
+					id:    'saved-search-' + search.id,
+					attributes: {
+						'data-saved-search-id':       search.id,
+						'data-saved-search-name':     search.name,
+						'data-saved-search-query':    search.query,
+						'data-saved-search-position': search.position
+					},
+					onclick: function(e){
+						var query = $(this).attr('data-saved-search-query');
+						$('#search-for').val(query);
+						thisST.timeline.refresh();
+					}
+				};
+			}
+
+			// Create menu
+			$menu = $('<ul id="' + menuId + '" class="' + menuClass + '"></ul>');
+			for(i = 0, iMax = menuItems.length; i < iMax; i++){
+				menuItem = menuItems[i];
+				menuItemAttributes = menuItem.attributes;
+				$menuItem = $(
+					'<li id="' + menuItem.id +
+						'" class="menuitem ' + menuItemClass + '">' +
+						menuItem.label +
+					'</li>');
+				for(key in menuItemAttributes){
+					if(menuItemAttributes.hasOwnProperty(key)){
+						$menuItem.attr(key, menuItemAttributes[key]);
+					}
+				}
+				$menu.append($menuItem);
+
+				// Attach menu item click handler, if any
+				if(menuItem.onclick){
+					$menuItem.bind('click', {onClick: menuItem.onclick}, function(e){
+						e.data.onClick.call(this, e); // `this`: The clicked item
+					});
+				}
+			}
+
+			// Add menu to DOM
+			$menu.appendTo(rootContainerSelector);
+
+			// Bind menu toggling handlers
+			(function(){
+				var $document = $(document);
+
+				function showMenu(e){
+					var $this = $(e.target),
+					    pos   = $this.offset();
+					$menu.css({
+						position: 'absolute',
+						left:     pos.left + 'px',
+						top:      (pos.top + $this.height()) + 'px'
+					}).show();
+				}
+				function hideMenu(e){ $menu.hide(); }
+				function toggleMenu(e){
+					if($menu.is(':visible')){
+						hideMenu(e);
+					}else{
+						showMenu(e);
+					}
+				}
+
+				$(menuTriggerSelector).live('click', function(e){
+					toggleMenu(e);
+					$document.one('click', function(e){
+						if(!$(e.target).is(menuTriggerSelector)){
+							hideMenu(e);
+						}
+					});
+				});
+			})();
+
+			Spaz.UI.statusBar('Saved searches loaded for @' + username);
+			Spaz.UI.hideLoading();
+		}
+
+		function onGetSavedSearchesFailure(msg){
+			Spaz.UI.statusBar(
+				'Loading saved searches for @' + username + ' failed!');
+			Spaz.UI.hideLoading();
+		}
+
+		thisST.twit.getSavedSearches(
+			onGetSavedSearchesSuccess, onGetSavedSearchesFailure);
+	};
+
+	thisST.buildSavedSearchesMenu();
+
 };
 
 SearchTimeline.prototype = new AppTimeline();
