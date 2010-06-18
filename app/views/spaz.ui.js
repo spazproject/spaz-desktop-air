@@ -1279,13 +1279,14 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 			
 			var title = 'New Messages';
 			
-	        Spaz.UI.notify({
-				'message':text,
-				'title'  :title,
-				'where'  :Spaz.Prefs.get('window-notificationposition'),
-				'icon'   :img,
-				'data'   :notify_data
+			Spaz.UI.notify({
+				message:  text,
+				title:    title,
+				position: Spaz.Prefs.get('window-notificationposition'),
+				icon:     img,
+				data:     notify_data
 			});
+
 		}
 
         Spaz.UI.playSoundNew();
@@ -1312,20 +1313,21 @@ Spaz.UI.alert = function(message, title) {
 Spaz.UI.notify = function(opts) {
 	
 	opts = sch.defaults({
-		message : 'message',
-		title   : 'title',
-		where   : null,
+		message:  'message',
+		title:    'title',
+		position: null,
 		duration: Spaz.Prefs.get('window-notificationhidedelay')*1000,
-		icon    : new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url,
-		force   : false,
-		data    : null,
+		icon:     new air.File(new air.File(
+		          	'app:/images/spaz-icon-alpha.png').nativePath).url,
+		force:    false,
+		data:     null,
 		template: null,
-		onClick : null,
-		onHover : null
+		onClick:  null,
+		onHover:  null
 	}, opts);
 	
     if (Spaz.Prefs.get('window-shownotificationpopups') || opts.force) {
-        // Spaz.Notify.add(message, title, where, duration, icon);
+        // Spaz.Notify.add(message, title, position, duration, icon);
 
 		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
 
@@ -1336,15 +1338,15 @@ Spaz.UI.notify = function(opts) {
 			Spaz.Growl.notify(opts.title, opts.message, opts.icon);
 		} else {
 			PurrJS.notify({
-				'title':   opts.title,
-				'message': opts.message,
-				'icon':    opts.icon,
-				'duration':opts.duration,
-				'where':   opts.where,
-				'data':    opts.data,
-				'template':opts.template,
-				'onClick' :opts.onClick,
-				'onHover' :opts.onHover
+				title:    opts.title,
+				message:  opts.message,
+				icon:     opts.icon,
+				duration: opts.duration,
+				position: opts.position,
+				data:     opts.data,
+				template: opts.template,
+				onClick:  opts.onClick,
+				onHover:  opts.onHover
 			});
 		}
 
