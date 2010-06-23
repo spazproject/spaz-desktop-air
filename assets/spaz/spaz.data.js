@@ -15,14 +15,64 @@ $.ajaxSetup(
 );
 
 
+Spaz.Data.getAuthHeader = function(method, url, data) {
+    var auth_header;
+    var user = Spaz.Prefs.getUser();
+    var pass = Spaz.Prefs.getPass();
+    
+    if (Spaz.Prefs.get('twitter-api-base-url').indexOf('twitter.com') != -1) { // this is Twitter. hopefully
+
+        SpazAuth.addService(SPAZCORE_ACCOUNT_TWITTER, {
+            authType: SPAZCORE_AUTHTYPE_OAUTH,
+            consumerKey: SPAZCORE_CONSUMERKEY_TWITTER,
+            consumerSecret: SPAZCORE_CONSUMERSECRET_TWITTER,
+            accessURL: 'https://twitter.com/oauth/access_token'
+        });
+
+		var prefs = new SpazPrefs(null, 'spazcore_prefs');
+		prefs.load();
+		var accts = new SpazAccounts(prefs);
+		var auth  = new SpazAuth(SPAZCORE_ACCOUNT_TWITTER);
+
+		if ( !(account_id = prefs.get(user + '_account_id')) ) {
+		    
+		    try {
+		        var rs = auth.authorize(user, pass)
+		    } catch(e) {
+		        sch.error(e);
+		        rs = false;
+		    }
+			if(rs) {
+				account_id = accts.add(user, auth.save(), SPAZCORE_ACCOUNT_TWITTER).id;
+				prefs.set(user + '_account_id', account_id);
+			} else {
+				
+			}
+		}
+		if (account_id) {
+		    var account = accts.get(account_id);
+    		auth.load(account.auth);
+    		var twit    = new SpazTwit({'auth':auth});
+    		auth_header = auth.signRequest(method, url, data);
+		}
+    } else {
+
+    	var pass = Spaz.Prefs.getPass();
+        auth_header = "Basic " + Base64.encode(user + ":" + pass);
+    }
+    
+    sch.error(auth_header);
+    return auth_header;
+    
+}
 
 
 Spaz.Data.getAPIURL = function(key) {
 
-	var base_url = Spaz.Prefs.get('twitter-api-base-url');
+    var base_url = Spaz.Prefs.get('twitter-api-base-url');
 
 	if (!base_url) {
-		base_url = 'https://twitter.com/';
+		base_url = 'https://api.twitter.com/1/';
 	}
 
 	var urls = {}
@@ -105,12 +155,12 @@ Spaz.Data.verifyPassword = function() {
 
 	var xhr = $.ajax({
 		complete:Spaz.Data.onAjaxComplete,
-		error:function() {
+		error:function(xhr, textStatus, errorThrown) {
 			// Spaz.verified = false;
 			Spaz.dump('verification failed');
 			Spaz.UI.statusBar("Verification failed");
 			Spaz.UI.flashStatusBar();
-			Spaz.Data.onAjaxError();
+			Spaz.Data.onAjaxError(xhr, textStatus, errorThrown);
 		},
 		success:function(data){
 			// var json = JSON.parse(data);
@@ -133,12 +183,15 @@ Spaz.Data.verifyPassword = function() {
 			// }
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("GET", Spaz.Data.getAPIURL('verify_password'), null));
 			// cookies just get in the way.	 eliminate them.
 			xhr.setRequestHeader("Cookie", "");
 		},
-		processData:false,
-		type:"POST",
+		complete:function(xhr, textStatus) {
+		    sch.error(xhr.responseText);
+		},
+		// processData:false,
+		type:"GET",
 		url:Spaz.Data.getAPIURL('verify_password'),
 	})
 
@@ -170,16 +223,26 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 	var oldButtonLabel = $('#updateButton').val();
 	$('#updateButton').val('Sending...');
 
-	var update_data = "&source="+Spaz.Prefs.get('twitter-source')+"&status="+encodeURIComponent(msg);
+	var update_data = {
+	    'source':Spaz.Prefs.get('twitter-source'),
+	    'status':msg
+	};
+	
+	sch.error(update_data);
+	
 	if (irt_id) {
-		update_data = update_data+"&in_reply_to_status_id="+irt_id;
+		update_data.in_reply_to_status_id = irt_id;
 	}
+
+    
 
 	var xhr = $.ajax({
 		timeout:1000*40, // updates can take longer, so we double the standard timeout
 		complete:Spaz.Data.onAjaxComplete,
 		error:function(xhr, rstr){
 			Spaz.dump("ERROR");
+			sch.error(rstr);
+            Spaz.Data.onAjaxError(xhr, rstr);
 			$('#entrybox').attr('disabled', false);
 			$('#updateButton').attr('disabled', false);
 			$('#updateButton').val(oldButtonLabel);
@@ -250,12 +313,12 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 			//Spaz.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('update'), update_data));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", '');
 			// have to kill referer header to post
 		},
-		processData:false,
+        // processData:false,
 		type:"POST",
 		url:Spaz.Data.getAPIURL('update'),
 		data:update_data,
@@ -276,7 +339,11 @@ Spaz.Data.update = function(msg, username, password, irt_id) {
 Spaz.Data.destroyStatus = function(postid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
-
+    
+    var data = { 
+        'id':postid
+    };
+    
 	Spaz.UI.showLoading();
 
 	var xhr = $.ajax({
@@ -288,14 +355,14 @@ Spaz.Data.destroyStatus = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAPIURL('destroy_status').replace(/{{ID}}/, postid), data);
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
-		processData:false,
+        // processData:false,
 		type:"POST",
-		data:'&id='+postid,
+		data:data,
 		url:Spaz.Data.getAPIURL('destroy_status').replace(/{{ID}}/, postid),
 	});
 
@@ -313,6 +380,10 @@ Spaz.Data.makeFavorite = function(postid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
 
+    var data = { 
+        'id':postid
+    };
+
 	Spaz.UI.statusBar('Adding fav: ' + postid);
 	Spaz.UI.showLoading();
 
@@ -329,14 +400,14 @@ Spaz.Data.makeFavorite = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('favorites_create'), data));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
-		processData:false,
+        // processData:false,
 		type:"POST",
-		data:'&id='+postid,
+		data:data,
 		url:Spaz.Data.getAPIURL('favorites_create').replace(/{{ID}}/, postid),
 	});
 };
@@ -351,6 +422,10 @@ Spaz.Data.makeFavorite = function(postid) {
 Spaz.Data.makeNotFavorite = function(postid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
+
+    var data = { 
+        'id':postid
+    };
 
 	Spaz.UI.statusBar('Removing fav: ' + postid);
 	Spaz.UI.showLoading();
@@ -368,14 +443,14 @@ Spaz.Data.makeNotFavorite = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('favorites_destroy'), data));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
-		processData:false,
+		// processData:false,
 		type:"POST",
-		data:'&id='+postid,
+		data:data,
 		url:Spaz.Data.getAPIURL('favorites_destroy').replace(/{{ID}}/, postid),
 	});
 };
@@ -390,6 +465,10 @@ Spaz.Data.makeNotFavorite = function(postid) {
 Spaz.Data.followUser = function(userid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
+
+    var data = { 
+        'id':userid
+    };
 
 	Spaz.dump('user:'+user+' pass:********');
 
@@ -406,14 +485,14 @@ Spaz.Data.followUser = function(userid) {
 			Spaz.UI.statusBar("Now following " + userid);
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('follow').replace(/{{ID}}/, userid), data));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
-		processData:false,
+		// processData:false,
 		type:"POST",
-		data:'&id='+userid,
+		data:data,
 		url:Spaz.Data.getAPIURL('follow').replace(/{{ID}}/, userid),
 	});
 
@@ -431,6 +510,10 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
 
+    var data = { 
+        'id':userid
+    };
+
 	Spaz.dump('user:'+user+' pass:********');
 
 	Spaz.UI.statusBar('Stop following: ' + userid)
@@ -446,14 +529,14 @@ Spaz.Data.stopFollowingUser = function(userid) {
 			Spaz.UI.statusBar("No longer following " + userid);
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('stop_follow').replace(/{{ID}}/, userid), data));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
-		processData:false,
+		// processData:false,
 		type:"POST",
-		data:'&id='+userid,
+		data:data,
 		url:Spaz.Data.getAPIURL('stop_follow').replace(/{{ID}}/, userid),
 	});
 
@@ -493,14 +576,15 @@ Spaz.Data.onAjaxError = function(xhr,rstr) {
 	}
 	if (xhr.responseText) {
 		try {
-			var errorInfo = JSON.parse(xhr.responseText)
+			var errorInfo = JSON.parse(xhr.responseText);
+			sch.error(xhr.responseText);
 			if (errorInfo.error) {
 				Spaz.UI.statusBar('ERROR: "' + errorInfo.error+'"');
 			} else {
 				Spaz.UI.statusBar('ERROR: Server returned invalid data');
 			}
 		} catch(e) {
-			Spaz.dump('Error parsing for JSON in error response');
+			sch.error('Error parsing for JSON in error response');
 			Spaz.UI.statusBar('ERROR: Server returned invalid data');
 		}
 	}
@@ -687,12 +771,13 @@ Spaz.Data.getDataForUrl = function(url, section) {
 			}
 		},
 		beforeSend:function(xhr){
+
 			var user = Spaz.Prefs.getUser();
 			var pass = Spaz.Prefs.getPass();
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("GET", url, null));
 			xhr.setRequestHeader("Cookie", '');
 		},
-		processData:false,
+		// processData:false,
 		type:"GET",
 		url:url,
 		data:null
@@ -736,7 +821,7 @@ Spaz.Data.searchSummize = function(query) {
 				Spaz.dump("Error:Unknown from "+url);
 			}
 		},
-		processData:false,
+		// processData:false,
 		type:"GET",
 		url:url,
 		data:null
@@ -841,11 +926,11 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 			}
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", "Basic " + Base64.encode(user + ":" + pass));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("GET", Spaz.Data.getAPIURL('ratelimit_status'), null));
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
 		},
-		processData:false,
+		// processData:false,
 		type:"GET",
 		url:Spaz.Data.getAPIURL('ratelimit_status'),
 	});

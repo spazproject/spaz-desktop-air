@@ -1,4 +1,4 @@
-/*********** Built 2010-06-16 09:44:17 EDT ***********/
+/*********** Built 2010-06-22 11:14:11 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -3866,6 +3866,7 @@ SpazAccounts.prototype.load	= function() {
  * saves the accounts array to the prefs obj 
  */
 SpazAccounts.prototype.save	= function() {
+    sch.error(this._accounts[0]);
 	this.prefs.set(this.prefskey, sch.enJSON(this._accounts));
 	sch.debug('saved users to "'+this.prefskey+'" pref');
 	for (var x in this._accounts) {
@@ -4323,7 +4324,7 @@ SpazOAuth.prototype.setAccessToken = function(key, secret) {
 SpazOAuth.prototype.signRequest = function(method, url, parameters) {
     // We need to copy parameters because OAuth.js modifies it.
     var param = jQuery.extend({}, parameters);
-
+    
     OAuth.completeRequest({
         method: method,
         action: url,
@@ -4362,6 +4363,246 @@ SpazOAuth.prototype.save = function() {
     return this.username + ":" + this.accessToken.key + ":" + this.accessToken.secret;
 };
 
+/*jslint 
+browser: true,
+nomen: false,
+debug: true,
+forin: true,
+undef: true,
+white: false,
+onevar: false 
+ */
+var sc, Titanium, air, jQuery, Mojo;
+
+var SPAZCORE_PREFS_TI_KEY = 'preferences_json';
+
+var SPAZCORE_PREFS_AIR_FILENAME = 'preferences.json';
+
+var SPAZCORE_PREFS_MOJO_COOKIENAME = 'preferences.json';
+
+var SPAZCORE_PREFS_STANDARD_COOKIENAME = 'preferences_json';
+ 
+/**
+ * A preferences lib for AIR JS apps. This requires the json2.js library
+ * 
+ * @param {object} defaults a JS object of key:value pairs used for the pref defaults. Example:
+ * {
+ * 	foo:124545,
+ * 	bar:'Hello!',
+ *  boo:false
+ * };
+ * @param {object} sanity_methods a JS object of key:object pairs that defines methods to be called when the pref is get() or set(). Example:
+ * {
+ * 	foo:{
+ * 		onGet:function(key, value) {};
+ * 		onSet:function(key, value) {};
+ * 	},
+ * 	bar:{
+ * 		onGet:function(key, value) {};
+ * 		onSet:function(key, value) {};
+ * 	}
+ * }
+ * 
+ * events raised:
+ * 'spazprefs_loaded'
+ * 
+ * @TODO we need to pull out the platform-specifc stuff into the /platforms/... hierarchy
+ * @class SpazPrefs
+ */
+function SpazPrefs(defaults, id, sanity_methods) {	
+
+	/*
+		init prefs
+	*/
+	this._prefs = {};
+	
+	/*
+		init sanity check methods
+		we use:
+		* onGet()
+		* onSet()
+	*/
+	this._sanity_methods = {};
+
+
+	if (sanity_methods) {
+		sch.debug('adding sanity methods to prefs');
+		this._sanity_methods = sanity_methods;
+	}
+	
+	if (id) {
+		this.id = id;
+	}
+	
+	if (defaults) {
+		this.setDefaults(defaults);
+		this._applyDefaults();
+	}
+	
+	this.loaded = false;
+}
+
+
+/**
+ * sets the passed object of key:val pairs as the default preferences
+ * @param {object} defaults
+ */ 
+SpazPrefs.prototype.setDefaults = function(defaults) {
+	this._defaults = defaults;
+};
+
+
+/**
+ * this goes through the default prefs and applies them. It also will
+ * call the onSet sanity method if it is defined for a given pref keys.
+ */
+SpazPrefs.prototype._applyDefaults = function() {
+	var key;
+	for (key in this._defaults) {
+		sc.helpers.debug('Copying default "' + key + '":"' + this._defaults[key] + '" (' + typeof(this._defaults[key]) + ')');
+		this._prefs[key] = this._defaults[key];
+	}
+};
+
+/**
+ * resets all prefs to defaults and saves 
+ */
+SpazPrefs.prototype.resetPrefs = function() {
+	
+	this._applyDefaults();
+	this.save();
+};
+
+
+
+/**
+ * Get a preference
+ * Note that undefined is returned if the key does not exist
+ */
+SpazPrefs.prototype.get = function(key, encrypted) {
+	var value;
+	
+	if (encrypted) {
+		value = this.getEncrypted(key);
+	} else {
+		sc.helpers.debug('Looking for pref "'+key+'"');
+
+		if (this._prefs[key] !== undefined) {
+			sc.helpers.debug('Found pref "'+key+'" of value "'+this._prefs[key]+'" ('+typeof(this._prefs[key])+')');
+			value = this._prefs[key];
+		} else {
+			value = undefined;
+		}
+	}
+	
+	if (this._sanity_methods[key] && this._sanity_methods[key].onGet) {
+		sc.helpers.debug("Calling "+key+".onGet()");
+		value = this._sanity_methods[key].onGet.call(this, key, value);
+	}
+		
+	return value;
+};
+
+
+/**
+ * set a preference and save automatically
+ */
+SpazPrefs.prototype.set = function(key, val, encrypted) {
+	
+	sc.helpers.debug('Setting and saving "'+key+'" to "'+val+'" ('+typeof(val)+')');
+	
+	if (this._sanity_methods[key] && this._sanity_methods[key].onSet) {
+		sc.helpers.debug("Calling "+key+".onSet()");
+		val = this._sanity_methods[key].onSet.call(this, key, val);
+	}
+	
+	if (encrypted) {
+		this.setEncrypted(key, val);
+	} else {
+		this._prefs[key] = val;
+	}
+
+	
+	
+	this.save();
+};
+
+
+
+
+
+
+
+/**
+ * @param {string} key the name of the pref
+ * @param {string} type the type of method. Currently either 'onGet' or 'onSet'
+ * @param {function} method the method definition
+ */
+SpazPrefs.prototype.setSanityMethod = function(key, type, method) {
+	
+	if (type !== 'onGet' && type !== 'onSet') {
+		sch.error('sanity method type must be onGet or onSet');
+	}
+	
+	if (!this._sanity_methods[key]) {
+		this._sanity_methods[key] = {};
+	}
+	
+	this._sanity_methods[key][type] = method;
+	
+};
+
+
+/**
+ * get an encrypted preference
+ * @todo
+ */
+SpazPrefs.prototype.getEncrypted = function(key) {
+	alert('not yet implemented');
+};
+
+
+/**
+ * Sets an encrypted pref
+ * @todo
+ */
+SpazPrefs.prototype.setEncrypted = function(key, val) {
+	alert('not yet implemented');
+};
+
+
+/**
+ * loads the prefs file and parses the prefs into this._prefs,
+ * or initializes the file and loads the defaults
+ * @stub
+ */
+SpazPrefs.prototype.load = function(name) {
+};
+
+
+
+
+
+
+
+/**
+ * saves the current preferences
+ * @todo
+ */
+SpazPrefs.prototype.save = function() {
+
+
+	
+};
+
+
+
+/**
+ * shortcut for SpazPrefs
+ */
+if (sc) {
+	var scPrefs = SpazPrefs;
+}
 /*jslint 
 browser: true,
 nomen: false,
@@ -5995,6 +6236,17 @@ SpazTwit.prototype._processUser = function(item, section_name) {
 };
 
 
+/**
+ * returns the header string for oAuth Echo usage
+ */
+SpazTwit.prototype.getEchoHeader = function(opts) {
+	var url = this.getAPIURL('verify_credentials');
+	var method = 'GET';
+
+	var auth_header = this.auth.signRequest(method, url, null);
+
+	return auth_header;
+};
 
 
 /**
@@ -7574,132 +7826,6 @@ if (sc) {
 	var scTwit = SpazTwit;
 }
 
-
-/*
-* EXAMPLES OF JS OBJECTS RETURNED BY TWITTER
-* /statuses/public_timeline.json
-	{
-        "user": {
-            "followers_count": 1144,
-            "description": "フツーですよ。",
-            "url": "http:\/\/camellia.jottit.com\/",
-            "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/66954592\/20081210071932_normal.jpg",
-            "protected": false,
-            "location": "あかし",
-            "screen_name": "camellia",
-            "name": "かめ",
-            "id": "6519832"
-        },
-        "text": "@sugatch おはよう、すがっち！ *Tw*",
-        "truncated": false,
-        "favorited": false,
-        "in_reply_to_user_id": 10116882,
-        "created_at": "Sat Jan 17 00:53:27 +0000 2009",
-        "source": "<a href=\"http:\/\/cheebow.info\/chemt\/archives\/2007\/04\/twitterwindowst.html\">Twit<\/a>",
-        "in_reply_to_status_id": 1125158879,
-        "id": "1125159824"
-    }
-* 
-* 
-* From authenticated /statuses/friends_timeline.json
-* {
-    "text": "@elazar I don't know about the pony - but a lot of that is in CSS3 - only browsers are crap ;)",
-    "user": {
-        "description": "PHP Windows Geek (not Oxymoron)",
-        "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/25760052\/headshot_normal.jpg",
-        "url": "http:\/\/elizabethmariesmith.com",
-        "name": "auroraeosrose",
-        "protected": false,
-        "screen_name": "auroraeosrose",
-        "followers_count": 242,
-        "location": "",
-        "id": 8854222 
-    },
-    "in_reply_to_screen_name": "elazar",
-    "in_reply_to_user_id": 9105122,
-    "truncated": false,
-    "favorited": false,
-    "in_reply_to_status_id": 1125164128,
-    "created_at": "Sat Jan 17 00:59:04 +0000 2009",
-    "id": 1125170241,
-    "source": "<a href=\"http:\/\/twitterfox.net\/\">TwitterFox<\/a>"
- }
-* 
-* 
-* From authenticated /direct_messages.json
-* 
-* {
-    "recipient_screen_name": "funkatron",
-    "created_at": "Fri Jan 16 13:43:16 +0000 2009",
-    "recipient_id": 65583,
-    "sender_id": 808824,
-    "sender": {
-        "description": "Impoverished Ph.D. student at the Indiana University School of Informatics",
-        "screen_name": "kmakice",
-        "followers_count": 671,
-        "url": "http:\/\/www.blogschmog.net",
-        "name": "Kevin Makice",
-        "protected": false,
-        "location": "Bloomington, Indiana",
-        "id": 808824,
-        "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/69221803\/2009avatar_normal.jpg"
-    },
-    "sender_screen_name": "kmakice",
-    "id": 51212447,
-    "recipient": {
-        "description": "Supernerd, Dad, Webapp security dude, Spaz developer, webmonkey, designer, musician, ego-ho. See also: @funkalinks",
-        "screen_name": "funkatron",
-        "followers_count": 1143,
-        "url": "http:\/\/funkatron.com",
-        "name": "Ed Finkler",
-        "protected": false,
-        "location": "iPhone: 40.423752,-86.907547",
-        "id": 65583,
-        "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/67512037\/cat_with_hat_and_monocle_normal.jpg"
-    },
-    "text": "[REDACTED]"
-}
-* 
-* 
-* 
-* From http://search.twitter.com/search.json?q=javascript
-* 
-* {
-    "results": [
-        {
-            "text": "Updated the Wiki page on JavaScript development to reflect latest changes in Orbeon Forms. http:\/\/tinyurl.com\/axtu5u",
-            "to_user_id": null,
-            "from_user": "orbeon",
-            "id": 1125204181,
-            "from_user_id": 279624,
-            "iso_language_code": "en",
-            "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/53169511\/Picture_1_normal.png",
-            "created_at": "Sat, 17 Jan 2009 01:14:11 +0000"
-        },
-        {
-            "text": "when I close my eyes I dream in javascript",
-            "to_user_id": null,
-            "from_user": "apuritz",
-            "id": 1125196059,
-            "from_user_id": 95155,
-            "iso_language_code": "en",
-            "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/55159511\/images_normal.jpeg",
-            "created_at": "Sat, 17 Jan 2009 01:10:11 +0000"
-        }
-        // more results deleted
-    ],
-    "since_id": 0,
-    "max_id": 1125204181,
-    "refresh_url": "?since_id=1125204181&q=javascript",
-    "results_per_page": 15,
-    "next_page": "?page=2&max_id=1125204181&q=javascript",
-    "completed_in": 0.015077,
-    "page": 1,
-    "query": "javascript"
-}
-* 
-* 
-*/
 /*jslint 
 browser: true,
 nomen: false,
@@ -8070,9 +8196,8 @@ var sc, air;
  *  file_url:'',
  *  url:'',
  * 	extra:{...}
+ *  headers:{...}
  * 
- * 
- * mostly taken from http://carefulweb.com/blog/2008/06/24/upload-server-adobe-air-and-javascript/
  * 
  * }
  */
@@ -8081,7 +8206,7 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	function callback_for_upload_progress(event) { 
 
 	    var pct = Math.ceil( ( event.bytesLoaded / event.bytesTotal ) * 100 ); 
-	    air.trace('Uploaded ' + pct.toString() + '%');
+	    sch.error('Uploaded ' + pct.toString() + '%');
 		
 		if (opts.onProgress) {
 			opts.onProgress({
@@ -8093,19 +8218,38 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	}
 
 	function callback_for_upload_finish(event) {
-		air.trace('File upload complete');
-		air.trace(event.data); // output of server response to AIR dev console
+		sch.error('File upload complete');
+		sch.error(event.data); // output of server response to AIR dev console
 		if (onSuccess) {
 			onSuccess(event.data);
 		}
 	}
+	
+    function callback_for_error(event) {
+        sch.error('IOError!');
+        if (onError) {
+            onError(event);
+        }
+    }
 
-	var field_name   = opts.field_name || 'media';
-	var content_type = opts.content_type || null;
+    opts = sch.defaults({
+        'method':'POST',
+        'content_type':'multipart/form-data',
+        'field_name':'media',
+        'file_url':null,
+        'url':null,
+        'extra':null,
+        'headers':null,
+        'username':null,
+        'password':null,
+    }, opts);
+
+	var field_name   = opts.field_name;
+	var content_type = opts.content_type;
 	
 	var uploading_file = new air.File(opts.file_url);
 	
-	var key;
+
 
 	// creating POST request variables (like in html form fields)
 	var variables = new air.URLVariables();
@@ -8117,7 +8261,8 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	if (opts.password) {
 		variables.password = opts.password;
 	}
-	
+
+	var key;	
 	if (opts.extra) {
 		for(key in opts.extra) {
 			variables[key] = opts.extra[key];
@@ -8127,8 +8272,6 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	var headers = [];
 	if (opts.headers) {
 		for(key in opts.headers) {
-			sch.error(key);
-			sch.error(opts.headers[key]);
 			headers.push( new air.URLRequestHeader(key, opts.headers[key]) );
 		}
 	}
@@ -8137,17 +8280,17 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	// set params for http request
 	var tmpRequest = new air.URLRequest(opts.url);
 	tmpRequest.authenticate = false;
-	tmpRequest.method = air.URLRequestMethod.POST;
-	tmpRequest.contentType = 'multipart/form-data';
+	tmpRequest.method = opts.method;
+	tmpRequest.contentType = opts.content_type;
 	tmpRequest.requestHeaders = headers;
-	
-	// assigning variables to request
 	tmpRequest.data = variables;
 
 	// attach events for displaying progress bar and upload complete
 	uploading_file.addEventListener(air.ProgressEvent.PROGRESS, callback_for_upload_progress);
 	uploading_file.addEventListener(air.DataEvent.UPLOAD_COMPLETE_DATA, callback_for_upload_finish); 
-
+    uploading_file.addEventListener(air.SecurityErrorEvent.SECURITY_ERROR, callback_for_error);
+    uploading_file.addEventListener(air.IOErrorEvent.IO_ERROR, callback_for_error);
+    
 	// doing upload request to server
 	uploading_file.upload(tmpRequest, field_name, false);
 	
