@@ -395,7 +395,7 @@ ul#account-list li:nth-child(even){
         left:0;
         right:0;
         top:60px;
-        bottom:94px;
+        bottom:128px; /* = #entryform height + 28px */
         clear:both;
       }
 
@@ -673,7 +673,7 @@ ul#account-list li:nth-child(even){
       bottom:28px;
       margin:0;
       padding:0;
-      height:66px;
+      height:100px;
       background:#d9d9d9;
       border-top:1px solid #313131;
       z-index:10;
@@ -738,7 +738,7 @@ ul#account-list li:nth-child(even){
         display:none;
         left:1px;
         right:1px;
-        bottom:65px;
+        bottom:99px; /* = #entryform height - 1px */
         max-width:300px;
         margin:0 auto;
         padding:0;
