@@ -179,3 +179,17 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 #timelinewrapper-search div.loading{
   display:none;
 }
+
+/*** Entry form ***/
+
+#entryform:not(.has-drafts) #entryform-drafts{
+  display:none;
+}
+#entrybox.flash{
+  animation-name:entrybox-flash;
+    -webkit-animation-name:entrybox-flash;
+  animation-duration:1s;
+    -webkit-animation-duration:1s;
+  animation-iteration-count:1;
+    -webkit-animation-iteration-count:1;
+}

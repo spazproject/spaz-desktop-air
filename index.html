@@ -78,6 +78,7 @@
 	<!-- JazzRecord models -->
 	<script src="app/models/TweetModel.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/models/TwUserModel.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/models/DraftModel.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!-- auth config -->
 	<script src="app/auth_config.js" type="text/javascript" charset="utf-8"></script>
@@ -129,10 +130,8 @@
 	<script src="app/views/spaz.imageuploader.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.conversation.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.accountprefs.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.drafts.js" type="text/javascript" charset="utf-8"></script>
 
-	
-
-	
 
 	<!-- theme scripts -->
 	<script type="text/javascript" charset="utf-8" id="themeinfo"></script>
@@ -906,15 +905,20 @@
 						</span>
 					</div>
 					<span id="chars-left">
-						<span id="chars-left-count"></span> <span id="chars-left-description">chars left</span>
+						<span id="chars-left-count"></span> <span id="chars-left-description">left</span>
 					</span>
 					<div id="entrybox-actions">
+						<input type="button" name="entrybox-saveDraft"   value="Save"         id="entrybox-saveDraft" />
 						<input type="button" name="entrybox-shortenText" value="Shorten Text" id="entrybox-shortenText" />
 						<input type="button" name="entrybox-shortenURLs" value="Shorten URLs" id="entrybox-shortenURLs" />
 					</div>
 				</div>
 			</div>
 			<input type="button" onclick="Spaz.UI.sendUpdate()" id="updateButton" value="Send &raquo;" />
+			<div id="entryform-drafts">
+				You have <span class="count">0 drafts</span> saved.
+				<input type="button" id="view-drafts" value="View drafts" />
+			</div>
 		</form>
 
 		<!-- STATUSBAR -->
@@ -1321,6 +1325,18 @@
 				<h1>Conversation <span class="closeDOMWindow">close</span></h1>
 				<div class="content">
 					<div id="timeline-conversation" class="timeline"></div>
+				</div>
+			</div>
+		</div>
+
+		<!--
+			Drafts Window
+		-->
+		<div class="popbox-content-wrapper" id="draftsWindow">
+			<div class="popbox-content" id="popbox-content-drafts">
+				<h1>Drafts <span class="closeDOMWindow">close</span></h1>
+				<div class="content">
+					<ul></ul>
 				</div>
 			</div>
 		</div>

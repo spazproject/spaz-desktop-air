@@ -30,19 +30,8 @@ function SpazPostPanel(opts) {
 		var curr_count = thisPP.textarea.value.length;
 		var left = thisPP.maxlen - curr_count;
 		thisPP.counter.innerText = left.toString();
+		thisPP.counter_desc.innerText = 'left';
 
-		// Fix "chars left" pluralization. For speed, this uses the
-		// `counter_desc_is_singular` flag to modify the DOM only when needed,
-		// not on every update.
-		if(thisPP.counter_desc_is_singular){
-		  thisPP.counter_desc.innerText = 'chars left';
-		  thisPP.counter_desc_is_singular = false;
-		}else if(Math.abs(left) === 1){
-		  thisPP.counter_desc.innerText = 'char left';
-		  thisPP.counter_desc_is_singular = true;
-		}
-	
-	
 		var info = {
 			'entry_el':thisPP.textarea,
 			'count_el':thisPP.counter,
