@@ -37,7 +37,7 @@
         newHeight = Math.min(maxEntryFormHeight(), newHeight);
 
         // Set min height: fit at least one line of text
-        newHeight = Math.max(34, newHeight);
+        newHeight = Math.max(36, newHeight);
 
         setEntryFormHeight(newHeight);
       },

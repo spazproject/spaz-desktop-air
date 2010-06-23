@@ -84,6 +84,10 @@ ul#account-list li:nth-child(even){
   99.99%  { -webkit-transform: rotate(330deg); }
   to      { -webkit-transform: rotate(360deg); }
 }
+@-webkit-keyframes entrybox-flash{
+  from  { background:#fcec8f; }
+  to    { background:#fff; }
+}
 
 
 
@@ -711,6 +715,9 @@ ul#account-list li:nth-child(even){
       body:not(.active) #entrybox{
         border-bottom:1px solid #e1e1e1;
       }
+      #entryform.has-drafts #entrybox{
+        bottom:27px;
+      }
 				/* the hint shown when the widget does not have focus */
 				.textareaHintState{
 					color:#828282;
@@ -817,7 +824,28 @@ ul#account-list li:nth-child(even){
               linear, left top, left bottom, from(#668bf4), to(#2b64f0));
             border-color:#5c83ea transparent #1d58e7 transparent;
           }
-
+      #entryform-drafts{
+        /* See also #timeline-userlists-full-name */
+        position:absolute;
+        left:4px;
+        right:5px;
+        bottom:0;
+        padding:0 8px;
+        background:-webkit-gradient(
+          linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+        border:1px solid #c0c7cf;
+        color:#202020;
+        cursor:default;
+        font-size:11px;
+        font-weight:bold;
+        line-height:25px;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+      #entryform-drafts input{
+        /* FIXME: Style */
+        float:right;
+      }
 
 			/*
 				The button to submit the post. This can be hidden completely, and the user can still

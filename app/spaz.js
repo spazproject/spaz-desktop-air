@@ -280,6 +280,7 @@ Spaz.initialize = function() {
 			twit.update(status, source, irt_id);
 		}
 	});
+	Spaz.Drafts.updateCounter();
 
 	/*
 		Set up timeline calls to action

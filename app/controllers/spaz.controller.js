@@ -365,6 +365,16 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.UI.accountMaintenance();
 			},
 
+			'#entrybox-saveDraft':function(e){
+				var editingDraftId = Spaz.Drafts.getEditingId(),
+				    editingDraft   = DraftModel.findById(editingDraftId),
+				    text           = jQuery(Spaz.postPanel.textarea).val();
+				if(editingDraft){
+					Spaz.Drafts.update(editingDraft, text);
+				}else{
+					Spaz.Drafts.create(text);
+				}
+			},
 			'#entrybox-shortenText':function(e) {
 				Spaz.postPanel.textarea.focus();
 				Spaz.postPanel.shortenText.call(Spaz.postPanel);
@@ -378,7 +388,11 @@ Spaz.Controller.initIntercept = function() {
 
 			'#irt-dismiss':function(e) {
 				Spaz.postPanel.clearPostIRT();
-				$('#entrybox').focus();
+				Spaz.postPanel.textarea.focus();
+			},
+
+			'#entryform-drafts input':function(e){
+				Spaz.Drafts.showList();
 			},
 
 
