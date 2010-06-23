@@ -12,6 +12,7 @@
 
 
 // Make #entryform resizable
+// TODO: Remember height in prefs
 (function(){
   var $body             = $('body'),
       $timeline         = $('#timeline-tabs-content, .TabbedPanelsContentGroup'),
