@@ -21,12 +21,12 @@ $(function(){
 			Spaz.Drafts.setEditingId(null);
 		}
 	});
-	$list.delegate('input', 'click', function(ev){
+	$list.delegate('.draft-action', 'click', function(ev){
 		var $target   = $(ev.target),
 		    $listItem = $target.closest('li'),
 		    draftId   = +($listItem.attr('id').replace(/^draft-/, '')),
 		    draft     = DraftModel.findById(draftId);
-		switch($target.attr('name')){
+		switch($target.attr('data-action')){
 			case 'edit':
 				Spaz.Drafts.edit(draft); break;
 			case 'delete':
@@ -39,9 +39,11 @@ Spaz.Drafts.createView = function(draft){
 	$list.append(
 		'<li id="draft-' + draft.id + '">' +
 			'<p>' + draft.text + '</p>' +
-			'<div class="controls">' +
-				'<input type="button" name="delete" value="Delete" />' +
-				'<input type="button" name="edit" value="Edit" />' +
+			'<div class="actions">' +
+				'<span class="clickable draft-action draft-action-edit" ' +
+					'title="Edit" data-action="edit">Edit</span>' +
+				'<span class="clickable draft-action draft-action-del" ' +
+					'title="Delete" data-action="delete">Delete</span>' +
 			'</div>' +
 		'</li>'
 	);
