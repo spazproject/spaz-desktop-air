@@ -8227,8 +8227,8 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	
     function callback_for_error(event) {
         sch.error('IOError!');
-        if (onError) {
-            onError(event);
+        if (onFailure) {
+            onFailure(event);
         }
     }
 
@@ -8265,6 +8265,7 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	var key;	
 	if (opts.extra) {
 		for(key in opts.extra) {
+			sch.error('adding '+key+':'+opts.extra[key]);
 			variables[key] = opts.extra[key];
 		}
 	}

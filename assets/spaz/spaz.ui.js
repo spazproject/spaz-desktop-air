@@ -200,6 +200,7 @@ Spaz.UI.uploadImage = function(imgurl) {
 		url += '?fileUrl='+encodeURIComponent(imgurl);
 	}
     this.instance = window.open(url, 'uploadWin', 'height=380,width=400');
+	
 }
 Spaz.UI.showCSSEdit = function() {
     this.instance = window.open('app:/html/css_edit.html', 'cssEditWin', 'height=350,width=400');

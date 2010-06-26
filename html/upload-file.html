@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<script src="app:/assets/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/assets/spaz/spaz.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="app:/assets/spaz/spaz.js" type="text/javascript" charset="utf-8"></script> 
 	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/spaz/spaz.upload.js" type="text/javascript" charset="utf-8"></script>
@@ -21,10 +21,14 @@
 	<script src="app:/assets/lib/webtoolkit.trim.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/assets/helpers/string.js" type="text/javascript" charset="utf-8"></script>
 	
+	<script src="app:/app/auth_config.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="app:/assets/spazcore/spazcore-spaz_0.8-air.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script type="text/javascript" charset="utf-8">
 		Spaz.Prefs = window.opener.Spaz.Prefs;
 		
-		var service_url = null;
+		var service = null;
 	
 		var browseForImage = function() {
 			var imageFilter = new air.FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png");
@@ -33,40 +37,34 @@
 			
 			userFile.addEventListener(air.Event.SELECT, function(event) {
 				
-				air.trace('Chosen file: '+event.target.url);
-							
-				if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
-					if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
-						return false;
-					}
-				}
-							
+				sch.error('Chosen file: '+event.target.url);
+														
 				if (event.target.url.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 					alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
 					return;
 				}
 				handleDrop(event.target.url);
-			})
-		}
+			});
+		};
 
 		
 	
 		var prepPhotoPost = function(url) {
-		    var eb = window.opener.$('#entrybox');
-		    eb.focus();
-		    if (url) {
-		        eb.val($('#post-message').val() + ' ' + url);
-		        //eb[0].setSelectionRange(eb.val().length - $('#post-message').val().length, eb.val().length);
-				eb[0].setSelectionRange(0, $('#post-message').val().length);
-		        return true;
-		    } else {
-		        return false;
-		    }
-
+			var eb = window.opener.$('#entrybox');
+			eb.focus();
+			
 			window.opener.$('#irt').fadeOut('fast');
 			window.opener.$('#irt-message').html('').attr('data-status-id', '0');
-
-		}
+			
+			if (url) {
+				eb.val($('#post-message').val() + ' ' + url);
+				//eb[0].setSelectionRange(eb.val().length - $('#post-message').val().length, eb.val().length);
+				eb[0].setSelectionRange(0, $('#post-message').val().length);
+				return true;
+			} else {
+				return false;
+			}
+		};
 		
 		
 	
@@ -91,26 +89,18 @@
 			$('#file-url').val(fileUrl);
 		}
 
-    
-	    function dragEnterOverHandler(event){
-	        event.preventDefault();
-	    }
+	
+		function dragEnterOverHandler(event){
+			event.preventDefault();
+		}
 
-	    function dropHandler(event){
+		function dropHandler(event){
 
 			event.preventDefault();
 			
-			if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
-				if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
-					return false;
-				}
-			}
-
-
-		
 			var fileUrl = event.dataTransfer.getData("text/uri-list");
 		
-			air.trace(fileUrl);
+			sch.error(fileUrl);
 		
 			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
@@ -118,56 +108,49 @@
 			}
 			handleDrop(fileUrl);
 			return;
-	    }
+		}
 	
 		/*
 			Upload the dragged image to Twitpic
 		*/
-		function uploadDraggedImage(fileUrl) {
-			air.trace(fileUrl);
+		function uploadDraggedImage(file_url) {
+			sch.error(file_url);
+			
+			// if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+			//	if ( !confirm('Uploading requires that you share your username and password with the service. Are you sure you want to do this?') ) {
+			//		return false;
+			//	}
+			// }
+			
+			var msg = $('#post-message').val();
+			if (msg.length < 1) {
+				msg = 'from Spaz';
+			}
 			
 			Spaz.UI.showLoading();
-				
+			
 			// upload the file
-			Spaz.Data.uploadFile({
-				'extra'  :{
-					"username": Spaz.Prefs.getUser(),
-					"password": Spaz.Prefs.getPass(),
-					"source":Spaz.Prefs.get('twitter-source'),
-					"message":$('#post-message').val()
+			Spaz.Uploadservice.upload({
+				'file_url'  : file_url,
+				'service'   : window.service,
+				'extra'     : {
+					'message':msg
 				},
-				'url'    :service_url,
-				'fileUrl':fileUrl,
-				'open'   : Spaz.UI.showLoading,
-				'complete': function(event) {
+				'onSuccess' : function(data) {
 					Spaz.UI.hideLoading();
-					
-					var loader = event.target;
-				    air.trace(loader.data);
-
-					var parser=new DOMParser();
-					xmldoc = parser.parseFromString(loader.data,"text/xml");
-					
-					//var mediaurl = $(xmldoc).find('mediaurl').text();
-					//air.trace(mediaurl);
-					//prepPhotoPost(mediaurl);
-					//$('#status-text').html('Complete');
-					var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
-					if (rspAttr.getNamedItem("stat").nodeValue == 'ok')
-					{
-						var mediaurl = $(xmldoc).find('mediaurl').text();
-						air.trace(mediaurl);
-						prepPhotoPost(mediaurl);
-						$('#status-text').html('Complete');
-					} 
-					else
-					{
-						var errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
-						air.trace(errAttributes);
-						errMsg = errAttributes.getNamedItem("msg").nodeValue;
-						air.trace(errMsg);
-						$('#status-text').html(errMsg);
-					} 
+					if (data.url) {
+						prepPhotoPost(data.url);
+						$('#status-text').html('Complete');						
+					} else if (data.err) {
+						$('#status-text').html(data.err);
+					} else {
+						sch.error('unknown error');
+						$('#status-text').html('unknown error');
+					}
+				},
+				'onFailure' : function(event) {
+					sch.error(event.text);
+					alert('failed!!\n'+event.text);
 				}
 			});
 		}
@@ -177,6 +160,13 @@
 	<script type="text/javascript" charset="utf-8">
 	
 		$(document).ready(function() {
+			
+			/*
+			  bring app and window to front
+			*/
+			air.NativeApplication.nativeApplication.activate();
+			window.nativeWindow.activate();
+
 
 			$('#loading').hide();
 			
@@ -186,13 +176,11 @@
 			target.addEventListener("drop", dropHandler);
 
 			// get the pref
-			var service = Spaz.Prefs.get('file-uploader');
-			service_url = Spaz.Uploadservice.services[service].url;
-			air.trace("service is "+ service);
-			air.trace("service url "+ service_url);
+			window.service = Spaz.Prefs.get('file-uploader');
+			sch.error("service is "+ window.service);
 
 			var sharepass = Spaz.Prefs.get('services-twitpic-sharepassword');
-			air.trace("sharepass is "+ sharepass);
+			sch.error("sharepass is "+ sharepass);
 			
 			// populate the dropdown
 			for (method in Spaz.Uploadservice.services) {
@@ -202,7 +190,7 @@
 						$('#extra-'+service).show();
 					} else {
 						$('#file-uploader').append('<option value="'+method+'">'+method+'</option>');
-						$('#extra-'+service).hide();
+						$('#extra-'+window.service).hide();
 					}
 				}
 			}
@@ -214,15 +202,13 @@
 			
 			// bind service dropdown
 			$('#file-uploader').bind('change', function() {
-				var service = $('#file-uploader').val()
-				Spaz.Prefs.set('file-uploader', service);
+				Spaz.Prefs.set('file-uploader', $('#file-uploader').val());
 				
-				service_url = Spaz.Uploadservice.services[service].url;
-				air.trace("service is "+ service);
-				air.trace("service url "+ service_url);
+				window.service = Spaz.Prefs.get('file-uploader');
+				sch.error("service is "+ service);
 				
 				$('.service-extras').fadeOut();
-				$('#extra-'+service).fadeIn();
+				$('#extra-'+window.service).fadeIn();
 				
 			});
 			
@@ -239,7 +225,7 @@
 				}
 				
 				// var service = Spaz.Prefs.get('file-uploader');
-				// air.trace("service is "+ service);
+				// sch.error("service is "+ service);
 				// Spaz.Upload[service]($('#shorten-original-link').val());
 			});
 			
@@ -248,7 +234,7 @@
 				if ($('#post-message').val().length>110) {
 					$('#post-message').val( $('#post-message').val().substr(0,110) );
 				}
-				air.trace($('#post-message').val().length);
+				sch.error($('#post-message').val().length);
 			})
 			
 			
@@ -258,9 +244,9 @@
 				handleDrop(fileUrl);
 			}
 			
-			air.trace(window.location.href);
+			sch.error(window.location.href);
 			
-			// air.trace(air.NativeApplication.nativeApplication.spazPrefs);
+			// sch.error(air.NativeApplication.nativeApplication.spazPrefs);
 		})
 	</script>
 	
