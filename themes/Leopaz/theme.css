@@ -716,7 +716,7 @@ ul#account-list li:nth-child(even){
         border-bottom:1px solid #e1e1e1;
       }
       #entryform.has-drafts #entrybox{
-        bottom:27px;
+        bottom:26px;
       }
 				/* the hint shown when the widget does not have focus */
 				.textareaHintState{
@@ -843,8 +843,26 @@ ul#account-list li:nth-child(even){
         white-space:nowrap;
       }
       #entryform-drafts input{
-        /* FIXME: Style */
         float:right;
+        padding-left:0.75em;
+        padding-right:0.75em;
+        background:-webkit-gradient(
+          linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
+        border:1px solid #a5a5a5;
+        border-radius:1em;
+          -webkit-border-radius:1em;
+        font-weight:normal;
+      }
+      body:not(.active) #entryform-drafts input{
+        border-color:#d8d8d8;
+        color:rgba(0, 0, 0, 0.5);
+        text-shadow:0 1px 1px #fff;
+      }
+      #entryform-drafts input:active{
+        background:-webkit-gradient(
+          linear, left top, left bottom, from(#a7a7a7), to(#d2d2d2),
+          color-stop(0.1, #c2c2c2));
+        border-color:#767676;
       }
 
 			/*
@@ -1243,7 +1261,8 @@ div.timeline-entry:hover{
       padding:0;
       overflow:hidden;
       opacity:0.75;
-      -webkit-transition:opacity 0.125s linear;
+      transition:opacity 0.125s linear;
+        -webkit-transition:opacity 0.125s linear;
     }
     div.timeline-entry.read:not(.ui-selected):hover div.status-thumbnails{
       opacity:1;
@@ -1277,7 +1296,8 @@ div.timeline-entry:hover{
         -webkit-border-radius:10px;
       font-size:10px;
       opacity:0;
-      -webkit-transition:opacity 0.125s linear;
+      transition:opacity 0.125s linear;
+        -webkit-transition:opacity 0.125s linear;
     }
     div.timeline-entry:hover:not(.read) div.status-actions,
     div.timeline-entry.ui-selected div.status-actions{
@@ -1288,7 +1308,8 @@ div.timeline-entry:hover{
       opacity:1;
     }
       .status-action,
-      .status-action-del{
+      .status-action-del,
+      .draft-action{
         display:inline-block;
         width:23px;
         height:20px;
@@ -1299,10 +1320,13 @@ div.timeline-entry:hover{
         vertical-align:middle;
       }
 	    .status-action:hover,
-	    .status-action-del:hover{
+	    .status-action-del:hover,
+	    .draft-action{
 	      background-position:0 -20px;
+	      text-indent:-9999em;
 	    }
-	      .status-action:first-child{
+	      .status-action:first-child,
+	      .draft-action:first-child{
 	        margin-left:0;
 	      }
         .status-action-fav      { background-image:url(images/status-fav-off.png); }
@@ -1311,7 +1335,10 @@ div.timeline-entry:hover{
         .status-action-retweet  { background-image:url(images/status-retweet.png); }
         .status-action-dm       { background-image:url(images/status-dm.png); }
         .status-action-reply    { background-image:url(images/status-reply.png); }
-        .status-action-del      { background-image:url(images/status-delete.png); text-indent:-9999em; }
+        .status-action-edit,
+        .draft-action-edit      { background-image:url(images/status-edit.png); }
+        .status-action-del,
+        .draft-action-del       { background-image:url(images/status-delete.png); }
 
 		/* the container for the "permalink" to the post */
 		div.status-link{
@@ -1659,7 +1686,8 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 font-size:10px;
               }
               div.prefs input[type=button],
-              div.prefs input[type=submit]{
+              div.prefs input[type=submit],
+              #popbox-content-drafts div.content ul li div.controls input{
                 height:19px;
                 padding:0;
                 background:transparent;
@@ -1671,14 +1699,16 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                 font-size:10px;
               }
                 div.prefs input[type=button]:active,
-                div.prefs input[type=submit]:active{
+                div.prefs input[type=submit]:active,
+                #popbox-content-drafts div.content ul li div.controls input:active{
                   border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
                     -webkit-border-image:url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
                 }
                 body:not(.active) div.prefs input[type=button],
                 body:not(.active) div.prefs input[type=submit],
                 div.prefs input[type=button][disabled],
-                div.prefs input[type=submit][disabled]{
+                div.prefs input[type=submit][disabled],
+                body:not(.active) #popbox-content-drafts div.content ul li div.controls input{
                   border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                     -webkit-border-image:url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
                   color:#999;
@@ -2124,4 +2154,43 @@ div#popbox-content-conversation #timeline-conversation{
 }
 div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   outline:0;
+}
+
+/*** Popboxes > Drafts ***/
+
+#popbox-content-drafts div.content{
+  padding:0;
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(#49525F), to(#7C8695),
+    color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+}
+#popbox-content-drafts div.content ul{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+#popbox-content-drafts div.content ul li{
+  position:relative;
+  padding:20px 14px;
+  background:-webkit-gradient(
+    linear, left top, left bottom, from(#fff), to(#f9f9f9));
+  border-top:1px solid #fff;
+  border-bottom:1px solid #f0f0f0;
+  color:rgba(0, 0, 0, 0.9);
+}
+#popbox-content-drafts div.content ul li p{
+  margin:0;
+}
+#popbox-content-drafts div.content ul li div.actions{
+  opacity:0;
+  transition:opacity 0.125s linear;
+    -webkit-transition:opacity 0.125s linear;
+}
+#popbox-content-drafts div.content ul li:hover div.actions{
+  opacity:1;
+  left:auto;
+  right:4px;
+  top:auto;
+  bottom:4px;
 }
