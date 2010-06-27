@@ -125,6 +125,9 @@ sch.listen(document, 'account_switched', function(e, account) {
 		rateLimitsSet();
 	}
 
+	Spaz.Drafts.rebuildList();
+	Spaz.Drafts.updateCounter();
+
 });
 
 

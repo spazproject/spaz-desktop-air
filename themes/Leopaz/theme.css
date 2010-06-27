@@ -844,8 +844,7 @@ ul#account-list li:nth-child(even){
       }
       #entryform-drafts input{
         float:right;
-        padding-left:0.75em;
-        padding-right:0.75em;
+        padding:3px 0.75em;
         background:-webkit-gradient(
           linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
         border:1px solid #a5a5a5;
