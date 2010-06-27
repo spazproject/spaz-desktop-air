@@ -170,14 +170,16 @@ Spaz.Drafts.afterDraftSave = function(draft){
 /*** Helpers > Views ***/
 
 Spaz.Drafts.getNewViewHTML = function(draft){
+	var length = draft.text.length,
+	    maxLength = Spaz.postPanel.maxlen;
 	return (
 		'<li id="draft-' + draft.id + '">' +
 			'<p>' + sch.makeClickable(draft.text) + '</p>' +
 			'<div class="meta">' +
-				'<p>' + draft.text.length +
-					' character' + (draft.text.length != 1 ? 's' : '') +
+				'<p class="chars' + (length <= maxLength ? '' : ' over') + '">' +
+					length + ' character' + (length != 1 ? 's' : '') +
 				'</p>' +
-				'<p>Saved ' +
+				'<p class="updated-at">Saved ' +
 					'<span class="datetime" data-value="' + draft.updated_at + '">' +
 						draft.updated_at +
 					'</span>' +

@@ -2191,3 +2191,6 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   color:rgba(0, 0, 0, 0.25);
   font-size:0.75em;
 }
+#popbox-content-drafts div.content ul li div.meta p.chars.over{
+  color:rgba(255, 0, 0, 0.75);
+}
