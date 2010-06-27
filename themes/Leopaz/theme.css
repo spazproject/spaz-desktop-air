@@ -1284,8 +1284,9 @@ div.timeline-entry:hover{
       div.timeline-entry.read:not(.ui-selected) div.status-text br{
         display:none; /* Hide <br />s in collapsed tweets */
       }
-		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
-    div.status-actions{
+    /* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
+    div.status-actions,
+    div.draft-actions{
       position:absolute;
       left:-9999em;
       top:-9999em;
@@ -1300,7 +1301,8 @@ div.timeline-entry:hover{
         -webkit-transition:opacity 0.125s linear;
     }
     div.timeline-entry:hover:not(.read) div.status-actions,
-    div.timeline-entry.ui-selected div.status-actions{
+    div.timeline-entry.ui-selected div.status-actions,
+    #popbox-content-drafts div.content ul li:hover div.draft-actions{
       left:auto;
       right:4px;
       top:auto;
@@ -1317,28 +1319,30 @@ div.timeline-entry:hover{
         background-color:transparent;
         background-position:0 0;
         background-repeat:no-repeat;
+        text-indent:-9999em;
         vertical-align:middle;
       }
-	    .status-action:hover,
-	    .status-action-del:hover,
-	    .draft-action{
-	      background-position:0 -20px;
-	      text-indent:-9999em;
-	    }
-	      .status-action:first-child,
-	      .draft-action:first-child{
-	        margin-left:0;
-	      }
-        .status-action-fav      { background-image:url(images/status-fav-off.png); }
+      .status-action:hover,
+      .status-action-del:hover,
+      .draft-action:hover{
+        background-position:0 -20px;
+      }
+        .status-action:first-child,
+        .draft-action:first-child{
+          margin-left:0;
+        }
+        .status-action-fav    { background-image:url(images/status-fav-off.png); }
         div.timeline-entry.favorited .status-action-fav
-                                { background-image:url(images/status-fav-on.png); }
-        .status-action-retweet  { background-image:url(images/status-retweet.png); }
-        .status-action-dm       { background-image:url(images/status-dm.png); }
-        .status-action-reply    { background-image:url(images/status-reply.png); }
+                              { background-image:url(images/status-fav-on.png); }
+        .status-action-retweet{ background-image:url(images/status-retweet.png); }
+        .status-action-dm     { background-image:url(images/status-dm.png); }
+        .status-action-reply  { background-image:url(images/status-reply.png); }
         .status-action-edit,
-        .draft-action-edit      { background-image:url(images/status-edit.png); }
+        .draft-action[data-action=edit]
+                              { background-image:url(images/status-edit.png); }
         .status-action-del,
-        .draft-action-del       { background-image:url(images/status-delete.png); }
+        .draft-action[data-action=delete]
+                              { background-image:url(images/status-delete.png); }
 
 		/* the container for the "permalink" to the post */
 		div.status-link{
@@ -2172,7 +2176,7 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 }
 #popbox-content-drafts div.content ul li{
   position:relative;
-  padding:20px 14px;
+  padding:10px 14px;
   background:-webkit-gradient(
     linear, left top, left bottom, from(#fff), to(#f9f9f9));
   border-top:1px solid #fff;
@@ -2182,15 +2186,8 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 #popbox-content-drafts div.content ul li p{
   margin:0;
 }
-#popbox-content-drafts div.content ul li div.actions{
-  opacity:0;
-  transition:opacity 0.125s linear;
-    -webkit-transition:opacity 0.125s linear;
-}
-#popbox-content-drafts div.content ul li:hover div.actions{
-  opacity:1;
-  left:auto;
-  right:4px;
-  top:auto;
-  bottom:4px;
+#popbox-content-drafts div.content ul li div.meta{
+  margin:1em 0 0;
+  color:rgba(0, 0, 0, 0.25);
+  font-size:0.75em;
 }
