@@ -1,4 +1,3 @@
-// TODO: Associate each draft with a specific account
 // TODO: Add control to destroy all drafts
 
 (function($){
@@ -40,11 +39,13 @@ Spaz.Drafts.showList = function(){
 
 	if($list.is(':empty')){
 		Spaz.Drafts.rebuildList();
+	}else{
+		Spaz.Drafts.updateRelativeTimes();
 	}
 	Spaz.UI.openPopboxInline('#draftsWindow');
 
 	// FIXME: Testing; remove
-	sch.error('DRAFTS: List has ' + $list.children().length + ' children');
+	sch.error('- List has ' + $list.children().length + ' children');
 };
 
 Spaz.Drafts.hideList = function(){
@@ -58,13 +59,17 @@ Spaz.Drafts.create = function(text){
 	if(text === ''){ return; }
 
 	// Update model
-	var draft = DraftModel.create({ text: text });
+	var draft = DraftModel.create({
+	            	account_id: Spaz.Drafts.currentAccountId(),
+	            	text:       text
+	            });
 	Spaz.Drafts.setEditingId(draft.id);
 	Spaz.Drafts.afterDraftSave(draft);
 
 	// FIXME: Testing; remove
 	draft.reload();
-	sch.error('DRAFTS: Created id=' + draft.id + ':');
+	sch.error('- id: ' + draft.id);
+	sch.error('- account_id: ' + draft.account_id);
 	sch.error('- text: ' + draft.text);
 	sch.error('- updated_at: ' + draft.updated_at);
 
@@ -95,7 +100,7 @@ Spaz.Drafts.update = function(draft, text){
 
 	// FIXME: Testing; remove
 	draft.reload();
-	sch.error('DRAFTS: Updated id=' + draft.id + ':');
+	sch.error('- id: ' + draft.id);
 	sch.error('- text: ' + draft.text);
 	sch.error('- updated_at: ' + draft.updated_at);
 
@@ -107,13 +112,13 @@ Spaz.Drafts.destroy = function(draft){
 	sch.error('Spaz.Drafts.destroy'); // FIXME: Testing; remove
 
 	// FIXME: Testing; remove
-	sch.error('DRAFTS: About to destroy: id=' + draft.id);
+	sch.error('- id: ' + draft.id);
 
 	// Update model
 	DraftModel.destroy(draft.id);
 
 	// Update views
-	if(DraftModel.count() < 1){
+	if(Spaz.Drafts.count() < 1){
 		Spaz.Drafts.hideList();
 	}
 	$('#draft-' + draft.id).remove(); // <li>
@@ -135,6 +140,15 @@ Spaz.Drafts.destroyAll = function(){
 
 
 /*** Helpers > Model ***/
+
+Spaz.Drafts.currentAccountId = function(){
+	return Spaz.Prefs.getUsername() + '@' + Spaz.Prefs.getAccountType();
+};
+
+Spaz.Drafts.count = function(){
+	// Returns the count for *only* the current account, not the overall count.
+	return DraftModel.countByAccountId(Spaz.Drafts.currentAccountId());
+}
 
 Spaz.Drafts.getEditingId = function(){
 	// Returns the id of the draft being editing, or null if no draft is being
@@ -171,7 +185,9 @@ Spaz.Drafts.afterDraftSave = function(draft){
 
 Spaz.Drafts.getNewViewHTML = function(draft){
 	var length = draft.text.length,
-	    maxLength = Spaz.postPanel.maxlen;
+	    maxLength = Spaz.postPanel ? Spaz.postPanel.maxlen : 140;
+	    	// The value `140` really belongs in a global config that's set
+	    	// immediately.
 	return (
 		'<li id="draft-' + draft.id + '">' +
 			'<p>' + sch.makeClickable(draft.text) + '</p>' +
@@ -196,19 +212,23 @@ Spaz.Drafts.getNewViewHTML = function(draft){
 };
 
 Spaz.Drafts.rebuildList = function(){
-	var i, iMax, draft,
+	sch.error('Spaz.Drafts.rebuildList'); // FIXME: Testing; remove
+	var i, iMax,
 	    drafts = DraftModel.all({
-	    	select: 'id',
-	    	order:  'updated_at_unixtime DESC'
+	    	conditions: {account_id: Spaz.Drafts.currentAccountId()},
+	    	order:      'updated_at_unixtime ASC'
 	    }),
 	    html = '';
 	$list.empty();
 
-	for(i = 0, iMax = drafts.length; i < iMax; i++){
-		draft = DraftModel.findById(drafts[i].id);
-		if(!$('#draft-' + draft.id)[0]){
-			html += Spaz.Drafts.getNewViewHTML(draft);
-		}
+	// FIXME: Testing; remove
+	sch.error('- account: ' + Spaz.Drafts.currentAccountId());
+	sch.error('- # drafts: ' + drafts.length);
+
+	i = drafts.length; while(i--){
+		// Drafts are retrieved oldest first, then with a reverse loop (for
+		// speed), rendered newest first.
+		html += Spaz.Drafts.getNewViewHTML(drafts[i]);
 	}
 	$list.html(html);
 	Spaz.Drafts.updateRelativeTimes();
@@ -223,11 +243,12 @@ Spaz.Drafts.updateRelativeTimes = function(){
 };
 
 Spaz.Drafts.updateCounter = function(){
-	var count      = DraftModel.count(),
-	    text       = count + (count === 1 ? ' draft' : ' drafts'),
-	    $entryform = $('#entryform'),
-	    $wrapper   = $('#entryform-drafts'),
-	    $text      = $wrapper.children('span.count');
+	sch.error('Spaz.Drafts.updateCounter'); // FIXME: Testing; remove
+	var count       = Spaz.Drafts.count(),
+	    text        = count + (count === 1 ? ' draft' : ' drafts'),
+	    $entryform  = $('#entryform'),
+	    $wrapper    = $('#entryform-drafts'),
+	    $text       = $wrapper.children('span.count');
 
 	if(count > 0){
 		$entryform.addClass('has-drafts');

@@ -3,7 +3,7 @@
 window.DraftModel = new JazzRecord.Model({
 	table: 'drafts',
 	columns: {
-		// TODO: account_id: 'string',
+		account_id:          'string',
 		text:                'text',
 		updated_at:          'string',
 		updated_at_unixtime: 'int'
@@ -19,6 +19,15 @@ window.DraftModel = new JazzRecord.Model({
 	modelMethods: {
 		findById: function(id){
 			return this.findBy('id', id);
+		},
+		countByAccountId: function(account_id){
+			// Ticket: http://github.com/thynctank/jazzrecord/issues/issue/1
+			// return this.count('account_id = "' + account_id + '"');
+
+			return this.all({
+				select: 'id',
+				conditions: {account_id: account_id}
+			}).length;
 		}
 	}
 });
