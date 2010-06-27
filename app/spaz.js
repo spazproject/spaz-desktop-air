@@ -113,6 +113,7 @@ Spaz.initialize = function() {
 	JazzRecord.addIndex('tweets', 'twitter_id');
 	JazzRecord.addIndex('twusers', 'twitter_id');
 	JazzRecord.addIndex('twusers', 'screen_name');
+	JazzRecord.addIndex('drafts', 'updated_at_unixtime');
 
 	// Docking initialization
 	sch.debug("docking initialization");

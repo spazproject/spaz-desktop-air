@@ -3,11 +3,17 @@
 window.DraftModel = new JazzRecord.Model({
 	table: 'drafts',
 	columns: {
-		// TODO: accountId: 'string',
-		text: 'text'
+		// TODO: account_id: 'string',
+		text:                'text',
+		updated_at:          'string',
+		updated_at_unixtime: 'int'
 	},
 	// events: {
-	// 	onUpdate: function(){}
+	// 	onSave: function(){
+	// 		var now = new Date();
+	// 		this.updated_at = now.toString();
+	// 		this.updated_at_unixtime = +now;
+	// 	}
 	// },
 	// recordMethods: {},
 	modelMethods: {

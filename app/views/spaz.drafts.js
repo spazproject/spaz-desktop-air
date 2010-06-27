@@ -35,35 +35,12 @@ $(function(){
 	});
 });
 
-Spaz.Drafts.createView = function(draft){
-	$list.append(
-		'<li id="draft-' + draft.id + '">' +
-			'<p>' + draft.text + '</p>' +
-			'<div class="actions">' +
-				'<span class="clickable draft-action draft-action-edit" ' +
-					'title="Edit" data-action="edit">Edit</span>' +
-				'<span class="clickable draft-action draft-action-del" ' +
-					'title="Delete" data-action="delete">Delete</span>' +
-			'</div>' +
-		'</li>'
-	);
-};
-
 Spaz.Drafts.showList = function(){
 	sch.error('Spaz.Drafts.showList'); // FIXME: Testing; remove
 
-	var i, iMax, draft,
-	    drafts = DraftModel.all({select: 'id'});
-
-	// Create any missing draft views
-	for(i = 0, iMax = drafts.length; i < iMax; i++){
-		sch.error('DRAFTS: id: ' + drafts[i].id); // FIXME: Testing; remove
-		draft = DraftModel.findById(drafts[i].id);
-		if(!$('#draft-' + draft.id)[0]){
-			Spaz.Drafts.createView(draft);
-		}
+	if($list.is(':empty')){
+		Spaz.Drafts.rebuildList();
 	}
-
 	Spaz.UI.openPopboxInline('#draftsWindow');
 
 	// FIXME: Testing; remove
@@ -83,13 +60,16 @@ Spaz.Drafts.create = function(text){
 	// Update model
 	var draft = DraftModel.create({ text: text });
 	Spaz.Drafts.setEditingId(draft.id);
+	Spaz.Drafts.afterDraftSave(draft);
 
 	// FIXME: Testing; remove
+	draft.reload();
 	sch.error('DRAFTS: Created id=' + draft.id + ':');
-	sch.error(draft.text);
+	sch.error('- text: ' + draft.text);
+	sch.error('- updated_at: ' + draft.updated_at);
 
 	// Update views
-	Spaz.Drafts.createView(draft);
+	Spaz.Drafts.rebuildList();
 	Spaz.Drafts.updateCounter();
 };
 
@@ -107,16 +87,20 @@ Spaz.Drafts.update = function(draft, text){
 
 	if(text === ''){ return; }
 
+	var $draft = $('#draft-' + draft.id);
+
 	// Update model
-	draft.updateAttribute('text', text);
+	draft.updateAttributes({ text: text });
+	Spaz.Drafts.afterDraftSave(draft);
 
 	// FIXME: Testing; remove
 	draft.reload();
 	sch.error('DRAFTS: Updated id=' + draft.id + ':');
-	sch.error(draft.text);
+	sch.error('- text: ' + draft.text);
+	sch.error('- updated_at: ' + draft.updated_at);
 
 	// Update views
-	$('#draft-' + draft.id).children('p:first').html(draft.text);
+	Spaz.Drafts.rebuildList();
 };
 
 Spaz.Drafts.destroy = function(draft){
@@ -148,6 +132,94 @@ Spaz.Drafts.destroyAll = function(){
 	Spaz.Drafts.hideList();
 };
 
+
+
+/*** Helpers > Model ***/
+
+Spaz.Drafts.getEditingId = function(){
+	// Returns the id of the draft being editing, or null if no draft is being
+	// edited.
+	return $list.data('editing-draft-id');
+};
+
+Spaz.Drafts.setEditingId = function(id){
+	// Sets the id of the draft being edited.
+	$list.data('editing-draft-id', id);
+};
+
+Spaz.Drafts.afterDraftSave = function(draft){
+	// Tried this in the JazzRecord model as an `events.onSave` callback
+	// (*before* save), but since it wouldn't work, we'll make an extra query
+	// *after* save.
+
+	var now = new Date();
+	draft.updateAttributes({
+		updated_at:          now.toString(),
+		updated_at_unixtime: +now
+	});
+
+	// FIXME: Testing; remove
+	draft.reload();
+	sch.error('AFTER SAVE:');
+	sch.error('- updated_at: ' + draft.updated_at);
+	sch.error('- updated_at_unixtime: ' + draft.updated_at_unixtime);
+};
+
+
+
+/*** Helpers > Views ***/
+
+Spaz.Drafts.getNewViewHTML = function(draft){
+	return (
+		'<li id="draft-' + draft.id + '">' +
+			'<p>' + sch.makeClickable(draft.text) + '</p>' +
+			'<div class="meta">' +
+				'<p>' + draft.text.length +
+					' character' + (draft.text.length != 1 ? 's' : '') +
+				'</p>' +
+				'<p>Saved ' +
+					'<span class="datetime" data-value="' + draft.updated_at + '">' +
+						draft.updated_at +
+					'</span>' +
+				'</p>' +
+			'</div>' +
+			'<div class="draft-actions">' +
+				'<span class="clickable draft-action" ' +
+					'title="Edit" data-action="edit">Edit</span>' +
+				'<span class="clickable draft-action" ' +
+					'title="Delete" data-action="delete">Delete</span>' +
+			'</div>' +
+		'</li>'
+	);
+};
+
+Spaz.Drafts.rebuildList = function(){
+	var i, iMax, draft,
+	    drafts = DraftModel.all({
+	    	select: 'id',
+	    	order:  'updated_at_unixtime DESC'
+	    }),
+	    html = '';
+	$list.empty();
+
+	for(i = 0, iMax = drafts.length; i < iMax; i++){
+		draft = DraftModel.findById(drafts[i].id);
+		if(!$('#draft-' + draft.id)[0]){
+			html += Spaz.Drafts.getNewViewHTML(draft);
+		}
+	}
+	$list.html(html);
+	Spaz.Drafts.updateRelativeTimes();
+};
+
+Spaz.Drafts.updateRelativeTimes = function(){
+	var selector = '#popbox-content-drafts .datetime:not(:empty)';
+	sch.updateRelativeTimes(selector, 'data-value');
+	$(selector).html(function(i, html){
+		return html.toLowerCase();
+	});
+};
+
 Spaz.Drafts.updateCounter = function(){
 	var count      = DraftModel.count(),
 	    text       = count + (count === 1 ? ' draft' : ' drafts'),
@@ -163,17 +235,6 @@ Spaz.Drafts.updateCounter = function(){
 	}
 };
 
-Spaz.Drafts.getEditingId = function(){
-	// Returns the id of the draft being editing, or null if no draft is being
-	// edited.
-	return $list.data('editing-draft-id');
-};
-
-Spaz.Drafts.setEditingId = function(id){
-	// Sets the id of the draft being edited.
-	$list.data('editing-draft-id', id);
-};
-
 Spaz.Drafts.flashPostPanel = function(){
 	var $textarea = $(Spaz.postPanel.textarea);
 	setTimeout(function(){
@@ -181,5 +242,7 @@ Spaz.Drafts.flashPostPanel = function(){
 		setTimeout(function(){ $textarea.removeClass('flash'); }, 1000);
 	}, 250);
 };
+
+
 
 })(jQuery);
