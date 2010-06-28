@@ -840,6 +840,7 @@ ul#account-list li:nth-child(even){
         font-weight:bold;
         line-height:25px;
         text-overflow:ellipsis;
+        text-shadow:0 1px 1px #fff;
         white-space:nowrap;
       }
       #entryform-drafts input{
@@ -2166,7 +2167,29 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   background:-webkit-gradient(
     linear, left top, left bottom,
     from(#49525F), to(#7C8695),
-    color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+    color-stop(0.02, #69727F), color-stop(0.95, #8C96A5));
+}
+#popbox-content-drafts div.content > div.meta{
+  /* See also #timeline-userlists-full-name */
+  overflow:hidden;
+  padding:2px 11px;
+  background:-webkit-gradient(
+    linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+  border-bottom:1px solid #c0c7cf;
+  font-size:0.875em;
+  line-height:1.75em;
+  text-shadow:0 1px 1px #fff;
+}
+#popbox-content-drafts div.content > div.meta input{
+  float:right;
+  display:block;
+  padding:3px 0.75em;
+  background:-webkit-gradient(
+    linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
+  border:1px solid #a5a5a5;
+  border-radius:1em;
+    -webkit-border-radius:1em;
+  font-size:0.875em;
 }
 #popbox-content-drafts div.content ul{
   margin:0;
@@ -2175,7 +2198,7 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 }
 #popbox-content-drafts div.content ul li{
   position:relative;
-  padding:10px 14px;
+  padding:10px 11px;
   background:-webkit-gradient(
     linear, left top, left bottom, from(#fff), to(#f9f9f9));
   border-top:1px solid #fff;
