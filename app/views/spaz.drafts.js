@@ -131,7 +131,7 @@ Spaz.Drafts.destroyAll = function(){
 	sch.error('Spaz.Drafts.destroyAll'); // FIXME: Testing; remove
 
 	// Update model
-	DraftModel.destroyAll();
+	DraftModel.destroyAll({account_id: Spaz.Drafts.currentAccountId()});
 
 	// Update views
 	$list.empty();
