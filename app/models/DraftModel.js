@@ -21,13 +21,7 @@ window.DraftModel = new JazzRecord.Model({
 			return this.findBy('id', id);
 		},
 		countByAccountId: function(account_id){
-			// Ticket: http://github.com/thynctank/jazzrecord/issues/issue/1
-			// return this.count('account_id = "' + account_id + '"');
-
-			return this.all({
-				select: 'id',
-				conditions: {account_id: account_id}
-			}).length;
+			return this.count({account_id: account_id});
 		}
 	}
 });
