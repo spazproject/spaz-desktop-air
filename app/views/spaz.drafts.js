@@ -37,17 +37,12 @@ $(function(){
 });
 
 Spaz.Drafts.showList = function(){
-	sch.error('Spaz.Drafts.showList'); // FIXME: Testing; remove
-
 	if($list.is(':empty')){
 		Spaz.Drafts.rebuildList();
 	}else{
 		Spaz.Drafts.updateRelativeTimes();
 	}
 	Spaz.UI.openPopboxInline('#draftsWindow');
-
-	// FIXME: Testing; remove
-	sch.error('- List has ' + $list.children().length + ' children');
 };
 
 Spaz.Drafts.hideList = function(){
@@ -56,8 +51,6 @@ Spaz.Drafts.hideList = function(){
 };
 
 Spaz.Drafts.create = function(text){
-	sch.error('Spaz.Drafts.create'); // FIXME: Testing; remove
-
 	if(text === ''){ return; }
 
 	// Update model
@@ -68,21 +61,12 @@ Spaz.Drafts.create = function(text){
 	Spaz.Drafts.setEditingId(draft.id);
 	Spaz.Drafts.afterDraftSave(draft);
 
-	// FIXME: Testing; remove
-	draft.reload();
-	sch.error('- id: ' + draft.id);
-	sch.error('- account_id: ' + draft.account_id);
-	sch.error('- text: ' + draft.text);
-	sch.error('- updated_at: ' + draft.updated_at);
-
 	// Update views
 	Spaz.Drafts.rebuildList();
 	Spaz.Drafts.updateCounter();
 };
 
 Spaz.Drafts.edit = function(draft){
-	sch.error('Spaz.Drafts.edit'); // FIXME: Testing; remove
-
 	$(Spaz.postPanel.textarea).val(draft.text);
 	Spaz.Drafts.setEditingId(draft.id);
 	Spaz.Drafts.hideList();
@@ -90,8 +74,6 @@ Spaz.Drafts.edit = function(draft){
 };
 
 Spaz.Drafts.update = function(draft, text){
-	sch.error('Spaz.Drafts.update'); // FIXME: Testing; remove
-
 	if(text === ''){ return; }
 
 	var $draft = $('#draft-' + draft.id);
@@ -100,22 +82,11 @@ Spaz.Drafts.update = function(draft, text){
 	draft.updateAttributes({ text: text });
 	Spaz.Drafts.afterDraftSave(draft);
 
-	// FIXME: Testing; remove
-	draft.reload();
-	sch.error('- id: ' + draft.id);
-	sch.error('- text: ' + draft.text);
-	sch.error('- updated_at: ' + draft.updated_at);
-
 	// Update views
 	Spaz.Drafts.rebuildList();
 };
 
 Spaz.Drafts.destroy = function(draft){
-	sch.error('Spaz.Drafts.destroy'); // FIXME: Testing; remove
-
-	// FIXME: Testing; remove
-	sch.error('- id: ' + draft.id);
-
 	// Update model
 	DraftModel.destroy(draft.id);
 
@@ -128,8 +99,6 @@ Spaz.Drafts.destroy = function(draft){
 };
 
 Spaz.Drafts.destroyAll = function(){
-	sch.error('Spaz.Drafts.destroyAll'); // FIXME: Testing; remove
-
 	// Update model
 	DraftModel.destroyAll({account_id: Spaz.Drafts.currentAccountId()});
 
@@ -173,12 +142,6 @@ Spaz.Drafts.afterDraftSave = function(draft){
 		updated_at:          now.toString(),
 		updated_at_unixtime: +now
 	});
-
-	// FIXME: Testing; remove
-	draft.reload();
-	sch.error('AFTER SAVE:');
-	sch.error('- updated_at: ' + draft.updated_at);
-	sch.error('- updated_at_unixtime: ' + draft.updated_at_unixtime);
 };
 
 
@@ -214,7 +177,6 @@ Spaz.Drafts.getNewViewHTML = function(draft){
 };
 
 Spaz.Drafts.rebuildList = function(){
-	sch.error('Spaz.Drafts.rebuildList'); // FIXME: Testing; remove
 	var i, iMax,
 	    drafts = DraftModel.all({
 	    	conditions: {account_id: Spaz.Drafts.currentAccountId()},
@@ -222,10 +184,6 @@ Spaz.Drafts.rebuildList = function(){
 	    }),
 	    html = '';
 	$list.empty();
-
-	// FIXME: Testing; remove
-	sch.error('- account: ' + Spaz.Drafts.currentAccountId());
-	sch.error('- # drafts: ' + drafts.length);
 
 	if(drafts.length > 1 &&
 			!$popbox.find('div.meta input[name=destroy-all]')[0]){
@@ -255,7 +213,6 @@ Spaz.Drafts.updateRelativeTimes = function(){
 };
 
 Spaz.Drafts.updateCounter = function(){
-	sch.error('Spaz.Drafts.updateCounter'); // FIXME: Testing; remove
 	var count       = Spaz.Drafts.count(),
 	    text        = count + (count === 1 ? ' draft' : ' drafts'),
 	    $entryform  = $('#entryform'),
