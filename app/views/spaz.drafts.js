@@ -1,5 +1,3 @@
-// TODO: Add control to destroy all drafts
-
 (function($){
 
 if(!window.Spaz){ window.Spaz = {}; }
@@ -8,10 +6,11 @@ if(!window.Spaz.Drafts){ window.Spaz.Drafts = {}; }
 var Spaz = window.Spaz,
     draft,  // DraftModel record
     drafts, // DraftModel record collection
-    $list;
+    $list, $popbox;
 
 $(function(){
-	$list = $('#popbox-content-drafts').find('.content ul');
+	$popbox = $('#popbox-content-drafts');
+	$list = $popbox.find('.content ul');
 
 	// Delegate handlers
 	$('#entrybox').live('keydown', function(ev){
@@ -19,6 +18,9 @@ $(function(){
 			// When the textarea is cleared, allow for creating a new draft
 			Spaz.Drafts.setEditingId(null);
 		}
+	});
+	$popbox.delegate('.meta input[name=destroy-all]', 'click', function(ev){
+		Spaz.Drafts.destroyAll();
 	});
 	$list.delegate('.draft-action', 'click', function(ev){
 		var $target   = $(ev.target),
@@ -225,6 +227,16 @@ Spaz.Drafts.rebuildList = function(){
 	sch.error('- account: ' + Spaz.Drafts.currentAccountId());
 	sch.error('- # drafts: ' + drafts.length);
 
+	if(drafts.length > 1 &&
+			!$popbox.find('div.meta input[name=destroy-all]')[0]){
+		$list.before(
+			'<div class="meta">' +
+				'<span class="count"></span>' +
+				'<input type="button" name="destroy-all" ' +
+					'value="Delete all drafts" />' +
+			'</div>'
+		);
+	}
 	i = drafts.length; while(i--){
 		// Drafts are retrieved oldest first, then with a reverse loop (for
 		// speed), rendered newest first.
@@ -235,7 +247,7 @@ Spaz.Drafts.rebuildList = function(){
 };
 
 Spaz.Drafts.updateRelativeTimes = function(){
-	var selector = '#popbox-content-drafts .datetime:not(:empty)';
+	var selector = $popbox.selector = ' .datetime:not(:empty)';
 	sch.updateRelativeTimes(selector, 'data-value');
 	$(selector).html(function(i, html){
 		return html.toLowerCase();
@@ -248,7 +260,8 @@ Spaz.Drafts.updateCounter = function(){
 	    text        = count + (count === 1 ? ' draft' : ' drafts'),
 	    $entryform  = $('#entryform'),
 	    $wrapper    = $('#entryform-drafts'),
-	    $text       = $wrapper.children('span.count');
+	    $text       = $wrapper.children('span.count').
+	                  	add($popbox.find('div.meta span.count'));
 
 	if(count > 0){
 		$entryform.addClass('has-drafts');
