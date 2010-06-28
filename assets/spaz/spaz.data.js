@@ -16,10 +16,10 @@ $.ajaxSetup(
 
 
 Spaz.Data.getAuthHeader = function(method, url, data) {
-    var auth_header;
-    var user = Spaz.Prefs.getUser();
-    var pass = Spaz.Prefs.getPass();
-    
+	var auth_header;
+	var user = $('#username').val();
+	var pass = $('#password').val();
+
     if (Spaz.Prefs.get('twitter-api-base-url').indexOf('twitter.com') != -1) { // this is Twitter. hopefully
 
         SpazAuth.addService(SPAZCORE_ACCOUNT_TWITTER, {
@@ -56,8 +56,6 @@ Spaz.Data.getAuthHeader = function(method, url, data) {
     		auth_header = auth.signRequest(method, url, data);
 		}
     } else {
-
-    	var pass = Spaz.Prefs.getPass();
         auth_header = "Basic " + Base64.encode(user + ":" + pass);
     }
     
@@ -145,11 +143,9 @@ Spaz.Data.$ajaxQueueFinished = 0;
  */
 Spaz.Data.verifyPassword = function() {
 
-	var user = $('#username').val();
-	var pass = $('#password').val();
-
-	Spaz.dump('user:'+user+' pass:********');
-
+	// var user = $('#username').val();
+	// var pass = $('#password').val();
+	
 	Spaz.UI.statusBar("Verifying username and password");
 	Spaz.UI.showLoading();
 

@@ -899,7 +899,7 @@ Spaz.Prefs.setSoundFileLocations = function() {
 };
 
 
-Spaz.Prefs.savePrefs = function() {
+Spaz.Prefs.savePrefs = function(onComplete) {
     var jsonPrefs = JSON.stringify(Spaz.Prefs.preferences, null, 4);
     Spaz.dump(jsonPrefs);
 
@@ -914,6 +914,10 @@ Spaz.Prefs.savePrefs = function() {
 
     Spaz.Prefs.saveUsername();
     Spaz.Prefs.savePassword();
+
+	if (onComplete) {
+		onComplete();
+	}
 };
 
 
@@ -988,10 +992,13 @@ Spaz.Prefs.loadPassword = function() {
 };
 
 Spaz.Prefs.setPrefs = function() {
-    // Spaz.dump('Verifying password');
-    Spaz.Data.verifyPassword();
-    // Spaz.dump('saving Prefs');
-    Spaz.Prefs.savePrefs();
+    Spaz.dump('saving Prefs');
+    Spaz.Prefs.savePrefs(function() {
+	    Spaz.dump('Verifying password');
+	    Spaz.Data.verifyPassword();
+	});
+
+
 }
 
 Spaz.Prefs.setCurrentUser = function() {
