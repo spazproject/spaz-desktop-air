@@ -60,6 +60,8 @@ var TweetModel = new JazzRecord.Model({
 			delete thisobj.id;
 			sch.debug('twitter_id:'+thisobj.twitter_id);
 			
+			sch.debug(sch.enJSON(thisobj));
+			
 			this.create(thisobj);
 			return this.getById(thisobj.twitter_id);
 		},

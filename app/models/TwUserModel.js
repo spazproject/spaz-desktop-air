@@ -108,29 +108,36 @@ var TwUserModel = new JazzRecord.Model({
 			sch.dump(userobj);
 			
 			user_id = this.userExistsId(userobj.id, true);
+			
+			try {
+				if ( user_id ) { // user_id is the DB record's id, not the twitter id
 
-			if ( user_id ) { // user_id is the DB record's id, not the twitter id
+					userobj.twitter_id = userobj.id;
+					delete userobj.id;			
 
-				userobj.twitter_id = userobj.id;
-				delete userobj.id;			
-				
-				olduser = this.find(user_id);
-				numchanges = 0;
-				for(var index in userobj) {
-					if (olduser[index] && userobj[index] != olduser[index]) {
-						olduser[index] = userobj[index];
-						numchanges++;
+					olduser = this.find(user_id);
+					numchanges = 0;
+					for(var index in userobj) {
+						if (olduser[index] && userobj[index] != olduser[index]) {
+							olduser[index] = userobj[index];
+							numchanges++;
+						}
 					}
+					if (numchanges > 0) {
+						olduser.save();
+					}
+					return user_id;
+				} else {
+					userobj.twitter_id = userobj.id;
+					delete userobj.id;
+					return this.create(userobj).id;
 				}
-				if (numchanges > 0) {
-					olduser.save();
-				}
-				return user_id;
-			} else {
-				userobj.twitter_id = userobj.id;
-				delete userobj.id;
-				return this.create(userobj).id;
+				
+			} catch(exc) {
+				sch.error('problem saving…');
+				sch.error(exc);
 			}
+			
 		},
 
 		getUserById: function(twitter_id) {
