@@ -141,8 +141,8 @@
 					if (data.url) {
 						prepPhotoPost(data.url);
 						$('#status-text').html('Complete');						
-					} else if (data.err) {
-						$('#status-text').html(data.err);
+					} else if (data.error) {
+						$('#status-text').html(data.error);
 					} else {
 						sch.error('unknown error');
 						$('#status-text').html('unknown error');

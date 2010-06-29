@@ -47,15 +47,65 @@ Spaz.Uploadservice.services = {
 			'api_key':'MzTrvEd/uPNjGDabr539FA',
 			'source':'Spaz'
 		},
-		'parseResponse': function(data) {}
+		'parseResponse': function(data) {
+			var parser=new DOMParser();
+			xmldoc = parser.parseFromString(data,"text/xml");
+	
+			var status;
+			var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+			status = rspAttr.getNamedItem("stat").nodeValue;
+			
+			if (status == 'ok') {
+				var mediaurl = $(xmldoc).find('mediaurl').text();
+				return {'url':mediaurl};
+			} else {
+				var errAttributes;
+				if (xmldoc.getElementsByTagName("err")[0]) {
+					errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
+				} else {
+					errAttributes = xmldoc.getElementsByTagName("error")[0].attributes;
+				}
+				
+				sch.error(errAttributes);
+				errMsg = errAttributes.getNamedItem("msg").nodeValue;
+				sch.error(errMsg);
+				return {'error':errMsg};
+			}
+		}
 	},
-	'yfrog' : {
-		'url' : 'http://yfrog.com/api/xauth_upload',
-		'extra': {
-			'api_key':''
-		},
-		'parseResponse': function(data) {}
-	},
+	// 'yfrog' : {
+	// 	'url' : 'http://yfrog.com/api/xauth_upload',
+	// 	'extra': {
+	// 		'key':'579HINUYe8d826dd61808f2580cbda7f13433310'
+	// 	},
+	// 	'parseResponse': function(data) {
+	// 		
+	// 		var parser=new DOMParser();
+	// 		xmldoc = parser.parseFromString(data,"text/xml");
+	// 
+	// 		var status;
+	// 		var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+	// 		status = rspAttr.getNamedItem("stat").nodeValue;
+	// 		
+	// 		if (status == 'ok') {
+	// 			var mediaurl = $(xmldoc).find('mediaurl').text();
+	// 			return {'url':mediaurl};
+	// 		} else {
+	// 			var errAttributes;
+	// 			if (xmldoc.getElementsByTagName("err")[0]) {
+	// 				errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
+	// 			} else {
+	// 				errAttributes = xmldoc.getElementsByTagName("error")[0].attributes;
+	// 			}
+	// 			
+	// 			sch.error(errAttributes);
+	// 			errMsg = errAttributes.getNamedItem("msg").nodeValue;
+	// 			sch.error(errMsg);
+	// 			return {'error':errMsg};
+	// 		}
+	// 		
+	// 	}
+	// },
 	'twitpic' : {
 		'url' : 'http://api.twitpic.com/2/upload.json',
 		'extra': {
@@ -113,7 +163,12 @@ Spaz.Uploadservice.services = {
 };
 
 
-Spaz.Uploadservice.getAuthHeader = function() {
+Spaz.Uploadservice.getAuthHeader = function(opts) {
+	
+	opts = sch.defaults({
+		'getEchoHeaderOpts':{}
+	}, opts);
+	
 	var auth_header;
 	var user = Spaz.Prefs.getUser();
 	var pass = Spaz.Prefs.getPass();
@@ -151,7 +206,7 @@ Spaz.Uploadservice.getAuthHeader = function() {
 			var account = accts.get(account_id);
 			auth.load(account.auth);
 			var twit	= new SpazTwit({'auth':auth});
-			auth_header = twit.getEchoHeader();
+			auth_header = twit.getEchoHeader(opts.getEchoHeaderOps);
 		}
 	} else {
 		pass = Spaz.Prefs.getPass();
@@ -193,13 +248,25 @@ Spaz.Uploadservice.upload = function(opts) {
 	/*
 		get auth stuff
 	*/
-	var auth_header = Spaz.Uploadservice.getAuthHeader();
+	var auth_header;
+	if (opts.service == 'yfrog') {
+		verify_url  = 'https://api.twitter.com/1/account/verify_credentials.xml';
+		auth_header = Spaz.Uploadservice.getAuthHeader({
+			'getEchoHeaderOpts': {
+				'verify_url':verify_url
+			}
+		});
+	} else {
+		verify_url  = 'https://api.twitter.com/1/account/verify_credentials.json';
+		auth_header = Spaz.Uploadservice.getAuthHeader();
+	}
+	
 	if (auth_header.indexOf('Basic ') === 0) {
 		opts.username = Spaz.Prefs.getUser();
 		opts.password = Spaz.Prefs.getPass();
 	} else {
 		opts.headers = {
-			'X-Auth-Service-Provider':'https://api.twitter.com/1/account/verify_credentials.json',
+			'X-Auth-Service-Provider': verify_url,
 			'X-Verify-Credentials-Authorization':auth_header
 		};
 		

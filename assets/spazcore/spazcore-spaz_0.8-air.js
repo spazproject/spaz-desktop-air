@@ -6240,7 +6240,13 @@ SpazTwit.prototype._processUser = function(item, section_name) {
  * returns the header string for oAuth Echo usage
  */
 SpazTwit.prototype.getEchoHeader = function(opts) {
-	var url = this.getAPIURL('verify_credentials');
+	var url;
+	if (opts && opts.verify_url) {
+		url = opts.verify_url
+	} else {
+		url = this.getAPIURL('verify_credentials');
+	}
+	
 	var method = 'GET';
 
 	var auth_header = this.auth.signRequest(method, url, null);
