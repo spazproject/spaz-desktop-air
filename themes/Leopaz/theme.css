@@ -2169,8 +2169,9 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
     from(#49525F), to(#7C8695),
     color-stop(0.02, #69727F), color-stop(0.95, #8C96A5));
 }
+/*
 #popbox-content-drafts div.content > div.meta{
-  /* See also #timeline-userlists-full-name */
+  /* See also #timeline-userlists-full-name * /
   overflow:hidden;
   padding:2px 11px;
   background:-webkit-gradient(
@@ -2191,6 +2192,7 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
     -webkit-border-radius:1em;
   font-size:0.875em;
 }
+*/
 #popbox-content-drafts div.content ul{
   margin:0;
   padding:0;

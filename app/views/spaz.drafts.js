@@ -19,9 +19,9 @@ $(function(){
 			Spaz.Drafts.setEditingId(null);
 		}
 	});
-	$popbox.delegate('.meta input[name=destroy-all]', 'click', function(ev){
-		Spaz.Drafts.destroyAll();
-	});
+	// $popbox.delegate('.meta input[name=destroy-all]', 'click', function(ev){
+	// 	Spaz.Drafts.destroyAll();
+	// });
 	$list.delegate('.draft-action', 'click', function(ev){
 		var $target   = $(ev.target),
 		    $listItem = $target.closest('li'),
@@ -185,16 +185,16 @@ Spaz.Drafts.rebuildList = function(){
 	    html = '';
 	$list.empty();
 
-	if(drafts.length > 1 &&
-			!$popbox.find('div.meta input[name=destroy-all]')[0]){
-		$list.before(
-			'<div class="meta">' +
-				'<span class="count"></span>' +
-				'<input type="button" name="destroy-all" ' +
-					'value="Delete all drafts" />' +
-			'</div>'
-		);
-	}
+	// if(drafts.length > 1 &&
+	// 		!$popbox.find('div.meta input[name=destroy-all]')[0]){
+	// 	$list.before(
+	// 		'<div class="meta">' +
+	// 			'<span class="count"></span>' +
+	// 			'<input type="button" name="destroy-all" ' +
+	// 				'value="Delete all drafts" />' +
+	// 		'</div>'
+	// 	);
+	// }
 	i = drafts.length; while(i--){
 		// Drafts are retrieved oldest first, then with a reverse loop (for
 		// speed), rendered newest first.
