@@ -231,17 +231,15 @@ Spaz.initialize = function() {
 	}
 
 
-	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
-		Spaz.Data.getRateLimitInfo(Spaz.Prefs.setRateLimit);
-	}
-
-
-
-
-
 
 	if (Spaz.Prefs.get('timeline-loadonstartup')) {
-		$('#tab-friends').trigger('click');
+		setTimeout(function() {
+			if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+				Spaz.Data.getRateLimitInfo(Spaz.Prefs.setRateLimit);
+			}
+			
+			$('#tab-friends').trigger('click');
+		}, 2000); // wait on this for a couple seconds, just to make sure we're all go
 	}
 
 
