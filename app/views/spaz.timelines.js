@@ -1276,8 +1276,6 @@ var SearchTimeline = function(args) {
 	});
 
 	this.buildSavedSearchesMenu = function(){
-		// TODO: Fix all the duplication with `this.buildListsMenu`
-
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisST.twit.setCredentials(auth);
@@ -1287,67 +1285,36 @@ var SearchTimeline = function(args) {
 		Spaz.UI.showLoading();
 
 		function onGetSavedSearchesSuccess(data){
-			var i, iMax, key,
-			    rootContainerSelector = '#container',
-			    $menu,
+			var i, iMax,
+			    menu,
 			    menuId = 'saved-searches-menu',
-			    menuClass = 'popup-menu',
-			    menuItem, menuItems = [], $menuItem,
-			    menuItemClass = 'saved-searches-menu-item',
-			    menuItemAttributes,
-			    menuTriggerSelector = '#search-saved',
-			    search;
+			    menuTriggerSelector = '#search-saved';
 
-			// If the menu exists, remove it
-			$('#' + menuId).remove();
-
-			// Collect menu data
-			for(i = 0, iMax = data.length; i < iMax; i++){
-				search = data[i];
-				menuItems[i] = {
-					label: search.name,
-					id:    'saved-search-' + search.id,
-					attributes: {
-						'data-saved-search-id':       search.id,
-						'data-saved-search-name':     search.name,
-						'data-saved-search-query':    search.query,
-						'data-saved-search-position': search.position
-					},
-					onclick: function(e){
-						var query = $(this).attr('data-saved-search-query');
-						$('#search-for').val(query);
-						thisST.timeline.refresh();
-					}
-				};
+			function onMenuItemClick(e, searchData){
+				$('#search-for').val(searchData.query);
+				thisST.timeline.refresh();
 			}
 
-			// Create menu
-			$menu = $('<ul id="' + menuId + '" class="' + menuClass + '"></ul>');
-			for(i = 0, iMax = menuItems.length; i < iMax; i++){
-				menuItem = menuItems[i];
-				menuItemAttributes = menuItem.attributes;
-				$menuItem = $(
-					'<li id="' + menuItem.id +
-						'" class="menuitem ' + menuItemClass + '">' +
-						menuItem.label +
-					'</li>');
-				for(key in menuItemAttributes){
-					if(menuItemAttributes.hasOwnProperty(key)){
-						$menuItem.attr(key, menuItemAttributes[key]);
+			// Build menu
+			menu = new SpazMenu({
+				base_id:    menuId,
+				base_class: 'spaz-menu',
+				li_class:   'spaz-menu-item',
+				items_func: function(searchesData){
+					var i, iMax, searchData, items = [];
+
+					// TODO: Sort by each `searchesData[i].position`
+					for(i = 0, iMax = searchesData.length; i < iMax; i++){
+						searchData = searchesData[i];
+						items.push({
+							label:   searchData.name,
+							handler: onMenuItemClick,
+							data:    {query: searchData.query}
+						});
 					}
+					return items;
 				}
-				$menu.append($menuItem);
-
-				// Attach menu item click handler, if any
-				if(menuItem.onclick){
-					$menuItem.bind('click', {onClick: menuItem.onclick}, function(e){
-						e.data.onClick.call(this, e); // `this`: The clicked item
-					});
-				}
-			}
-
-			// Add menu to DOM
-			$menu.appendTo(rootContainerSelector);
+			});
 
 			// Bind menu toggling handlers
 			(function(){
@@ -1355,35 +1322,30 @@ var SearchTimeline = function(args) {
 
 				function showMenu(e){
 					var $this = $(e.target),
-					    pos   = $this.offset();
-					$menu.css({
-						position: 'absolute',
-						left:     pos.left + 'px',
-						top:      (pos.top + $this.height()) + 'px'
-					}).show();
-				}
-				function hideMenu(e){ $menu.hide(); }
-				function toggleMenu(e){
-					if($menu.is(':visible')){
-						hideMenu(e);
+					    pos   = $this.offset(),
+					    $menu = $('#' + menuId);
+					if(!!$menu[0]){
+						$menu.show(); // Show existing
 					}else{
-						showMenu(e);
+						menu.show(e, data); // Build and show
 					}
+				}
+				function hideMenu(e){ menu.hide(e); }
+				function toggleMenu(e){
+					$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
 				}
 
 				$(menuTriggerSelector).live('click', function(e){
 					toggleMenu(e);
 					$document.one('click', function(e){
-						if(!$(e.target).is(menuTriggerSelector)){
-							hideMenu(e);
-						}
-					});
+						if(!$(e.target).is(menuTriggerSelector)){ hideMenu(e); }
+					})
 				});
-			})();
 
-			Spaz.UI.statusBar('Saved searches loaded for @' + username);
-			Spaz.UI.hideLoading();
-		}
+				Spaz.UI.statusBar('Saved searches loaded for @' + username);
+				Spaz.UI.hideLoading();
+			})();
+		} // onGetSavedSearchesSuccess
 
 		function onGetSavedSearchesFailure(msg){
 			Spaz.UI.statusBar(
