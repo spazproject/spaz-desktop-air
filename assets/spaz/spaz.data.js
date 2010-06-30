@@ -37,7 +37,8 @@ Spaz.Data.getAuthHeader = function(method, url, data) {
 		if ( !(account_id = prefs.get(user + '_account_id')) ) {
 		    
 		    try {
-		        var rs = auth.authorize(user, pass)
+		        var rs = auth.authorize(user, pass);
+				sch.error("RESULT for user "+user+":"+rs);
 		    } catch(e) {
 		        sch.error(e);
 		        rs = false;
@@ -59,7 +60,7 @@ Spaz.Data.getAuthHeader = function(method, url, data) {
         auth_header = "Basic " + Base64.encode(user + ":" + pass);
     }
     
-    sch.error(auth_header);
+    sch.error('auth_header:'+auth_header);
     return auth_header;
     
 }
