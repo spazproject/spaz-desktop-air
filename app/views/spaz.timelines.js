@@ -1313,7 +1313,8 @@ var SearchTimeline = function(args) {
 						});
 					}
 					return items;
-				}
+				},
+				close_on_any_click: false
 			});
 
 			// Bind menu toggling handlers

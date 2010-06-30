@@ -30,6 +30,7 @@
  * @param {string} [opts.base_class] the class attribute for the menu's base element. default is 'spaz_menu'
  * @param {string} [opts.li_class] the class attribute for the menu's base element. default is 'spaz_menu_li'
  * @param {string} [opts.show_immediately] whether or not to immediately show the menu on creation. Default is TRUE
+ * @param {string} [opts.close_on_any_click] whether or not to close the menu when anything is clicked. Default is TRUE
  */
 
 if(typeof SpazMenu === 'undefined' || !SpazMenu){
@@ -40,11 +41,14 @@ SpazMenu = function(opts) {
 		'base_id'   :'spaz_menu',
 		'base_class':'spaz_menu',
 		'li_class'  :'spaz_menu_li',
-		'show_immediately':true
+		'show_immediately':  true,
+		'close_on_any_click':true
 	}, opts);
 	
 	// close on ANY clicks
-	jQuery(document).bind('click', {'spazmenu':this}, this.hide);
+	if(this.opts.close_on_any_click){
+		jQuery(document).bind('click', {'spazmenu':this}, this.hide);
+	}
 	
 	/**
 	 * dismiss with escape 
@@ -149,7 +153,9 @@ SpazMenu.prototype.destroy = function() {
 
 	
 	// close on ANY clicks
-	jQuery(document).unbind('click', {'spazmenu':this}, this.hide);
+	if(this.opts.close_on_any_click){
+		jQuery(document).unbind('click', {'spazmenu':this}, this.hide);
+	}
 	
 	
 	jQuery(document).unbind('keydown', {'spazmenu':this}, this.keypressHide);
