@@ -1073,7 +1073,8 @@ div.spaz-menu{
   position:absolute;
   display:none;
   margin:0;
-  width:200px;
+  width:auto;
+  margin-right:20px; /* Margin away from viewport's right edge */
   padding:4px 0;
   background-color:rgba(255, 255, 255, 0.9);
   border:1px solid #dfdfdf;

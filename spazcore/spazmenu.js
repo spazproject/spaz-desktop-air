@@ -208,6 +208,20 @@ SpazMenu.prototype._positionBeforeShow = function(position) {
  */
 SpazMenu.prototype._reposition = function(e, data) {
 	sch.debug('_reposition');
+
+	var jqMenu        = jQuery('#' + this.opts.base_id),
+	    viewportWidth = jQuery(window).width(),
+	    menuWidth     = jqMenu.width(),
+	    menuOffset    = jqMenu.offset();
+
+	if(menuWidth + menuOffset.left > viewportWidth){
+		jqMenu.offset(function(i, offset){
+			return {
+				left: viewportWidth - menuWidth,
+				top:  offset.top
+			};
+		});
+	}
 };
 
 /**
