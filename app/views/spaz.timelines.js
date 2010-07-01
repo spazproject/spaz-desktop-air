@@ -1061,27 +1061,42 @@ var UserlistsTimeline = function(args) {
 			sch.debug($menu.get(0).innerHTML);
 			
 			/*
-				show menu on event
+				bind menu toggling handlers
 			*/
-			$(menu_trigger_selector).live('click', function(e) {
+			(function(){
 				/*
 					thank you http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another
 				*/
-				var $this	= $(this),
-					pos		= $this.offset(),
-					height	= $this.height(),
-					width	= $this.width();
-				$menu.css({
-					position: 'absolute',
-					left:	  pos.left + 'px',
-					top:	  (pos.top + height) + 'px'
-				}).show();
-				
-				$(document).one('click', function() {
-					$menu.hide();
+				var $document = $(document);
+
+				function showMenu(e){
+					var $this = $(e.target),
+					    pos   = $this.offset();
+					$menu.css({
+						position: 'absolute',
+						left:     pos.left + 'px',
+						top:      (pos.top + $this.height()) + 'px'
+					}).show();
+				}
+				function hideMenu(e){ $menu.hide(); }
+				function toggleMenu(e){
+					if($menu.is(':visible')){
+						hideMenu(e);
+					}else{
+						showMenu(e);
+					}
+				}
+
+				$(menu_trigger_selector).live('click', function(e){
+					toggleMenu(e);
+					$document.one('click', function(e){
+						if(!$(e.target).is(menu_trigger_selector)){
+							hideMenu(e);
+						}
+					});
 				});
-			});
-			
+			})();
+
 			Spaz.UI.statusBar("Lists loaded for @"+username+ "…");
 			Spaz.UI.hideLoading();
 			
@@ -1259,6 +1274,100 @@ var SearchTimeline = function(args) {
 			
 		}
 	});
+
+	this.buildSavedSearchesMenu = function(){
+		var auth     = Spaz.Prefs.getAuthObject(),
+		    username = Spaz.Prefs.getUsername();
+		thisST.twit.setCredentials(auth);
+		thisST.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+		sch.debug('Loading saved searches for @'+username+'…');
+		Spaz.UI.statusBar('Loading saved searches for @'+username+'…');
+		Spaz.UI.showLoading();
+
+		function onGetSavedSearchesSuccess(data){
+			var i, iMax, menu, menuId = 'saved-searches-menu';
+
+			function onMenuItemClick(e, searchData){
+				$('#search-for').val(searchData.query);
+				thisST.timeline.refresh();
+			}
+
+			// Build menu
+			menu = new SpazMenu({
+				base_id:    menuId,
+				base_class: 'spaz-menu',
+				li_class:   'spaz-menu-item',
+				items_func: function(searchesData){
+					var i, iMax, searchData, items = [];
+
+					// TODO: Sort by each `searchesData[i].position`
+					for(i = 0, iMax = searchesData.length; i < iMax; i++){
+						searchData = searchesData[i];
+						items.push({
+							label:   searchData.name,
+							handler: onMenuItemClick,
+							data:    {query: searchData.query}
+						});
+					}
+					return items;
+				},
+				close_on_any_click: false
+			});
+
+			// Bind menu toggling handlers
+			(function(){
+				var $toggle = $('#search-saved');
+
+				function showMenu(e){
+					var $this = $(e.target),
+					    $menu = $('#' + menuId),
+					    togglePos;
+					if(!!$menu[0]){
+						$menu.show(); // Show existing
+					}else{
+						// Build and show
+						togglePos = $toggle.offset();
+						menu.show(e, data, {
+							position: {
+								left: togglePos.left,
+								top:  togglePos.top + $toggle.height()
+							}
+						});
+					}
+				}
+				function hideMenu(e){ menu.hide(e); }
+				function toggleMenu(e){
+					$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+				}
+
+				$($toggle.selector).live('click', function(e){
+					// Using $.fn.live because `$toggle.click(function...)` kept running
+					// the following document click handler immediately, which wasn't
+					// intended.
+
+					toggleMenu(e);
+					$(document).one('click', function(e){
+						if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
+					})
+				});
+
+				Spaz.UI.statusBar('Saved searches loaded for @' + username);
+				Spaz.UI.hideLoading();
+			})();
+		} // onGetSavedSearchesSuccess
+
+		function onGetSavedSearchesFailure(msg){
+			Spaz.UI.statusBar(
+				'Loading saved searches for @' + username + ' failed!');
+			Spaz.UI.hideLoading();
+		}
+
+		thisST.twit.getSavedSearches(
+			onGetSavedSearchesSuccess, onGetSavedSearchesFailure);
+	};
+
+	thisST.buildSavedSearchesMenu();
+
 };
 
 SearchTimeline.prototype = new AppTimeline();
