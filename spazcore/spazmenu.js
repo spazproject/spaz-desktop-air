@@ -68,12 +68,15 @@ SpazMenu = function(opts) {
  * Creates the menu, but doesn't show 
  * @param {object} trigger_event the event that triggered the show
  * @param {object} itemsdata a data structure that will be passed to the items_func 
+ * @param {object} [showOpts.position] {left: <number>, top: <number>} position at which to show the menu. Defaults to trigger_event coordinates.
  */
-SpazMenu.prototype.show = function(trigger_event, itemsdata) {
+SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 	sch.debug('creating');
 	
 	var that = this;
-	
+
+	if(!showOpts){ showOpts = {}; }
+
 	// map the triggering event
 	this.trigger_event = trigger_event;
 
@@ -113,9 +116,18 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata) {
 	
 
 	sch.debug('show');
-	
-	this._postionBeforeShow(trigger_event);
-	jQuery('#'+this.opts.base_id).show();
+
+	showOpts.position = jQuery.extend({
+		left: trigger_event.clientX,
+		top:  trigger_event.clientY
+	}, showOpts.position);
+
+	this._positionBeforeShow({
+		// Filter out any stray properties aside from these:
+		left: showOpts.position.left,
+		top:  showOpts.position.top
+	});
+	jQuery('#' + this.opts.base_id).show();
 	this._reposition(trigger_event);
 };
 
@@ -184,19 +196,11 @@ SpazMenu.prototype.hideAndDestroy = function(e) {
 
 /**
  * sets the position of the menu right before we show it 
+ * @param {object} position {left: <number>, top: <number>}
  */
-SpazMenu.prototype._postionBeforeShow = function(e, data) {
-	sch.debug('_postionBeforeShow');
-	var jqtrigger = jQuery(e.target);
-	
-	// var top  = jqtrigger.position().top + jqtrigger.height();
-	// var left = jqtrigger.position().left+ jqtrigger.width();
-	
-	var top  = e.clientY;
-	var left = e.clientX;
-	
-	jQuery('#'+this.opts.base_id).css('top', top);
-	jQuery('#'+this.opts.base_id).css('left', left);
+SpazMenu.prototype._positionBeforeShow = function(position) {
+	sch.debug('_positionBeforeShow');
+	jQuery('#' + this.opts.base_id).css(position);
 };
 
 /**
