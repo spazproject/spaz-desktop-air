@@ -1285,10 +1285,7 @@ var SearchTimeline = function(args) {
 		Spaz.UI.showLoading();
 
 		function onGetSavedSearchesSuccess(data){
-			var i, iMax,
-			    menu,
-			    menuId = 'saved-searches-menu',
-			    menuTriggerSelector = '#search-saved';
+			var i, iMax, menu, menuId = 'saved-searches-menu';
 
 			function onMenuItemClick(e, searchData){
 				$('#search-for').val(searchData.query);
@@ -1319,16 +1316,23 @@ var SearchTimeline = function(args) {
 
 			// Bind menu toggling handlers
 			(function(){
-				var $document = $(document);
+				var $toggle = $('#search-saved');
 
 				function showMenu(e){
 					var $this = $(e.target),
-					    pos   = $this.offset(),
-					    $menu = $('#' + menuId);
+					    $menu = $('#' + menuId),
+					    togglePos;
 					if(!!$menu[0]){
 						$menu.show(); // Show existing
 					}else{
-						menu.show(e, data); // Build and show
+						// Build and show
+						togglePos = $toggle.offset();
+						menu.show(e, data, {
+							position: {
+								left: togglePos.left,
+								top:  togglePos.top + $toggle.height()
+							}
+						});
 					}
 				}
 				function hideMenu(e){ menu.hide(e); }
@@ -1336,10 +1340,14 @@ var SearchTimeline = function(args) {
 					$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
 				}
 
-				$(menuTriggerSelector).live('click', function(e){
+				$($toggle.selector).live('click', function(e){
+					// Using $.fn.live because `$toggle.click(function...)` kept running
+					// the following document click handler immediately, which wasn't
+					// intended.
+
 					toggleMenu(e);
-					$document.one('click', function(e){
-						if(!$(e.target).is(menuTriggerSelector)){ hideMenu(e); }
+					$(document).one('click', function(e){
+						if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
 					})
 				});
 
