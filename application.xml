@@ -4,9 +4,9 @@
 <!-- AIR Application Descriptor File. See
 	http://www.adobe.com/go/air_1.1_application_descriptor. -->
 	<id>Spaz.AIR</id>
-    <!-- <publisherID>16CB261D461B1CA2027F7C39946115FA2DC8CD7F.1</publisherID> -->
+	<publisherID>16CB261D461B1CA2027F7C39946115FA2DC8CD7F.1</publisherID>
 	<name>Spaz</name>
-	<version>0.8.6</version>
+	<version>0.8.7</version>
 	<filename>Spaz</filename>
 	<description>A Twitter client</description>
 	<copyright>Copyright Funkatron Productions</copyright>

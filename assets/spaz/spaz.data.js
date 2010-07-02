@@ -397,7 +397,7 @@ Spaz.Data.makeFavorite = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('favorites_create'), data));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('favorites_create').replace(/{{ID}}/, postid), data));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
@@ -440,7 +440,7 @@ Spaz.Data.makeNotFavorite = function(postid) {
 			//Spaz.Data.loadUserTimelineData('tab-user');
 		},
 		beforeSend:function(xhr){
-			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('favorites_destroy'), data));
+			xhr.setRequestHeader("Authorization", Spaz.Data.getAuthHeader("POST", Spaz.Data.getAPIURL('favorites_destroy').replace(/{{ID}}/, postid), data));
 			// cookies just get in the way.	 eliminate them
 			xhr.setRequestHeader("Cookie", "");
 			xhr.setRequestHeader("If-Modified-Since", 'Sun, 1 Jan 2007 18:54:41 GMT');
