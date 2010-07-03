@@ -974,139 +974,92 @@ var UserlistsTimeline = function(args) {
 	
 	
 	this.buildListsMenu = function() {
-		var auth = Spaz.Prefs.getAuthObject();
-		var username = Spaz.Prefs.getUsername();
+		// TODO: Refactor out repetition with `this.buildSavedSearchesMenu`
+
+		var auth     = Spaz.Prefs.getAuthObject(),
+		    username = Spaz.Prefs.getUsername();
 		thisULT.twit.setCredentials(auth);
-		sch.error('settoing base URL');
 		thisULT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 		sch.debug("Loading lists for @"+username+ "…");
 		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
 		Spaz.UI.showLoading();
-		
-		
-		
-		thisULT.twit.getLists(username, function(data) {
-			/*
-				build a new menu
-			*/
-			var i, iMax,
-				root_container_selector = '#container',
-				menu_id = 'lists-menu',
-				menu_class = 'popup-menu',
-				menu_items = [],
-				menu_item_class = 'userlists-menu-item',
-				menu_trigger_selector = '#view-userlists';
-			
-			// if it exists, remove
-			$('#'+menu_id).remove();
-			
-			for (i = 0, iMax = data.lists.length; i < iMax; i++){
-				var thislist = data.lists[i];
-				menu_items[i] = {
-					'label':thislist.full_name,
-					'id':'userlist-'+thislist.user.screen_name+'-'+thislist.slug, // this should be unique!
-					'attributes':{
-						'data-list-id':thislist.id,
-						'data-list-name':thislist.name,
-						'data-list-slug':thislist.slug,
-						'data-user-screen_name':thislist.user.screen_name,
-						'title':thislist.description
-					},
-					'onclick':function(e) {
-						var $this = $(this),
-							slug  = $this.attr('data-list-slug'),
-							user  = $this.attr('data-user-screen_name');
-						thisULT.setlist(slug, user);
-					}
-				};
+
+		function onDataRequestSuccess(data){
+			var i, iMax, menu,
+			    menuId  = 'lists-menu',
+			    $toggle = $('#view-userlists');
+
+			// Build menu
+			function onMenuItemClick(e, itemData){
+				thisULT.setlist(itemData.slug, itemData.username);
 			}
-		
-			
-			/*
-				create container for menu
-			*/
-			$(root_container_selector).append('<ul id="'+menu_id+'" class="'+menu_class+'"></ul>');
-			var $menu = $('#' + menu_id);
-			
-			/*
-				add <li> items to menu
-			*/
-			for (i = 0, iMax = menu_items.length; i < iMax; i++){
+			menu = new SpazMenu({
+				base_id:    menuId,
+				base_class: 'spaz-menu',
+				li_class:   'spaz-menu-item',
+				items_func: function(itemsData){
+					var i, iMax, itemData, items = [];
 
-				var menuItem = menu_items[i],
-					menuItemAttributes = menuItem.attributes,
-					jqitem = $('<li id="'+menuItem.id+'" class="menuitem '+menu_item_class+'">'+menuItem.label+'</li>');
-
-				for (var key in menuItemAttributes) {
-					if(menuItemAttributes.hasOwnProperty(key)){
-						jqitem.attr(key, menuItemAttributes[key]);
+					for(i = 0, iMax = itemsData.lists.length; i < iMax; i++){
+						itemData = itemsData.lists[i];
+						items.push({
+							label:   itemData.name,
+							handler: onMenuItemClick,
+							data: {
+								slug:     itemData.slug,
+								username: itemData.user.screen_name
+							}
+						});
 					}
-				}
-
-				$menu.append(jqitem);
-				
-				/*
-					if onclick is defined for this item, bind it to the ID of this element
-				*/
-				if (menuItem.onclick) {
-					sch.debug(menuItem.id);
-					sch.debug(menuItem.onclick);
-					
-					$('#'+menuItem.id).bind('click', {'onClick':menuItem.onclick}, function(e) {
-						e.data.onClick.call(this, e); // 'this' refers to the clicked element
+					items.sort(function(a, b){
+						return (a.label === b.label) ? 0 :
+						       (a.label > b.label)   ? 1 : -1;
 					});
-				}
-			}
-			
-			sch.debug($menu.get(0).innerHTML);
-			
-			/*
-				bind menu toggling handlers
-			*/
-			(function(){
-				/*
-					thank you http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another
-				*/
-				var $document = $(document);
+					return items;
+				},
+				close_on_any_click: false
+			});
 
-				function showMenu(e){
-					var $this = $(e.target),
-					    pos   = $this.offset();
-					$menu.css({
-						position: 'absolute',
-						left:     pos.left + 'px',
-						top:      (pos.top + $this.height()) + 'px'
-					}).show();
-				}
-				function hideMenu(e){ $menu.hide(); }
-				function toggleMenu(e){
-					if($menu.is(':visible')){
-						hideMenu(e);
-					}else{
-						showMenu(e);
-					}
-				}
-
-				$(menu_trigger_selector).live('click', function(e){
-					toggleMenu(e);
-					$document.one('click', function(e){
-						if(!$(e.target).is(menu_trigger_selector)){
-							hideMenu(e);
+			// Bind menu toggling handlers
+			function showMenu(e){
+				var $menu = $('#' + menuId),
+				    togglePos;
+				if(!!$menu[0]){
+					$menu.show(); // Show existing
+				}else{
+					// Build and show
+					togglePos = $toggle.offset();
+					menu.show(e, data, {
+						position: {
+							left: togglePos.left,
+							top:  togglePos.top + $toggle.height()
 						}
 					});
-				});
-			})();
+				}
+			}
+			function hideMenu(e){ menu.hide(e); }
+			function toggleMenu(e){
+				$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+			}
 
-			Spaz.UI.statusBar("Lists loaded for @"+username+ "…");
+			$($toggle.selector).live('click', function(e){
+				toggleMenu(e);
+				$(document).one('click', function(e){
+					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
+				});
+			});
+
+			Spaz.UI.statusBar('Loaded lists for @' + username);
 			Spaz.UI.hideLoading();
-			
-		}, function(msg) {
-			Spaz.UI.statusBar("Loading lists for @"+username+ " failed!");
+		} // function onDataRequestSuccess
+
+		function onDataRequestFailure(msg){
+			Spaz.UI.statusBar('Error loading lists for @' + username);
 			Spaz.UI.hideLoading();
-			
-		});
-		
-		
+		}
+
+		thisULT.twit.getLists(
+			username, onDataRequestSuccess, onDataRequestFailure);
 	};
 
 	/*
@@ -1276,6 +1229,8 @@ var SearchTimeline = function(args) {
 	});
 
 	this.buildSavedSearchesMenu = function(){
+		// TODO: Refactor out repetition with `this.buildListsMenu`
+
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisST.twit.setCredentials(auth);
@@ -1284,86 +1239,85 @@ var SearchTimeline = function(args) {
 		Spaz.UI.statusBar('Loading saved searches for @'+username+'…');
 		Spaz.UI.showLoading();
 
-		function onGetSavedSearchesSuccess(data){
-			var i, iMax, menu, menuId = 'saved-searches-menu';
-
-			function onMenuItemClick(e, searchData){
-				$('#search-for').val(searchData.query);
-				thisST.timeline.refresh();
-			}
+		function onDataRequestSuccess(data){
+			var i, iMax, menu,
+			    menuId  = 'saved-searches-menu',
+			    $toggle = $('#search-saved');
 
 			// Build menu
+			function onMenuItemClick(e, itemData){
+				$('#search-for').val(itemData.query);
+				thisST.timeline.refresh();
+			}
 			menu = new SpazMenu({
 				base_id:    menuId,
 				base_class: 'spaz-menu',
 				li_class:   'spaz-menu-item',
-				items_func: function(searchesData){
-					var i, iMax, searchData, items = [];
+				items_func: function(itemsData){
+					var i, iMax, itemData, items = [];
 
-					// TODO: Sort by each `searchesData[i].position`
-					for(i = 0, iMax = searchesData.length; i < iMax; i++){
-						searchData = searchesData[i];
+					for(i = 0, iMax = itemsData.length; i < iMax; i++){
+						itemData = itemsData[i];
 						items.push({
-							label:   searchData.name,
+							label:   itemData.name,
 							handler: onMenuItemClick,
-							data:    {query: searchData.query}
+							data:    {query: itemData.query}
 						});
 					}
+					items.sort(function(a, b){
+						// TODO: Sort by `a.position` instead when Twitter allows changing
+						//       saved searches' positions
+						return (a.label === b.label) ? 0 :
+						       (a.label > b.label)   ? 1 : -1;
+					});
 					return items;
 				},
 				close_on_any_click: false
 			});
 
 			// Bind menu toggling handlers
-			(function(){
-				var $toggle = $('#search-saved');
-
-				function showMenu(e){
-					var $this = $(e.target),
-					    $menu = $('#' + menuId),
-					    togglePos;
-					if(!!$menu[0]){
-						$menu.show(); // Show existing
-					}else{
-						// Build and show
-						togglePos = $toggle.offset();
-						menu.show(e, data, {
-							position: {
-								left: togglePos.left,
-								top:  togglePos.top + $toggle.height()
-							}
-						});
-					}
+			function showMenu(e){
+				var $menu = $('#' + menuId),
+				    togglePos;
+				if(!!$menu[0]){
+					$menu.show(); // Show existing
+				}else{
+					// Build and show
+					togglePos = $toggle.offset();
+					menu.show(e, data, {
+						position: {
+							left: togglePos.left,
+							top:  togglePos.top + $toggle.height()
+						}
+					});
 				}
-				function hideMenu(e){ menu.hide(e); }
-				function toggleMenu(e){
-					$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-				}
+			}
+			function hideMenu(e){ menu.hide(e); }
+			function toggleMenu(e){
+				$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+			}
 
-				$($toggle.selector).live('click', function(e){
-					// Using $.fn.live because `$toggle.click(function...)` kept running
-					// the following document click handler immediately, which wasn't
-					// intended.
+			$($toggle.selector).live('click', function(e){
+				// Using $.fn.live because `$toggle.click(function...)` kept running
+				// the following document click handler immediately, which wasn't
+				// intended.
 
-					toggleMenu(e);
-					$(document).one('click', function(e){
-						if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-					})
-				});
+				toggleMenu(e);
+				$(document).one('click', function(e){
+					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
+				})
+			});
 
-				Spaz.UI.statusBar('Saved searches loaded for @' + username);
-				Spaz.UI.hideLoading();
-			})();
-		} // onGetSavedSearchesSuccess
+			Spaz.UI.statusBar('Loaded saved searches for @' + username);
+			Spaz.UI.hideLoading();
+		} // function onDataRequestSuccess
 
-		function onGetSavedSearchesFailure(msg){
-			Spaz.UI.statusBar(
-				'Loading saved searches for @' + username + ' failed!');
+		function onDataRequestFailure(msg){
+			Spaz.UI.statusBar('Error loading saved searches for @' + username);
 			Spaz.UI.hideLoading();
 		}
 
-		thisST.twit.getSavedSearches(
-			onGetSavedSearchesSuccess, onGetSavedSearchesFailure);
+		thisST.twit.getSavedSearches(onDataRequestSuccess, onDataRequestFailure);
 	};
 
 	thisST.buildSavedSearchesMenu();

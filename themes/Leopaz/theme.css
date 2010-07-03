@@ -1080,6 +1080,7 @@ div.spaz-menu{
   border:1px solid #dfdfdf;
   border-radius:4px;
     -webkit-border-radius:4px;
+  cursor:default;
 }
   div.spaz-menu ul{
     margin:0;
