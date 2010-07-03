@@ -209,15 +209,16 @@ SpazMenu.prototype._positionBeforeShow = function(position) {
 SpazMenu.prototype._reposition = function(e, data) {
 	sch.debug('_reposition');
 
-	var jqMenu        = jQuery('#' + this.opts.base_id),
-	    viewportWidth = jQuery(window).width(),
-	    menuWidth     = jqMenu.width(),
-	    menuOffset    = jqMenu.offset();
+	var jqMenu          = jQuery('#' + this.opts.base_id),
+	    viewportWidth   = jQuery(window).width(),
+	    menuWidth       = jqMenu.width(),
+	    menuMarginRight = parseInt(jqMenu.css('margin-right'), 10),
+	    menuOffset      = jqMenu.offset();
 
-	if(menuWidth + menuOffset.left > viewportWidth){
+	if(menuOffset.left + menuWidth + menuMarginRight > viewportWidth){
 		jqMenu.offset(function(i, offset){
 			return {
-				left: viewportWidth - menuWidth,
+				left: viewportWidth - menuWidth - menuMarginRight,
 				top:  offset.top
 			};
 		});
