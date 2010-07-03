@@ -790,6 +790,7 @@ ul#account-list li:nth-child(even){
         #chars-left{
           float:left;
           color:#c0c0c0;
+          cursor:default;
           font-size:12px;
           line-height:20px;
         }
@@ -1081,6 +1082,7 @@ div.spaz-menu{
   border-radius:4px;
     -webkit-border-radius:4px;
   cursor:default;
+  z-index:9999;
 }
   div.spaz-menu ul{
     margin:0;
@@ -1102,6 +1104,9 @@ div.spaz-menu{
       border-top-color:#5c83ea;
       border-bottom-color:#1d58e7;
       color:#fff;
+    }
+    div.spaz-menu#entrybox-shorten-menu li.spaz-menu-item{
+      white-space:nowrap;
     }
 
 

@@ -12,7 +12,8 @@ function SpazPostPanel(opts) {
 	this.irt_message    = opts.irt_message    || document.getElementById('irt-message');
 	this.$irt_message   = jQuery(this.irt_message);
 	this.irt_id_attr    = opts.irt_id_attr    || 'data-status-id';
-	this.menu      = opts.menu      || null;
+	// this.menu      = opts.menu      || null;
+	this.menus     = opts.menus     || {};
 	this.maxlen    = opts.maxlen    || 140;
 	this.on_over   = opts.on_over   || this.on_over_default;
 	this.on_under  = opts.on_under  || this.on_under_default;
@@ -48,9 +49,8 @@ function SpazPostPanel(opts) {
 
 	};
 
-
 	this.addListeners();
-
+	this.buildShortenMenu();
 }
 
 
@@ -166,19 +166,31 @@ SpazPostPanel.prototype.getMessageText = function() {
 
 
 SpazPostPanel.prototype.addListeners = function() {
-	/*
-		add listeners
-	*/
+	var _this = this;
+
 	sc.helpers.listen(this.textarea, 'keyup', this.updateCharCount);
 	sc.helpers.listen(this.textarea, 'focus', this.updateCharCount);
 	sc.helpers.listen(this.textarea, 'blur', this.updateCharCount);
 
+	jQuery('#entrybox').focus(function(e){
+		Spaz.UI.showEntryboxTip();
+		$('#entrybox-popup').fadeIn('fast');
+	}).blur(function(e){
+		setTimeout(function(){
+			// Hack: Brief delay to allow menus to appear, if any. A race condition
+			// can occur here, where the menu only starts building after
+			// #entrybox-popup has begun fading.
+			if(!jQuery('#' + _this.menus.shorten.opts.base_id + ':visible')[0]){
+				Spaz.UI.resetStatusBar();
+				$("body").focus();
+				$('#entrybox-popup').fadeOut('fast');
+			}
+		}, 100);
+		return false;
+	});
 };
 
 SpazPostPanel.prototype.removeListeners = function() {
-	/*
-		remove listeners
-	*/
 	sc.helpers.unlisten(this.textarea, 'keyup', this.updateCharCount);
 	sc.helpers.unlisten(this.textarea, 'focus', this.updateCharCount);
 	sc.helpers.unlisten(this.textarea, 'blur', this.updateCharCount);
@@ -197,6 +209,57 @@ SpazPostPanel.prototype.on_under_default = function(info) {
 	jQuery(info.entry_el).addClass('under').removeClass('over');
 };
 
+
+SpazPostPanel.prototype.buildShortenMenu = function(){
+	var menuId  = 'entrybox-shorten-menu',
+	    menu,
+	    $toggle = $('#entrybox-shorten');
+
+	// Build menu
+	menu = this.menus.shorten = new SpazMenu({
+		base_id:    menuId,
+		base_class: 'spaz-menu',
+		li_class:   'spaz-menu-item',
+		items_func: function(){
+			return [
+				{ id: 'entrybox-shortenText', label: 'Shorten text' },
+				{ id: 'entrybox-shortenURLs', label: 'Shorten URLs' }
+			];
+		},
+		close_on_any_click: false
+	});
+
+	// Build menu toggling handlers
+	function showMenu(e){
+		var $menu     = $('#' + menuId),
+		    togglePos = $toggle.offset();
+		menu.show(e, null, {
+			position: {
+				// Position below toggle:
+				left: togglePos.left,
+				top:  togglePos.top + $toggle.height()
+			}
+		});
+		$('#entrybox').focus();
+	}
+	function hideMenu(e){
+		menu.hide(e);
+	}
+	function toggleMenu(e){
+		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+	}
+
+	$($toggle.selector).live('click', function(e){
+		toggleMenu(e);
+
+		// Allow the next click to hide the menu, unless the click is on the
+		// toggle. In that case, the previous call to `toggleMenu` should have the
+		// final effect on the menu's state.
+		$(document).one('click', function(e){
+			if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
+		});
+	});
+};
 
 SpazPostPanel.prototype.shortenText = function() {
 	var stxt = new SpazShortText();

@@ -1031,6 +1031,7 @@ var UserlistsTimeline = function(args) {
 					togglePos = $toggle.offset();
 					menu.show(e, data, {
 						position: {
+							// Position below toggle:
 							left: togglePos.left,
 							top:  togglePos.top + $toggle.height()
 						}
@@ -1286,6 +1287,7 @@ var SearchTimeline = function(args) {
 					togglePos = $toggle.offset();
 					menu.show(e, data, {
 						position: {
+							// Position below toggle:
 							left: togglePos.left,
 							top:  togglePos.top + $toggle.height()
 						}

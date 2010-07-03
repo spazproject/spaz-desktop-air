@@ -566,22 +566,6 @@ Spaz.Controller.initIntercept = function() {
 	// end intercept
 
 
-	/*
-		Normal bindings where intercept doesn't work
-	*/
-
-
-	$('#entrybox').focus(function(e) {
-			Spaz.UI.showEntryboxTip();
-			$('#entrybox-popup').fadeIn('fast');
-		})
-		.blur(function(e) {
-			Spaz.UI.resetStatusBar();
-			$("body").focus();
-			$('#entrybox-popup').fadeOut('fast');
-			return false;
-		});
-
 
 	/*
 		Set-up invoke event for command-line processing
