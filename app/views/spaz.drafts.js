@@ -6,17 +6,20 @@ if(!window.Spaz.Drafts){ window.Spaz.Drafts = {}; }
 var Spaz = window.Spaz,
     draft,  // DraftModel record
     drafts, // DraftModel record collection
-    $list, $popbox;
+    editingId = null, // id of the draft being edited; private to this file
+    $list, $popbox, $saveButton;
 
 $(function(){
-	$popbox = $('#popbox-content-drafts');
-	$list = $popbox.find('.content ul');
+	$popbox     = $('#popbox-content-drafts');
+	$list       = $popbox.find('.content ul');
+	$saveButton = $('#entrybox-saveDraft');
 
 	// Delegate handlers
-	$('#entrybox').live('keydown', function(ev){
+	$('#entrybox').live('keyup', function(ev){
 		if($(ev.target).val() === ''){
 			// When the textarea is cleared, allow for creating a new draft
 			Spaz.Drafts.setEditingId(null);
+			Spaz.Drafts.highlightEditing();
 		}
 	});
 	// $popbox.delegate('.meta input[name=destroy-all]', 'click', function(ev){
@@ -67,8 +70,12 @@ Spaz.Drafts.create = function(text){
 };
 
 Spaz.Drafts.edit = function(draft){
-	$(Spaz.postPanel.textarea).val(draft.text);
+	// Update model
 	Spaz.Drafts.setEditingId(draft.id);
+
+	// Update views
+	Spaz.Drafts.highlightEditing();
+	$(Spaz.postPanel.textarea).val(draft.text).focus();
 	Spaz.Drafts.hideList();
 	Spaz.Drafts.flashPostPanel();
 };
@@ -124,12 +131,14 @@ Spaz.Drafts.count = function(){
 Spaz.Drafts.getEditingId = function(){
 	// Returns the id of the draft being editing, or null if no draft is being
 	// edited.
-	return $list.data('editing-draft-id');
+
+	return editingId;
 };
 
 Spaz.Drafts.setEditingId = function(id){
 	// Sets the id of the draft being edited.
-	$list.data('editing-draft-id', id);
+
+	editingId = id;
 };
 
 Spaz.Drafts.afterDraftSave = function(draft){
@@ -157,6 +166,7 @@ Spaz.Drafts.getNewViewHTML = function(draft){
 		'<li id="draft-' + draft.id + '">' +
 			'<p>' + sch.makeClickable(draft.text) + '</p>' +
 			'<div class="meta">' +
+				'<p class="editing" style="display:none">Currently editing</p>' +
 				'<p class="chars' + (length <= maxLength ? '' : ' over') + '">' +
 					length + ' character' + (length != 1 ? 's' : '') +
 				'</p>' +
@@ -195,13 +205,16 @@ Spaz.Drafts.rebuildList = function(){
 	// 		'</div>'
 	// 	);
 	// }
+
 	i = drafts.length; while(i--){
 		// Drafts are retrieved oldest first, then with a reverse loop (for
 		// speed), rendered newest first.
 		html += Spaz.Drafts.getNewViewHTML(drafts[i]);
 	}
 	$list.html(html);
+
 	Spaz.Drafts.updateRelativeTimes();
+	Spaz.Drafts.highlightEditing();
 };
 
 Spaz.Drafts.updateRelativeTimes = function(){
@@ -225,6 +238,22 @@ Spaz.Drafts.updateCounter = function(){
 		$text.html(text);
 	}else{
 		$entryform.removeClass('has-drafts');
+	}
+};
+
+Spaz.Drafts.highlightEditing = function(){
+	// Highlights the drafts list item that is currently being edited, if any.
+
+	var id = Spaz.Drafts.getEditingId();
+
+	$list.children('.editing').removeClass('editing').
+		find('div.meta .editing').hide();
+	if(id){
+		$('#draft-' + id).addClass('editing').find('div.meta .editing').show();
+		$saveButton.val('Save Existing Draft').
+			attr('title', 'To start a new draft, delete the current text.');
+	}else{
+		$saveButton.val('Save New Draft').removeAttr('title');
 	}
 };
 

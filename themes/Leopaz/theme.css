@@ -1156,21 +1156,22 @@ div.timeline-entry:hover{
     div.timeline-entry.read .status-text{
       color:#999;
     }
-		div.timeline-entry.read.reply .status-text{
-		  color:#ccbc5f;
-		}
-		div.timeline-entry.read.dm .status-text{
-		  color:#cf9392;
-		}
-		div.timeline-entry.read.ui-selected .status-text{
-			color:#f0f0f0;
-		}
+    div.timeline-entry.read.reply .status-text{
+      color:#ccbc5f;
+    }
+    div.timeline-entry.read.dm .status-text{
+      color:#cf9392;
+    }
+    div.timeline-entry.read.ui-selected .status-text{
+      color:#f0f0f0;
+    }
     div.timeline-entry.read:not(.ui-selected) div.user{
       padding:0;
       overflow:hidden;
       opacity:0.75;
       white-space:nowrap;
-      -webkit-transition:opacity 0.125s linear;
+      transition:opacity 0.125s linear;
+        -webkit-transition:opacity 0.125s linear;
     }
     div.timeline-entry.read:not(.ui-selected):hover div.user{
       opacity:1;
@@ -2252,6 +2253,12 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   border-bottom:1px solid #f0f0f0;
   color:rgba(0, 0, 0, 0.9);
 }
+#popbox-content-drafts div.content ul li.editing{
+  background:-webkit-gradient(
+    linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
+  border-top-color:#fffbcc;
+  border-bottom-color:#ecdc7f;
+}
 #popbox-content-drafts div.content ul li p{
   margin:0;
 }
@@ -2259,6 +2266,9 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   margin:1em 0 0;
   color:rgba(0, 0, 0, 0.25);
   font-size:0.75em;
+}
+#popbox-content-drafts div.content ul li.editing div.meta{
+  color:#ccbc5f;
 }
 #popbox-content-drafts div.content ul li div.meta p.chars.over{
   color:rgba(255, 0, 0, 0.75);
