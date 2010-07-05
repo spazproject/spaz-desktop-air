@@ -1678,8 +1678,8 @@ Spaz.UI.showTab = function(index) {
  */
 Spaz.UI.showPrefs = function() {
 	var tabid = 'tab-prefs';
-    Spaz.UI.setSelectedTab(tabid);
-    Spaz.UI.tabbedPanels.showPanel(tabid);
+	Spaz.UI.setSelectedTab(tabid);
+	Spaz.UI.tabbedPanels.showPanel(tabid);
 }
 
 /**

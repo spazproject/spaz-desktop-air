@@ -295,7 +295,7 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
 
 		$('#current-account-id').val(account_id);
-		$('#account-list li[data-account-id="' + account_id + '"]').
+		$('#account-list').find('li[data-account-id="' + account_id + '"]').
 			addClass('current').siblings().removeClass('current');
 		Spaz.Prefs.setCurrentUserId(account_id);
 						
@@ -318,7 +318,7 @@ Spaz.AccountPrefs.add = function(username, password, type){
 Spaz.AccountPrefs.edit = function(id, acctobj){
 	var savedacct = Spaz.AccountPrefs.spaz_acc.update(id, acctobj);
 	sch.debug(savedacct);
-	$('#account-list li[data-account-id="' + savedacct.id + '"] span').
+	$('#account-list').find('li[data-account-id="' + savedacct.id + '"] span').
 		html(savedacct.username + "@" + savedacct.type);
 	sch.debug("Edited:");
 	sch.debug(savedacct);
@@ -327,13 +327,38 @@ Spaz.AccountPrefs.edit = function(id, acctobj){
 
 Spaz.AccountPrefs.getAccountListItemHTML = function(account){
 	// `account`: SpazAccounts instance
+
 	return (
 		'<li data-account-id="' + account.id + '">' +
 			'<span class="clickable">' +
+				'<span class="image">' + account.username + '</span>' +
+					// `span.image` receives a background image later, after user data
+					// is available; see `Spaz.AccountPrefs.setAccountListImages`. Until
+					// then, it can be used to reserve space and align account names.
 				account.username + '@' + account.type +
 			'</span>' +
 		'</li>'
 	);
+};
+
+Spaz.AccountPrefs.setAccountListImages = function(){
+	var i, acct, user,
+	    $accountList = $('#account-list'),
+	    accts = Spaz.AccountPrefs.spaz_acc._accounts;
+
+	// Abort if any list item has already been given its background image
+	if(!!$accountList.find('li span.image[style*="background-image"]')[0]){
+		return;
+	}
+
+	i = accts.length; while(i--){
+		acct = accts[i];
+		user = TwUserModel.first({conditions: {screen_name: acct.username}});
+		$accountList.
+			find('li[data-account-id="' + acct.id + '"] span.image').css({
+				backgroundImage: 'url(' + user.profile_image_url + ')'
+			});
+	}
 };
 
 Spaz.AccountPrefs.toggleCTA = function(){
