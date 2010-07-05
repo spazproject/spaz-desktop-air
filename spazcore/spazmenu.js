@@ -69,13 +69,16 @@ SpazMenu = function(opts) {
  * @param {object} trigger_event the event that triggered the show
  * @param {object} itemsdata a data structure that will be passed to the items_func 
  * @param {object} [showOpts.position] {left: <number>, top: <number>} position at which to show the menu. Defaults to trigger_event coordinates.
+ * @param {object} [showOpts.rebuild] whether to rebuild the menu contents if the menu already exists. Defaults to false.
  */
 SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 	sch.debug('creating');
 	
 	var that = this;
 
-	if(!showOpts){ showOpts = {}; }
+	showOpts = sch.defaults({
+		rebuild: false
+	}, showOpts);
 
 	// map the triggering event
 	this.trigger_event = trigger_event;
@@ -86,34 +89,35 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
  	// create base DOM elements
 	if (jQuery('#'+this.opts.base_id).length < 1) {
 		jQuery('body').append(this._tplBase());
-	} else { // if exists, empty it
+	} else if(showOpts.rebuild) { // if exists, empty it
 		jQuery('#'+this.opts.base_id + ' ul').empty();
 	}
 	
 	// iterate over items
 	var item, itemhtml = '';
-	for (var i=0; i < this.items.length; i++) {
-		item = this.items[i];
-		if (!item['class']) {
-			item['class'] = this._generateItemClass(item);
+	if(showOpts.rebuild || !jQuery('#' + this.opts.base_id + ' ul li')[0]){
+		for (var i=0; i < this.items.length; i++) {
+			item = this.items[i];
+			if (!item['class']) {
+				item['class'] = this._generateItemClass(item);
+			}
+
+			// create the item HTML
+			itemhtml = this._tplItem(item);
+
+			// -- add item DOM element
+			jQuery('#'+this.opts.base_id + ' ul').append(itemhtml);
+
+			// -- remove any existing handlers (in case this menu was shown before)
+			jQuery('#'+this.opts.base_id + ' ul').undelegate('.'+item['class'], 'click');
+
+			// -- add delegated handler
+			jQuery('#'+this.opts.base_id + ' ul').delegate('.'+item['class'], 'click', {'item':item, 'spazmenu':this}, function(e, data) {
+				e.data.item.handler.call(this, e, e.data.item.data||itemsdata);
+				that.hide();
+			});
 		}
-		
-		// create the item HTML
-		itemhtml = this._tplItem(item);
-		
-		// -- add item DOM element
-		jQuery('#'+this.opts.base_id + ' ul').append(itemhtml);
-		
-		// -- remove any existing handlers (in case this menu was shown before)
-		jQuery('#'+this.opts.base_id + ' ul').undelegate('.'+item['class'], 'click');
-		
-		// -- add delegated handler
-		jQuery('#'+this.opts.base_id + ' ul').delegate('.'+item['class'], 'click', {'item':item, 'spazmenu':this}, function(e, data) {
-			e.data.item.handler.call(this, e, e.data.item.data||itemsdata);
-			that.hide();
-		});
 	}
-	
 
 	sch.debug('show');
 
@@ -209,15 +213,16 @@ SpazMenu.prototype._positionBeforeShow = function(position) {
 SpazMenu.prototype._reposition = function(e, data) {
 	sch.debug('_reposition');
 
-	var jqMenu        = jQuery('#' + this.opts.base_id),
-	    viewportWidth = jQuery(window).width(),
-	    menuWidth     = jqMenu.width(),
-	    menuOffset    = jqMenu.offset();
+	var jqMenu          = jQuery('#' + this.opts.base_id),
+	    viewportWidth   = jQuery(window).width(),
+	    menuWidth       = jqMenu.width(),
+	    menuMarginRight = parseInt(jqMenu.css('margin-right'), 10),
+	    menuOffset      = jqMenu.offset();
 
-	if(menuWidth + menuOffset.left > viewportWidth){
+	if(menuOffset.left + menuWidth + menuMarginRight > viewportWidth){
 		jqMenu.offset(function(i, offset){
 			return {
-				left: viewportWidth - menuWidth,
+				left: viewportWidth - menuWidth - menuMarginRight,
 				top:  offset.top
 			};
 		});
