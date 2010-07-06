@@ -294,9 +294,13 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 	if (account_id != Spaz.Prefs.getCurrentUserId()) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
 
+		// Update views
 		$('#current-account-id').val(account_id);
 		$('#account-list').find('li[data-account-id="' + account_id + '"]').
 			addClass('current').siblings().removeClass('current');
+		Spaz.AccountPrefs.setAccountsMenuSelection(account_id);
+
+		// Update model
 		Spaz.Prefs.setCurrentUserId(account_id);
 						
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
@@ -323,6 +327,10 @@ Spaz.AccountPrefs.edit = function(id, acctobj){
 	sch.debug("Edited:");
 	sch.debug(savedacct);
 	return savedacct;
+};
+
+Spaz.AccountPrefs.count = function(){
+	return Spaz.AccountPrefs.spaz_acc.getAll().length;
 };
 
 Spaz.AccountPrefs.getAccountListItemHTML = function(account){
@@ -364,8 +372,7 @@ Spaz.AccountPrefs.setAccountListImages = function(){
 Spaz.AccountPrefs.toggleCTA = function(){
 	// Show the special CTA if this is a new Spaz user
 
-	// var anyAccts = Spaz.DB.getUserCount() <= 0,
-	var anyAccts  = Spaz.AccountPrefs.spaz_acc.getAll().length > 0,
+	var anyAccts  = Spaz.AccountPrefs.count() > 0,
 	    $fieldset = $('#account-list-fieldset');
 	$fieldset.find('div.formrow.cta').toggle(!anyAccts);
 	$fieldset.find('div.formrow:not(.cta)').toggle(anyAccts);
@@ -392,4 +399,94 @@ Spaz.AccountPrefs.deselectAccounts = function(){
 
 Spaz.AccountPrefs.getSelectedAccountId = function(){
 	return $('#account-list li.selected').attr('data-account-id');
+};
+
+Spaz.AccountPrefs.buildAccountsMenu = function(){
+	// Builds the global menu for switching accounts.
+
+	var menuId = 'accounts-menu',
+	    menu,
+	    $toggle = $(
+	    	'<div class="accounts-menu-toggle" title="Switch accounts">' +
+	    		'<span class="current"></span>' +
+	    	'</div>'
+	    ),
+	    currentAccount  = Spaz.Prefs.getCurrentAccount();
+
+	$toggle.selector = '#header .accounts-menu-toggle';
+
+	// Build menu
+	menu = new SpazMenu({
+		base_id:    menuId,
+		base_class: 'spaz-menu',
+		li_class:   'spaz-menu-item',
+		items_func: function(){
+			var i, acct,
+			    accts = Spaz.AccountPrefs.spaz_acc._accounts,
+			    items = [];
+
+			i = accts.length; while(i--){
+				acct = accts[i];
+				items.unshift({
+					label:   acct.username + '@' + acct.type,
+					data:    { accountId: acct.id },
+					handler: function(e, data){
+						Spaz.AccountPrefs.setAccount(data.accountId);
+					}
+				});
+			}
+
+			return items;
+		},
+		close_on_any_click: false
+	});
+
+	// Bind menu toggling handlers
+	function showMenu(e){
+		var $menu = $('#' + menuId),
+		    togglePos = $toggle.offset();
+		menu.show(e, null, {
+			position: {
+				// Position below toggle:
+				left: togglePos.left,
+				top:  togglePos.top + $toggle.height()
+			},
+			rebuild: true // Rebuild every time; can be optimized to only rebuild
+			              // if any account has been modified since the last time
+			              // the menu was shown.
+		});
+	}
+	function hideMenu(e){ menu.hide(e); }
+	function toggleMenu(e){
+		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+	}
+	$($toggle.selector).live('click', function(e){
+		toggleMenu(e);
+		$(document).one('click', function(e){
+			if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
+		});
+	});
+
+	// Add to DOM
+	$('#header').append($toggle);
+	Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
+	Spaz.AccountPrefs.toggleAccountsMenuToggle();
+};
+
+Spaz.AccountPrefs.toggleAccountsMenuToggle = function(){
+	var $toggle = $('#header .accounts-menu-toggle');
+	$toggle.toggle(Spaz.AccountPrefs.count() > 1);
+};
+
+Spaz.AccountPrefs.setAccountsMenuSelection = function(accountId){
+	var account = Spaz.Prefs.getUserAccount(accountId),
+	    user = TwUserModel.first({
+	    	conditions: {screen_name: account.username}
+	    }),
+	    $toggle = $('#header .accounts-menu-toggle');
+	if(user){
+		$toggle.children('.current').html(user.screen_name).css({
+			backgroundImage: 'url(' + user.profile_image_url + ')'
+		});
+	}
 };

@@ -242,9 +242,7 @@ SpazPostPanel.prototype.buildShortenMenu = function(){
 		});
 		$('#entrybox').focus();
 	}
-	function hideMenu(e){
-		menu.hide(e);
-	}
+	function hideMenu(e){ menu.hide(e); }
 	function toggleMenu(e){
 		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
 	}
