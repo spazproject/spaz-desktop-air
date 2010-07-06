@@ -264,7 +264,12 @@ SpazMenu.prototype._tplBase = function() {
 SpazMenu.prototype._tplItem = function(i) {
 	var html = '';
 	
-	html += '<li class="'+this.opts.li_class+' '+i['class']+'" id="'+(i.id||'')+'">'+i.label+'</li>';
+	html += (
+		'<li class="' + this.opts.li_class + ' ' + i['class'] +
+				'" id="' + (i.id || '') + '">' +
+			'<span>' + i.label + '</span>' +
+		'</li>'
+	);
 	
 	sch.debug(html);
 	

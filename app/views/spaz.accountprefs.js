@@ -429,6 +429,7 @@ Spaz.AccountPrefs.buildAccountsMenu = function(){
 				acct = accts[i];
 				items.unshift({
 					label:   acct.username + '@' + acct.type,
+					'class': acct.username + '-at-' + acct.type,
 					data:    { accountId: acct.id },
 					handler: function(e, data){
 						Spaz.AccountPrefs.setAccount(data.accountId);
@@ -444,7 +445,8 @@ Spaz.AccountPrefs.buildAccountsMenu = function(){
 	// Bind menu toggling handlers
 	function showMenu(e){
 		var $menu = $('#' + menuId),
-		    togglePos = $toggle.offset();
+		    togglePos = $toggle.offset(),
+		    currentAccount = Spaz.Prefs.getCurrentAccount();
 		menu.show(e, null, {
 			position: {
 				// Position below toggle:
@@ -455,6 +457,9 @@ Spaz.AccountPrefs.buildAccountsMenu = function(){
 			              // if any account has been modified since the last time
 			              // the menu was shown.
 		});
+
+		// Re-select the current account because the menu has been rebuilt
+		Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
 	}
 	function hideMenu(e){ menu.hide(e); }
 	function toggleMenu(e){
@@ -474,7 +479,7 @@ Spaz.AccountPrefs.buildAccountsMenu = function(){
 };
 
 Spaz.AccountPrefs.toggleAccountsMenuToggle = function(){
-	var $toggle = $('#header .accounts-menu-toggle');
+	var $toggle = jQuery('#header').find('.accounts-menu-toggle');
 	$toggle.toggle(Spaz.AccountPrefs.count() > 1);
 };
 
@@ -483,10 +488,14 @@ Spaz.AccountPrefs.setAccountsMenuSelection = function(accountId){
 	    user = TwUserModel.first({
 	    	conditions: {screen_name: account.username}
 	    }),
-	    $toggle = $('#header .accounts-menu-toggle');
+	    $toggle = jQuery('#header').find('.accounts-menu-toggle'),
+	    $menu   = jQuery('#accounts-menu');
+
 	if(user){
 		$toggle.children('.current').html(user.screen_name).css({
 			backgroundImage: 'url(' + user.profile_image_url + ')'
 		});
+		$menu.find('li.' + account.username + '-at-' + account.type).
+			addClass('selected').siblings().removeClass('selected');
 	}
 };
