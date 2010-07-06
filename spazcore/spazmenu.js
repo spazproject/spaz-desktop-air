@@ -121,7 +121,7 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 
 	sch.debug('show');
 
-	showOpts.position = jQuery.extend({
+	showOpts.position = sch.defaults({
 		left: trigger_event.clientX,
 		top:  trigger_event.clientY
 	}, showOpts.position);
@@ -133,6 +133,10 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 	});
 	jQuery('#' + this.opts.base_id).show();
 	this._reposition(trigger_event);
+
+	if(Spaz && Spaz.UI){
+		Spaz.UI.hideTooltips();
+	}
 };
 
 /**
