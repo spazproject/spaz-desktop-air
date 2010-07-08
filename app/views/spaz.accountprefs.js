@@ -133,21 +133,17 @@ Spaz.AccountPrefs.init = function(){
 		 */
 		$('#del-account').click(function(){
 			var id = Spaz.AccountPrefs.getSelectedAccountId(),
-			    firstAccount;
+			    firstAccount, removedAccount;
 			if (id) {
-				var deleted = that.spaz_acc.remove(id);
-				$accountList.children('li[data-account-id="' + id + '"]').remove();
+				removedAccount = Spaz.AccountPrefs.remove(id);
 
 				// Deleted the active account; switch to another one
-				if(id === deleted.id){
+				if(id === removedAccount.id){
 					firstAccount = Spaz.AccountPrefs.spaz_acc._accounts[0];
 					if(firstAccount){
 						Spaz.AccountPrefs.setAccount(firstAccount.id);
 					}
 				}
-
-				Spaz.AccountPrefs.toggleCTA();
-				Spaz.Timelines.toggleNewUserCTAs();
 			}
 			else {
 				sch.error('Nothing selected to delete');
@@ -294,11 +290,15 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 	if (account_id != Spaz.Prefs.getCurrentUserId()) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
 
-		$('#current-account-id').val(account_id);
-		$('#account-list li[data-account-id="' + account_id + '"]').
-			addClass('current').siblings().removeClass('current');
+		// Update model
 		Spaz.Prefs.setCurrentUserId(account_id);
-						
+
+		// Update views
+		jQuery('#current-account-id').val(account_id);
+		jQuery('#account-list').find('li[data-account-id="' + account_id + '"]').
+			addClass('current').siblings().removeClass('current');
+		Spaz.AccountPrefs.setAccountsMenuSelection(account_id);
+
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
 	}
 };
@@ -306,11 +306,16 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 Spaz.AccountPrefs.add = function(username, password, type){
 	var newacct = Spaz.AccountPrefs.spaz_acc.add(username, password, type);
 	sch.debug(newacct);
+
+	// Update views
 	$('#account-list').append(
 		Spaz.AccountPrefs.getAccountListItemHTML(newacct));
+	Spaz.AccountPrefs.setAccountListImages();
+	Spaz.AccountPrefs.toggleAccountsMenuToggle();
 	Spaz.AccountPrefs.toggleCTA();
 	Spaz.Timelines.toggleNewUserCTAs();
-	sch.debug("Added:");
+
+	sch.debug('Added account:');
 	sch.debug(newacct);
 	return newacct;
 };
@@ -318,29 +323,74 @@ Spaz.AccountPrefs.add = function(username, password, type){
 Spaz.AccountPrefs.edit = function(id, acctobj){
 	var savedacct = Spaz.AccountPrefs.spaz_acc.update(id, acctobj);
 	sch.debug(savedacct);
-	$('#account-list li[data-account-id="' + savedacct.id + '"] span').
+
+	// Update views
+	$('#account-list').find('li[data-account-id="' + savedacct.id + '"] span').
 		html(savedacct.username + "@" + savedacct.type);
-	sch.debug("Edited:");
+
+	sch.debug('Edited account:');
 	sch.debug(savedacct);
 	return savedacct;
 };
 
+Spaz.AccountPrefs.remove = function(id){
+	var removedAcct = Spaz.AccountPrefs.spaz_acc.remove(id);
+
+	// Update views
+	$('#account-list').children('li[data-account-id="' + id + '"]').remove();
+	Spaz.AccountPrefs.toggleAccountsMenuToggle();
+	Spaz.AccountPrefs.toggleCTA();
+	Spaz.Timelines.toggleNewUserCTAs();
+
+	sch.debug('Removed account:');
+	sch.debug(removedAcct);
+	return removedAcct;
+};
+
+Spaz.AccountPrefs.count = function(){
+	return Spaz.AccountPrefs.spaz_acc.getAll().length;
+};
+
 Spaz.AccountPrefs.getAccountListItemHTML = function(account){
 	// `account`: SpazAccounts instance
+
 	return (
 		'<li data-account-id="' + account.id + '">' +
 			'<span class="clickable">' +
+				'<span class="image">' + account.username + '</span>' +
+					// `span.image` receives a background image later, after user data
+					// is available; see `Spaz.AccountPrefs.setAccountListImages`. Until
+					// then, it can be used to reserve space and align account names.
 				account.username + '@' + account.type +
 			'</span>' +
 		'</li>'
 	);
 };
 
+Spaz.AccountPrefs.setAccountListImages = function(){
+	var i, acct, user,
+	    $accountList = $('#account-list'),
+	    accts = Spaz.AccountPrefs.spaz_acc._accounts;
+
+	// Abort if any list item has already been given its background image
+	if(!!$accountList.find('li span.image[style*="background-image"]')[0]){
+		return;
+	}
+
+	i = accts.length; while(i--){
+		acct = accts[i];
+		user = TwUserModel.first({conditions: {screen_name: acct.username}});
+		$accountList.
+			find('li[data-account-id="' + acct.id + '"] span.image').css({
+				backgroundImage: 'url(' + user.profile_image_url + ')'
+			});
+	}
+};
+
 Spaz.AccountPrefs.toggleCTA = function(){
 	// Show the special CTA if this is a new Spaz user
 
-	// var anyAccts = Spaz.DB.getUserCount() <= 0,
-	var anyAccts  = Spaz.AccountPrefs.spaz_acc.getAll().length > 0,
+	var anyAccts  = Spaz.AccountPrefs.count() > 0,
 	    $fieldset = $('#account-list-fieldset');
 	$fieldset.find('div.formrow.cta').toggle(!anyAccts);
 	$fieldset.find('div.formrow:not(.cta)').toggle(anyAccts);
@@ -367,4 +417,103 @@ Spaz.AccountPrefs.deselectAccounts = function(){
 
 Spaz.AccountPrefs.getSelectedAccountId = function(){
 	return $('#account-list li.selected').attr('data-account-id');
+};
+
+Spaz.AccountPrefs.buildAccountsMenu = function(){
+	// Builds the global menu for switching accounts.
+
+	var menuId = 'accounts-menu',
+	    menu,
+	    $toggle = $(
+	    	'<div class="accounts-menu-toggle" title="Switch accounts">' +
+	    		'<span class="current"></span>' +
+	    	'</div>'
+	    ),
+	    currentAccount  = Spaz.Prefs.getCurrentAccount();
+
+	$toggle.selector = '#header .accounts-menu-toggle';
+
+	// Build menu
+	menu = new SpazMenu({
+		base_id:    menuId,
+		base_class: 'spaz-menu',
+		li_class:   'spaz-menu-item',
+		items_func: function(){
+			var i, acct,
+			    accts = Spaz.AccountPrefs.spaz_acc._accounts,
+			    items = [];
+
+			i = accts.length; while(i--){
+				acct = accts[i];
+				items.unshift({
+					label:   acct.username + '@' + acct.type,
+					'class': acct.username + '-at-' + acct.type,
+					data:    { accountId: acct.id },
+					handler: function(e, data){
+						Spaz.AccountPrefs.setAccount(data.accountId);
+					}
+				});
+			}
+
+			return items;
+		},
+		close_on_any_click: false
+	});
+
+	// Bind menu toggling handlers
+	function showMenu(e){
+		var $menu = $('#' + menuId),
+		    togglePos = $toggle.offset(),
+		    currentAccount = Spaz.Prefs.getCurrentAccount();
+		menu.show(e, null, {
+			position: {
+				// Position below toggle:
+				left: togglePos.left,
+				top:  togglePos.top + $toggle.height()
+			},
+			rebuild: true // Rebuild every time; can be optimized to only rebuild
+			              // if any account has been modified since the last time
+			              // the menu was shown.
+		});
+
+		// Re-select the current account because the menu has been rebuilt
+		Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
+	}
+	function hideMenu(e){ menu.hide(e); }
+	function toggleMenu(e){
+		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+	}
+	$($toggle.selector).live('click', function(e){
+		toggleMenu(e);
+		$(document).one('click', function(e){
+			if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
+		});
+	});
+
+	// Add to DOM
+	$('#header').append($toggle);
+	Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
+	Spaz.AccountPrefs.toggleAccountsMenuToggle();
+};
+
+Spaz.AccountPrefs.toggleAccountsMenuToggle = function(){
+	var $toggle = jQuery('#header').find('.accounts-menu-toggle');
+	$toggle.toggle(Spaz.AccountPrefs.count() > 1);
+};
+
+Spaz.AccountPrefs.setAccountsMenuSelection = function(accountId){
+	var account = Spaz.Prefs.getUserAccount(accountId),
+	    user = TwUserModel.first({
+	    	conditions: {screen_name: account.username}
+	    }),
+	    $toggle = jQuery('#header').find('.accounts-menu-toggle'),
+	    $menu   = jQuery('#accounts-menu');
+
+	if(user){
+		$toggle.children('.current').html(user.screen_name).css({
+			backgroundImage: 'url(' + user.profile_image_url + ')'
+		});
+		$menu.find('li.' + account.username + '-at-' + account.type).
+			addClass('selected').siblings().removeClass('selected');
+	}
 };

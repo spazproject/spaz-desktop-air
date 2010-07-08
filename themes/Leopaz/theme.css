@@ -193,6 +193,43 @@ ul#account-list li:nth-child(even){
       #header-label:after{
         content:' \025BE'; /* Down-pointing triangle */
       }
+      #header .accounts-menu-toggle{
+        position:absolute;
+        right:4px;
+        top:1px;
+        padding:2px 4px 2px 2px;
+        color:#000;
+      }
+      #header .accounts-menu-toggle:hover{
+        background:#a3a3a3;
+        background:-webkit-gradient(
+          linear, left top, left bottom, from(#909090), to(#a3a3a3));
+        border-radius:6px;
+          -webkit-border-radius:6px;
+        color:#fff;
+      }
+      #header .accounts-menu-toggle:after{
+        position:relative;
+        top:-3px;
+        content:' \025BE'; /* Down-pointing triangle */
+        font-size:13px;
+        line-height:13px;
+      }
+      body:not(.active) #header .accounts-menu-toggle:not(:hover){
+        color:#717171;
+      }
+      #header .accounts-menu-toggle .current{
+        display:inline-block;
+        width:16px;
+        height:16px;
+        background:transparent 0 0 no-repeat;
+        background-size:16px 16px;
+          -webkit-background-size:16px 16px;
+        border-radius:4px;
+          -webkit-border-radius:4px;
+        pointer-events:none;
+        text-indent:-9999em;
+      }
 		
 		/*
 			The tabs group contains the tabs themselves and the content panels
@@ -328,7 +365,7 @@ ul#account-list li:nth-child(even){
           #tab-userlists.TabbedPanelsTabSelected                      { background-position:-62px -66px; }
           body:not(.active) #tab-userlists.TabbedPanelsTabSelected    { background-position:-62px -88px; }
           #tab-userlists.TabbedPanelsTabSelected:active               { background-position:-62px -110px; }
-        #tab-public                                                 { background-position:0 0; margin-left:9px; }
+        #tab-public                                                 { background-position:0 0; margin-left:8px; }
           body:not(.active) #tab-public                               { background-position:0 -22px; }
           #tab-public:not(.TabbedPanelsTabSelected):active            { background-position:0 -44px; }
           #tab-public.TabbedPanelsTabSelected                         { background-position:0 -66px; }
@@ -340,7 +377,7 @@ ul#account-list li:nth-child(even){
           #tab-search.TabbedPanelsTabSelected                         { background-position:-62px -66px; }
           body:not(.active) #tab-search.TabbedPanelsTabSelected       { background-position:-62px -88px; }
           #tab-search.TabbedPanelsTabSelected:active                  { background-position:-62px -110px; }
-        #tab-followerslist                                            { background-position:-93px 0; margin-left:9px; }
+        #tab-followerslist                                            { background-position:-93px 0; margin-left:8px; }
           body:not(.active) #tab-followerslist                          { background-position:-93px -22px; }
           #tab-followerslist:not(.TabbedPanelsTabSelected):active       { background-position:-93px -44px; }
           #tab-followerslist.TabbedPanelsTabSelected                    { background-position:-93px -66px; }
@@ -1084,6 +1121,9 @@ div.spaz-menu{
   cursor:default;
   z-index:9999;
 }
+div.spaz-menu#accounts-menu{
+  margin-right:14px;
+}
   div.spaz-menu ul{
     margin:0;
     padding:0;
@@ -1092,7 +1132,6 @@ div.spaz-menu{
   }
     li.spaz-menu-item{
       margin:0px;
-      padding:2px 15px 2px 20px;
       border:solid transparent;
       border-width:1px 0;
       font-size:10px;
@@ -1104,6 +1143,16 @@ div.spaz-menu{
       border-top-color:#5c83ea;
       border-bottom-color:#1d58e7;
       color:#fff;
+    }
+    li.spaz-menu-item span{
+      display:block;
+      padding:2px 15px 2px 20px;
+    }
+    li.spaz-menu-item.selected span{
+      background:transparent url(images/menu-checkmark.png) 6px 1px no-repeat;
+    }
+    li.spaz-menu-item.selected:hover span{
+      background-position:6px -87px;
     }
     div.spaz-menu#entrybox-shorten-menu li.spaz-menu-item{
       white-space:nowrap;
@@ -1672,22 +1721,35 @@ body:not(.active) #panel-prefs .timeline-wrapper{
                   linear, left top, left bottom, from(#989797), to(#666));
                 border-top-color:#7f7e7e;
               }
-              div.prefs ul#account-list li span{
+              div.prefs ul#account-list li > span{
                 display:block;
-                padding:6px 0 8px 28px;
+                padding:4px 0 6px 30px;
                 color:#000;
                 cursor:default;
+                line-height:24px;
               }
-              div.prefs ul#account-list li.current span{
+              div.prefs ul#account-list li.current > span{
                 background:transparent url(images/accounts-current.png)
-                  10px 8px no-repeat;
+                  10px 10px no-repeat;
               }
-              div.prefs ul#account-list li.selected span{
+              div.prefs ul#account-list li.selected > span{
                 color:#f0f0f0;
                 font-weight:bold;
               }
-              div.prefs ul#account-list li.current.selected span{
-                background-position:10px -32px;
+              div.prefs ul#account-list li.current.selected > span{
+                background-position:10px -30px;
+              }
+              div.prefs ul#account-list li .image{
+                display:inline-block;
+                width:24px;
+                height:24px;
+                margin:0 0.5em 0 0;
+                background:transparent 0 0 no-repeat;
+                background-size:24px 24px;
+                  -webkit-background-size:24px 24px;
+                border-radius:4px;
+                  -webkit-border-radius:4px;
+                text-indent:-9999em;
               }
 
               /*** Preferences > Controls ***/

@@ -121,7 +121,7 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 
 	sch.debug('show');
 
-	showOpts.position = jQuery.extend({
+	showOpts.position = sch.defaults({
 		left: trigger_event.clientX,
 		top:  trigger_event.clientY
 	}, showOpts.position);
@@ -133,6 +133,10 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 	});
 	jQuery('#' + this.opts.base_id).show();
 	this._reposition(trigger_event);
+
+	if(Spaz && Spaz.UI){
+		Spaz.UI.hideTooltips();
+	}
 };
 
 /**
@@ -260,7 +264,12 @@ SpazMenu.prototype._tplBase = function() {
 SpazMenu.prototype._tplItem = function(i) {
 	var html = '';
 	
-	html += '<li class="'+this.opts.li_class+' '+i['class']+'" id="'+(i.id||'')+'">'+i.label+'</li>';
+	html += (
+		'<li class="' + this.opts.li_class + ' ' + i['class'] +
+				'" id="' + (i.id || '') + '">' +
+			'<span>' + i.label + '</span>' +
+		'</li>'
+	);
 	
 	sch.debug(html);
 	

@@ -681,6 +681,7 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 
 	switch (tab.id) {
 		case 'tab-prefs':
+			Spaz.AccountPrefs.setAccountListImages();
 			break;
 		case 'tab-friends':
 			Spaz.Timelines.friends.activate();
