@@ -114,9 +114,9 @@ AppTimeline.prototype.getTimelineSelector = function() {
 AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 
 	var items = jQuery( this.getEntrySelector() ),
-		itemAttrs	= [],
-		itemsSorted = [],
-		sortedHTML	= '';
+	    itemAttrs   = [],
+	    itemsSorted = [],
+	    sortedHTML  = '';
 	sortfunc = sortfunc || function(a,b){return b.sortval - a.sortval;};
 
 	(function(){
@@ -191,7 +191,14 @@ var FriendsTimeline = function() {
 
 		'request_data': function() {
 			sch.dump('REQUESTING DATA FOR FRIENDS TIMELINE =====================');
-			sch.markAllAsRead($timeline.selector + ' div.timeline-entry'); // just add .read to the entries
+
+			// Give UI feedback immediately
+			if($timeline.is(':empty')){
+				$timelineWrapper.children('.loading').show();
+			}
+			Spaz.UI.statusBar('Loading friends timeline…');
+			Spaz.UI.showLoading();
+			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 
 			var count = {
 				'home': Spaz.Prefs.get('timeline-home-pager-count'),
@@ -204,16 +211,13 @@ var FriendsTimeline = function() {
 				'dm_count': (count.direct > maxFT.direct ? maxFT.direct : count.direct),
 				'replies_count': (count.replies > maxFT.replies ? maxFT.replies : count.replies)
 			};
-			
-			
+
 			thisFT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			sch.error('thisFT.twit.username:'+thisFT.twit.username);
 			sch.error('thisFT.twit.auth:'+sch.enJSON(thisFT.twit.auth));
 			thisFT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			thisFT.twit.getCombinedTimeline(com_opts);
-			Spaz.UI.statusBar("Loading friends timeline");
-			Spaz.UI.showLoading();
-			
+
 			sch.dump('REQUEST_DATA');
 		},
 		'data_success': function(e, data) {
@@ -222,9 +226,9 @@ var FriendsTimeline = function() {
 			
 			data = data.reverse();
 			var i, iMax,
-				no_dupes = [],
-				sui = new SpazImageURL(),
-				dataItem;
+			    no_dupes = [],
+			    sui = new SpazImageURL(),
+			    dataItem;
 
 			sch.dump(data);
 			
@@ -383,8 +387,11 @@ var FriendsTimeline = function() {
 		},
 		'data_failure': function(e, error_obj) {
 			sch.dump('DATA_FAILURE');
+
+			// Give UI feedback immediately
 			var err_msg = "There was an error retrieving your timeline";
 			Spaz.UI.statusBar(err_msg);
+			$timelineWrapper.children('.loading').hide();
 
 			/*
 				Update relative dates
@@ -471,19 +478,24 @@ var PublicTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
+			// Give UI feedback immediately
+			if($timeline.is(':empty')){
+				$timelineWrapper.children('.loading').show();
+			}
+			Spaz.UI.statusBar('Loading public timeline…');
+			Spaz.UI.showLoading();
 			thisPT.markAsRead($timeline.selector + ' div.timeline-entry');
+
 			thisPT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			thisPT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			thisPT.twit.getPublicTimeline();
-			Spaz.UI.statusBar("Loading public timeline");
-			Spaz.UI.showLoading();
 		},
 		'data_success': function(e, data) {
 			data = data.reverse();
 			var i, iMax,
-				no_dupes = [],
-				sui = new SpazImageURL(),
-				dataItem; // "datum"?
+			    no_dupes = [],
+			    sui = new SpazImageURL(),
+			    dataItem; // "datum"?
 
 			for (i = 0, iMax = data.length; i < iMax; i++){
 				dataItem = data[i];
@@ -542,8 +554,10 @@ var PublicTimeline = function(args) {
 
 		},
 		'data_failure': function(e, error_obj) {
+			// Give UI feedback immediately
 			var err_msg = "There was an error retrieving the public timeline";
 			Spaz.UI.statusBar(err_msg);
+			$timelineWrapper.children('.loading').hide();
 
 			/*
 				Update relative dates
@@ -593,19 +607,24 @@ var FavoritesTimeline = function(args) {
 		'max_items':100,
 
 		'request_data': function() {
+			// Give UI feedback immediately
+			if($timeline.is(':empty')){
+				$timelineWrapper.children('.loading').show();
+			}
+			Spaz.UI.statusBar('Loading favorites…');
+			Spaz.UI.showLoading();
 			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
+
 			thisFVT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			thisFVT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			thisFVT.twit.getFavorites();
-			Spaz.UI.statusBar("Loading favorites timeline");
-			Spaz.UI.showLoading();
 		},
 		'data_success': function(e, data) {
 			data = data.reverse();
 			var i, iMax,
-				no_dupes = [],
-				sui = new SpazImageURL(),
-				dataItem;
+			    no_dupes = [],
+			    sui = new SpazImageURL(),
+			    dataItem;
 
 			for (i = 0, iMax = data.length; i < iMax; i++){
 				dataItem = data[i];
@@ -665,8 +684,10 @@ var FavoritesTimeline = function(args) {
 
 		},
 		'data_failure': function(e, error_obj) {
+			// Give UI feedback immediately
 			var err_msg = "There was an error retrieving the favorites timeline";
 			Spaz.UI.statusBar(err_msg);
+			$timelineWrapper.children('.loading').hide();
 
 			/*
 				Update relative dates
@@ -713,6 +734,14 @@ var UserTimeline = function(args) {
 		'max_items': maxUT,
 
 		'request_data': function() {
+			var username = Spaz.Prefs.getUsername();
+
+			// Give UI feedback immediately
+			if($timeline.is(':empty')){
+				$timelineWrapper.children('.loading').show();
+			}
+			Spaz.UI.statusBar('Loading @' + username + '\'s timeline…');
+			Spaz.UI.showLoading();
 			thisUT.markAsRead($timeline.selector + ' div.timeline-entry');
 
 			var countmax = thisUT.timeline.max_items;
@@ -720,18 +749,15 @@ var UserTimeline = function(args) {
 			count = (count > maxUT ? maxUT : count);
 
 			thisUT.twit.setCredentials(Spaz.Prefs.getAuthObject());
-			var username = Spaz.Prefs.getUsername();
 			sch.error('username in UserTimeline is '+username);
 			thisUT.twit.getUserTimeline(username, count);
-			Spaz.UI.statusBar("Loading user timeline");
-			Spaz.UI.showLoading();
 		},
 		'data_success': function(e, data) {
 			data = data.reverse();
 			var i, iMax,
-				no_dupes = [],
-				sui = new SpazImageURL(),
-				dataItem;
+			    no_dupes = [],
+			    sui = new SpazImageURL(),
+			    dataItem;
 			
 			for (i = 0, iMax = data.length; i < iMax; i++){
 				dataItem = data[i];
@@ -791,8 +817,10 @@ var UserTimeline = function(args) {
 			
 		},
 		'data_failure': function(e, error_obj) {
+			// Give UI feedback immediately
 			var err_msg = "There was an error retrieving the user timeline";
 			Spaz.UI.statusBar(err_msg);
+			$timelineWrapper.children('.loading').hide();
 
 			/*
 				Update relative dates
@@ -864,28 +892,26 @@ var UserlistsTimeline = function(args) {
 		'max_items':300,
 
 		'request_data': function() {
-
 			thisULT.markAsRead($timeline.selector + ' div.timeline-entry');
 						
 			if (thisULT.list.user && thisULT.list.slug) {
 				// Give UI feedback immediately
-				$('#timeline-userlists-full-name').text("@"+thisULT.list.user+'/'+thisULT.list.slug);
 				if($timeline.is(':empty')){
 					$timelineWrapper.children('.loading').show();
 				}
+				Spaz.UI.statusBar('Loading followers list…');
+				Spaz.UI.showLoading();
+
+				$('#timeline-userlists-full-name').
+					text("@"+thisULT.list.user+'/'+thisULT.list.slug);
 				$timelineWrapper.children('.intro').hide();
 
 				thisULT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 				thisULT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 				thisULT.twit.getListTimeline(thisULT.list.slug, thisULT.list.user);
-				Spaz.UI.statusBar("Getting list @"+thisULT.list.user+'/'+thisULT.list.slug + "…");
-				Spaz.UI.showLoading();
 			}
-			
-			
 		},
 		'data_success': function(e, data) {
-			
 			sch.debug('statuses:'+data.statuses);
 			sch.debug('user:'+data.user);
 			sch.debug('slug:'+data.slug);
@@ -956,9 +982,11 @@ var UserlistsTimeline = function(args) {
 			
 		},
 		'data_failure': function(e, error_obj) {
+			// Give UI feedback immediately
 			var err_msg = "There was an error retrieving the userlists timeline";
 			Spaz.UI.statusBar(err_msg);
-			
+			$timelineWrapper.children('.loading').hide();
+
 			/*
 				Update relative dates
 			*/
@@ -1114,12 +1142,10 @@ var SearchTimeline = function(args) {
 				thisST.query = $searchInput.val();
 
 				// Give UI feedback immediately
+				$timelineWrapper.children('.intro, .empty').hide();
+				$timelineWrapper.children('.loading').show();
 				Spaz.UI.statusBar("Searching for '" + thisST.query + "'…");
 				Spaz.UI.showLoading();
-				if($timeline.is(':empty')){
-					$timelineWrapper.children('.loading').show();
-				}
-				$timelineWrapper.children('.intro, .empty').hide();
 
 				if (!thisST.lastquery) {
 					thisST.lastquery = thisST.query;
@@ -1147,10 +1173,10 @@ var SearchTimeline = function(args) {
 			
 			data = data.reverse();
 			var i, iMax,
-				no_dupes = [],
-				md = new Showdown.converter(),
-				sui = new SpazImageURL(),
-				dataItem;
+			    no_dupes = [],
+			    md = new Showdown.converter(),
+			    sui = new SpazImageURL(),
+			    dataItem;
 			
 			for (i = 0, iMax = data.length; i < iMax; i++){
 				dataItem = data[i];
@@ -1212,8 +1238,10 @@ var SearchTimeline = function(args) {
 			Spaz.UI.statusBar("Ready");
 		},
 		'data_failure': function(e, error_obj) {
+			// Give UI feedback immediately
 			var err_msg = "There was an error retrieving your favorites";
 			Spaz.UI.statusBar(err_msg);
+			$timelineWrapper.children('.loading').hide();
 
 			/*
 				Update relative dates
@@ -1356,20 +1384,25 @@ var FollowersTimeline = function(args) {
 		'max_items':200,
 
 		'request_data': function() {
+			// Give UI feedback immediately
+			if($timeline.is(':empty')){
+				$timelineWrapper.children('.loading').show();
+			}
+			Spaz.UI.statusBar('Loading followers list…');
+			Spaz.UI.showLoading();
 			sch.markAsRead($timeline.selector + ' div.timeline-entry');
+
 			thisFLT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			thisFLT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
 			thisFLT.twit.getFollowersList();
-			Spaz.UI.statusBar("Loading followerslist");
-			Spaz.UI.showLoading();
 		},
 		'data_success': function(e, data) {
 			// alert('got follower data');
 			data = data.reverse();
 			
 			var i, iMax,
-				no_dupes = [],
-				dataItem;
+			    no_dupes = [],
+			    dataItem;
 			
 			for (i = 0, iMax = data.length; i < iMax; i++){
 				dataItem = data[i];
@@ -1396,8 +1429,10 @@ var FollowersTimeline = function(args) {
 			
 		},
 		'data_failure': function(e, error_obj) {
+			// Give UI feedback immediately
 			var err_msg = "There was an error retrieving the user timeline";
 			Spaz.UI.statusBar(err_msg);
+			$timelineWrapper.children('.loading').hide();
 
 			/*
 				Update relative dates
