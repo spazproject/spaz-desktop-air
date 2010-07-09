@@ -1753,4 +1753,17 @@ Spaz.UI.accountMaintenance = function(imgurl) {
 		url += '?fileUrl='+encodeURIComponent(imgurl);
 	}
     this.instance = window.open(url, 'accountMaint', 'height=300,width=350');
-}
+};
+
+
+Spaz.UI.shortenPostPanelText = function() {
+	Spaz.postPanel.textarea.focus();
+	Spaz.postPanel.shortenText.call(Spaz.postPanel);
+};
+
+Spaz.UI.shortenPostPanelURLs = function() {
+	sch.error('firing entrybox-shortenURLs');
+	Spaz.postPanel.textarea.focus();
+	Spaz.postPanel.shortenURLs.call(Spaz.postPanel);
+};
+

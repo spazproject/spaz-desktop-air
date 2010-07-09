@@ -386,13 +386,11 @@ Spaz.Controller.initIntercept = function() {
 				}
 			},
 			'#entrybox-shortenText':function(e) {
-				Spaz.postPanel.textarea.focus();
-				Spaz.postPanel.shortenText.call(Spaz.postPanel);
+				Spaz.UI.shortenPostPanelText();
 				return false;
 			},
 			'#entrybox-shortenURLs':function(e) {
-				Spaz.postPanel.textarea.focus();
-				Spaz.postPanel.shortenURLs.call(Spaz.postPanel);
+				Spaz.UI.shortenPostPanelURLs();
 				return false;
 			},
 

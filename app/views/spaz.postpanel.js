@@ -222,8 +222,8 @@ SpazPostPanel.prototype.buildShortenMenu = function(){
 		li_class:   'spaz-menu-item',
 		items_func: function(){
 			return [
-				{ id: 'entrybox-shortenURLs', label: 'Shorten URLs' },
-				{ id: 'entrybox-shortenText', label: 'Shorten text' }
+				{ id: 'entrybox-shortenURLs', label: 'Shorten URLs', 'handler':Spaz.UI.shortenPostPanelURLs },
+				{ id: 'entrybox-shortenText', label: 'Shorten text', 'handler':Spaz.UI.shortenPostPanelText }
 			];
 		},
 		close_on_any_click: false

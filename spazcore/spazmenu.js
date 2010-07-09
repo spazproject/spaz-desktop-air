@@ -113,7 +113,11 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 
 			// -- add delegated handler
 			jQuery('#'+this.opts.base_id + ' ul').delegate('.'+item['class'], 'click', {'item':item, 'spazmenu':this}, function(e, data) {
-				e.data.item.handler.call(this, e, e.data.item.data||itemsdata);
+				if (e.data.item.handler) {
+					e.data.item.handler.call(this, e, e.data.item.data||itemsdata);
+				} else {
+					sch.debug('No handler defined for menu item');
+				}
 				that.hide();
 			});
 		}
