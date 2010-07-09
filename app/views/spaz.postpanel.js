@@ -172,28 +172,48 @@ SpazPostPanel.prototype.addListeners = function() {
 	sc.helpers.listen(this.textarea, 'focus', this.updateCharCount);
 	sc.helpers.listen(this.textarea, 'blur', this.updateCharCount);
 
-	jQuery('#entrybox').focus(function(e){
-		Spaz.UI.showEntryboxTip();
-		$('#entrybox-popup').fadeIn('fast');
-	}).blur(function(e){
-		setTimeout(function(){
-			// Hack: Brief delay to allow menus to appear, if any. A race condition
-			// can occur here, where the menu only starts building after
-			// #entrybox-popup has begun fading.
-			if(!jQuery('#' + _this.menus.shorten.opts.base_id + ':visible')[0]){
+	jQuery('#entrybox-popup')
+		.mousedown(function(e) {
+			_this.panelClicked = true;
+		})
+		.mouseup(function(e) {
+			_this.panelClicked = false;
+			_this.textarea.focus();
+		});
+
+
+	jQuery('#entrybox')
+		.focus(function(e){
+			Spaz.UI.showEntryboxTip();
+			jQuery('#entrybox-popup').fadeIn('fast');
+		})
+		.blur(function(e){
+
+			if (!_this.panelClicked) {
+				sch.error('panel NOT clicked, blur-ing');
 				Spaz.UI.resetStatusBar();
-				$("body").focus();
-				$('#entrybox-popup').fadeOut('fast');
+				jQuery("body").focus();
+				jQuery('#entrybox-popup').fadeOut('fast');
+				_this.panelClicked = false;
+			} else {
+				sch.error('panel clicked, blocking blur');
 			}
-		}, 100);
-		return false;
-	});
+			return false;
+		});
 };
 
 SpazPostPanel.prototype.removeListeners = function() {
 	sc.helpers.unlisten(this.textarea, 'keyup', this.updateCharCount);
 	sc.helpers.unlisten(this.textarea, 'focus', this.updateCharCount);
 	sc.helpers.unlisten(this.textarea, 'blur', this.updateCharCount);
+
+	jQuery('#entrybox-popup')
+		.unbind('mousedown')
+		.unbind('mouseup');
+	
+	jQuery('#entrybox')
+		.unbind('focus')
+		.unbind('blur');
 
 };
 
