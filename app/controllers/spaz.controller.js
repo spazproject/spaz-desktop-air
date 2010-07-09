@@ -385,15 +385,6 @@ Spaz.Controller.initIntercept = function() {
 					Spaz.Drafts.create(text);
 				}
 			},
-			'#entrybox-shortenText':function(e) {
-				Spaz.UI.shortenPostPanelText();
-				return false;
-			},
-			'#entrybox-shortenURLs':function(e) {
-				Spaz.UI.shortenPostPanelURLs();
-				return false;
-			},
-
 			'#irt-dismiss':function(e) {
 				Spaz.postPanel.clearPostIRT();
 				Spaz.postPanel.textarea.focus();
