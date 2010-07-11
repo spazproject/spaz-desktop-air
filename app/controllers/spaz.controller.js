@@ -144,7 +144,7 @@ Spaz.Controller.initIntercept = function() {
 			// 	});
 			// 	tt.show();
 			// },
-		
+
 			'.status-action[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,

@@ -730,6 +730,71 @@ Spaz.UI.getViewport = function() {
 
 
 
+Spaz.UI.buildToolsMenu = function(){
+	var menuId  = 'tools-menu',
+	    menu,
+	    $menu   = $('#' + menuId),
+	    $toggle = $('#tools-menu-toggle');
+
+	// Build menu
+	menu = new SpazMenu({
+		base_id:    menuId,
+		base_class: 'spaz-menu',
+		li_class:   'spaz-menu-item',
+		items_func: function(){
+			return [
+				{
+					label:   'Item 1',
+					data:    {},
+					handler: function(){ sch.debug('=== TEST ITEM 1'); }
+				},
+				{
+					label:   'Item 2',
+					data:    {},
+					handler: function(){ sch.debug('=== TEST ITEM 2'); }
+				},
+				null,
+				{
+					label:   'Item 3',
+					data:    {},
+					handler: function(){ sch.error('=== TEST ITEM 3'); }
+				},
+				{
+					label:   'Item 4',
+					data:    {},
+					handler: function(){ sch.error('=== TEST ITEM 4'); }
+				},
+			];
+		},
+		close_on_any_click: false
+	});
+
+	// Bind menu toggling handlers
+	function showMenu(e){
+		var $menu = $('#' + menuId),
+		    togglePos = $toggle.offset();
+		menu.show(e, null, {
+			position: {
+				// Position below toggle:
+				left: togglePos.left,
+				top:  togglePos.top + $toggle.height()
+			}
+		});
+	}
+	function hideMenu(e){ menu.hide(e); }
+	function toggleMenu(e){
+		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+	}
+	$($toggle.selector).live('click', function(e){
+		toggleMenu(e);
+		if($('#' + menuId).is(':visible')){
+			$(document).one('click', function(e){ hideMenu(e); });
+		}
+		e.preventDefault();
+	});
+
+};
+
 Spaz.UI.showLinkContextMenu = function(jq, url) {
     var el = jq[0];
 

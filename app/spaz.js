@@ -194,6 +194,8 @@ Spaz.initialize = function() {
 		duration: 200
 	});
 
+	Spaz.UI.buildToolsMenu();
+
 	$('#header-label').menu({
 			copyClassAttr: true,
 			addExpando: true,

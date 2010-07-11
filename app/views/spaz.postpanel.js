@@ -249,13 +249,9 @@ SpazPostPanel.prototype.buildShortenMenu = function(){
 
 	$($toggle.selector).live('click', function(e){
 		toggleMenu(e);
-
-		// Allow the next click to hide the menu, unless the click is on the
-		// toggle. In that case, the previous call to `toggleMenu` should have the
-		// final effect on the menu's state.
-		$(document).one('click', function(e){
-			if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-		});
+		if($('#' + menuId).is(':visible')){
+			$(document).one('click', function(e){ hideMenu(e); });
+		}
 	});
 };
 

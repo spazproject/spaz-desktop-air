@@ -176,6 +176,12 @@
 			<span id="header-label" style="cursor:pointer">Spaz</span>
 		</h1>
 
+		<!-- Tools -->
+		<div id="tools-menu-toggle" title="Tools"
+			onmouseover="Spaz.UI.showTooltip(this, this.title)"
+			onmouseout="Spaz.UI.hideTooltips()">
+			<span class="tab-icon"></span>
+		</div>
 
 		<div id="tabs" class="TabbedPanels">
 			<ul class="TabbedPanelsTabGroup" id="timeline-tabs">
@@ -243,14 +249,8 @@
 					<span class="tab-icon"></span>
 				</li> -->
 
-				<!-- PREFS -->
-				<li class="TabbedPanelsTab" id="tab-prefs"
-					tabindex="8" title="Preferences"
-					onmouseover="Spaz.UI.showTooltip(this, this.title)"
-					onmouseout="Spaz.UI.hideTooltips()"
-					onclick="Spaz.UI.setSelectedTab(this)">
-					<span class="tab-icon"></span>
-				</li>
+				<!-- Prefs (hidden) -->
+				<li class="TabbedPanelsTab" id="tab-prefs" tabindex="8"></li>
 			</ul>
 
 

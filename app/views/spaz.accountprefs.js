@@ -485,9 +485,9 @@ Spaz.AccountPrefs.buildAccountsMenu = function(){
 	}
 	$($toggle.selector).live('click', function(e){
 		toggleMenu(e);
-		$(document).one('click', function(e){
-			if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-		});
+		if($('#' + menuId).is(':visible')){
+			$(document).one('click', function(e){ hideMenu(e); });
+		}
 	});
 
 	// Add to DOM

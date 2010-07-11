@@ -1073,9 +1073,9 @@ var UserlistsTimeline = function(args) {
 
 			$($toggle.selector).live('click', function(e){
 				toggleMenu(e);
-				$(document).one('click', function(e){
-					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-				});
+				if($('#' + menuId).is(':visible')){
+					$(document).one('click', function(e){ hideMenu(e); });
+				}
 			});
 
 			Spaz.UI.statusBar('Loaded lists for @' + username);
@@ -1333,9 +1333,9 @@ var SearchTimeline = function(args) {
 				// intended.
 
 				toggleMenu(e);
-				$(document).one('click', function(e){
-					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-				})
+				if($('#' + menuId).is(':visible')){
+					$(document).one('click', function(e){ hideMenu(e); });
+				}
 			});
 
 			Spaz.UI.statusBar('Loaded saved searches for @' + username);

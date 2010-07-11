@@ -12,7 +12,7 @@ Spaz.Prefs.defaultPreferences = {
 
 	'window-x': 50,
 	'window-y': 50,
-	'window-width': 275,
+	'window-width': 297,
 	'window-height': 600,
 	'window-alpha': 100,
 	'window-hideafterdelay': true,
