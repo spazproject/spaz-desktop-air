@@ -201,7 +201,6 @@ ul#account-list li:nth-child(even){
         color:#000;
       }
       #header .accounts-menu-toggle:hover{
-        background:#a3a3a3;
         background:-webkit-gradient(
           linear, left top, left bottom, from(#909090), to(#a3a3a3));
         border-radius:6px;

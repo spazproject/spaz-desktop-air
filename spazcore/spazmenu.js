@@ -94,32 +94,38 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 	}
 	
 	// iterate over items
-	var item, itemhtml = '';
-	if(showOpts.rebuild || !jQuery('#' + this.opts.base_id + ' ul li')[0]){
+	var item, itemhtml = '',
+	    jqList = jQuery('#' + this.opts.base_id).children('ul');
+	if(showOpts.rebuild || !jqList.find('li')[0]){
 		for (var i=0; i < this.items.length; i++) {
 			item = this.items[i];
-			if (!item['class']) {
-				item['class'] = this._generateItemClass(item);
-			}
 
-			// create the item HTML
-			itemhtml = this._tplItem(item);
-
-			// -- add item DOM element
-			jQuery('#'+this.opts.base_id + ' ul').append(itemhtml);
-
-			// -- remove any existing handlers (in case this menu was shown before)
-			jQuery('#'+this.opts.base_id + ' ul').undelegate('.'+item['class'], 'click');
-
-			// -- add delegated handler
-			jQuery('#'+this.opts.base_id + ' ul').delegate('.'+item['class'], 'click', {'item':item, 'spazmenu':this}, function(e, data) {
-				if (e.data.item.handler) {
-					e.data.item.handler.call(this, e, e.data.item.data||itemsdata);
-				} else {
-					sch.debug('No handler defined for menu item');
+			if(item){
+				if (!item['class']) {
+					item['class'] = this._generateItemClass(item);
 				}
-				that.hide();
-			});
+
+				// create the item HTML
+				itemhtml = this._tplItem(item);
+
+				// -- add item DOM element
+				jqList.append(itemhtml);
+
+				// -- remove any existing handlers (in case this menu was shown before)
+				jqList.undelegate('.'+item['class'], 'click');
+
+				// -- add delegated handler
+				jqList.delegate('.'+item['class'], 'click', {'item':item, 'spazmenu':this}, function(e, data) {
+					if (e.data.item.handler) {
+						e.data.item.handler.call(this, e, e.data.item.data||itemsdata);
+					} else {
+						sch.debug('No handler defined for menu item');
+					}
+					that.hide();
+				});
+			}else{
+				jqList.append('<li class="separator"></li>');
+			}
 		}
 	}
 
