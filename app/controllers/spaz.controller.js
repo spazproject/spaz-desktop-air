@@ -331,48 +331,21 @@ Spaz.Controller.initIntercept = function() {
 			'#search-help':function(e) {
 				sc.helpers.openInBrowser('http://search.twitter.com/operators');
 			},
-			'#mainMenu-help':function(e) {
-				Spaz.UI.showHelp();
-			},
-			'#mainMenu-prefs':function(e) {
-				Spaz.UI.showPrefs();
-			},
-			'#mainMenu-about':function(e) {
-				Spaz.UI.showAbout();
-			},
-			'#mainMenu-view-toggle':function(e) {
-				Spaz.UI.toggleTimelineFilter();
-			},
-			'#mainMenu-view-reloadCurrentView':function(e) {
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#mainMenu-view-markAsReadCurrentView':function(e) {
-				Spaz.UI.markCurrentTimelineAsRead();
-			},
-			'#mainMenu-view-clearReloadCurrentView':function(e) {
-				Spaz.UI.clearCurrentTimeline();
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#mainMenu-sendDM':function(e) {
-				Spaz.postPanel.prepDirectMessage('');
-			},
-			'#mainmenu-shortenLink':function(e) {
-				Spaz.UI.showShortLink();
-			},
-			'#mainmenu-uploadImage':function(e) {
-				Spaz.UI.uploadImage();
-			},
-			'#mainMenu-sendReply':function(e) {
-				Spaz.postPanel.prepReply('');
-			},
-			'#mainMenu-followSpaz':function(e) {
-				Spaz.Data.followUser('spaz');
-			},
+			// '#mainMenu-view-toggle':function(e) {
+			// 	Spaz.UI.toggleTimelineFilter();
+			// },
+			// '#mainMenu-view-reloadCurrentView':function(e) {
+			// 	Spaz.UI.reloadCurrentTab(true);
+			// },
+			// '#mainMenu-view-markAsReadCurrentView':function(e) {
+			// 	Spaz.UI.markCurrentTimelineAsRead();
+			// },
+			// '#mainMenu-view-clearReloadCurrentView':function(e) {
+			// 	Spaz.UI.clearCurrentTimeline();
+			// 	Spaz.UI.reloadCurrentTab(true);
+			// },
 			'.mainMenu-account':function(e) {
 				alert('click: ' + $(this).text());
-			},
-			'#mainMenu-accounts':function(e) {
-				Spaz.UI.accountMaintenance();
 			},
 
 			'#entrybox-saveDraft':function(e){

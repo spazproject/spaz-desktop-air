@@ -744,26 +744,50 @@ Spaz.UI.buildToolsMenu = function(){
 		items_func: function(){
 			return [
 				{
-					label:   'Item 1',
+					label:   '[account 1]',
 					data:    {},
-					handler: function(){ sch.debug('=== TEST ITEM 1'); }
+					handler: function(){ sch.debug('=== FIXME: Implement'); }
 				},
 				{
-					label:   'Item 2',
+					label:   '[account 2]',
 					data:    {},
-					handler: function(){ sch.debug('=== TEST ITEM 2'); }
+					handler: function(){ sch.debug('=== FIXME: Implement'); }
 				},
 				null,
 				{
-					label:   'Item 3',
-					data:    {},
-					handler: function(){ sch.error('=== TEST ITEM 3'); }
+					label:   'Send a @-reply',
+					handler: function(){ Spaz.postPanel.prepReply(''); }
 				},
 				{
-					label:   'Item 4',
-					data:    {},
-					handler: function(){ sch.error('=== TEST ITEM 4'); }
+					label:   'Send a direct message',
+					handler: function(){ Spaz.postPanel.prepDirectMessage(''); }
 				},
+				{
+					label:   'Shorten URL',
+					handler: function(){ Spaz.UI.showShortLink(); }
+				},
+				{
+					label:   'Upload image',
+					handler: function(){ Spaz.UI.uploadImage(); }
+				},
+				null,
+				{
+					label:   'Preferences',
+					handler: function(){ Spaz.UI.showPrefs(); }
+				},
+				// TODO: Add "Accounts" item to switch to Preferences > Accounts
+				{
+					label:   'Help',
+					handler: function(){ Spaz.UI.showHelp(); }
+				},
+				{
+					label:   'About Spaz',
+					handler: function(){ Spaz.UI.showAbout(); }
+				},
+				{
+					label:   'Follow @Spaz',
+					handler: function(){ Spaz.Data.followUser('spaz'); }
+				}
 			];
 		},
 		close_on_any_click: false
@@ -1812,13 +1836,13 @@ Spaz.UI.clickHandler = function(event) {
 // 	);
 // }
 
-Spaz.UI.accountMaintenance = function(imgurl) {
-	var url = 'app:/html/accounts.html';
-	if (imgurl) {
-		url += '?fileUrl='+encodeURIComponent(imgurl);
-	}
-    this.instance = window.open(url, 'accountMaint', 'height=300,width=350');
-};
+// Spaz.UI.accountMaintenance = function(imgurl) {
+// 	var url = 'app:/html/accounts.html';
+// 	if (imgurl) {
+// 		url += '?fileUrl='+encodeURIComponent(imgurl);
+// 	}
+//     this.instance = window.open(url, 'accountMaint', 'height=300,width=350');
+// };
 
 
 Spaz.UI.shortenPostPanelText = function() {
