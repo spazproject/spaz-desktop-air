@@ -753,29 +753,35 @@ Spaz.UI.buildToolsMenu = function(){
 					data:    {},
 					handler: function(){ sch.debug('=== FIXME: Implement'); }
 				},
+				{
+					label:   'Manage Accounts…',
+					handler: function(){
+						Spaz.UI.showPrefs();
+						Spaz.UI.openAccountsPrefs();
+					}
+				},
 				null,
 				{
-					label:   'Send a @-reply',
+					label:   'Send a @-reply…',
 					handler: function(){ Spaz.postPanel.prepReply(''); }
 				},
 				{
-					label:   'Send a direct message',
+					label:   'Send a direct message…',
 					handler: function(){ Spaz.postPanel.prepDirectMessage(''); }
 				},
 				{
-					label:   'Shorten URL',
+					label:   'Shorten URL…',
 					handler: function(){ Spaz.UI.showShortLink(); }
 				},
 				{
-					label:   'Upload image',
+					label:   'Upload image…',
 					handler: function(){ Spaz.UI.uploadImage(); }
 				},
 				null,
 				{
-					label:   'Preferences',
+					label:   'Preferences…',
 					handler: function(){ Spaz.UI.showPrefs(); }
 				},
-				// TODO: Add "Accounts" item to switch to Preferences > Accounts
 				{
 					label:   'Help',
 					handler: function(){ Spaz.UI.showHelp(); }
@@ -1772,9 +1778,9 @@ Spaz.UI.showPrefs = function() {
 }
 
 /**
- * open the login panel in the prefs section 
+ * Open the Accounts panel in the Prefs section
  */
-Spaz.UI.openLoginPanel = function() {
+Spaz.UI.openAccountsPrefs = function() {
     Spaz.UI.prefsCPG.openPanel(0);
 };
 
