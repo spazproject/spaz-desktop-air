@@ -213,13 +213,6 @@ Spaz.Controller.initIntercept = function() {
 				});
 				tt.show();
 			},
-			'.accounts-menu-toggle':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
-					'e'		:e,
-					'trigger':this
-				});
-				tt.show();
-			},
 			'.directory-user-followstatus':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,

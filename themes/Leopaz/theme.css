@@ -1110,7 +1110,6 @@ div.spaz-menu{
   cursor:default;
   z-index:9999;
 }
-div.spaz-menu#accounts-menu,
 div.spaz-menu#tools-menu{
   margin-right:14px;
   white-space:nowrap;

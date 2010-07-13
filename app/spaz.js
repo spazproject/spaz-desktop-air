@@ -291,11 +291,6 @@ Spaz.initialize = function() {
 	Spaz.Timelines.toggleNewUserCTAs();
 
 	/*
-		Set up accounts menu
-	*/
-	Spaz.AccountPrefs.buildAccountsMenu();
-
-	/*
 		About popbox
 	*/
 	$('#about-version').text("v"+Spaz.Sys.getVersion());
