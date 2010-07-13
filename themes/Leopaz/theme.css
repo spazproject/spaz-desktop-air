@@ -180,7 +180,7 @@ ul#account-list li:nth-child(even){
 				}
       #header-label{
         display:block;
-        width:45px;
+        width:65px;
         margin:-3px auto 0;
         font-size:13px;
         font-weight:normal;
@@ -194,34 +194,11 @@ ul#account-list li:nth-child(even){
       #header-label:after{
         content:' \025BE'; /* Down-pointing triangle */
       }
-      #header .accounts-menu-toggle{
-        position:absolute;
-        right:4px;
-        top:1px;
-        padding:2px 4px 2px 2px;
-        color:#000;
-      }
-      #header .accounts-menu-toggle:hover{
-        background:-webkit-gradient(
-          linear, left top, left bottom, from(#909090), to(#a3a3a3));
-        border-radius:6px;
-          -webkit-border-radius:6px;
-        color:#fff;
-      }
-      #header .accounts-menu-toggle:after{
-        position:relative;
-        top:-3px;
-        content:' \025BE'; /* Down-pointing triangle */
-        font-size:13px;
-        line-height:13px;
-      }
-      body:not(.active) #header .accounts-menu-toggle:not(:hover){
-        color:#717171;
-      }
-      #header .accounts-menu-toggle .current{
+      #header-label .current{
         display:inline-block;
         width:16px;
         height:16px;
+        margin:0 5px 0 0;
         background:transparent 0 0 no-repeat;
         background-size:16px 16px;
           -webkit-background-size:16px 16px;

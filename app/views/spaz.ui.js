@@ -742,17 +742,23 @@ Spaz.UI.buildToolsMenu = function(){
 		base_class: 'spaz-menu',
 		li_class:   'spaz-menu-item',
 		items_func: function(){
-			return [
-				{
-					label:   '[account 1]',
-					data:    {},
-					handler: function(){ sch.debug('=== FIXME: Implement'); }
-				},
-				{
-					label:   '[account 2]',
-					data:    {},
-					handler: function(){ sch.debug('=== FIXME: Implement'); }
-				},
+			var i, acct,
+			    accts = Spaz.AccountPrefs.spaz_acc._accounts,
+			    items = [];
+
+			i = accts.length; while(i--){
+				acct = accts[i];
+				items.unshift({
+					label:   acct.username + '@' + acct.type,
+					'class': acct.username + '-at-' + acct.type,
+					data:    { accountId: acct.id },
+					handler: function(e, data){
+						Spaz.AccountPrefs.setAccount(data.accountId);
+					}
+				});
+			}
+
+			items = items.concat(
 				{
 					label:   'Manage Accounts…',
 					handler: function(){
@@ -794,7 +800,8 @@ Spaz.UI.buildToolsMenu = function(){
 					label:   'Follow @Spaz',
 					handler: function(){ Spaz.Data.followUser('spaz'); }
 				}
-			];
+			);
+			return items;
 		},
 		close_on_any_click: false
 	});
@@ -802,14 +809,21 @@ Spaz.UI.buildToolsMenu = function(){
 	// Bind menu toggling handlers
 	function showMenu(e){
 		var $menu = $('#' + menuId),
-		    togglePos = $toggle.offset();
+		    togglePos = $toggle.offset(),
+		    currentAccount = Spaz.Prefs.getCurrentAccount();
 		menu.show(e, null, {
 			position: {
 				// Position below toggle:
 				left: togglePos.left,
 				top:  togglePos.top + $toggle.height()
-			}
+			},
+			rebuild: true // Rebuild every time; can be optimized to only rebuild
+			              // if any account has been modified since the last time
+			              // the menu was shown.
 		});
+
+		// Re-select the current account because the menu has been rebuilt
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(currentAccount.id);
 	}
 	function hideMenu(e){ menu.hide(e); }
 	function toggleMenu(e){

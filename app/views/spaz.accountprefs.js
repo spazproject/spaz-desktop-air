@@ -297,7 +297,7 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 		jQuery('#current-account-id').val(account_id);
 		jQuery('#account-list').find('li[data-account-id="' + account_id + '"]').
 			addClass('current').siblings().removeClass('current');
-		Spaz.AccountPrefs.setAccountsMenuSelection(account_id);
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account_id);
 
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
 	}
@@ -311,7 +311,6 @@ Spaz.AccountPrefs.add = function(username, password, type){
 	$('#account-list').append(
 		Spaz.AccountPrefs.getAccountListItemHTML(newacct));
 	Spaz.AccountPrefs.setAccountListImages();
-	Spaz.AccountPrefs.toggleAccountsMenuToggle();
 	Spaz.AccountPrefs.toggleCTA();
 	Spaz.Timelines.toggleNewUserCTAs();
 
@@ -338,7 +337,6 @@ Spaz.AccountPrefs.remove = function(id){
 
 	// Update views
 	$('#account-list').children('li[data-account-id="' + id + '"]').remove();
-	Spaz.AccountPrefs.toggleAccountsMenuToggle();
 	Spaz.AccountPrefs.toggleCTA();
 	Spaz.Timelines.toggleNewUserCTAs();
 
@@ -477,7 +475,7 @@ Spaz.AccountPrefs.buildAccountsMenu = function(){
 		});
 
 		// Re-select the current account because the menu has been rebuilt
-		Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(currentAccount.id);
 	}
 	function hideMenu(e){ menu.hide(e); }
 	function toggleMenu(e){
@@ -492,25 +490,23 @@ Spaz.AccountPrefs.buildAccountsMenu = function(){
 
 	// Add to DOM
 	$('#header').append($toggle);
-	Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
-	Spaz.AccountPrefs.toggleAccountsMenuToggle();
+	Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(currentAccount.id);
 };
 
-Spaz.AccountPrefs.toggleAccountsMenuToggle = function(){
-	var $toggle = jQuery('#header').find('.accounts-menu-toggle');
-	$toggle.toggle(Spaz.AccountPrefs.count() > 1);
-};
-
-Spaz.AccountPrefs.setAccountsMenuSelection = function(accountId){
+Spaz.AccountPrefs.updateWindowTitleAndToolsMenu = function(accountId){
 	var account = Spaz.Prefs.getUserAccount(accountId),
 	    user = TwUserModel.first({
 	    	conditions: {screen_name: account.username}
 	    }),
-	    $toggle = jQuery('#header').find('.accounts-menu-toggle'),
-	    $menu   = jQuery('#accounts-menu');
+	    $menu = jQuery('#tools-menu'),
+	    $currentAccountAvatar = jQuery('#header-label').children('.current');
 
 	if(user){
-		$toggle.children('.current').html(user.screen_name).css({
+		if(!$currentAccountAvatar[0]){
+			$currentAccountAvatar =
+				jQuery('<span class="current"></span>').prependTo('#header-label');
+		}
+		$currentAccountAvatar.html(account.username).css({
 			backgroundImage: 'url(' + user.profile_image_url + ')'
 		});
 		$menu.find('li.' + account.username + '-at-' + account.type).
