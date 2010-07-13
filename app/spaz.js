@@ -291,6 +291,16 @@ Spaz.initialize = function() {
 	Spaz.Timelines.toggleNewUserCTAs();
 
 	/*
+		Initialize indicators of current account
+	*/
+	(function(){
+		var account = Spaz.Prefs.getCurrentAccount();
+		if(account){
+			Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account.id);
+		}
+	})();
+
+	/*
 		About popbox
 	*/
 	$('#about-version').text("v"+Spaz.Sys.getVersion());
