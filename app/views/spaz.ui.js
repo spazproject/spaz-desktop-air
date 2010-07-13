@@ -1821,15 +1821,6 @@ Spaz.UI.clickHandler = function(event) {
     sch.debug('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
 
-// Spaz.UI.accountMaintenance = function(imgurl) {
-// 	var url = 'app:/html/accounts.html';
-// 	if (imgurl) {
-// 		url += '?fileUrl='+encodeURIComponent(imgurl);
-// 	}
-//     this.instance = window.open(url, 'accountMaint', 'height=300,width=350');
-// };
-
-
 Spaz.UI.shortenPostPanelText = function() {
 	Spaz.postPanel.textarea.focus();
 	Spaz.postPanel.shortenText.call(Spaz.postPanel);
