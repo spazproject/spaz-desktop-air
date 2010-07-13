@@ -196,14 +196,6 @@ Spaz.initialize = function() {
 
 	Spaz.UI.buildToolsMenu();
 
-	$('#header-label').menu({
-			copyClassAttr: true,
-			addExpando: true,
-			onClick: $.Menu.closeAll
-		},
-		'#mainMenuRoot'
-	);
-
 	$('#view-friends').menu({
 			copyClassAttr: true,
 			addExpando: true,

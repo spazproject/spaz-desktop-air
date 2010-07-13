@@ -179,20 +179,16 @@ ul#account-list li:nth-child(even){
 				  background-image:url(images/window-controls-minimize.png);
 				}
       #header-label{
-        display:block;
-        width:65px;
+        width:55px;
         margin:-3px auto 0;
         font-size:13px;
         font-weight:normal;
         color:#000;
-        cursor:pointer;
+        cursor:default;
         text-shadow:0 1px 1px #fff;
       }
       body:not(.active) #header-label{
         color:#717171;
-      }
-      #header-label:after{
-        content:' \025BE'; /* Down-pointing triangle */
       }
       #header-label .current{
         display:inline-block;

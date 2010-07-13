@@ -172,8 +172,7 @@
 				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
 				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
 			</div>
-			<!-- <span id="header-label" onclick="Spaz.UI.showMainMenu($(this))">Spaz &raquo;</span> -->
-			<span id="header-label" style="cursor:pointer">Spaz</span>
+			<div id="header-label">Spaz</div>
 		</h1>
 
 		<!-- Tools -->
@@ -958,31 +957,6 @@
 				<li id="userContextMenu-follow" class="clickable menuitem">Follow</li>
 				<li id="userContextMenu-unfollow" class="clickable menuitem">Stop Following</li>
 				<!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
-			</ul>
-		</div>
-
-		<!-- the main menu container -->
-		<div id="mainMenu">
-			<ul id="mainMenuRoot" style="display:none;">
-				<li class="menuitem mainMenu-view"><a>View…&nbsp;&raquo;</a>
-					<ul>
-						<!-- <li class="menuitem mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li> -->
-						<!-- <li class="menuitem mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li> -->
-						<!-- <li class="menuitem mainMenu-view-reloadCurrentView"><a id="mainMenu-view-reloadCurrentView">Reload current view</a></li> -->
-						<!-- <li class="menuitem mainMenu-view-clearReloadCurrentView"><a id="mainMenu-view-clearReloadCurrentView">Clear &amp; reload current view</a></li> -->
-					</ul>
-				</li>
-
-				<li class="menu-separator"><hr /></li>
-
-				<li class="menuitem mainMenu-account-switch"><a>Switch Accounts…&nbsp;&raquo;</a>
-					<ul id="mainMenu-account-list">
-<!--
-						<li class="menuitem mainMenu-account selected-account"><a id="mainMenu-account-kibitzer">Kibitzer</a></li>
-						<li class="menuitem mainMenu-account"><a id="mainMenu-account-spaz">Spaz</a></li>
--->
-					</ul>
-				</li>
 			</ul>
 		</div>
 

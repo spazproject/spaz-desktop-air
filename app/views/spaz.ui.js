@@ -1821,41 +1821,6 @@ Spaz.UI.clickHandler = function(event) {
     sch.debug('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
 
-/**
- * Generates the Account (user) selection menu.
- * @returns void
- */
-// Spaz.UI.generateAccountsMenu = function() {
-// 	var accounts = Spaz.DB.getUserList();
-//
-// 	for (i = 0; i < accounts.length; i++) {
-// 		$('#mainMenu-account-list').append('<li class="menuitem">' +
-// 										   '<a  class="mainMenu-account" id="mainMenu-accountname-' + accounts[i] +
-// 										   '">' + accounts[i] + '</a></li>');
-// 		$('#account-list').append('<li class="account-list-item">' +
-// 								  '<a  class="account-item" id="account-list-item-' + accounts[i] +
-// 								  '">' + accounts[i] + '</a></li>');
-// 		if (accounts[i].toLowerCase() == Spaz.Prefs.getUsername) {
-// 			$('#mainMenu-accountname-' + accounts[i]).addClass("selected-account");
-// 			$('#account-list-item-'    + accounts[i]).addClass("selected-account");
-// 		}
-// 	}
-//
-// 	// $('#account-details').hide();
-//
-// 	/**
-// 	 * Repeating this code block here makes the previously generated menu items
-// 	 * appear -- but I don't understand why.
-// 	 */
-// 	$('#header-label').menu({
-// 			copyClassAttr: true,
-// 			addExpando: true,
-// 			onClick: $.Menu.closeAll
-// 		},
-// 		'#mainMenuRoot'
-// 	);
-// }
-
 // Spaz.UI.accountMaintenance = function(imgurl) {
 // 	var url = 'app:/html/accounts.html';
 // 	if (imgurl) {

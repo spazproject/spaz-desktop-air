@@ -324,22 +324,6 @@ Spaz.Controller.initIntercept = function() {
 			'#search-help':function(e) {
 				sc.helpers.openInBrowser('http://search.twitter.com/operators');
 			},
-			// '#mainMenu-view-toggle':function(e) {
-			// 	Spaz.UI.toggleTimelineFilter();
-			// },
-			// '#mainMenu-view-reloadCurrentView':function(e) {
-			// 	Spaz.UI.reloadCurrentTab(true);
-			// },
-			// '#mainMenu-view-markAsReadCurrentView':function(e) {
-			// 	Spaz.UI.markCurrentTimelineAsRead();
-			// },
-			// '#mainMenu-view-clearReloadCurrentView':function(e) {
-			// 	Spaz.UI.clearCurrentTimeline();
-			// 	Spaz.UI.reloadCurrentTab(true);
-			// },
-			'.mainMenu-account':function(e) {
-				alert('click: ' + $(this).text());
-			},
 
 			'#entrybox-saveDraft':function(e){
 				var editingDraftId = Spaz.Drafts.getEditingId(),
