@@ -222,40 +222,23 @@ SpazPostPanel.prototype.buildShortenMenu = function(){
 		li_class:   'spaz-menu-item',
 		items_func: function(){
 			return [
-				{ id: 'entrybox-shortenURLs', label: 'Shorten URLs', 'handler':Spaz.UI.shortenPostPanelURLs },
-				{ id: 'entrybox-shortenText', label: 'Shorten text', 'handler':Spaz.UI.shortenPostPanelText }
+				{
+					id:      'entrybox-shortenURLs',
+					label:   'Shorten URLs',
+					handler: Spaz.UI.shortenPostPanelURLs
+				},
+				{
+					id:      'entrybox-shortenText',
+					label:   'Shorten text',
+					handler: Spaz.UI.shortenPostPanelText
+				}
 			];
-		},
-		close_on_any_click: false
+		}
 	});
-
-	// Build menu toggling handlers
-	function showMenu(e){
-		var $menu     = $('#' + menuId),
-		    togglePos = $toggle.offset();
-		menu.show(e, null, {
-			position: {
-				// Position below toggle:
-				left: togglePos.left,
-				top:  togglePos.top + $toggle.height()
-			}
-		});
-		$('#entrybox').focus();
-	}
-	function hideMenu(e){ menu.hide(e); }
-	function toggleMenu(e){
-		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-	}
-
-	$($toggle.selector).live('click', function(e){
-		toggleMenu(e);
-
-		// Allow the next click to hide the menu, unless the click is on the
-		// toggle. In that case, the previous call to `toggleMenu` should have the
-		// final effect on the menu's state.
-		$(document).one('click', function(e){
-			if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-		});
+	menu.bindToggle($toggle.selector, {
+		afterShow: function(e){
+			jQuery('#entrybox').focus();
+		}
 	});
 };
 

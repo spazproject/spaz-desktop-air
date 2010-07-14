@@ -1002,8 +1002,6 @@ var UserlistsTimeline = function(args) {
 	
 	
 	this.buildListsMenu = function() {
-		// TODO: Refactor out repetition with `this.buildSavedSearchesMenu`
-
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisULT.twit.setCredentials(auth);
@@ -1044,39 +1042,9 @@ var UserlistsTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 					return items;
-				},
-				close_on_any_click: false
-			});
-
-			// Bind menu toggling handlers
-			function showMenu(e){
-				var $menu = $('#' + menuId),
-				    togglePos;
-				if(!!$menu[0]){
-					$menu.show(); // Show existing
-				}else{
-					// Build and show
-					togglePos = $toggle.offset();
-					menu.show(e, data, {
-						position: {
-							// Position below toggle:
-							left: togglePos.left,
-							top:  togglePos.top + $toggle.height()
-						}
-					});
 				}
-			}
-			function hideMenu(e){ menu.hide(e); }
-			function toggleMenu(e){
-				$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-			}
-
-			$($toggle.selector).live('click', function(e){
-				toggleMenu(e);
-				$(document).one('click', function(e){
-					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-				});
 			});
+			menu.bindToggle($toggle.selector, { showData: data });
 
 			Spaz.UI.statusBar('Loaded lists for @' + username);
 			Spaz.UI.hideLoading();
@@ -1258,8 +1226,6 @@ var SearchTimeline = function(args) {
 	});
 
 	this.buildSavedSearchesMenu = function(){
-		// TODO: Refactor out repetition with `this.buildListsMenu`
-
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisST.twit.setCredentials(auth);
@@ -1300,43 +1266,9 @@ var SearchTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 					return items;
-				},
-				close_on_any_click: false
-			});
-
-			// Bind menu toggling handlers
-			function showMenu(e){
-				var $menu = $('#' + menuId),
-				    togglePos;
-				if(!!$menu[0]){
-					$menu.show(); // Show existing
-				}else{
-					// Build and show
-					togglePos = $toggle.offset();
-					menu.show(e, data, {
-						position: {
-							// Position below toggle:
-							left: togglePos.left,
-							top:  togglePos.top + $toggle.height()
-						}
-					});
 				}
-			}
-			function hideMenu(e){ menu.hide(e); }
-			function toggleMenu(e){
-				$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-			}
-
-			$($toggle.selector).live('click', function(e){
-				// Using $.fn.live because `$toggle.click(function...)` kept running
-				// the following document click handler immediately, which wasn't
-				// intended.
-
-				toggleMenu(e);
-				$(document).one('click', function(e){
-					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-				})
 			});
+			menu.bindToggle($toggle.selector, { showData: data });
 
 			Spaz.UI.statusBar('Loaded saved searches for @' + username);
 			Spaz.UI.hideLoading();

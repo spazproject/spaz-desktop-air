@@ -30,7 +30,7 @@
  * @param {string} [opts.base_class] the class attribute for the menu's base element. default is 'spaz_menu'
  * @param {string} [opts.li_class] the class attribute for the menu's base element. default is 'spaz_menu_li'
  * @param {string} [opts.show_immediately] whether or not to immediately show the menu on creation. Default is TRUE
- * @param {string} [opts.close_on_any_click] whether or not to close the menu when anything is clicked. Default is TRUE
+ * @param {string} [opts.close_on_any_click] whether or not to close the menu when anything is clicked. Default is FALSE
  */
 
 if(typeof SpazMenu === 'undefined' || !SpazMenu){
@@ -42,7 +42,7 @@ SpazMenu = function(opts) {
 		'base_class':'spaz_menu',
 		'li_class'  :'spaz_menu_li',
 		'show_immediately':  true,
-		'close_on_any_click':true
+		'close_on_any_click':false
 	}, opts);
 	
 	// close on ANY clicks
@@ -65,14 +65,14 @@ SpazMenu = function(opts) {
 
 
 /**
- * Creates the menu, but doesn't show 
+ * Creates and shows the menu
  * @param {object} trigger_event the event that triggered the show
  * @param {object} itemsdata a data structure that will be passed to the items_func 
  * @param {object} [showOpts.position] {left: <number>, top: <number>} position at which to show the menu. Defaults to trigger_event coordinates.
  * @param {object} [showOpts.rebuild] whether to rebuild the menu contents if the menu already exists. Defaults to false.
  */
 SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
-	sch.debug('creating');
+	sch.debug('SpazMenu: create');
 	
 	var that = this;
 
@@ -119,7 +119,7 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 					if (e.data.item.handler) {
 						e.data.item.handler.call(this, e, e.data.item.data||itemsdata);
 					} else {
-						sch.debug('No handler defined for menu item');
+						sch.debug('SpazMenu: No handler defined for menu item');
 					}
 					that.hide();
 				});
@@ -129,7 +129,7 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 		}
 	}
 
-	sch.debug('show');
+	sch.debug('SpazMenu: show');
 
 	showOpts.position = sch.defaults({
 		left: trigger_event.clientX,
@@ -153,7 +153,7 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
  * hides a created menu 
  */
 SpazMenu.prototype.hide = function(e) {
-	sch.debug('hide');
+	sch.debug('SpazMenu: hide');
 	var that; 
 	
 	if (e && e.data && e.data.spazmenu) {
@@ -178,7 +178,7 @@ SpazMenu.prototype.keypressHide = function(e) {
  * destroys a menu completely (DOM and JS object) 
  */
 SpazMenu.prototype.destroy = function() {
-	sch.debug('destroy');
+	sch.debug('SpazMenu: destroy');
 	
 
 	
@@ -213,11 +213,71 @@ SpazMenu.prototype.hideAndDestroy = function(e) {
 
 
 /**
+ * Bind to another element for toggling the menu. `close_on_any_click` should
+ * be false, or else it will interfere.
+ * @param {function} [opts.showMenu] the function responsible for showing the menu
+ * @param {object}   [opts.showData] data (object) to pass to opts.showMenu
+ * @param {object}   [opts.showOpts] options to use when showing the menu
+ * @param {function} [opts.afterShow] optional callback after showing the menu
+ * @param {function} [opts.hideMenu] the function responsible for hiding the menu
+ * @param {function} [opts.afterHide] optional callback after hiding the menu
+ */
+SpazMenu.prototype.bindToggle = function(toggleSelector, opts){
+	var _this = this;
+
+	opts = sch.defaults({
+		showMenu: function(e){
+			var jqToggle  = jQuery(toggleSelector),
+			    togglePos = jqToggle.offset();
+			_this.show(e, opts.showData, sch.defaults({
+				position: {
+					// Position below toggle:
+					left: togglePos.left,
+					top:  togglePos.top + jqToggle.height()
+				}
+			}, opts.showOpts));
+			if(opts.afterShow){ opts.afterShow.call(_this, e); }
+		},
+		hideMenu: function(e){
+			_this.hide(e);
+			if(opts.afterHide){ opts.afterHide.call(_this, e); }
+		}
+	}, opts);
+
+	function onDocumentClick(e){
+		// Bind this handler to run it only once. Use this, rather than `.one()`,
+		// so it can be unbound before execution if needed.
+		opts.hideMenu(e);
+		jQuery(this).unbind(e);
+	}
+
+	jQuery(toggleSelector).live('click', function(e){
+		if(jQuery('#' + _this.opts.base_id).is(':visible')){
+			opts.hideMenu(e);
+			jQuery(document).unbind('click', onDocumentClick);
+		}else{
+			opts.showMenu(e);
+			jQuery(document).click(onDocumentClick);
+		}
+	});
+
+	// SpryTabbedPanels' `onTabClick` ends with `return false`, so the event
+	// reaches no other handlers. Fantastic. To work around this and hide this
+	// menu when switching tabs, bind more handlers directly to the tabs, rather
+	// than to the document. Bloat.
+	jQuery('.TabbedPanelsTab').click(function(e){
+		opts.hideMenu(e);
+	});
+};
+
+
+
+/**
  * sets the position of the menu right before we show it 
  * @param {object} position {left: <number>, top: <number>}
  */
 SpazMenu.prototype._positionBeforeShow = function(position) {
-	sch.debug('_positionBeforeShow');
+	sch.debug('SpazMenu: _positionBeforeShow');
 	jQuery('#' + this.opts.base_id).css(position);
 };
 
@@ -225,7 +285,7 @@ SpazMenu.prototype._positionBeforeShow = function(position) {
  * Repositions the menu after showing in case we're outside the viewport boundaries
  */
 SpazMenu.prototype._reposition = function(e, data) {
-	sch.debug('_reposition');
+	sch.debug('SpazMenu: _reposition');
 
 	var jqMenu          = jQuery('#' + this.opts.base_id),
 	    viewportWidth   = jQuery(window).width(),
