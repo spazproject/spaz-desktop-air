@@ -207,13 +207,25 @@ Spaz.Windows.resetPosition = function() {
 
 
 Spaz.Windows.onWindowResize = function() {
-	Spaz.Prefs.set('window-width', nativeWindow.width);
-	Spaz.Prefs.set('window-height', nativeWindow.height);
+	if(Spaz.Windows.onWindowResize.prefsTimeout){
+		clearTimeout(Spaz.Windows.onWindowResize.prefsTimeout);
+		delete Spaz.Windows.onWindowResize.prefsTimeout;
+	}
+	Spaz.Windows.onWindowResize.prefsTimeout = setTimeout(function(){
+		Spaz.Prefs.set('window-width',  nativeWindow.width);
+		Spaz.Prefs.set('window-height', nativeWindow.height);
+	}, 500);
 };
 
 Spaz.Windows.onWindowMove = function() {
-	Spaz.Prefs.set('window-x', nativeWindow.x);
-	Spaz.Prefs.set('window-y', nativeWindow.y);	
+	if(Spaz.Windows.onWindowMove.prefsTimeout){
+		clearTimeout(Spaz.Windows.onWindowMove.prefsTimeout);
+		delete Spaz.Windows.onWindowMove.prefsTimeout;
+	}
+	Spaz.Windows.onWindowMove.prefsTimeout = setTimeout(function(){
+		Spaz.Prefs.set('window-x', nativeWindow.x);
+		Spaz.Prefs.set('window-y', nativeWindow.y);
+	}, 500);
 };
 
 /**
