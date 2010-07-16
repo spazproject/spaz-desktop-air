@@ -194,13 +194,7 @@ Spaz.initialize = function() {
 		duration: 200
 	});
 
-	$('#header-label').menu({
-			copyClassAttr: true,
-			addExpando: true,
-			onClick: $.Menu.closeAll
-		},
-		'#mainMenuRoot'
-	);
+	Spaz.UI.buildToolsMenu();
 
 	// $('.panelmenu form input[title="filter"]').hint();
 
@@ -281,9 +275,14 @@ Spaz.initialize = function() {
 	Spaz.Timelines.toggleNewUserCTAs();
 
 	/*
-		Set up accounts menu
+		Initialize indicators of current account
 	*/
-	Spaz.AccountPrefs.buildAccountsMenu();
+	(function(){
+		var account = Spaz.Prefs.getCurrentAccount();
+		if(account){
+			Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account.id);
+		}
+	})();
 
 	/*
 		About popbox

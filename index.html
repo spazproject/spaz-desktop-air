@@ -172,10 +172,15 @@
 				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
 				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
 			</div>
-			<!-- <span id="header-label" onclick="Spaz.UI.showMainMenu($(this))">Spaz &raquo;</span> -->
-			<span id="header-label" style="cursor:pointer">Spaz</span>
+			<div id="header-label">Spaz</div>
 		</h1>
 
+		<!-- Tools -->
+		<div id="tools-menu-toggle" title="Tools"
+			onmouseover="Spaz.UI.showTooltip(this, this.title)"
+			onmouseout="Spaz.UI.hideTooltips()">
+			<span class="tab-icon"></span>
+		</div>
 
 		<div id="tabs" class="TabbedPanels">
 			<ul class="TabbedPanelsTabGroup" id="timeline-tabs">
@@ -243,14 +248,8 @@
 					<span class="tab-icon"></span>
 				</li> -->
 
-				<!-- PREFS -->
-				<li class="TabbedPanelsTab" id="tab-prefs"
-					tabindex="8" title="Preferences"
-					onmouseover="Spaz.UI.showTooltip(this, this.title)"
-					onmouseout="Spaz.UI.hideTooltips()"
-					onclick="Spaz.UI.setSelectedTab(this)">
-					<span class="tab-icon"></span>
-				</li>
+				<!-- Prefs (hidden) -->
+				<li class="TabbedPanelsTab" id="tab-prefs" tabindex="8"></li>
 			</ul>
 
 
@@ -958,48 +957,6 @@
 				<li id="userContextMenu-follow" class="clickable menuitem">Follow</li>
 				<li id="userContextMenu-unfollow" class="clickable menuitem">Stop Following</li>
 				<!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
-			</ul>
-		</div>
-
-		<!-- the main menu container -->
-		<div id="mainMenu">
-			<ul id="mainMenuRoot" style="display:none;">
-				<li class="menuitem mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
-				<li class="menuitem mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
-				<li class="menuitem mainmenu-shortenLink"><a id="mainmenu-shortenLink">Shorten URL</a></li>
-				<li class="menuitem mainmenu-uploadImage"><a id="mainmenu-uploadImage">Upload Image</a></li>
-				<!-- <li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
-					<ul>
-						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
-						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
-					</ul> -->
-				<li class="menuitem mainMenu-view"><a>View…&nbsp;&raquo;</a>
-					<ul>
-						<li class="menuitem mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li>
-						<li class="menuitem mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li>
-						<li class="menuitem mainMenu-view-reloadCurrentView"><a id="mainMenu-view-reloadCurrentView">Reload current view</a></li>
-						<li class="menuitem mainMenu-view-clearReloadCurrentView"><a id="mainMenu-view-clearReloadCurrentView">Clear &amp; reload current view</a></li>
-					</ul>
-				</li>
-
-				<li class="menu-separator"><hr /></li>
-
-				<li class="menuitem mainMenu-account-switch"><a>Switch Accounts…&nbsp;&raquo;</a>
-					<ul id="mainMenu-account-list">
-<!--
-						<li class="menuitem mainMenu-account selected-account"><a id="mainMenu-account-kibitzer">Kibitzer</a></li>
-						<li class="menuitem mainMenu-account"><a id="mainMenu-account-spaz">Spaz</a></li>
--->
-					</ul>
-				</li>
-				<li class="menuitem mainMenu-accounts"><a id="mainMenu-accounts">Account Maintenance</a></li>
-
-				<li class="menu-separator"><hr /></li>
-
-				<li class="menuitem mainMenu-prefs"><a id="mainMenu-prefs">Preferences</a></li>
-				<li class="menuitem mainMenu-help"><a id="mainMenu-help">Help</a></li>
-				<li class="menuitem mainMenu-about"><a id="mainMenu-about">About Spaz</a></li>
-				<li class="menuitem mainMenu-followSpaz"><a id="mainMenu-followSpaz">Follow @spaz</a></li>
 			</ul>
 		</div>
 

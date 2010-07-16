@@ -297,7 +297,7 @@ Spaz.AccountPrefs.setAccount = function(account_id) {
 		jQuery('#current-account-id').val(account_id);
 		jQuery('#account-list').find('li[data-account-id="' + account_id + '"]').
 			addClass('current').siblings().removeClass('current');
-		Spaz.AccountPrefs.setAccountsMenuSelection(account_id);
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account_id);
 
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
 	}
@@ -311,7 +311,6 @@ Spaz.AccountPrefs.add = function(username, password, type){
 	$('#account-list').append(
 		Spaz.AccountPrefs.getAccountListItemHTML(newacct));
 	Spaz.AccountPrefs.setAccountListImages();
-	Spaz.AccountPrefs.toggleAccountsMenuToggle();
 	Spaz.AccountPrefs.toggleCTA();
 	Spaz.Timelines.toggleNewUserCTAs();
 
@@ -338,7 +337,6 @@ Spaz.AccountPrefs.remove = function(id){
 
 	// Update views
 	$('#account-list').children('li[data-account-id="' + id + '"]').remove();
-	Spaz.AccountPrefs.toggleAccountsMenuToggle();
 	Spaz.AccountPrefs.toggleCTA();
 	Spaz.Timelines.toggleNewUserCTAs();
 
@@ -419,98 +417,20 @@ Spaz.AccountPrefs.getSelectedAccountId = function(){
 	return $('#account-list li.selected').attr('data-account-id');
 };
 
-Spaz.AccountPrefs.buildAccountsMenu = function(){
-	// Builds the global menu for switching accounts.
-
-	var menuId = 'accounts-menu',
-	    menu,
-	    $toggle = $(
-	    	'<div class="accounts-menu-toggle" title="Switch accounts">' +
-	    		'<span class="current"></span>' +
-	    	'</div>'
-	    ),
-	    currentAccount  = Spaz.Prefs.getCurrentAccount();
-
-	$toggle.selector = '#header .accounts-menu-toggle';
-
-	// Build menu
-	menu = new SpazMenu({
-		base_id:    menuId,
-		base_class: 'spaz-menu',
-		li_class:   'spaz-menu-item',
-		items_func: function(){
-			var i, acct,
-			    accts = Spaz.AccountPrefs.spaz_acc._accounts,
-			    items = [];
-
-			i = accts.length; while(i--){
-				acct = accts[i];
-				items.unshift({
-					label:   acct.username + '@' + acct.type,
-					'class': acct.username + '-at-' + acct.type,
-					data:    { accountId: acct.id },
-					handler: function(e, data){
-						Spaz.AccountPrefs.setAccount(data.accountId);
-					}
-				});
-			}
-
-			return items;
-		},
-		close_on_any_click: false
-	});
-
-	// Bind menu toggling handlers
-	function showMenu(e){
-		var $menu = $('#' + menuId),
-		    togglePos = $toggle.offset(),
-		    currentAccount = Spaz.Prefs.getCurrentAccount();
-		menu.show(e, null, {
-			position: {
-				// Position below toggle:
-				left: togglePos.left,
-				top:  togglePos.top + $toggle.height()
-			},
-			rebuild: true // Rebuild every time; can be optimized to only rebuild
-			              // if any account has been modified since the last time
-			              // the menu was shown.
-		});
-
-		// Re-select the current account because the menu has been rebuilt
-		Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
-	}
-	function hideMenu(e){ menu.hide(e); }
-	function toggleMenu(e){
-		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-	}
-	$($toggle.selector).live('click', function(e){
-		toggleMenu(e);
-		$(document).one('click', function(e){
-			if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-		});
-	});
-
-	// Add to DOM
-	$('#header').append($toggle);
-	Spaz.AccountPrefs.setAccountsMenuSelection(currentAccount.id);
-	Spaz.AccountPrefs.toggleAccountsMenuToggle();
-};
-
-Spaz.AccountPrefs.toggleAccountsMenuToggle = function(){
-	var $toggle = jQuery('#header').find('.accounts-menu-toggle');
-	$toggle.toggle(Spaz.AccountPrefs.count() > 1);
-};
-
-Spaz.AccountPrefs.setAccountsMenuSelection = function(accountId){
+Spaz.AccountPrefs.updateWindowTitleAndToolsMenu = function(accountId){
 	var account = Spaz.Prefs.getUserAccount(accountId),
 	    user = TwUserModel.first({
 	    	conditions: {screen_name: account.username}
 	    }),
-	    $toggle = jQuery('#header').find('.accounts-menu-toggle'),
-	    $menu   = jQuery('#accounts-menu');
+	    $menu = jQuery('#tools-menu'),
+	    $currentAccountAvatar = jQuery('#header-label').children('.current');
 
 	if(user){
-		$toggle.children('.current').html(user.screen_name).css({
+		if(!$currentAccountAvatar[0]){
+			$currentAccountAvatar =
+				jQuery('<span class="current"></span>').prependTo('#header-label');
+		}
+		$currentAccountAvatar.html(account.username).css({
 			backgroundImage: 'url(' + user.profile_image_url + ')'
 		});
 		$menu.find('li.' + account.username + '-at-' + account.type).

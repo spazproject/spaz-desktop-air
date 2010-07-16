@@ -730,6 +730,115 @@ Spaz.UI.getViewport = function() {
 
 
 
+Spaz.UI.buildToolsMenu = function(){
+	var menuId  = 'tools-menu',
+	    menu,
+	    $menu   = $('#' + menuId),
+	    $toggle = $('#tools-menu-toggle');
+
+	// Build menu
+	menu = new SpazMenu({
+		base_id:    menuId,
+		base_class: 'spaz-menu',
+		li_class:   'spaz-menu-item',
+		items_func: function(){
+			var i, acct,
+			    accts = Spaz.AccountPrefs.spaz_acc._accounts,
+			    items = [];
+
+			i = accts.length; while(i--){
+				acct = accts[i];
+				items.unshift({
+					label:   acct.username + '@' + acct.type,
+					'class': acct.username + '-at-' + acct.type,
+					data:    { accountId: acct.id },
+					handler: function(e, data){
+						Spaz.AccountPrefs.setAccount(data.accountId);
+					}
+				});
+			}
+
+			items = items.concat(
+				{
+					label:   'Manage Accounts…',
+					handler: function(){
+						Spaz.UI.showPrefs();
+						Spaz.UI.openAccountsPrefs();
+					}
+				},
+				null,
+				{
+					label:   'Send a @-reply…',
+					handler: function(){ Spaz.postPanel.prepReply(''); }
+				},
+				{
+					label:   'Send a direct message…',
+					handler: function(){ Spaz.postPanel.prepDirectMessage(''); }
+				},
+				{
+					label:   'Shorten URL…',
+					handler: function(){ Spaz.UI.showShortLink(); }
+				},
+				{
+					label:   'Upload image…',
+					handler: function(){ Spaz.UI.uploadImage(); }
+				},
+				null,
+				{
+					label:   'Preferences…',
+					handler: function(){ Spaz.UI.showPrefs(); }
+				},
+				{
+					label:   'Help',
+					handler: function(){ Spaz.UI.showHelp(); }
+				},
+				{
+					label:   'About Spaz',
+					handler: function(){ Spaz.UI.showAbout(); }
+				},
+				{
+					label:   'Follow @Spaz',
+					handler: function(){ Spaz.Data.followUser('spaz'); }
+				}
+			);
+			return items;
+		},
+		close_on_any_click: false
+	});
+
+	// Bind menu toggling handlers
+	function showMenu(e){
+		var $menu = $('#' + menuId),
+		    togglePos = $toggle.offset(),
+		    currentAccount = Spaz.Prefs.getCurrentAccount();
+		menu.show(e, null, {
+			position: {
+				// Position below toggle:
+				left: togglePos.left,
+				top:  togglePos.top + $toggle.height()
+			},
+			rebuild: true // Rebuild every time; can be optimized to only rebuild
+			              // if any account has been modified since the last time
+			              // the menu was shown.
+		});
+
+		// Re-select the current account because the menu has been rebuilt
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(currentAccount.id);
+	}
+	function hideMenu(e){ menu.hide(e); }
+	function toggleMenu(e){
+		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
+	}
+	$($toggle.selector).live('click', function(e){
+		toggleMenu(e);
+		if($('#' + menuId).is(':visible')){
+			$(document).one('click', function(e){ hideMenu(e); });
+		}
+		e.preventDefault();
+	});
+
+};
+
 Spaz.UI.showLinkContextMenu = function(jq, url) {
     var el = jq[0];
 
@@ -1683,9 +1792,9 @@ Spaz.UI.showPrefs = function() {
 }
 
 /**
- * open the login panel in the prefs section 
+ * Open the Accounts panel in the Prefs section
  */
-Spaz.UI.openLoginPanel = function() {
+Spaz.UI.openAccountsPrefs = function() {
     Spaz.UI.prefsCPG.openPanel(0);
 };
 
@@ -1711,50 +1820,6 @@ Spaz.UI.clickHandler = function(event) {
 
     sch.debug('BLUR	 name:' + e.name + ' tagname:' + el.tagName + ' id:' + el.id);
 };
-
-/**
- * Generates the Account (user) selection menu.
- * @returns void
- */
-// Spaz.UI.generateAccountsMenu = function() {
-// 	var accounts = Spaz.DB.getUserList();
-//
-// 	for (i = 0; i < accounts.length; i++) {
-// 		$('#mainMenu-account-list').append('<li class="menuitem">' +
-// 										   '<a  class="mainMenu-account" id="mainMenu-accountname-' + accounts[i] +
-// 										   '">' + accounts[i] + '</a></li>');
-// 		$('#account-list').append('<li class="account-list-item">' +
-// 								  '<a  class="account-item" id="account-list-item-' + accounts[i] +
-// 								  '">' + accounts[i] + '</a></li>');
-// 		if (accounts[i].toLowerCase() == Spaz.Prefs.getUsername) {
-// 			$('#mainMenu-accountname-' + accounts[i]).addClass("selected-account");
-// 			$('#account-list-item-'    + accounts[i]).addClass("selected-account");
-// 		}
-// 	}
-//
-// 	// $('#account-details').hide();
-//
-// 	/**
-// 	 * Repeating this code block here makes the previously generated menu items
-// 	 * appear -- but I don't understand why.
-// 	 */
-// 	$('#header-label').menu({
-// 			copyClassAttr: true,
-// 			addExpando: true,
-// 			onClick: $.Menu.closeAll
-// 		},
-// 		'#mainMenuRoot'
-// 	);
-// }
-
-Spaz.UI.accountMaintenance = function(imgurl) {
-	var url = 'app:/html/accounts.html';
-	if (imgurl) {
-		url += '?fileUrl='+encodeURIComponent(imgurl);
-	}
-    this.instance = window.open(url, 'accountMaint', 'height=300,width=350');
-};
-
 
 Spaz.UI.shortenPostPanelText = function() {
 	Spaz.postPanel.textarea.focus();
