@@ -202,14 +202,6 @@ Spaz.initialize = function() {
 		'#mainMenuRoot'
 	);
 
-	$('#view-friends').menu({
-			copyClassAttr: true,
-			addExpando: true,
-			onClick: $.Menu.closeAll
-		},
-		'#view-friends-menu'
-	);
-
 	// $('.panelmenu form input[title="filter"]').hint();
 
 	$('.TabbedPanelsTab').each(function(i) {

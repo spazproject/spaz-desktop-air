@@ -650,7 +650,7 @@ Spaz.UI.setView = function(type ) {
 			break;
 		case 'view-friends-menu-replies-dms':
 			$container.addClass('filter-timeline-replies-dms');
-			Spaz.UI.statusBar('Hiding tweets not directed at you');
+			// Spaz.UI.statusBar('Hiding tweets not directed at you');
 			break;
 		case 'view-friends-menu-replies':
 			$container.addClass('filter-timeline-replies');

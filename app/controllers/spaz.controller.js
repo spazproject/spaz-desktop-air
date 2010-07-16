@@ -292,28 +292,6 @@ Spaz.Controller.initIntercept = function() {
 			'#markread-userlists':function(e) {
 				Spaz.UI.markCurrentTimelineAsRead();
 			},
-			'#view-friends-menu .menuitem':function(e) {
-				$('#view-friends-menu .menuitem').removeClass('selected');
-				$(this).addClass('selected');
-			},
-			'#view-friends-menu-all':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-replies-dms':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-replies':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-dms':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-unread':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-custom':function(e) {
-				Spaz.UI.setView(this.id);
-			},
 			'#prefs-open-folder':function(e) {
 				Spaz.Sys.openAppStorageFolder();
 			},

@@ -409,7 +409,84 @@ var FriendsTimeline = function() {
 			
 		}
 	});
-	
+
+	this.buildViewMenu = function(){
+		var menu,
+		    menuId = 'view-friends-menu';
+
+		function onStandardFilterClick(e, itemData){
+			Spaz.UI.setView(e.data.item.id);
+		}
+		function onCustomFilterClick(e, itemData){
+			// TODO: Implement
+		}
+
+		menu = new SpazMenu({
+			base_id:    menuId,
+			base_class: 'spaz-menu',
+			li_class:   'spaz-menu-item',
+			items_func: function(){
+				var items;
+
+				// Add standard filters
+				items = [
+					{	label:   'All',
+						id:      'view-friends-menu-all',
+						handler: onStandardFilterClick
+					},
+					{	label:   'Mentions and DMs',
+						id:      'view-friends-menu-replies-dms',
+						handler: onStandardFilterClick
+					},
+					{	label:   'Mentions',
+						id:      'view-friends-menu-replies',
+						handler: onStandardFilterClick
+					},
+					{	label:   'DMs',
+						id:      'view-friends-menu-dms',
+						handler: onStandardFilterClick
+					},
+					{	label:   'Unread',
+						id:      'view-friends-menu-unread',
+						handler: onStandardFilterClick
+					}
+				];
+
+				// Add saved custom filters
+				items = items.concat([null]); // Add separator
+				// TODO: Implement; use `onCustomFilterClick`
+
+				// Add controls for managing custom filters
+				// TODO: After adding/deleting a custom filter, empty the menu. This
+				//       forces it to be rebuilt the next time it's shown.
+				items = items.concat([
+					{	label:   'Save current filter (NYI)',
+						handler: function(){
+							sch.debug('Save current filter (NYI)');
+							// TODO: Implement
+						}
+					},
+					{	label:   'Manage saved filters&hellip; (NYI)',
+						handler: function(){
+							sch.debug('Manage saved filters (NYI)');
+							// TODO: Implement
+						}
+					}
+				]);
+
+				return items;
+			}
+		});
+		menu.bindToggle('#view-friends', {
+			afterShow: function(e){
+				var selectedId = Spaz.UI.currentFriendsTimelineView ||
+				                   'view-friends-menu-all';
+				jQuery('#' + selectedId).addClass('selected').
+					siblings('.selected').removeClass('selected');
+			}
+		});
+	};
+
 	/*
 		override the default method
 	*/
@@ -438,6 +515,8 @@ var FriendsTimeline = function() {
 		listener for URL expansion
 	*/
 	sch.listen(this.timeline.container, sc.events.newExpandURLSuccess, this.expandURL);
+
+	this.buildViewMenu();
 };
 
 FriendsTimeline.prototype = new AppTimeline();
