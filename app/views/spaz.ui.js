@@ -802,39 +802,19 @@ Spaz.UI.buildToolsMenu = function(){
 				}
 			);
 			return items;
-		},
-		close_on_any_click: false
-	});
-
-	// Bind menu toggling handlers
-	function showMenu(e){
-		var $menu = $('#' + menuId),
-		    togglePos = $toggle.offset(),
-		    currentAccount = Spaz.Prefs.getCurrentAccount();
-		menu.show(e, null, {
-			position: {
-				// Position below toggle:
-				left: togglePos.left,
-				top:  togglePos.top + $toggle.height()
-			},
-			rebuild: true // Rebuild every time; can be optimized to only rebuild
-			              // if any account has been modified since the last time
-			              // the menu was shown.
-		});
-
-		// Re-select the current account because the menu has been rebuilt
-		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(currentAccount.id);
-	}
-	function hideMenu(e){ menu.hide(e); }
-	function toggleMenu(e){
-		$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-	}
-	$($toggle.selector).live('click', function(e){
-		toggleMenu(e);
-		if($('#' + menuId).is(':visible')){
-			$(document).one('click', function(e){ hideMenu(e); });
 		}
-		e.preventDefault();
+	});
+	menu.bindToggle($toggle.selector, {
+		showOpts: {rebuild: true},
+			// Rebuild every time. This can be optimized to only rebuild if any
+			// account has been modified since the last time the menu was shown.
+		afterShow: function(e){
+			// Re-select the current account because the menu has been rebuilt
+			var account = Spaz.Prefs.getCurrentAccount();
+			if(account){
+				Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account.id);
+			}
+		}
 	});
 
 };
