@@ -1095,8 +1095,13 @@ var UserlistsTimeline = function(args) {
 			    $toggle = $('#view-userlists');
 
 			// Build menu
+			function menuItemId(id){
+				return menuId + '-' + id;
+			}
 			function onMenuItemClick(e, itemData){
 				thisULT.setlist(itemData.slug, itemData.username);
+				jQuery('#' + menuItemId(itemData.id)).addClass('selected').
+					siblings('.selected').removeClass('selected');
 			}
 			menu = new SpazMenu({
 				base_id:    menuId,
@@ -1108,9 +1113,11 @@ var UserlistsTimeline = function(args) {
 					for(i = 0, iMax = itemsData.lists.length; i < iMax; i++){
 						itemData = itemsData.lists[i];
 						items.push({
+							id:      menuItemId(itemData.id),
 							label:   itemData.name,
 							handler: onMenuItemClick,
 							data: {
+								id:       itemData.id,
 								slug:     itemData.slug,
 								username: itemData.user.screen_name
 							}
