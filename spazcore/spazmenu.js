@@ -332,15 +332,23 @@ SpazMenu.prototype._tplBase = function() {
  * @param {object} i the item object 
  */
 SpazMenu.prototype._tplItem = function(i) {
-	var html = '';
-	
-	html += (
-		'<li class="' + this.opts.li_class + ' ' + i['class'] +
-				'" id="' + (i.id || '') + '">' +
-			'<span>' + i.label + '</span>' +
-		'</li>'
-	);
-	
+	var html = '',
+	    attr,
+	    attrs = i.attrs || {};
+	      // The `attrs` hook allows for specifying attributes other than `id`
+	      // and `class`, such as `data-silverfish` and `data-monocle`.
+
+	attrs.id = i.id || '';
+	attrs['class'] = [this.opts.li_class, i['class']].join(' ');
+
+	html += '<li';
+	for(attr in attrs){
+		if(attrs.hasOwnProperty(attr)){
+			html += ' ' + attr + '="' + attrs[attr] + '"';
+		}
+	}
+	html += '><span>' + i.label + '</span></li>';
+
 	sch.debug(html);
 	
 	return html;
