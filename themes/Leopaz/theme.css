@@ -39,6 +39,9 @@ input[type=password]:focus,
   outline:3px solid #98bde1; /* Light blue */
     /* TODO: Change to glow when Adobe AIR supports `box-shadow` */
 }
+#entrybox.dm:focus{
+  outline-color:#ffb3b2;
+}
 .highlight{
   border-bottom:1px dotted #884;
 }
