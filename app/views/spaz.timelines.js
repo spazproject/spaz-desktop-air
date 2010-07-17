@@ -1311,6 +1311,18 @@ var SearchTimeline = function(args) {
 		}
 	});
 
+	this.searchFor = function(query){
+		jQuery('#search-for').val(query);
+		thisST.timeline.refresh();
+
+		var dataQueryAttr = query.toLowerCase().replace('"', '\\"'),
+		    $queryLI = jQuery('#saved-searches-menu li').removeClass('selected').
+		                 filter('[data-query="' + dataQueryAttr + '"]');
+		if($queryLI[0]){
+			$queryLI.addClass('selected');
+		}
+	};
+
 	this.buildSavedSearchesMenu = function(){
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
@@ -1326,9 +1338,11 @@ var SearchTimeline = function(args) {
 			    $toggle = $('#search-saved');
 
 			// Build menu
+			function menuItemId(id){
+				return menuId + '-' + id;
+			}
 			function onMenuItemClick(e, itemData){
-				$('#search-for').val(itemData.query);
-				thisST.timeline.refresh();
+				thisST.searchFor(itemData.query);
 			}
 			menu = new SpazMenu({
 				base_id:    menuId,
@@ -1340,9 +1354,14 @@ var SearchTimeline = function(args) {
 					for(i = 0, iMax = itemsData.length; i < iMax; i++){
 						itemData = itemsData[i];
 						items.push({
+							id:      menuItemId(itemData.id),
+							attrs:   { 'data-query': itemData.query.toLowerCase() },
 							label:   itemData.name,
 							handler: onMenuItemClick,
-							data:    {query: itemData.query}
+							data: {
+								id:    itemData.id,
+								query: itemData.query
+							}
 						});
 					}
 					items.sort(function(a, b){

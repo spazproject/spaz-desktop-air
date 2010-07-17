@@ -349,9 +349,8 @@ Spaz.Controller.initIntercept = function() {
 				var screen_name = $(this).attr('user-screen_name');
 				var search_str = "from:"+screen_name+" OR to:"+screen_name;
 
-				$('#search-for').val(search_str);
-			    Spaz.Timelines.search.refresh();
-			    Spaz.UI.showTab('tab-search');
+				Spaz.UI.showTab('tab-search');
+				Spaz.Timelines.search.searchFor(search_str);
 			},
 			'#userContextMenu-filterByUser':function(e) {
 				var screen_name = $(this).attr('user-screen_name');
@@ -379,9 +378,8 @@ Spaz.Controller.initIntercept = function() {
 				sc.helpers.openInBrowser(url);
 			},
 			'.hashtag':function(e) {
-				$('#search-for').val($(this).text());
 				Spaz.UI.showTab('tab-search');
-				Spaz.Timelines.search.activate();
+				Spaz.Timelines.search.searchFor($(this).text());
 			},
 			'.status-thumbnail':function(e) {
 				var url = $(this).attr('data-href');
@@ -715,7 +713,7 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	// Search box
 	// ****************************************
 	shortcut.add('Enter', function() {
-			Spaz.Timelines.search.activate();
+			Spaz.Timelines.search.searchFor($('#search-for').val());
 		}, {
 			target:$('#search-for')[0],
 			propagate:false
