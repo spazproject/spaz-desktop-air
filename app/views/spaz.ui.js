@@ -760,7 +760,7 @@ Spaz.UI.buildToolsMenu = function(){
 
 			items = items.concat(
 				{
-					label:   'Manage Accounts…',
+					label:   'Manage accounts…',
 					handler: function(){
 						Spaz.UI.showPrefs();
 						Spaz.UI.openAccountsPrefs();

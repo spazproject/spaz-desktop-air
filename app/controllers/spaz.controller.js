@@ -206,7 +206,7 @@ Spaz.Controller.initIntercept = function() {
 				});
 				tt.showUser($(this).attr('user-screen_name'));
 			},
-			'input[title]':function(e) {
+			'input[title], button[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
 					'trigger':this

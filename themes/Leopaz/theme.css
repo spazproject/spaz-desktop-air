@@ -459,11 +459,13 @@ ul#account-list li:nth-child(even){
               line-height:9px;
               text-align:left;
             }
-              .panelmenu form input{
+              .panelmenu form input,
+              .panelmenu form button{
                 font-size:10px;
+                font-weight:normal;
                 margin:2px 0;
               }
-              .panelmenu form input[type=button]{
+              .panelmenu form button{
                 width:48px;
                 height:22px;
                 padding:0;
@@ -474,14 +476,21 @@ ul#account-list li:nth-child(even){
                 border-width:0 8px;
                 color:#fff;
                 cursor:default;
+                white-space:nowrap;
               }
-              .panelmenu form input[type=button][value=Refresh]{
-                width:55px;
+              .panelmenu form button[id^="refresh-"]{
+                width:auto;
               }
-              .panelmenu form input[type=button]:active{
+              .panelmenu form button:active{
                 border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
                   -webkit-border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
                 /* border-image-source:url(images/panel-menu/button-active.png); */
+              }
+              #panel-friends   .panelmenu #view-friends:after,
+              #panel-userlists .panelmenu #view-userlists:after,
+              #panel-search    .panelmenu #search-saved:after,
+              #panel-search    .panelmenu #search-trends:after{
+                content:' \025BE'; /* Down-pointing triangle */
               }
               .panelmenu form input[type=text]{
                 float:right;
@@ -514,16 +523,16 @@ ul#account-list li:nth-child(even){
                 float:none;
                 width:30.75%;
               }
-              #panel-search .panelmenu form input[type=button]{
+              #panel-search .panelmenu form button{
                 width:auto;
                 margin-right:-4px;
               }
-              #panel-search .panelmenu form input#search-go{
+              #panel-search .panelmenu form #search-go{
                 display:none;
                   /*  Allows for making the text input wider. Hit Enter to
                       search instead. */
               }
-              #panel-search .panelmenu form input#search-help{
+              #panel-search .panelmenu form #search-help{
                 float:right;
                 margin-right:0;
               }
