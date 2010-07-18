@@ -1370,6 +1370,14 @@ var SearchTimeline = function(args) {
 						return (a.label === b.label) ? 0 :
 						       (a.label > b.label)   ? 1 : -1;
 					});
+
+					items.push(null);
+
+					items = items.concat(
+						{ label: 'Save current search (NYI)' },
+						{ label: 'Manage saved searches&hellip; (NYI)' }
+					);
+
 					return items;
 				}
 			});
