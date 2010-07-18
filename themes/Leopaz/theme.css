@@ -499,9 +499,25 @@ ul#account-list li:nth-child(even){
               }
               #panel-friends   .panelmenu #view-friends:after,
               #panel-userlists .panelmenu #view-userlists:after,
-              #panel-search    .panelmenu #search-saved:after,
-              #panel-search    .panelmenu #search-trends:after{
+              #panel-public    .panelmenu #trends-public:after,
+              #panel-search    .panelmenu #search-saved:after{
                 content:' \025BE'; /* Down-pointing triangle */
+              }
+              #panel-public .panelmenu form #trends-public,
+              #panel-search .panelmenu form #search-saved{
+                width:auto;
+              }
+              #panel-search .panelmenu form #search-help{
+                width:35px;
+              }
+              #panel-search .panelmenu form #search-go{
+                display:none;
+                  /*  Allows for making the text input wider. Hit Enter to
+                      search instead. */
+              }
+              #panel-search .panelmenu form #search-help{
+                float:right;
+                margin-right:0;
               }
               .panelmenu form input[type=text]{
                 float:right;
@@ -525,27 +541,16 @@ ul#account-list li:nth-child(even){
                 outline:0;
                 /* TODO: Add rounded blue glow */
               }
-              #panel-user       .panelmenu form input[type=text],
-              #panel-favorites  .panelmenu form input[type=text],
-              #panel-public     .panelmenu form input[type=text]{
+              #panel-user .panelmenu form input[type=text],
+              #panel-favorites .panelmenu form input[type=text]{
                 width:150px;
+              }
+              #panel-public .panelmenu form input[type=text]{
+                width:90px;
               }
               #panel-search .panelmenu form input[type=text]{
                 float:none;
                 width:30.75%;
-              }
-              #panel-search .panelmenu form button{
-                width:auto;
-                margin-right:-4px;
-              }
-              #panel-search .panelmenu form #search-go{
-                display:none;
-                  /*  Allows for making the text input wider. Hit Enter to
-                      search instead. */
-              }
-              #panel-search .panelmenu form #search-help{
-                float:right;
-                margin-right:0;
               }
 
           /*
