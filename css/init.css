@@ -58,6 +58,9 @@ input, textarea, .status-text, .status-text * {
     -webkit-user-select:text;
 }
 
+#tab-prefs{
+  display:none;
+}
 
 .relaunch-required {
 	font-weight:bold;

@@ -39,6 +39,9 @@ input[type=password]:focus,
   outline:3px solid #98bde1; /* Light blue */
     /* TODO: Change to glow when Adobe AIR supports `box-shadow` */
 }
+#entrybox.dm:focus{
+  outline-color:#ffb3b2;
+}
 .highlight{
   border-bottom:1px dotted #884;
 }
@@ -103,6 +106,7 @@ ul#account-list li:nth-child(even){
     bottom:8px;
       /*  This effectively has 8px padding to fit the app drop shadow. Using
           all-four-sides positioning lets it expand properly on resize. */
+    min-width:297px;
     border-top:1px solid rgba(204, 204, 204, 0.8);
     border-radius:4px;
       -webkit-border-radius:4px;
@@ -178,50 +182,22 @@ ul#account-list li:nth-child(even){
 				  background-image:url(images/window-controls-minimize.png);
 				}
       #header-label{
-        display:block;
-        width:45px;
+        width:55px;
         margin:-3px auto 0;
         font-size:13px;
         font-weight:normal;
         color:#000;
-        cursor:pointer;
+        cursor:default;
         text-shadow:0 1px 1px #fff;
       }
       body:not(.active) #header-label{
         color:#717171;
       }
-      #header-label:after{
-        content:' \025BE'; /* Down-pointing triangle */
-      }
-      #header .accounts-menu-toggle{
-        position:absolute;
-        right:4px;
-        top:1px;
-        padding:2px 4px 2px 2px;
-        color:#000;
-      }
-      #header .accounts-menu-toggle:hover{
-        background:#a3a3a3;
-        background:-webkit-gradient(
-          linear, left top, left bottom, from(#909090), to(#a3a3a3));
-        border-radius:6px;
-          -webkit-border-radius:6px;
-        color:#fff;
-      }
-      #header .accounts-menu-toggle:after{
-        position:relative;
-        top:-3px;
-        content:' \025BE'; /* Down-pointing triangle */
-        font-size:13px;
-        line-height:13px;
-      }
-      body:not(.active) #header .accounts-menu-toggle:not(:hover){
-        color:#717171;
-      }
-      #header .accounts-menu-toggle .current{
+      #header-label .current{
         display:inline-block;
         width:16px;
         height:16px;
+        margin:0 5px 0 0;
         background:transparent 0 0 no-repeat;
         background-size:16px 16px;
           -webkit-background-size:16px 16px;
@@ -294,16 +270,24 @@ ul#account-list li:nth-child(even){
 					panel. This gives the appearance that the tab is being drawn behind the
 					content panel.
 				 */
-				.TabbedPanelsTab{
-					position:relative;
-					top:-5px;
-					float:left;
+				.TabbedPanelsTab,
+				#tools-menu-toggle{
 					margin:0;
 					padding:0;
 					font-size:11px;
           background:transparent url(images/view-switches.png) 0 0 no-repeat;
+				}
+				.TabbedPanelsTab{
+					position:relative;
+					top:-5px;
+					float:left;
 					border:none;
 					list-style:none;
+				}
+				#tools-menu-toggle{
+				  position:absolute;
+				  right:8px;
+				  top:29px;
 				}
 
 				/*
@@ -342,59 +326,56 @@ ul#account-list li:nth-child(even){
 					text-decoration: none;
 				}
         #tab-friends                                                {}
-          body:not(.active) #tab-friends                              { background-position:0 -22px; }
-          #tab-friends:not(.TabbedPanelsTabSelected):active           { background-position:0 -44px; }
-          #tab-friends.TabbedPanelsTabSelected                        { background-position:0 -66px; }
-          body:not(.active) #tab-friends.TabbedPanelsTabSelected      { background-position:0 -88px; }
-          #tab-friends.TabbedPanelsTabSelected:active                 { background-position:0 -110px; }
+          body:not(.active) #tab-friends                              { background-position:0 -23px; }
+          #tab-friends:not(.TabbedPanelsTabSelected):active           { background-position:0 -46px; }
+          #tab-friends.TabbedPanelsTabSelected                        { background-position:0 -69px; }
+          body:not(.active) #tab-friends.TabbedPanelsTabSelected      { background-position:0 -92px; }
+          #tab-friends.TabbedPanelsTabSelected:active                 { background-position:0 -115px; }
         #tab-user                                                   { background-position:-31px 0; }
-          body:not(.active) #tab-user                                 { background-position:-31px -22px; }
-          #tab-user:not(.TabbedPanelsTabSelected):active              { background-position:-31px -44px; }
-          #tab-user.TabbedPanelsTabSelected                           { background-position:-31px -66px; }
-          body:not(.active) #tab-user.TabbedPanelsTabSelected         { background-position:-31px -88px; }
-          #tab-user.TabbedPanelsTabSelected:active                    { background-position:-31px -110px; }
+          body:not(.active) #tab-user                                 { background-position:-31px -23px; }
+          #tab-user:not(.TabbedPanelsTabSelected):active              { background-position:-31px -46px; }
+          #tab-user.TabbedPanelsTabSelected                           { background-position:-31px -69px; }
+          body:not(.active) #tab-user.TabbedPanelsTabSelected         { background-position:-31px -92px; }
+          #tab-user.TabbedPanelsTabSelected:active                    { background-position:-31px -115px; }
         #tab-favorites                                              { background-position:-31px 0; }
-          body:not(.active) #tab-favorites                            { background-position:-31px -22px; }
-          #tab-favorites:not(.TabbedPanelsTabSelected):active         { background-position:-31px -44px; }
-          #tab-favorites.TabbedPanelsTabSelected                      { background-position:-31px -66px; }
-          body:not(.active) #tab-favorites.TabbedPanelsTabSelected    { background-position:-31px -88px; }
-          #tab-favorites.TabbedPanelsTabSelected:active               { background-position:-31px -110px; }
+          body:not(.active) #tab-favorites                            { background-position:-31px -23px; }
+          #tab-favorites:not(.TabbedPanelsTabSelected):active         { background-position:-31px -46px; }
+          #tab-favorites.TabbedPanelsTabSelected                      { background-position:-31px -69px; }
+          body:not(.active) #tab-favorites.TabbedPanelsTabSelected    { background-position:-31px -92px; }
+          #tab-favorites.TabbedPanelsTabSelected:active               { background-position:-31px -115px; }
         #tab-userlists                                              { background-position:-62px 0; }
-          body:not(.active) #tab-userlists                            { background-position:-62px -22px; }
-          #tab-userlists:not(.TabbedPanelsTabSelected):active         { background-position:-62px -44px; }
-          #tab-userlists.TabbedPanelsTabSelected                      { background-position:-62px -66px; }
-          body:not(.active) #tab-userlists.TabbedPanelsTabSelected    { background-position:-62px -88px; }
-          #tab-userlists.TabbedPanelsTabSelected:active               { background-position:-62px -110px; }
+          body:not(.active) #tab-userlists                            { background-position:-62px -23px; }
+          #tab-userlists:not(.TabbedPanelsTabSelected):active         { background-position:-62px -46px; }
+          #tab-userlists.TabbedPanelsTabSelected                      { background-position:-62px -69px; }
+          body:not(.active) #tab-userlists.TabbedPanelsTabSelected    { background-position:-62px -92px; }
+          #tab-userlists.TabbedPanelsTabSelected:active               { background-position:-62px -115px; }
         #tab-public                                                 { background-position:0 0; margin-left:8px; }
-          body:not(.active) #tab-public                               { background-position:0 -22px; }
-          #tab-public:not(.TabbedPanelsTabSelected):active            { background-position:0 -44px; }
-          #tab-public.TabbedPanelsTabSelected                         { background-position:0 -66px; }
-          body:not(.active) #tab-public.TabbedPanelsTabSelected       { background-position:0 -88px; }
-          #tab-public.TabbedPanelsTabSelected:active                  { background-position:0 -110px; }
+          body:not(.active) #tab-public                               { background-position:0 -23px; }
+          #tab-public:not(.TabbedPanelsTabSelected):active            { background-position:0 -46px; }
+          #tab-public.TabbedPanelsTabSelected                         { background-position:0 -69px; }
+          body:not(.active) #tab-public.TabbedPanelsTabSelected       { background-position:0 -92px; }
+          #tab-public.TabbedPanelsTabSelected:active                  { background-position:0 -115px; }
         #tab-search                                                 { background-position:-62px 0; }
-          body:not(.active) #tab-search                               { background-position:-62px -22px; }
-          #tab-search:not(.TabbedPanelsTabSelected):active            { background-position:-62px -44px; }
-          #tab-search.TabbedPanelsTabSelected                         { background-position:-62px -66px; }
-          body:not(.active) #tab-search.TabbedPanelsTabSelected       { background-position:-62px -88px; }
-          #tab-search.TabbedPanelsTabSelected:active                  { background-position:-62px -110px; }
+          body:not(.active) #tab-search                               { background-position:-62px -23px; }
+          #tab-search:not(.TabbedPanelsTabSelected):active            { background-position:-62px -46px; }
+          #tab-search.TabbedPanelsTabSelected                         { background-position:-62px -69px; }
+          body:not(.active) #tab-search.TabbedPanelsTabSelected       { background-position:-62px -92px; }
+          #tab-search.TabbedPanelsTabSelected:active                  { background-position:-62px -115px; }
         #tab-followerslist                                            { background-position:-93px 0; margin-left:8px; }
-          body:not(.active) #tab-followerslist                          { background-position:-93px -22px; }
-          #tab-followerslist:not(.TabbedPanelsTabSelected):active       { background-position:-93px -44px; }
-          #tab-followerslist.TabbedPanelsTabSelected                    { background-position:-93px -66px; }
-          body:not(.active) #tab-followerslist.TabbedPanelsTabSelected  { background-position:-93px -88px; }
-          #tab-followerslist.TabbedPanelsTabSelected:active             { background-position:-93px -110px; }
-        #tab-prefs                                                  { background-position:-93px 0; position:absolute; right:0; margin-left:15px; }
-          body:not(.active) #tab-prefs                                { background-position:-93px -22px; }
-          #tab-prefs:not(.TabbedPanelsTabSelected):active             { background-position:-93px -44px; }
-          #tab-prefs.TabbedPanelsTabSelected                          { background-position:-93px -66px; }
-          body:not(.active) #tab-prefs.TabbedPanelsTabSelected        { background-position:-93px -88px; }
-          #tab-prefs.TabbedPanelsTabSelected:active                   { background-position:-93px -110px; }
+          body:not(.active) #tab-followerslist                          { background-position:-93px -23px; }
+          #tab-followerslist:not(.TabbedPanelsTabSelected):active       { background-position:-93px -46px; }
+          #tab-followerslist.TabbedPanelsTabSelected                    { background-position:-93px -69px; }
+          body:not(.active) #tab-followerslist.TabbedPanelsTabSelected  { background-position:-93px -92px; }
+          #tab-followerslist.TabbedPanelsTabSelected:active             { background-position:-93px -115px; }
+        #tools-menu-toggle                                          { background-position:-124px 0; position:absolute; width:40px; margin-left:15px; }
+          body:not(.active) #tools-menu-toggle                        { background-position:-124px -23px; }
+          #tools-menu-toggle:active                                   { background-position:-124px -46px; }
 				
 					/* The image in the tab itself */
 					.tab-icon{
 						display:block;
 						width:31px;
-						height:22px;
+						height:23px;
 						cursor:default;
 					}
 					body:not(.active) .tab-icon{
@@ -414,8 +395,15 @@ ul#account-list li:nth-child(even){
           #tab-search.TabbedPanelsTabSelected .tab-icon         { background:url(images/tab-icon-search-selected.png) 5px 1px no-repeat; }
           #tab-followerslist .tab-icon                          { background:url(images/tab-icon-followers.png) 6px 4px no-repeat; }
           #tab-followerslist.TabbedPanelsTabSelected .tab-icon  { background:url(images/tab-icon-followers-selected.png) 4px 0 no-repeat; }
-          #tab-prefs .tab-icon                                  { background:url(images/tab-icon-prefs.png) 6px 3px no-repeat; }
-          #tab-prefs.TabbedPanelsTabSelected .tab-icon          { background:url(images/tab-icon-prefs-selected.png) 3px 0 no-repeat; }
+          #tools-menu-toggle .tab-icon                          { background:url(images/tab-icon-tools.png) 6px 4px no-repeat; width:40px; padding-right:10px; }
+          #tools-menu-toggle .tab-icon:after{
+            position:absolute;
+            right:5px;
+            top:1px;
+            display:block;
+            content:' \025BE'; /* Down-pointing triangle */
+            font-size:13px;
+          }
 
 			/*
 				These are the content panels, wrapped inside a single container div
@@ -471,11 +459,13 @@ ul#account-list li:nth-child(even){
               line-height:9px;
               text-align:left;
             }
-              .panelmenu form input{
+              .panelmenu form input,
+              .panelmenu form button{
                 font-size:10px;
+                font-weight:normal;
                 margin:2px 0;
               }
-              .panelmenu form input[type=button]{
+              .panelmenu form button{
                 width:48px;
                 height:22px;
                 padding:0;
@@ -486,18 +476,36 @@ ul#account-list li:nth-child(even){
                 border-width:0 8px;
                 color:#fff;
                 cursor:default;
+                white-space:nowrap;
               }
-              .panelmenu form input[type=button][value=Refresh]{
-                width:55px;
+              .panelmenu form button[id^="refresh-"]{
+                position:relative;
+                width:35px;
+                color:transparent;
               }
-              .panelmenu form input[type=button]:active{
+              .panelmenu form button[id^="refresh-"]:before{
+                position:absolute;
+                left:0;
+                right:0;
+                top:0;
+                bottom:0;
+                background:transparent url(images/refresh-white.png) center center no-repeat;
+                content:""; /* Forces background to be used */
+              }
+              .panelmenu form button:active{
                 border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
                   -webkit-border-image:url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
                 /* border-image-source:url(images/panel-menu/button-active.png); */
               }
+              #panel-friends   .panelmenu #view-friends:after,
+              #panel-userlists .panelmenu #view-userlists:after,
+              #panel-search    .panelmenu #search-saved:after,
+              #panel-search    .panelmenu #search-trends:after{
+                content:' \025BE'; /* Down-pointing triangle */
+              }
               .panelmenu form input[type=text]{
                 float:right;
-                width:80px;
+                width:100px;
                 height:19px;
                 margin-top:3px;
                 padding:0;
@@ -520,22 +528,22 @@ ul#account-list li:nth-child(even){
               #panel-user       .panelmenu form input[type=text],
               #panel-favorites  .panelmenu form input[type=text],
               #panel-public     .panelmenu form input[type=text]{
-                width:120px;
+                width:150px;
               }
               #panel-search .panelmenu form input[type=text]{
                 float:none;
                 width:30.75%;
               }
-              #panel-search .panelmenu form input[type=button]{
+              #panel-search .panelmenu form button{
                 width:auto;
                 margin-right:-4px;
               }
-              #panel-search .panelmenu form input#search-go{
+              #panel-search .panelmenu form #search-go{
                 display:none;
                   /*  Allows for making the text input wider. Hit Enter to
                       search instead. */
               }
-              #panel-search .panelmenu form input#search-help{
+              #panel-search .panelmenu form #search-help{
                 float:right;
                 margin-right:0;
               }
@@ -1114,15 +1122,16 @@ div.spaz-menu{
   width:auto;
   margin-right:20px; /* Margin away from viewport's right edge */
   padding:4px 0;
-  background-color:rgba(255, 255, 255, 0.9);
+  background-color:rgba(255, 255, 255, 0.95);
   border:1px solid #dfdfdf;
   border-radius:4px;
     -webkit-border-radius:4px;
   cursor:default;
   z-index:9999;
 }
-div.spaz-menu#accounts-menu{
+div.spaz-menu#tools-menu{
   margin-right:14px;
+  white-space:nowrap;
 }
   div.spaz-menu ul{
     margin:0;
@@ -1130,12 +1139,14 @@ div.spaz-menu#accounts-menu{
     list-style:none;
     overflow:auto;
   }
+    div.spaz-menu ul > li{
+      list-style:none;
+    }
     li.spaz-menu-item{
       margin:0px;
       border:solid transparent;
       border-width:1px 0;
       font-size:10px;
-      list-style:none;
     }
     li.spaz-menu-item:hover{
       background:-webkit-gradient(
@@ -1156,6 +1167,10 @@ div.spaz-menu#accounts-menu{
     }
     div.spaz-menu#entrybox-shorten-menu li.spaz-menu-item{
       white-space:nowrap;
+    }
+    div.spaz-menu ul li.separator{
+      margin:5px 1px;
+      border-bottom:1px solid #dfdfdf;
     }
 
 

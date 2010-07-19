@@ -198,7 +198,8 @@ Spaz.Data.makeFavorite = function(postid, onSuccess, onFailure) {
 
 	sch.debug('auth:'+auth);
 
-	Spaz.UI.statusBar('Adding fav: ' + postid);
+	sch.debug('Adding fav: ' + postid);
+	Spaz.UI.statusBar('Adding favorite&hellip;');
 	Spaz.UI.showLoading();
 
 	var twit = new SpazTwit({'auth':auth});
@@ -208,7 +209,8 @@ Spaz.Data.makeFavorite = function(postid, onSuccess, onFailure) {
 		function(data) {
 			var faved_element;
 			sch.debug(data);
-			Spaz.UI.statusBar('Added fav: ' + postid);
+			sch.debug('Added fav: ' + postid);
+			Spaz.UI.statusBar('Added favorite');
 			Spaz.UI.hideLoading();
 			if (onSuccess) {
 				onSuccess();
@@ -216,7 +218,8 @@ Spaz.Data.makeFavorite = function(postid, onSuccess, onFailure) {
 		},
 		function(xhr, msg, exc) {
 			sch.error(msg);
-			Spaz.UI.statusBar("Adding fav " + postid + " failed!");
+			sch.debug("Adding fav " + postid + " failed!");
+			Spaz.UI.statusBar('Error while adding favorite');
 			Spaz.UI.hideLoading();
 			if (onFailure) {
 				onFailure();
@@ -269,7 +272,8 @@ Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
 
 	sch.debug('auth:'+auth);
 
-	Spaz.UI.statusBar('Removing fav: ' + postid);
+	sch.debug('Removing fav: ' + postid);
+	Spaz.UI.statusBar('Removing favorite&hellip;');
 	Spaz.UI.showLoading();
 
 	var twit = new SpazTwit({'auth':auth});
@@ -279,7 +283,8 @@ Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
 		function(data) {
 			var faved_element;
 			sch.debug(data);
-			Spaz.UI.statusBar('Removed fav: ' + postid);
+			sch.debug('Removed fav: ' + postid);
+			Spaz.UI.statusBar('Removed favorite');
 			Spaz.UI.hideLoading();
 			if (onSuccess) {
 				onSuccess();
@@ -287,7 +292,8 @@ Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
 		},
 		function(xhr, msg, exc) {
 			sch.error(msg);
-			Spaz.UI.statusBar("Removing fav " + postid + " failed!");
+			sch.debug("Removing fav " + postid + " failed!");
+			Spaz.UI.statusBar('Error while removing favorite');
 			Spaz.UI.hideLoading();
 			if (onFailure) {
 				onFailure();

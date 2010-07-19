@@ -409,7 +409,84 @@ var FriendsTimeline = function() {
 			
 		}
 	});
-	
+
+	this.buildViewMenu = function(){
+		var menu,
+		    menuId = 'view-friends-menu';
+
+		function onStandardFilterClick(e, itemData){
+			Spaz.UI.setView(e.data.item.id);
+		}
+		function onCustomFilterClick(e, itemData){
+			// TODO: Implement
+		}
+
+		menu = new SpazMenu({
+			base_id:    menuId,
+			base_class: 'spaz-menu',
+			li_class:   'spaz-menu-item',
+			items_func: function(){
+				var items;
+
+				// Add standard filters
+				items = [
+					{	label:   'All',
+						id:      'view-friends-menu-all',
+						handler: onStandardFilterClick
+					},
+					{	label:   'Mentions and DMs',
+						id:      'view-friends-menu-replies-dms',
+						handler: onStandardFilterClick
+					},
+					{	label:   'Mentions',
+						id:      'view-friends-menu-replies',
+						handler: onStandardFilterClick
+					},
+					{	label:   'DMs',
+						id:      'view-friends-menu-dms',
+						handler: onStandardFilterClick
+					},
+					{	label:   'Unread',
+						id:      'view-friends-menu-unread',
+						handler: onStandardFilterClick
+					}
+				];
+
+				// Add saved custom filters
+				items = items.concat([null]); // Add separator
+				// TODO: Implement; use `onCustomFilterClick`
+
+				// Add controls for managing custom filters
+				// TODO: After adding/deleting a custom filter, empty the menu. This
+				//       forces it to be rebuilt the next time it's shown.
+				items = items.concat([
+					{	label:   'Save current filter (NYI)',
+						handler: function(){
+							sch.debug('Save current filter (NYI)');
+							// TODO: Implement
+						}
+					},
+					{	label:   'Manage saved filters&hellip; (NYI)',
+						handler: function(){
+							sch.debug('Manage saved filters (NYI)');
+							// TODO: Implement
+						}
+					}
+				]);
+
+				return items;
+			}
+		});
+		menu.bindToggle('#view-friends', {
+			afterShow: function(e){
+				var selectedId = Spaz.UI.currentFriendsTimelineView ||
+				                   'view-friends-menu-all';
+				jQuery('#' + selectedId).addClass('selected').
+					siblings('.selected').removeClass('selected');
+			}
+		});
+	};
+
 	/*
 		override the default method
 	*/
@@ -438,6 +515,8 @@ var FriendsTimeline = function() {
 		listener for URL expansion
 	*/
 	sch.listen(this.timeline.container, sc.events.newExpandURLSuccess, this.expandURL);
+
+	this.buildViewMenu();
 };
 
 FriendsTimeline.prototype = new AppTimeline();
@@ -1002,8 +1081,6 @@ var UserlistsTimeline = function(args) {
 	
 	
 	this.buildListsMenu = function() {
-		// TODO: Refactor out repetition with `this.buildSavedSearchesMenu`
-
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisULT.twit.setCredentials(auth);
@@ -1018,8 +1095,13 @@ var UserlistsTimeline = function(args) {
 			    $toggle = $('#view-userlists');
 
 			// Build menu
+			function menuItemId(id){
+				return menuId + '-' + id;
+			}
 			function onMenuItemClick(e, itemData){
 				thisULT.setlist(itemData.slug, itemData.username);
+				jQuery('#' + menuItemId(itemData.id)).addClass('selected').
+					siblings('.selected').removeClass('selected');
 			}
 			menu = new SpazMenu({
 				base_id:    menuId,
@@ -1031,9 +1113,11 @@ var UserlistsTimeline = function(args) {
 					for(i = 0, iMax = itemsData.lists.length; i < iMax; i++){
 						itemData = itemsData.lists[i];
 						items.push({
+							id:      menuItemId(itemData.id),
 							label:   itemData.name,
 							handler: onMenuItemClick,
 							data: {
+								id:       itemData.id,
 								slug:     itemData.slug,
 								username: itemData.user.screen_name
 							}
@@ -1044,39 +1128,9 @@ var UserlistsTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 					return items;
-				},
-				close_on_any_click: false
-			});
-
-			// Bind menu toggling handlers
-			function showMenu(e){
-				var $menu = $('#' + menuId),
-				    togglePos;
-				if(!!$menu[0]){
-					$menu.show(); // Show existing
-				}else{
-					// Build and show
-					togglePos = $toggle.offset();
-					menu.show(e, data, {
-						position: {
-							// Position below toggle:
-							left: togglePos.left,
-							top:  togglePos.top + $toggle.height()
-						}
-					});
 				}
-			}
-			function hideMenu(e){ menu.hide(e); }
-			function toggleMenu(e){
-				$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-			}
-
-			$($toggle.selector).live('click', function(e){
-				toggleMenu(e);
-				$(document).one('click', function(e){
-					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-				});
 			});
+			menu.bindToggle($toggle.selector, { showData: data });
 
 			Spaz.UI.statusBar('Loaded lists for @' + username);
 			Spaz.UI.hideLoading();
@@ -1257,9 +1311,19 @@ var SearchTimeline = function(args) {
 		}
 	});
 
-	this.buildSavedSearchesMenu = function(){
-		// TODO: Refactor out repetition with `this.buildListsMenu`
+	this.searchFor = function(query){
+		jQuery('#search-for').val(query);
+		thisST.timeline.refresh();
 
+		var dataQueryAttr = query.toLowerCase().replace('"', '\\"'),
+		    $queryLI = jQuery('#saved-searches-menu li').removeClass('selected').
+		                 filter('[data-query="' + dataQueryAttr + '"]');
+		if($queryLI[0]){
+			$queryLI.addClass('selected');
+		}
+	};
+
+	this.buildSavedSearchesMenu = function(){
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisST.twit.setCredentials(auth);
@@ -1274,9 +1338,11 @@ var SearchTimeline = function(args) {
 			    $toggle = $('#search-saved');
 
 			// Build menu
+			function menuItemId(id){
+				return menuId + '-' + id;
+			}
 			function onMenuItemClick(e, itemData){
-				$('#search-for').val(itemData.query);
-				thisST.timeline.refresh();
+				thisST.searchFor(itemData.query);
 			}
 			menu = new SpazMenu({
 				base_id:    menuId,
@@ -1288,9 +1354,14 @@ var SearchTimeline = function(args) {
 					for(i = 0, iMax = itemsData.length; i < iMax; i++){
 						itemData = itemsData[i];
 						items.push({
+							id:      menuItemId(itemData.id),
+							attrs:   { 'data-query': itemData.query.toLowerCase() },
 							label:   itemData.name,
 							handler: onMenuItemClick,
-							data:    {query: itemData.query}
+							data: {
+								id:    itemData.id,
+								query: itemData.query
+							}
 						});
 					}
 					items.sort(function(a, b){
@@ -1299,44 +1370,18 @@ var SearchTimeline = function(args) {
 						return (a.label === b.label) ? 0 :
 						       (a.label > b.label)   ? 1 : -1;
 					});
+
+					items.push(null);
+
+					items = items.concat(
+						{ label: 'Save current search (NYI)' },
+						{ label: 'Manage saved searches&hellip; (NYI)' }
+					);
+
 					return items;
-				},
-				close_on_any_click: false
-			});
-
-			// Bind menu toggling handlers
-			function showMenu(e){
-				var $menu = $('#' + menuId),
-				    togglePos;
-				if(!!$menu[0]){
-					$menu.show(); // Show existing
-				}else{
-					// Build and show
-					togglePos = $toggle.offset();
-					menu.show(e, data, {
-						position: {
-							// Position below toggle:
-							left: togglePos.left,
-							top:  togglePos.top + $toggle.height()
-						}
-					});
 				}
-			}
-			function hideMenu(e){ menu.hide(e); }
-			function toggleMenu(e){
-				$('#' + menuId).is(':visible') ? hideMenu(e) : showMenu(e);
-			}
-
-			$($toggle.selector).live('click', function(e){
-				// Using $.fn.live because `$toggle.click(function...)` kept running
-				// the following document click handler immediately, which wasn't
-				// intended.
-
-				toggleMenu(e);
-				$(document).one('click', function(e){
-					if(!$(e.target).is($toggle.selector)){ hideMenu(e); }
-				})
 			});
+			menu.bindToggle($toggle.selector, { showData: data });
 
 			Spaz.UI.statusBar('Loaded saved searches for @' + username);
 			Spaz.UI.hideLoading();

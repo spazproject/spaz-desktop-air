@@ -144,7 +144,7 @@ Spaz.Controller.initIntercept = function() {
 			// 	});
 			// 	tt.show();
 			// },
-		
+
 			'.status-action[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
@@ -206,14 +206,7 @@ Spaz.Controller.initIntercept = function() {
 				});
 				tt.showUser($(this).attr('user-screen_name'));
 			},
-			'input[title]':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
-					'e'		:e,
-					'trigger':this
-				});
-				tt.show();
-			},
-			'.accounts-menu-toggle':function(e) {
+			'input[title], button[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
 					'trigger':this
@@ -292,28 +285,6 @@ Spaz.Controller.initIntercept = function() {
 			'#markread-userlists':function(e) {
 				Spaz.UI.markCurrentTimelineAsRead();
 			},
-			'#view-friends-menu .menuitem':function(e) {
-				$('#view-friends-menu .menuitem').removeClass('selected');
-				$(this).addClass('selected');
-			},
-			'#view-friends-menu-all':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-replies-dms':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-replies':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-dms':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-unread':function(e) {
-				Spaz.UI.setView(this.id);
-			},
-			'#view-friends-menu-custom':function(e) {
-				Spaz.UI.setView(this.id);
-			},
 			'#prefs-open-folder':function(e) {
 				Spaz.Sys.openAppStorageFolder();
 			},
@@ -330,49 +301,6 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'#search-help':function(e) {
 				sc.helpers.openInBrowser('http://search.twitter.com/operators');
-			},
-			'#mainMenu-help':function(e) {
-				Spaz.UI.showHelp();
-			},
-			'#mainMenu-prefs':function(e) {
-				Spaz.UI.showPrefs();
-			},
-			'#mainMenu-about':function(e) {
-				Spaz.UI.showAbout();
-			},
-			'#mainMenu-view-toggle':function(e) {
-				Spaz.UI.toggleTimelineFilter();
-			},
-			'#mainMenu-view-reloadCurrentView':function(e) {
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#mainMenu-view-markAsReadCurrentView':function(e) {
-				Spaz.UI.markCurrentTimelineAsRead();
-			},
-			'#mainMenu-view-clearReloadCurrentView':function(e) {
-				Spaz.UI.clearCurrentTimeline();
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#mainMenu-sendDM':function(e) {
-				Spaz.postPanel.prepDirectMessage('');
-			},
-			'#mainmenu-shortenLink':function(e) {
-				Spaz.UI.showShortLink();
-			},
-			'#mainmenu-uploadImage':function(e) {
-				Spaz.UI.uploadImage();
-			},
-			'#mainMenu-sendReply':function(e) {
-				Spaz.postPanel.prepReply('');
-			},
-			'#mainMenu-followSpaz':function(e) {
-				Spaz.Data.followUser('spaz');
-			},
-			'.mainMenu-account':function(e) {
-				alert('click: ' + $(this).text());
-			},
-			'#mainMenu-accounts':function(e) {
-				Spaz.UI.accountMaintenance();
 			},
 
 			'#entrybox-saveDraft':function(e){
@@ -421,9 +349,8 @@ Spaz.Controller.initIntercept = function() {
 				var screen_name = $(this).attr('user-screen_name');
 				var search_str = "from:"+screen_name+" OR to:"+screen_name;
 
-				$('#search-for').val(search_str);
-			    Spaz.Timelines.search.refresh();
-			    Spaz.UI.showTab('tab-search');
+				Spaz.UI.showTab('tab-search');
+				Spaz.Timelines.search.searchFor(search_str);
 			},
 			'#userContextMenu-filterByUser':function(e) {
 				var screen_name = $(this).attr('user-screen_name');
@@ -451,9 +378,8 @@ Spaz.Controller.initIntercept = function() {
 				sc.helpers.openInBrowser(url);
 			},
 			'.hashtag':function(e) {
-				$('#search-for').val($(this).text());
 				Spaz.UI.showTab('tab-search');
-				Spaz.Timelines.search.activate();
+				Spaz.Timelines.search.searchFor($(this).text());
 			},
 			'.status-thumbnail':function(e) {
 				var url = $(this).attr('data-href');
@@ -787,7 +713,7 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	// Search box
 	// ****************************************
 	shortcut.add('Enter', function() {
-			Spaz.Timelines.search.activate();
+			Spaz.Timelines.search.searchFor($('#search-for').val());
 		}, {
 			target:$('#search-for')[0],
 			propagate:false

@@ -172,10 +172,15 @@
 				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
 				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
 			</div>
-			<!-- <span id="header-label" onclick="Spaz.UI.showMainMenu($(this))">Spaz &raquo;</span> -->
-			<span id="header-label" style="cursor:pointer">Spaz</span>
+			<div id="header-label">Spaz</div>
 		</h1>
 
+		<!-- Tools -->
+		<div id="tools-menu-toggle" title="Tools"
+			onmouseover="Spaz.UI.showTooltip(this, this.title)"
+			onmouseout="Spaz.UI.hideTooltips()">
+			<span class="tab-icon"></span>
+		</div>
 
 		<div id="tabs" class="TabbedPanels">
 			<ul class="TabbedPanelsTabGroup" id="timeline-tabs">
@@ -243,14 +248,8 @@
 					<span class="tab-icon"></span>
 				</li> -->
 
-				<!-- PREFS -->
-				<li class="TabbedPanelsTab" id="tab-prefs"
-					tabindex="8" title="Preferences"
-					onmouseover="Spaz.UI.showTooltip(this, this.title)"
-					onmouseout="Spaz.UI.hideTooltips()"
-					onclick="Spaz.UI.setSelectedTab(this)">
-					<span class="tab-icon"></span>
-				</li>
+				<!-- Prefs (hidden) -->
+				<li class="TabbedPanelsTab" id="tab-prefs" tabindex="8"></li>
 			</ul>
 
 
@@ -263,15 +262,15 @@
 				<div class="TabbedPanelsContent" id="panel-friends">
 					<div id="menu-friends" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="button" name="refresh-friends" value="Refresh" id="refresh-friends" title="Refresh this timeline" />
-							<input type="button" name="markread-friends" value="Mark" id="markread-friends" title="Mark all as read" />
-							<input type="button" name="view-friends" value="View &#x25BE;" id="view-friends" title="Filter mentions, DMs, unread tweets, etc." />
+							<button id="refresh-friends"  title="Refresh this timeline">Refresh</button>
+							<button id="markread-friends" title="Mark all as read">Mark</button>
+							<button id="view-friends"     title="Filter mentions, DMs, unread tweets, etc.">View</button>
 							<input type="text" name="filter-friends" value="" id="filter-friends" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
 					<div id="timelinewrapper-friends" class="timeline-wrapper">
 						<div id="timeline-friends" class="timeline"></div>
-						<div class="loading">Loading...</div>
+						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
 							<span class="add-account">Set up your account</span>
 						</div>
@@ -283,14 +282,14 @@
 				<div class="TabbedPanelsContent" id="panel-user">
 					<div id="menu-user" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="button" name="refresh-user" value="Refresh" id="refresh-user" />
-							<input type="button" name="markread-user" value="Mark" id="markread-user" title="Mark all as read" />
+							<button id="refresh-user"  title="Refresh this timeline">Refresh</button>
+							<button id="markread-user" title="Mark all as read">Mark</button>
 							<input type="text" name="filter-user" value="" id="filter-user" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
 					<div id="timelinewrapper-user" class="timeline-wrapper">
 						<div id="timeline-user" class="timeline"></div>
-						<div class="loading">Loading...</div>
+						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
 							<span class="add-account">Set up your account</span>
 						</div>
@@ -302,14 +301,14 @@
 				<div class="TabbedPanelsContent" id="panel-favorites">
 					<div id="menu-favorites" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="button" name="refresh-favorites" value="Refresh" id="refresh-favorites" />
-							<input type="button" name="markread-favorites" value="Mark" id="markread-favorites" title="Mark all as read" />
+							<button id="refresh-favorites"  title="Refresh this timeline">Refresh</button>
+							<button id="markread-favorites" title="Mark all as read">Mark</button>
 							<input type="text" name="filter-favorites" value="" id="filter-favorites" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
 					<div id="timelinewrapper-favorites" class="timeline-wrapper">
 						<div id="timeline-favorites" class="timeline"></div>
-						<div class="loading">Loading...</div>
+						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
 							<span class="add-account">Set up your account</span>
 						</div>
@@ -320,16 +319,16 @@
 				<div class="TabbedPanelsContent" id="panel-userlists">
 					<div id="menu-userlists" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="button" name="refresh-userlists" value="Refresh" id="refresh-userlists" />
-							<input type="button" name="markread-userlists" value="Mark" id="markread-userlists" title="Mark all as read" />
-							<input type="button" name="view-userlists" value="Lists &#x25BE;" id="view-userlists" title="Choose a list to view" />
+							<button id="refresh-userlists"  title="Refresh this timeline">Refresh</button>
+							<button id="markread-userlists" title="Mark all as read">Mark</button>
+							<button id="view-userlists"     title="Choose a list to view">Lists</button>
 							<input type="text" name="filter-userlists" value="" id="filter-userlists" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
 					<div id="timelinewrapper-userlists" class="timeline-wrapper">
 						<div id="timeline-userlists-full-name"></div>
 						<div id="timeline-userlists" class="timeline"></div>
-						<div class="loading">Loading...</div>
+						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
 							<span class="add-account">Set up your account</span>
 						</div>
@@ -343,14 +342,14 @@
 				<div class="TabbedPanelsContent" id="panel-public">
 					<div id="menu-public" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="button" name="refresh-public" value="Refresh" id="refresh-public" />
-							<input type="button" name="markread-public" value="Mark" id="markread-public" title="Mark all as read" />
+							<button id="refresh-public"  title="Refresh this timeline">Refresh</button>
+							<button id="markread-public" title="Mark all as read">Mark</button>
 							<input type="text" name="filter-public" value="" id="filter-public" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
 					<div id="timelinewrapper-public" class="timeline-wrapper">
 						<div id="timeline-public" class="timeline"></div>
-						<div class="loading">Loading...</div>
+						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
 							<span class="add-account">Set up your account</span>
 						</div>
@@ -364,17 +363,16 @@
 
 					<div id="menu-search" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="text"   name="search-for"    value=""                id="search-for"    title="Enter search" placeholder="Search" />
-							<input type="button" name="search-go"     value="&raquo;"         id="search-go"     title="Submit Search" />
-							<input type="button" name="search-save"   value="+"               id="search-save"   title="Save Search (NYI)" />
-							<input type="button" name="search-help"   value="?"               id="search-help"   title="Search Help" />
-							<input type="button" name="search-saved"  value="Saved &#x25BE;"  id="search-saved"  title="Saved Searches" />
-							<input type="button" name="search-trends" value="Trends &#x25BE;" id="search-trends" title="Trends (NYI)" /> 
+							<input type="text"   name="search-for" value="" id="search-for" title="Enter search" placeholder="Search" />
+							<button id="search-go"     title="Submit search">Search</button>
+							<button id="search-help"   title="Search help">?</button>
+							<button id="search-saved"  title="Saved searches">Saved</button>
+							<button id="search-trends" title="Trending worldwide (NYI)">Trends</button>
 						</form>
 					</div>
 					<div id="timelinewrapper-search" class="timeline-wrapper">
 						<div id="timeline-search" class="timeline"></div>
-						<div class="loading">Loading...</div>
+						<div class="loading">Loading&hellip;</div>
 						<div class="intro">
 							Enter your search terms above.
 						</div>
@@ -389,15 +387,15 @@
 				<div class="TabbedPanelsContent" id="panel-followerslist">
 					<div id="menu-followerslist" class="panelmenu">
 						<form onsubmit="return false;">
-							<input type="button" name="refresh-followerslist" value="Refresh" id="refresh-followerslist" />
+							<button id="refresh-followerslist" title="Refresh this list">Refresh</button>
 						</form>
 					</div>
 					<div id="timelinewrapper-followerslist" class="timeline-wrapper">
 						<div id="timeline-followerslist" class="timeline directory"></div>
 						<form onsubmit="return false;" class="load-more">
-							<input type="button" class="load-more" name="load-more-followers" value="load more…" id="load-more-followers" title="Load More…" />
+							<input type="button" class="load-more" name="load-more-followers" value="Load more&hellip;" id="load-more-followers" />
 						</form>
-						<div class="loading">Loading...</div>
+						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
 							<span class="add-account">Set up your account</span>
 						</div>
@@ -482,7 +480,7 @@
 																<option value="StatusNet">StatusNet</option>
 																<option value="wordpress.com">Wordpress</option>
 																<option value="tumblr">Tumblr</option>
-																<option value="custom">Custom…</option>
+																<option value="custom">Custom&hellip;</option>
 															</select>
 														</div>
 												
@@ -935,7 +933,7 @@
 
 
 		<div id="updateCheckWindow" class="popupWindow" style="display:none;">
-			Checking for updates...
+			Checking for updates&hellip;
 		</div>
 
 
@@ -949,7 +947,6 @@
 		<!-- User context menu -->
 		<div id="userContextMenu" class="context-menu">
 			<ul>
-
 				<li id="userContextMenu-sendReply" class="clickable menuitem">Send @Reply</li>
 				<li id="userContextMenu-sendDM" class="clickable menuitem">Send Direct Message</li>
 				<li id="userContextMenu-searchForUser" class="clickable menuitem">Search For User</li>
@@ -958,60 +955,6 @@
 				<li id="userContextMenu-follow" class="clickable menuitem">Follow</li>
 				<li id="userContextMenu-unfollow" class="clickable menuitem">Stop Following</li>
 				<!-- <li id="userContextMenu-block" class="clickable">Block</li> -->
-			</ul>
-		</div>
-
-		<!-- the main menu container -->
-		<div id="mainMenu">
-			<ul id="mainMenuRoot" style="display:none;">
-				<li class="menuitem mainMenu-sendReply"><a id="mainMenu-sendReply">Send a @reply</a></li>
-				<li class="menuitem mainMenu-sendDM"><a id="mainMenu-sendDM">Send a direct message</a></li>
-				<li class="menuitem mainmenu-shortenLink"><a id="mainmenu-shortenLink">Shorten URL</a></li>
-				<li class="menuitem mainmenu-uploadImage"><a id="mainmenu-uploadImage">Upload Image</a></li>
-				<!-- <li class="mainMenu-Post">Post…&nbsp;&raquo;</li>
-					<ul>
-						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 1</a></li>
-						<li class="mainMenu-Post-type1"><a id="mainMenu-Post-type1">Post type 2</a></li>
-					</ul> -->
-				<li class="menuitem mainMenu-view"><a>View…&nbsp;&raquo;</a>
-					<ul>
-						<li class="menuitem mainMenu-view-toggle"><a id="mainMenu-view-toggle">Toggle tweets directed at you</a></li>
-						<li class="menuitem mainMenu-view-markAsReadCurrentView"><a id="mainMenu-view-markAsReadCurrentView">Mark current view as read</a></li>
-						<li class="menuitem mainMenu-view-reloadCurrentView"><a id="mainMenu-view-reloadCurrentView">Reload current view</a></li>
-						<li class="menuitem mainMenu-view-clearReloadCurrentView"><a id="mainMenu-view-clearReloadCurrentView">Clear &amp; reload current view</a></li>
-					</ul>
-				</li>
-
-				<li class="menu-separator"><hr /></li>
-
-				<li class="menuitem mainMenu-account-switch"><a>Switch Accounts…&nbsp;&raquo;</a>
-					<ul id="mainMenu-account-list">
-<!--
-						<li class="menuitem mainMenu-account selected-account"><a id="mainMenu-account-kibitzer">Kibitzer</a></li>
-						<li class="menuitem mainMenu-account"><a id="mainMenu-account-spaz">Spaz</a></li>
--->
-					</ul>
-				</li>
-				<li class="menuitem mainMenu-accounts"><a id="mainMenu-accounts">Account Maintenance</a></li>
-
-				<li class="menu-separator"><hr /></li>
-
-				<li class="menuitem mainMenu-prefs"><a id="mainMenu-prefs">Preferences</a></li>
-				<li class="menuitem mainMenu-help"><a id="mainMenu-help">Help</a></li>
-				<li class="menuitem mainMenu-about"><a id="mainMenu-about">About Spaz</a></li>
-				<li class="menuitem mainMenu-followSpaz"><a id="mainMenu-followSpaz">Follow @spaz</a></li>
-			</ul>
-		</div>
-
-		<!-- view-friends-menu-container -->
-		<div id="view-friends-menu-container" style="display:none">
-			<ul id="view-friends-menu">
-				<li class="menuitem view-friends-menu-all"><a id="view-friends-menu-all">All</a></li>
-				<li class="menuitem view-friends-menu-replies-dms"><a id="view-friends-menu-replies-dms">Mentions and DMs</a></li>
-				<li class="menuitem view-friends-menu-replies"><a id="view-friends-menu-replies">Mentions</a></li>
-				<li class="menuitem view-friends-menu-dms"><a id="view-friends-menu-dms">DMs</a></li>
-				<li class="menuitem view-friends-menu-unread"><a id="view-friends-menu-unread">Unread</a></li>
-				<li class="menuitem view-friends-menu-custom"><a id="view-friends-menu-custom">Custom filters</a> <a id="view-friends-menu-custom-edit">[edit]</a></li>
 			</ul>
 		</div>
 
