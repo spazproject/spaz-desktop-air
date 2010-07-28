@@ -4,19 +4,19 @@ function SpazPostPanel(opts) {
 
 	
 	this.container = opts.container || document.getElementById('entryform');
-	this.textarea  = opts.textarea  || document.getElementById('entrybox');
-	this.counter   = opts.counter   || document.getElementById('chars-left-count');
-	this.counter_desc   = opts.counter_desc   || document.getElementById('chars-left-description');
-	this.irt_container  = opts.irt_container  || document.getElementById('irt');
+	this.textarea  = opts.textarea	|| document.getElementById('entrybox');
+	this.counter   = opts.counter	|| document.getElementById('chars-left-count');
+	this.counter_desc	= opts.counter_desc	  || document.getElementById('chars-left-description');
+	this.irt_container	= opts.irt_container  || document.getElementById('irt');
 	this.$irt_container = jQuery(this.irt_container);
-	this.irt_message    = opts.irt_message    || document.getElementById('irt-message');
-	this.$irt_message   = jQuery(this.irt_message);
-	this.irt_id_attr    = opts.irt_id_attr    || 'data-status-id';
-	// this.menu      = opts.menu      || null;
-	this.menus     = opts.menus     || {};
-	this.maxlen    = opts.maxlen    || 140;
-	this.on_over   = opts.on_over   || this.on_over_default;
-	this.on_under  = opts.on_under  || this.on_under_default;
+	this.irt_message	= opts.irt_message	  || document.getElementById('irt-message');
+	this.$irt_message	= jQuery(this.irt_message);
+	this.irt_id_attr	= opts.irt_id_attr	  || 'data-status-id';
+	// this.menu	  = opts.menu	   || null;
+	this.menus	   = opts.menus		|| {};
+	this.maxlen	   = opts.maxlen	|| 140;
+	this.on_over   = opts.on_over	|| this.on_over_default;
+	this.on_under  = opts.on_under	|| this.on_under_default;
 	this.on_submit = opts.on_submit || null;
 	this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_BITLY;
 	
@@ -43,9 +43,9 @@ SpazPostPanel.prototype.prepReply = function(username, status_id, status_text) {
 	
 	var text = '@';
 	
-    if (username) {
+	if (username) {
 		text += username + ' ';
-    }
+	}
 
 	this.setPostIRT(status_id, status_text);
 	
@@ -65,9 +65,9 @@ SpazPostPanel.prototype.prepDirectMessage = function(username) {
 	this.textarea.focus();
 	var text = 'd ';
 
-    if (username) {
+	if (username) {
 		text += (username + ' ');
-    }
+	}
 	this.setMessageText(text);
 };
 
@@ -141,34 +141,44 @@ SpazPostPanel.prototype.getMessageText = function() {
 
 SpazPostPanel.prototype.addListeners = function() {
 	var thisPP = this;
-
+	
+	jQuery('#entrybox-popup')
+		.mousedown(function(e) {
+			thisPP.panelClicked = true;
+		})
+		.mouseup(function(e) {
+			thisPP.panelClicked = false;
+			thisPP.textarea.focus();
+		});
+		
+		
+	
 	jQuery(thisPP.textarea).
 		keyup(function(e){ thisPP.updateTextMetadata(); }).
 		focus(function(e){
 			thisPP.updateTextMetadata();
 			Spaz.UI.showEntryboxTip();
-			$('#entrybox-popup').fadeIn('fast');
+			jQuery('#entrybox-popup').fadeIn('fast');
 		}).
 		blur(function(e){
 			thisPP.updateTextMetadata();
-			setTimeout(function(){
-				// Hack: Brief delay to allow menus to appear, if any. A race condition
-				// can occur here, where the menu only starts building after
-				// #entrybox-popup has begun fading.
-				if(!jQuery('#' + thisPP.menus.shorten.opts.base_id + ':visible')[0]){
-					Spaz.UI.resetStatusBar();
-					$("body").focus();
-					$('#entrybox-popup').fadeOut('fast');
-				}
-			}, 100);
+			if (!thisPP.panelClicked) {
+				sch.error('panel NOT clicked, blur-ing');
+				Spaz.UI.resetStatusBar();
+				jQuery("body").focus();
+				jQuery('#entrybox-popup').fadeOut('fast');
+				thisPP.panelClicked = false;
+			} else {
+				sch.error('panel clicked, blocking blur');
+			}
 			return false;
 		});
 };
 
 // SpazPostPanel.prototype.removeListeners = function() {
-// 	sc.helpers.unlisten(this.textarea, 'keyup');
-// 	sc.helpers.unlisten(this.textarea, 'focus');
-// 	sc.helpers.unlisten(this.textarea, 'blur');
+//	sc.helpers.unlisten(this.textarea, 'keyup');
+//	sc.helpers.unlisten(this.textarea, 'focus');
+//	sc.helpers.unlisten(this.textarea, 'blur');
 // };
 
 SpazPostPanel.prototype.updateTextMetadata = function(){
@@ -177,16 +187,16 @@ SpazPostPanel.prototype.updateTextMetadata = function(){
 	// Update character count
 	(function(){
 		var count = thisPP.textarea.value.length,
-		    left  = thisPP.maxlen - count;
+			left  = thisPP.maxlen - count;
 		thisPP.counter.innerText = left.toString();
 		thisPP.counter_desc.innerText = 'left';
 
 		var info = {
-			entry_el:   thisPP.textarea,
-			count_el:   thisPP.counter,
+			entry_el:	thisPP.textarea,
+			count_el:	thisPP.counter,
 			curr_count: count,
-			left:       left,
-			max:        thisPP.maxlen
+			left:		left,
+			max:		thisPP.maxlen
 		};
 
 		if (left < 0) {
@@ -198,10 +208,10 @@ SpazPostPanel.prototype.updateTextMetadata = function(){
 
 	// Add styling hook for DMs
 	(function(){
-		var $textarea    = jQuery(thisPP.textarea),
-		    text         = $textarea.val(),
-		    textareaIsDM = $textarea.hasClass('dm'),
-		    textIsDM     = text.match(/^d /);
+		var $textarea	 = jQuery(thisPP.textarea),
+			text		 = $textarea.val(),
+			textareaIsDM = $textarea.hasClass('dm'),
+			textIsDM	 = text.match(/^d /);
 
 		if(textIsDM && !textareaIsDM){
 			$textarea.addClass('dm');
@@ -223,24 +233,24 @@ SpazPostPanel.prototype.on_under_default = function(info) {
 };
 
 SpazPostPanel.prototype.buildShortenMenu = function(){
-	var thisPP  = this,
-	    menuId  = 'entrybox-shorten-menu',
-	    menu,
-	    $toggle = $('#entrybox-shorten');
+	var thisPP	= this,
+		menuId	= 'entrybox-shorten-menu',
+		menu,
+		$toggle = $('#entrybox-shorten');
 
 	// Build menu
 	menu = this.menus.shorten = new SpazMenu({
-		base_id:    menuId,
+		base_id:	menuId,
 		base_class: 'spaz-menu',
-		li_class:   'spaz-menu-item',
+		li_class:	'spaz-menu-item',
 		items_func: function(){
 			return [
 				{
-					label:   'Shorten URLs',
+					label:	 'Shorten URLs',
 					handler: Spaz.UI.shortenPostPanelURLs
 				},
 				{
-					label:   'Shorten text',
+					label:	 'Shorten text',
 					handler: Spaz.UI.shortenPostPanelText
 				}
 			];
@@ -261,7 +271,7 @@ SpazPostPanel.prototype.shortenText = function() {
 };
 
 SpazPostPanel.prototype.shortenURLs = function() {
-    
+	
 	var thisPP = this;
 	
 	var event_target = this.textarea;
@@ -270,8 +280,8 @@ SpazPostPanel.prototype.shortenURLs = function() {
 	
 	var longurls = sc.helpers.extractURLs(this.getMessageText());
 
-    sch.error(this.getMessageText());
-    sch.error(longurls);
+	sch.error(this.getMessageText());
+	sch.error(longurls);
 
 	/*
 		check URL lengths
@@ -315,7 +325,7 @@ SpazPostPanel.prototype.shortenURLs = function() {
 
 	Spaz.UI.statusBar('Shortening URLs in message');
 	Spaz.UI.showLoading();
-    
+	
 	surl.shorten(reallylongurls, {
 		'event_target':event_target,
 		'apiopts': {
