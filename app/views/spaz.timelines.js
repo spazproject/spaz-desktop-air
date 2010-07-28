@@ -414,8 +414,8 @@ var FriendsTimeline = function() {
 		var menu,
 		    menuId = 'view-friends-menu';
 
-		function onStandardFilterClick(e, itemData){
-			Spaz.UI.setView(e.data.item.id);
+		function onStandardFilterClick(e, label){
+			Spaz.cssFilters.applyFilter(label);
 		}
 		function onCustomFilterClick(e, itemData){
 			// TODO: Implement
@@ -426,32 +426,18 @@ var FriendsTimeline = function() {
 			base_class: 'spaz-menu',
 			li_class:   'spaz-menu-item',
 			items_func: function(){
-				var items;
-
-				// Add standard filters
-				items = [
-					{	label:   'All',
-						id:      'view-friends-menu-all',
-						handler: onStandardFilterClick
-					},
-					{	label:   'Mentions and DMs',
-						id:      'view-friends-menu-replies-dms',
-						handler: onStandardFilterClick
-					},
-					{	label:   'Mentions',
-						id:      'view-friends-menu-replies',
-						handler: onStandardFilterClick
-					},
-					{	label:   'DMs',
-						id:      'view-friends-menu-dms',
-						handler: onStandardFilterClick
-					},
-					{	label:   'Unread',
-						id:      'view-friends-menu-unread',
-						handler: onStandardFilterClick
-					}
-				];
-
+				var items = [];
+				
+				var this_filter;
+				for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
+					this_filter = Spaz.cssFilters.filters[i];
+					items.push({
+						'label':this_filter.label,
+						'handler':onStandardFilterClick,
+						'data':this_filter.label
+					});
+				}
+				
 				// Add saved custom filters
 				items = items.concat([null]); // Add separator
 				// TODO: Implement; use `onCustomFilterClick`
