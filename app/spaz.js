@@ -1,6 +1,13 @@
 var Spaz;
 if (!Spaz) Spaz = {};
 
+/**
+ * localization helper. Not yet implemented; just returns the passed string 
+ */
+function $L(str) {
+	return str;
+}
+
 // Spaz.verified = false;
 Spaz.startReloadTimer = function() {
 	var refreshInterval = Spaz.Prefs.getRefreshInterval();
@@ -103,17 +110,20 @@ Spaz.initialize = function() {
 	sch.debug("database initialization");
 	Spaz.DB.init();
 	
-	sch.debug('JazzRecord initialization');
-	JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db"});
-	if (Spaz.Prefs.get('debug-enabled')) {
-		JazzRecord.debug = true;
-	}
-	JazzRecord.depth = 0;
-	JazzRecord.migrate();
-	JazzRecord.addIndex('tweets', 'twitter_id');
-	JazzRecord.addIndex('twusers', 'twitter_id');
-	JazzRecord.addIndex('twusers', 'screen_name');
-	JazzRecord.addIndex('drafts', 'updated_at_unixtime');
+    sch.debug('JazzRecord initialization');
+    JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db"});
+    if (Spaz.Prefs.get('debug-enabled')) {
+     JazzRecord.debug = true;
+    }
+    JazzRecord.depth = 0;
+    JazzRecord.migrate();
+    // JazzRecord.addIndex('tweets', 'twitter_id');
+    // JazzRecord.addIndex('twusers', 'twitter_id');
+    // JazzRecord.addIndex('twusers', 'screen_name');
+    JazzRecord.addIndex('drafts', 'updated_at_unixtime');
+
+
+    Spaz.TweetsModel = new Tweets();
 
 	// Docking initialization
 	sch.debug("docking initialization");

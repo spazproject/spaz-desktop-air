@@ -280,7 +280,7 @@ var FriendsTimeline = function() {
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(dataItem);
+					Spaz.TweetsModel.saveTweet(dataItem);
 					
 				}
 				
@@ -598,7 +598,7 @@ var PublicTimeline = function(args) {
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(dataItem);
+					Spaz.TweetsModel.saveTweet(dataItem);
 				}
 
 			}
@@ -727,7 +727,7 @@ var FavoritesTimeline = function(args) {
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(dataItem);
+					Spaz.TweetsModel.saveTweet(dataItem);
 				}
 
 			}
@@ -860,7 +860,7 @@ var UserTimeline = function(args) {
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(dataItem);
+					Spaz.TweetsModel.saveTweet(dataItem);
 				}
 				
 			}
@@ -1023,7 +1023,7 @@ var UserlistsTimeline = function(args) {
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(status);
+					Spaz.TweetsModel.saveTweet(status);
 				} else {
 					sch.debug(status.id+' already exists');
 				}
@@ -1260,7 +1260,7 @@ var SearchTimeline = function(args) {
 					/*
 						Save to DB via JazzRecord
 					*/
-					TweetModel.saveTweet(dataItem);
+					Spaz.TweetsModel.saveTweet(dataItem);
 				}
 				
 			}
@@ -1447,7 +1447,7 @@ var FollowersTimeline = function(args) {
 					/*
 						Save to DB via JazzRecord
 					*/
-					TwUserModel.findOrCreate(dataItem);
+					Spaz.Tweets.saveUser(dataItem);
 				}
 				
 			}

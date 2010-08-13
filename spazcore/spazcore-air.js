@@ -13172,7 +13172,8 @@ SpazTwit.prototype._callMethod = function(opts) {
 			stwit.triggerEvent('spaztwit_ajax_error', {'url':opts.url, 'xhr':xhr, 'msg':msg});
 	    },
 	    'success':function(data) {
-			sc.helpers.dump(opts.url + ' success');
+			sc.helpers.error(opts.url + ' success');
+			sch.error(data);
 			data = sc.helpers.deJSON(data);
 			if (opts.process_callback) {
 				/*

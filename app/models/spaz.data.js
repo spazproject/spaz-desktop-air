@@ -731,34 +731,44 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 	target_el = target_el || document;
 	
 	if (sch.isString(user_id)) {
-		userobj = TwUserModel.getUser(user_id);
+		userobj = Spaz.TweetsModel.getUser(user_id, onComplete);
 	} else {
-		userobj = TwUserModel.getUserById(user_id);
+		userobj = Spaz.TweetsModel.getUserById(user_id, onComplete);
 	}
 	
-	if (userobj) {
-		if (onSuccess) {
-			onSuccess(userobj);
-		}
-		sch.trigger('get_user_succeeded', target_el, userobj);
-	} else {
-		var twit = new SpazTwit({
-			'auth':Spaz.Prefs.getAuthObject(),
-			'event_target':target_el
-		});
+    function onComplete(userobj) {
+        if (userobj) {
+            sch.error('Got userobj:'+userobj);
+    	    if (userobj.twitter_id) {
+    	        userobj.id = userobj.twitter_id;
+    	    }
+    		if (onSuccess) {
+    			onSuccess(userobj);
+    		}
+    		sch.trigger('get_user_succeeded', target_el, userobj);
+    	} else {
+    	    sch.error('Getting userobj remotely in Spaz.Data.getUser');
+    		var twit = new SpazTwit({
+    			'auth':Spaz.Prefs.getAuthObject(),
+    			'event_target':target_el
+    		});
 
-		sch.listen(target_el, 'get_user_succeeded', saveUserObject);
-		twit.getUser(user_id);
-	}
-	
-	
-	function saveUserObject(e, data) {
-		if (onSuccess) {
-			onSuccess(data);
-		}
-		TwUserModel.findOrCreate(data);
-		sch.unlisten(target_el, 'get_user_succeeded', saveUserObject);
-	}
+    		twit.getUser(
+    			user_id,
+    			function(data) {
+    				sch.error('DATA FROM twit.getUser');
+    				sch.error(data.screen_name);
+    				if (onSuccess) {
+    					onSuccess(data);
+    				}
+    				Spaz.TweetsModel.saveUser(data);
+    			},
+    			function() {
+    				sch.error('getUser failed for '+user_id);
+    			}
+    		);
+    	}
+    }
 };
 
 
@@ -770,41 +780,18 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
  */
 Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 	
-	var statusobj = null;
 	target_el = target_el || document;
 	
 
-	statusobj = TweetModel.getById(status_id);
+	Spaz.TweetsModel.getById(status_id, false, function(statusobj) {
+	    if (statusobj) {
+    		sch.error('loaded statusobj from model');
+    		if (onSuccess) {
+    			onSuccess(statusobj);
+    		}
+    		sch.trigger('get_one_status_succeeded', target_el, statusobj);
+    	}
+	});
 	
-	if (statusobj) {
-		sch.error('loaded statusobj from model');
-		if (onSuccess) {
-			onSuccess(statusobj);
-		}
-		sch.trigger('get_one_status_succeeded', target_el, statusobj);
-	} else {
-		sch.error('retrieving '+status_id+' from Twitter');
-		var twit = new SpazTwit({
-			'auth':Spaz.Prefs.getAuthObject(),
-			'event_target':target_el
-		});
 
-		// sch.listen(target_el, 'get_one_status_succeeded', saveTweetObject);
-		twit.getOne(status_id, saveTweetObject);
-	}
-	
-	
-	function saveTweetObject(data) {
-		sch.error('Saving '+data.id+' to DB');
-		// sch.error(data);
-		// var statusobj = sch.getEventData(e);
-		var savedobj = TweetModel.saveTweet(data);
-		
-		
-		if (onSuccess) {
-			onSuccess(savedobj);
-		}
-		sch.trigger('get_one_status_succeeded', target_el, savedobj);
-		// sch.unlisten(target_el, 'get_one_status_succeeded', saveTweetObject);
-	}
 };

@@ -157,7 +157,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				tt.showUser($(this).attr('user-screen_name'));
+				tt.showUser('@'+$(this).attr('user-screen_name'));
 			},
 			'span.in-reply-to':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
@@ -172,7 +172,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				tt.showUser($(this).attr('user-screen_name'));
+				tt.showUser('@'+$(this).attr('user-screen_name'));
 			},
 			'a[href]':function(e) {
 				var href = $(this).attr('href');
@@ -204,7 +204,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				tt.showUser($(this).attr('user-screen_name'));
+				tt.showUser('@'+$(this).attr('user-screen_name'));
 			},
 			'input[title], button[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
@@ -330,34 +330,6 @@ Spaz.Controller.initIntercept = function() {
 
 
 			// user context menu handlers
-			'#userContextMenu-viewProfile':function(e) {
-				Spaz.Sys.sc.helpers.openInBrowser(Spaz.Prefs.get('twitter-base-url')+$(this).attr('user-screen_name'));
-			},
-			'#userContextMenu-follow':function(e) {
-				Spaz.Data.followUser($(this).attr('user-screen_name'));
-			},
-			'#userContextMenu-unfollow':function(e) {
-				Spaz.Data.stopFollowingUser($(this).attr('user-screen_name'));
-			},
-			'#userContextMenu-sendReply':function(e) {
-				Spaz.postPanel.prepReply($(this).attr('user-screen_name'));
-			},
-			'#userContextMenu-sendDM':function(e) {
-				Spaz.postPanel.prepDirectMessage($(this).attr('user-screen_name'));
-			},
-			'#userContextMenu-searchForUser':function(e) {
-				var screen_name = $(this).attr('user-screen_name');
-				var search_str = "from:"+screen_name+" OR to:"+screen_name;
-
-				Spaz.UI.showTab('tab-search');
-				Spaz.Timelines.search.searchFor(search_str);
-			},
-			'#userContextMenu-filterByUser':function(e) {
-				var screen_name = $(this).attr('user-screen_name');
-				$('#filter-friends').val(screen_name);
-				$('#filter-friends').trigger('keyup');
-			    Spaz.UI.showTab('tab-friends');
-			},
 			'span.in-reply-to': function(e){
 				var status_id = $(this).attr('data-status-id');
 				var irt_status_id = $(this).attr('data-irt-status-id');
@@ -400,16 +372,29 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'.status-action-retweet':function(e) {
 				var tweet_id = parseInt($(this).attr('entry-id'), 10);
-				var tweetobj = TweetModel.getById( tweet_id );
-				Spaz.postPanel.prepRetweet(tweetobj.user.screen_name, tweetobj.SC_text_raw);
+				Spaz.TweetsModel.getById(
+				    tweet_id,
+				    false,
+				    function(data) {
+				        Spaz.postPanel.prepRetweet(data.user.screen_name, data.SC_text_raw);
+				    }
+				);
+				
 			},
 			'.status-action-dm':function(e) {
 				Spaz.postPanel.prepDirectMessage($(this).attr('user-screen_name'));
 			},
 			'.status-action-reply':function(e) {
 				var tweet_id = parseInt($(this).attr('entry-id'), 10);
-				var tweetobj = TweetModel.getById( tweet_id );
-				Spaz.postPanel.prepReply(tweetobj.user.screen_name, tweetobj.twitter_id, tweetobj.SC_text_raw);
+				Spaz.TweetsModel.getById(
+				    tweet_id,
+				    false,
+				    function(data) {
+				        Spaz.postPanel.prepReply(data.user.screen_name, data.id, data.SC_text_raw);
+				    }
+				);
+
+				
 			},
 			'.status-action-del':function(e) {
 				if ($(this).hasClass('dm')) {
@@ -454,12 +439,6 @@ Spaz.Controller.initIntercept = function() {
 
 		})
 		.intercept('contextmenu', {
-			// 'div.timeline-entry .user, div.timeline-entry .user-image, div.timeline-entry .user-screen-name':function(e) {
-			'.user,.user-image,.user-screen-name,a[user-screen_name]':function(e) {
-				// sch.dump(this.outerHTML);
-				var screen_name = $(this).attr('user-screen_name');
-				Spaz.UI.showUserContextMenu($(this), screen_name);
-			},
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
 				Spaz.UI.showLinkContextMenu($(this), url);

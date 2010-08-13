@@ -23,28 +23,9 @@ Spaz.Conversation = {
 			sch.debug('---------------------------------------------');
 			
 			
-			if (!status_obj.twitter_id) { // this must have been retrieved from Twitter				
-				/*
-					Save to DB via JazzRecord
-				*/
-				sch.debug('status '+status_obj.id+' was not yet saved to the DB. Saving now.');
-				status_obj = TweetModel.saveTweet(status_obj);
-			}
-			
-			
-			
-			sch.debug("Retrieved "+status_obj.twitter_id);
-			// sch.debug("ID: "+status_obj.twitter_id);
-			// sch.debug("IRT:"+status_obj.in_reply_to_status_id);
-			// sch.debug("TXT:"+status_obj.SC_text_raw);
-			// sch.debug(status_obj);
+			sch.debug("Retrieved "+status_obj.id);
 
-			// sch.debug("===================================================================");
-			
-			
-			
-			
-			if (added_ids.indexOf(status_obj.twitter_id) !== -1) {
+			if (added_ids.indexOf(status_obj.id) !== -1) {
 				sch.debug("This id has already been retrieved");
 				renderConversation();
 				return;
@@ -65,14 +46,14 @@ Spaz.Conversation = {
 				status_obj.text = Emoticons.SimpleSmileys.convertEmoticons(status_obj.text);
 				
 				convo_array.push(status_obj);
-				added_ids.push(status_obj.twitter_id);
+				added_ids.push(status_obj.id);
 
 				sch.debug("conversation length is now "+convo_array.length);
 				sch.debug("added_ids: "+added_ids.toString());
 
 				if (status_obj.in_reply_to_status_id
 						&& (added_ids.indexOf(status_obj.in_reply_to_status_id) === -1)
-						&& (status_obj.in_reply_to_status_id != status_obj.twitter_id)
+						&& (status_obj.in_reply_to_status_id != status_obj.id)
 						) {
 					Spaz.Data.getTweet(status_obj.in_reply_to_status_id, this.trigger, onRetrieved);
 				} else {
@@ -90,9 +71,9 @@ Spaz.Conversation = {
 			
 			for (var i=0; i < convo_array.length; i++) {
 				var status_obj  = convo_array[i];
-				sch.debug("Adding "+status_obj.twitter_id);
+				sch.debug("Adding "+status_obj.id);
 				status_obj.db_id = status_obj.id;
-				status_obj.id    = status_obj.twitter_id;
+				status_obj.id    = status_obj.id;
 				var status_html  = Spaz.Templates.timeline_entry(status_obj);
 				container.append(status_html);
 			};
