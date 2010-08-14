@@ -255,19 +255,7 @@ Spaz.Controller.initIntercept = function() {
 			'#filter-public':function(e) {
 				this.select();
 			},
-			'#refresh-friends':function(e) {
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#refresh-user':function(e) {
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#refresh-public':function(e) {
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#refresh-favorites':function(e) {
-				Spaz.UI.reloadCurrentTab(true);
-			},
-			'#refresh-userlists':function(e) {
+			'.panelmenu .refresh':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
 			},
 			'#markread-friends':function(e) {
