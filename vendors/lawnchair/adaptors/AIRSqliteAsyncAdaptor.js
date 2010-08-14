@@ -81,15 +81,21 @@ AIRSQLiteAsyncAdaptor.prototype = {
 		this.conn = new air.SQLConnection();
 		var appstoredir = air.File.applicationStorageDirectory;
 		this.dbFile = appstoredir.resolvePath(this.name + ".sqlite.db");
-	
+
+		this.conn.addEventListener(air.SQLEvent.OPEN, openHandler);
+
 		try {
 			this.conn.openAsync(this.dbFile);
 		} catch(err) {
 			air.trace('Error msg:'+err.message);
 			air.trace('Error details:'+err.details);
 		}
-
-		this._execSql('create table if not exists ' + this.table + ' (id NVARCHAR(32) UNIQUE PRIMARY KEY, value TEXT, timestamp REAL)');
+        
+        function openHandler() {
+            that.conn.removeEventListener(air.SQLEvent.OPEN, openHandler);
+            that._execSql('create table if not exists ' + that.table + ' (id NVARCHAR(32) UNIQUE PRIMARY KEY, value TEXT, timestamp REAL)', null, options.onCreate);
+        }
+		
 	},
 	
 	/*
@@ -238,7 +244,7 @@ AIRSQLiteAsyncAdaptor.prototype = {
 		SQL statements
 	*/
 	_execSql:function(sql, params, onSuccess, onError) {
-	
+	    
 		var stmt = new air.SQLStatement();
 		stmt.sqlConnection = this.conn;
 		stmt.text = sql;
@@ -270,6 +276,7 @@ AIRSQLiteAsyncAdaptor.prototype = {
 		try {
 			stmt.execute();
 		} catch(err) {
+		    air.trace('failed to execute '+sql);
 			air.trace('Error:' + err.message);
 			air.trace('Error details:' + err.details);
 			if (onError) {

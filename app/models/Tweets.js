@@ -3,10 +3,20 @@
  * 
  */
 var Tweets = function(replace) {
+	var buckets_made = 0;
+	var that = this;
 	
-	this.bucket = new Lawnchair({name:"spaz_tweets", 'adaptor':'air-async'});
-	this.dm_bucket = new Lawnchair({name:"spaz_dms", 'adaptor':'air-async'});
-	this.user_bucket = new Lawnchair({name:"spaz_users", 'adaptor':'air-async'});
+	
+	function onCreateBucket() {
+	    buckets_made++;
+	    if (buckets_made >= 3) {
+	        that._init(replace);
+	    }
+	}
+	
+	this.bucket = new Lawnchair({name:"spaz_tweets", 'adaptor':'air-async', 'onCreate':onCreateBucket});
+	this.dm_bucket = new Lawnchair({name:"spaz_dms", 'adaptor':'air-async', 'onCreate':onCreateBucket});
+	this.user_bucket = new Lawnchair({name:"spaz_users", 'adaptor':'air-async', 'onCreate':onCreateBucket});
 	
 	this.user_bucket.each = function(callback, onFinish) {
 		var cb = this.adaptor.terseToVerboseCallback(callback);
@@ -35,7 +45,6 @@ var Tweets = function(replace) {
 		});
 	};
 	
-	this._init(replace);
 };
 
 /**
