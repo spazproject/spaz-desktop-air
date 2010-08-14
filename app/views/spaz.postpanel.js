@@ -54,10 +54,17 @@ SpazPostPanel.prototype.prepReply = function(username, status_id, status_text) {
 };
 
 SpazPostPanel.prototype.prepRetweet = function(screenname, text) {
-	this.clearPostIRT();
-	this.textarea.focus();
-	text = 'RT @' + screenname + ': '+text+'';
-	this.setMessageText(text);
+    this.clearPostIRT();
+    this.textarea.focus();
+    text = 'RT @' + screenname + ': '+text+'';
+    this.setMessageText(text);
+};
+
+SpazPostPanel.prototype.prepVia = function(screenname, text) {
+    this.clearPostIRT();
+    this.textarea.focus();
+    text = text +' /via @' + screenname;
+    this.setMessageText(text);
 };
 
 SpazPostPanel.prototype.prepDirectMessage = function(username) {

@@ -149,6 +149,34 @@ Spaz.Data.destroyStatus = function(postid, onSuccess, onFailure) {
 };
 
 
+Spaz.Data.retweet = function(postid, onSuccess, onFailure) {
+    var auth = Spaz.Prefs.getAuthObject();
+	var twit = new SpazTwit({'auth':auth});
+
+	Spaz.UI.statusBar('Retweeting post: ' + postid);
+	Spaz.UI.showLoading();
+	
+	twit.retweet(
+		postid,
+		function(data) {
+			Spaz.UI.statusBar("Retweeted post " + postid);
+			Spaz.UI.hideLoading();
+			if (onSuccess) {
+				onSuccess(data);
+			}
+		},
+		function(xhr, msg, exc) {
+			sch.error(msg);
+			Spaz.UI.statusBar("Retweeting post " + postid + " failed!");
+			Spaz.UI.hideLoading();
+			if (onFailure) {
+				onFailure();
+			}
+		}
+	);	
+};
+
+
 /**
  * Deletes the given DM
  * @param {Number} postid the id of the post to delete
@@ -392,6 +420,49 @@ Spaz.Data.stopFollowingUser = function(userid) {
 		}
 	);
 
+};
+
+
+Spaz.Data.blockUser = function(userid) {
+    
+    var auth = Spaz.Prefs.getAuthObject();  
+    var twit = new SpazTwit({'auth':auth});
+    
+    twit.block(
+        userid,
+        function(data) {
+            sch.error(data);
+            Spaz.UI.statusBar("Blocked " + userid);
+            Spaz.UI.hideLoading();
+        },
+        function(xhr, msg, exc) {
+            sch.error(msg);
+            Spaz.UI.statusBar("Block failed for " + userid);
+            Spaz.UI.hideLoading();
+        }
+    );
+};
+
+
+Spaz.Data.reportUser = function(userid) {
+    
+    var auth = Spaz.Prefs.getAuthObject();  
+    var twit = new SpazTwit({'auth':auth});
+    
+    twit.reportSpam(
+        userid,
+        function(data) {
+            sch.error(data);
+            jQuery('div.timeline-entry[data-user_id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]');
+            Spaz.UI.statusBar("Blocked and reported " + userid);
+            Spaz.UI.hideLoading();
+        },
+        function(xhr, msg, exc) {
+            sch.error(msg);
+            Spaz.UI.statusBar("Block & report failed for " + userid);
+            Spaz.UI.hideLoading();
+        }
+    );
 };
 
 

@@ -76,15 +76,17 @@ Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
 			}
 			
 			items.push({
-				label:   $L('Block (NYI)'),
+				label:   $L('Block'),
 				handler: function(e, data) {
-					
+					Spaz.Data.blockUser(data.userid);
 				},
 				data:    {'userid':userid}
 			});
 			items.push({
-				label:   $L('Block and report (NYI)'),
-				handler: function(e, data) {  },
+				label:   $L('Block and report'),
+				handler: function(e, data) { 
+				    Spaz.Data.reportUser(data.userid);
+				},
 				data:    {'userid':userid}
 			});
 
@@ -99,7 +101,7 @@ Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
  * this onReady binds clicks on the appropriate elements to the user menu creation method 
  */
 jQuery(document).ready(function(){
-	jQuery('.user,.user-image,.user-screen-name,a[user-screen_name]').live('contextmenu', function(e) {
+	jQuery('.user,.user-image,.user-screen-name,a[user-screen_name]').live('click', function(e) {
         sch.error(this.outerHTML);
 		var userid = $(this).attr('user-id');
 		if (!userid) { userid = '@'+$(this).attr('user-screen_name'); } // try to get screen name instead

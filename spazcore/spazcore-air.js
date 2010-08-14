@@ -1,4 +1,4 @@
-/*********** Built 2010-06-13 19:45:42 EDT ***********/
+/*********** Built 2010-08-13 20:05:24 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -2780,1056 +2780,6 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
         };
     }
 })();
-/*!
- * Sizzle CSS Selector Engine - v1.0
- *  Copyright 2009, The Dojo Foundation
- *  Released under the MIT, BSD, and GPL Licenses.
- *  More information: http://sizzlejs.com/
- */
-(function(){
-
-var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|['"][^'"]*['"]|[^[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g,
-	done = 0,
-	toString = Object.prototype.toString,
-	hasDuplicate = false,
-	baseHasDuplicate = true;
-
-// Here we check if the JavaScript engine is using some sort of
-// optimization where it does not always call our comparision
-// function. If that is the case, discard the hasDuplicate value.
-//   Thus far that includes Google Chrome.
-[0, 0].sort(function(){
-	baseHasDuplicate = false;
-	return 0;
-});
-
-var Sizzle = function(selector, context, results, seed) {
-	results = results || [];
-	var origContext = context = context || document;
-
-	if ( context.nodeType !== 1 && context.nodeType !== 9 ) {
-		return [];
-	}
-	
-	if ( !selector || typeof selector !== "string" ) {
-		return results;
-	}
-
-	var parts = [], m, set, checkSet, extra, prune = true, contextXML = isXML(context),
-		soFar = selector;
-	
-	// Reset the position of the chunker regexp (start from head)
-	while ( (chunker.exec(""), m = chunker.exec(soFar)) !== null ) {
-		soFar = m[3];
-		
-		parts.push( m[1] );
-		
-		if ( m[2] ) {
-			extra = m[3];
-			break;
-		}
-	}
-
-	if ( parts.length > 1 && origPOS.exec( selector ) ) {
-		if ( parts.length === 2 && Expr.relative[ parts[0] ] ) {
-			set = posProcess( parts[0] + parts[1], context );
-		} else {
-			set = Expr.relative[ parts[0] ] ?
-				[ context ] :
-				Sizzle( parts.shift(), context );
-
-			while ( parts.length ) {
-				selector = parts.shift();
-
-				if ( Expr.relative[ selector ] ) {
-					selector += parts.shift();
-				}
-				
-				set = posProcess( selector, set );
-			}
-		}
-	} else {
-		// Take a shortcut and set the context if the root selector is an ID
-		// (but not if it'll be faster if the inner selector is an ID)
-		if ( !seed && parts.length > 1 && context.nodeType === 9 && !contextXML &&
-				Expr.match.ID.test(parts[0]) && !Expr.match.ID.test(parts[parts.length - 1]) ) {
-			var ret = Sizzle.find( parts.shift(), context, contextXML );
-			context = ret.expr ? Sizzle.filter( ret.expr, ret.set )[0] : ret.set[0];
-		}
-
-		if ( context ) {
-			var ret = seed ?
-				{ expr: parts.pop(), set: makeArray(seed) } :
-				Sizzle.find( parts.pop(), parts.length === 1 && (parts[0] === "~" || parts[0] === "+") && context.parentNode ? context.parentNode : context, contextXML );
-			set = ret.expr ? Sizzle.filter( ret.expr, ret.set ) : ret.set;
-
-			if ( parts.length > 0 ) {
-				checkSet = makeArray(set);
-			} else {
-				prune = false;
-			}
-
-			while ( parts.length ) {
-				var cur = parts.pop(), pop = cur;
-
-				if ( !Expr.relative[ cur ] ) {
-					cur = "";
-				} else {
-					pop = parts.pop();
-				}
-
-				if ( pop == null ) {
-					pop = context;
-				}
-
-				Expr.relative[ cur ]( checkSet, pop, contextXML );
-			}
-		} else {
-			checkSet = parts = [];
-		}
-	}
-
-	if ( !checkSet ) {
-		checkSet = set;
-	}
-
-	if ( !checkSet ) {
-		throw "Syntax error, unrecognized expression: " + (cur || selector);
-	}
-
-	if ( toString.call(checkSet) === "[object Array]" ) {
-		if ( !prune ) {
-			results.push.apply( results, checkSet );
-		} else if ( context && context.nodeType === 1 ) {
-			for ( var i = 0; checkSet[i] != null; i++ ) {
-				if ( checkSet[i] && (checkSet[i] === true || checkSet[i].nodeType === 1 && contains(context, checkSet[i])) ) {
-					results.push( set[i] );
-				}
-			}
-		} else {
-			for ( var i = 0; checkSet[i] != null; i++ ) {
-				if ( checkSet[i] && checkSet[i].nodeType === 1 ) {
-					results.push( set[i] );
-				}
-			}
-		}
-	} else {
-		makeArray( checkSet, results );
-	}
-
-	if ( extra ) {
-		Sizzle( extra, origContext, results, seed );
-		Sizzle.uniqueSort( results );
-	}
-
-	return results;
-};
-
-Sizzle.uniqueSort = function(results){
-	if ( sortOrder ) {
-		hasDuplicate = baseHasDuplicate;
-		results.sort(sortOrder);
-
-		if ( hasDuplicate ) {
-			for ( var i = 1; i < results.length; i++ ) {
-				if ( results[i] === results[i-1] ) {
-					results.splice(i--, 1);
-				}
-			}
-		}
-	}
-
-	return results;
-};
-
-Sizzle.matches = function(expr, set){
-	return Sizzle(expr, null, null, set);
-};
-
-Sizzle.find = function(expr, context, isXML){
-	var set, match;
-
-	if ( !expr ) {
-		return [];
-	}
-
-	for ( var i = 0, l = Expr.order.length; i < l; i++ ) {
-		var type = Expr.order[i], match;
-		
-		if ( (match = Expr.leftMatch[ type ].exec( expr )) ) {
-			var left = match[1];
-			match.splice(1,1);
-
-			if ( left.substr( left.length - 1 ) !== "\\" ) {
-				match[1] = (match[1] || "").replace(/\\/g, "");
-				set = Expr.find[ type ]( match, context, isXML );
-				if ( set != null ) {
-					expr = expr.replace( Expr.match[ type ], "" );
-					break;
-				}
-			}
-		}
-	}
-
-	if ( !set ) {
-		set = context.getElementsByTagName("*");
-	}
-
-	return {set: set, expr: expr};
-};
-
-Sizzle.filter = function(expr, set, inplace, not){
-	var old = expr, result = [], curLoop = set, match, anyFound,
-		isXMLFilter = set && set[0] && isXML(set[0]);
-
-	while ( expr && set.length ) {
-		for ( var type in Expr.filter ) {
-			if ( (match = Expr.match[ type ].exec( expr )) != null ) {
-				var filter = Expr.filter[ type ], found, item;
-				anyFound = false;
-
-				if ( curLoop == result ) {
-					result = [];
-				}
-
-				if ( Expr.preFilter[ type ] ) {
-					match = Expr.preFilter[ type ]( match, curLoop, inplace, result, not, isXMLFilter );
-
-					if ( !match ) {
-						anyFound = found = true;
-					} else if ( match === true ) {
-						continue;
-					}
-				}
-
-				if ( match ) {
-					for ( var i = 0; (item = curLoop[i]) != null; i++ ) {
-						if ( item ) {
-							found = filter( item, match, i, curLoop );
-							var pass = not ^ !!found;
-
-							if ( inplace && found != null ) {
-								if ( pass ) {
-									anyFound = true;
-								} else {
-									curLoop[i] = false;
-								}
-							} else if ( pass ) {
-								result.push( item );
-								anyFound = true;
-							}
-						}
-					}
-				}
-
-				if ( found !== undefined ) {
-					if ( !inplace ) {
-						curLoop = result;
-					}
-
-					expr = expr.replace( Expr.match[ type ], "" );
-
-					if ( !anyFound ) {
-						return [];
-					}
-
-					break;
-				}
-			}
-		}
-
-		// Improper expression
-		if ( expr == old ) {
-			if ( anyFound == null ) {
-				throw "Syntax error, unrecognized expression: " + expr;
-			} else {
-				break;
-			}
-		}
-
-		old = expr;
-	}
-
-	return curLoop;
-};
-
-var Expr = Sizzle.selectors = {
-	order: [ "ID", "NAME", "TAG" ],
-	match: {
-		ID: /#((?:[\w\u00c0-\uFFFF-]|\\.)+)/,
-		CLASS: /\.((?:[\w\u00c0-\uFFFF-]|\\.)+)/,
-		NAME: /\[name=['"]*((?:[\w\u00c0-\uFFFF-]|\\.)+)['"]*\]/,
-		ATTR: /\[\s*((?:[\w\u00c0-\uFFFF-]|\\.)+)\s*(?:(\S?=)\s*(['"]*)(.*?)\3|)\s*\]/,
-		TAG: /^((?:[\w\u00c0-\uFFFF\*-]|\\.)+)/,
-		CHILD: /:(only|nth|last|first)-child(?:\((even|odd|[\dn+-]*)\))?/,
-		POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/,
-		PSEUDO: /:((?:[\w\u00c0-\uFFFF-]|\\.)+)(?:\((['"]*)((?:\([^\)]+\)|[^\2\(\)]*)+)\2\))?/
-	},
-	leftMatch: {},
-	attrMap: {
-		"class": "className",
-		"for": "htmlFor"
-	},
-	attrHandle: {
-		href: function(elem){
-			return elem.getAttribute("href");
-		}
-	},
-	relative: {
-		"+": function(checkSet, part){
-			var isPartStr = typeof part === "string",
-				isTag = isPartStr && !/\W/.test(part),
-				isPartStrNotTag = isPartStr && !isTag;
-
-			if ( isTag ) {
-				part = part.toLowerCase();
-			}
-
-			for ( var i = 0, l = checkSet.length, elem; i < l; i++ ) {
-				if ( (elem = checkSet[i]) ) {
-					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {}
-
-					checkSet[i] = isPartStrNotTag || elem && elem.nodeName.toLowerCase() === part ?
-						elem || false :
-						elem === part;
-				}
-			}
-
-			if ( isPartStrNotTag ) {
-				Sizzle.filter( part, checkSet, true );
-			}
-		},
-		">": function(checkSet, part){
-			var isPartStr = typeof part === "string";
-
-			if ( isPartStr && !/\W/.test(part) ) {
-				part = part.toLowerCase();
-
-				for ( var i = 0, l = checkSet.length; i < l; i++ ) {
-					var elem = checkSet[i];
-					if ( elem ) {
-						var parent = elem.parentNode;
-						checkSet[i] = parent.nodeName.toLowerCase() === part ? parent : false;
-					}
-				}
-			} else {
-				for ( var i = 0, l = checkSet.length; i < l; i++ ) {
-					var elem = checkSet[i];
-					if ( elem ) {
-						checkSet[i] = isPartStr ?
-							elem.parentNode :
-							elem.parentNode === part;
-					}
-				}
-
-				if ( isPartStr ) {
-					Sizzle.filter( part, checkSet, true );
-				}
-			}
-		},
-		"": function(checkSet, part){
-			var doneName = done++, checkFn = dirCheck;
-
-			if ( !/\W/.test(part) ) {
-				var nodeCheck = part = part.toLowerCase();
-				checkFn = dirNodeCheck;
-			}
-
-			checkFn("parentNode", part, doneName, checkSet, nodeCheck, isXML);
-		},
-		"~": function(checkSet, part){
-			var doneName = done++, checkFn = dirCheck;
-
-			if ( typeof part === "string" && !/\W/.test(part) ) {
-				var nodeCheck = part = part.toLowerCase();
-				checkFn = dirNodeCheck;
-			}
-
-			checkFn("previousSibling", part, doneName, checkSet, nodeCheck, isXML);
-		}
-	},
-	find: {
-		ID: function(match, context, isXML){
-			if ( typeof context.getElementById !== "undefined" && !isXML ) {
-				var m = context.getElementById(match[1]);
-				return m ? [m] : [];
-			}
-		},
-		NAME: function(match, context){
-			if ( typeof context.getElementsByName !== "undefined" ) {
-				var ret = [], results = context.getElementsByName(match[1]);
-
-				for ( var i = 0, l = results.length; i < l; i++ ) {
-					if ( results[i].getAttribute("name") === match[1] ) {
-						ret.push( results[i] );
-					}
-				}
-
-				return ret.length === 0 ? null : ret;
-			}
-		},
-		TAG: function(match, context){
-			return context.getElementsByTagName(match[1]);
-		}
-	},
-	preFilter: {
-		CLASS: function(match, curLoop, inplace, result, not, isXML){
-			match = " " + match[1].replace(/\\/g, "") + " ";
-
-			if ( isXML ) {
-				return match;
-			}
-
-			for ( var i = 0, elem; (elem = curLoop[i]) != null; i++ ) {
-				if ( elem ) {
-					if ( not ^ (elem.className && (" " + elem.className + " ").replace(/[\t\n]/g, " ").indexOf(match) >= 0) ) {
-						if ( !inplace ) {
-							result.push( elem );
-						}
-					} else if ( inplace ) {
-						curLoop[i] = false;
-					}
-				}
-			}
-
-			return false;
-		},
-		ID: function(match){
-			return match[1].replace(/\\/g, "");
-		},
-		TAG: function(match, curLoop){
-			return match[1].toLowerCase();
-		},
-		CHILD: function(match){
-			if ( match[1] == "nth" ) {
-				// parse equations like 'even', 'odd', '5', '2n', '3n+2', '4n-1', '-n+6'
-				var test = /(-?)(\d*)n((?:\+|-)?\d*)/.exec(
-					match[2] == "even" && "2n" || match[2] == "odd" && "2n+1" ||
-					!/\D/.test( match[2] ) && "0n+" + match[2] || match[2]);
-
-				// calculate the numbers (first)n+(last) including if they are negative
-				match[2] = (test[1] + (test[2] || 1)) - 0;
-				match[3] = test[3] - 0;
-			}
-
-			// TODO: Move to normal caching system
-			match[0] = done++;
-
-			return match;
-		},
-		ATTR: function(match, curLoop, inplace, result, not, isXML){
-			var name = match[1].replace(/\\/g, "");
-			
-			if ( !isXML && Expr.attrMap[name] ) {
-				match[1] = Expr.attrMap[name];
-			}
-
-			if ( match[2] === "~=" ) {
-				match[4] = " " + match[4] + " ";
-			}
-
-			return match;
-		},
-		PSEUDO: function(match, curLoop, inplace, result, not){
-			if ( match[1] === "not" ) {
-				// If we're dealing with a complex expression, or a simple one
-				if ( ( chunker.exec(match[3]) || "" ).length > 1 || /^\w/.test(match[3]) ) {
-					match[3] = Sizzle(match[3], null, null, curLoop);
-				} else {
-					var ret = Sizzle.filter(match[3], curLoop, inplace, true ^ not);
-					if ( !inplace ) {
-						result.push.apply( result, ret );
-					}
-					return false;
-				}
-			} else if ( Expr.match.POS.test( match[0] ) || Expr.match.CHILD.test( match[0] ) ) {
-				return true;
-			}
-			
-			return match;
-		},
-		POS: function(match){
-			match.unshift( true );
-			return match;
-		}
-	},
-	filters: {
-		enabled: function(elem){
-			return elem.disabled === false && elem.type !== "hidden";
-		},
-		disabled: function(elem){
-			return elem.disabled === true;
-		},
-		checked: function(elem){
-			return elem.checked === true;
-		},
-		selected: function(elem){
-			// Accessing this property makes selected-by-default
-			// options in Safari work properly
-			elem.parentNode.selectedIndex;
-			return elem.selected === true;
-		},
-		parent: function(elem){
-			return !!elem.firstChild;
-		},
-		empty: function(elem){
-			return !elem.firstChild;
-		},
-		has: function(elem, i, match){
-			return !!Sizzle( match[3], elem ).length;
-		},
-		header: function(elem){
-			return /h\d/i.test( elem.nodeName );
-		},
-		text: function(elem){
-			return "text" === elem.type;
-		},
-		radio: function(elem){
-			return "radio" === elem.type;
-		},
-		checkbox: function(elem){
-			return "checkbox" === elem.type;
-		},
-		file: function(elem){
-			return "file" === elem.type;
-		},
-		password: function(elem){
-			return "password" === elem.type;
-		},
-		submit: function(elem){
-			return "submit" === elem.type;
-		},
-		image: function(elem){
-			return "image" === elem.type;
-		},
-		reset: function(elem){
-			return "reset" === elem.type;
-		},
-		button: function(elem){
-			return "button" === elem.type || elem.nodeName.toLowerCase() === "button";
-		},
-		input: function(elem){
-			return /input|select|textarea|button/i.test(elem.nodeName);
-		}
-	},
-	setFilters: {
-		first: function(elem, i){
-			return i === 0;
-		},
-		last: function(elem, i, match, array){
-			return i === array.length - 1;
-		},
-		even: function(elem, i){
-			return i % 2 === 0;
-		},
-		odd: function(elem, i){
-			return i % 2 === 1;
-		},
-		lt: function(elem, i, match){
-			return i < match[3] - 0;
-		},
-		gt: function(elem, i, match){
-			return i > match[3] - 0;
-		},
-		nth: function(elem, i, match){
-			return match[3] - 0 == i;
-		},
-		eq: function(elem, i, match){
-			return match[3] - 0 == i;
-		}
-	},
-	filter: {
-		PSEUDO: function(elem, match, i, array){
-			var name = match[1], filter = Expr.filters[ name ];
-
-			if ( filter ) {
-				return filter( elem, i, match, array );
-			} else if ( name === "contains" ) {
-				return (elem.textContent || elem.innerText || getText([ elem ]) || "").indexOf(match[3]) >= 0;
-			} else if ( name === "not" ) {
-				var not = match[3];
-
-				for ( var i = 0, l = not.length; i < l; i++ ) {
-					if ( not[i] === elem ) {
-						return false;
-					}
-				}
-
-				return true;
-			}
-		},
-		CHILD: function(elem, match){
-			var type = match[1], node = elem;
-			switch (type) {
-				case 'only':
-				case 'first':
-					while ( (node = node.previousSibling) )	 {
-						if ( node.nodeType === 1 ) { 
-							return false; 
-						}
-					}
-					if ( type == 'first') { 
-						return true; 
-					}
-					node = elem;
-				case 'last':
-					while ( (node = node.nextSibling) )	 {
-						if ( node.nodeType === 1 ) { 
-							return false; 
-						}
-					}
-					return true;
-				case 'nth':
-					var first = match[2], last = match[3];
-
-					if ( first == 1 && last == 0 ) {
-						return true;
-					}
-					
-					var doneName = match[0],
-						parent = elem.parentNode;
-	
-					if ( parent && (parent.sizcache !== doneName || !elem.nodeIndex) ) {
-						var count = 0;
-						for ( node = parent.firstChild; node; node = node.nextSibling ) {
-							if ( node.nodeType === 1 ) {
-								node.nodeIndex = ++count;
-							}
-						} 
-						parent.sizcache = doneName;
-					}
-					
-					var diff = elem.nodeIndex - last;
-					if ( first == 0 ) {
-						return diff == 0;
-					} else {
-						return ( diff % first == 0 && diff / first >= 0 );
-					}
-			}
-		},
-		ID: function(elem, match){
-			return elem.nodeType === 1 && elem.getAttribute("id") === match;
-		},
-		TAG: function(elem, match){
-			return (match === "*" && elem.nodeType === 1) || elem.nodeName.toLowerCase() === match;
-		},
-		CLASS: function(elem, match){
-			return (" " + (elem.className || elem.getAttribute("class")) + " ")
-				.indexOf( match ) > -1;
-		},
-		ATTR: function(elem, match){
-			var name = match[1],
-				result = Expr.attrHandle[ name ] ?
-					Expr.attrHandle[ name ]( elem ) :
-					elem[ name ] != null ?
-						elem[ name ] :
-						elem.getAttribute( name ),
-				value = result + "",
-				type = match[2],
-				check = match[4];
-
-			return result == null ?
-				type === "!=" :
-				type === "=" ?
-				value === check :
-				type === "*=" ?
-				value.indexOf(check) >= 0 :
-				type === "~=" ?
-				(" " + value + " ").indexOf(check) >= 0 :
-				!check ?
-				value && result !== false :
-				type === "!=" ?
-				value != check :
-				type === "^=" ?
-				value.indexOf(check) === 0 :
-				type === "$=" ?
-				value.substr(value.length - check.length) === check :
-				type === "|=" ?
-				value === check || value.substr(0, check.length + 1) === check + "-" :
-				false;
-		},
-		POS: function(elem, match, i, array){
-			var name = match[2], filter = Expr.setFilters[ name ];
-
-			if ( filter ) {
-				return filter( elem, i, match, array );
-			}
-		}
-	}
-};
-
-var origPOS = Expr.match.POS;
-
-for ( var type in Expr.match ) {
-	Expr.match[ type ] = new RegExp( Expr.match[ type ].source + /(?![^\[]*\])(?![^\(]*\))/.source );
-	Expr.leftMatch[ type ] = new RegExp( /(^(?:.|\r|\n)*?)/.source + Expr.match[ type ].source );
-}
-
-var makeArray = function(array, results) {
-	array = Array.prototype.slice.call( array, 0 );
-
-	if ( results ) {
-		results.push.apply( results, array );
-		return results;
-	}
-	
-	return array;
-};
-
-// Perform a simple check to determine if the browser is capable of
-// converting a NodeList to an array using builtin methods.
-try {
-	Array.prototype.slice.call( document.documentElement.childNodes, 0 );
-
-// Provide a fallback method if it does not work
-} catch(e){
-	makeArray = function(array, results) {
-		var ret = results || [];
-
-		if ( toString.call(array) === "[object Array]" ) {
-			Array.prototype.push.apply( ret, array );
-		} else {
-			if ( typeof array.length === "number" ) {
-				for ( var i = 0, l = array.length; i < l; i++ ) {
-					ret.push( array[i] );
-				}
-			} else {
-				for ( var i = 0; array[i]; i++ ) {
-					ret.push( array[i] );
-				}
-			}
-		}
-
-		return ret;
-	};
-}
-
-var sortOrder;
-
-if ( document.documentElement.compareDocumentPosition ) {
-	sortOrder = function( a, b ) {
-		if ( !a.compareDocumentPosition || !b.compareDocumentPosition ) {
-			if ( a == b ) {
-				hasDuplicate = true;
-			}
-			return a.compareDocumentPosition ? -1 : 1;
-		}
-
-		var ret = a.compareDocumentPosition(b) & 4 ? -1 : a === b ? 0 : 1;
-		if ( ret === 0 ) {
-			hasDuplicate = true;
-		}
-		return ret;
-	};
-} else if ( "sourceIndex" in document.documentElement ) {
-	sortOrder = function( a, b ) {
-		if ( !a.sourceIndex || !b.sourceIndex ) {
-			if ( a == b ) {
-				hasDuplicate = true;
-			}
-			return a.sourceIndex ? -1 : 1;
-		}
-
-		var ret = a.sourceIndex - b.sourceIndex;
-		if ( ret === 0 ) {
-			hasDuplicate = true;
-		}
-		return ret;
-	};
-} else if ( document.createRange ) {
-	sortOrder = function( a, b ) {
-		if ( !a.ownerDocument || !b.ownerDocument ) {
-			if ( a == b ) {
-				hasDuplicate = true;
-			}
-			return a.ownerDocument ? -1 : 1;
-		}
-
-		var aRange = a.ownerDocument.createRange(), bRange = b.ownerDocument.createRange();
-		aRange.setStart(a, 0);
-		aRange.setEnd(a, 0);
-		bRange.setStart(b, 0);
-		bRange.setEnd(b, 0);
-		var ret = aRange.compareBoundaryPoints(Range.START_TO_END, bRange);
-		if ( ret === 0 ) {
-			hasDuplicate = true;
-		}
-		return ret;
-	};
-}
-
-// Utility function for retreiving the text value of an array of DOM nodes
-function getText( elems ) {
-	var ret = "", elem;
-
-	for ( var i = 0; elems[i]; i++ ) {
-		elem = elems[i];
-
-		// Get the text from text nodes and CDATA nodes
-		if ( elem.nodeType === 3 || elem.nodeType === 4 ) {
-			ret += elem.nodeValue;
-
-		// Traverse everything else, except comment nodes
-		} else if ( elem.nodeType !== 8 ) {
-			ret += getText( elem.childNodes );
-		}
-	}
-
-	return ret;
-}
-
-// Check to see if the browser returns elements by name when
-// querying by getElementById (and provide a workaround)
-(function(){
-	// We're going to inject a fake input element with a specified name
-	var form = document.createElement("div"),
-		id = "script" + (new Date).getTime();
-	form.innerHTML = "<a name='" + id + "'/>";
-
-	// Inject it into the root element, check its status, and remove it quickly
-	var root = document.documentElement;
-	root.insertBefore( form, root.firstChild );
-
-	// The workaround has to do additional checks after a getElementById
-	// Which slows things down for other browsers (hence the branching)
-	if ( document.getElementById( id ) ) {
-		Expr.find.ID = function(match, context, isXML){
-			if ( typeof context.getElementById !== "undefined" && !isXML ) {
-				var m = context.getElementById(match[1]);
-				return m ? m.id === match[1] || typeof m.getAttributeNode !== "undefined" && m.getAttributeNode("id").nodeValue === match[1] ? [m] : undefined : [];
-			}
-		};
-
-		Expr.filter.ID = function(elem, match){
-			var node = typeof elem.getAttributeNode !== "undefined" && elem.getAttributeNode("id");
-			return elem.nodeType === 1 && node && node.nodeValue === match;
-		};
-	}
-
-	root.removeChild( form );
-	root = form = null; // release memory in IE
-})();
-
-(function(){
-	// Check to see if the browser returns only elements
-	// when doing getElementsByTagName("*")
-
-	// Create a fake element
-	var div = document.createElement("div");
-	div.appendChild( document.createComment("") );
-
-	// Make sure no comments are found
-	if ( div.getElementsByTagName("*").length > 0 ) {
-		Expr.find.TAG = function(match, context){
-			var results = context.getElementsByTagName(match[1]);
-
-			// Filter out possible comments
-			if ( match[1] === "*" ) {
-				var tmp = [];
-
-				for ( var i = 0; results[i]; i++ ) {
-					if ( results[i].nodeType === 1 ) {
-						tmp.push( results[i] );
-					}
-				}
-
-				results = tmp;
-			}
-
-			return results;
-		};
-	}
-
-	// Check to see if an attribute returns normalized href attributes
-	div.innerHTML = "<a href='#'></a>";
-	if ( div.firstChild && typeof div.firstChild.getAttribute !== "undefined" &&
-			div.firstChild.getAttribute("href") !== "#" ) {
-		Expr.attrHandle.href = function(elem){
-			return elem.getAttribute("href", 2);
-		};
-	}
-
-	div = null; // release memory in IE
-})();
-
-if ( document.querySelectorAll ) {
-	(function(){
-		var oldSizzle = Sizzle, div = document.createElement("div");
-		div.innerHTML = "<p class='TEST'></p>";
-
-		// Safari can't handle uppercase or unicode characters when
-		// in quirks mode.
-		if ( div.querySelectorAll && div.querySelectorAll(".TEST").length === 0 ) {
-			return;
-		}
-	
-		Sizzle = function(query, context, extra, seed){
-			context = context || document;
-
-			// Only use querySelectorAll on non-XML documents
-			// (ID selectors don't work in non-HTML documents)
-			if ( !seed && context.nodeType === 9 && !isXML(context) ) {
-				try {
-					return makeArray( context.querySelectorAll(query), extra );
-				} catch(e){}
-			}
-		
-			return oldSizzle(query, context, extra, seed);
-		};
-
-		for ( var prop in oldSizzle ) {
-			Sizzle[ prop ] = oldSizzle[ prop ];
-		}
-
-		div = null; // release memory in IE
-	})();
-}
-
-(function(){
-	var div = document.createElement("div");
-
-	div.innerHTML = "<div class='test e'></div><div class='test'></div>";
-
-	// Opera can't find a second classname (in 9.6)
-	// Also, make sure that getElementsByClassName actually exists
-	if ( !div.getElementsByClassName || div.getElementsByClassName("e").length === 0 ) {
-		return;
-	}
-
-	// Safari caches class attributes, doesn't catch changes (in 3.2)
-	div.lastChild.className = "e";
-
-	if ( div.getElementsByClassName("e").length === 1 ) {
-		return;
-	}
-	
-	Expr.order.splice(1, 0, "CLASS");
-	Expr.find.CLASS = function(match, context, isXML) {
-		if ( typeof context.getElementsByClassName !== "undefined" && !isXML ) {
-			return context.getElementsByClassName(match[1]);
-		}
-	};
-
-	div = null; // release memory in IE
-})();
-
-function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
-	var sibDir = dir == "previousSibling" && !isXML;
-	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
-		var elem = checkSet[i];
-		if ( elem ) {
-			if ( sibDir && elem.nodeType === 1 ){
-				elem.sizcache = doneName;
-				elem.sizset = i;
-			}
-			elem = elem[dir];
-			var match = false;
-
-			while ( elem ) {
-				if ( elem.sizcache === doneName ) {
-					match = checkSet[elem.sizset];
-					break;
-				}
-
-				if ( elem.nodeType === 1 && !isXML ){
-					elem.sizcache = doneName;
-					elem.sizset = i;
-				}
-
-				if ( elem.nodeName.toLowerCase() === cur ) {
-					match = elem;
-					break;
-				}
-
-				elem = elem[dir];
-			}
-
-			checkSet[i] = match;
-		}
-	}
-}
-
-function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
-	var sibDir = dir == "previousSibling" && !isXML;
-	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
-		var elem = checkSet[i];
-		if ( elem ) {
-			if ( sibDir && elem.nodeType === 1 ) {
-				elem.sizcache = doneName;
-				elem.sizset = i;
-			}
-			elem = elem[dir];
-			var match = false;
-
-			while ( elem ) {
-				if ( elem.sizcache === doneName ) {
-					match = checkSet[elem.sizset];
-					break;
-				}
-
-				if ( elem.nodeType === 1 ) {
-					if ( !isXML ) {
-						elem.sizcache = doneName;
-						elem.sizset = i;
-					}
-					if ( typeof cur !== "string" ) {
-						if ( elem === cur ) {
-							match = true;
-							break;
-						}
-
-					} else if ( Sizzle.filter( cur, [elem] ).length > 0 ) {
-						match = elem;
-						break;
-					}
-				}
-
-				elem = elem[dir];
-			}
-
-			checkSet[i] = match;
-		}
-	}
-}
-
-var contains = document.compareDocumentPosition ? function(a, b){
-	return a.compareDocumentPosition(b) & 16;
-} : function(a, b){
-	return a !== b && (a.contains ? a.contains(b) : true);
-};
-
-var isXML = function(elem){
-	// documentElement is verified for cases where it doesn't yet exist
-	// (such as loading iframes in IE - #4833) 
-	var documentElement = (elem ? elem.ownerDocument || elem : 0).documentElement;
-	return documentElement ? documentElement.nodeName !== "HTML" : false;
-};
-
-var posProcess = function(selector, context){
-	var tmpSet = [], later = "", match,
-		root = context.nodeType ? [context] : context;
-
-	// Position selectors must be done after the filter
-	// And so must :not(positional) so we move all PSEUDOs to the end
-	while ( (match = Expr.match.PSEUDO.exec( selector )) ) {
-		later += match[0];
-		selector = selector.replace( Expr.match.PSEUDO, "" );
-	}
-
-	selector = Expr.relative[selector] ? selector + "*" : selector;
-
-	for ( var i = 0, l = root.length; i < l; i++ ) {
-		Sizzle( selector, root[i], tmpSet );
-	}
-
-	return Sizzle.filter( later, tmpSet );
-};
-
-// EXPOSE
-
-window.Sizzle = Sizzle;
-
-})();
 // Underscore.js
 // (c) 2009 Jeremy Ashkenas, DocumentCloud Inc.
 // Underscore is freely distributable under the terms of the MIT license.
@@ -6455,6 +5405,10 @@ sc.helpers.isNumber = function(chk) {
 	http://www.breakingpar.com/bkp/home.nsf/0/87256B280015193F87256C720080D723
 */
 sc.helpers.isArray = function(obj) {
+	if (!obj || !obj.constructor) { // short-circuit this if it's falsey
+		return false;
+	}
+	
 	if (obj.constructor.toString().indexOf("Array") === -1) {
 		return false;
 	} else {
@@ -7991,8 +6945,8 @@ SpazAccounts.prototype.setAll = function(accounts_array) {
 	this._accounts = accounts_array;
 	this.save();
 	sch.debug("Saved these accounts:");
-	for (var i=0; i < this_accounts.length; i++) {
-		sch.debug(this._accounts[x].id);
+	for (var i=0; i < this._accounts.length; i++) {
+		sch.debug(this._accounts[i].id);
 	};
 };
 
@@ -8278,15 +7232,21 @@ function SpazBasicAuth() {
  *
  * @param {string} username
  * @param {string} password
+ * @param {function} [onComplete] a callback to fire when complete. Currently just passed TRUE all the time; for compatibility with oAuth need for callbacks
  * @class SpazBasicAuth
  * @return {Boolean} true. ALWAYS returns true!
  */
-SpazBasicAuth.prototype.authorize = function(username, password) {
+SpazBasicAuth.prototype.authorize = function(username, password, onComplete) {
     this.username = username;
     this.password = password;
     this.authHeader = "Basic " + sc.helpers.Base64.encode(username + ":" + password);
+    
+    if (onComplete) {
+        onComplete.call(this, true);
+    }
 	return true;
 };
+
 
 /**
  * Returns the authentication header
@@ -8326,6 +7286,15 @@ SpazBasicAuth.prototype.save = function() {
 };
 
 
+SpazBasicAuth.prototype.getUsername = function() {
+	return this.username;
+}
+
+SpazBasicAuth.prototype.getPassword = function() {
+	return this.password;
+}
+
+
 /**
  * Construct a new OAuth authentication object.
  *
@@ -8340,13 +7309,19 @@ function SpazOAuth(realm, options) {
 
 /**
  * Authorize access to the service by fetching an OAuth access token.
- *
+ * 
  * @param {string} username
  * @param {string} password
+ * @param {function} [onComplete] a callback to fire on complete. If this is set, the request is asynchronous
  * @returns {boolean} true if authorization successful, otherwise false
  * @class SpazOAuth
  */
-SpazOAuth.prototype.authorize = function(username, password) {
+SpazOAuth.prototype.authorize = function(username, password, onComplete) {
+	
+	var that = this;
+	
+	var async_mode = false;
+	
     this.username = username;
 
     // Fill in xAuth parameters
@@ -8363,31 +7338,117 @@ SpazOAuth.prototype.authorize = function(username, password) {
         parameters: parameters
     }, this.opts);
 
+	if (onComplete) {
+		async_mode = true;
+	}
+
     // Perform request to fetch access token
     var accessToken = null;
-    jQuery.ajax({
-        async: false,
-        type: 'post',
-        url: this.opts.accessURL,
-        data: parameters,
-        success: function(data, textStatus) {
-            var results = OAuth.decodeForm(data);
-            accessToken = {};
-            accessToken.key = OAuth.getParameter(results, 'oauth_token');
-            accessToken.secret = OAuth.getParameter(results, 'oauth_token_secret');
-        },
-        error: function(req, textStatus, error) {
-            sch.error("Failed to fetch oAuth access token: " + req.responseText);
-        }
-    });
+	jQuery.ajax({
+		async: async_mode,
+		type: 'post',
+		url: this.opts.accessURL,
+		data: parameters,
+		dataType: 'text',
+		success: function(data, textStatus, xhr) {
 
-    if (accessToken != null) {
-        this.setAccessToken(accessToken.key, accessToken.secret);
-        return true;
-    } else {
-        return false;
-    }
+			sch.error(xhr);
+
+			sch.error("xhr.responseText:" + xhr.responseText);
+			sch.error("xhr.responseXML:" + xhr.responseXML);
+			sch.error('getAllResponseHeaders:n' + xhr.getAllResponseHeaders());
+
+
+			sch.error("OAuth Data return");
+			sch.error(sch.enJSON(data));
+
+			var results = OAuth.decodeForm(data);
+			sch.error("results");
+			sch.error(sch.enJSON(results));
+			accessToken = {};
+			accessToken.key = OAuth.getParameter(results, 'oauth_token');
+			accessToken.secret = OAuth.getParameter(results, 'oauth_token_secret');
+			
+			that.setAccessToken(accessToken.key, accessToken.secret);
+			
+			if (onComplete) {
+				onComplete.call(this, true, accessToken);
+			}
+
+		},
+		error: function(req, textStatus, error) {
+			sch.error("Failed to fetch oAuth access token: " + req.responseText);
+
+			if (onComplete) {
+				onComplete.call(this, false);
+			}
+			
+		},
+		complete: function(xhr, textStatus) {
+			sch.error('COMPLETE:');
+			sch.error("xhr.responseText:" + xhr.responseText);
+			sch.error("xhr.responseXML:" + xhr.responseXML);
+			sch.error('getAllResponseHeaders:n' + xhr.getAllResponseHeaders());
+
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader('Accept-Encoding', 'none');
+
+		}
+
+	});
+	
+	if (async_mode !== true) {
+		if (accessToken != null) {
+			return true;
+	    } else {
+			return false;
+		}
+	} else {
+		return null;
+	}
+	// var request = new Ajax.Request(this.opts.accessURL, {
+	// 	'asynchronous':true,
+	// 	'method':'post',
+	// 	'parameters':parameters,
+	// 	'onSuccess': function(xhr, foo) {
+	// 		sch.error('onSuccess=====================================================');
+	// 		var data = xhr.responseText;
+	// 		sch.error('foo');
+	// 		sch.error(foo);
+	// 		sch.error(xhr);
+	// 	
+	// 		sch.error("xhr.responseText:"+xhr.responseText);
+	// 		sch.error("xhr.responseXML:"+xhr.responseXML);
+	// 		sch.error('getAllResponseHeaders:\n'+xhr.getAllResponseHeaders());		
+	// 	
+	// 		sch.error("OAuth Data return");
+	// 		sch.error(data);
+	// 	
+	//             var results = OAuth.decodeForm(data);
+	// 		sch.error("results");
+	// 		sch.error(sch.enJSON(results));
+	//             accessToken = {};
+	//             accessToken.key = OAuth.getParameter(results, 'oauth_token');
+	//             accessToken.secret = OAuth.getParameter(results, 'oauth_token_secret');
+	// 		sch.error('==============================================================');
+	// 		if (accessToken != null) {
+	// 			that.setAccessToken(accessToken.key, accessToken.secret);
+	// 			onComplete(true);
+	// 	    } else {
+	// 			onComplete(false);
+	// 		}
+	// 	},
+	// 	'onFailure': function(xhr) {
+	// 		sch.error('onFailure=====================================================');
+	// 		sch.error("xhr.responseText:"+xhr.responseText);
+	// 		sch.error('getAllResponseHeaders:\n'+xhr.getAllResponseHeaders());
+	// 		sch.error('==============================================================');
+	// 		onComplete(false);
+	// 	}
+	// });
 };
+
 
 /**
   * Set the access token
@@ -8505,6 +7566,7 @@ function SpazFileUploader(opts) {
 	this.successEvent = opts.successEvent || sc.events.fileUploadSuccess;
 	this.failureEvent = opts.failureEvent || sc.events.fileUploadFailure;
 	this.eventTarget  = opts.eventTarget  || document;
+	this.auth         = opts.auth         || null;
 	
 	this.apis = this.getAPIs();
 
@@ -8743,6 +7805,7 @@ SpazFileUploader.prototype.getAPIKey = function() {
 		return this.api.api_key;
 	} else {
 		sch.error('Must set the API before getting API key');
+		return null;
 	}
 };
 
@@ -8829,7 +7892,8 @@ SpazFileUploader.prototype.uploadFile = function(post_url, file_url, opts) {
 			'extra'   : extraParams,
 			'url'     : post_url,
 			'file_url': file_url,
-			'platform': platformOpts
+			'platform': platformOpts,
+			'auth'    : this.auth
 		},
 		function(event) {
 			sch.debug('UPLOAD SUCCESS, PROCESSING');
@@ -8897,7 +7961,382 @@ SpazFileUploader.prototype.upload = function(file_url, opts) {
 	
 };
 
+/*jslint 
+browser: true,
+nomen: false,
+debug: true,
+forin: true,
+undef: true,
+white: false,
+onevar: false 
+ */
+var sc, DOMParser, jQuery;
+
+
 /**
+ * An image uploader library for SpazCore. Probably this will supercede spazfileuploader.js
+ * @param {object} [opts] options hash
+ * @param {object} [opts.auth_obj] A SpazAuth object that's filled with proper authentication info
+ * @param {string} [opts.username] a username, in case we're doing that kind of thing
+ * @param {string} [opts.password] a password, in case we're doing that kind of thing
+ * @param {string} [opts.auth_method] the method of authentication: 'echo' or 'basic'. Default is 'echo'
+ * @param {object} [opts.extra] Extra params to pass in the upload request
+ */
+var SpazImageUploader = function(opts) {
+    if (opts) {
+        this.setOpts(opts);
+    }
+};
+
+
+/**
+ * this lets us set options after instantiation 
+ * @param {object} opts options hash
+ * @param {object} [opts.auth_obj] A SpazAuth object that's filled with proper authentication info
+ * @param {string} [opts.username] a username, in case we're doing that kind of thing
+ * @param {string} [opts.password] a password, in case we're doing that kind of thing
+ * @param {string} [opts.auth_method] the method of authentication: 'echo' or 'basic'. Default is 'echo'
+ * @param {string} [opts.statusnet_api_base] the api base URL for statusnet, if that service is used
+ * @param {object} [opts.extra] Extra params to pass in the upload request
+ */
+SpazImageUploader.prototype.setOpts = function(opts) {
+    this.opts = sch.defaults({
+        'extra':{},
+        'auth_obj':null,
+        'username':null,
+        'password':null,
+        'auth_method':'echo', // 'echo' or 'basic'
+		'statusnet_api_base':null // only used by statusnet
+    }, opts);
+};
+
+/**
+ * a hash of service objects. Each object has a URL endpoint, a parseResponse callback, and an optional "extra" set of params to pass on upload
+ *	parseResponse should return one of these key/val pairs:
+ *	- {'url':'http://foo.bar/XXXX'}
+ *	- {'error':'Error message'}
+ */
+SpazImageUploader.prototype.services = {
+	'drippic' : {
+		'url' : 'http://drippic.com/drippic2/upload',
+		'parseResponse': function(data) {
+			
+			var parser=new DOMParser();
+			xmldoc = parser.parseFromString(data,"text/xml");
+
+			var status;
+			var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+			status = rspAttr.getNamedItem("stat").nodeValue;
+			
+			if (status == 'ok') {
+				var mediaurl = $(xmldoc).find('mediaurl').text();
+				return {'url':mediaurl};
+			} else {
+				var errMsg;
+				if (xmldoc.getElementsByTagName("err")[0]) {
+					errMsg = xmldoc.getElementsByTagName("err")[0].childNodes[0].nodeValue;
+				} else {
+					errMsg = xmldoc.getElementsByTagName("error")[0].childNodes[0].nodeValue;
+				}
+				
+				sch.error(errMsg);
+				return {'error':errMsg};
+			}
+		}
+	},
+	'pikchur' : {
+		'url'  : 'http://api.pikchur.com/simple/upload',
+		'extra': {
+			'api_key':'MzTrvEd/uPNjGDabr539FA',
+			'source':'NjMw'
+		},
+		'parseResponse': function(data) {
+			var parser=new DOMParser();
+			xmldoc = parser.parseFromString(data,"text/xml");
+	
+			var status;
+			var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+			if (rspAttr.getNamedItem("status")) {
+				status = rspAttr.getNamedItem("status").nodeValue;
+			} else if(rspAttr.getNamedItem("stat")) {
+				status = rspAttr.getNamedItem("stat").nodeValue;
+			} else {
+				status = 'fuck I wish they would use the same goddamn nodenames';
+			}
+			
+			if (status == 'ok') {
+				var mediaurl = $(xmldoc).find('mediaurl').text();
+				return {'url':mediaurl};
+			} else {
+				var errAttributes;
+				if (xmldoc.getElementsByTagName("err")[0]) {
+					errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
+				} else {
+					errAttributes = xmldoc.getElementsByTagName("error")[0].attributes;
+				}
+				
+				sch.error(errAttributes);
+				errMsg = errAttributes.getNamedItem("msg").nodeValue;
+				sch.error(errMsg);
+				return {'error':errMsg};
+			}
+		}
+	},
+	/*
+		Removed yfrog for now because their oAuth Echo stuff never seems to work.
+		Not sure if it's my code or theirs
+	*/
+    // 'yfrog' : {
+    //     'url' : 'http://yfrog.com/api/xauth_upload',
+    //     'extra': {
+    //         'key':'579HINUYe8d826dd61808f2580cbda7f13433310'
+    //     },
+    //     'parseResponse': function(data) {
+    //         
+    //         var parser=new DOMParser();
+    //         xmldoc = parser.parseFromString(data,"text/xml");
+    // 
+    //         var status;
+    //         var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+    //         status = rspAttr.getNamedItem("stat").nodeValue;
+    //         
+    //         if (status == 'ok') {
+    //             var mediaurl = $(xmldoc).find('mediaurl').text();
+    //             return {'url':mediaurl};
+    //         } else {
+    //             var errAttributes;
+    //             if (xmldoc.getElementsByTagName("err")[0]) {
+    //                 errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
+    //             } else {
+    //                 errAttributes = xmldoc.getElementsByTagName("error")[0].attributes;
+    //             }
+    //             
+    //             sch.error(errAttributes);
+    //             errMsg = errAttributes.getNamedItem("msg").nodeValue;
+    //             sch.error(errMsg);
+    //             return {'error':errMsg};
+    //         }
+    //         
+    //     }
+    // },
+	'twitpic' : {
+		'url' : 'http://api.twitpic.com/2/upload.json',
+		'extra': {
+			'key':'3d8f511397248dc913193a6195c4a018'
+		},
+		'parseResponse': function(data) {
+			
+			if (sch.isString(data)) {
+				data = sch.deJSON(data);
+			}
+			
+			if (data.url) {
+				return {'url':data.url};
+			} else {
+				return {'error':'unknown error'};
+			}
+			
+		}
+	},
+	'twitgoo' : {
+		'url'  : 'http://twitgoo.com/api/upload',
+		'extra': {
+			'format':'xml',
+			'source':'Spaz',
+			'source_url':'http://getspaz.com'
+		},
+		'parseResponse': function(data) {
+			
+			var parser=new DOMParser();
+			xmldoc = parser.parseFromString(data,"text/xml");
+
+			var status;
+			var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+			status = rspAttr.getNamedItem("status").nodeValue;
+
+			if (status == 'ok') {
+				var mediaurl = $(xmldoc).find('mediaurl').text();
+				return {'url':mediaurl};
+			} else {
+				var errAttributes;
+				if (xmldoc.getElementsByTagName("err")[0]) {
+					errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
+				} else {
+					errAttributes = xmldoc.getElementsByTagName("error")[0].attributes;
+				}
+
+				sch.error(errAttributes);
+				errMsg = errAttributes.getNamedItem("msg").nodeValue;
+				sch.error(errMsg);
+				return {'error':errMsg};
+			}
+			
+		}
+	},
+	'identi.ca' : {
+		'url'  : 'http://identi.ca/api/statusnet/media/upload',
+		'parseResponse': function(data) {
+			
+			var parser=new DOMParser();
+			xmldoc = parser.parseFromString(data,"text/xml");
+
+			var status;
+			var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+			status = rspAttr.getNamedItem("stat").nodeValue;
+			
+			if (status == 'ok') {
+				var mediaurl = $(xmldoc).find('mediaurl').text();
+				return {'url':mediaurl};
+			} else {
+				var errMsg;
+				if (xmldoc.getElementsByTagName("err")[0]) {
+					errMsg = xmldoc.getElementsByTagName("err")[0].childNodes[0].nodeValue;
+				} else {
+					errMsg = xmldoc.getElementsByTagName("error")[0].childNodes[0].nodeValue;
+				}
+				
+				sch.error(errMsg);
+				return {'error':errMsg};
+			}
+		}
+	},
+	'statusnet' : {
+		'url'  : '/statusnet/media/upload',
+		'prepForUpload':function() {
+			if (this.opts.statusnet_api_base) {
+				this.services.statusnet.url = this.opts.statusnet_api_base + this.services.statusnet.url;
+			} else {
+				sch.error('opts.statusnet_api_base must be set to use statusnet uploader service');
+			}
+		},
+		'parseResponse':function(data) {
+			var parser=new DOMParser();
+			xmldoc = parser.parseFromString(data,"text/xml");
+
+			var status;
+			var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+			status = rspAttr.getNamedItem("stat").nodeValue;
+			
+			if (status == 'ok') {
+				var mediaurl = $(xmldoc).find('mediaurl').text();
+				return {'url':mediaurl};
+			} else {
+				var errMsg;
+				if (xmldoc.getElementsByTagName("err")[0]) {
+					errMsg = xmldoc.getElementsByTagName("err")[0].childNodes[0].nodeValue;
+				} else {
+					errMsg = xmldoc.getElementsByTagName("error")[0].childNodes[0].nodeValue;
+				}
+				
+				sch.error(errMsg);
+				return {'error':errMsg};
+			}
+			
+		}
+	}
+};
+
+/**
+ * Retrieves the auth_header 
+ */
+SpazImageUploader.prototype.getAuthHeader = function() {
+	
+	var opts = sch.defaults({
+		'getEchoHeaderOpts':{}
+	}, this.opts);
+	
+	var auth_header;
+	var user = opts.username;
+	var pass = opts.password;
+	
+	if (opts.auth_method === 'echo') { // this is Twitter. hopefully
+
+		var twit	= new SpazTwit({'auth':opts.auth_obj});
+		auth_header = twit.getEchoHeader(opts.getEchoHeaderOpts);
+
+	} else {
+		auth_header = opts.auth_obj.signRequest(); // returns basic auth header
+	}
+	
+	sch.error(auth_header);
+	return auth_header;
+
+};
+
+
+/**
+ * this actually does the upload. Well, really it preps the data and uses sc.helpers.HTTPFileUpload 
+ */
+SpazImageUploader.prototype.upload = function() {
+
+	var opts = sch.defaults({
+		extra:{}
+	}, this.opts);
+	
+	var srvc = this.services[opts.service];
+
+	if (srvc.prepForUpload) {
+		srvc.prepForUpload.call(this);
+	}
+
+	/*
+		file url
+	*/
+	opts.url      = srvc.url;
+	if (srvc.extra) {
+		opts.extra = jQuery.extend(opts.extra, srvc.extra);
+	}
+	
+	var onSuccess, rs;
+	if (srvc.parseResponse) {
+		onSuccess = function(data) {
+			if (sch.isString(data)) {
+				rs = srvc.parseResponse.call(srvc, data);
+				return opts.onSuccess(rs);
+			} else if (data && data.responseString) { // webOS will return an object, not just the response string
+				rs = srvc.parseResponse.call(srvc, data.responseString);
+				return opts.onSuccess(rs);
+			} else { // I dunno what it is; just pass it to the callback
+				return opts.onSuccess(data);
+			}
+		};
+	} else {
+		onSuccess = opts.onSuccess;
+	}
+	
+	/*
+		get auth stuff
+	*/
+	var auth_header;
+    if (opts.service === 'yfrog') {
+		verify_url  = 'https://api.twitter.com/1/account/verify_credentials.xml';
+		auth_header = this.getAuthHeader({
+			'getEchoHeaderOpts': {
+				'verify_url':verify_url
+			}
+		});
+	} else {
+		verify_url  = 'https://api.twitter.com/1/account/verify_credentials.json';
+		auth_header = this.getAuthHeader();
+	}
+	
+	sch.error(auth_header);
+	if (auth_header.indexOf('Basic ') === 0) {
+		
+		opts.username = this.opts.auth_obj.getUsername();
+		opts.password = this.opts.auth_obj.getPassword();
+
+	} else {
+		opts.headers = {
+			'X-Auth-Service-Provider': verify_url,
+			'X-Verify-Credentials-Authorization':auth_header
+		};
+		
+	}
+	
+	sc.helpers.HTTPUploadFile(opts, onSuccess, opts.onFailure);
+	
+};/**
  * a library to get direct image urls for various image hosting servces 
  */
 function SpazImageURL(args) {
@@ -11967,7 +11406,7 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 			urldata = '';
 		}
 		
-		if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER && (key === 'search' || key === 'trends')) {
+		if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER && (key === 'search')) {
 			return this._postProcessURL(urls[key] + urldata);
 		} else {
 			return this._postProcessURL(this.baseurl + urls[key] + urldata);
@@ -11976,6 +11415,7 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
     } else {
         return false;
     }
+
 
 };
 
@@ -12763,8 +12203,13 @@ SpazTwit.prototype._getTimeline = function(opts) {
 			}			
         },
         'beforeSend':function(xhr){
-			sc.helpers.dump("beforesend");
-            xhr.setRequestHeader('Authorization', stwit.auth.signRequest(opts.method, opts.url, opts.data));
+			sc.helpers.dump(opts.url + ' beforesend');
+			if (stwit.auth) {
+				sch.debug('signing request');
+				xhr.setRequestHeader('Authorization', stwit.auth.signRequest(opts.method, opts.url, opts.data));
+			} else {
+				sch.debug('NOT signing request -- no auth object provided');
+			}
         },
         'type': 	opts.method,
         'url': 		opts.url,
@@ -13084,6 +12529,23 @@ SpazTwit.prototype._processUser = function(item, section_name) {
 };
 
 
+/**
+ * returns the header string for oAuth Echo usage
+ */
+SpazTwit.prototype.getEchoHeader = function(opts) {
+	var url;
+	if (opts && opts.verify_url) {
+		url = opts.verify_url;
+	} else {
+		url = this.getAPIURL('verify_credentials');
+	}
+	
+	var method = 'GET';
+
+	var auth_header = this.auth.signRequest(method, url, null);
+
+	return auth_header;
+};
 
 
 /**
@@ -13172,8 +12634,7 @@ SpazTwit.prototype._callMethod = function(opts) {
 			stwit.triggerEvent('spaztwit_ajax_error', {'url':opts.url, 'xhr':xhr, 'msg':msg});
 	    },
 	    'success':function(data) {
-			sc.helpers.error(opts.url + ' success');
-			sch.error(data);
+			sc.helpers.dump(opts.url + ' success');
 			data = sc.helpers.deJSON(data);
 			if (opts.process_callback) {
 				/*
@@ -13193,7 +12654,12 @@ SpazTwit.prototype._callMethod = function(opts) {
 	    },
 	    'beforeSend':function(xhr){
 			sc.helpers.dump(opts.url + ' beforesend');
-            xhr.setRequestHeader('Authorization', stwit.auth.signRequest(method, opts.url, opts.data));
+			if (stwit.auth) {
+				sch.debug('signing request');
+				xhr.setRequestHeader('Authorization', stwit.auth.signRequest(method, opts.url, opts.data));
+			} else {
+				sch.debug('NOT signing request -- no auth object provided');
+			}
 	    },
 	    'type': method,
 	    'url' : opts.url,
@@ -14397,8 +13863,6 @@ SpazTwit.prototype.addUserToList = function(user, list, list_user) {
 	
 	var opts = {
 		'url':url,
-		'success_event_type':'create_list_succeeded',
-		'failure_event_type':'create_list_failed',
 		'success_event_type':'add_list_user_succeeded',
 		'failure_event_type':'add_list_user_failed',
 		'data':data
@@ -14619,8 +14083,7 @@ SpazTwit.prototype.isMember = function(list, list_user, user){
 /*
  * Marks a user as a spammer and blocks them
  */
- 
-SpazTwit.prototype.reportSpam = function(user) {
+SpazTwit.prototype.reportSpam = function(user, onSuccess, onFailure) {
 	var url = this.getAPIURL('report_spam');
 	
 	var data = {};
@@ -14630,6 +14093,8 @@ SpazTwit.prototype.reportSpam = function(user) {
 		'url':url,
 		'username': this.username,
 		'password': this.password,
+		'success_callback': onSuccess,
+		'failure_callback': onFailure,
 		'success_event_type':'report_spam_succeeded',
 		'failure_event_type':'report_spam_failed',
 		'method':'POST',
@@ -14664,132 +14129,6 @@ if (sc) {
 	var scTwit = SpazTwit;
 }
 
-
-/*
-* EXAMPLES OF JS OBJECTS RETURNED BY TWITTER
-* /statuses/public_timeline.json
-	{
-        "user": {
-            "followers_count": 1144,
-            "description": "フツーですよ。",
-            "url": "http:\/\/camellia.jottit.com\/",
-            "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/66954592\/20081210071932_normal.jpg",
-            "protected": false,
-            "location": "あかし",
-            "screen_name": "camellia",
-            "name": "かめ",
-            "id": "6519832"
-        },
-        "text": "@sugatch おはよう、すがっち！ *Tw*",
-        "truncated": false,
-        "favorited": false,
-        "in_reply_to_user_id": 10116882,
-        "created_at": "Sat Jan 17 00:53:27 +0000 2009",
-        "source": "<a href=\"http:\/\/cheebow.info\/chemt\/archives\/2007\/04\/twitterwindowst.html\">Twit<\/a>",
-        "in_reply_to_status_id": 1125158879,
-        "id": "1125159824"
-    }
-* 
-* 
-* From authenticated /statuses/friends_timeline.json
-* {
-    "text": "@elazar I don't know about the pony - but a lot of that is in CSS3 - only browsers are crap ;)",
-    "user": {
-        "description": "PHP Windows Geek (not Oxymoron)",
-        "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/25760052\/headshot_normal.jpg",
-        "url": "http:\/\/elizabethmariesmith.com",
-        "name": "auroraeosrose",
-        "protected": false,
-        "screen_name": "auroraeosrose",
-        "followers_count": 242,
-        "location": "",
-        "id": 8854222 
-    },
-    "in_reply_to_screen_name": "elazar",
-    "in_reply_to_user_id": 9105122,
-    "truncated": false,
-    "favorited": false,
-    "in_reply_to_status_id": 1125164128,
-    "created_at": "Sat Jan 17 00:59:04 +0000 2009",
-    "id": 1125170241,
-    "source": "<a href=\"http:\/\/twitterfox.net\/\">TwitterFox<\/a>"
- }
-* 
-* 
-* From authenticated /direct_messages.json
-* 
-* {
-    "recipient_screen_name": "funkatron",
-    "created_at": "Fri Jan 16 13:43:16 +0000 2009",
-    "recipient_id": 65583,
-    "sender_id": 808824,
-    "sender": {
-        "description": "Impoverished Ph.D. student at the Indiana University School of Informatics",
-        "screen_name": "kmakice",
-        "followers_count": 671,
-        "url": "http:\/\/www.blogschmog.net",
-        "name": "Kevin Makice",
-        "protected": false,
-        "location": "Bloomington, Indiana",
-        "id": 808824,
-        "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/69221803\/2009avatar_normal.jpg"
-    },
-    "sender_screen_name": "kmakice",
-    "id": 51212447,
-    "recipient": {
-        "description": "Supernerd, Dad, Webapp security dude, Spaz developer, webmonkey, designer, musician, ego-ho. See also: @funkalinks",
-        "screen_name": "funkatron",
-        "followers_count": 1143,
-        "url": "http:\/\/funkatron.com",
-        "name": "Ed Finkler",
-        "protected": false,
-        "location": "iPhone: 40.423752,-86.907547",
-        "id": 65583,
-        "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/67512037\/cat_with_hat_and_monocle_normal.jpg"
-    },
-    "text": "[REDACTED]"
-}
-* 
-* 
-* 
-* From http://search.twitter.com/search.json?q=javascript
-* 
-* {
-    "results": [
-        {
-            "text": "Updated the Wiki page on JavaScript development to reflect latest changes in Orbeon Forms. http:\/\/tinyurl.com\/axtu5u",
-            "to_user_id": null,
-            "from_user": "orbeon",
-            "id": 1125204181,
-            "from_user_id": 279624,
-            "iso_language_code": "en",
-            "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/53169511\/Picture_1_normal.png",
-            "created_at": "Sat, 17 Jan 2009 01:14:11 +0000"
-        },
-        {
-            "text": "when I close my eyes I dream in javascript",
-            "to_user_id": null,
-            "from_user": "apuritz",
-            "id": 1125196059,
-            "from_user_id": 95155,
-            "iso_language_code": "en",
-            "profile_image_url": "http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/55159511\/images_normal.jpeg",
-            "created_at": "Sat, 17 Jan 2009 01:10:11 +0000"
-        }
-        // more results deleted
-    ],
-    "since_id": 0,
-    "max_id": 1125204181,
-    "refresh_url": "?since_id=1125204181&q=javascript",
-    "results_per_page": 15,
-    "next_page": "?page=2&max_id=1125204181&q=javascript",
-    "completed_in": 0.015077,
-    "page": 1,
-    "query": "javascript"
-}
-* 
-* 
-*/
 /*jslint 
 browser: true,
 nomen: false,
@@ -15160,131 +14499,104 @@ var sc, air;
  *  file_url:'',
  *  url:'',
  * 	extra:{...}
+ *  headers:{...}
+ * 
  * 
  * }
  */
-sc.helpers.HTTPUploadFile = function(opts) {
+sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 
-	function getContentType(fileType){
-		switch (fileType) {
-			  case "JPG": return "image/jpeg";
-			 case "JPEG": return "image/jpeg";
-			  case "PNG": return "image/png";
-			  case "GIF": return "image/gif";
-				 default: return "image/jpeg";
+	function callback_for_upload_progress(event) { 
+
+	    var pct = Math.ceil( ( event.bytesLoaded / event.bytesTotal ) * 100 ); 
+	    sch.error('Uploaded ' + pct.toString() + '%');
+		
+		if (opts.onProgress) {
+			opts.onProgress({
+				'bytesLoaded':event.bytesLoaded,
+				'bytesLoaded':event.bytesTotal,
+				'percentage':pct
+			});
 		}
 	}
 
-
-	/**
-	 * Multipart File Upload Request Helper Function
-	 *
-	 * A function to help prepare URLRequest object for uploading.
-	 * The script works without FileReference.upload().
-	 *
-	 * @author FreeWizard
-	 *
-	 * Function Parameters:
-	 * void PrepareMultipartRequest(URLRequest request, ByteArray file_bytes,
-	 *								string field_name = "file", string native_path = "C:\FILE",
-	 *								object data_before = {}, object data_after = {});
-	 *
-	 * Sample JS Code:
-	 * <script>
-	 * var request = new air.URLRequest('http://example.com/upload.php');
-	 * var loader = new air.URLLoader();
-	 * var file = new air.File('C:\\TEST.TXT'); //use file.browseForOpen() on ur wish
-	 * var stream = new air.FileStream();
-	 * var buf = new air.ByteArray();
-	 * var extra = {
-	 *	   "id": "abcd"
-	 *	   };
-	 * stream.open(file, air.FileMode.READ);
-	 * stream.readBytes(buf);
-	 * MultipartRequest(request, buf, 'myfile', file.nativePath, extra);
-	 * loader.load(request);
-	 * </script>
-	 *
-	 * Sample PHP Code:
-	 * <?php
-	 * $id = $_POST['id'];
-	 * move_uploaded_file($_FILES['myfile']['tmp_name'], '/opt/blahblah');
-	 * ?>\
-	 * @link http://rollingcode.org/blog/2007/11/file-upload-with-urlrequest-in-air.html
-	 */
-	function prepareMultipartRequest(request, file_bytes, file_type, field_name, native_path, data_before, data_after) {
-		var boundary = '---------------------------1076DEAD1076DEAD1076DEAD';
-		var header1 = '';
-		var header2 = '\r\n';
-		var header1_bytes = new air.ByteArray();
-		var header2_bytes = new air.ByteArray();
-		var body_bytes = new air.ByteArray();
-		var n;
-		if (!field_name) { field_name = 'file'; }
-		if (!file_type) {file_type = 'application/octet-stream';}
-		if (!native_path) {native_path = 'C:\\FILE';}
-		if (!data_before) {data_before = {};}
-		if (!data_after) {data_after = {};}
-		for (n in data_before) {
-			header1 += '--' + boundary + '\r\n' +
-					   'Content-Disposition: form-data; name="' + n + '"\r\n\r\n'+
-					    data_before[n] + '\r\n';
+	function callback_for_upload_finish(event) {
+		sch.error('File upload complete');
+		sch.error(event.data); // output of server response to AIR dev console
+		if (onSuccess) {
+			onSuccess(event.data);
 		}
-		header1 += '--' + boundary + '\r\n' +
-				   'Content-Disposition: form-data; name="' + field_name + '"; filename="' + native_path + '"\r\n' +
-				   'Content-Type: ' + file_type + '\r\n\r\n';
-		for (n in data_after) {
-			header2 += '--' + boundary + '\r\n' +
-					   'Content-Disposition: form-data; name="' + n + '"\r\n\r\n' +
-					   data_after[n] + '\r\n';
+	}
+	
+    function callback_for_error(event) {
+        sch.error('IOError!');
+        if (onFailure) {
+            onFailure(event);
+        }
+    }
+
+    opts = sch.defaults({
+        'method':'POST',
+        'content_type':'multipart/form-data',
+        'field_name':'media',
+        'file_url':null,
+        'url':null,
+        'extra':null,
+        'headers':null,
+        'username':null,
+        'password':null
+    }, opts);
+
+	var field_name   = opts.field_name;
+	var content_type = opts.content_type;
+	
+	var uploading_file = new air.File(opts.file_url);
+	
+
+
+	// creating POST request variables (like in html form fields)
+	var variables = new air.URLVariables();
+
+	if (opts.username) {
+		variables.username = opts.username;
+	}
+
+	if (opts.password) {
+		variables.password = opts.password;
+	}
+
+	var key;	
+	if (opts.extra) {
+		for(key in opts.extra) {
+			variables[key] = opts.extra[key];
 		}
-		header2 += '--' + boundary + '--';
-		header1_bytes.writeMultiByte(header1, "ascii");
-		header2_bytes.writeMultiByte(header2, "ascii");
-		body_bytes.writeBytes(header1_bytes, 0, header1_bytes.length);
-		body_bytes.writeBytes(file_bytes, 0, file_bytes.length);
-		body_bytes.writeBytes(header2_bytes, 0, header2_bytes.length);
-		request.method = air.URLRequestMethod.POST;
-		request.contentType = 'multipart/form-data; boundary='+boundary;
-		request.data = body_bytes;
-	}
-
-
-
-	var field_name = opts.field_name || 'media';
-	var content_type = opts.content_type || null;
-
-	var file   = new air.File(opts.file_url); //use file.browseForOpen() on ur wish
-	var stream = new air.FileStream();
-	var buf    = new air.ByteArray();
-
-
-
-	stream.open(file, air.FileMode.READ);
-	stream.readBytes(buf);
-
-
-
-	
-	if (!content_type) {
-		content_type = getContentType(file.extension.toUpperCase());
 	}
 	
-	var request = new air.URLRequest(opts.url);
-	prepareMultipartRequest(request, buf, content_type, field_name, file.nativePath, opts.extra);
-
-	var loader = new air.URLLoader();
-	if (opts.onComplete) {
-		loader.addEventListener(air.Event.COMPLETE, opts.onComplete);
-	}
-	if (opts.onStart) {
-		loader.addEventListener(air.Event.OPEN, opts.onStart);
+	var headers = [];
+	if (opts.headers) {
+		for(key in opts.headers) {
+			headers.push( new air.URLRequestHeader(key, opts.headers[key]) );
+		}
 	}
 	
-	loader.load(request);
 
+	// set params for http request
+	var tmpRequest = new air.URLRequest(opts.url);
+	tmpRequest.authenticate = false;
+	tmpRequest.method = opts.method;
+	tmpRequest.contentType = opts.content_type;
+	tmpRequest.requestHeaders = headers;
+	tmpRequest.data = variables;
 
-
+	// attach events for displaying progress bar and upload complete
+	uploading_file.addEventListener(air.ProgressEvent.PROGRESS, callback_for_upload_progress);
+	uploading_file.addEventListener(air.DataEvent.UPLOAD_COMPLETE_DATA, callback_for_upload_finish); 
+    uploading_file.addEventListener(air.SecurityErrorEvent.SECURITY_ERROR, callback_for_error);
+    uploading_file.addEventListener(air.IOErrorEvent.IO_ERROR, callback_for_error);
+    
+	// doing upload request to server
+	uploading_file.upload(tmpRequest, field_name, false);
+	
 
 };
 
@@ -15338,7 +14650,7 @@ SpazPrefs.prototype.load = function() {
 };
 
 SpazPrefs.prototype.save = function() {
-	var jsonPrefs = sch.enJSON(Spaz.Prefs.preferences);
+	var jsonPrefs = sch.enJSON(this._prefs);
 	sch.debug(jsonPrefs);
 
 	var filename = this.id || SPAZCORE_PREFS_AIR_FILENAME;
