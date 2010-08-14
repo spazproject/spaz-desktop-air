@@ -412,10 +412,12 @@ var FriendsTimeline = function() {
 
 	this.buildViewMenu = function(){
 		var menu,
-		    menuId = 'view-friends-menu';
+		    menuId = 'view-friends-menu',
+		    currentFilterId = Spaz.cssFilters.filters[0].id;
 
-		function onStandardFilterClick(e, label){
-			Spaz.cssFilters.applyFilter(label);
+		function onStandardFilterClick(e){
+			Spaz.cssFilters.applyFilter(e.data.item.id);
+			currentFilterId = e.data.item.id;
 		}
 		function onCustomFilterClick(e, itemData){
 			// TODO: Implement
@@ -426,15 +428,14 @@ var FriendsTimeline = function() {
 			base_class: 'spaz-menu',
 			li_class:   'spaz-menu-item',
 			items_func: function(){
-				var items = [];
-				
-				var this_filter;
-				for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
-					this_filter = Spaz.cssFilters.filters[i];
+				var items = [], filter, i;
+
+				for (i = 0; i < Spaz.cssFilters.filters.length; i++) {
+					filter = Spaz.cssFilters.filters[i];
 					items.push({
-						'label':this_filter.label,
-						'handler':onStandardFilterClick,
-						'data':this_filter.label
+						label:   filter.label,
+						id:      filter.id,
+						handler: onStandardFilterClick
 					});
 				}
 				
@@ -465,9 +466,7 @@ var FriendsTimeline = function() {
 		});
 		menu.bindToggle('#view-friends', {
 			afterShow: function(e){
-				var selectedId = Spaz.UI.currentFriendsTimelineView ||
-				                   'view-friends-menu-all';
-				jQuery('#' + selectedId).addClass('selected').
+				jQuery('#' + currentFilterId).addClass('selected').
 					siblings('.selected').removeClass('selected');
 			}
 		});

@@ -5,31 +5,36 @@ Spaz.cssFilters = {};
 
 Spaz.cssFilters.filters = [
 	{
-		'label': 'All',
+		label: 'All',
+		id:    'view-friends-menu-all',
 		'css': 'div.timeline-entry       { display:block; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:block; }'
 	},
 	{
 		label: '@mentions and DMs',
+		id:    'view-friends-menu-replies-dms',
 		'css': 'div.timeline-entry       { display:none; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:block; }'
 	},
 	{
 		label: '@mentions',
+		id:    'view-friends-menu-replies',
 		'css': 'div.timeline-entry       { display:none; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:none; }'
 	},
 	{
 		label: 'DMs',
+		id:    'view-friends-menu-dms',
 		'css': 'div.timeline-entry       { display:none; }\
 				div.timeline-entry.reply { display:none; }\
 				div.timeline-entry.dm    { display:block; }'
 	},
 	{
 		label: 'Unread',
+		id:    'view-friends-menu-unread',
 		'css': 'div.timeline-entry       { display:block; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:block; }\
@@ -37,6 +42,7 @@ Spaz.cssFilters.filters = [
 	},
 	{
 		label: 'No API RTs',
+		id:    'view-friends-menu-no-rts',
 		'css': 'div.timeline-entry       { display:block; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:block; }\
@@ -45,9 +51,9 @@ Spaz.cssFilters.filters = [
 	}
 ];
 
-Spaz.cssFilters.getCSS = function(label) {
+Spaz.cssFilters.getCSS = function(id) {
 	for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
-		if (Spaz.cssFilters.filters[i].label === label) {
+		if (Spaz.cssFilters.filters[i].id === id) {
 			return Spaz.cssFilters.filters[i].css;
 		}
 	}
@@ -55,15 +61,16 @@ Spaz.cssFilters.getCSS = function(label) {
 };
 
 
-Spaz.cssFilters.applyFilter = function(label) {
-	
-	if (jQuery('#cssfilter').length < 1) {
-		jQuery('head').append('<style id="cssfilter" type="text/css"></style>');
+Spaz.cssFilters.applyFilter = function(id) {
+	var css = Spaz.cssFilters.getCSS(id),
+	    $style = jQuery('#cssfilter');
+
+	if ($style.length < 1) {
+		$style = jQuery('<style id="cssfilter" type="text/css"></style>');
+		jQuery('head').append($style);
 	}
-	
-	var css = Spaz.cssFilters.getCSS(label);
-	
-	jQuery('#cssfilter').text(css);
+
+	$style.text(css);
 };
 
 
@@ -72,29 +79,28 @@ Spaz.cssFilters.clearFilter = function() {
 };
 
 
-Spaz.cssFilters.addFilter = function(label, css) {
-	if ( !(Spaz.cssFilters.setFilterCSS(label, css)) ) {
-		Spaz.cssFilters.filters.push({
-			'label':label,
-			'css':css
-		});
+Spaz.cssFilters.addFilter = function(data) {
+	if ( data.label && data.id && data.css &&
+		   !(Spaz.cssFilters.setFilterCSS(data.id, data.css))
+		) {
+		Spaz.cssFilters.filters.push(data);
 	}
 };
 
-Spaz.cssFilters.setFilterCSS = function(label, css) {
+Spaz.cssFilters.removeFilter = function(id) {
 	for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
-		if (Spaz.cssFilters.filters[i].label === label) {
-			Spaz.cssFilters.filters[i].css = css;
+		if (Spaz.cssFilters.filters[i].id === id) {
+			Spaz.cssFilters.filters[i] = null;
 			return true;
 		}
 	}
 	return false;
 };
 
-Spaz.cssFilters.removeFilter = function(label) {
+Spaz.cssFilters.setFilterCSS = function(id, css) {
 	for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
-		if (Spaz.cssFilters.filters[i].label === label) {
-			Spaz.cssFilters.filters[i] = null;
+		if (Spaz.cssFilters.filters[i].id === id) {
+			Spaz.cssFilters.filters[i].css = css;
 			return true;
 		}
 	}
