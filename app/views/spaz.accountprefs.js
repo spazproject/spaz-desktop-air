@@ -377,17 +377,16 @@ Spaz.AccountPrefs.setAccountListImages = function(){
 
 	i = accts.length; while(i--){
 		acct = accts[i];
-        // user = TwUserModel.first({conditions: {screen_name: acct.username}});
-		user = Spaz.TweetsModel.getUser(
-		    acct.username,
-		    function(user) {
-		        $accountList.
-        			find('li[data-account-id="' + acct.id + '"] span.image').css({
-        				backgroundImage: 'url(' + user.profile_image_url + ')'
-        			});
-        		
-		    }
-		);
+		user = Spaz.TweetsModel.getUser(acct.username, (function(acct){
+			// Return a new callback for each value of `acct` in the parent scope.
+			// Otherwise, the callback will always have the first value of `acct`.
+			return function(user){
+				$accountList.
+					find('li[data-account-id="' + acct.id + '"] span.image').css({
+						backgroundImage: 'url(' + user.profile_image_url + ')'
+					});
+			};
+		})(acct));
 	}
 };
 
