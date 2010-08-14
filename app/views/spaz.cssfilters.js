@@ -11,13 +11,13 @@ Spaz.cssFilters.filters = [
 				div.timeline-entry.dm    { display:block; }'
 	},
 	{
-		label: '@replies and DMs',
+		label: '@mentions and DMs',
 		'css': 'div.timeline-entry       { display:none; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:block; }'
 	},
 	{
-		label: '@replies',
+		label: '@mentions',
 		'css': 'div.timeline-entry       { display:none; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:none; }'
