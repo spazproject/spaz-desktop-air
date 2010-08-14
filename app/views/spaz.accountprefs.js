@@ -425,28 +425,21 @@ Spaz.AccountPrefs.getSelectedAccountId = function(){
 
 Spaz.AccountPrefs.updateWindowTitleAndToolsMenu = function(accountId){
 	var account = Spaz.Prefs.getUserAccount(accountId),
-        // user = TwUserModel.first({
-        //  conditions: {screen_name: account.username}
-        // }),
-        user,
 	    $menu = jQuery('#tools-menu'),
 	    $currentAccountAvatar = jQuery('#header-label').children('.current');
 
-        Spaz.TweetsModel.getUser(
-            accountId,
-            function(user) {
-                if(user){
-            		if(!$currentAccountAvatar[0]){
-            			$currentAccountAvatar =
-            				jQuery('<span class="current"></span>').prependTo('#header-label');
-            		}
-            		$currentAccountAvatar.html(account.username).css({
-            			backgroundImage: 'url(' + user.profile_image_url + ')'
-            		});
-            		$menu.find('li.' + account.username + '-at-' + account.type).
-            			addClass('selected').siblings().removeClass('selected');
-            	}
-            }
-        );
+	Spaz.TweetsModel.getUser(account.username, function(user){
+		if(!user){ return; }
+
+		if(!$currentAccountAvatar[0]){
+			$currentAccountAvatar =
+				jQuery('<span class="current"></span>').prependTo('#header-label');
+		}
+		$currentAccountAvatar.html(account.username).css({
+			backgroundImage: 'url(' + user.profile_image_url + ')'
+		});
+		$menu.find('li.' + account.username + '-at-' + account.type).
+			addClass('selected').siblings().removeClass('selected');
+	});
 
 };
