@@ -494,7 +494,11 @@ var FriendsTimeline = function() {
 
 		sch.debug('expanding…');
 		sch.debug(data);
-		el.innerHTML = thisFT.shurl.replaceExpandableURL(el.innerHTML, data.shorturl, data.longurl);
+		if(data.longurl){
+			// `data.longurl` may be null if the URL lengthening service fails
+			el.innerHTML = thisFT.shurl.replaceExpandableURL(
+				el.innerHTML, data.shorturl, data.longurl);
+		}
 	};
 
 	/*
