@@ -2095,6 +2095,7 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
   bottom:8px !important;
   width:auto !important;
   height:auto !important;
+  min-width:297px;
   border-radius:4px;
     -webkit-border-radius:4px;
 }
