@@ -408,8 +408,6 @@ var FriendsTimeline = function() {
 			} else {
 				return Spaz.Tpl.parse('timeline_entry', obj);
 			}
-			
-			
 		}
 	});
 
@@ -634,7 +632,6 @@ var PublicTimeline = function(args) {
 		},
 		'renderer': function(obj) {
 			return Spaz.Tpl.parse('timeline_entry', obj);
-
 		}
 	});
 
@@ -898,7 +895,6 @@ var UserTimeline = function(args) {
 		},
 		'renderer': function(obj) {
 			return Spaz.Tpl.parse('timeline_entry', obj);
-			
 		}
 	});
 	
@@ -1063,7 +1059,6 @@ var UserlistsTimeline = function(args) {
 		},
 		'renderer': function(obj) {
 			return Spaz.Tpl.parse('timeline_entry', obj);
-			
 		}
 	});
 	
@@ -1150,9 +1145,9 @@ UserlistsTimeline.prototype = new AppTimeline();
  */
 var SearchTimeline = function(args) {
 
-	var thisST			 = this,
-		$timeline		 = $('#timeline-search'),
-		$timelineWrapper = $timeline.parent();
+	var thisST    = this,
+	    $timeline = $('#timeline-search'),
+	    $timelineWrapper = $timeline.parent();
 	
 	this.query = null;
 	this.lastquery = null;
@@ -1295,10 +1290,7 @@ var SearchTimeline = function(args) {
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
-			
-			var html = Spaz.Tpl.parse('timeline_entry', obj);
-			return html;
-			
+			return Spaz.Tpl.parse('timeline_entry', obj);
 		}
 	});
 
@@ -1478,7 +1470,6 @@ var FollowersTimeline = function(args) {
 		},
 		'renderer': function(obj) {
 			return Spaz.Tpl.parse('followerslist_row', obj);
-			
 		}
 	});
 	

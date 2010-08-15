@@ -258,19 +258,7 @@ Spaz.Controller.initIntercept = function() {
 			'.panelmenu .refresh':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
 			},
-			'#markread-friends':function(e) {
-				Spaz.UI.markCurrentTimelineAsRead();
-			},
-			'#markread-user':function(e) {
-				Spaz.UI.markCurrentTimelineAsRead();
-			},
-			'#markread-public':function(e) {
-				Spaz.UI.markCurrentTimelineAsRead();
-			},
-			'#markread-favorites':function(e) {
-				Spaz.UI.markCurrentTimelineAsRead();
-			},
-			'#markread-userlists':function(e) {
+			'.panelmenu .markread':function(e) {
 				Spaz.UI.markCurrentTimelineAsRead();
 			},
 			'#prefs-open-folder':function(e) {

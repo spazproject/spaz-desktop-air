@@ -43,7 +43,6 @@ Spaz.Templates.timeline_entry = function(d) {
 		d.user = d.retweeted_status.user;
 		d.id = d.retweeted_status.id;
 		d.in_reply_to_status_id = d.retweeted_status.in_reply_to_status_id;
-		d.in_reply_to_status_id = d.retweeted_status.in_reply_to_status_id;
 		d.isSent = d.isSent;
 		d.text = d.retweeted_status.text;
 	}
