@@ -2153,7 +2153,7 @@ div.popbox-content div.content{
 
 div.popbox-content.info h1{
   padding:10px;
-  background:transparent url(../../../images/spaz-icon-alpha.png) 145% 40% no-repeat;
+  background:transparent url(../../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
   border-top:1px solid rgba(255, 255, 255, 0.15);
   border-bottom:1px solid rgb(38, 38, 38);
   text-align:center;
