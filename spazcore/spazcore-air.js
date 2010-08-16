@@ -1,4 +1,4 @@
-/*********** Built 2010-08-13 20:05:24 EDT ***********/
+/*********** Built 2010-08-15 19:31:56 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -6859,6 +6859,7 @@ var SPAZCORE_ACCOUNT_WORDPRESS	= 'wordpress.com';
 var SPAZCORE_ACCOUNT_TUMBLR		= 'tumblr';
 var SPAZCORE_ACCOUNT_FACEBOOK	= 'facebook';
 var SPAZCORE_ACCOUNT_FRIENDFEED	= 'friendfeed';
+var SPAZCORE_ACCOUNT_CUSTOM 	= 'custom';
 
 /**
  * This creates a new SpazAccounts object, and optionally associates it with an existing preferences object
@@ -7181,7 +7182,10 @@ SPAZAUTH_SERVICES[SPAZCORE_ACCOUNT_STATUSNET] = {
 	'authType': SPAZCORE_AUTHTYPE_BASIC
 };
 SPAZAUTH_SERVICES[SPAZCORE_ACCOUNT_IDENTICA] = {
-	'authType': SPAZCORE_AUTHTYPE_BASIC
+    'authType': SPAZCORE_AUTHTYPE_BASIC
+};
+SPAZAUTH_SERVICES[SPAZCORE_ACCOUNT_CUSTOM] = {
+    'authType': SPAZCORE_AUTHTYPE_BASIC
 };
 SPAZAUTH_SERVICES['default'] = {
 	'authType': SPAZCORE_AUTHTYPE_BASIC
@@ -7288,11 +7292,11 @@ SpazBasicAuth.prototype.save = function() {
 
 SpazBasicAuth.prototype.getUsername = function() {
 	return this.username;
-}
+};
 
 SpazBasicAuth.prototype.getPassword = function() {
 	return this.password;
-}
+};
 
 
 /**

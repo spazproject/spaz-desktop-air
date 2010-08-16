@@ -44,7 +44,7 @@ Spaz.ShareMenu.prototype.createAndShow = function(event, status_obj) {
 };
 
 /**
- * this onReady binds clicks on the appropriate elements to the user menu creation method 
+ * this onReady binds clicks on the appropriate elements to the menu creation method
  */
 jQuery(document).ready(function(){    
 	jQuery('.status-action-retweet').live('click', function(e) {

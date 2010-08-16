@@ -101,6 +101,7 @@ Spaz.Data.verifyCredentials = function() {
 
 	var auth = Spaz.Prefs.getAuthObject();	
 	var twit = new SpazTwit({'auth':auth});
+	Spaz.Data.setAPIUrl(twit);
 	twit.verifyCredentials();
 
 	Spaz.UI.statusBar("Verifying username and password");
@@ -127,7 +128,7 @@ Spaz.Data.destroyStatus = function(postid, onSuccess, onFailure) {
 	Spaz.UI.showLoading();
 
 	var twit = new SpazTwit({'auth':auth});
-	
+	Spaz.Data.setAPIUrl(twit);
 	twit.destroy(
 		postid,
 		function(data) {
@@ -152,7 +153,8 @@ Spaz.Data.destroyStatus = function(postid, onSuccess, onFailure) {
 Spaz.Data.retweet = function(postid, onSuccess, onFailure) {
     var auth = Spaz.Prefs.getAuthObject();
 	var twit = new SpazTwit({'auth':auth});
-
+    Spaz.Data.setAPIUrl(twit);
+    
 	Spaz.UI.statusBar('Retweeting post: ' + postid);
 	Spaz.UI.showLoading();
 	
@@ -192,6 +194,7 @@ Spaz.Data.destroyDirectMessage = function(postid, onSuccess, onFailure) {
 	Spaz.UI.showLoading();
 
 	var twit = new SpazTwit({'auth':auth});
+	Spaz.Data.setAPIUrl(twit);
 	
 	twit.destroyDirectMessage(
 		postid,
@@ -231,6 +234,8 @@ Spaz.Data.makeFavorite = function(postid, onSuccess, onFailure) {
 	Spaz.UI.showLoading();
 
 	var twit = new SpazTwit({'auth':auth});
+	Spaz.Data.setAPIUrl(twit);
+	
 	
 	twit.favorite(
 		postid,
@@ -305,6 +310,7 @@ Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
 	Spaz.UI.showLoading();
 
 	var twit = new SpazTwit({'auth':auth});
+	Spaz.Data.setAPIUrl(twit);
 	
 	twit.unfavorite(
 		postid,
@@ -375,6 +381,7 @@ Spaz.Data.followUser = function(userid) {
 	Spaz.UI.showLoading();
 
 	var twit = new SpazTwit({'auth':auth});
+	Spaz.Data.setAPIUrl(twit);
 	
 	twit.follow(
 		userid,
@@ -405,6 +412,7 @@ Spaz.Data.stopFollowingUser = function(userid) {
 
 	var auth = Spaz.Prefs.getAuthObject();	
 	var twit = new SpazTwit({'auth':auth});
+	Spaz.Data.setAPIUrl(twit);
 	
 	twit.unfollow(
 		userid,
@@ -427,6 +435,7 @@ Spaz.Data.blockUser = function(userid) {
     
     var auth = Spaz.Prefs.getAuthObject();  
     var twit = new SpazTwit({'auth':auth});
+    Spaz.Data.setAPIUrl(twit);
     
     twit.block(
         userid,
@@ -448,6 +457,7 @@ Spaz.Data.reportUser = function(userid) {
     
     var auth = Spaz.Prefs.getAuthObject();  
     var twit = new SpazTwit({'auth':auth});
+    Spaz.Data.setAPIUrl(twit);
     
     twit.reportSpam(
         userid,
@@ -605,6 +615,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 	var auth = Spaz.Prefs.getAuthObject();
 	sch.debug('auth:'+auth);
 	var twit = new SpazTwit({'auth':auth});
+	Spaz.Data.setAPIUrl(twit);
 	
 	twit.getRateLimitStatus(
 		function(data) {
@@ -823,6 +834,7 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
     			'auth':Spaz.Prefs.getAuthObject(),
     			'event_target':target_el
     		});
+    		Spaz.Data.setAPIUrl(twit);
 
     		twit.getUser(
     			user_id,
@@ -841,7 +853,6 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
     	}
     }
 };
-
 
 
 /**
@@ -866,3 +877,17 @@ Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 	
 
 };
+
+
+/**
+ * This sets the API url for the passed SpazTwit object to the current user's settings 
+ */
+Spaz.Data.setAPIUrl = function(twit_obj) {
+    if (Spaz.Prefs.getAccountType() === SPAZCORE_ACCOUNT_CUSTOM) {
+	    twit_obj.setBaseURL(Spaz.Prefs.getCustomAPIUrl());
+	} else {
+	    twit_obj.setBaseURLByService(Spaz.Prefs.getAccountType());
+	}
+};
+
+

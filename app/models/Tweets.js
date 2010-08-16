@@ -334,7 +334,7 @@ Tweets.prototype.initSpazTwit = function(event_mode) {
 	var auth;
 	if ( (auth = Spaz.Prefs.getAuthObject()) ) {
 		this.twit.setCredentials(auth);
-		this.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+		Spaz.Data.setAPIUrl(this.twit);
 	} else {
 		// alert('NOT seetting credentials for!');
 	}	

@@ -271,7 +271,7 @@ Spaz.initialize = function() {
 			var status = sch.trim(this.getMessageText());
 			var auth = Spaz.Prefs.getAuthObject();	
 			var twit = new SpazTwit({'auth':auth});
-			twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+			Spaz.Data.setAPIUrl(twit);
 			var source = Spaz.Prefs.get('twitter-source');
 			var irt_id = this.irt_status_id;
 			twit.update(status, source, irt_id);

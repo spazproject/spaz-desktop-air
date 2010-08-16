@@ -1349,6 +1349,13 @@ Spaz.Prefs.getAuthKey = function() {
 };
 
 /**
+ * Retrieves the custom API url for the current account
+ */
+Spaz.Prefs.getCustomAPIUrl = function() {
+    return Spaz.Prefs._accounts.getMeta(Spaz.Prefs.getCurrentAccountId(), 'twitter-api-base-url');
+};
+
+/**
  * Returns a SpazAuth object based on the current user's type and auth key 
  */
 Spaz.Prefs.getAuthObject = function() {

@@ -213,9 +213,12 @@ var FriendsTimeline = function() {
 			};
 
 			thisFT.twit.setCredentials(Spaz.Prefs.getAuthObject());
-			sch.error('thisFT.twit.username:'+thisFT.twit.username);
-			sch.error('thisFT.twit.auth:'+sch.enJSON(thisFT.twit.auth));
-			thisFT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+			sch.debug('thisFT.twit.username:'+thisFT.twit.username);
+			sch.debug('thisFT.twit.auth:'+sch.enJSON(thisFT.twit.auth));
+			sch.debug('Account Type:'+Spaz.Prefs.getAccountType());
+			sch.debug(Spaz.Prefs.getCustomAPIUrl());
+            Spaz.Data.setAPIUrl(thisFT.twit);
+			
 			thisFT.twit.getCombinedTimeline(com_opts);
 
 			sch.dump('REQUEST_DATA');
@@ -550,7 +553,7 @@ var PublicTimeline = function(args) {
 			Spaz.UI.showLoading();
 			thisPT.markAsRead($timeline.selector + ' div.timeline-entry');
 
-			thisPT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+			Spaz.Data.setAPIUrl(thisPT.twit);
 			thisPT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			thisPT.twit.getPublicTimeline();
 		},
@@ -680,7 +683,7 @@ var FavoritesTimeline = function(args) {
 			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
 
 			thisFVT.twit.setCredentials(Spaz.Prefs.getAuthObject());
-			thisFVT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+			Spaz.Data.setAPIUrl(thisFVT.twit);
 			thisFVT.twit.getFavorites();
 		},
 		'data_success': function(e, data) {
@@ -813,6 +816,7 @@ var UserTimeline = function(args) {
 			count = (count > maxUT ? maxUT : count);
 
 			thisUT.twit.setCredentials(Spaz.Prefs.getAuthObject());
+			Spaz.Data.setAPIUrl(thisUT.twit);
 			sch.error('username in UserTimeline is '+username);
 			thisUT.twit.getUserTimeline(username, count);
 		},
@@ -971,7 +975,7 @@ var UserlistsTimeline = function(args) {
 				$timelineWrapper.children('.intro').hide();
 
 				thisULT.twit.setCredentials(Spaz.Prefs.getAuthObject());
-				thisULT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+				Spaz.Data.setAPIUrl(thisULT.twit);
 				thisULT.twit.getListTimeline(thisULT.list.slug, thisULT.list.user);
 			}
 		},
@@ -1069,7 +1073,7 @@ var UserlistsTimeline = function(args) {
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisULT.twit.setCredentials(auth);
-		thisULT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+		Spaz.Data.setAPIUrl(thisULT.twit);
 		sch.debug("Loading lists for @"+username+ "…");
 		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
 		Spaz.UI.showLoading();
@@ -1197,7 +1201,7 @@ var SearchTimeline = function(args) {
 				// clear the existing results if this is a new query
 				thisST.markAsRead($timeline.selector + ' div.timeline-entry');
 				
-				thisST.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+				Spaz.Data.setAPIUrl(thisST.twit);
         		var auth = Spaz.Prefs.getAuthObject();
         		var username = Spaz.Prefs.getUsername();
         		thisST.twit.setCredentials(auth);
@@ -1206,7 +1210,9 @@ var SearchTimeline = function(args) {
 			}
 		},
 		'data_success': function(e, data) {
-			sch.dump(e);
+			sch.debug(e);
+			sch.error(data[1]);
+			sch.error(data[0]);
 			var query_info = data[1];
 			data = data[0] || [];
 			
@@ -1312,7 +1318,7 @@ var SearchTimeline = function(args) {
 		var auth     = Spaz.Prefs.getAuthObject(),
 		    username = Spaz.Prefs.getUsername();
 		thisST.twit.setCredentials(auth);
-		thisST.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+		Spaz.Data.setAPIUrl(thisST.twit);
 		sch.debug('Loading saved searches for @'+username+'…');
 		Spaz.UI.statusBar('Loading saved searches for @'+username+'…');
 		Spaz.UI.showLoading();
@@ -1423,7 +1429,7 @@ var FollowersTimeline = function(args) {
 			sch.markAsRead($timeline.selector + ' div.timeline-entry');
 
 			thisFLT.twit.setCredentials(Spaz.Prefs.getAuthObject());
-			thisFLT.twit.setBaseURLByService(Spaz.Prefs.getAccountType());
+			Spaz.Data.setAPIUrl(thisFLT.twit);
 			thisFLT.twit.getFollowersList();
 		},
 		'data_success': function(e, data) {
