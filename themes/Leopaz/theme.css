@@ -599,6 +599,7 @@ ul#account-list li:nth-child(even){
                 left:8px;
                 right:8px;
                 top:96px;
+                min-width:281px; /* = #container min-width - horizontal padding */
                 margin:-1px 0 0;
                 padding:0 8px;
                 overflow:hidden;
