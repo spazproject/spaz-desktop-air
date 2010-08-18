@@ -163,9 +163,9 @@ AppTimeline.prototype.refresh = function() {
  */
 var FriendsTimeline = function() {
 
-	var thisFT			 = this,
-		$timeline		 = $('#timeline-friends'),
-		$timelineWrapper = $timeline.parent();
+	var thisFT    = this,
+	    $timeline = $('#timeline-friends'),
+	    $timelineWrapper = $timeline.parent();
 	this.twit  = new SpazTwit();
 	this.shurl = new SpazShortURL();
 
@@ -431,6 +431,7 @@ var FriendsTimeline = function() {
 			items_func: function(){
 				var items = [], filter, i;
 
+				// Add standard filters
 				for (i = 0; i < Spaz.cssFilters.filters.length; i++) {
 					filter = Spaz.cssFilters.filters[i];
 					items.push({
@@ -441,26 +442,26 @@ var FriendsTimeline = function() {
 				}
 				
 				// Add saved custom filters
-				items = items.concat([null]); // Add separator
+				items.push(null); // Separator
 				// TODO: Implement; use `onCustomFilterClick`
 
 				// Add controls for managing custom filters
 				// TODO: After adding/deleting a custom filter, empty the menu. This
 				//       forces it to be rebuilt the next time it's shown.
-				items = items.concat([
-					{	label:   'Save current filter (NYI)',
-						handler: function(){
-							sch.debug('Save current filter (NYI)');
-							// TODO: Implement
-						}
-					},
-					{	label:   'Manage saved filters&hellip; (NYI)',
-						handler: function(){
-							sch.debug('Manage saved filters (NYI)');
-							// TODO: Implement
-						}
+				items.push({
+					label:   'Save current filter (NYI)',
+					handler: function(){
+						sch.debug('Save current filter (NYI)');
+						// TODO: Implement
 					}
-				]);
+				});
+				items.push({
+					label:   'Manage saved filters&hellip; (NYI)',
+					handler: function(){
+						sch.debug('Manage saved filters (NYI)');
+						// TODO: Implement
+					}
+				});
 
 				return items;
 			}
@@ -470,6 +471,9 @@ var FriendsTimeline = function() {
 				jQuery('#' + currentFilterId).addClass('selected').
 					siblings('.selected').removeClass('selected');
 			}
+		});
+		sch.listen(document, 'before_account_switched', function(e, account){
+			menu.hideAndDestroy();
 		});
 	};
 
@@ -917,9 +921,9 @@ UserTimeline.prototype = new AppTimeline();
  */
 var UserlistsTimeline = function(args) {
 
-	var thisULT			 = this,
-		$timeline		 = $('#timeline-userlists'),
-		$timelineWrapper = $timeline.parent();
+	var thisULT   = this,
+	    $timeline = $('#timeline-userlists'),
+	    $timelineWrapper = $timeline.parent();
 	
 	this.twit = new SpazTwit();
 	
@@ -971,7 +975,7 @@ var UserlistsTimeline = function(args) {
 				Spaz.UI.showLoading();
 
 				$('#timeline-userlists-full-name').
-					text("@"+thisULT.list.user+'/'+thisULT.list.slug);
+					text("@"+thisULT.list.user+'/'+thisULT.list.slug).show();
 				$timelineWrapper.children('.intro').hide();
 
 				thisULT.twit.setCredentials(Spaz.Prefs.getAuthObject());
@@ -1098,6 +1102,7 @@ var UserlistsTimeline = function(args) {
 				items_func: function(itemsData){
 					var i, iMax, itemData, items = [];
 
+					// Add user lists
 					for(i = 0, iMax = itemsData.lists.length; i < iMax; i++){
 						itemData = itemsData.lists[i];
 						items.push({
@@ -1115,6 +1120,21 @@ var UserlistsTimeline = function(args) {
 						return (a.label === b.label) ? 0 :
 						       (a.label > b.label)   ? 1 : -1;
 					});
+
+					if(items.length > 0){
+						items.push(null); // Separator
+					}
+
+					// Add management controls
+					items.push({
+						label:   'Add list&hellip; (NYI)',
+						handler: function(e){}
+					});
+					items.push({
+						label:   'Manage lists&hellip; (NYI)',
+						handler: function(e){}
+					});
+
 					return items;
 				}
 			});
@@ -1122,6 +1142,11 @@ var UserlistsTimeline = function(args) {
 
 			Spaz.UI.statusBar('Loaded lists for @' + username);
 			Spaz.UI.hideLoading();
+
+			sch.listen(document, 'before_account_switched', function(e, account){
+				menu.hideAndDestroy();
+				$('#timeline-userlists-full-name').hide();
+			});
 		} // function onDataRequestSuccess
 
 		function onDataRequestFailure(msg){
@@ -1338,6 +1363,7 @@ var SearchTimeline = function(args) {
 				items_func: function(itemsData){
 					var i, iMax, itemData, items = [];
 
+					// Add saved searches
 					for(i = 0, iMax = itemsData.length; i < iMax; i++){
 						itemData = itemsData[i];
 						items.push({
@@ -1358,12 +1384,19 @@ var SearchTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 
-					items.push(null);
+					if(items.length > 0){
+						items.push(null); // Separator
+					}
 
-					items = items.concat(
-						{ label: 'Save current search (NYI)' },
-						{ label: 'Manage saved searches&hellip; (NYI)' }
-					);
+					// Add management controls
+					items.push({
+						label:   'Save current search (NYI)',
+						handler: function(e){}
+					});
+					items.push({
+						label:   'Manage saved searches&hellip; (NYI)',
+						handler: function(e){}
+					})
 
 					return items;
 				}
@@ -1372,6 +1405,10 @@ var SearchTimeline = function(args) {
 
 			Spaz.UI.statusBar('Loaded saved searches for @' + username);
 			Spaz.UI.hideLoading();
+
+			sch.listen(document, 'before_account_switched', function(e, account){
+				menu.hideAndDestroy();
+			});
 		} // function onDataRequestSuccess
 
 		function onDataRequestFailure(msg){
