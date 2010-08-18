@@ -180,15 +180,12 @@ SpazMenu.prototype.keypressHide = function(e) {
 SpazMenu.prototype.destroy = function() {
 	sch.debug('SpazMenu: destroy');
 	
-
-	
-	// close on ANY clicks
+	// Unbind handlers
 	if(this.opts.close_on_any_click){
 		jQuery(document).unbind('click', {'spazmenu':this}, this.hide);
 	}
-	
-	
 	jQuery(document).unbind('keydown', {'spazmenu':this}, this.keypressHide);
+	this.unbindToggle();
 	
 	// remove base DOM element
 	jQuery('#'+this.opts.base_id).remove();
@@ -244,22 +241,26 @@ SpazMenu.prototype.bindToggle = function(toggleSelector, opts){
 		}
 	}, opts);
 
-	function onDocumentClick(e){
+	this.toggleSelector = toggleSelector;
+
+	this.onToggleClick = function(e){
+		if(jQuery('#' + _this.opts.base_id).is(':visible')){
+			opts.hideMenu(e);
+			jQuery(document).unbind('click', _this.onDocumentClick);
+		}else{
+			opts.showMenu(e);
+			jQuery(document).click(_this.onDocumentClick);
+		}
+	};
+
+	this.onDocumentClick = function(e){
 		// Bind this handler to run it only once. Use this, rather than `.one()`,
 		// so it can be unbound before execution if needed.
 		opts.hideMenu(e);
 		jQuery(this).unbind(e);
-	}
+	};
 
-	jQuery(toggleSelector).live('click', function(e){
-		if(jQuery('#' + _this.opts.base_id).is(':visible')){
-			opts.hideMenu(e);
-			jQuery(document).unbind('click', onDocumentClick);
-		}else{
-			opts.showMenu(e);
-			jQuery(document).click(onDocumentClick);
-		}
-	});
+	jQuery(toggleSelector).live('click', this.onToggleClick);
 
 	// SpryTabbedPanels' `onTabClick` ends with `return false`, so the event
 	// reaches no other handlers. Fantastic. To work around this and hide this
@@ -268,6 +269,15 @@ SpazMenu.prototype.bindToggle = function(toggleSelector, opts){
 	jQuery('.TabbedPanelsTab').click(function(e){
 		opts.hideMenu(e);
 	});
+};
+
+SpazMenu.prototype.unbindToggle = function(){
+	if(this.onToggleClick){
+		jQuery(this.toggleSelector).die('click', this.onToggleClick);
+	}
+	if(this.onDocumentClick){
+		jQuery(document).unbind('click', this.onDocumentClick);
+	}
 };
 
 
