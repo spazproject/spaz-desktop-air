@@ -262,16 +262,19 @@ Spaz.UI.closePopbox = function() {
 
 Spaz.UI.showAbout = function() {
     Spaz.UI.openPopboxInline('#aboutWindow');
-}
+};
 Spaz.UI.showHelp = function() {
     Spaz.UI.openPopboxInline('#helpWindow');
-}
+};
 Spaz.UI.showShortLink = function() {
     Spaz.UI.openPopboxInline('#shortLinkWindow');
-}
+};
 Spaz.UI.uploadImage = function(imgurl) {
 	Spaz.UI.openPopboxInline('#imageUploadWindow');
-}
+	if (imgurl) {
+		SpazImgUpl.displayChosenFile(imgurl);
+	}
+};
 Spaz.UI.showCSSEdit = function() {
     this.instance = window.open('app:/html/css_edit.html', 'cssEditWin', 'height=350,width=400');
 };
@@ -893,180 +896,6 @@ Spaz.UI.showUserContextMenu = function(jq, screen_name) {
     });
 
 };
-
-
-
-
-
-Spaz.UI.addItemToTimeline = function(entry, section, mark_as_read, prepend) {
-	//     // alert('adding:'+entry.id)
-	//     if (entry.error) {
-	//         sch.debug('There was an error in the entry:' + entry.error)
-	//     }
-	// 
-	//     var timelineid = section.timeline;
-	// 
-	// sch.debug('TIMELINE #' + timelineid + '-' + entry.id);
-	// sch.dump('TIMELINE #' + timelineid + '-' + entry.id);
-	// 
-	// 
-	// 
-	//     // sch.dump(JSON.stringify(entry));
-	//     if ($('#' + timelineid + '-' + entry.id).length < 1) {
-	// 	sch.dump('adding #' + timelineid + '-' + entry.id);
-	// 	entry.isDM = false;
-	// 	entry.isSent = false;
-	// 	if (!entry.favorited) { // we do this to make a favorited property for DMs
-	// 		entry.favorited = false;
-	// 	}
-	// 
-	// 	if (entry.sender) {
-	// 		entry.user = entry.sender
-	// 		entry.isDM = true;
-	// 	}
-	// 
-	// 	if (!entry.in_reply_to_screen_name) {
-	// 		entry.in_reply_to_screen_name = false;
-	// 	}
-	// 
-	// 
-	// 	if (timelineid == 'timeline-user') {
-	// 		entry.isSent = true;
-	// 	}
-	// 
-	// 	// sch.debug(entry);
-	// 
-	// 	if (!entry.user.name) {
-	// 		entry.user.name = entry.user.screen_name
-	// 	}
-	// 
-	// 	/*
-	// 		Check for reply
-	// 	*/
-	// 
-	// 	if (entry.in_reply_to_user_id && !entry.in_reply_to_screen_name) {
-	// 		sch.dump('in_reply_to_user_id exists, but in_reply_to_screen_name not set');
-	// 		var reply_matches = null;
-	// 		if (reply_matches = entry.text.match(/^@([a-zA-Z0-9_\-]+)/i)) {
-	// 			entry.in_reply_to_screen_name = reply_matches[1];
-	// 		}
-	// 	}
-	// 
-	// 	entry.rowclass = "even";
-	// 	entry.timestamp = sch.httpTimeToInt(entry.created_at);
-	// 	entry.base_url = Spaz.Prefs.get('twitter-base-url');
-	// 	entry.timelineid = timelineid;
-	// 
-	// 
-	// 	/*
-	// 		Clean the entry.text
-	// 	*/
-	// 	// fix weird unicode junk
-	// 	entry.text = entry.text.replace(/\u2028/, " ");
-	// 
-	// 	// save a raw version
-	// 	entry.rawtext = entry.text;
-	// 
-	// 	// fix extra ampersand encoding
-	// 	entry.text = entry.text.replace(/&amp;(gt|lt|quot|apos);/gi, '&$1;');
-	// 
-	// 	// fix entity &#123; style extra encoding
-	// 	entry.text = entry.text.replace(/&amp;#([\d]{3,4});/gi, '&#$1;');
-	// 
-	// 	// sch.dump(this.innerHTML);
-	// 	if (Spaz.Prefs.get('usemarkdown')) {
-	// 		var md = new Showdown.converter();
-	// 
-	// 		// Markdown conversion with Showdown
-	// 		entry.text = md.makeHtml(entry.text);
-	// 
-	// 		// put title attr in converted Markdown link
-	// 		entry.text = entry.text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');
-	// 	}
-	// 
-	// 	// convert inline links
-	// 	/*
-	// 		Inline links that start with http://
-	// 	*/
-	// 	var inlineRE = /(?:(\s|^|\.|\:|\())(https?:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/gi;
-	// 	entry.text = entry.text.replace(inlineRE, '$1<a href=\"$2$3$6\" title="Open link in a browser window" class="inline-link">$3&raquo;</a>');
-	// 
-	// 	/*
-	// 		this is the regex we use to match inline
-	// 		lots of uncommon but valid top-level domains aren't used
-	// 		because they cause more problems than solved
-	// 	*/
-	// 	var inlineRE = /(?:(\s|^|\:|\())((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+(com|net|org|co\.uk|aero|asia|biz|cat|coop|edu|gov|info|jobs|mil|mobi|museum|name|au|ca|cc|cz|de|eu|fm|fr|gd|hk|ie|it|jp|nl|no|nu|nz|ru|st|tv|uk|us))((?:\/[\w\.\/\?=%&_\-~@#+]*)*)/g;
-	// 	entry.text = entry.text.replace(inlineRE, '$1<a href=\"http://$2$5\" title="Open link in a browser window" class="inline-link">$2&raquo;</a>');
-	// 
-	// 	// email addresses
-	// 	entry.text = entry.text.replace(/(^|\s+)([a-zA-Z0-9_+-]+)@([a-zA-Z0-9\.-]+)/gi, '$1<a href="mailto:$2@$3" class="inline-email" title="Send an email to $2@$3">$2@$3</a>');
-	// 
-	// 	// convert @username reply indicators
-	// 	entry.text = entry.text.replace(/(^|\s+)@([a-zA-Z0-9_-]+)/gi, '$1<a href="' + Spaz.Prefs.get('twitter-base-url') + '$2" class="inline-reply" title="View $2\'s profile page" user-screen_name="$2">@$2</a>');
-	// 
-	// 	// convert emoticons
-	// 	entry.text = Emoticons.SimpleSmileys.convertEmoticons(entry.text)
-	// 
-	// 	// hashtags
-	// 	entry.text = entry.text.replace(/(\s|^|\(|\[)(#([a-z0-9_\-]{2,}))/gi, '$1<a href="javascript:;" title="View search results for $2" class="inline-link hashtag-link">$2</a>');
-	// 
-	// 
-	// 	var entryHTML = Spaz.Tpl.parse('timeline_entry', entry);
-	// 	// sch.dump(entryHTML);
-	// 
-	// 	// sch.dump('make DOMElement from string: '+entryHTML);
-	// 	// var entryElement = document.createElement(entryHTML);
-	// 
-	// 	// Make the jQuery object and bind events
-	// 	// sch.dump('make jQ entry and bind events to: '+entryElement);
-	// 	// sch.dump('make jQ entry and bind events to: '+entryElement);
-	// 
-	// 	var jqentry = $(entryHTML);
-	// 
-	// 	if (mark_as_read) {
-	// 		jqentry.addClass('read')
-	// 		jqentry.removeClass('new')
-	// 	}
-	// 
-	// 	if (entry.isDM) {
-	// 		jqentry.addClass('dm');
-	// 	}
-	// 
-	// 	// We only do the fetch if the mark_as_read is not specified
-	// 	if (typeof mark_as_read == 'undefined')
-	// 	{
-	// 		// The as read callback
-	// 		Spaz.DB.asyncGetAsRead(entry.id,
-	// 		function(read)
-	// 		{
-	// 			if (read)
-	// 			{
-	// 				// sch.dump("Entry " + entry.id + " is read");
-	// 				jqentry.addClass('read');
-	// 				jqentry.removeClass('new');
-	// 				$().trigger('UNREAD_COUNT_CHANGED');
-	// 			}
-	// 		});
-	// 	}
-	// 
-	// 	if (prepend) {
-	// 		$('#' + timelineid).prepend(jqentry);
-	// 	} else {
-	// 		$('#' + timelineid).append(jqentry);
-	// 	}
-	// 
-	// 
-	// 	return true;
-	// 
-	//     } else {
-	//         sch.debug('skipping ' + entry.id);
-	// 
-	//         return false;
-	//     }
-
-}
-
 
 
 
