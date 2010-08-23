@@ -361,12 +361,12 @@ Spaz.initialize = function() {
 	/*
 		initialize Image uploader popbox
 	*/
-	var SpazImageUploader = new Spaz.ImageUploader();
-	SpazImageUploader.init();
+	window.SpazImgUpl = new Spaz.ImageUploader();
+	window.SpazImgUpl.init();
 
 	// load User JS file
 	Spaz.loadUserJS();
 
 
-	sch.debug('ended document.ready()');
+	sch.error('ended document.ready()');
 };
