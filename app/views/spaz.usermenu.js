@@ -101,7 +101,7 @@ Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
  * this onReady binds clicks on the appropriate elements to the user menu creation method 
  */
 jQuery(document).ready(function(){
-	jQuery('.user,.user-image,.user-screen-name,a[user-screen_name]').live('click', function(e) {
+	jQuery('.user,.user-image,.user-screen-name,a[user-screen_name]').live('contextmenu', function(e) {
         sch.error(this.outerHTML);
 		var userid = $(this).attr('user-id');
 		if (!userid) { userid = '@'+$(this).attr('user-screen_name'); } // try to get screen name instead
