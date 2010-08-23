@@ -1,4 +1,4 @@
-/*********** Built 2010-08-15 19:31:56 EDT ***********/
+/*********** Built 2010-08-22 20:43:19 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -8012,6 +8012,18 @@ SpazImageUploader.prototype.setOpts = function(opts) {
         'auth_method':'echo', // 'echo' or 'basic'
 		'statusnet_api_base':null // only used by statusnet
     }, opts);
+};
+
+/**
+ * returns an array of labels for the services 
+ * @return array
+ */
+SpazImageUploader.prototype.getServiceLabels = function() {
+	var labels = [];
+	for(var key in this.services) {
+		labels.push(key);
+	}
+	return labels;
 };
 
 /**
