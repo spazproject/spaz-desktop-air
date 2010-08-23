@@ -38,7 +38,7 @@ sch.listen(document, 'update_succeeded', function(e, data) {
 	}
 
 	// if (Spaz.Prefs.get('services-pingfm-enabled')) {
-	// 	Spaz.Data.updatePingFM(msg);
+	//	Spaz.Data.updatePingFM(msg);
 	// }
 
 });
@@ -139,10 +139,10 @@ Spaz.Controller.initIntercept = function() {
 	$('body').intercept('mouseover', {
 		
 			// '.TabbedPanelsTab':function(e) {
-			// 	var tt = new Spaz_Tooltip($(this).attr('title'), {
-			// 		'e'		:e,
-			// 	});
-			// 	tt.show();
+			//	var tt = new Spaz_Tooltip($(this).attr('title'), {
+			//		'e'		:e,
+			//	});
+			//	tt.show();
 			// },
 
 			'.status-action[title]':function(e) {
@@ -232,7 +232,7 @@ Spaz.Controller.initIntercept = function() {
 		.intercept('click', {
 			
 			// '.TabbedPanelsTab':function(e) {
-			// 	Spaz.UI.setSelectedTab(this);
+			//	Spaz.UI.setSelectedTab(this);
 			// },
 			
 			'#tab-public':function(e) {
@@ -293,8 +293,8 @@ Spaz.Controller.initIntercept = function() {
 
 			'#entrybox-saveDraft':function(e){
 				var editingDraftId = Spaz.Drafts.getEditingId(),
-				    editingDraft   = DraftModel.findById(editingDraftId),
-				    text           = jQuery(Spaz.postPanel.textarea).val();
+					editingDraft   = DraftModel.findById(editingDraftId),
+					text		   = jQuery(Spaz.postPanel.textarea).val();
 				if(editingDraft){
 					Spaz.Drafts.update(editingDraft, text);
 				}else{
@@ -356,11 +356,11 @@ Spaz.Controller.initIntercept = function() {
 			'.status-action-reply':function(e) {
 				var tweet_id = parseInt($(this).attr('entry-id'), 10);
 				Spaz.TweetsModel.getById(
-				    tweet_id,
-				    false,
-				    function(data) {
-				        Spaz.postPanel.prepReply(data.user.screen_name, data.id, data.SC_text_raw);
-				    }
+					tweet_id,
+					false,
+					function(data) {
+						Spaz.postPanel.prepReply(data.user.screen_name, data.id, data.SC_text_raw);
+					}
 				);
 
 				
@@ -455,11 +455,11 @@ Spaz.Controller.initIntercept = function() {
 	target.addEventListener("dragover", dragEnterOverHandler);
 	target.addEventListener("drop", dropHandler);
 
-    function dragEnterOverHandler(event){
-        event.preventDefault();
-    }
+	function dragEnterOverHandler(event){
+		event.preventDefault();
+	}
 
-    function dropHandler(event){
+	function dropHandler(event){
 		event.preventDefault();
 		uploadDraggedImage(event);
 
@@ -479,7 +479,7 @@ Spaz.Controller.initIntercept = function() {
 				return;
 			}
 		}
-    }
+	}
 
 };
 
@@ -490,7 +490,7 @@ Spaz.Controller.initIntercept = function() {
  */
 Spaz.Controller.setKeyboardShortcuts = function() {
 	sch.debug("Setting Shortcuts=================================================");
-    sch.debug("os: " + air.Capabilities['os']);
+	sch.debug("os: " + air.Capabilities['os']);
 
 	var Modkey = 'Meta';
 
@@ -613,7 +613,7 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	});
 	shortcut.add(Modkey+'+Home', function() {
 		Spaz.Keyboard.move('up', ':first');
-	});	
+	}); 
 	shortcut.add('Down', function() {
 			Spaz.Keyboard.move('down');
 		}, {
@@ -707,11 +707,11 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 			}
 		};
 		shortcut.add('Enter', callback, {
-			target:    $('#username')[0],
+			target:	   $('#username')[0],
 			propagate: false
 		});
 		shortcut.add('Enter', callback, {
-			target:    $('#password')[0],
+			target:	   $('#password')[0],
 			propagate: false
 		});
 	})();
