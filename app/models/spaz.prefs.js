@@ -86,7 +86,7 @@ Spaz.Prefs.defaultPreferences = {
 
 	'url-shortener': 'short.ie',
 
-	'file-uploader': 'twitgoo',
+	'file-uploader': 'drippic',
 
 	'services-twitpic-sharepassword': false,
 
