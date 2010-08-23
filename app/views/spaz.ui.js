@@ -865,37 +865,37 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 
 
 
-Spaz.UI.showUserContextMenu = function(jq, screen_name) {
-    if (!screen_name) {
-        return false;
-    }
-
-    sch.dump(screen_name)
-
-    var el = jq[0];
-
-    sch.debug(el);
-
-    // hide any showing tooltips
-    // sch.dump('hiding tooltip');
-    $('#tooltip').hide();
-
-    // show the link context menu
-    // sch.dump('opening context menu for user '+screen_name);
-    $('#userContextMenu').css('left', event.pageX)
-    .css('top', event.pageY)
-    .show();
-
-    $('#userContextMenu .menuitem').attr('user-screen_name', screen_name);
-
-
-    // sch.dump('Set one-time click event on #userContextMenu');
-    $(document).one('click',
-    function() {
-        $('#userContextMenu').hide();
-    });
-
-};
+// Spaz.UI.showUserContextMenu = function(jq, screen_name) {
+//     if (!screen_name) {
+//         return false;
+//     }
+// 
+//     sch.dump(screen_name)
+// 
+//     var el = jq[0];
+// 
+//     sch.debug(el);
+// 
+//     // hide any showing tooltips
+//     // sch.dump('hiding tooltip');
+//     $('#tooltip').hide();
+// 
+//     // show the link context menu
+//     // sch.dump('opening context menu for user '+screen_name);
+//     $('#userContextMenu').css('left', event.pageX)
+//     .css('top', event.pageY)
+//     .show();
+// 
+//     $('#userContextMenu .menuitem').attr('user-screen_name', screen_name);
+// 
+// 
+//     // sch.dump('Set one-time click event on #userContextMenu');
+//     $(document).one('click',
+//     function() {
+//         $('#userContextMenu').hide();
+//     });
+// 
+// };
 
 
 
