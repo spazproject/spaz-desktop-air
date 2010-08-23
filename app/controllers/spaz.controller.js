@@ -279,6 +279,9 @@ Spaz.Controller.initIntercept = function() {
 				sc.helpers.openInBrowser('http://search.twitter.com/operators');
 			},
 
+			'#entrybox-attach':function(e){
+				Spaz.UI.uploadImage();
+			},
 			'#entrybox-saveDraft':function(e){
 				var editingDraftId = Spaz.Drafts.getEditingId(),
 					editingDraft   = DraftModel.findById(editingDraftId),
@@ -372,6 +375,9 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'.directory-user-location': function(e) {
 				Spaz.UI.showLocationOnMap($(this).text());
+			},
+			'.user,.user-image,.user-screen-name,a[user-screen_name]': function(e) {
+				sch.openInBrowser(Spaz.Prefs.get('twitter-base-url') + $(this).attr('user-screen_name'));
 			},
 			'.timeline-entry':function(e) {
 				Spaz.UI.selectEntry(this);
