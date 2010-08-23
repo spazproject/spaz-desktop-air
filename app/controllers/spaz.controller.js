@@ -461,14 +461,7 @@ Spaz.Controller.initIntercept = function() {
 
     function dropHandler(event){
 		event.preventDefault();
-
-		if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
-			if ( confirm('Uploading to Twitpic requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
-				uploadDraggedImage(event);
-			}
-		} else {
-			uploadDraggedImage(event);
-		}
+		uploadDraggedImage(event);
 
 		/*
 			Upload the dragged image to Twitpic
@@ -485,10 +478,7 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.UI.uploadImage(fileUrl);
 				return;
 			}
-
 		}
-
-
     }
 
 };
