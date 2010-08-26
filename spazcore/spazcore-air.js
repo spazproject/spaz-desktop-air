@@ -12243,6 +12243,7 @@ SpazTwit.prototype._getTimeline = function(opts) {
  * @private
  */
 SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, processing_opts) {
+	var proc_items = [];
 	
 	sch.debug(opts);
 	
@@ -12264,8 +12265,14 @@ SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, pr
 			we process each item, adding some attributes and generally making it cool
 		*/
 		for (var k=0; k<ret_items.length; k++) {
-			ret_items[k] = this._processItem(ret_items[k], section_name);
+			sch.error(k);
+			sch.error(ret_items.length);
+			if (ret_items[k]) {			
+				proc_items.push(this._processItem(ret_items[k], section_name));
+			}
 		}
+		ret_items = proc_items;
+		proc_items = null;
 
 
 		/*
@@ -12427,6 +12434,9 @@ SpazTwit.prototype._cleanupItemArray = function(arr, max, sortfunc) {
  * this executes within the jQuery.each scope, so this === the item 
  */
 SpazTwit.prototype._processItem = function(item, section_name) {
+	
+	sch.error(item);
+	sch.error(sch.enJSON(item));
 	
 	item.SC_timeline_from = section_name;
 	if (this.username) {
