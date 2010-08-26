@@ -12,7 +12,7 @@ if (!Spaz.Update) Spaz.Update = {};
 
 Spaz.Update.descriptorUrl = 'http://funkatron.com/apps/spaz/AIR/UpdateDescriptor.json';
 
-Spaz.Update.descriptorUrlTests = 'http://funkatron.com/apps/spaz/AIR/testbuilds/UpdateDescriptor_newstyle.json';
+Spaz.Update.descriptorUrlTests = 'http://funkatron.com/apps/spaz/AIR/testbuilds/UpdateDescriptor.json';
 
 Spaz.Update.info = {};
 
