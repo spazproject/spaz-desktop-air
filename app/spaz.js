@@ -166,7 +166,7 @@ Spaz.initialize = function() {
 	//DONE: Check for Update
 	if (Spaz.Prefs.get('checkupdate')) {
 		sch.debug('Starting check for update');
-		// Spaz.Update.updater.checkForUpdate();
+		Spaz.Update.go();
 		sch.debug('Ending check for update');
 	}
 
@@ -234,13 +234,6 @@ Spaz.initialize = function() {
 		Set up event delegation stuff
 	*/
 	Spaz.Controller.initIntercept();
-
-	/*
-		Start check for updates process
-	*/
-	if (Spaz.Prefs.get('checkupdate')) {
-		Spaz.Update.go();
-	}
 
 	/*
 		if we have a username and password set, trigger an "account_switched" event
