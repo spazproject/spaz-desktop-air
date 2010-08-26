@@ -513,7 +513,13 @@ Spaz.Prefs.changeMethods = {
 		},
 		onChange: function(value) {
 			Spaz.Themes.setCurrentTheme();
-		}
+		},
+        onGet: function(key, value) {
+            return 'Leopaz'; // HARDCODE LEOPAZ
+        },
+        onSet: function(key, value) {
+            return 'Leopaz'; // HARDCODE LEOPAZ
+        }
 	},
 
 	'sound-enabled': {
