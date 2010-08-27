@@ -1126,13 +1126,17 @@ var UserlistsTimeline = function(args) {
 					}
 
 					// Add management controls
+					// items.push({
+					// 	label:   'Add list&hellip; (NYI)',
+					// 	handler: function(e){}
+					// });
 					items.push({
-						label:   'Add list&hellip; (NYI)',
-						handler: function(e){}
-					});
-					items.push({
-						label:   'Manage lists&hellip; (NYI)',
-						handler: function(e){}
+						// This will be built into a later version of Spaz. For now,
+						// manage lists via web instead.
+						label:   'Manage lists&hellip;',
+						handler: function(e){
+							sch.openInBrowser('http://twitter.com/lists');
+						}
 					});
 
 					return items;
