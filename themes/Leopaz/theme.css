@@ -857,7 +857,7 @@ ul#account-list li:nth-child(even){
         #entrybox-actions{
           float:right;
         }
-          #entrybox-actions input[type=button]{
+          #entrybox-actions button{
             padding:0 8px;
             background:-webkit-gradient(linear,
               left top, left bottom,
@@ -868,13 +868,21 @@ ul#account-list li:nth-child(even){
             color:#fff;
             font-size:10px;
             line-height:18px; /* = vertical border widths + #chars-left line-height */
+            font-weight:normal;
           }
-          #entrybox-actions input[type=button]:hover,
-          #entrybox-actions input[type=button]:focus,
-          #entrybox-actions input[type=button]:active{
+          #entrybox-actions button:hover,
+          #entrybox-actions button:focus,
+          #entrybox-actions button:active{
             background:-webkit-gradient(
               linear, left top, left bottom, from(#668bf4), to(#2b64f0));
             border-color:#5c83ea transparent #1d58e7 transparent;
+          }
+          #entrybox-attach span{
+            display:block;
+            width:16px;
+            background:url(../../../images/glyphish/photos.png) center center no-repeat;
+            pointer-events:none;
+            text-indent:-9999em;
           }
       #entryform-drafts{
         /* See also #timeline-userlists-full-name */
