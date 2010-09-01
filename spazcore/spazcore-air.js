@@ -1,4 +1,4 @@
-/*********** Built 2010-08-22 20:43:19 EDT ***********/
+/*********** Built 2010-08-27 10:13:58 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -12243,7 +12243,6 @@ SpazTwit.prototype._getTimeline = function(opts) {
  * @private
  */
 SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, processing_opts) {
-	var proc_items = [];
 	
 	sch.debug(opts);
 	
@@ -12260,14 +12259,13 @@ SpazTwit.prototype._processTimeline = function(section_name, ret_items, opts, pr
 
 	if (ret_items.length > 0){
 		
+		var proc_items = [];
 		
 		/*
 			we process each item, adding some attributes and generally making it cool
 		*/
 		for (var k=0; k<ret_items.length; k++) {
-			sch.error(k);
-			sch.error(ret_items.length);
-			if (ret_items[k]) {			
+			if (ret_items[k]) {
 				proc_items.push(this._processItem(ret_items[k], section_name));
 			}
 		}
@@ -12434,9 +12432,6 @@ SpazTwit.prototype._cleanupItemArray = function(arr, max, sortfunc) {
  * this executes within the jQuery.each scope, so this === the item 
  */
 SpazTwit.prototype._processItem = function(item, section_name) {
-	
-	sch.error(item);
-	sch.error(sch.enJSON(item));
 	
 	item.SC_timeline_from = section_name;
 	if (this.username) {
@@ -14108,12 +14103,15 @@ SpazTwit.prototype.isMember = function(list, list_user, user){
 
 /*
  * Marks a user as a spammer and blocks them
+ * @param {integer} user_id a user_id (not a screen name!)
+ * @param {function} onSuccess callback
+ * @param {function} onFailure callback
  */
-SpazTwit.prototype.reportSpam = function(user, onSuccess, onFailure) {
+SpazTwit.prototype.reportSpam = function(user_id, onSuccess, onFailure) {
 	var url = this.getAPIURL('report_spam');
 	
 	var data = {};
-	data['screen_name'] = user;
+	data['user_id'] = user_id;
 	
 	var opts = {
 		'url':url,
