@@ -142,11 +142,11 @@
 	<script src="app/views/spaz.tooltip.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.menus.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.windows.js"	   type="text/javascript" charset="utf-8"></script>
-	<script src="app/views/spaz.imageuploader.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app/views/spaz.conversation.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.accountprefs.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.conversation.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.drafts.js" type="text/javascript" charset="utf-8"></script>
-
+	<script src="app/views/spaz.imageuploader.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.profile.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- theme scripts -->
 	<script type="text/javascript" charset="utf-8" id="themeinfo"></script>
@@ -924,7 +924,8 @@
 					<div id="irt" style="display:none">
 						<span id="irt-dismiss" class="clickable" title="Clear the 'in-reply-to:' setting for this update">x</span>
 						<span id="irt-content">
-						<strong>Re:</strong> <span id="irt-message" data-status-id="0"></span>
+							<strong>Re:</strong>
+							<span id="irt-message" data-status-id="0"></span>
 						</span>
 					</div>
 					<span id="chars-left">
@@ -988,14 +989,12 @@
 			<div class="preview" style='display:none; overflow:hidden; margin-top:.7em'></div>
 		</div>
 
-		<!-- suggestions popup -->
-		<div id="suggestions">
-
-		</div>
+		<!-- Suggestions menu -->
+		<div id="suggestions"></div>
 
 
 		<!--
-			The About popup
+			About window
 		-->
 		<div class="popbox-content-wrapper" id="aboutWindow">
 			<div class="popbox-content info" id="popbox-content-about">
@@ -1066,7 +1065,7 @@
 		
 		
 		<!--
-			The Help popup
+			Help window
 		-->
 		<div class="popbox-content-wrapper" id="helpWindow">
 			<div class="popbox-content info" id="popbox-content-help">
@@ -1196,7 +1195,7 @@
 		
 		
 		<!--
-			Short Link Window
+			Short Link window
 		-->
 		<div class="popbox-content-wrapper" id="shortLinkWindow">
 			<div class="popbox-content" id="popbox-content-short-link">
@@ -1237,7 +1236,7 @@
 
 
 		<!--
-			Image Upload Window
+			Image Upload window
 		-->
 		<div class="popbox-content-wrapper" id="imageUploadWindow">
 			<div class="popbox-content" id="popbox-content-image-upload">
@@ -1281,7 +1280,7 @@
 		</div>
 		
 		<!--
-			Conversation Window
+			Conversation window
 		-->
 		<div class="popbox-content-wrapper" id="conversationWindow">
 			<div class="popbox-content" id="popbox-content-conversation">
@@ -1293,7 +1292,7 @@
 		</div>
 
 		<!--
-			Drafts Window
+			Drafts window
 		-->
 		<div class="popbox-content-wrapper" id="draftsWindow">
 			<div class="popbox-content" id="popbox-content-drafts">
@@ -1303,8 +1302,54 @@
 				</div>
 			</div>
 		</div>
-		
-		
+
+		<!--
+			Profile window
+		-->
+		<div class="popbox-content-wrapper" id="profileWindow">
+			<div class="popbox-content" id="popbox-content-profile">
+				<h1>Profile <span class="closeDOMWindow">close</span></h1>
+				<div class="content">
+					<div class="header">
+						<div class="profile-user-image clickable" title="View large"></div>
+						<p class="name clickable" title="View profile in browser">
+							<strong class="real-name"></strong>
+							<span class="username"></span>
+						</p>
+					</div>
+
+					<p class="location clickable"></p>
+					<p class="website clickable" title="View in browser"></p>
+					<ul class="counts">
+						<li>
+							<span class="following clickable" title="View in browser">
+								<em></em> <span class="label">following</span>
+							</span>
+						</li>
+						<li>
+							<span class="followers clickable" href="#" title="View in browser">
+								<em></em> <span class="label">followers</span>
+							</span>
+						</li>
+						<li>
+							<span class="listed clickable" href="#" title="View in browser">
+								<em></em> <span class="label">listed</span>
+							</span>
+						</li>
+					</ul>
+					<p class="tweets clickable" title="View in browser"></p>
+					<p class="bio"></p>
+
+					<div class="controls">
+						<button class="follow">Follow</button>
+						<button class="lists">Lists</button>
+						<button class="tools">Tools</button>
+					</div>
+				</div> <!-- div.content -->
+			</div>
+		</div>
+
+
 
 	</div> <!-- End #container -->
 

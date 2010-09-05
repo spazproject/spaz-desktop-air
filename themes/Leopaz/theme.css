@@ -2370,3 +2370,26 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 #popbox-content-drafts div.content ul li div.meta p.chars.over{
   color:rgba(255, 0, 0, 0.75);
 }
+
+/*** Popboxes > Profile ***/
+
+#popbox-content-profile div.content div.header{
+  overflow: hidden;
+}
+#popbox-content-profile div.content div.header div.profile-user-image{
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-size:48px 48px;
+    -webkit-background-size:48px 48px;
+  border-radius:4px;
+    -webkit-border-radius:4px;
+  text-indent: -9999em;
+}
+#popbox-content-profile div.content div.header p.name{
+  margin: 0.5em 0 0 58px; /* margin-left = div.profile-user-image width + 10px */
+}
+#popbox-content-profile div.content div.header p.name .real-name,
+#popbox-content-profile div.content div.header p.name .username{
+  display: block;
+}

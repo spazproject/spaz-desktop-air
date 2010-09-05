@@ -118,7 +118,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				tt.showUser('@'+$(this).attr('user-screen_name'));
+				tt.show();
 			},
 			'span.in-reply-to':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
@@ -133,7 +133,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				tt.showUser('@'+$(this).attr('user-screen_name'));
+				tt.show();
 			},
 			'a[href]':function(e) {
 				var href = $(this).attr('href');
@@ -165,7 +165,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				tt.showUser('@'+$(this).attr('user-screen_name'));
+				tt.show();
 			},
 			'input[title], button[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
@@ -372,7 +372,7 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.UI.showLocationOnMap($(this).text());
 			},
 			'.user,.user-image,.user-screen-name,a[user-screen_name]': function(e) {
-				sch.openInBrowser(Spaz.Prefs.get('twitter-base-url') + $(this).attr('user-screen_name'));
+				Spaz.Profile.show($(this).attr('user-screen_name'));
 			},
 			'.timeline-entry':function(e) {
 				sch.error('triggered by .timeline-entry');
