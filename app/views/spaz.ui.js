@@ -196,6 +196,21 @@ Spaz.UI.hideUpdateCheck = function() {
  *  These should be handled via CSS instead.
  */
 Spaz.UI.openDOMWindow = function(options){
+	// Close any existing popbox
+	(function(){
+		function closeDOMWindowCallback(){
+			// Stop animations immediately. `stop` arguments:
+			// - `false`: Don't clear queue.
+			// - `true`:  Jump to end and run callbacks.
+			jQuery('#DOMWindow').stop(false, true);
+			jQuery('#DOMWindowOverlay').stop(false, true);
+		}
+		jQuery.closeDOMWindow({
+			functionCallOnClose:    closeDOMWindowCallback,
+			functionCallAfterClose: closeDOMWindowCallback
+		});
+	})();
+
 	return jQuery.openDOMWindow($.extend({
 		width:          null,
 		height:         null,
@@ -224,7 +239,7 @@ Spaz.UI.openPopboxURL = function(url) {
 		windowSourceURL: url,
 		width:           cont_width - 30,
 		height:          300
-    });
+	});
 
 	jQuery('#DOMWindow').outerWidth( cont_width-30 );
 }
@@ -235,7 +250,7 @@ Spaz.UI.openPopboxURL = function(url) {
  */
 Spaz.UI.openPopboxInline = function(content_id) {
 	var $body       = jQuery('body'),
-		$domWindow  = jQuery('#DOMWindow'),
+	    $domWindow  = jQuery('#DOMWindow'),
 	    cont_width  = $body.outerWidth(),
 	    cont_height = $body.outerHeight();
 	Spaz.UI.openDOMWindow({
@@ -244,7 +259,7 @@ Spaz.UI.openPopboxInline = function(content_id) {
 		// fixedWindowY:   30,
 		width:          cont_width - 40,
 		height:         cont_height - 100
-    });
+	});
 
 	$domWindow.outerWidth(cont_width - 30);
 	$domWindow.outerHeight(cont_height - 30);
