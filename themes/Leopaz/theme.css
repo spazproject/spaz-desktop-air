@@ -2131,6 +2131,13 @@ div.popbox-content{
   border-bottom-right-radius:4px;
     -webkit-border-bottom-right-radius:4px;
 }
+div#popbox-content-account-details,
+div#popbox-content-profile{
+  border-bottom-left-radius:7px;
+    -webkit-border-bottom-left-radius:7px;
+  border-bottom-right-radius:7px;
+    -webkit-border-bottom-right-radius:7px;
+}
 div.popbox-content h1{
   background:transparent;
   border-top:1px solid rgba(255, 255, 255, 0.15);
@@ -2161,6 +2168,7 @@ div.popbox-content div.content{
 }
 div.popbox-content div.controls{
   overflow: hidden;
+  margin-top: -3px; /* = div.content border-bottom-width */
   padding: 8px;
   background: -webkit-gradient(
     linear, left top, left bottom,
@@ -2228,10 +2236,6 @@ div#popbox-content-account-details{
     color-stop(0.5, rgba(49, 49, 49, 0.95)),
     color-stop(0.5, rgba(33, 33, 33, 0.95))
     ) no-repeat;
-  border-bottom-left-radius:7px;
-    -webkit-border-bottom-left-radius:7px;
-  border-bottom-right-radius:7px;
-    -webkit-border-bottom-right-radius:7px;
 }
 div#popbox-content-account-details h1{
   border-bottom-color:rgba(38, 38, 38, 0.95);
@@ -2242,8 +2246,6 @@ div#popbox-content-account-details div.content{
   padding:0 12px;
   background:#e0e0e0;
   border-color:rgba(38, 38, 38, 0.95);
-  border-top:0;
-  border-bottom:0;
   font-size:11px;
 }
 div#popbox-content-account-details div.content div.formrow{
@@ -2294,7 +2296,6 @@ div#popbox-content-conversation div.content{
          shadows. However, the shadow heights are percent-based;
          static heights would be ideal. */
   border:3px solid rgb(38, 38, 38);
-  border-top:0;
 }
 div#popbox-content-conversation #timeline-conversation{
   overflow:auto;
@@ -2373,8 +2374,19 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 
 /*** Popboxes > Profile ***/
 
+#popbox-content-profile div.content{
+  padding: 0;
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#fff), to(#ccc));
+}
 #popbox-content-profile div.content div.header{
   overflow: hidden;
+  height: 48px;
+  margin: 0;
+  padding: 1em;
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#fff), to(#ccc),
+    color-stop(0.5, #efefef), color-stop(0.5, #eaeaea));
 }
 #popbox-content-profile div.content div.header div.profile-user-image{
   float: left;
@@ -2387,9 +2399,85 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   text-indent: -9999em;
 }
 #popbox-content-profile div.content div.header p.name{
-  margin: 0.5em 0 0 58px; /* margin-left = div.profile-user-image width + 10px */
+  float: left;
+  margin: 0.375em 0 0 1em;
 }
 #popbox-content-profile div.content div.header p.name .real-name,
 #popbox-content-profile div.content div.header p.name .username{
   display: block;
+  line-height: 1.5;
+}
+#popbox-content-profile div.content div.body{
+  overflow: auto;
+  max-height: 199px;
+  padding: 1em;
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#ddd), to(#ccc),
+    color-stop(0.025, #fff), color-stop(0.5, #fff));
+}
+#popbox-content-profile div.content div.body p.location{
+  margin: 0;
+}
+#popbox-content-profile div.content div.body p.location .label{
+  font-size: 0.75em;
+  font-weight: bold;
+  opacity: 0.5;
+  text-shadow: 0 1px 1px #fff;
+  text-transform: uppercase;
+}
+#popbox-content-profile div.content div.body p.location .value{
+  font-size: 0.875em;
+}
+#popbox-content-profile div.content div.body p.website{
+  overflow: hidden;
+  margin: 0;
+  font-size: 0.875em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#popbox-content-profile div.content div.body ul.counts{
+  margin: 0;
+  padding: 0;
+}
+#popbox-content-profile div.content div.body ul.counts li{
+  display: inline-block;
+  width: 27%;
+  padding: 0.5em 2%;
+  border: 1px solid transparent;
+  border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+#popbox-content-profile div.content div.body ul.counts li:hover{
+  background: -webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(255, 255, 255, 0.5)), to(rgba(191, 191, 191, 0.25)),
+    color-stop(0.75, rgba(255, 255, 255, 0)));
+  border-color: rgba(127, 127, 127, 0.25);
+  border-bottom-color: rgba(127, 127, 127, 0.5);
+}
+#popbox-content-profile div.content div.body ul.counts li:active{
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#5b5b5b), to(#979797),
+    color-stop(0.125,#7f7f7f), color-stop(0.95, #a3a3a3));
+  border-color: rgba(0, 0, 0, 0.5);
+  border-bottom-color: rgba(127, 127, 127, 0.5);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+#popbox-content-profile div.content div.body ul.counts li em{
+  display: block;
+  font-size: 0.75em;
+  font-style: normal;
+  font-weight: bold;
+}
+#popbox-content-profile div.content div.body ul.counts li .label{
+  font-size: 0.75em;
+}
+#popbox-content-profile div.controls button.follow{
+  float: none;
+  margin-left: 0;
+}
+#popbox-content-profile div.controls button.lists:after,
+#popbox-content-profile div.controls button.tools:after{
+  content:' \025BE'; /* Down-pointing triangle */
 }

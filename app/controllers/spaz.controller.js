@@ -153,7 +153,7 @@ Spaz.Controller.initIntercept = function() {
 					tt.showURLPreview(href);
 				}
 			},
-			'a[title]':function(e) {
+			'a[title], .clickable[title]':function(e) {
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
 					'trigger':this

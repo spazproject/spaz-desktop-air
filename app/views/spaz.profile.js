@@ -16,6 +16,11 @@ Spaz.Profile.show = function(username){
 	Spaz.UI.openPopboxInline('#profileWindow');
 };
 
+Spaz.Profile.hide = function(){
+	// Hides the currently visible profile, if any.
+	Spaz.UI.closePopbox();
+}
+
 Spaz.Profile.build = function(username){
 	// Builds HTML for the profile window
 
@@ -24,7 +29,20 @@ Spaz.Profile.build = function(username){
 	var $profile = $('#popbox-content-profile').children('.content'),
 	    baseURL  = Spaz.Prefs.get('twitter-base-url');
 
-	sch.listen(document, 'get_user_succeeded', function(ev, data){
+	function numberWithCommas(num){
+		// Adapted from: http://www.mredkj.com/javascript/nfbasic.html
+		var numStr   = num + '',
+		    numParts = numStr.split('.'),
+		    numInt   = numParts[0],
+		    numDec   = numParts.length > 1 ? '.' + numParts[1] : '',
+		    regex    = /(\d+)(\d{3})/;
+		while(regex.test(numInt)){
+			numInt = numInt.replace(regex, '$1' + ',' + '$2');
+		}
+		return numInt + numDec;
+	}
+
+	function onUserDataLoad(data){
 		// Build image view
 		$profile.find('.profile-user-image').
 			css('background-image', 'url(' + data.profile_image_url + ')').
@@ -36,12 +54,14 @@ Spaz.Profile.build = function(username){
 
 		// Build location view
 		(function(){
-			var $location = $profile.children('p.location'),
+			var $location = $profile.find('p.location'),
 			    value = data.location;
 			if(value){
-				$location.text(value).show().unbind('click').click(function(ev){
-					sch.openInBrowser('http://maps.google.com/?q=' + escape(value));
-				});
+				$location.children('.value').text(value).
+					unbind('click').click(function(ev){
+						sch.openInBrowser('http://maps.google.com/?q=' + escape(value));
+					});
+				$location.show();
 			}else{
 				$location.hide();
 			}
@@ -49,7 +69,7 @@ Spaz.Profile.build = function(username){
 
 		// Build website view
 		(function(){
-			var $website = $profile.children('p.website'),
+			var $website = $profile.find('p.website'),
 			    value = data.url;
 			if(value){
 				$website.text(value).show().unbind('click').click(function(ev){
@@ -60,21 +80,44 @@ Spaz.Profile.build = function(username){
 			}
 		})();
 
-		// Build counter views
-		$profile.find('.counts .following em').text(data.friends_count);
-		$profile.find('.counts .followers em').text(data.followers_count);
-		$profile.find('.counts .listed em').text(data.listed_count);
-
-		// Build tweet count view
-		$profile.find('.tweets').text(data.statuses_count +
-			(data.statuses_count > 1 ? ' tweets' : ' tweet'));
-
 		// Build bio view
 		(function(){
-			var $bio = $profile.children('p.bio'),
+			var $bio = $profile.find('p.bio'),
 			    value = data.description;
-			value ? $bio.text(value).show() : $bio.hide();
+			if(value){
+				$bio.html(sch.makeClickable(value, {
+					screenname: {
+						tpl: '<span class="username clickable" title="View profile" ' +
+							'data-username="#username#">@#username#</span>'
+					},
+					hashtag: {
+						tpl: '<span class="hashtag clickable" ' +
+							'title="Search for this hashtag" ' +
+							'data-hashtag="#hashtag_enc#">##hashtag#</span>'
+					}
+				})).show();
+			}else{
+				$bio.hide();
+			}
 		})();
+
+		// Build counter views
+		$profile.find('.counts .following em').
+			text(numberWithCommas(data.friends_count));
+		$profile.find('.counts .followers em').
+			text(numberWithCommas(data.followers_count)).
+			siblings('.label').
+			html(data.followers_count == 1 ? 'follower' : 'followers');
+		$profile.find('.counts .listed em').
+			text(numberWithCommas(data.listed_count));
+		$profile.find('.counts .tweets em').
+			text(numberWithCommas(data.statuses_count)).
+			siblings('.label').
+			html(data.statuses_count == 1 ? 'tweet' : 'tweets');
+		$profile.find('.counts .faves em').
+			text(numberWithCommas(data.favourites_count)).
+			siblings('.label').
+			html(data.favourites_count == 1 ? 'favorite' : 'favorites');
 
 		// Build follow/unfollow button
 		(function(){
@@ -92,10 +135,10 @@ Spaz.Profile.build = function(username){
 		})();
 
 		Spaz.Profile.hideLoading();
-	});
+	}
 
 	// Request data
-	Spaz.Data.getUser('@' + username, document);
+	Spaz.Data.getUser('@' + username, document, onUserDataLoad);
 
 	// Add listeners
 	$profile.undelegate();
@@ -114,8 +157,17 @@ Spaz.Profile.build = function(username){
 	$profile.delegate('ul.counts .listed', 'click', function(ev){
 		sch.openInBrowser(baseURL + username + '/lists/memberships');
 	});
+	$profile.delegate('ul.counts .faves', 'click', function(ev){
+		sch.openInBrowser(baseURL + username + '/favorites');
+	});
 	$profile.delegate('.tweets', 'click', function(ev){
 		sch.openInBrowser(baseURL + username);
+	});
+	$profile.delegate('.bio .username.clickable', 'click', function(ev){
+		Spaz.Profile.show($(ev.target).attr('data-username'));
+	});
+	$profile.delegate('.bio .hashtag.clickable', 'click', function(ev){
+		Spaz.Profile.hide();
 	});
 };
 
