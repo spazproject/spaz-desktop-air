@@ -17,8 +17,8 @@ Spaz.AccountPrefs.init = function(){
 	    $username             = $('#username'),
 	    $password             = $('#password'),
 	    $accountType          = $('#account-type'),
-	    $saveAccountButton    = $('#save_account_button'),
-	    $cancelAccountButton  = $('#cancel_account_button');
+	    $saveAccountButton    = $('#account-save'),
+	    $cancelAccountButton  = $('#account-cancel');
 	
 	$().ready(function(){
 
