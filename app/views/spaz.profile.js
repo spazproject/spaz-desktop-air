@@ -8,7 +8,7 @@ var Spaz = window.Spaz;
 Spaz.Profile.lastProfileUsername = null;
 
 Spaz.Profile.show = function(username){
-	if(username && Spaz.Profile.lastProfileUsername != username){
+	if(username && Spaz.Profile.lastProfileUsername !== username){
 		Spaz.Profile.build(username);
 		Spaz.Profile.lastProfileUsername = username;
 	}
@@ -19,7 +19,7 @@ Spaz.Profile.show = function(username){
 Spaz.Profile.hide = function(){
 	// Hides the currently visible profile, if any.
 	Spaz.UI.closePopbox();
-}
+};
 
 Spaz.Profile.build = function(username){
 	// Builds HTML for the profile window
@@ -59,7 +59,8 @@ Spaz.Profile.build = function(username){
 			if(value){
 				$location.children('.value').text(value).
 					unbind('click').click(function(ev){
-						sch.openInBrowser('http://maps.google.com/?q=' + escape(value));
+						sch.openInBrowser('http://maps.google.com/?q=' +
+							window.escape(value));
 					});
 				$location.show();
 			}else{
@@ -172,13 +173,16 @@ Spaz.Profile.build = function(username){
 };
 
 Spaz.Profile.showLoading = function(){
-	// FIXME: Implement
+	$('#popbox-content-profile').children('.content').addClass('loading');
 };
 
 Spaz.Profile.hideLoading = function(){
-	// FIXME: Implement
+	var $content = $('#popbox-content-profile').children('.content.loading');
+	if($content[0]){
+		$content.removeClass('loading');
+	}
 };
 
 
 
-})(jQuery);
+})(window.jQuery);

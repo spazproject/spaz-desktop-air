@@ -670,7 +670,8 @@ ul#account-list li:nth-child(even){
               text-align:center;
             }
             .timeline-wrapper div.loading,
-            div#popbox-content-conversation div.loading{
+            #popbox-content-conversation div.loading,
+            #popbox-content-profile div.content div.loading{
               width:50px;
               height:50px;
               margin-left:auto;
@@ -2164,7 +2165,7 @@ div.popbox-content div.content{
   border:3px solid rgb(38, 38, 38);
     /*  The border is opaque because, when translucent, the border corners
         overlap and still turn opaque. */
-  border-top:0;
+  border-top-width:0;
 }
 div.popbox-content div.controls{
   overflow: hidden;
@@ -2378,6 +2379,30 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   padding: 0;
   background: -webkit-gradient(
     linear, left top, left bottom, from(#fff), to(#ccc));
+}
+#popbox-content-profile div.content.loading{
+  background:-webkit-gradient(
+    linear, left top, left bottom,
+    from(#49525F), to(#7C8695),
+    color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+      /* See also `.timeline-wrapper`; `color-stop` values differ slightly.
+         These `color-stop` values create top and bottom inner
+         shadows. However, the shadow heights are percent-based;
+         static heights would be ideal. */
+}
+#popbox-content-profile div.content div.loading{
+  /* See also `.timeline-wrapper div.loading` */
+  display: none;
+  margin: 20px auto;
+}
+#popbox-content-profile div.content.loading div.loading{
+  display: block;
+  border-top-width: 3px;
+}
+#popbox-content-profile div.content.loading div.header,
+#popbox-content-profile div.content.loading div.body,
+#popbox-content-profile div.content.loading + div.controls{
+  display: none;
 }
 #popbox-content-profile div.content div.header{
   overflow: hidden;
