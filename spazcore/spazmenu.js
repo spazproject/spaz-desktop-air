@@ -179,12 +179,14 @@ SpazMenu.prototype.keypressHide = function(e) {
  */
 SpazMenu.prototype.destroy = function() {
 	sch.debug('SpazMenu: destroy');
+
+	var jqDoc = jQuery(document);
 	
 	// Unbind handlers
 	if(this.opts.close_on_any_click){
-		jQuery(document).unbind('click', {'spazmenu':this}, this.hide);
+		jqDoc.unbind('click', this.hide);
 	}
-	jQuery(document).unbind('keydown', {'spazmenu':this}, this.keypressHide);
+	jqDoc.unbind('keydown', this.keypressHide);
 	this.unbindToggle();
 	
 	// remove base DOM element
