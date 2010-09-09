@@ -8,9 +8,18 @@ var Spaz = window.Spaz;
 Spaz.Profile.lastProfileUsername = null;
 
 Spaz.Profile.show = function(username){
-	if(username && Spaz.Profile.lastProfileUsername !== username){
-		Spaz.Profile.build(username);
-		Spaz.Profile.lastProfileUsername = username;
+	if(username){
+		if(Spaz.Profile.lastProfileUsername === username){
+			// Repeat profile. Don't rebuild HTML, but ensure that menu listeners
+			// are still bound.
+			Spaz.Data.getUser('@' + username, document, function(userData){
+				Spaz.Profile.buildListsMenu(userData);
+				Spaz.Profile.buildToolsMenu(userData);
+			});
+		}else{
+			Spaz.Profile.build(username);
+			Spaz.Profile.lastProfileUsername = username;
+		}
 	}
 
 	Spaz.UI.openPopboxInline('#profileWindow');
@@ -21,13 +30,25 @@ Spaz.Profile.hide = function(){
 	Spaz.UI.closePopbox();
 };
 
+Spaz.Profile.isVisible = function(username){
+	var profileSelector = (
+	    	username ?
+	    		'#popbox-content-profile[data-username=' + username + ']' :
+	    		'#popbox-content-profile'
+	    );
+	return $(profileSelector).is(':visible');
+};
+
 Spaz.Profile.build = function(username){
 	// Builds HTML for the profile window
 
 	Spaz.Profile.showLoading();
 
-	var $profile = $('#popbox-content-profile').children('.content'),
+	var $profileWrapper = $('#popbox-content-profile'),
+	    $profile = $profileWrapper.children('.content'),
 	    baseURL  = Spaz.Prefs.get('twitter-base-url');
+
+	$profileWrapper.attr('data-username', username);
 
 	function numberWithCommas(num){
 		// Adapted from: http://www.mredkj.com/javascript/nfbasic.html
@@ -120,20 +141,9 @@ Spaz.Profile.build = function(username){
 			siblings('.label').
 			html(data.favourites_count == 1 ? 'favorite' : 'favorites');
 
-		// Build follow/unfollow button
-		(function(){
-			// FIXME: Implement
-		})();
-
-		// Build lists menu
-		(function(){
-			// FIXME: Implement
-		})();
-
-		// Build tools menu
-		(function(){
-			// FIXME: Implement
-		})();
+		Spaz.Profile.buildFollowButton(data);
+		Spaz.Profile.buildListsMenu(data);
+		Spaz.Profile.buildToolsMenu(data);
 
 		Spaz.Profile.hideLoading();
 	}
@@ -170,6 +180,20 @@ Spaz.Profile.build = function(username){
 	$profile.delegate('.bio .hashtag.clickable', 'click', function(ev){
 		Spaz.Profile.hide();
 	});
+};
+
+Spaz.Profile.buildFollowButton = function(userData){
+	// FIXME: Implement
+};
+
+Spaz.Profile.buildListsMenu = function(userData){
+	// FIXME: Implement
+};
+
+Spaz.Profile.buildToolsMenu = function(userData){
+	Spaz.UserMenu.create(userData);
+	Spaz.UserMenu.menu.bindToggle(
+		'#popbox-content-profile div.controls button.tools');
 };
 
 Spaz.Profile.showLoading = function(){

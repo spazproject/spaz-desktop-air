@@ -12,14 +12,14 @@ Spaz.cssFilters.filters = [
 				div.timeline-entry.dm    { display:block; }'
 	},
 	{
-		label: '@mentions and DMs',
+		label: '@Mentions and DMs',
 		id:    'view-friends-menu-replies-dms',
 		'css': 'div.timeline-entry       { display:none; }\
 				div.timeline-entry.reply { display:block; }\
 				div.timeline-entry.dm    { display:block; }'
 	},
 	{
-		label: '@mentions',
+		label: '@Mentions',
 		id:    'view-friends-menu-replies',
 		'css': 'div.timeline-entry       { display:none; }\
 				div.timeline-entry.reply { display:block; }\

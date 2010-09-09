@@ -1142,11 +1142,17 @@ div.spaz-menu{
   border-radius:4px;
     -webkit-border-radius:4px;
   cursor:default;
-  z-index:9999;
+  z-index: 99999;
 }
-div.spaz-menu#tools-menu{
-  margin-right:14px;
-  white-space:nowrap;
+div.spaz-menu#tools-menu,
+div.spaz-menu#user-menu {
+  white-space: nowrap;
+}
+div.spaz-menu#tools-menu {
+  margin-right: 14px;
+}
+div.spaz-menu#user-menu {
+  margin-right: 31px;
 }
   div.spaz-menu ul{
     margin:0;
@@ -2455,6 +2461,7 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 }
 #popbox-content-profile div.content div.body p.website{
   overflow: hidden;
+  display: inline-block;
   margin: 0;
   font-size: 0.875em;
   text-overflow: ellipsis;
