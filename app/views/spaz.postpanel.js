@@ -43,6 +43,10 @@ SpazPostPanel.prototype.prepReply = function(username, status_id, status_text) {
 	
 	var text = '@';
 	
+	if (sch.isArray(username)) {
+		username = username.join(' @');
+	}
+	
 	if (username) {
 		text += username + ' ';
 	}
