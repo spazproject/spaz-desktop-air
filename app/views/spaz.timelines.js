@@ -1400,7 +1400,7 @@ var SearchTimeline = function(args) {
 					items.push({
 						label:   'Manage saved searches&hellip; (NYI)',
 						handler: function(e){}
-					})
+					});
 
 					return items;
 				}
