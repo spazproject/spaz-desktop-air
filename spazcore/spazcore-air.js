@@ -1,4 +1,4 @@
-/*********** Built 2010-08-27 10:13:58 EDT ***********/
+/*********** Built 2010-09-06 18:23:40 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -5739,12 +5739,12 @@ sc.helpers.containsScreenName = function(str, sn) {
 };
 
 sc.helpers.extractScreenNames = function(str, tpl) {
-	var re_uname = /(^|\s|\(\[|,|\.|\()@([a-zA-Z0-9_]+)([^a-zA-Z0-9_]|$)/gi;
+    // var re_uname = /(^|\s|\(\[|,|\.|\()@([a-zA-Z0-9_]+)([^a-zA-Z0-9_]|$)/gi;
+	var re_uname = /(?:^|\s|\(\[|,|\.|\()@([a-zA-Z0-9_]+)/gi;
 	var usernames = [];
 	var ms = [];
 	while (ms = re_uname.exec(str))
 	{
-		
 		/*
 			sometimes we can end up with a null instead of a blank string,
 			so we need to force the issue in javascript.
@@ -5755,8 +5755,8 @@ sc.helpers.extractScreenNames = function(str, tpl) {
 			}
 		}
 		
-		if(ms[2] != ''){
-			usernames.push(ms[2]);
+		if(ms[1] != ''){
+			usernames.push(ms[1]);
 		}
 	}
 	return usernames;
