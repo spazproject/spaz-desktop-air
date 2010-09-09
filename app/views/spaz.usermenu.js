@@ -61,7 +61,7 @@ Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
 				items.push({
 					label:   $L('Stop following'),
 					handler: function(e, data) {
-						Spaz.Data.stopFollowingUser(userobj.screen_name);
+						Spaz.Data.removeFriend(userobj.screen_name);
 					},
 					data:    {'userid':userid}
 				});				
@@ -69,7 +69,7 @@ Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
 				items.push({
 					label:   $L('Follow'),
 					handler: function(e, data) {
-						Spaz.Data.followUser(userobj.screen_name);
+						Spaz.Data.addFriend(userobj.screen_name);
 					},
 					data:    {'userid':userid}
 				});			

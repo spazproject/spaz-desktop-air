@@ -372,7 +372,7 @@ Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
  * @param {String} userid the userid to follow
  * @returns void
  */
-Spaz.Data.followUser = function(userid) {
+Spaz.Data.addFriend = function(userid) {
 	var auth = Spaz.Prefs.getAuthObject();
 
 	sch.debug('auth:'+auth);
@@ -383,16 +383,17 @@ Spaz.Data.followUser = function(userid) {
 	var twit = new SpazTwit({'auth':auth});
 	Spaz.Data.setAPIUrl(twit);
 	
-	twit.follow(
+	twit.addFriend(
 		userid,
 		function(data) {
 			sch.error(data);
-			Spaz.UI.statusBar("Now following " + userid);
+			Spaz.UI.statusBar("Friended " + userid);
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
 			sch.error(msg);
-			Spaz.UI.statusBar("Following failed " + userid);
+			Spaz.UI.statusBar("Friending failed for " + userid);
+			sch.error(xhr.responseText);
 			Spaz.UI.hideLoading();
 		}
 	);
@@ -405,7 +406,7 @@ Spaz.Data.followUser = function(userid) {
  * @param {String} userid the userid to stop following
  * @returns void
  */
-Spaz.Data.stopFollowingUser = function(userid) {
+Spaz.Data.removeFriend = function(userid) {
 
 	Spaz.UI.statusBar('Stop following: ' + userid);
 	Spaz.UI.showLoading();
@@ -414,16 +415,17 @@ Spaz.Data.stopFollowingUser = function(userid) {
 	var twit = new SpazTwit({'auth':auth});
 	Spaz.Data.setAPIUrl(twit);
 	
-	twit.unfollow(
+	twit.removeFriend(
 		userid,
 		function(data) {
 			sch.error(data);
-			Spaz.UI.statusBar("Stopped following " + userid);
+			Spaz.UI.statusBar("Un-friended " + userid);
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
 			sch.error(msg);
-			Spaz.UI.statusBar("Unfollow failed for " + userid);
+			Spaz.UI.statusBar("Un-friending failed for " + userid);
+			sch.error(xhr.responseText);
 			Spaz.UI.hideLoading();
 		}
 	);

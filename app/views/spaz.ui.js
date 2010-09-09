@@ -801,7 +801,7 @@ Spaz.UI.buildToolsMenu = function(){
 				},
 				{
 					label:   'Follow @Spaz',
-					handler: function(){ Spaz.Data.followUser('spaz'); }
+					handler: function(){ Spaz.Data.addFriend('spaz'); }
 				}
 			);
 			return items;
