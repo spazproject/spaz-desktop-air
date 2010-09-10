@@ -186,7 +186,7 @@ var FriendsTimeline = function() {
 		'failure_event':'error_combined_timeline_data',
 		'event_target' :document,
 		
-		'refresh_time':Spaz.Prefs.get('network-refreshinterval'),
+		'refresh_time':0,
 		'max_items': (maxFT.home + maxFT.direct + maxFT.replies),
 
 		'request_data': function() {
@@ -220,7 +220,11 @@ var FriendsTimeline = function() {
             Spaz.Data.setAPIUrl(thisFT.twit);
 			
 			thisFT.twit.getCombinedTimeline(com_opts);
-
+			
+			thisFT.twit.openUserStream(function(data) {
+				sch.trigger('new_combined_timeline_data', document, [data]);
+			});
+			
 			sch.dump('REQUEST_DATA');
 		},
 		'data_success': function(e, data) {
@@ -511,6 +515,7 @@ var FriendsTimeline = function() {
 	sch.listen(this.timeline.container, sc.events.newExpandURLSuccess, this.expandURL);
 
 	this.buildViewMenu();
+
 };
 
 FriendsTimeline.prototype = new AppTimeline();
