@@ -76,8 +76,8 @@ sch.listen(document, 'verify_credentials_failed', function(e) {
 	right before we switch an account…
 */
 sch.listen(document, 'before_account_switched', function(e, account) {
-	sch.error('about to switch accounts');
-	sch.error('account:'+sch.enJSON(account));
+	sch.debug('about to switch accounts');
+	sch.debug('account:'+sch.enJSON(account));
 	if(account){
 		// `account` may be null if this is your first account, or your
 		// prefs are in a broken state.
