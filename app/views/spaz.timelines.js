@@ -174,7 +174,12 @@ var FriendsTimeline = function() {
 		'direct': Spaz.Prefs.get('timeline-direct-pager-count-max'),
 		'replies': Spaz.Prefs.get('timeline-replies-pager-count-max')
 	};
-
+	
+	var refresh_time = Spaz.Prefs.get('network-refreshinterval');
+	if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) {
+		refresh_time = 0;
+	}
+	
 	/*
 		set up the Friends timeline
 	*/
@@ -186,7 +191,7 @@ var FriendsTimeline = function() {
 		'failure_event':'error_combined_timeline_data',
 		'event_target' :document,
 		
-		'refresh_time':0,
+		'refresh_time':refresh_time,
 		'max_items': (maxFT.home + maxFT.direct + maxFT.replies),
 
 		'request_data': function() {
@@ -221,9 +226,12 @@ var FriendsTimeline = function() {
 			
 			thisFT.twit.getCombinedTimeline(com_opts);
 			
-			thisFT.twit.openUserStream(function(data) {
-				sch.trigger('new_combined_timeline_data', document, [data]);
-			});
+			
+			if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) {
+				thisFT.twit.openUserStream(function(data) {
+					sch.trigger('new_combined_timeline_data', document, [data]);
+				});
+			}
 			
 			sch.dump('REQUEST_DATA');
 		},
