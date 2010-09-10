@@ -1,4 +1,4 @@
-/*********** Built 2010-09-09 23:08:13 EDT ***********/
+/*********** Built 2010-09-10 10:33:26 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -4399,8 +4399,8 @@ sc.helpers.addListener = function(target, event_type, handler, scope, use_captur
 		sch.warn('use_capture no longer supported!');
 	}
 	
-	sch.error('listening for '+event_type);
-	sch.error('on target nodeName:'+target.nodeName);
+	sch.debug('listening for '+event_type);
+	sch.debug('on target nodeName:'+target.nodeName);
 	
 	jQuery(target).bind(event_type, handler);
 	
@@ -4421,8 +4421,8 @@ sc.helpers.addListener = function(target, event_type, handler, scope, use_captur
  */
 sc.helpers.removeListener = function(target, event_type, handler, use_capture) {
 
-	sch.error('removing listener for '+event_type);
-	sch.error('on target nodeName:'+target.nodeName);
+	sch.debug('removing listener for '+event_type);
+	sch.debug('on target nodeName:'+target.nodeName);
 
 	if (use_capture) {
 		sch.warn('use_capture no longer supported!');
@@ -14132,14 +14132,15 @@ SpazTwit.prototype.reportSpam = function(user_id, onSuccess, onFailure) {
 
 SpazTwit.prototype.openUserStream = function(onData, onFailure) {
 	var that = this;
+
+	/*
+		close existing stream
+	*/
+	this.closeUserStream();
 	
 	/*
-		set up streamer
+		open new stream
 	*/
-	if (this.userstream) {
-		this.userstream.disconnect();
-		this.userstream = null;
-	}
 	this.userstream = new SpazTwitterStream({
 		'auth'   : this.auth,
 		'onData' : function(data) {
@@ -14168,7 +14169,24 @@ SpazTwit.prototype.openUserStream = function(onData, onFailure) {
 	});
 	this.userstream.connect();
 	return this.userstream;
-}
+};
+
+
+SpazTwit.prototype.closeUserStream = function() {
+	if (this.userstream) {
+		sch.error('userstream exist… disconnecting');
+		this.userstream.disconnect();
+		this.userstream = null;
+	}
+};
+
+
+SpazTwit.prototype.userStreamExists = function() {
+	if (this.userstream) {
+		return true;
+	}
+	return false;
+};
 
 
 
@@ -14275,8 +14293,7 @@ var SpazTwitterStream = function(opts) {
 			isReading = true;
 		}
 		
-		// pump the JSON pieces through -- due to actionscript to javascript
-		// encoding issues, we have to wrap them funnily
+		// pump the JSON pieces through
 		if ((toRead > 0) && (amountRead > 0)) {
 			streamBuffer += buffer;
 			sch.debug("streamBuffer:"+streamBuffer);
