@@ -45,9 +45,9 @@ means themes must set display:block on the <body> element */
 /*
 	cheezy new items animation test
 */
-div.timeline-entry.new:first-of-type  {
+div.timeline-entry.new:nth-of-type(-n+8)  {
 	-webkit-animation-name: enterNewEntry;
-	-webkit-animation-duration: .4s;
+	-webkit-animation-duration: .7s;
 	-webkit-animation-iteration-count: 1;
 	-webkit-animation-timing-function: ease-in;
 }
