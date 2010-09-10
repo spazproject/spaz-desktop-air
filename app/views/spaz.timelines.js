@@ -168,6 +168,12 @@ var FriendsTimeline = function() {
 	    $timelineWrapper = $timeline.parent();
 	this.twit  = new SpazTwit();
 	this.shurl = new SpazShortURL();
+	
+	// set up listener to close existing user streams
+	sch.listen(document, 'before_account_switched', function(e, account) {
+		sch.error('closing user stream');
+		thisFT.twit.closeUserStream();
+	});
 
 	var maxFT = {
 		'home': Spaz.Prefs.get('timeline-home-pager-count-max'),
@@ -226,9 +232,10 @@ var FriendsTimeline = function() {
 			
 			thisFT.twit.getCombinedTimeline(com_opts);
 			
-			
-			if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) {
+			if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && !thisFT.twit.userStreamExists() ) {
+				sch.error('opening user stream');
 				thisFT.twit.openUserStream(function(data) {
+					sch.error('new stream data received');
 					sch.trigger('new_combined_timeline_data', document, [data]);
 				});
 			}
