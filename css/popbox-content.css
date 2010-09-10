@@ -246,3 +246,25 @@ div.popbox-content {
 	#imageupload-status-text {
 		margin-left:5px;
 	}
+
+
+/*
+	cheezy new items animation test
+*/
+div.timeline-entry.new {
+	-webkit-animation-name: enterNewEntry;
+	-webkit-animation-duration: .4s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-in;
+}
+
+@-webkit-keyframes enterNewEntry {
+	from {
+		opacity:0;
+/*		-webkit-transform:translateX(-200px);*/
+	}
+	to {
+		opacity:1.0;
+/*		-webkit-transform:translateX(0px);*/
+	}
+}
