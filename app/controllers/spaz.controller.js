@@ -45,6 +45,8 @@ sch.listen(document, 'before_account_switched', function(e, account) {
 		var old_acct_class = account.username + '-at-' + account.type;
 		$('#container').removeClass(old_acct_class);
 	}
+
+	Spaz.TweetsModel.reset();
 });
 
 /*
