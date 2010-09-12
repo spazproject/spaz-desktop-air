@@ -1,4 +1,4 @@
-/*********** Built 2010-09-10 17:16:00 EDT ***********/
+/*********** Built 2010-09-11 13:45:41 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -14157,8 +14157,8 @@ SpazTwit.prototype.openUserStream = function(onData, onFailure) {
 					}
 				}
 
-				if (item.recipient_id) { // is DM
-					var item = that._processItem(item, SPAZCORE_SECTION_HOME);
+				if (item.direct_message) { // is DM
+					var item = that._processItem(item.direct_message, SPAZCORE_SECTION_HOME);
 					if (onData) {
 						onData(item);
 					}
@@ -14228,7 +14228,7 @@ var SpazTwitterStream = function(opts) {
 	
 	this.opts = sch.defaults({
 		'auth'		: null,
-		'userstream_url': "https://betastream.twitter.com/2b/user.json",
+		'userstream_url': "https://userstream.twitter.com/2/user.json",
 		'onData'		: null,
 		'onError'		: null
 	}, opts);
