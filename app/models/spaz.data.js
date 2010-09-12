@@ -369,64 +369,98 @@ Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
 /**
  * Follows the passed userid
  * @param {String} userid the userid to follow
+ * @param {function} [options.onSuccess] optional callback on success
+ * @param {function} [options.onFailure] optional callback on failure
  * @returns void
  */
-Spaz.Data.addFriend = function(userid) {
+Spaz.Data.addFriend = function(userid, options) {
+	// Give UI feedback immediately
+	Spaz.UI.showLoading();
+
+	if(!options){ options = {}; }
+
 	var auth = Spaz.Prefs.getAuthObject(),
 	    twit = new SpazTwit({auth: auth});
 
-	sch.debug('auth:'+auth);
-
-	Spaz.UI.statusBar('Start following: ' + userid);
-	Spaz.UI.showLoading();
-
+	sch.debug('Spaz.Data.addFriend: auth: ' + auth);
 	Spaz.Data.setAPIUrl(twit);
 
-	twit.addFriend(
-		userid,
-		function(data) {
-			sch.error(data);
-			Spaz.UI.statusBar("Friended " + userid);
-			Spaz.UI.hideLoading();
-		},
-		function(xhr, msg, exc) {
-			sch.error(msg);
-			Spaz.UI.statusBar("Friending failed for " + userid);
-			sch.error(xhr.responseText);
-			Spaz.UI.hideLoading();
-		}
-	);
+	Spaz.Data.getUser(userid, null, function(userData){
+		var username = userData.screen_name;
+
+		sch.debug('Spaz.Data.addFriend: ' +
+			'Adding friend: ' + username + ' (' + userid + ')');
+		Spaz.UI.statusBar('Following ' + username + '&hellip;');
+
+		twit.addFriend(
+			userid,
+			function(userData) {
+				Spaz.UI.statusBar('Now following ' + username);
+				sch.debug('Spaz.Data.addFriend: ' +
+					'Added friend: ' + username + ' (' + userid + ')');
+				sch.debug(userData);
+
+				options.onSuccess && options.onSuccess(userData);
+				Spaz.UI.hideLoading();
+			},
+			function(xhr, msg, exc) {
+				Spaz.UI.statusBar(
+					'Failed to follow ' + username + '; try again later.');
+				sch.error(msg);
+				options.onFailure && options.onFailure();
+				Spaz.UI.hideLoading();
+			}
+		);
+	});
 };
 
 
 /**
  * Stop following the passed userid
  * @param {String} userid the userid to stop following
+ * @param {function} [options.onSuccess] optional callback on success
+ * @param {function} [options.onFailure] optional callback on failure
  * @returns void
  */
-Spaz.Data.removeFriend = function(userid) {
-
-	Spaz.UI.statusBar('Stop following: ' + userid);
+Spaz.Data.removeFriend = function(userid, options) {
+	// Give UI feedback immediately
 	Spaz.UI.showLoading();
+
+	if(!options){ options = {}; }
 
 	var auth = Spaz.Prefs.getAuthObject(),
 	    twit = new SpazTwit({auth: auth});
+
+	sch.debug('Spaz.Data.removeFriend: auth: ' + auth);
 	Spaz.Data.setAPIUrl(twit);
 
-	twit.removeFriend(
-		userid,
-		function(data) {
-			sch.error(data);
-			Spaz.UI.statusBar("Un-friended " + userid);
-			Spaz.UI.hideLoading();
-		},
-		function(xhr, msg, exc) {
-			sch.error(msg);
-			Spaz.UI.statusBar("Un-friending failed for " + userid);
-			sch.error(xhr.responseText);
-			Spaz.UI.hideLoading();
-		}
-	);
+	Spaz.Data.getUser(userid, null, function(userData){
+		var username = userData.screen_name;
+
+		sch.debug('Spaz.Data.removeFriend: ' +
+			'Removing friend: ' + username + ' (' + userid + ')');
+		Spaz.UI.statusBar('Unfollowing ' + username + '&hellip;');
+
+		twit.removeFriend(
+			userid,
+			function(userData) {
+				Spaz.UI.statusBar('Stopped following ' + username);
+				sch.debug('Spaz.Data.removeFriend: ' +
+					'Removed friend: ' + username + ' (' + userid + ')');
+				sch.debug(userData);
+
+				options.onSuccess && options.onSuccess(userData);
+				Spaz.UI.hideLoading();
+			},
+			function(xhr, msg, exc) {
+				Spaz.UI.statusBar(
+					'Failed to unfollow ' + username + '; try again later.');
+				sch.error(msg);
+				options.onFailure && options.onFailure();
+				Spaz.UI.hideLoading();
+			}
+		);
+	});
 };
 
 
