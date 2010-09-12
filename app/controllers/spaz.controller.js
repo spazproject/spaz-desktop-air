@@ -58,7 +58,7 @@ sch.listen(document, 'verify_credentials_succeeded', function(e) {
 	Spaz.UI.statusBar("Verification succeeded");
 	Spaz.UI.flashStatusBar();
 
-	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+	if (Spaz.Prefs.get('network-autoadjustrefreshinterval') && (Spaz.Prefs.getAccountType() != SPAZCORE_ACCOUNT_TWITTER)) {
 		Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
 	}
 });
@@ -114,7 +114,7 @@ sch.listen(document, 'account_switched', function(e, account) {
 	sch.dump('switching accounts');
 	Spaz.UI.statusBar('Switching accounts…');
 	
-	if (Spaz.Prefs.get('network-autoadjustrefreshinterval')) {
+	if (Spaz.Prefs.get('network-autoadjustrefreshinterval') && (Spaz.Prefs.getAccountType() != SPAZCORE_ACCOUNT_TWITTER)) {
 		Spaz.Data.getRateLimitInfo(function(json, cbdata) {
 			sch.error(json);
 			sch.error(cbdata);
@@ -304,7 +304,11 @@ Spaz.Controller.initIntercept = function() {
 
 			// prefs buttons handlers
 			'#prefs-autosetrefresh-button':function(e) {
-				Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
+				if (Spaz.Prefs.getAccountType() != SPAZCORE_ACCOUNT_TWITTER) {
+					Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
+				} else {
+					sch.error('ignoring network-autoadjustrefreshinterval');
+				}
 			},
 
 

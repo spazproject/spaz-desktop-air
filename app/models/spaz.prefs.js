@@ -107,6 +107,8 @@ Spaz.Prefs.defaultPreferences = {
 	'twitter-source': 'spaz',
 
 	'twitter-disable-direct-posting':false,
+	
+	'twitter-enable-userstream':true,
 
 	'dock-refreshinterval': 500,
 	'dock-displayunreadbadge': true,
@@ -597,6 +599,18 @@ Spaz.Prefs.changeMethods = {
 			return !!value;
 		}
 	},
+	
+	'twitter-enable-userstream': {
+		setUI: function(value) {
+			$('#twitter-enable-userstream').attr('checked', value);
+		},
+		onGet: function(key, value) {
+			return !!value;
+		},
+		onSet: function(key, value) {
+			return !!value;
+		}
+	},
 
 	'services-shortie-secretkey': {
 		setUI: function(value) {
@@ -1059,6 +1073,7 @@ Spaz.Prefs.initUI = function() {
 	$('#twitter-api-base-url').bind('change', Spaz.Prefs.setFromUI);
 	$('#twitter-base-url').bind('change', Spaz.Prefs.setFromUI);
 	$('#twitter-disable-direct-posting').bind('change', Spaz.Prefs.setFromUI);
+	$('#twitter-enable-userstream').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-twitpic-sharepassword').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-userappkey').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-enabled').bind('change', Spaz.Prefs.setFromUI);

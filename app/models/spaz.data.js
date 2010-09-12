@@ -610,7 +610,7 @@ Spaz.Data.updatePingFM = function(msg) {
 
 
 Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
-
+	
 	Spaz.UI.statusBar('Asking Twitter for rate limit info…');
 	Spaz.UI.showLoading();
 

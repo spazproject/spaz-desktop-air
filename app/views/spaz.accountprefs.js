@@ -8,7 +8,7 @@ Spaz.AccountPrefs.init = function(){
 	
 	this.metavals = ['twitter-api-accesskey', 'twitter-api-base-url', 'twitter-disable-direct-posting', 'services-pingfm-userappkey', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-shortie-email', 'services-shortie-secretkey', 'services-twitpic-sharepassword'];
 	
-	this.checkboxes = ['twitter-disable-direct-posting', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
+	this.checkboxes = ['twitter-disable-direct-posting', 'twitter-enable-userstream', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
 	
 	var that = this,
 	    $accountList          = $('#account-list'),

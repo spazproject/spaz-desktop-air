@@ -232,12 +232,14 @@ var FriendsTimeline = function() {
 			
 			thisFT.twit.getCombinedTimeline(com_opts);
 			
-			if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && !thisFT.twit.userStreamExists() ) {
-				sch.error('opening user stream');
-				thisFT.twit.openUserStream(function(data) {
-					sch.error('new stream data received');
-					sch.trigger('new_combined_timeline_data', document, [data]);
-				});
+			if (Spaz.Prefs.get('twitter-enable-userstream')) {
+				if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && !thisFT.twit.userStreamExists() ) {
+					sch.error('opening user stream');
+					thisFT.twit.openUserStream(function(data) {
+						sch.error('new stream data received');
+						sch.trigger('new_combined_timeline_data', document, [data]);
+					});
+				}
 			}
 			
 			sch.dump('REQUEST_DATA');
@@ -323,6 +325,11 @@ var FriendsTimeline = function() {
 				Add new items
 			*/
 			$timelineWrapper.children('.loading, .new-user').hide();
+			
+			setTimeout(function(){
+				$timeline.children('.animate-in').removeClass('animate-in');
+			}, 2000);
+			
 			thisFT.timeline.addItems(no_dupes);
 
 			/*
@@ -422,11 +429,15 @@ var FriendsTimeline = function() {
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
+			var html = '';
 			if (obj.SC_is_dm) {
-				return Spaz.Tpl.parse('timeline_entry_dm', obj);
+				html = Spaz.Tpl.parse('timeline_entry_dm', obj);
 			} else {
-				return Spaz.Tpl.parse('timeline_entry', obj);
+				html = Spaz.Tpl.parse('timeline_entry', obj);
 			}
+			$html = jQuery(html).addClass('animate-in');
+			html = $html[0].outerHTML;
+			return html;
 		}
 	});
 
