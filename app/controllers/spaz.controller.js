@@ -442,19 +442,19 @@ Spaz.Controller.initIntercept = function() {
 		})
 		.intercept('keyup', {
 			'#filter-friends':function(e) {
-				Spaz.Timelines.friends.filter( $(this).val() );
+				Spaz.Timelines.friends.filterWithDelay( $(this).val() );
 			},
 			'#filter-user':function(e) {
-				Spaz.Timelines.user.filter( $(this).val() );
+				Spaz.Timelines.user.filterWithDelay( $(this).val() );
 			},
 			'#filter-favorites':function(e) {
-				Spaz.Timelines.user.filter( $(this).val() );
+				Spaz.Timelines.user.filterWithDelay( $(this).val() );
 			},
 			'#filter-public':function(e) {
-				Spaz.Timelines['public'].filter( $(this).val() );
+				Spaz.Timelines['public'].filterWithDelay( $(this).val() );
 			},
 			'#filter-userlists':function(e) {
-				Spaz.Timelines.userlists.filter( $(this).val() );
+				Spaz.Timelines.userlists.filterWithDelay( $(this).val() );
 			}
 		});
 
