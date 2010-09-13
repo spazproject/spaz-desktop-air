@@ -260,7 +260,7 @@ var FriendsTimeline = function() {
 			if($timeline.is(':empty')){
 				$timelineWrapper.children('.loading').show();
 			}
-			Spaz.UI.statusBar('Loading friends timeline…');
+			Spaz.UI.statusBar('Loading friends timeline&hellip;');
 			Spaz.UI.showLoading();
 			sch.markAllAsRead($timeline.selector + ' div.timeline-entry');
 
@@ -464,7 +464,7 @@ var FriendsTimeline = function() {
 			Spaz.UI.hideLoading();
 		},
 		'renderer': function(obj) {
-			var html = '';
+			var html = '', $html;
 			if (obj.SC_is_dm) {
 				html = Spaz.Tpl.parse('timeline_entry_dm', obj);
 			} else {
@@ -620,7 +620,7 @@ var PublicTimeline = function(args) {
 			if($timeline.is(':empty')){
 				$timelineWrapper.children('.loading').show();
 			}
-			Spaz.UI.statusBar('Loading public timeline…');
+			Spaz.UI.statusBar('Loading public timeline&hellip;');
 			Spaz.UI.showLoading();
 			thisPT.markAsRead($timeline.selector + ' div.timeline-entry');
 
@@ -733,7 +733,7 @@ var FavoritesTimeline = function(args) {
 			if($timeline.is(':empty')){
 				$timelineWrapper.children('.loading').show();
 			}
-			Spaz.UI.statusBar('Loading favorites…');
+			Spaz.UI.statusBar('Loading favorites&hellip;');
 			Spaz.UI.showLoading();
 			thisFVT.markAsRead($timeline.selector + ' div.timeline-entry');
 
@@ -848,7 +848,7 @@ var UserTimeline = function(args) {
 			if($timeline.is(':empty')){
 				$timelineWrapper.children('.loading').show();
 			}
-			Spaz.UI.statusBar('Loading @' + username + '\'s timeline…');
+			Spaz.UI.statusBar('Loading @' + username + '\'s timeline&hellip;');
 			Spaz.UI.showLoading();
 			thisUT.markAsRead($timeline.selector + ' div.timeline-entry');
 
@@ -992,7 +992,7 @@ var UserlistsTimeline = function(args) {
 				if($timeline.is(':empty')){
 					$timelineWrapper.children('.loading').show();
 				}
-				Spaz.UI.statusBar('Loading followers list…');
+				Spaz.UI.statusBar('Loading followers list&hellip;');
 				Spaz.UI.showLoading();
 
 				$('#timeline-userlists-full-name').
@@ -1085,7 +1085,7 @@ var UserlistsTimeline = function(args) {
 		thisULT.twit.setCredentials(auth);
 		Spaz.Data.setAPIUrl(thisULT.twit);
 		sch.debug("Loading lists for @"+username+ "…");
-		Spaz.UI.statusBar("Loading lists for @"+username+ "…");
+		Spaz.UI.statusBar("Loading lists for @"+username+ "&hellip;");
 		Spaz.UI.showLoading();
 
 		function onDataRequestSuccess(data){
@@ -1222,7 +1222,7 @@ var SearchTimeline = function(args) {
 				// Give UI feedback immediately
 				$timelineWrapper.children('.intro, .empty').hide();
 				$timelineWrapper.children('.loading').show();
-				Spaz.UI.statusBar("Searching for '" + thisST.query + "'…");
+				Spaz.UI.statusBar("Searching for '" + thisST.query + "'&hellip;");
 				Spaz.UI.showLoading();
 
 				if (!thisST.lastquery) {
@@ -1331,7 +1331,7 @@ var SearchTimeline = function(args) {
 		thisST.twit.setCredentials(auth);
 		Spaz.Data.setAPIUrl(thisST.twit);
 		sch.debug('Loading saved searches for @'+username+'…');
-		Spaz.UI.statusBar('Loading saved searches for @'+username+'…');
+		Spaz.UI.statusBar('Loading saved searches for @'+username+'&hellip;');
 		Spaz.UI.showLoading();
 
 		function onDataRequestSuccess(data){
@@ -1447,7 +1447,7 @@ var FollowersTimeline = function(args) {
 			if($timeline.is(':empty')){
 				$timelineWrapper.children('.loading').show();
 			}
-			Spaz.UI.statusBar('Loading followers list…');
+			Spaz.UI.statusBar('Loading followers list&hellip;');
 			Spaz.UI.showLoading();
 			sch.markAsRead($timeline.selector + ' div.timeline-entry');
 

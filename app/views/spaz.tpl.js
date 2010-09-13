@@ -94,7 +94,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	// entryHTML += '						<!-- <a href="/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
 	// 								}
 									if (d.retweeting_user) {
-	entryHTML += '						<span class="status-rt-by">RTed by <a href="http://twitter.com/'+d.retweeting_user.screen_name+'" class="user-screen-name clickable" title="View profile" user-screen_name="'+d.retweeting_user.screen_name+'">'+d.retweeting_user.screen_name+'</a></span>';
+	entryHTML += '						<span class="status-rt-by">RTed by <span class="user-screen-name clickable" title="View profile" user-screen_name="'+d.retweeting_user.screen_name+'">'+d.retweeting_user.screen_name+'</span></span>';
 									}
 	entryHTML += '					<span class="status-source">from';
 	entryHTML += '						<span class="status-source-label">'+d.source+'</span>';
