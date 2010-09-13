@@ -72,7 +72,14 @@ Spaz.Profile.build = function(username){
 			html(username);
 
 		// Build name views
-		$profile.find('.real-name').text(data.name);
+		(function(){
+			var $realName = $profile.find('.real-name');
+			if(data.name){
+				$realName.text(data.name).show();
+			}else{
+				$realName.hide();
+			}
+		})();
 		$profile.find('.username').text('@' + username); // data.screen_name
 
 		// Build location view

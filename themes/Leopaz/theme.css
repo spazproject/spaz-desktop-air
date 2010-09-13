@@ -2438,6 +2438,9 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   display: block;
   line-height: 1.5;
 }
+#popbox-content-profile div.content div.header p.name .real-name[style^="display: none"] + .username{
+  line-height: 3;
+}
 #popbox-content-profile div.content div.body{
   overflow: auto;
   max-height: 199px;
