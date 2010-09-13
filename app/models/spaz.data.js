@@ -406,7 +406,7 @@ Spaz.Data.addFriend = function(userid, options) {
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to follow ' + username + '; try again later.');
-				sch.error(msg);
+				sch.error('Spaz.Data.addFriend: error: ' + msg);
 				options.onFailure && options.onFailure();
 				Spaz.UI.hideLoading();
 			}
@@ -455,7 +455,7 @@ Spaz.Data.removeFriend = function(userid, options) {
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to unfollow ' + username + '; try again later.');
-				sch.error(msg);
+				sch.error('Spaz.Data.removeFriend: error: ' + msg);
 				options.onFailure && options.onFailure();
 				Spaz.UI.hideLoading();
 			}

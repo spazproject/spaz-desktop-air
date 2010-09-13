@@ -8,18 +8,18 @@ var Spaz = window.Spaz;
 Spaz.Profile.lastProfileUsername = null;
 
 Spaz.Profile.show = function(username){
-	if(username){
-		if(Spaz.Profile.lastProfileUsername === username){
-			// Repeat profile. Don't rebuild HTML, but ensure that menu listeners
-			// are still bound.
-			Spaz.Data.getUser('@' + username, document, function(userData){
-				Spaz.Profile.buildListsMenu(userData);
-				Spaz.Profile.buildToolsMenu(userData);
-			});
-		}else{
-			Spaz.Profile.build(username);
-			Spaz.Profile.lastProfileUsername = username;
-		}
+	if(!username){ return; }
+
+	if(Spaz.Profile.lastProfileUsername === username){
+		// Repeat profile. Don't rebuild HTML, but ensure that menu listeners
+		// are still bound.
+		Spaz.Data.getUser('@' + username, document, function(userData){
+			Spaz.Profile.buildListsMenu(userData);
+			Spaz.Profile.buildToolsMenu(userData);
+		});
+	}else{
+		Spaz.Profile.build(username);
+		Spaz.Profile.lastProfileUsername = username;
 	}
 
 	Spaz.UI.openPopboxInline('#profileWindow');
@@ -64,6 +64,8 @@ Spaz.Profile.build = function(username){
 	}
 
 	function onUserDataLoad(data){
+		$profileWrapper.toggleClass('following', !!data.following);
+
 		// Build image view
 		$profile.find('.profile-user-image').
 			css('background-image', 'url(' + data.profile_image_url + ')').
@@ -129,19 +131,18 @@ Spaz.Profile.build = function(username){
 		$profile.find('.counts .followers em').
 			text(numberWithCommas(data.followers_count)).
 			siblings('.label').
-			html(data.followers_count == 1 ? 'follower' : 'followers');
+			html(+data.followers_count === 1 ? 'follower' : 'followers');
 		$profile.find('.counts .listed em').
 			text(numberWithCommas(data.listed_count));
 		$profile.find('.counts .tweets em').
 			text(numberWithCommas(data.statuses_count)).
 			siblings('.label').
-			html(data.statuses_count == 1 ? 'tweet' : 'tweets');
+			html(+data.statuses_count === 1 ? 'tweet' : 'tweets');
 		$profile.find('.counts .faves em').
 			text(numberWithCommas(data.favourites_count)).
 			siblings('.label').
-			html(data.favourites_count == 1 ? 'favorite' : 'favorites');
+			html(+data.favourites_count === 1 ? 'favorite' : 'favorites');
 
-		Spaz.Profile.buildFollowButton(data);
 		Spaz.Profile.buildListsMenu(data);
 		Spaz.Profile.buildToolsMenu(data);
 
@@ -180,10 +181,30 @@ Spaz.Profile.build = function(username){
 	$profile.delegate('.bio .hashtag.clickable', 'click', function(ev){
 		Spaz.Profile.hide();
 	});
+	Spaz.Profile.buildFollowButton(username);
 };
 
-Spaz.Profile.buildFollowButton = function(userData){
-	// FIXME: Implement
+Spaz.Profile.buildFollowButton = function(username){
+	var $profileWrapper = $('#popbox-content-profile'),
+	    $controls = $profileWrapper.children('.controls');
+
+	$controls.undelegate();
+	$controls.delegate('button.follow', 'click', function(ev){
+		Spaz.Data.addFriend('@' + username, {
+			onSuccess: function(userData){
+				$profileWrapper.addClass('following');
+				Spaz.Profile.buildToolsMenu(userData);
+			}
+		});
+	});
+	$controls.delegate('button.unfollow', 'click', function(ev){
+		Spaz.Data.removeFriend('@' + username, {
+			onSuccess: function(userData){
+				$profileWrapper.removeClass('following');
+				Spaz.Profile.buildToolsMenu(userData);
+			}
+		});
+	});
 };
 
 Spaz.Profile.buildListsMenu = function(userData){

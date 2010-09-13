@@ -2462,6 +2462,7 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 #popbox-content-profile div.content div.body p.website{
   overflow: hidden;
   display: inline-block;
+  max-width: 100%;
   margin: 0;
   font-size: 0.875em;
   text-overflow: ellipsis;
@@ -2505,9 +2506,14 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 #popbox-content-profile div.content div.body ul.counts li .label{
   font-size: 0.75em;
 }
-#popbox-content-profile div.controls button.follow{
+#popbox-content-profile div.controls button.follow-toggle{
   float: none;
+  display: none;
   margin-left: 0;
+}
+#popbox-content-profile:not(.following) div.controls button.follow-toggle.follow,
+#popbox-content-profile.following div.controls button.follow-toggle.unfollow{
+  display: inline-block;
 }
 #popbox-content-profile div.controls button.lists:after,
 #popbox-content-profile div.controls button.tools:after{

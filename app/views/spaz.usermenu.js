@@ -85,14 +85,16 @@ Spaz.UserMenu.create = function(userobj, menuOpts) {
 				label:   $L('Loading…'),
 				'class':'follow-toggle',
 				handler: function(e, data) {
-				    if (Spaz.UserMenu._friendshipInfo.target.followed_by) {
-				        Spaz.Data.removeFriend(data.userid);
-				    } else {
-				        Spaz.Data.addFriend(data.userid);
-				    }
+					if (Spaz.UserMenu._friendshipInfo.target.followed_by) {
+						Spaz.Data.removeFriend(data.userid);
+					} else {
+						Spaz.Data.addFriend(data.userid);
+					}
+					// Force rebuilding the follow/unfollow item
+					Spaz.UserMenu.menu.hideAndDestroy();
 				},
 				data:    {'userid':userid}
-			});			
+			});
 
 			items.push(null);
 
