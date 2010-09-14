@@ -400,14 +400,14 @@ Spaz.Data.addFriend = function(userid, options) {
 					'Added friend: ' + username + ' (' + userid + ')');
 				sch.debug(userData);
 
-				options.onSuccess && options.onSuccess(userData);
+				if(options.onSuccess){ options.onSuccess(userData); }
 				Spaz.UI.hideLoading();
 			},
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to follow ' + username + '; try again later.');
 				sch.error('Spaz.Data.addFriend: error: ' + msg);
-				options.onFailure && options.onFailure();
+				if(options.onFailure){ options.onFailure(); }
 				Spaz.UI.hideLoading();
 			}
 		);
@@ -449,14 +449,14 @@ Spaz.Data.removeFriend = function(userid, options) {
 					'Removed friend: ' + username + ' (' + userid + ')');
 				sch.debug(userData);
 
-				options.onSuccess && options.onSuccess(userData);
+				if(options.onSuccess){ options.onSuccess(userData); }
 				Spaz.UI.hideLoading();
 			},
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to unfollow ' + username + '; try again later.');
 				sch.error('Spaz.Data.removeFriend: error: ' + msg);
-				options.onFailure && options.onFailure();
+				if(options.onFailure){ options.onFailure(); }
 				Spaz.UI.hideLoading();
 			}
 		);
@@ -934,6 +934,50 @@ Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 			}
 			sch.trigger('get_one_status_succeeded', target_el, statusobj);
 		}
+	});
+
+};
+
+
+/**
+ * @param {integer|string} integer id or the username prefixed with '@'
+ * @param {DOMElement} target_el
+ * @param {function} [onSuccess] a callback function taking one argument, the API response data
+ * @param {function} [onFailure] a callback function taking no arguments
+ */
+Spaz.Data.getLists = function(userId, targetEl, onSuccess, onFailure){
+	// TODO: Cache in local storage for the current user
+	// - Clear cache when switching accounts, managing lists, etc.
+
+	if(!targetEl) { targetEl = document; }
+
+	var auth = Spaz.Prefs.getAuthObject(),
+	    twit = new SpazTwit({auth: auth});
+
+	Spaz.Data.getUser(userId, null, function(data){
+		var username = data.screen_name;
+
+		twit.setCredentials(auth);
+		Spaz.Data.setAPIUrl(twit);
+
+		sch.debug('Loading lists for @'+username+ '…');
+		Spaz.UI.statusBar('Loading lists for @'+username+ '&hellip;');
+		Spaz.UI.showLoading();
+
+		twit.getLists(username,
+			function(data){
+				sch.debug('Spaz.Data.getLists: Loaded lists for @' + username);
+				if(onSuccess){ onSuccess(data); }
+				Spaz.UI.statusBar('Loaded lists for @' + username);
+				Spaz.UI.hideLoading();
+			},
+			function(msg){
+				sch.debug('Spaz.Data.getLists: Error loading lists for @' + username);
+				if(onFailure){ onFailure(msg); }
+				Spaz.UI.statusBar('Error loading lists for @' + username);
+				Spaz.UI.hideLoading();
+			}
+		);
 	});
 
 };

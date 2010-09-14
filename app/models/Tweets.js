@@ -180,7 +180,7 @@ Tweets.prototype.getUser = function(id, onSuccess, onFailure) {
 	/*
 		if the id starts with a '@', we have a screen_name
 	*/
-	if (id.indexOf('@') === 0) {
+	if ((id+'').indexOf('@') === 0) {
 		sch.error('we have a screen name');
 		screen_name = id.slice(1);
 		sch.error('screen name is '+screen_name);	
@@ -417,7 +417,7 @@ Tweets.prototype.userExists = function(id, onComplete) {
 	/*
 		if the id starts with a '@', we have a screen_name
 	*/
-	if (id.indexOf('@') === 0) {
+	if ((id+'').indexOf('@') === 0) {
 		sch.error('we have a screen name');
 		screen_name = id.slice(1);
 		sch.error('screen name is '+screen_name);

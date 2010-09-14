@@ -1165,8 +1165,8 @@ var UserlistsTimeline = function(args) {
 			Spaz.UI.hideLoading();
 		}
 
-		thisULT.twit.getLists(
-			username, onDataRequestSuccess, onDataRequestFailure);
+		Spaz.Data.getLists('@' + username, null,
+			onDataRequestSuccess, onDataRequestFailure);
 	};
 
 	/*
