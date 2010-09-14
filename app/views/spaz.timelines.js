@@ -514,16 +514,16 @@ var FriendsTimeline = function() {
 				// TODO: After adding/deleting a custom filter, empty the menu. This
 				//       forces it to be rebuilt the next time it's shown.
 				items.push({
-					label:   'Save current filter (NYI)',
+					label:   'Save current filter (N/A)',
 					handler: function(){
-						sch.debug('Save current filter (NYI)');
+						sch.debug('Save current filter (N/A)');
 						// TODO: Implement
 					}
 				});
 				items.push({
-					label:   'Manage saved filters&hellip; (NYI)',
+					label:   'Manage saved filters&hellip; (N/A)',
 					handler: function(){
-						sch.debug('Manage saved filters (NYI)');
+						sch.debug('Manage saved filters (N/A)');
 						// TODO: Implement
 					}
 				});
@@ -1134,7 +1134,7 @@ var UserlistsTimeline = function(args) {
 
 					// Add management controls
 					// items.push({
-					// 	label:   'Add list&hellip; (NYI)',
+					// 	label:   'Add list&hellip; (N/A)',
 					// 	handler: function(e){}
 					// });
 					items.push({
@@ -1382,11 +1382,11 @@ var SearchTimeline = function(args) {
 
 					// Add management controls
 					items.push({
-						label:   'Save current search (NYI)',
+						label:   'Save current search (N/A)',
 						handler: function(e){}
 					});
 					items.push({
-						label:   'Manage saved searches&hellip; (NYI)',
+						label:   'Manage saved searches&hellip; (N/A)',
 						handler: function(e){}
 					});
 
