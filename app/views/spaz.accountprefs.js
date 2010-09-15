@@ -287,6 +287,9 @@ Spaz.AccountPrefs.init = function(){
 };
 
 Spaz.AccountPrefs.setAccount = function(account_id) {
+    
+    sch.error(account_id);
+    
 	if (account_id != Spaz.Prefs.getCurrentUserId()) {
 		sch.trigger('before_account_switched', document, Spaz.Prefs.getCurrentAccount());
 
@@ -437,7 +440,9 @@ Spaz.AccountPrefs.updateWindowTitleAndToolsMenu = function(accountId){
 		$currentAccountAvatar.html(account.username).css({
 			backgroundImage: 'url(' + user.profile_image_url + ')'
 		});
-		$menu.find('li.' + account.username + '-at-' + account.type).
+		var account_class = 'account_'+account.id;
+		sch.error(account_class);
+		$menu.find('li.' + account_class).
 			addClass('selected').siblings().removeClass('selected');
 	});
 

@@ -745,15 +745,17 @@ Spaz.UI.buildToolsMenu = function(){
 		base_class: 'spaz-menu',
 		li_class:   'spaz-menu-item',
 		items_func: function(){
-			var i, acct,
+			var i, acct, account_class,
 			    accts = Spaz.AccountPrefs.spaz_acc._accounts,
 			    items = [];
 
 			i = accts.length; while(i--){
 				acct = accts[i];
+				account_class = 'account_'+acct.id;
+        		sch.error(account_class);        		
 				items.unshift({
 					label:   acct.username + '@' + acct.type,
-					'class': acct.username + '-at-' + acct.type,
+					'class': account_class,
 					data:    { accountId: acct.id },
 					handler: function(e, data){
 						Spaz.AccountPrefs.setAccount(data.accountId);
