@@ -81,6 +81,22 @@ AppTimeline.prototype.filter = function(terms) {
 
 };
 
+AppTimeline.prototype.filterWithDelay = function(terms){
+	var _this = this;
+
+	if(this.filterTimeout){ this.clearFilterTimeout(); }
+
+	this.filterTimeout = setTimeout(function(){
+		_this.filter(terms);
+		_this.clearFilterTimeout();
+	}, 100);
+};
+
+AppTimeline.prototype.clearFilterTimeout = function(){
+	clearTimeout(this.filterTimeout);
+	delete this.filterTimeout;
+};
+
 AppTimeline.prototype.clear = function() {
 	var entry_selector = this.getEntrySelector();
 	$(entry_selector).remove();

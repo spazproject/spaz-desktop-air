@@ -2157,6 +2157,52 @@ div.popbox-content div.content{
         overlap and still turn opaque. */
   border-top:0;
 }
+div.popbox-content div.controls{
+  overflow: hidden;
+  padding: 8px;
+  background: -webkit-gradient(
+    linear, left top, left bottom,
+    from(rgba(38, 38, 38, 0.95)), to(rgba(0, 0, 0, 0.95)),
+    color-stop(0.5, rgba(19, 19, 19, 0.95)),
+    color-stop(0.5, rgba(0, 0, 0, 0.95))
+    ) no-repeat;
+  border-bottom-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+}
+div.popbox-content div.controls button{
+  float: right;
+  height: auto;
+  margin: 0 0 0 6px;
+  padding: 3px 16px;
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#828282), to(#333));
+  border: 0;
+  border-image: none;
+    -webkit-border-image: none;
+  border-radius: 1em;
+    -webkit-border-radius: 1em;
+  color: #fff;
+  font-size: 10px;
+  font-weight: normal;
+  line-height: 15px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+div.popbox-content div.controls button.primary{
+  /*  Using an attribute selector, not `#`, to match specificity of `:hover`,
+      etc. selectors below. */
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#a2a2a2), to(#636363));
+  font-size: 12px;
+}
+div.popbox-content div.controls button:hover,
+div.popbox-content div.controls button:focus,
+div.popbox-content div.controls button:active{
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#668bf4), to(#2b64f0));
+  border-color: #5c83ea transparent #1d58e7 transparent;
+}
 
 /*** Popboxes > Info ***/
 
@@ -2216,49 +2262,6 @@ div#popbox-content-account-details div.content label + input[type=password]{
 div#popbox-content-account-details div.content input#username,
 div#popbox-content-account-details div.content input#password{
   font-size:16px;
-}
-div#popbox-content-account-details div.submit{
-  overflow:hidden;
-  padding:8px 3px;
-  background:-webkit-gradient(
-    linear, left top, left bottom,
-    from(rgba(38, 38, 38, 0.95)), to(rgba(0, 0, 0, 0.95)),
-    color-stop(0.5, rgba(19, 19, 19, 0.95)),
-    color-stop(0.5, rgba(0, 0, 0, 0.95))
-    ) no-repeat;
-  border-bottom-left-radius:6px;
-    -webkit-border-bottom-left-radius:6px;
-  border-bottom-right-radius:6px;
-    -webkit-border-bottom-right-radius:6px;
-}
-div#popbox-content-account-details div.submit input{
-  float:right;
-  height:auto;
-  margin:0 0 0 3px;
-  padding:3px 16px;
-  background:-webkit-gradient(
-    linear, left top, left bottom, from(#828282), to(#333));
-  border-image:none;
-    -webkit-border-image:none;
-  border-radius:1em;
-    -webkit-border-radius:1em;
-  color:#fff;
-  font-size:10px;
-  line-height:15px;
-}
-div#popbox-content-account-details div.submit input[id=save_account_button]{
-  /*  Using an attribute selector, not `#`, to match specificity of `:hover`,
-      etc. selectors below. */
-  background:-webkit-gradient(
-    linear, left top, left bottom, from(#a2a2a2), to(#636363));
-  font-size:12px;
-}
-div#popbox-content-account-details div.submit input:hover,
-div#popbox-content-account-details div.submit input:focus,
-div#popbox-content-account-details div.submit input:active{
-  background:-webkit-gradient(
-    linear, left top, left bottom, from(#668bf4), to(#2b64f0));
-  border-color:#5c83ea transparent #1d58e7 transparent;
 }
 
 /*** Popboxes > Conversation ***/
