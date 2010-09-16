@@ -199,7 +199,7 @@ var FriendsTimeline = function() {
 	
 	var refresh_time = Spaz.Prefs.get('network-refreshinterval');
 	if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) {
-		refresh_time = 0;
+		refresh_time = -1;
 	}
 	
 	/*
