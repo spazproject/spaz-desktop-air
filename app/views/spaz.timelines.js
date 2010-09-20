@@ -262,7 +262,7 @@ var FriendsTimeline = function() {
 		},
 		'data_success': function(e, data) {
 			
-			Spaz.Hooks.trigger('friends_timeline_data_success_start', document);
+			Spaz.Hooks.trigger('friends_timeline_data_success_start');
 			
 			sch.dump('DATA_SUCCESS');
 			
@@ -407,7 +407,7 @@ var FriendsTimeline = function() {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
-			Spaz.Hooks.trigger('friends_timeline_data_success_finish', document);
+			Spaz.Hooks.trigger('friends_timeline_data_success_finish');
 
 		},
 		'data_failure': function(e, error_obj) {
@@ -592,7 +592,7 @@ var PublicTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			
-			Spaz.Hooks.trigger('public_timeline_data_success_start', document);
+			Spaz.Hooks.trigger('public_timeline_data_success_start');
 			
 			data = data.reverse();
 			var i, iMax,
@@ -635,7 +635,7 @@ var PublicTimeline = function(args) {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
-			Spaz.Hooks.trigger('public_timeline_data_success_finish', document);
+			Spaz.Hooks.trigger('public_timeline_data_success_finish');
 
 		},
 		'data_failure': function(e, error_obj) {
@@ -705,7 +705,7 @@ var FavoritesTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			
-			Spaz.Hooks.trigger('favorites_timeline_data_success_start', document);
+			Spaz.Hooks.trigger('favorites_timeline_data_success_start');
 			
 			data = data.reverse();
 			var i, iMax,
@@ -733,7 +733,7 @@ var FavoritesTimeline = function(args) {
 			/*
 				process new items through filter chain
 			*/			
-			no_dupes = Spaz.TimelineFilters.standard.processArray(no_dupes);
+			no_dupes = Spaz.TimelineFilters.other.processArray(no_dupes);
 
 			$timelineWrapper.children('.loading, .new-user').hide();
 			thisFVT.timeline.addItems(no_dupes);
@@ -750,7 +750,7 @@ var FavoritesTimeline = function(args) {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
-			Spaz.Hooks.trigger('favorites_timeline_data_success_finish', document);
+			Spaz.Hooks.trigger('favorites_timeline_data_success_finish');
 
 		},
 		'data_failure': function(e, error_obj) {
@@ -825,7 +825,7 @@ var UserTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			
-			Spaz.Hooks.trigger('user_timeline_data_success_start', document);
+			Spaz.Hooks.trigger('user_timeline_data_success_start');
 			
 			data = data.reverse();
 			var i, iMax,
@@ -852,7 +852,7 @@ var UserTimeline = function(args) {
 			/*
 				process new items through filter chain
 			*/			
-			no_dupes = Spaz.TimelineFilters.standard.processArray(no_dupes);
+			no_dupes = Spaz.TimelineFilters.other.processArray(no_dupes);
 
 			$timelineWrapper.children('.loading, .new-user').hide();
 			thisUT.timeline.addItems(no_dupes);
@@ -869,7 +869,7 @@ var UserTimeline = function(args) {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
-			Spaz.Hooks.trigger('user_timeline_data_success_finish', document);
+			Spaz.Hooks.trigger('user_timeline_data_success_finish');
 			
 		},
 		'data_failure': function(e, error_obj) {
@@ -968,7 +968,7 @@ var UserlistsTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			
-			Spaz.Hooks.trigger('lists_timeline_data_success_start', document);
+			Spaz.Hooks.trigger('lists_timeline_data_success_start');
 			
 			sch.debug('statuses:'+data.statuses);
 			sch.debug('user:'+data.user);
@@ -1019,7 +1019,7 @@ var UserlistsTimeline = function(args) {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
-			Spaz.Hooks.trigger('lists_timeline_data_success_finish', document);
+			Spaz.Hooks.trigger('lists_timeline_data_success_finish');
 			
 		},
 		'data_failure': function(e, error_obj) {
@@ -1208,7 +1208,7 @@ var SearchTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			
-			Spaz.Hooks.trigger('search_timeline_data_success_start', document);
+			Spaz.Hooks.trigger('search_timeline_data_success_start');
 			
 			sch.debug(e);
 			sch.error(data[1]);
@@ -1258,7 +1258,7 @@ var SearchTimeline = function(args) {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
-			Spaz.Hooks.trigger('search_timeline_data_success_finish', document);
+			Spaz.Hooks.trigger('search_timeline_data_success_finish');
 		},
 		'data_failure': function(e, error_obj) {
 			// Give UI feedback immediately
@@ -1421,7 +1421,7 @@ var FollowersTimeline = function(args) {
 		},
 		'data_success': function(e, data) {
 			
-			Spaz.Hooks.trigger('followers_timeline_data_success_start', document);
+			Spaz.Hooks.trigger('followers_timeline_data_success_start');
 			
 			// alert('got follower data');
 			data = data.reverse();
@@ -1453,7 +1453,7 @@ var FollowersTimeline = function(args) {
 			Spaz.UI.hideLoading();
 			Spaz.UI.statusBar("Ready");
 			
-			Spaz.Hooks.trigger('followers_timeline_data_success_finish', document);
+			Spaz.Hooks.trigger('followers_timeline_data_success_finish');
 			
 		},
 		'data_failure': function(e, error_obj) {
