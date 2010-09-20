@@ -43,11 +43,11 @@ Spaz.TimelineFilters.defaultEntryFilters = [
 	{
 		'label':'getImageURLs',
 		'func':function(d) {
-			var sui = new SpazImageURL(),
+			var sui = new SpazImageURL();
 			if (d.SC_is_retweet) {
 				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.retweeted_status.text);
 			} else {
-				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.SC_text_raw);
+				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.SC_text_raw||d.text);
 			}
 			return d
 		}
