@@ -6,6 +6,8 @@
 
 	<link rel="stylesheet" href="css/init.css" type="text/css" media="screen" charset="utf-8" />
 
+    <script type="text/javascript" src="http://scripts.embed.ly/embedly.js"></script>
+
         <!-- The AIR aliases definitions -->
 	<script src="vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 
@@ -22,9 +24,6 @@
 	
 	<!-- Keyboard shortcuts handling http://www.openjs.com/scripts/events/keyboard_shortcuts/ -->
 	<script src="vendors/shortcut.js" type="text/javascript" charset="utf-8"></script>
-
-	<!-- SlickGrid -->
-	<script src="vendors/slick.grid.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Showdown, the Markdown parser -->
 	<script src="vendors/showdown.js" type="text/javascript" charset="utf-8"></script>
@@ -51,6 +50,11 @@
 	<script src="vendors/jquery/jqXMLUtils.js"					type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/jquery/jquery.DOMWindow.js" type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/jquery/jquery.tinysort.js" type="text/javascript" charset="utf-8"></script>
+    <script src="vendors/jquery/jquery.embedly.js" type="text/javascript" charset="utf-8"></script>
+
+
+	<!-- SlickGrid -->
+	<script src="vendors/slick.grid.js" type="text/javascript" charset="utf-8"></script>
 
 
 	<!-- HTML notification library -->
@@ -108,7 +112,9 @@
 	<script src="app/libs/spaz.timers.js"	  type="text/javascript"></script>
 	<script src="app/libs/spaz.sys.js"		  type="text/javascript"></script>
 	<script src="app/libs/spaz.update.js"	  type="text/javascript"></script>
-	<script src="app/libs/spaz.debug.js"	  type="text/javascript"></script>	
+	<script src="app/libs/spaz.debug.js"	  type="text/javascript"></script>
+	<script src="app/libs/spaz.hooks.js" type="text/javascript" charset="utf-8"></script>
+	
 	<!-- Emoticons lib developed by Graeme Dunlop -->
 	<script src="app/libs/Emoticons.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/libs/Emoticons.SimpleSmileys.js" type="text/javascript" charset="utf-8"></script>
@@ -133,6 +139,7 @@
 	<script src="app/views/spaz.editor.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.tpl.js"		   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.timelines.js"  type="text/javascript" charset="utf-8"></script>
+    <script src="app/views/spaz.timelinefilters.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.postpanel.js"  type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.shortlink.js"  type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.dock.js"	   type="text/javascript"></script>
@@ -490,8 +497,6 @@
 																<option value="twitter">Twitter</option>
 																<option value="identi.ca">identi.ca</option>
 																<option value="StatusNet">StatusNet</option>
-																<option value="wordpress.com">Wordpress</option>
-																<option value="tumblr">Tumblr</option>
 																<option value="custom">Custom&hellip;</option>
 															</select>
 														</div>
