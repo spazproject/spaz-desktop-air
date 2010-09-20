@@ -10,45 +10,6 @@ if (!Spaz.Controller) Spaz.Controller = {};
 
 
 
-
-/**
- * listen for new posting responses 
- */
-sch.listen(document, 'update_succeeded', function(e, data) {
-	Spaz.postPanel.reset();
-	Spaz.postPanel.enable();
-	sch.trigger('new_combined_timeline_data', document.getElementById('timeline-friends'), data);
-	$('#entrybox')[0].blur();
-	
-	if (data[0].text.length == 140) {
-		if (Spaz.Prefs.get('sound-enabled')) {
-			if (Spaz.Prefs.get('wilhelm-enabled')) {
-				Spaz.UI.doWilhelm();
-				Spaz.UI.statusBar("Wilhelm!");
-				Spaz.UI.playSoundWilhelm();
-			} else {
-				sch.dump('not doing Wilhelm because Wilhelm disabled');
-			}
-		} else {
-			sch.dump('not doing Wilhelm because sound disabled');
-		}
-	} else {
-		Spaz.UI.playSoundUpdate();
-		Spaz.UI.statusBar("Update succeeded");
-	}
-
-	// if (Spaz.Prefs.get('services-pingfm-enabled')) {
-	//	Spaz.Data.updatePingFM(msg);
-	// }
-
-});
-sch.listen(document, 'update_failed', function(e) {
-	Spaz.postPanel.enable();
-	Spaz.UI.statusBar('Posting failed!');
-});
-
-
-
 /*
 	Handle verifyCredentials
 */
@@ -320,6 +281,7 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'a[href]':function(e) {
 				var url = $(this).attr('href');
+				e.preventDefault();
 				sch.dump('Intercepted click on <a> and sending to '+url);
 				sc.helpers.openInBrowser(url);
 				return false;
