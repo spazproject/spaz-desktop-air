@@ -99,7 +99,7 @@ Spaz.Templates.timeline_entry = function(d) {
 	entryHTML += '					<span class="status-source">from';
 	entryHTML += '						<span class="status-source-label">'+d.source+'</span>';
 	entryHTML += '					</span>';
-									if (d.user.protected) {
+									if (d.user['protected']) {
 	entryHTML += '						<span class="status-protected">&nbsp;</span>';
 									}
 	entryHTML += '				</div>';
@@ -109,9 +109,8 @@ Spaz.Templates.timeline_entry = function(d) {
 						
 	entryHTML += '	</div>';
 	entryHTML += '</div>';
-	
 	return entryHTML;
-}
+};
 
 
 Spaz.Templates.timeline_entry_dm = function(d) {
@@ -146,7 +145,7 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 	entryHTML += '	</div>';
 	entryHTML += '</div>';
 	return entryHTML;
-}
+};
 
 
 
