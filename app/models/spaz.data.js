@@ -857,6 +857,29 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 };
 
 
+Spaz.Data.getFriendshipInfo = function(target_user_id, onSuccess) {
+	
+	var auth = Spaz.Prefs.getAuthObject(),
+	    twit = new SpazTwit({auth: auth});
+	sch.debug('auth:'+auth);
+	Spaz.Data.setAPIUrl(twit);
+
+	twit.showFriendship(target_user_id, null,
+		function(data) {
+		    sch.debug('GOT RELATIONSHIP DATA:');
+			sch.debug(sch.enJSON(data.relationship));
+			if (onSuccess) {
+				onSuccess(data);
+			}
+		},
+		function(xhr, msg, exc) {
+			sch.error(msg);
+			Spaz.UI.statusBar($L('Failed getting friendship info!'));
+		}
+	);
+	
+}
+
 /**
  * @param {integer|string} user_id
  * @param {DOMElement} target_el

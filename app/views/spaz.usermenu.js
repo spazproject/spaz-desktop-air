@@ -2,6 +2,21 @@ Spaz.UserMenu = function() {};
 
 Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
 	
+	// set expando to 
+	Spaz.UserMenu._friendshipInfo = null;
+	Spaz.Data.getFriendshipInfo(
+	    userobj.id,
+        function(data) {
+            Spaz.UserMenu._friendshipInfo = data.relationship;
+            if (data.relationship.target.followed_by) {
+                jQuery('#user-menu li.follow-toggle span').html($L('Stop Following'));
+            } else {                                
+                jQuery('#user-menu li.follow-toggle span').html($L('Follow'));
+            }
+        }
+	);
+
+	
 	var userid = userobj.id;
 	sch.error('userid:'+userid);
 	sch.error('userobj.screen_name:'+userobj.screen_name);
@@ -57,23 +72,18 @@ Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
 				data:    {'userid':userid}
 			});
 			
-			if (userobj.following === true) {
-				items.push({
-					label:   $L('Stop following'),
-					handler: function(e, data) {
-						Spaz.Data.removeFriend(userobj.screen_name);
-					},
-					data:    {'userid':userid}
-				});				
-			} else {
-				items.push({
-					label:   $L('Follow'),
-					handler: function(e, data) {
-						Spaz.Data.addFriend(userobj.screen_name);
-					},
-					data:    {'userid':userid}
-				});			
-			}
+			items.push({
+				label:   $L('Loading…'),
+				'class':'follow-toggle',
+				handler: function(e, data) {
+				    if (Spaz.UserMenu._friendshipInfo.target.followed_by) {
+				        Spaz.Data.removeFriend(data.userid);
+				    } else {
+				        Spaz.Data.addFriend(data.userid);
+				    }
+				},
+				data:    {'userid':userid}
+			});			
 			
 			items.push({
 				label:   $L('Block'),
@@ -102,16 +112,13 @@ Spaz.UserMenu.prototype.createAndShow = function(event, userobj) {
  */
 jQuery(document).ready(function(){
 	jQuery('.user,.user-image,.user-screen-name,a[user-screen_name]').live('contextmenu', function(e) {
-        sch.error(this.outerHTML);
 		var userid = $(this).attr('user-id');
 		if (!userid) { userid = '@'+$(this).attr('user-screen_name'); } // try to get screen name instead
 	
 		var usermenu = new Spaz.UserMenu();
 		
-		sch.error(userid);
-
 		Spaz.Data.getUser(userid, null, function(data) {
 		    usermenu.createAndShow(e, data);
-		});
+		});		
 	});
 });
