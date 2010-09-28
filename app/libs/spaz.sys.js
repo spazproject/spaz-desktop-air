@@ -157,7 +157,7 @@ Spaz.Sys.openInBrowser = function(url) {
 
 
 Spaz.Sys.openAppStorageFolder = function() {
-	Spaz.Sys.sc.helpers.openInBrowser('file://'+air.File.applicationStorageDirectory.nativePath);
+	air.File.applicationStorageDirectory.openWithDefaultApplication(); 
 };
 
 
