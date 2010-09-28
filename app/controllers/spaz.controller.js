@@ -375,7 +375,10 @@ Spaz.Controller.initIntercept = function() {
 				sch.openInBrowser(Spaz.Prefs.get('twitter-base-url') + $(this).attr('user-screen_name'));
 			},
 			'.timeline-entry':function(e) {
-				Spaz.UI.selectEntry(this);
+				$target = jQuery(e.target);
+				if ($target.is('.timeline-entry') || $target.is('.status-text')) {
+					Spaz.UI.selectEntry(this);
+				}
 			},
 			'.timeline-entry *':function(e) { // this one needs to be last so the more specific ones above take precedence
 				var entry = $(this).parents('.timeline-entry').get(0);
