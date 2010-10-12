@@ -185,10 +185,51 @@ var FriendsTimeline = function() {
 	this.twit  = new SpazTwit();
 	this.shurl = new SpazShortURL();
 	
+	/**
+	 * helper to get refresh time. pass true or false to force state of "stream_enabled"; otherwise uses pref
+	 */
+	function getRefreshTime(stream_enabled) {
+		
+		if (!stream_enabled === true && !stream_enabled === false) {
+			stream_enabled = Spaz.Prefs.get('twitter-enable-userstream');
+		}
+		
+		var refresh_time = Spaz.Prefs.get('network-refreshinterval');
+		if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER && stream_enabled) {
+			refresh_time = -1;
+		}
+		return refresh_time;
+	}
+	
+	
 	// set up listener to close existing user streams
 	sch.listen(document, 'before_account_switched', function(e, account) {
-		sch.error('closing user stream');
+		sch.error('closing user stream because of account switch');
 		thisFT.twit.closeUserStream();
+	});
+
+	sch.listen(document, 'pref_user_stream_changed', function(e, stream_enabled) {
+		sch.error('user stream changed ===========================================');
+		sch.error("stream_enabled: "+ stream_enabled);
+		if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && stream_enabled ) {
+			sch.error('Spaz.Prefs.getAccountType():'+Spaz.Prefs.getAccountType());
+			sch.error('stream_enabled:'+stream_enabled);
+			sch.error('opening user stream');
+			thisFT.twit.openUserStream(function(data) {
+				sch.error('new stream data received');
+				sch.trigger('new_combined_timeline_data', document, [data]);
+			});
+		} else {
+			sch.error('closing user stream because of pref change');
+			thisFT.twit.closeUserStream();
+		}
+		thisFT.timeline.refresh_time = getRefreshTime(stream_enabled);
+		sch.error('refresh_time:'+thisFT.timeline.refresh_time);
+		sch.error('refreshing because of pref_user_stream_changed');
+		setTimeout(function() {
+			thisFT.refresh();
+		}, 1000); // give it a sec to refresh (so pref sets correctly and things aren't so busy)
+		sch.error('user stream listener done ======================================');
 	});
 
 	var maxFT = {
@@ -197,10 +238,6 @@ var FriendsTimeline = function() {
 		'replies': Spaz.Prefs.get('timeline-replies-pager-count-max')
 	};
 	
-	var refresh_time = Spaz.Prefs.get('network-refreshinterval');
-	if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) {
-		refresh_time = -1;
-	}
 	
 	/*
 		set up the Friends timeline
@@ -213,7 +250,7 @@ var FriendsTimeline = function() {
 		'failure_event':'error_combined_timeline_data',
 		'event_target' :document,
 		
-		'refresh_time':refresh_time,
+		'refresh_time':getRefreshTime(),
 		'max_items': (maxFT.home + maxFT.direct + maxFT.replies),
 
 		'request_data': function() {
@@ -249,8 +286,10 @@ var FriendsTimeline = function() {
 			thisFT.twit.getCombinedTimeline(com_opts);
 			
 			if (Spaz.Prefs.get('twitter-enable-userstream')) {
+				sch.error("Spaz.Prefs.get('twitter-enable-userstream'): "+Spaz.Prefs.get('twitter-enable-userstream'));
+				sch.error("typeof Spaz.Prefs.get('twitter-enable-userstream'): "+ typeof Spaz.Prefs.get('twitter-enable-userstream'));
 				if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && !thisFT.twit.userStreamExists() ) {
-					sch.error('opening user stream');
+					sch.error('opening user stream in request_data');
 					thisFT.twit.openUserStream(function(data) {
 						sch.error('new stream data received');
 						sch.trigger('new_combined_timeline_data', document, [data]);

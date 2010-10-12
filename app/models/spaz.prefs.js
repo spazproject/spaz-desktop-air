@@ -608,7 +608,9 @@ Spaz.Prefs.changeMethods = {
 			return !!value;
 		},
 		onSet: function(key, value) {
-			return !!value;
+			value = !!value;
+			sch.trigger('pref_user_stream_changed', document, value);
+			return value;
 		}
 	},
 
