@@ -544,7 +544,6 @@ FriendsTimeline.prototype = new AppTimeline();
 
 FriendsTimeline.prototype.reset = function() {
 	sch.debug('reset friends timeline');
-
 };
 
 
@@ -1519,12 +1518,12 @@ Spaz.Timelines.getTabFromTimeline = function(tab) {
 Spaz.Timelines.toggleNewUserCTAs = function(){
 	var anyAccts = Spaz.AccountPrefs.spaz_acc.getAll().length > 0,
 	    $timelines = $(
-	    	'#timelinewrapper-friends, ' +
-	    	'#timelinewrapper-user, ' +
-	    	'#timelinewrapper-favorites, ' +
-	    	'#timelinewrapper-userlists, ' +
-	    	'#timelinewrapper-public, ' +
-	    	'#timelinewrapper-followerslist');
+		'#timelinewrapper-friends, ' +
+		'#timelinewrapper-user, ' +
+		'#timelinewrapper-favorites, ' +
+		'#timelinewrapper-userlists, ' +
+		'#timelinewrapper-public, ' +
+		'#timelinewrapper-followerslist');
 	$timelines.each(function(){
 		// Timelines that require user interaction first (e.g., choose a
 		// list, enter a search query) should show the intro by default.
