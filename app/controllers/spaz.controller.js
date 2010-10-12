@@ -375,14 +375,20 @@ Spaz.Controller.initIntercept = function() {
 				sch.openInBrowser(Spaz.Prefs.get('twitter-base-url') + $(this).attr('user-screen_name'));
 			},
 			'.timeline-entry':function(e) {
+				sch.error('triggered by .timeline-entry');
 				$target = jQuery(e.target);
-				if ($target.is('.timeline-entry') || $target.is('.status-text')) {
+				if (!$target.is('a[href], .clickable, .status-action')) {
 					Spaz.UI.selectEntry(this);
 				}
 			},
 			'.timeline-entry *':function(e) { // this one needs to be last so the more specific ones above take precedence
-				var entry = $(this).parents('.timeline-entry').get(0);
-				Spaz.UI.selectEntry(entry);
+				sch.error('triggered by .timeline-entry *');
+				$target = jQuery(e.target);
+				if (!$target.is('a[href], .clickable, .status-action')) {
+					var entry = $(this).parents('.timeline-entry').get(0);
+					Spaz.UI.selectEntry(entry);
+				}
+				
 			},
 			'a .highlight':function(e) { // this is for search-highlighted links
 				if ($(this).parents('a').attr('href')) {
