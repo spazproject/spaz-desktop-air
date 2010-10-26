@@ -18,7 +18,8 @@ function SpazPostPanel(opts) {
 	this.on_over   = opts.on_over	|| this.on_over_default;
 	this.on_under  = opts.on_under	|| this.on_under_default;
 	this.on_submit = opts.on_submit || null;
-	this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_BITLY;
+	// this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_BITLY;
+	this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_JMP;
 	
 	this.irt_status = '';
 	this.irt_status_id = 0;
