@@ -49,9 +49,9 @@ Spaz.TimelineFilters.defaultEntryFilters = [
 			} else {
 				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.SC_text_raw||d.text);
 			}
-			return d
+			return d;
 		}
-	},
+	}
 ];
 
 /*
