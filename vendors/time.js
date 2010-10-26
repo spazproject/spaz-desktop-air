@@ -169,15 +169,15 @@ if (typeof window.time == 'undefined') {
     };
 
     function defaultReport(l) {
-      alert(l.join("\n"));
+      sch.error(l.join("\n"));
     }
 
     function defaultLineReport(l) {
-      alert(l);
+      sch.error(l);
     }
 
     function error(e) {
-      if (time.errors) alert(e);
+      if (time.errors) sch.error(e);
     }
     
     // required to create a brand new instance of our copied function
