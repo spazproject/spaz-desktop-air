@@ -1340,6 +1340,8 @@ div.timeline-entry:hover{
 		div.user-screen-name{
 			font-size:10px;
 			overflow:hidden;
+			text-overflow:ellipsis;
+	        white-space: nowrap;
 		}
 		div.user-screen-name:hover{
 			text-decoration:underline;
