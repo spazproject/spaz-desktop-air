@@ -1,4 +1,4 @@
-/*********** Built 2010-10-12 11:25:46 EDT ***********/
+/*********** Built 2010-11-04 10:59:25 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -11527,7 +11527,8 @@ SpazTwit.prototype.getLastId   = function(section) {
  * @param {integer} id  the new last id retrieved for this section
  */
 SpazTwit.prototype.setLastId   = function(section, id) {
-	this.data[section].lastid = parseInt(id, 10);
+	// this.data[section].lastid = parseInt(id, 10);
+	this.data[section].lastid = id;
 };
 
 
@@ -11775,7 +11776,7 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 	urls.dm_sent            = "direct_messages/sent.json";
 	urls.friendslist        = "statuses/friends.json";
 	urls.followerslist      = "statuses/followers.json";
-	urls.show_user			= "users/show/{{ID}}.json";
+	urls.show_user			= "users/show.json";
 	urls.featuredlist       = "statuses/featured.json";
 
 	// Action URLs
@@ -12351,7 +12352,7 @@ SpazTwit.prototype.search = function(query, since_id, results_per_page, page, la
 	// 	}
 	// }
 	if (!results_per_page) {
-		results_per_page = 50;
+		results_per_page = 100;
 	}
 	
 	
@@ -12470,6 +12471,10 @@ SpazTwit.prototype._processSearchTimeline = function(search_result, opts, proces
 
 
 SpazTwit.prototype._processSearchItem = function(item, section_name) {
+	
+	// remove snowflakeyness
+	item = this.deSnowFlake(item);
+	
 	
 	item.SC_timeline_from = section_name;
 	if (this.username) {
@@ -12912,6 +12917,9 @@ SpazTwit.prototype._cleanupItemArray = function(arr, max, sortfunc) {
  */
 SpazTwit.prototype._processItem = function(item, section_name) {
 	
+	// remove snowflakeyness
+	item = this.deSnowFlake(item);
+	
 	item.SC_timeline_from = section_name;
 	if (this.username) {
 		item.SC_user_received_by = this.username;
@@ -12998,6 +13006,10 @@ SpazTwit.prototype._processItem = function(item, section_name) {
  */
 SpazTwit.prototype._processUser = function(item, section_name) {
 	
+	// remove snowflakeyness
+	item = this.deSnowFlake(item);
+	
+	
 	item.SC_timeline_from = section_name;
 	if (this.username) {
 		item.SC_user_received_by = this.username;
@@ -13015,14 +13027,14 @@ SpazTwit.prototype._processUser = function(item, section_name) {
 		add unix timestamp .SC_created_at_unixtime for easier date comparison
 	*/
 	if (!item.SC_created_at_unixtime) {
-		item.SC_created_at_unixtime = sc.helpers.httpTimeToInt(item.created_at);
+		item.SC_created_at_unixtime = sc.helpers.httpTimeToInt(item.created_at)/1000;
 	}
 	
 	/*
 		add .SC_retrieved_unixtime
 	*/
 	if (!item.SC_retrieved_unixtime) {
-		item.SC_retrieved_unixtime = sc.helpers.getTimeAsInt();
+		item.SC_retrieved_unixtime = sc.helpers.getTimeAsInt()/1000;
 	}
 	
 	return item;
@@ -13173,13 +13185,18 @@ SpazTwit.prototype._callMethod = function(opts) {
 
 SpazTwit.prototype.getUser = function(user_id, onSuccess, onFailure) {
 	var data = {};
-	data['id'] = user_id;
+
+	if (sch.isString(user_id) && user_id.indexOf('@') === 0) {
+		data.screen_name = user_id.substr(1);
+	} else {
+		data.user_id = user_id;
+	}
 	
-	var url = this.getAPIURL('show_user', data);
+	var url = this.getAPIURL('show_user');
 	
 	var opts = {
 		'url':url,
-		// 'process_callback': this._processUserData,
+		'data':data,
 		'success_event_type':'get_user_succeeded',
 		'failure_event_type':'get_user_failed',
 		'success_callback':onSuccess,
@@ -13195,12 +13212,29 @@ SpazTwit.prototype.getUser = function(user_id, onSuccess, onFailure) {
 
 
 
-SpazTwit.prototype.getFriendsList = function() {
-	
+SpazTwit.prototype.getFriendsList = function(user_id, cursor, onSuccess, onFailure) {
+
 	var url = this.getAPIURL('friendslist');
-	
+
+	var data = {};
+
+    if (sch.isString(user_id) && user_id.indexOf('@') === 0) {
+		data.screen_name = user_id.substr(1);
+    } else {
+        data.user_id = user_id;
+    }
+
+    if (cursor) {
+        data.cursor = cursor;
+    } else {
+        data.cursor = -1;
+    }
+
 	var opts = {
 		'url':url,
+		'data':data,
+		'success_callback':onSuccess,
+		'failure_callback':onFailure,
 		'process_callback': this._processFriendsList,
 		'success_event_type':'get_friendslist_succeeded',
 		'failure_event_type':'get_friendslist_failed',
@@ -13213,7 +13247,7 @@ SpazTwit.prototype.getFriendsList = function() {
  * @private
  */
 SpazTwit.prototype._processFriendsList = function(ret_items, opts, processing_opts) {
-	this._processUserList(SPAZCORE_SECTION_FRIENDLIST, ret_items, opts.success_event_type, processing_opts);
+	this._processUserList(SPAZCORE_SECTION_FRIENDLIST, ret_items, opts, processing_opts);
 };
 
 
@@ -13221,11 +13255,28 @@ SpazTwit.prototype._processFriendsList = function(ret_items, opts, processing_op
 
 
 
-SpazTwit.prototype.getFollowersList = function() {
+SpazTwit.prototype.getFollowersList = function(user_id, cursor, onSuccess, onFailure) {
 	var url = this.getAPIURL('followerslist');
 	
+	var data = {};
+
+	if (sch.isString(user_id) && user_id.indexOf('@') === 0) {
+		data.screen_name = user_id.substr(1);
+	} else {
+	    data.user_id = user_id;
+	}
+	
+    if (cursor) {
+        data.cursor = cursor;
+    } else {
+        data.cursor = -1;
+    }
+
 	var opts = {
 		'url':url,
+		'data':data,
+		'success_callback':onSuccess,
+		'failure_callback':onFailure,
 		'process_callback': this._processFollowersList,
 		'success_event_type':'get_followerslist_succeeded',
 		'failure_event_type':'get_followerslist_failed',
@@ -13238,52 +13289,57 @@ SpazTwit.prototype.getFollowersList = function() {
  * @private
  */
 SpazTwit.prototype._processFollowersList = function(ret_items, opts, processing_opts) {
-	this._processUserList(SPAZCORE_SECTION_FOLLOWERSLIST, ret_items, opts.success_event_type, processing_opts);
+	this._processUserList(SPAZCORE_SECTION_FOLLOWERSLIST, ret_items, opts, processing_opts);
 };
 
 
 
 /**
- * general processor for timeline data 
+ * general processor for timeline data. results are not sorted
  * @private
  */
 SpazTwit.prototype._processUserList = function(section_name, ret_items, opts, processing_opts) {
 	
+	var users = [], next = -1, prev = -1;
+	
 	if (!processing_opts) { processing_opts = {}; }
 
-	if (ret_items.length > 0){
+    if (ret_items.users) {
+        users = ret_items.users;
+        next  = ret_items.next_cursor_str;
+        prev  = ret_items.previous_cursor_str;
+    } else {
+        users = ret_items;
+    }
+
+	if (users.length > 0){
 		/*
 			we process each item, adding some attributes and generally making it cool
 		*/
-		for (var k=0; k<ret_items.length; k++) {
-			ret_items[k] = this._processUser(ret_items[k], section_name);
-			sch.dump(ret_items[k]);
+		for (var k=0; k<users.length; k++) {
+			users[k] = this._processUser(users[k], section_name);
+			sch.dump(users[k]);
 		}
-
-		/*
-			sort items
-		*/
-		ret_items.sort(this._sortItemsAscending);
 		
 			
 		// set lastid
-		var lastid = ret_items[ret_items.length-1].id;
+		var lastid = users[users.length-1].id;
 		this.data[section_name].lastid = lastid;
 		sc.helpers.dump('this.data['+section_name+'].lastid:'+this.data[section_name].lastid);
 
 		// add new items to data.newitems array
-		this.data[section_name].newitems = ret_items;
+		this.data[section_name].newitems = users;
 
 		this._addToSectionItems(section_name, this.data[section_name].newitems);
 
 		if (opts.success_callback) {
-			opts.success_callback(this.data[section_name].newitems);
+			opts.success_callback(this.data[section_name].newitems, { 'next':next, 'prev':prev });
 		}
-		this.triggerEvent(opts.success_event_type,this.data[section_name].newitems );
+		this.triggerEvent(opts.success_event_type, this.data[section_name].newitems );
 
 	} else { // no new items, but we should fire off success anyway
 		if (opts.success_callback) {
-			opts.success_callback();
+			opts.success_callback(users, { 'next':next, 'prev':prev });
 		}
 		this.triggerEvent(opts.success_event_type);
 	}
@@ -13616,6 +13672,39 @@ SpazTwit.prototype._processUpdateReturn = function(data, opts) {
 	opts.is_update_item = true;
 	this._processTimeline(SPAZCORE_SECTION_HOME, [data], opts);
 };
+
+/**
+ * @param {string|number} user_id a string or number. if a screen name, prefix with '@'; else assumed to be a numeric user_id 
+ * @param {string} text the message to send to the user_id
+ */
+SpazTwit.prototype.sendDirectMessage = function(user_id, text, onSuccess, onFailure) {
+    var url = this.getAPIURL('dm_new');
+	
+	var data = {};
+	
+	if (sch.isString(user_id) && user_id.indexOf('@') === 0) {
+	    data.screen_name = user_id.substr(1);
+	} else {
+	    data.user_id = user_id;
+	}
+	
+	data.text = text;
+	
+	var opts = {
+		'url':url,
+		'data':data,
+		'success_callback':onSuccess,
+		'failure_callback':onFailure,
+		'success_event_type':'sent_dm_succeeded',
+		'failure_event_type':'sent_dm_failed'
+	};
+
+	/*
+		Perform a request and get true or false back
+	*/
+	var xhr = this._callMethod(opts);
+}
+
 
 /**
  * destroy/delete a status
@@ -14039,7 +14128,15 @@ SpazTwit.prototype._postProcessURL = function(url) {
  * @private
  */
 SpazTwit.prototype._sortItemsAscending = function(a,b) {
-	return (a.id - b.id);
+	if (a.id < b.id) {
+		return -1;
+	}
+
+	if (a.id > b.id) {
+		return 1;
+	}
+
+	return 0;
 };
 
 /**
@@ -14052,7 +14149,16 @@ SpazTwit.prototype._sortItemsAscending = function(a,b) {
  * @private
  */
 SpazTwit.prototype._sortItemsDescending = function(a,b) {
-	return (b.id - a.id);
+	if (a.id < b.id) {
+		return 1;
+	}
+
+	if (a.id > b.id) {
+		return -1;
+	}
+
+	return 0;
+
 };
 
 
@@ -14853,6 +14959,52 @@ SpazTwit.prototype.userStreamExists = function() {
 };
 
 
+/**
+ * scans an object for _str values and assigns them back to the non-string id properties 
+ */
+SpazTwit.prototype.deSnowFlake = function(obj) {
+	
+	if (obj.id_str) {
+		obj.id = obj.id_str;
+	}
+	
+	if (obj.in_reply_to_user_id_str) {
+		obj.in_reply_to_user_id = obj.in_reply_to_user_id_str;
+	}
+	
+	if (obj.in_reply_to_status_id_str) {
+		obj.in_reply_to_status_id = obj.in_reply_to_status_id_str;
+	}
+	
+	// search item stuff	
+	if (obj.to_user_id_str) {
+		obj.to_user_id = obj.to_user_id_str;
+	}
+
+	if (obj.from_user_id_str) {
+		obj.from_user_id = obj.from_user_id_str;
+	}
+	
+	// descend into the underworld
+	if (obj.user) {
+		obj.user = this.deSnowFlake(obj.user);
+	}
+	
+	if (obj.recipient) {
+		obj.recipient = this.deSnowFlake(obj.recipient);
+	}
+	
+	if (obj.sender) {
+		obj.sender = this.deSnowFlake(obj.sender);
+	}
+	
+	if (obj.retweeted_status) {
+		obj.retweeted_status = this.deSnowFlake(obj.retweeted_status);
+	}
+	
+	return obj;
+}
+
 
 /**
  *  
@@ -14909,9 +15061,14 @@ var SpazTwitterStream = function(opts) {
 	 */
 	this.timeout;
 
+	/**
+	 * 
+	 * @function 
+	 */
 	this.connect = function() {
 		that.restartTimer();
 		
+		// reset these values on connection
 		isReading    = false;		
 		amountRead   = 0;
 		streamBuffer = "";
@@ -14923,6 +15080,10 @@ var SpazTwitterStream = function(opts) {
 		that.stream.load(request);
 	};
 
+	/**
+	 * 
+	 * @function 
+	 */
 	this.disconnect = function() {
 		if (that.timeout) {
 			clearTimeout(that.timeout);
@@ -14932,6 +15093,10 @@ var SpazTwitterStream = function(opts) {
 		that.stream = null;
 	};
 	
+	/**
+	 * 
+	 * @function 
+	 */
 	this.restartTimer = function() {
 		sch.error('Restarting timer');
 		
@@ -14961,7 +15126,6 @@ var SpazTwitterStream = function(opts) {
 
 	function errorReceived(e) {
 		sch.error("errorReceived in stream");
-		sch.error(e);
 		if (that.opts.onError) {
 			that.opts.onError.call(this, e);
 		}
