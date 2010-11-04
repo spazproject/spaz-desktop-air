@@ -1271,10 +1271,8 @@ var SearchTimeline = function(args) {
 										
 					no_dupes.push(dataItem);
 					
-					/*
-						Save to DB via JazzRecord
-					*/
-					Spaz.TweetsModel.saveTweet(dataItem);
+					// don't save search tweets -- inconsistent data, esp for users
+					// Spaz.TweetsModel.saveTweet(dataItem);
 				}
 				
 			}
