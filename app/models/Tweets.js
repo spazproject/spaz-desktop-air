@@ -172,6 +172,7 @@ Tweets.prototype.getUser = function(id, onSuccess, onFailure) {
 			);
 		} else {
 			sch.error("Retrieved user id "+id+" from lawnchair bucket");
+			sch.error(sch.enJSON(data));
 			onSuccess(data);
 		}
 	};
