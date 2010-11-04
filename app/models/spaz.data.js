@@ -811,6 +811,9 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
  */
 Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 
+
+	sch.error('GETTING:'+user_id);
+
 	var userobj = null;
 	target_el = target_el || document;
 
@@ -849,7 +852,7 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 		}
 	}
 
-	if (sch.isString(user_id)) {
+	if (sch.isString(user_id) && user_id.indexOf('@') === 0) {
 		userobj = Spaz.TweetsModel.getUser(user_id, onComplete);
 	} else {
 		userobj = Spaz.TweetsModel.getUserById(user_id, onComplete);
