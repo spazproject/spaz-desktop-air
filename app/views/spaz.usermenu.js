@@ -1,22 +1,6 @@
 Spaz.UserMenu = {};
 
 Spaz.UserMenu.create = function(userobj, menuOpts) {
-	
-	// set expando to 
-	Spaz.UserMenu._friendshipInfo = null;
-	Spaz.Data.getFriendshipInfo(
-	    userobj.id,
-        function(data) {
-            Spaz.UserMenu._friendshipInfo = data.relationship;
-            if (data.relationship.target.followed_by) {
-                jQuery('#user-menu li.follow-toggle span').html($L('Stop Following'));
-            } else {                                
-                jQuery('#user-menu li.follow-toggle span').html($L('Follow'));
-            }
-        }
-	);
-
-	
 	var userid     = userobj.id,
 	    screenName = userobj.screen_name;
 	sch.debug('Spaz.UserMenu: userid='+userid);
@@ -63,9 +47,9 @@ Spaz.UserMenu.create = function(userobj, menuOpts) {
 			items.push({
 				label:   $L('Search for')+' '+screenName,
 				handler: function(e, data) { 
-					var search_str = "from:"+screenName+" OR to:"+screenName;
+					var searchStr = "from:"+screenName+" OR to:"+screenName;
 					Spaz.UI.showTab('tab-search');
-					Spaz.Timelines.search.searchFor(search_str);
+					Spaz.Timelines.search.searchFor(searchStr);
 					Spaz.Profile.hide();
 				},
 				data:    {'userid':userid}
@@ -83,17 +67,18 @@ Spaz.UserMenu.create = function(userobj, menuOpts) {
 
 			items.push({
 				label:   $L('Loading…'),
-				'class':'follow-toggle',
+				'class': 'follow-toggle',
 				handler: function(e, data) {
 					if (Spaz.UserMenu._friendshipInfo.target.followed_by) {
 						Spaz.Data.removeFriend(data.userid);
 					} else {
 						Spaz.Data.addFriend(data.userid);
 					}
+
 					// Force rebuilding the follow/unfollow item
 					Spaz.UserMenu.menu.hideAndDestroy();
 				},
-				data:    {'userid':userid}
+				data:    {'userid': userid}
 			});
 
 			items.push(null);
@@ -122,6 +107,19 @@ Spaz.UserMenu.show = function(event){
 	Spaz.UserMenu.menu && Spaz.UserMenu.menu.show(event);
 };
 
+Spaz.UserMenu.updateFollowToggle = function(userobj){
+	Spaz.UserMenu._friendshipInfo = null;
+	Spaz.Data.getFriendshipInfo(userobj.id, function(data) {
+		Spaz.UserMenu._friendshipInfo = data.relationship;
+		var $followToggle = jQuery('#user-menu li.follow-toggle span');
+		if (data.relationship.target.followed_by) {
+			$followToggle.html($L('Stop Following'));
+		} else {
+			$followToggle.html($L('Follow'));
+		}
+	});
+};
+
 /**
  * this onReady binds clicks on the appropriate elements to the user menu creation method 
  */
@@ -138,8 +136,9 @@ jQuery(function($){
 		}
 		sch.debug('Spaz.UserMenu: userid = ' + userid);
 
-		Spaz.Data.getUser(userid, null, function(data) {
-			Spaz.UserMenu.create(data, {close_on_any_click: true});
+		Spaz.Data.getUser(userid, null, function(userData) {
+			Spaz.UserMenu.updateFollowToggle(userData);
+			Spaz.UserMenu.create(userData, {close_on_any_click: true});
 			Spaz.UserMenu.show(e);
 		});
 	});

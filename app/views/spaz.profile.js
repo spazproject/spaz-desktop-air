@@ -221,7 +221,11 @@ Spaz.Profile.buildListsMenu = function(userData){
 Spaz.Profile.buildToolsMenu = function(userData){
 	Spaz.UserMenu.create(userData);
 	Spaz.UserMenu.menu.bindToggle(
-		'#popbox-content-profile div.controls button.tools');
+		'#popbox-content-profile div.controls button.tools', {
+		afterShow: function(){
+			Spaz.UserMenu.updateFollowToggle(userData);
+		}
+	});
 };
 
 Spaz.Profile.showLoading = function(){

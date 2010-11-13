@@ -72,7 +72,7 @@ SpazMenu = function(opts) {
  * @param {object} [showOpts.rebuild] whether to rebuild the menu contents if the menu already exists. Defaults to false.
  */
 SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
-	sch.debug('SpazMenu: create');
+	sch.debug('SpazMenu: show');
 	
 	var that = this;
 
