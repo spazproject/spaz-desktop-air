@@ -218,6 +218,9 @@ Spaz.Controller.initIntercept = function() {
 			'#filter-public':function(e) {
 				this.select();
 			},
+			'#filter-followers':function(e) {
+				this.select();
+			},
 			'.panelmenu .refresh':function(e) {
 				Spaz.UI.reloadCurrentTab(true);
 			},
@@ -392,6 +395,18 @@ Spaz.Controller.initIntercept = function() {
 				}
 				
 			},
+			'div.followers-row':function(e) {
+				sch.error('triggered by .followers-row');
+				$target = jQuery(e.target);
+				Spaz.Profile.show($(this).attr('user-screen_name'));
+			},
+			'div.followers-row *':function(e) {
+				sch.error('triggered by .followers-row *');
+				$target = jQuery(e.target);
+				sch.error('e.target.innerHTML'+e.target.innerHTML);
+				sch.error("$target.attr('user-screen_name'):"+$target.attr('user-screen_name'));
+				Spaz.Profile.show($target.attr('user-screen_name'));				
+			},
 			'a .highlight':function(e) { // this is for search-highlighted links
 				if ($(this).parents('a').attr('href')) {
 					sc.helpers.openInBrowser($(this).parents('a').attr('href'));
@@ -428,6 +443,9 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'#filter-userlists':function(e) {
 				Spaz.Timelines.userlists.filterWithDelay( $(this).val() );
+			},
+			'#filter-followers':function(e) {
+				Spaz.Timelines.followers.filterWithDelay( $(this).val() );
 			}
 		});
 
