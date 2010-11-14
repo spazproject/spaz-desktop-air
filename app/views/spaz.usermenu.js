@@ -125,7 +125,7 @@ Spaz.UserMenu.updateFollowToggle = function(userobj){
  */
 
 jQuery(function($){
-	jQuery('.user, .user-image, .user-screen-name, a[user-screen_name]').live('contextmenu', function(e) {
+	jQuery('.user, .user-image, .user-screen-name, a[user-screen_name], div.followers-row').live('contextmenu', function(e) {
 		var $this = $(this), userid;
 		sch.debug('Spaz.UserMenu: this.outerHTML = ' + this.outerHTML);
 
