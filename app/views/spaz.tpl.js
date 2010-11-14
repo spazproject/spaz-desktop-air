@@ -14,6 +14,15 @@ Spaz.Tpl.parse =function(template, data) {
 		return parsed;
 };
 
+Spaz.Tpl.parseArray    = function(template, data_array) {
+	var parsed = [];
+	for(var k=0; k < data_array.length; k++) {
+		parsed.push(Spaz.Templates[template](data_array[k]));
+	}
+	return parsed.join('\n');
+};
+
+
 
 if (!Spaz.Templates) Spaz.Templates = {};
 
@@ -151,35 +160,18 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 
 Spaz.Templates.followerslist_row = function(d) {
 	var entryHTML = '';
-	entryHTML += '<div screenname="'+d.screen_name+'" user-id="'+d.id+'" id="'+d.timeline+'-'+d.id+'" class="followerslist-row">';
-	// entryHTML += '		<span class="directory-user-followstatus" screen-name="'+d.screen_name+'" user-id="'+d.id+'"';
-	// 					if (d.is_mutual) {
-	// entryHTML += '			rel="mutual" title="'+d.screen_name+' is a mutual follower">&laquo;mutual&raquo;</span>';
-	// 					} else if (d.is_follower) {
-	// entryHTML += '			rel="follower" title="'+d.screen_name+' is following you">&laquo;follower</span>';
-	// 					} else if (d.is_following) {
-	// entryHTML += '			rel="following" title="You are following '+d.screen_name+'">friend&raquo;</span>';
-	// 					} else {
-	// entryHTML += '			>?</span>';
-	// 					}
-	entryHTML += '	<div class="directory-user">';
-	entryHTML += '		<img src="'+d.profile_image_url+'" class="user-image" user-screen_name="'+d.screen_name+'" title="View profile" />';
-	entryHTML += '		<div class="directory-user-name">';
-							if (d.name && d.name != d.screen_name) {
-	entryHTML += '				<div class="name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View profile">'+d.name+'</a></div>';
-							}
-	entryHTML += '			<div class="screen-name"><a class="inline-link" href="'+d.screen_name+'/" user-screen_name="'+d.screen_name+'" title="View profile">'+d.screen_name+'</a></div>';
-	entryHTML += '		</div>';
-	entryHTML += '		<div class="directory-user-info">';
-							if (d.location) {
-	entryHTML += '		    	<span class="directory-user-location clickable" title="View this location on a map">'+d.location+'</span>&nbsp;';
-							}
-							if (d.url) {
-	entryHTML += '		    	<a class="directory-user-homepage clickable" href="'+d.url+'" title="Open user\'s homepage">www&raquo;</a>';
-							}
-	entryHTML += '		    &nbsp;';
-	entryHTML += '    	</div>';
+	entryHTML += '<div class="followers-row" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';
+	entryHTML += '	<div class="user" id="user-'+d.id+'" user-id="'+d.id+'" user-screen_name="'+d.screen_name+'">';
+	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.profile_image_url+')" title="View profile" user-id="'+d.id+'" user-screen_name="'+d.screen_name+'">'+d.screen_name+'</div>';
 	entryHTML += '	</div>';
+    entryHTML += 	'<div class="user-name" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';
+    entryHTML += 	    '<div class="user-name-screen" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';
+    entryHTML += 	        d.screen_name;
+    entryHTML += 	    '</div>';
+    entryHTML += 	    '<div class="user-name-full" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';
+    entryHTML += 	        d.name||'';
+    entryHTML += 	    '</div>';
+    entryHTML += 	'</div>';
 	entryHTML += '</div>';
 	return entryHTML;
 };
