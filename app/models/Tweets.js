@@ -494,11 +494,11 @@ Tweets.prototype.updateOrCreate = function(userobj) {
 };
 
 Tweets.prototype.getUserById = function(userid, onSuccess, onFailure) {
-    Tweets.prototype.getUser(userid, onSuccess, onFailure);
+    this.getUser(userid, onSuccess, onFailure);
 };
 
 Tweets.prototype.getUserByName = function(userid, onSuccess, onFailure) {
-    Tweets.prototype.getUser('@'+userid, onSuccess, onFailure);
+    this.getUser('@'+userid, onSuccess, onFailure);
 };
 
 Tweets.prototype.getTweetsByUser = function(screen_name, onSuccess) {
