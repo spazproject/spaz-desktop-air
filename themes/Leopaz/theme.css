@@ -49,11 +49,13 @@ input[type=password]:focus,
 /*** Global > Zebra striping ***/
 
 div.timeline-entry:nth-child(odd),
-ul#account-list li:nth-child(odd){
+ul#account-list li:nth-child(odd),
+div.followers-row:nth-child(odd){
   background:#f1f5fa;
 }
 div.timeline-entry:nth-child(even),
-ul#account-list li:nth-child(even){
+ul#account-list li:nth-child(even),
+div.followers-row:nth-child(even){
   background:#fff;
 }
 
@@ -500,7 +502,8 @@ ul#account-list li:nth-child(even){
               #panel-friends   .panelmenu #view-friends:after,
               #panel-userlists .panelmenu #view-userlists:after,
               #panel-public    .panelmenu #trends-public:after,
-              #panel-search    .panelmenu #search-saved:after{
+              #panel-search    .panelmenu #search-saved:after,
+              #panel-followerslist    .panelmenu #view-followerslist:after{
                 content:' \025BE'; /* Down-pointing triangle */
               }
               #panel-public .panelmenu form #trends-public,
@@ -582,6 +585,14 @@ ul#account-list li:nth-child(even){
                   initially empty, which leaves the normal `.timeline-wrapper`
                   background with a floating, clearly fake "drop shadow". */
           }
+          #timelinewrapper-followerslist{
+            top:60px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+            background:transparent;
+              /*  Show the background for `#timeline-tabs-content`, not this
+                  element. This is because `#timeline-userlists-full-name` is
+                  initially empty, which leaves the normal `.timeline-wrapper`
+                  background with a floating, clearly fake "drop shadow". */
+          }
           #timelinewrapper-prefs{
             top:0px;  /* No .panelmenu */
           }
@@ -594,7 +605,7 @@ ul#account-list li:nth-child(even){
               padding:0px;
 /*              background:transparent url(images/dropshadow.png) 0 -6px repeat-x;*/
             }
-              #timeline-userlists-full-name{
+              div.timeline-subtitle{
                 position:fixed;
                 left:8px;
                 right:8px;
@@ -614,13 +625,13 @@ ul#account-list li:nth-child(even){
                 text-overflow:ellipsis;
                 white-space:nowrap;
               }
-              body:not(.active) #timeline-userlists-full-name{
+              body:not(.active) div.timeline-subtitle{
                 background:-webkit-gradient(
                   linear, left top, left bottom, from(#fff), to(#ededed));
                 border-bottom-color:#b4b4b4;
                 color:#717171;
               }
-              #timeline-userlists-full-name:empty{
+              div.timeline-subtitle:empty{
                 border-bottom:0;
               }
 
@@ -1505,72 +1516,63 @@ div.timeline-entry:hover{
       }
 
 
-.followerslist-row{
-  min-height:30px;
-	padding:8px;
+div.followers-row {
+	position:relative;
+	padding:5px;
 	clear:both;
-	font-size:8pt;
+	overflow:hidden;
 }
-  .followerslist-row .directory-user-followstatus{
-    float:right;
-    height:10px;
-    background:transparent 0 0 no-repeat;
-    text-indent:-9999em;
-  }
-  .followerslist-row .directory-user-followstatus[rel=mutual]{
-    width:60px;
-    background-image:url(images/followstatus-mutual.png);
-  }
-  .followerslist-row .directory-user-followstatus[rel=follower]{
-    width:61px;
-    background-image:url(images/followstatus-follower.png);
-  }
-  .followerslist-row .directory-user-followstatus[rel=following]{
-    width:44px;
-    background-image:url(images/followstatus-friend.png);
-  }
-	.followerslist-row .directory-user{
-	  margin-top:-2px;
+	div.followers-row div.user-name {
+	    min-height:50px; /* Pushes bg image to bottom of div.timeline-entry */
+	    margin:0 0 0 70px;
+	    padding:5px 0;
+	    background:transparent right bottom no-repeat;
+		font-size:13pt;
 	}
-		.directory-user .user-image{
-			float:left;
-			background-color:#dddddd;
-			/* border:1px solid #999; */
-			width:30px;
-			height:30px;
-			margin:0 5px 0 0;
-			-webkit-box-shadow:none;
+		div.followers-row div.user-name-screen {
+			font-size:13pt;
+			font-weight:bold;
 		}
-		.directory-user .directory-user-name{
-			font-size:16px;
-			letter-spacing:-1px;
+
+
+
+
+div.loadmore-panel{
+	margin:0;
+	padding:5px 10px;
+    background:-webkit-gradient(
+      linear, left top, left bottom, from(#d2d2d2), to(#bdbdbd));
+    border-bottom:1px solid #e1e1e1;
+    border-top:1px solid #ababab;
+    color:#6e6e6e;
+	text-align:center;
+}
+	body:not(.active) div.loadmore-panel {
+	    background:-webkit-gradient(
+	      linear, left top, left bottom, from(#e2e2e2), to(#cdcdcd));
+	    border-bottom-color:#f1f1f1;
+	    border-top-color:#bbb;
+	}
+
+	div.loadmore-panel input[type=button]{
+	    height:23px;
+	    margin:0;
+	    border-image:url(images/buttons/large.png) 0 11 0 11 repeat repeat;
+	      -webkit-border-image:url(images/buttons/large.png) 0 11 0 11 repeat repeat;
+	    border-width:0 11px;
+	    font-size:12px;
+	}
+		div.loadmore-panel input[type=button]:active{
+			border-image:url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
+			-webkit-border-image:url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
 		}
-		  .directory-user .directory-user-name div.name a{
-        color:#666;
-        font-size:0.675em;
-        font-weight:bold;
-        text-transform:uppercase;
-      }
-		.directory-user .directory-user-name,
-		.directory-user .directory-user-info{
-		  margin-left:44px;
+		body:not(.active) div.loadmore-panel input[type=button]
+		div.loadmore-panel input[type=button][disabled]{
+			border-image:url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
+			-webkit-border-image:url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
+			color:#999;
 		}
-		.directory-user .directory-user-info{
-		  margin-top:0.5em;
-		  overflow:auto;
-		}
-		  .directory-user .directory-user-info .clickable{
-		    opacity:0.75;
-		  }
-		  .directory-user .directory-user-info .clickable:hover{
-		    opacity:1;
-  		  text-decoration:underline;
-		  }
-  		.directory-user .directory-user-location,
-  		.directory-user .directory-user-homepage{
-		    float:left;
-		    clear:left;
-		  }
+
 
 
 
