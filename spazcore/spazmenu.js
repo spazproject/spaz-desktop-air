@@ -72,7 +72,6 @@ SpazMenu = function(opts) {
  * @param {object} [showOpts.rebuild] whether to rebuild the menu contents if the menu already exists. Defaults to false.
  */
 SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
-	sch.debug('SpazMenu: show');
 	
 	var that = this;
 
@@ -129,8 +128,6 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
 		}
 	}
 
-	sch.debug('SpazMenu: show');
-
 	showOpts.position = sch.defaults({
 		left: trigger_event.clientX,
 		top:  trigger_event.clientY
@@ -153,7 +150,7 @@ SpazMenu.prototype.show = function(trigger_event, itemsdata, showOpts) {
  * hides a created menu 
  */
 SpazMenu.prototype.hide = function(e) {
-	sch.debug('SpazMenu: hide');
+	
 	var that; 
 	
 	if (e && e.data && e.data.spazmenu) {
@@ -197,7 +194,6 @@ SpazMenu.prototype.destroy = function() {
  * hides AND destroys 
  */
 SpazMenu.prototype.hideAndDestroy = function(e) {
-	
 	if (this.hide && this.destroy) {
 		this.hide();
 		this.destroy();
@@ -289,7 +285,6 @@ SpazMenu.prototype.unbindToggle = function(){
  * @param {object} position {left: <number>, top: <number>}
  */
 SpazMenu.prototype._positionBeforeShow = function(position) {
-	sch.debug('SpazMenu: _positionBeforeShow');
 	jQuery('#' + this.opts.base_id).css(position);
 };
 
@@ -297,7 +292,6 @@ SpazMenu.prototype._positionBeforeShow = function(position) {
  * Repositions the menu after showing in case we're outside the viewport boundaries
  */
 SpazMenu.prototype._reposition = function(e, data) {
-	sch.debug('SpazMenu: _reposition');
 
 	var jqMenu          = jQuery('#' + this.opts.base_id),
 	    viewportWidth   = jQuery(window).width(),
