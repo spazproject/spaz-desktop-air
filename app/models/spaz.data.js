@@ -915,7 +915,7 @@ Spaz.Data.getFriendshipInfo = function(target_user_id, onSuccess) {
 		}
 	);
 	
-}
+};
 
 /**
  * @param {integer|string} user_id
