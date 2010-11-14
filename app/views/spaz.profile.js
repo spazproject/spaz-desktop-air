@@ -215,7 +215,21 @@ Spaz.Profile.buildFollowButton = function(username){
 };
 
 Spaz.Profile.buildListsMenu = function(userData){
-	// FIXME: Implement
+	Spaz.Profile.listsMenu = new SpazMenu({
+		base_id:    'profile-lists-menu',
+		base_class: 'spaz-menu',
+		li_class:   'spaz-menu-item',
+		items_func: function(itemsData){
+			var items = []
+
+			// FIXME: Implement
+			items.push({ label: 'N/A' });
+
+			return items;
+		}
+	});
+	Spaz.Profile.listsMenu.bindToggle(
+		'#popbox-content-profile div.controls button.lists');
 };
 
 Spaz.Profile.buildToolsMenu = function(userData){
