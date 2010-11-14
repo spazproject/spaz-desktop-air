@@ -340,7 +340,7 @@
 						</form>
 					</div>
 					<div id="timelinewrapper-userlists" class="timeline-wrapper">
-						<div id="timeline-userlists-full-name"></div>
+						<div id="timeline-userlists-full-name" class="timeline-subtitle"></div>
 						<div id="timeline-userlists" class="timeline"></div>
 						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
@@ -398,39 +398,29 @@
 				</div>
 
 
+
 				<!-- LIST OF PEOPLE YOU ARE FOLLOWING -->
 				<div class="TabbedPanelsContent" id="panel-followerslist">
-					<div id="menu-followerslist" class="panelmenu">
+				    
+				    <div id="menu-followerslist" class="panelmenu">
 						<form onsubmit="return false;">
-							<button id="refresh-followerslist" class="refresh" title="Refresh this list">Refresh</button>
+							<button id="refresh-followerslist"  class="refresh"  title="Refresh this timeline">Refresh</button>
+							<button id="view-followerslist"     title="Choose a list to view">View</button>
+							<input type="text" name="filter-followers" value="" id="filter-followers" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
 					<div id="timelinewrapper-followerslist" class="timeline-wrapper">
-						<div id="timeline-followerslist" class="timeline directory"></div>
-						<form onsubmit="return false;" class="load-more">
-							<input type="button" class="load-more" name="load-more-followers" value="Load more&hellip;" id="load-more-followers" />
-						</form>
+						<div id="timeline-followerslist-full-name" class="timeline-subtitle"></div>
+						<div id="timeline-followerslist" class="timeline"></div>
+						<div id="timeline-loadmore-panel" class="loadmore-panel">
+						    <input type="button" class="load-more" id="load-more-followers" name="load-more-followers" value="Load more&hellip;" id="load-more-followers" />
+						</div>
 						<div class="loading">Loading&hellip;</div>
 						<div class="new-user">
 							<span class="add-account">Set up your account</span>
 						</div>
 					</div>
 				</div>
-
-
-
-				<!-- LIST OF FOLLOWERS -->
-				<!-- <div class="TabbedPanelsContent" id="panel-followerslist">
-									<div id="menu-followerslist" class="panelmenu">
-										<form>
-											<input type="button" name="refresh-followerslist" value="Refresh" id="refresh-followerslist" class="refresh" />
-										</form>
-									</div>
-									<div id="timelinewrapper-followerslist" class="timeline-wrapper">
-										<div id="timeline-followerslist" class="timeline directory">
-										</div>
-									</div>
-								</div> -->
 
 
 
