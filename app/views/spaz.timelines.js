@@ -40,7 +40,12 @@ AppTimeline.prototype.model = {
  * This is just a wrapper to start the SpazTimeline object contained within 
  */
 AppTimeline.prototype.activate = function() {
-	this.timeline.start();
+	if (this.timeline) {
+		this.timeline.start();
+	} else {
+		this.refresh();
+	}
+	
 };
 
 /**
@@ -49,7 +54,7 @@ AppTimeline.prototype.activate = function() {
  */
 AppTimeline.prototype.filter = function(terms) {
 	var entry_selector = this.getEntrySelector();
-	sch.dump(entry_selector);
+	sch.error(entry_selector);
 	var jqentries = jQuery(entry_selector);
 	jqentries.removeClass('hidden');
 
@@ -61,7 +66,7 @@ AppTimeline.prototype.filter = function(terms) {
 				terms  = terms.slice(NEGATION_TOKEN.length);
 			}
 			var filter_re = new RegExp(sch.trim(terms), "i");
-			sch.dump(filter_re.toString());
+			sch.error(filter_re.toString());
 			jqentries.each(function(i) {
 				var jqthis = jQuery(this);
 				if (negate) {
@@ -75,7 +80,7 @@ AppTimeline.prototype.filter = function(terms) {
 				}
 			});
 		} catch(e) {
-			sch.debug(e.name+":"+e.message);
+			sch.error(e.name+":"+e.message);
 		}
 	}
 
@@ -992,7 +997,7 @@ var UserlistsTimeline = function(args) {
 				if($timeline.is(':empty')){
 					$timelineWrapper.children('.loading').show();
 				}
-				Spaz.UI.statusBar('Loading followers list&hellip;');
+				Spaz.UI.statusBar('Loading user list&hellip;');
 				Spaz.UI.showLoading();
 
 				$('#timeline-userlists-full-name').
@@ -1422,92 +1427,281 @@ SearchTimeline.prototype = new AppTimeline();
  * Followers/following timeline def 
  */
 var FollowersTimeline = function(args) {
+	
+	sch.error('Firing FollowersTimeline constructor');
 
 	var thisFLT			 = this,
 		$timeline		 = $('#timeline-followerslist'),
 		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
+	this.mode = 'friends';
+	
+	this.followers_more_cursor = -1;
+	
 	/*
-		set up the user timeline
+		redefine this to work with different selector
+	*/	
+	this.getTimelineSelector = function() {
+		return $timeline.selector;
+	};
+	
+	/*
+		redefine this to work with different selector
 	*/
-	this.timeline  = new SpazTimeline({
-		'timeline_container_selector' : $timeline.selector,
-		'entry_relative_time_selector':'.status-created-at',
+	this.getEntrySelector = function() {
+		return this.getTimelineSelector()+' div.followers-row';
+	};
+	
+	/**
+	 * build the view menu 
+	 */
+	this.buildViewMenu = function() {
 		
-		'success_event':'get_followerslist_succeeded',
-		'failure_event':'get_followerslist_failed',
-		'event_target' :document,
+		sch.error('Firing buildViewMenu');
 		
-		'refresh_time':-1, // never automatically
-		'max_items':200,
+		var i, iMax, menu,
+		    menuId  = 'view-followers-menu',
+		    $toggle = $('#view-followerslist');
 
-		'request_data': function() {
-			// Give UI feedback immediately
-			if($timeline.is(':empty')){
-				$timelineWrapper.children('.loading').show();
+		// Build menu
+		function menuItemId(id){
+			return menuId + '-' + id;
+		}
+		function onMenuItemClick(e, itemData){
+			thisULT.setlist(itemData.slug, itemData.username);
+			jQuery('#' + menuItemId(itemData.id)).addClass('selected').
+				siblings('.selected').removeClass('selected');
+		}
+		menu = thisFLT.viewmenu = new SpazMenu({
+			base_id:    menuId,
+			base_class: 'spaz-menu',
+			li_class:   'spaz-menu-item',
+			items_func: function(itemsData){
+				var i, iMax, itemData, items = [];
+				
+				items = [
+					{
+						id:'view-followerslist-friends',
+						label:$L('Friends'),
+						handler:function(){thisFLT.setMode('friends');}
+					},
+					{
+						id:'view-followerslist-followers',
+						label:$L('Followers'),
+						handler:function(){thisFLT.setMode('followers');}
+					}
+				];
+				
+				sch.error('items:' + sch.enJSON(items));
+				
+				return items;
 			}
-			Spaz.UI.statusBar('Loading followers list&hellip;');
-			Spaz.UI.showLoading();
-			sch.markAsRead($timeline.selector + ' div.timeline-entry');
+		});
+		// binds the trigger element
+		menu.bindToggle($toggle.selector, {
+			afterShow: function(e){
+				sch.error('thisFLT.mode:'+thisFLT.mode);
+				jQuery('#view-followerslist-' + thisFLT.mode).addClass('selected').
+					siblings('.selected').removeClass('selected');
+			}
+		});
+	};
 
-			thisFLT.twit.setCredentials(Spaz.Prefs.getAuthObject());
-			Spaz.Data.setAPIUrl(thisFLT.twit);
-			thisFLT.twit.getFollowersList();
-		},
-		'data_success': function(e, data) {
-			
-			Spaz.Hooks.trigger('followers_timeline_data_success_start');
-			
-			// alert('got follower data');
-			data = data.reverse();
-			
-			var i, iMax,
-			    no_dupes = [],
-			    dataItem;
-			
-			for (i = 0, iMax = data.length; i < iMax; i++){
-				dataItem = data[i];
+	this.bindListeners = function() {
+		/*
+			bind load more button
+		*/
+		jQuery('#load-more-followers').live('click', function(e) {
+			thisFLT.loadMore(e);
+		});
+
+	};
+		
+
+	
+	
+	/**
+	 * sets/changes the mode 
+	 */
+	this.setMode = function(mode) {
+		sch.error('thisFLT.mode:'+thisFLT.mode);
+		sch.error('mode:'+mode);
+
+		$('#timeline-followerslist-full-name').text(mode).show();
+
+		// no change
+		if (thisFLT.mode == mode) {
+			return;
+		}
+		
+		thisFLT.resetState();
+		
+		// change!
+		thisFLT.mode = mode;
+		thisFLT.refresh();
+	};
+	
+	
+	/**
+	 * this does the real work of loading stuff
+	 */
+	this.refresh = function(event) {
+		var thisA = this;
+
+		var method_name = 'getFriendsList';
+
+		var cursor = -1;
+		if (event !== null && (sch.isNumber(event) || sch.isString(event))) {
+			cursor = event;
+		}
+
+		sch.error('CURSOR:'+ cursor);
+
+		if (this.mode === 'friends') {
+		    method_name = 'getFriendsList';
+		} else if (this.mode === 'followers') {
+		    method_name = 'getFollowersList';
+		} else {
+		    sch.error('Invalid mode:%s', this.mode);
+		    return;
+		}
+
+
+		this.twit[method_name](
+			'@'+Spaz.Prefs.getUsername(),
+			cursor,
+			function(data, cursor_obj) {
+				
+				Spaz.Hooks.trigger('followers_timeline_data_success_start');
 				
 				/*
-					only add if it doesn't already exist
+					if mode is wrong, don't add
 				*/
-				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
+				if ( (thisA.mode === 'friends' && method_name === 'getFollowersList') ) {
+					return;
+				} else if ( (thisA.mode === 'followers' && method_name === 'getFriendsList') ) {
+					return;
+				}
+
+				if (sch.isArray(data)) {
+
+	                // data = data.reverse();
+					var no_dupes = [];
+
+					for (var i=0; i < data.length; i++) {
+						/*
+							only add if it doesn't already exist
+						*/
+						if (!thisFLT.itemExists(data[i].id)) {
+							no_dupes.push(data[i]);
+						}
+
+					};
+
+				    sch.error('no_dupes.length:', no_dupes.length);
+					$timelineWrapper.children('.loading, .new-user').hide();
 					
-					no_dupes.push(dataItem);
+					thisA.addItems(no_dupes);
+					
 					/*
-						Save to DB via JazzRecord
+						reapply filtering
 					*/
-					Spaz.Tweets.saveUser(dataItem);
+					$('#filter-followers').trigger('keyup');
+
 				}
 				
+				
+				sch.error('cursor_obj:'+sch.enJSON(cursor_obj));
+				
+				if (cursor_obj && cursor_obj.next) {
+				    thisFLT.followers_more_cursor = cursor_obj.next;
+				}
+				
+				Spaz.UI.hideLoading();
+				Spaz.UI.statusBar("Ready");
+
+				Spaz.Hooks.trigger('followers_timeline_data_success_finish');
+			},
+			function(xhr, msg, exc) {
+				sch.error('EROROR in getFriends');
+
+				var err_msg = "There was an error retrieving the user timeline";
+				Spaz.UI.statusBar(err_msg);
+				$timelineWrapper.children('.loading').hide();
+
+				Spaz.UI.hideLoading();
 			}
+		);
+		
 
-			$timelineWrapper.children('.loading, .new-user').hide();
-			thisFLT.timeline.addItems(no_dupes);
 
-			Spaz.UI.hideLoading();
-			Spaz.UI.statusBar("Ready");
-			
-			Spaz.Hooks.trigger('followers_timeline_data_success_finish');
-			
-		},
-		'data_failure': function(e, error_obj) {
-			// Give UI feedback immediately
-			var err_msg = "There was an error retrieving the user timeline";
-			Spaz.UI.statusBar(err_msg);
-			$timelineWrapper.children('.loading').hide();
+	};
 
-			/*
-				Update relative dates
-			*/
-			sch.updateRelativeTimes($timeline.selector + ' a.status-created-at', 'data-created-at');
-			Spaz.UI.hideLoading();
-		},
-		'renderer': function(obj) {
-			return Spaz.Tpl.parse('followerslist_row', obj);
+	/**
+	 * triggered by the "load mode" button
+	 */
+	this.loadMore = function(event) {
+
+	    sch.error('this.followers_more_cursor:'+this.followers_more_cursor);
+
+		this.refresh(this.followers_more_cursor);
+	};
+	
+	/**
+	 * add items to timeline 
+	 */
+	this.addItems = function(items) {
+		var html_items = this.renderItems(items);
+		$timeline.append(html_items);
+	};
+	
+	/**
+	 * check if this item already exists 
+	 */
+	this.itemExists = function(id) {
+		sch.error('Looking for:'+id );
+		if (jQuery('div.followers-row[data-user-id="'+id+'"]', $timeline).length > 0) {
+			sch.error('found:'+id );
+			return true;
 		}
+		sch.error('Did not find:'+id );
+		return false;
+	};
+	
+	/**
+	 * render the items for the timeline 
+	 */
+	this.renderItems = function(items) {
+		return Spaz.Tpl.parseArray('followerslist_row', items);
+	};
+	
+	/**
+	 * Reset the state 
+	 */
+	this.resetState = function() {
+	    this.followers_more_cursor = -1;
+		this.mode = 'friends';
+		$timeline.empty();
+	};
+	
+	
+	this.buildViewMenu();
+	
+	this.bindListeners();
+	
+	/*
+		listen for account switches
+	*/
+	jQuery(document).bind('before_account_switched', function(e, account){
+		thisFLT.viewmenu.hideAndDestroy();
+		thisFLT.resetState();
 	});
+	
+	/*
+		after all these definitions, set the mode
+	*/
+	this.setMode('friends');
 	
 };
 
