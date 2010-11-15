@@ -143,6 +143,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
+				sch.error('tooltip from a[href]');
 				tt.showURLPreview(href);
 			},
 			'a .highlight':function(e) {
@@ -156,10 +157,14 @@ Spaz.Controller.initIntercept = function() {
 				}
 			},
 			'a[title], .clickable[title]':function(e) {
+				if ($(this).attr('href')) { // don't fire if we have an href -- already handled
+					return;
+				}
 				var tt = new Spaz_Tooltip($(this).attr('title'), {
 					'e'		:e,
 					'trigger':this
 				});
+				sch.error('tooltip from a[title]');
 				tt.show();
 			},
 			'a[user-screen_name]':function(e) {
