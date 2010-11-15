@@ -50,6 +50,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 	}, opts);
 	
 	if (!this.uuid) {
+		sch.error('UUID was not set');
 	    this.setUUID(opts.uuid);
 	}
 	
@@ -145,7 +146,7 @@ Spaz_Tooltip.prototype.showIRT = function(irt_id) {
 	content += "  <div><strong class='user-name'>In reply to…</strong></div>";
 	content += '  <div class="irt"></div>';
 	content += "</div>";
-	this.setContent(content);
+	this.setContent(content, uuid);
 	this.show();
 
 	sch.listen(this.trigger, 'get_one_status_succeeded', function(e, d) {
@@ -176,7 +177,7 @@ Spaz_Tooltip.prototype.showUser = function(user_id) {
 	var uuid = sch.UUID();
 	this.setUUID(uuid);
 
-	thisTT.setContent(content);
+	thisTT.setContent(content, uuid);
 	thisTT.show();
 	
 	sch.listen(this.trigger, 'get_user_succeeded', function(e, d){
@@ -215,7 +216,9 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 	var thisTT = this;
 	
 	var display_url = sch.escape_html(url);
+	sch.error('display_url:'+display_url);
 	var uuid = sch.UUID();
+	sch.error('uuid is:'+uuid);
 	this.setUUID(uuid);
 	
 	if (display_url.length > 40) {
@@ -226,10 +229,11 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 	content += '  <div class="website-title"></div>';
 	content += '  <div class="website-url">'+display_url+'</div>';
 	content += '</div>';
-	this.setContent(content);
+	this.setContent(content, uuid);
 	this.show();
 	
 	$.get('http://api.getspaz.com/url/title.json', {'url':url}, function(data){
+		sch.error('data:'+data);
 		if (sch.isString(data)) {
 			data = sch.deJSON(data);
 		}
@@ -257,10 +261,9 @@ Spaz_Tooltip.prototype.setTrigger = function(trigger_element) {
 };
 
 Spaz_Tooltip.prototype.setContent = function(content, uuid) {
-    
-    
-    sch.error('setContent for '+ uuid + " to " + this.uuid);
-    sch.error(this.jqtt.attr('title'));
+    sch.error('setContent for '+ uuid + " to " + content);
+	sch.error('uuid is '+uuid+'; this.uuid:'+this.uuid);
+    sch.error("this.jqtt.attr('title'):"+this.jqtt.attr('title'));
     if (uuid && this.uuid && (this.uuid != uuid || this.jqtt.attr('title') !== uuid)) {
         sch.error('UUID did not match, not updating');
         return;
