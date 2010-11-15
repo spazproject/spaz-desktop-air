@@ -55,7 +55,7 @@ Spaz.UserMenu.create = function(userobj, menuOpts) {
 				data:    {'userid':userid}
 			});
 			items.push({
-				label:   $L('Filter by')+' "'+screenName+'"',
+				label:   $L('Filter by')+' &ldquo;'+screenName+'&rdquo;',
 				handler: function(e, data) {
 					jQuery('#filter-friends').val(screenName).trigger('keyup');
 					Spaz.UI.showTab('tab-friends');
