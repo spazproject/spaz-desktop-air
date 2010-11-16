@@ -160,9 +160,9 @@ Spaz.Templates.timeline_entry_dm = function(d) {
 
 Spaz.Templates.followerslist_row = function(d) {
 	var entryHTML = '';
-	entryHTML += '<div class="followers-row" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';
+	entryHTML += '<div class="followers-row clickable" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';
 	entryHTML += '	<div class="user" id="user-'+d.id+'" user-id="'+d.id+'" user-screen_name="'+d.screen_name+'">';
-	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.profile_image_url+')" title="View profile" user-id="'+d.id+'" user-screen_name="'+d.screen_name+'">'+d.screen_name+'</div>';
+	entryHTML += '		<div class="user-image" style="background-image:url('+d.profile_image_url+')" title="View profile" user-id="'+d.id+'" user-screen_name="'+d.screen_name+'">'+d.screen_name+'</div>';
 	entryHTML += '	</div>';
     entryHTML += 	'<div class="user-name" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';
     entryHTML += 	    '<div class="user-name-screen" data-user-screen_name="'+d.screen_name+'" data-user-id="'+d.id+'" user-screen_name="'+d.screen_name+'" user-id="'+d.id+'">';

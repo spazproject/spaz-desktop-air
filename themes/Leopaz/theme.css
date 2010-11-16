@@ -450,9 +450,13 @@ div.followers-row:nth-child(even){
 					/*
 						The panelmenu appears at the top of each timeline
 					*/
-          .panelmenu{
-            height:34px;
-            background:#000 url(images/panel-menu/bg.png) 0 0 repeat-x;
+          .panelmenu {
+            position: relative;
+            height: 34px;
+            background: #000 url(images/panel-menu/bg.png) 0 0 repeat-x;
+            box-shadow:           0 0 10px rgba(0, 0, 0, 0.25);
+              -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+            z-index: 1; /* = div.timeline-subtitle z-index */
           }
             .panelmenu form{
               position:relative;
@@ -597,42 +601,50 @@ div.followers-row:nth-child(even){
             top:0px;  /* No .panelmenu */
           }
 
-						/*
-							The .timeline divs are all inside .TabbedPanelsContent divs
-						*/
+            /*
+              The .timeline divs are all inside .TabbedPanelsContent divs
+            */
             div.timeline {
-              margin:0px;
-              padding:0px;
+              margin: 0px;
+              padding: 0px;
 /*              background:transparent url(images/dropshadow.png) 0 -6px repeat-x;*/
+              z-index: 0;
             }
-              div.timeline-subtitle{
-                position:fixed;
-                left:8px;
-                right:8px;
-                top:96px;
-                min-width:281px; /* = #container min-width - horizontal padding */
-                margin:-1px 0 0;
-                padding:0 8px;
-                overflow:hidden;
-                background:-webkit-gradient(
-                  linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
-                border-bottom:1px solid #c0c7cf;
-                color:#202020;
-                cursor:default;
-                font-size:11px;
-                font-weight:bold;
-                line-height:25px;
-                text-overflow:ellipsis;
-                white-space:nowrap;
-              }
-              body:not(.active) div.timeline-subtitle{
-                background:-webkit-gradient(
-                  linear, left top, left bottom, from(#fff), to(#ededed));
-                border-bottom-color:#b4b4b4;
-                color:#717171;
-              }
-              div.timeline-subtitle:empty{
-                border-bottom:0;
+            div.timeline-subtitle {
+              position: fixed;
+              left: 8px;
+              right: 8px;
+              top: 96px;
+              overflow: hidden;
+              min-width: 281px; /* = #container min-width - horizontal padding */
+              margin: -1px 0 0;
+              padding: 0 8px;
+              background: -webkit-gradient(
+                linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+              border-bottom: 1px solid #c0c7cf;
+              box-shadow:           0 0 5px rgba(0, 0, 0, 0.25);
+                -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+              color: #738292;
+              cursor: default;
+              font-size: 11px;
+              font-weight: bold;
+              line-height: 25px;
+              text-overflow: ellipsis;
+              text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+              white-space: nowrap;
+              z-index: 1; /* .panelmenu z-index */
+            }
+            body:not(.active) div.timeline-subtitle {
+              background: -webkit-gradient(
+                linear, left top, left bottom, from(#fff), to(#ededed));
+              border-bottom-color: #b4b4b4;
+              color: #626262;
+            }
+            div.timeline-subtitle:empty{
+              border-bottom:0;
+            }
+              div#panel-followerslist div.timeline-subtitle {
+                text-transform: uppercase;
               }
 
 							/*
@@ -915,26 +927,32 @@ div.followers-row:nth-child(even){
         text-shadow:0 1px 1px #fff;
         white-space:nowrap;
       }
-      #entryform-drafts input{
-        float:right;
-        padding:3px 0.75em;
-        background:-webkit-gradient(
+      body:not(.active) #entryform-drafts {
+        background: #ededed;
+        border-top-color: #b4b4b4;
+      }
+      #entryform-drafts input {
+        float: right;
+        padding: 3px 0.75em;
+        background: -webkit-gradient(
           linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
-        border:1px solid #a5a5a5;
-        border-radius:1em;
-          -webkit-border-radius:1em;
-        font-weight:normal;
+        border: 1px solid #a5a5a5;
+        border-radius:           1em;
+          -webkit-border-radius: 1em;
+        box-shadow:           0 1px 0 rgba(255, 255, 255, 0.75);
+          -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+        font-weight: normal;
+        text-shadow: 0 1px 1px #fff;
       }
-      body:not(.active) #entryform-drafts input{
-        border-color:#d8d8d8;
-        color:rgba(0, 0, 0, 0.5);
-        text-shadow:0 1px 1px #fff;
+      body:not(.active) #entryform-drafts input {
+        border-color: #d8d8d8;
+        color: rgba(0, 0, 0, 0.5);
       }
-      #entryform-drafts input:active{
-        background:-webkit-gradient(
+      #entryform-drafts input:active {
+        background: -webkit-gradient(
           linear, left top, left bottom, from(#a7a7a7), to(#d2d2d2),
           color-stop(0.1, #c2c2c2));
-        border-color:#767676;
+        border-color: #767676;
       }
 
 			/*
@@ -1516,62 +1534,65 @@ div.timeline-entry:hover{
 
 
 div.followers-row {
-	position:relative;
-	padding:5px;
-	clear:both;
-	overflow:hidden;
+  position: relative;
+  clear: both;
+  overflow: hidden;
+  padding: 5px;
 }
-	div.followers-row div.user-name {
-	    min-height:50px; /* Pushes bg image to bottom of div.timeline-entry */
-	    margin:0 0 0 70px;
-	    padding:5px 0;
-	    background:transparent right bottom no-repeat;
-		font-size:13pt;
-	}
-		div.followers-row div.user-name-screen {
-			font-size:13pt;
-			font-weight:bold;
-		}
+  div.followers-row div.user-name {
+    min-height: 35px;
+    margin: 5px 0 0 70px;
+    padding: 5px 0;
+  }
+    div.followers-row div.user-name-screen {
+      font-weight: bold;
+    }
+    div.followers-row div.user-name-full {
+      font-size: 0.75em;
+    }
 
 
 
+/*** Pagination ***/
 
-div.loadmore-panel{
-	margin:0;
-	padding:5px 10px;
-    background:-webkit-gradient(
-      linear, left top, left bottom, from(#d2d2d2), to(#bdbdbd));
-    border-bottom:1px solid #e1e1e1;
-    border-top:1px solid #ababab;
-    color:#6e6e6e;
-	text-align:center;
+div.loadmore-panel {
+  margin: 0;
+  padding: 10px;
+  background: -webkit-gradient(
+    linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+  border-top: 1px solid #c0c7cf;
+  color: #6e6e6e;
+  text-align: center;
 }
-	body:not(.active) div.loadmore-panel {
-	    background:-webkit-gradient(
-	      linear, left top, left bottom, from(#e2e2e2), to(#cdcdcd));
-	    border-bottom-color:#f1f1f1;
-	    border-top-color:#bbb;
-	}
-
-	div.loadmore-panel input[type=button]{
-	    height:23px;
-	    margin:0;
-	    border-image:url(images/buttons/large.png) 0 11 0 11 repeat repeat;
-	      -webkit-border-image:url(images/buttons/large.png) 0 11 0 11 repeat repeat;
-	    border-width:0 11px;
-	    font-size:12px;
-	}
-		div.loadmore-panel input[type=button]:active{
-			border-image:url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
-			-webkit-border-image:url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
-		}
-		body:not(.active) div.loadmore-panel input[type=button]
-		div.loadmore-panel input[type=button][disabled]{
-			border-image:url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
-			-webkit-border-image:url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
-			color:#999;
-		}
-
+body:not(.active) div.loadmore-panel {
+  background: #ededed;
+  border-top-color: #b4b4b4;
+}
+  div.loadmore-panel input[type=button] {
+    height: 23px;
+    margin: 0;
+    padding: 0 1em;
+    background: -webkit-gradient(
+      linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
+    border: 1px solid #a5a5a5;
+    border-radius:           1em;
+      -webkit-border-radius: 1em;
+    box-shadow:           0 1px 0 rgba(255, 255, 255, 0.75);
+      -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+  }
+  div.loadmore-panel input[type=button]:active {
+    background: -webkit-gradient(
+      linear, left top, left bottom, from(#a7a7a7), to(#d2d2d2),
+      color-stop(0.1, #c2c2c2));
+    border-color: #767676;
+  }
+  body:not(.active) div.loadmore-panel input[type=button],
+  div.loadmore-panel input[type=button][disabled] {
+    border-color: #d8d8d8;
+    color: rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 1px #fff;
+  }
 
 
 

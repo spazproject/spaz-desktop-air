@@ -206,6 +206,9 @@ div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
 #timelinewrapper-search div.loading{
   display:none;
 }
+div#timeline-followerslist:empty + div.loadmore-panel {
+  display: none;
+}
 
 /*** Entry form ***/
 
