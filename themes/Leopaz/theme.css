@@ -1157,20 +1157,21 @@ ul.popup-menu{
   }
 
 /*** Menus ***/
-/* NOTE: This will eventually replace all other menus. */
 
-div.spaz-menu{
-  position:absolute;
-  display:none;
-  margin:0;
-  width:auto;
-  margin-right:20px; /* Margin away from viewport's right edge */
-  padding:4px 0;
-  background-color:rgba(255, 255, 255, 0.95);
-  border:1px solid #dfdfdf;
-  border-radius:4px;
-    -webkit-border-radius:4px;
-  cursor:default;
+div.spaz-menu {
+  position: absolute;
+  display: none;
+  margin: 0;
+  width: auto;
+  margin-right: 20px; /* Margin away from viewport's right edge */
+  padding: 4px 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #dfdfdf;
+  border-radius:           4px;
+    -webkit-border-radius: 4px;
+  box-shadow:           0 10px 17px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 10px 17px rgba(0, 0, 0, 0.25);
+  cursor: default;
   z-index: 99999;
 }
 div.spaz-menu#tools-menu,
