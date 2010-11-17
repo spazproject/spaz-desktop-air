@@ -1483,7 +1483,7 @@ var FollowersTimeline = function(args) {
 				items = [
 					{
 						id:'view-followerslist-friends',
-						label:$L('Friends'),
+						label:$L('Following'),
 						handler:function(){thisFLT.setMode('friends');}
 					},
 					{
@@ -1528,7 +1528,8 @@ var FollowersTimeline = function(args) {
 		sch.error('thisFLT.mode:'+thisFLT.mode);
 		sch.error('mode:'+mode);
 
-		$('#timeline-followerslist-full-name').text(mode).show();
+		$('#timeline-followerslist-full-name').
+			text(mode == 'friends' ? 'following' : mode).show();
 
 		// no change
 		if (thisFLT.mode == mode) {
