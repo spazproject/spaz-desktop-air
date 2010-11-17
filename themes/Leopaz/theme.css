@@ -2473,6 +2473,9 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
     linear, left top, left bottom, from(#ddd), to(#ccc),
     color-stop(0.025, #fff), color-stop(0.5, #fff));
 }
+#popbox-content-profile div.content div.body .clickable:hover {
+  text-decoration: underline;
+}
 #popbox-content-profile div.content div.body p.location{
   margin: 0;
 }
@@ -2501,7 +2504,6 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 }
 #popbox-content-profile div.content div.body ul.counts li{
   display: inline-block;
-  width: 27%;
   padding: 0.5em 2%;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -2514,6 +2516,7 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
     color-stop(0.75, rgba(255, 255, 255, 0)));
   border-color: rgba(127, 127, 127, 0.25);
   border-bottom-color: rgba(127, 127, 127, 0.5);
+  text-decoration: none;
 }
 #popbox-content-profile div.content div.body ul.counts li:active{
   background: -webkit-gradient(
@@ -2532,6 +2535,14 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 }
 #popbox-content-profile div.content div.body ul.counts li .label{
   font-size: 0.75em;
+}
+#popbox-content-profile div.content div.body p.faves {
+  display: inline-block;
+  min-height: 15px; /* = background-image height */
+  margin: 1em 0 0;
+  padding: 0 0 0 21px; /* padding-left = background-image width + 5px */
+  background: transparent url(images/profiles/faves.png) 0 center no-repeat;
+  font-size: 0.875em;
 }
 #popbox-content-profile div.controls button.follow-toggle{
   float: none;
