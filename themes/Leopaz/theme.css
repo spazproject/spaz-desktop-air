@@ -2230,9 +2230,7 @@ div.popbox-content div.controls button{
   line-height: 15px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 }
-div.popbox-content div.controls button.primary{
-  /*  Using an attribute selector, not `#`, to match specificity of `:hover`,
-      etc. selectors below. */
+div.popbox-content div.controls button.primary {
   background: -webkit-gradient(
     linear, left top, left bottom, from(#a2a2a2), to(#636363));
   font-size: 12px;
@@ -2553,7 +2551,22 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 #popbox-content-profile.following div.controls button.follow-toggle.unfollow{
   display: inline-block;
 }
+#popbox-content-profile div.controls button.lists {
+  padding-right: 14px;
+}
+#popbox-content-profile div.controls button.tools {
+  padding: 3px 12px 1px 14px;
+}
 #popbox-content-profile div.controls button.lists:after,
 #popbox-content-profile div.controls button.tools:after{
   content:' \025BE'; /* Down-pointing triangle */
+  font-size: 1.25em;
+  line-height: 0.8; /* 1 / font-size */
+}
+#popbox-content-profile div.controls button.tools span {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  background: transparent url(images/profiles/tools.png) 0 0 no-repeat;
+  text-indent: -999em;
 }
