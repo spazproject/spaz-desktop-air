@@ -1079,6 +1079,8 @@ div.followers-row:nth-child(even){
     border:1px solid rgba(38, 38, 38, 0.95);
     border-radius:4px;
       -webkit-border-radius:4px;
+    box-shadow:           0 6px 14px rgba(0, 0, 0, 0.25);
+      -webkit-box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
     color:#fff;
     font-size:10px;
     opacity:1;
