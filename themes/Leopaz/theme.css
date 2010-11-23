@@ -31,11 +31,22 @@ a:hover{
 *:focus {
   outline: 0;
 }
+input[type=text],
+input[type=password],
+#entrybox {
+  z-index: 1;
+}
 input[type=text]:focus,
 input[type=password]:focus,
+div.prefs input[type=text]:focus,
+div.prefs input[type=password]:focus,
 #entrybox:focus {
   border-color: #7aadda; /* Light blue */
   border-top-color: #7092b0;
+}
+input[type=text]:focus,
+input[type=password]:focus,
+#entrybox:focus {
   box-shadow: 0 0 2px #7aadda,
               0 0 2px #7aadda,
               0 0 2px #7aadda,
@@ -48,7 +59,6 @@ input[type=password]:focus,
                         inset 0 0 2px #7aadda,
                         inset 0 0 2px #7aadda,
                         inset 0 0 2px #7aadda;
-  z-index: 1;
 }
 #entrybox.dm:focus {
   border-color: #ffb3b2; /* Light red */
@@ -65,6 +75,20 @@ input[type=password]:focus,
                         inset 0 0 2px #ffb3b2,
                         inset 0 0 2px #ffb3b2,
                         inset 0 0 2px #ffb3b2;
+}
+.panelmenu input[type=text]:focus {
+  box-shadow: 0 0 4px #7aadda,
+              0 0 4px #7aadda,
+              0 0 4px #7aadda,
+              inset 0 0 4px #7aadda,
+              inset 0 0 4px #7aadda,
+              inset 0 0 4px #7aadda; /* Hack: Repetition intensifies glow */
+    -webkit-box-shadow: 0 0 4px #7aadda,
+                        0 0 4px #7aadda,
+                        0 0 4px #7aadda,
+                        inset 0 0 4px #7aadda,
+                        inset 0 0 4px #7aadda,
+                        inset 0 0 4px #7aadda;
 }
 .highlight {
   border-bottom: 1px dotted #884;
@@ -550,27 +574,27 @@ div.followers-row:nth-child(even){
                 float:right;
                 margin-right:0;
               }
-              .panelmenu form input[type=text]{
-                float:right;
-                width:100px;
-                height:19px;
-                margin-top:3px;
-                padding:0;
-                background:transparent;
-                border:0;
-                border-image:url(images/search-input.png) 0 9 0 18 repeat repeat;
-                  -webkit-border-image:url(images/search-input.png) 0 9 0 18 repeat repeat;
-                border-width:0 9px 0 18px;
-                color:#828282;
+              .panelmenu form input[type=text] {
+                float: right;
+                width: 100px;
+                height: 19px;
+                margin-top: 3px;
+                padding: 0;
+                background: transparent;
+                border: 0;
+                border-image:           url(images/search-input.png) 0 9 0 18 repeat repeat;
+                  -webkit-border-image: url(images/search-input.png) 0 9 0 18 repeat repeat;
+                border-radius:           10px;
+                  -webkit-border-radius: 10px;
+                border-width: 0 9px 0 18px;
+                color: #828282;
               }
-              body:not(.active) .panelmenu form input[type=text]{
-                border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
-                  -webkit-border-image:url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+              body:not(.active) .panelmenu form input[type=text] {
+                border-image:           url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+                  -webkit-border-image: url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
               }
-              .panelmenu form input[type=text]:focus{
+              .panelmenu form input[type=text]:focus {
                 color:#0f0f0f;
-                outline:0;
-                /* TODO: Add rounded blue glow */
               }
               #panel-user .panelmenu form input[type=text],
               #panel-favorites .panelmenu form input[type=text]{
