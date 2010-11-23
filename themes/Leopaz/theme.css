@@ -910,44 +910,47 @@ div.followers-row:nth-child(even){
             color:#fff;
           }
             #irt-message{}
-        #chars-left{
-          float:left;
-          color:#c0c0c0;
-          cursor:default;
-          font-size:12px;
-          line-height:20px;
+        #chars-left {
+          float: left;
+          color: #c0c0c0;
+          cursor: default;
+          font-size: 12px;
+          line-height: 20px;
+          text-shadow: 0 -1px 0 #000;
         }
-          #chars-left-count{
-            font-weight:bold;
+          #chars-left-count {
+            font-weight: bold;
           }
-          #chars-left-count.under{
-            color:#fff;
+          #chars-left-count.under {
+            color: #fff;
           }
-          #chars-left-count.over{
-            color:#f00;
+          #chars-left-count.over {
+            color: #f00;
           }
-        #entrybox-actions{
-          float:right;
+        #entrybox-actions {
+          float: right;
         }
-          #entrybox-actions button{
-            padding:0 8px;
-            background:-webkit-gradient(linear,
+          #entrybox-actions button {
+            padding: 0 8px;
+            background: -webkit-gradient(linear,
               left top, left bottom,
               from(rgba(0, 0, 0, 0.25)), to(rgba(0, 0, 0, 0.5)));
-            border:1px solid #000;
-            border-radius:9px; /* = line-height / 2 */
-              -webkit-border-radius:9px;
-            color:#fff;
-            font-size:10px;
-            line-height:18px; /* = vertical border widths + #chars-left line-height */
-            font-weight:normal;
+            border: 1px solid #000;
+            border-radius:           9px; /* = line-height / 2 */
+              -webkit-border-radius: 9px;
+            box-shadow:           0 1px 1px rgba(255, 255, 255, 0.1);
+              -webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 10px;
+            line-height: 18px; /* = vertical border widths + #chars-left line-height */
+            font-weight: normal;
           }
           #entrybox-actions button:hover,
           #entrybox-actions button:focus,
-          #entrybox-actions button:active{
-            background:-webkit-gradient(
+          #entrybox-actions button:active {
+            background: -webkit-gradient(
               linear, left top, left bottom, from(#668bf4), to(#2b64f0));
-            border-color:#5c83ea transparent #1d58e7 transparent;
+            border-color: #5c83ea transparent #1d58e7 transparent;
           }
           #entrybox-attach span{
             display:block;
