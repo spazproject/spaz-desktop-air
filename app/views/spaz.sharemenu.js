@@ -49,7 +49,7 @@ Spaz.ShareMenu.prototype.createAndShow = function(event, status_obj) {
 jQuery(document).ready(function(){    
 	jQuery('.status-action-retweet').live('click', function(e) {
         sch.error(this.outerHTML);
-		var entryid = parseInt($(this).attr('entry-id'), 10);
+		var entryid = $(this).attr('entry-id');
 
 		var sharemenu = new Spaz.ShareMenu();
 		

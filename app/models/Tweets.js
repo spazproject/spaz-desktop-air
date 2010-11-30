@@ -69,10 +69,12 @@ Tweets.prototype.get    = function(id, isdm, onSuccess, onFailure) {
 	
 	var that = this;
 	
+	sch.error('ID PASSED IN AS '+id+', '+typeof id);
 	/*
 		make sure this is an integer
 	*/	
-	id = parseInt(id, 10);
+	// id = parseInt(id, 10);
+	sch.error('ID CONVERTED TO '+id+', '+typeof id);
 	
 	bucket.get(id,
 		function(data) { // wrapper for the passed onSuccess
@@ -101,10 +103,12 @@ Tweets.prototype.get    = function(id, isdm, onSuccess, onFailure) {
 Tweets.prototype.save   = function(object, onSuccess, onFailure) {
 	var objid = object.id;
 	
+	sch.error('ID PASSED IN AS '+objid+', '+typeof objid);
 	/*
 		make sure this is an integer
 	*/
-	objid = parseInt(objid, 10);
+	// objid = parseInt(objid, 10);
+	sch.error('ID CONVERTED TO '+objid+', '+typeof objid);
 	
 	object.key = objid;
 
@@ -140,14 +144,15 @@ Tweets.prototype.remove = function(objid, isdm, onSuccess, onFailure) {
 
 	var bucket = this.getBucket(isdm);
 	
-	objid = parseInt(objid, 10);
+	// objid = parseInt(objid, 10);
 	bucket.remove(objid);
 };
 
 
 
 Tweets.prototype.saveUser = function(userobj) { 
-	userobj.key = parseInt(userobj.id, 10);
+	// userobj.key = parseInt(userobj.id, 10);
+	userobj.key = userobj.id;
 	this.user_bucket.save(userobj);
 };
 
@@ -207,16 +212,17 @@ Tweets.prototype.getUser = function(id, onSuccess, onFailure) {
 		otherwise, we assume we have a numeric ID
 	*/
 	} else {
-		int_id = parseInt(id, 10);
+		// int_id = parseInt(id, 10);
+		
 
-        if (isNaN(int_id)) {
-            sch.error('id passed to Tweets.getUser is NaN!');
-            sch.error('trying as @username');
-            this.getUser('@'+id, onSuccess, onFailure);
-        }
+        // if (isNaN(id)) {
+        //     sch.error('id passed to Tweets.getUser is NaN!');
+        //     sch.error('trying as @username');
+        //     this.getUser('@'+id, onSuccess, onFailure);
+        // }
 
 		this.user_bucket.get(
-			int_id,
+			id,
 			onDataSuccess,
 			onFailure
 		);
@@ -369,9 +375,9 @@ Tweets.prototype.saveTweet = function(obj, onSuccess, onFailure) {
 Tweets.prototype.tweetExists = function(id, onComplete) {
     var that = this;
 	
-	sch.error('passed id is "'+id+'"');
+	sch.error('passed id is "'+id+'" '+typeof id);
 	
-		id = parseInt(id, 10);
+		// id = parseInt(id, 10);
 
 		this.user_bucket.get(
 			id,
@@ -441,7 +447,7 @@ Tweets.prototype.userExists = function(id, onComplete) {
 		otherwise, we assume we have a numeric ID
 	*/
 	} else {
-		id = parseInt(id, 10);
+		// id = parseInt(id, 10);
 
 		this.user_bucket.get(
 			id,
@@ -458,7 +464,8 @@ Tweets.prototype.userExists = function(id, onComplete) {
 };
 
 Tweets.prototype.userExistsId = function(userid, onComplete) {
-    id = parseInt(userid, 10);
+    // id = parseInt(userid, 10);
+	var id = userid;
 
 	this.user_bucket.get(
 		id,

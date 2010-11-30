@@ -940,7 +940,7 @@ Spaz.UI.selectEntry = function(el) {
 
 
 Spaz.UI.getStatusIdFromElement = function(el) {
-	var entryId = parseInt($(el).attr('data-status-id'), 10);
+	var entryId = $(el).attr('data-status-id');
 
     if (entryId === null) {
         sch.dump("Cannot obtain entry id for entry with DOM id " + this.id);

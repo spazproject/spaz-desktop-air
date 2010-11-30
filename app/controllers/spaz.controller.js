@@ -321,7 +321,7 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.postPanel.prepDirectMessage($(this).attr('user-screen_name'));
 			},
 			'.status-action-reply':function(e) {
-				var tweet_id = parseInt($(this).attr('entry-id'), 10);
+				var tweet_id = $(this).attr('entry-id');
 				Spaz.TweetsModel.getById(
 					tweet_id,
 					false,
