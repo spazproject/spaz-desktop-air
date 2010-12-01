@@ -46,52 +46,52 @@ div.prefs input[type=password]:focus,
 }
 input[type=text]:focus,
 input[type=password]:focus,
-#entrybox:focus {
-  box-shadow: 0 0 2px #7aadda,
-              0 0 2px #7aadda,
-              0 0 2px #7aadda,
-              inset 0 0 2px #7aadda,
-              inset 0 0 2px #7aadda,
-              inset 0 0 2px #7aadda; /* Hack: Repetition intensifies glow */
-    -webkit-box-shadow: 0 0 2px #7aadda,
-                        0 0 2px #7aadda,
-                        0 0 2px #7aadda,
-                        inset 0 0 2px #7aadda,
-                        inset 0 0 2px #7aadda,
-                        inset 0 0 2px #7aadda;
-}
-#entrybox.dm:focus {
-  border-color: #ffb3b2; /* Light red */
-  border-top-color: #f0a090;
-  box-shadow: 0 0 2px #ffb3b2,
-              0 0 2px #ffb3b2,
-              0 0 2px #ffb3b2,
-              inset 0 0 2px #ffb3b2,
-              inset 0 0 2px #ffb3b2,
-              inset 0 0 2px #ffb3b2; /* Hack: Repetition intensifies glow */
-    -webkit-box-shadow: 0 0 2px #ffb3b2,
-                        0 0 2px #ffb3b2,
-                        0 0 2px #ffb3b2,
-                        inset 0 0 2px #ffb3b2,
-                        inset 0 0 2px #ffb3b2,
-                        inset 0 0 2px #ffb3b2;
-}
-.panelmenu input[type=text]:focus {
-  box-shadow: 0 0 4px #7aadda,
-              0 0 4px #7aadda,
-              0 0 4px #7aadda,
-              inset 0 0 4px #7aadda,
-              inset 0 0 4px #7aadda,
-              inset 0 0 4px #7aadda; /* Hack: Repetition intensifies glow */
-    -webkit-box-shadow: 0 0 4px #7aadda,
-                        0 0 4px #7aadda,
-                        0 0 4px #7aadda,
-                        inset 0 0 4px #7aadda,
-                        inset 0 0 4px #7aadda,
-                        inset 0 0 4px #7aadda;
-}
+/* #entrybox:focus {                                                                */
+/*   box-shadow: 0 0 2px #7aadda,                                                   */
+/*               0 0 2px #7aadda,                                                   */
+/*               0 0 2px #7aadda,                                                   */
+/*               inset 0 0 2px #7aadda,                                             */
+/*               inset 0 0 2px #7aadda,                                             */
+/*               inset 0 0 2px #7aadda; /* Hack: Repetition intensifies glow        */
+/*     -webkit-box-shadow: 0 0 2px #7aadda,                                         */
+/*                         0 0 2px #7aadda,                                         */
+/*                         0 0 2px #7aadda,                                         */
+/*                         inset 0 0 2px #7aadda,                                   */
+/*                         inset 0 0 2px #7aadda,                                   */
+/*                         inset 0 0 2px #7aadda;                                   */
+/* }                                                                                */
+/* #entrybox.dm:focus {                                                             */
+/*   border-color: #ffb3b2; /* Light red                                            */
+/*   border-top-color: #f0a090;                                                     */
+/*   box-shadow: 0 0 2px #ffb3b2,                                                   */
+/*               0 0 2px #ffb3b2,                                                   */
+/*               0 0 2px #ffb3b2,                                                   */
+/*               inset 0 0 2px #ffb3b2,                                             */
+/*               inset 0 0 2px #ffb3b2,                                             */
+/*               inset 0 0 2px #ffb3b2; /* Hack: Repetition intensifies glow        */
+/*     -webkit-box-shadow: 0 0 2px #ffb3b2,                                         */
+/*                         0 0 2px #ffb3b2,                                         */
+/*                         0 0 2px #ffb3b2,                                         */
+/*                         inset 0 0 2px #ffb3b2,                                   */
+/*                         inset 0 0 2px #ffb3b2,                                   */
+/*                         inset 0 0 2px #ffb3b2;                                   */
+/* }                                                                                */
+/* .panelmenu input[type=text]:focus {                                              */
+/*   box-shadow: 0 0 4px #7aadda,                                                   */
+/*               0 0 4px #7aadda,                                                   */
+/*               0 0 4px #7aadda,                                                   */
+/*               inset 0 0 4px #7aadda,                                             */
+/*               inset 0 0 4px #7aadda,                                             */
+/*               inset 0 0 4px #7aadda; /* Hack: Repetition intensifies glow        */
+/*     -webkit-box-shadow: 0 0 4px #7aadda,                                         */
+/*                         0 0 4px #7aadda,                                         */
+/*                         0 0 4px #7aadda,                                         */
+/*                         inset 0 0 4px #7aadda,                                   */
+/*                         inset 0 0 4px #7aadda,                                   */
+/*                         inset 0 0 4px #7aadda;                                   */
+/* }                                                                                */
 .highlight {
-  border-bottom: 1px dotted #884;
+   border-bottom: 1px dotted #884;
 }
 
 /*** Global > Zebra striping ***/
