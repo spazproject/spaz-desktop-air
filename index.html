@@ -247,7 +247,7 @@
 				</li>
 
 				<!-- Friendslist -->
-				<li class="TabbedPanelsTab" tabindex="6" title="Friends"
+				<li class="TabbedPanelsTab" tabindex="6" title="Following/Followers"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-followerslist" onclick="Spaz.UI.setSelectedTab(this)">
@@ -358,7 +358,7 @@
 						<form onsubmit="return false;">
 							<button id="refresh-public"  class="refresh"  title="Refresh this timeline">Refresh</button>
 							<button id="markread-public" class="markread" title="Mark all as read">Mark</button>
-							<button id="trends-public"   title="Trending worldwide (N/A)">Trends</button>
+							<!-- <button id="trends-public"   title="Trending worldwide (N/A)">Trends</button> -->
 							<input type="text" name="filter-public" value="" id="filter-public" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
@@ -405,7 +405,7 @@
 						<form onsubmit="return false;">
 							<button id="refresh-followerslist"  class="refresh"  title="Refresh">Refresh</button>
 							<button id="view-followerslist"     title="Choose a list to view">View</button>
-							<input type="text" name="filter-followers" value="" id="filter-followers" title="Enter text to filter this timeline" placeholder="Filter" />
+							<input type="text" name="filter-followers" value="" id="filter-followers" title="Enter text to filter this list" placeholder="Filter" />
 						</form>
 					</div>
 					<div id="timelinewrapper-followerslist" class="timeline-wrapper">
@@ -744,6 +744,7 @@
 													<input type="checkbox" name="notify-totals" value="1" id="notify-totals" />
 													<label for="notify-totals" class="checkbox">New totals</label>
 												</div>
+												<!--
 												<div class="formrow">
 													<input type="checkbox" name="notify-searchresults" value="1" id="notify-searchresults" />
 													<label for="notify-searchresults" class="checkbox">Search results (N/A)</label>
@@ -752,6 +753,7 @@
 													<input type="checkbox" name="notify-listmessages" value="1" id="notify-listmessages" />
 													<label for="notify-listmessages" class="checkbox">List messages (N/A)</label>
 												</div>
+												-->
 											</fieldset>
 										</div>
 									</div>
@@ -1338,7 +1340,7 @@
 					<button class="follow-toggle follow">Follow</button>
 					<button class="follow-toggle unfollow">Unfollow</button>
 					<button class="tools"><span>Tools</span></button>
-					<button class="lists" title="N/A">Lists</button>
+					<!-- <button class="lists" title="N/A">Lists</button> -->
 				</div>
 			</div> <!-- div.popbox-content -->
 		</div>

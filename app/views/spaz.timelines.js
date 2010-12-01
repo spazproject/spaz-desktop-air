@@ -13,7 +13,7 @@ var SPAZ_MAKECLICKABLE_OPTS = {
 		'maxlen'	:100
 	},
 	'screenname': {
-		'tpl':'<span class="user-screen-name clickable" title="View user\'s profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
+		'tpl':'<span class="user-screen-name clickable" title="View profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
 	},
 	'hashtag': {
 		'tpl':'<span class="hashtag clickable" title="Search for this hashtag" data-hashtag="#hashtag_enc#">##hashtag#</span>' // should contain macros '#hashtag#' and '#hashtag_enc#'
@@ -512,26 +512,26 @@ var FriendsTimeline = function() {
 				}
 				
 				// Add saved custom filters
-				items.push(null); // Separator
+				// items.push(null); // Separator
 				// TODO: Implement; use `onCustomFilterClick`
 
 				// Add controls for managing custom filters
 				// TODO: After adding/deleting a custom filter, empty the menu. This
 				//       forces it to be rebuilt the next time it's shown.
-				items.push({
-					label:   'Save current filter (N/A)',
-					handler: function(){
-						sch.debug('Save current filter (N/A)');
-						// TODO: Implement
-					}
-				});
-				items.push({
-					label:   'Manage saved filters&hellip; (N/A)',
-					handler: function(){
-						sch.debug('Manage saved filters (N/A)');
-						// TODO: Implement
-					}
-				});
+				// items.push({
+				// 	label:   'Save current filter (N/A)',
+				// 	handler: function(){
+				// 		sch.debug('Save current filter (N/A)');
+				// 		// TODO: Implement
+				// 	}
+				// });
+				// items.push({
+				// 	label:   'Manage saved filters&hellip; (N/A)',
+				// 	handler: function(){
+				// 		sch.debug('Manage saved filters (N/A)');
+				// 		// TODO: Implement
+				// 	}
+				// });
 
 				return items;
 			}
@@ -1133,11 +1133,10 @@ var UserlistsTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 
+					// Add management controls
 					if(items.length > 0){
 						items.push(null); // Separator
 					}
-
-					// Add management controls
 					// items.push({
 					// 	label:   'Add list&hellip; (N/A)',
 					// 	handler: function(e){}
@@ -1379,19 +1378,19 @@ var SearchTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 
-					if(items.length > 0){
-						items.push(null); // Separator
-					}
-
 					// Add management controls
-					items.push({
-						label:   'Save current search (N/A)',
-						handler: function(e){}
-					});
-					items.push({
-						label:   'Manage saved searches&hellip; (N/A)',
-						handler: function(e){}
-					});
+					// TODO: Implement
+					// if(items.length > 0){
+					// 	items.push(null); // Separator
+					// }
+					// items.push({
+					// 	label:   'Save current search (N/A)',
+					// 	handler: function(e){}
+					// });
+					// items.push({
+					// 	label:   'Manage saved searches&hellip; (N/A)',
+					// 	handler: function(e){}
+					// });
 
 					return items;
 				}

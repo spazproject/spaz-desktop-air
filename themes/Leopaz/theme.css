@@ -596,16 +596,20 @@ div.followers-row:nth-child(even){
               .panelmenu form input[type=text]:focus {
                 color:#0f0f0f;
               }
-              #panel-user .panelmenu form input[type=text],
-              #panel-favorites .panelmenu form input[type=text]{
-                width:150px;
+              #panel-user      .panelmenu form input[type=text],
+              #panel-favorites .panelmenu form input[type=text],
+              #panel-public    .panelmenu form input[type=text] {
+                width: 150px;
               }
-              #panel-public .panelmenu form input[type=text]{
-                width:90px;
+              /*
+              For use if "Trends" menu is visible:
+              #panel-public .panelmenu form input[type=text] {
+                width: 90px;
               }
-              #panel-search .panelmenu form input[type=text]{
-                float:none;
-                width:41%;
+              */
+              #panel-search .panelmenu form input[type=text] {
+                float: none;
+                width: 41%;
               }
 
           /*
