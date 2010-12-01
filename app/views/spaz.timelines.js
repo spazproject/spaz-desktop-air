@@ -512,26 +512,26 @@ var FriendsTimeline = function() {
 				}
 				
 				// Add saved custom filters
-				items.push(null); // Separator
+				// items.push(null); // Separator
 				// TODO: Implement; use `onCustomFilterClick`
 
 				// Add controls for managing custom filters
 				// TODO: After adding/deleting a custom filter, empty the menu. This
 				//       forces it to be rebuilt the next time it's shown.
-				items.push({
-					label:   'Save current filter (N/A)',
-					handler: function(){
-						sch.debug('Save current filter (N/A)');
-						// TODO: Implement
-					}
-				});
-				items.push({
-					label:   'Manage saved filters&hellip; (N/A)',
-					handler: function(){
-						sch.debug('Manage saved filters (N/A)');
-						// TODO: Implement
-					}
-				});
+				// items.push({
+				// 	label:   'Save current filter (N/A)',
+				// 	handler: function(){
+				// 		sch.debug('Save current filter (N/A)');
+				// 		// TODO: Implement
+				// 	}
+				// });
+				// items.push({
+				// 	label:   'Manage saved filters&hellip; (N/A)',
+				// 	handler: function(){
+				// 		sch.debug('Manage saved filters (N/A)');
+				// 		// TODO: Implement
+				// 	}
+				// });
 
 				return items;
 			}
