@@ -1133,11 +1133,10 @@ var UserlistsTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 
+					// Add management controls
 					if(items.length > 0){
 						items.push(null); // Separator
 					}
-
-					// Add management controls
 					// items.push({
 					// 	label:   'Add list&hellip; (N/A)',
 					// 	handler: function(e){}
@@ -1379,19 +1378,19 @@ var SearchTimeline = function(args) {
 						       (a.label > b.label)   ? 1 : -1;
 					});
 
-					if(items.length > 0){
-						items.push(null); // Separator
-					}
-
 					// Add management controls
-					items.push({
-						label:   'Save current search (N/A)',
-						handler: function(e){}
-					});
-					items.push({
-						label:   'Manage saved searches&hellip; (N/A)',
-						handler: function(e){}
-					});
+					// TODO: Implement
+					// if(items.length > 0){
+					// 	items.push(null); // Separator
+					// }
+					// items.push({
+					// 	label:   'Save current search (N/A)',
+					// 	handler: function(e){}
+					// });
+					// items.push({
+					// 	label:   'Manage saved searches&hellip; (N/A)',
+					// 	handler: function(e){}
+					// });
 
 					return items;
 				}
