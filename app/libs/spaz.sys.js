@@ -8,7 +8,7 @@ Spaz.Sys.getVersion = function() {
 		var appXML = air.NativeApplication.nativeApplication.applicationDescriptor
 		var domParser = new DOMParser();
 		appXML = domParser.parseFromString(appXML, "text/xml");
-		var version = appXML.getElementsByTagName("version")[0].firstChild.nodeValue;
+		var version = appXML.getElementsByTagName("versionNumber")[0].firstChild.nodeValue;
 		return version;
 };
 
