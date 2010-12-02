@@ -380,7 +380,7 @@ Spaz.AccountPrefs.setAccountListImages = function(){
 
 	i = accts.length; while(i--){
 		acct = accts[i];
-		user = Spaz.TweetsModel.getUser(acct.username, (function(acct){
+		user = Spaz.TweetsModel.getUser('@'+acct.username, (function(acct){
 			// Return a new callback for each value of `acct` in the parent scope.
 			// Otherwise, the callback will always have the first value of `acct`.
 			return function(user){
@@ -430,7 +430,7 @@ Spaz.AccountPrefs.updateWindowTitleAndToolsMenu = function(accountId){
 	    $menu = jQuery('#tools-menu'),
 	    $currentAccountAvatar = jQuery('#header-label').children('.current');
 
-	Spaz.TweetsModel.getUser(account.username, function(user){
+	Spaz.TweetsModel.getUser('@'+account.username, function(user){
 		if(!user){ return; }
 
 		if(!$currentAccountAvatar[0]){
