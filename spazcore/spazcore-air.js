@@ -4481,9 +4481,9 @@ sc.helpers.removeDelegatedListener = function(base_target, selector, event_type,
  */
 sc.helpers.triggerCustomEvent = function(event_type, target, data, bubble) {
 	
-	sch.error('triggering '+event_type);
-	sch.error('on target nodeName:'+target.nodeName);
-	sch.error('event data:');
+	sch.debug('triggering '+event_type);
+	sch.debug('on target nodeName:'+target.nodeName);
+	sch.debug('event data:');
 	// sch.error(sch.enJSON(data));
 	
 	if (bubble) {
