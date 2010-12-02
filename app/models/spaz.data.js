@@ -384,11 +384,11 @@ Spaz.Data.addFriend = function(userid, options) {
 
 	sch.debug('Spaz.Data.addFriend: auth: ' + auth);
 	Spaz.Data.setAPIUrl(twit);
-
+	
 	Spaz.Data.getUser(userid, null, function(userData){
 		var username = userData.screen_name;
 
-		sch.debug('Spaz.Data.addFriend: ' +
+		sch.error('Spaz.Data.addFriend: ' +
 			'Adding friend: ' + username + ' (' + userid + ')');
 		Spaz.UI.statusBar('Following ' + username + '&hellip;');
 
@@ -406,7 +406,7 @@ Spaz.Data.addFriend = function(userid, options) {
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to follow ' + username + '; try again later.');
-				sch.debug('Spaz.Data.addFriend: error: ' + msg);
+				sch.error('Spaz.Data.addFriend: error: ' + xhr.responseText);
 				if(options.onFailure){ options.onFailure(); }
 				Spaz.UI.hideLoading();
 			}
@@ -455,7 +455,7 @@ Spaz.Data.removeFriend = function(userid, options) {
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to unfollow ' + username + '; try again later.');
-				sch.debug('Spaz.Data.removeFriend: error: ' + msg);
+				sch.error('Spaz.Data.removeFriend: error: ' + xhr.responseText);
 				if(options.onFailure){ options.onFailure(); }
 				Spaz.UI.hideLoading();
 			}
@@ -846,7 +846,7 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 
 
-	sch.debug('GETTING:'+user_id);
+	sch.error('GETTING:'+user_id);
 
 	var userobj = null;
 	target_el = target_el || document;
