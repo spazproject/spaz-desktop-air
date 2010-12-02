@@ -398,6 +398,10 @@ Spaz.initialize = function() {
 	// load User JS file
 	Spaz.loadUserJS();
 
-
-	sch.error('ended document.ready()');
+	/*
+		load news popup
+	*/
+	setTimeout(Spaz.Newspopup.build, 3000);
+	
+	sch.debug('ended document.ready()');
 };
