@@ -501,39 +501,31 @@
 														<fieldset>
 															<legend>Ping.FM</legend>
 															<div class="formrow">
-																<label for="services-pingfm-userappkey">
-																	Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)
-																</label>
-																<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
+																<strong>Ping.FM support is currently disabled</strong>
 															</div>
-															<!-- <div class="formrow">
-																<label for="base-theme">Update type</label>
-																<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
-																	<option value="default">default</option>
-																	<option value="microblog">microblog</option>
-																	<option value="status">status</option>
-																</select>
-															</div> -->
-															<div class="formrow">
-																<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
-																<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
-															</div>
-															<div class="formrow">
-																<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
-																<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
-															</div>
-														</fieldset>
-														<fieldset>
-															<legend>Short.ie API</legend>
-															<div class="formrow">
-																<label for="services-shortie-email">Short.ie email address</label>
-																<input type="text" name="services-shortie-email" id="services-shortie-email" value="" />
-															</div>
-															<div class="formrow">
-																<label for="services-shortie-secretkey">
-																	Short.ie secret key (<a href="http://short.ie/dev">Get a key</a>)
-																</label>
-																<input type="text" name="services-shortie-secretkey" id="services-shortie-secretkey" value="" />
+															<div style="display:none">
+																<div class="formrow">
+																	<label for="services-pingfm-userappkey">
+																		Ping.fm app key (<a id="pingfm-getkey" href="http://ping.fm/key" class="clickable">Find</a>)
+																	</label>
+																	<input type="text" name="services-pingfm-userappkey" id="services-pingfm-userappkey" value="" />
+																</div>
+																<!-- <div class="formrow">
+																	<label for="base-theme">Update type</label>
+																	<select id="services-pingfm-updatetype" name="services-pingfm-updatetype">
+																		<option value="default">default</option>
+																		<option value="microblog">microblog</option>
+																		<option value="status">status</option>
+																	</select>
+																</div> -->
+																<div class="formrow">
+																	<input type="checkbox" name="services-pingfm-enabled" id="services-pingfm-enabled" value="1" />
+																	<label for="services-pingfm-enabled" class="checkbox">Enable posting</label>
+																</div>
+																<div class="formrow">
+																	<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
+																	<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
+																</div>
 															</div>
 														</fieldset>
 														<fieldset>
@@ -579,17 +571,21 @@
 											<fieldset>
 												<legend>Theme</legend>
 												<div class="formrow">
-													<label>User CSS</label>
-													<!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
-													<input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
-													<input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
-													<!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
+													<label><strong>User CSS is currently disabled</strong></label>
+													<div style="display:none">
+														<!-- <input disabled="disabled" type="text" name="user-stylesheet" value="" id="prefs-user-stylesheet" /> -->
+														<input type="button" name="user-stylesheet-button" value="Load from file" id="prefs-user-stylesheet-button" onclick="Spaz.Themes.browseForUserCss()" />
+														<input type="button" name="user-stylesheet-edit" value="Edit User CSS" id="prefs-user-stylesheet-edit" onclick="Spaz.UI.showCSSEdit()" />
+														<!-- <input type="button" name="user-stylesheet-clear" value="&times;" id="prefs-user-stylesheet-clear" onclick="Spaz.Themes.clearUserStyleSheet()" /> -->
+													</div>
 												</div>
 												<div class="formrow">
-													<label for="theme-basetheme">Theme</label>
-													<select id="theme-basetheme" name="base-theme">
-														<!-- stuff goes here -->
-													</select> <span class="relaunch-required">*</span>
+													<label for="theme-basetheme"><strong>Theme switching currently disabled</strong></label>
+													<div  style="display:none">
+														<select id="theme-basetheme" name="base-theme">
+															<!-- stuff goes here -->
+														</select> <span class="relaunch-required">*</span>
+													</div>
 												</div>
 												<div class="formrow">
 													<label for="window-alpha">Opacity</label>
@@ -606,31 +602,36 @@
 											<fieldset>
 												<legend>Dock</legend>
 												<div class="formrow">
-													<input type="checkbox" name="dock-display-unread-badge" value="1"
-														id="dock-displayunreadbadge" />
-													<label for="dock-displayunreadbadge" class="checkbox">Display unread badge</label>
+													<label><strong>Dock badge options are currently disabled</strong></label>
 												</div>
-												<div class="formrow">
-													<label for="dock-unreadbadgecolor">Unread badge color</label>
-													<select id="dock-unreadbadgecolor" name="dock-unread-badge-color">
-														<option value="red">Red</option>
-														<option value="blue">Blue</option>
-														<option value="yellow">Yellow</option>
-														<option value="green">Green</option>
-														<option value="cyan">Cyan</option>
-														<option value="magenta">Magenta</option>
-													</select>
-												</div>
-												<div class="formrow">
-													<label for="dock-unreadbadgeshape">Unread badge shape</label>
-													<select id="dock-unreadbadgeshape" name="dock-unread-badge-shape">
-														<option value="classic">Classic</option>
-														<option value="star">Star</option>
-													</select>
+												<div style="display:none">
+													<div class="formrow">
+														<input type="checkbox" name="dock-display-unread-badge" value="1"
+															id="dock-displayunreadbadge" />
+														<label for="dock-displayunreadbadge" class="checkbox">Display unread badge</label>
+													</div>
+													<div class="formrow">
+														<label for="dock-unreadbadgecolor">Unread badge color</label>
+														<select id="dock-unreadbadgecolor" name="dock-unread-badge-color">
+															<option value="red">Red</option>
+															<option value="blue">Blue</option>
+															<option value="yellow">Yellow</option>
+															<option value="green">Green</option>
+															<option value="cyan">Cyan</option>
+															<option value="magenta">Magenta</option>
+														</select>
+													</div>
+													<div class="formrow">
+														<label for="dock-unreadbadgeshape">Unread badge shape</label>
+														<select id="dock-unreadbadgeshape" name="dock-unread-badge-shape">
+															<option value="classic">Classic</option>
+															<option value="star">Star</option>
+														</select>
+													</div>
 												</div>
 											</fieldset>
 											<fieldset>
-												<legend>Timeline Pager</legend>
+												<legend>Message Load Counts</legend>
 												<div class="formrow">
 													<label for="timeline-home-pager-count">Home Tweets</label>
 													<select id="timeline-home-pager-count" name="timeline-home-pager-count">
@@ -711,7 +712,7 @@
 													<label for="window-notificationmethod">Method</label>
 													<select id="window-notificationmethod" name="window-notificationmethod">
 														<option value="internal">Internal</option>
-														<option value="growl" >Growl (OS X-only –&nbsp;experimental)</option>
+														<!-- <option value="growl" >Growl (OS X-only –&nbsp;experimental)</option> -->
 													</select>
 												</div>
 												<div class="formrow">
@@ -995,53 +996,20 @@
 					<p><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/apps/spaz/AIR/whatsnew.html')"><span id="about-version"></span> – What's new</a></p>
 
 					<p>Created by <a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com')">Ed Finkler, Funkatron Productions</a></p>
-
+					
 					<ul>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://twitter.com/spaz/')">Spaz on Twitter</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/spaz/')">Spaz Homepage</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users group</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/spaziki/')">Spaz Wiki and FAQ</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://code.google.com/p/spaz')">Spaz SVN Repository</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://twitter.com/spaz')">@Spaz on Twitter</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://getspaz.com')">Spaz Homepage</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://help.getspaz.com')">Spaz User Support</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://webchat.freenode.net/">Spaz on IRC</a>: Freenode, channel #spaz</li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users discussion group</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://github.com/funkatron/spaz-desktop-air')">Spaz Source Code</a></li>
 						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://funkatron.com/apps/spaz/AIR/LICENSE.txt')">Spaz License</a></li>
 					</ul>
-
-					<h3>Contributors</h3>
-					<ul>
-						<li>Ed Finkler</li>
-						<li>Graeme Dunlop</li>
-						<li>Julien Viet</li>
-						<li>Alexandru Chiculita and the AIR engineering team</li>
-					</ul>
-
-					<h3>Donors</h3>
-					<ul>
-						<li>Bare Feet Studios</li>
-						<li>Erica Baker</li>
-						<li>Fred Leo</li>
-						<li>Geoffrey T. Cheshire</li>
-						<li>Graeme Dunlop</li>
-						<li>Konstantin Klein</li>
-						<li>Lionel Lenoir</li>
-						<li>Philippe Bradley</li>
-						<li>Rob Stead</li>
-						<li>Robert Rebholz</li>
-						<li>S Kayser</li>
-						<li>Sarah Adamec</li>
-						<li>Tracy Whitt</li>
-						<li>Vincent Koser</li>
-						<li>Webdurance Web Solutions</li>
-					</ul>
-
-					<h3>Libraries used</h3>
-					<ul>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.jquery.com/')">jQuery</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://labs.adobe.com/technologies/spry/')">Spry</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.JSON.org/js.html')">JSON2.js</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.webtoolkit.info/javascript-md5.html')">Webtoolkit Base64</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://www.attacklab.net/showdown-gui.html')">Showdown</a></li>
-						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://code.google.com/p/as3notificationlib/')">as3notificationlib</a></li>
-					</ul>
-
+					
+					<h3>Please Support Spaz!</h3>
+					<p><a href='http://www.pledgie.com/campaigns/8477'><img alt='Click here to lend your support to: Spaz: An open source microblogging client and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/8477.png?skin_name=chrome' border='0' /></a></p>
+					
 					<h3>Media sets used</h3>
 					<ul>
 						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://leobolin.net/simplesmileys/')">Simple Smileys emoticons by Leo Bolin</a></li>
@@ -1066,9 +1034,10 @@
 				<div class="content">
 					<h2>Online resources</h2>
 					<ul id="resources">
-						<li><a href="http://funkatron.com/spaziki" onclick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaziki – The Spaz Wiki and FAQ</a></li>
-						<li><a href="http://groups.google.com/group/spaz-users/" onclick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz-Users @ Google Groups</a></li>
-						<li><a href="http://code.google.com/p/spaz/" onclick="Spaz.Sys.sc.helpers.openInBrowser($(this).attr('href'));return false;">Spaz Source Code Repository</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://twitter.com/spaz')">@Spaz on Twitter</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://help.getspaz.com')">Spaz User Support</a></li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://webchat.freenode.net/">Spaz on IRC</a>: Freenode, channel #spaz</li>
+						<li><a class="clickable" onclick="sc.helpers.openInBrowser('http://groups.google.com/group/spaz-users')">Spaz-Users discussion group</a></li>
 					</ul>
 
 
@@ -1286,7 +1255,7 @@
 			News/updates window
 		-->
 		<div class="popbox-content-wrapper" id="newsWindow">
-			<div class="popbox-content" id="popbox-content-news">
+			<div class="popbox-content info" id="popbox-content-news">
 				<h1>News &amp; Updates <span class="closeDOMWindow">close</span></h1>
 				<div class="content">
 					<div id="news-content"></div>
