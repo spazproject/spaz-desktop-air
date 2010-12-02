@@ -53,8 +53,8 @@ sch.listen(document, 'before_account_switched', function(e, account) {
 	after we switch an account…
 */
 sch.listen(document, 'account_switched', function(e, account) {
-	sch.error('switched accounts');
-	sch.error('account:'+sch.enJSON(account));
+	sch.debug('switched accounts');
+	sch.debug('account:'+sch.enJSON(account));
 	function rateLimitsSet() {
 		Spaz.Timelines.resetTimelines();
 		
@@ -79,8 +79,8 @@ sch.listen(document, 'account_switched', function(e, account) {
 	
 	if (Spaz.Prefs.get('network-autoadjustrefreshinterval') && (Spaz.Prefs.getAccountType() != SPAZCORE_ACCOUNT_TWITTER)) {
 		Spaz.Data.getRateLimitInfo(function(json, cbdata) {
-			sch.error(json);
-			sch.error(cbdata);
+			sch.debug(json);
+			sch.debug(cbdata);
 			Spaz.Prefs.setRateLimit(json, cbdata);
 			rateLimitsSet();
 		});
@@ -143,7 +143,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				sch.error('tooltip from a[href]');
+				sch.debug('tooltip from a[href]');
 				tt.showURLPreview(href);
 			},
 			'a .highlight':function(e) {
@@ -164,7 +164,7 @@ Spaz.Controller.initIntercept = function() {
 					'e'		:e,
 					'trigger':this
 				});
-				sch.error('tooltip from a[title]');
+				sch.debug('tooltip from a[title]');
 				tt.show();
 			},
 			'a[user-screen_name]':function(e) {
@@ -278,7 +278,7 @@ Spaz.Controller.initIntercept = function() {
 				if (Spaz.Prefs.getAccountType() != SPAZCORE_ACCOUNT_TWITTER) {
 					Spaz.Data.getRateLimitInfo( Spaz.Prefs.setRateLimit );
 				} else {
-					sch.error('ignoring network-autoadjustrefreshinterval');
+					sch.debug('ignoring network-autoadjustrefreshinterval');
 				}
 			},
 
@@ -333,7 +333,7 @@ Spaz.Controller.initIntercept = function() {
 						
 						if (names.length >= 1) {
             			    var screenname_exists = false;
-            				sch.error('names for reply are:'+names);
+            				sch.debug('names for reply are:'+names);
 
             				for (var i=0; i < names.length; i++) {
             				    if (names[i].toLowerCase() == screenname.toLowerCase()) {
@@ -385,14 +385,14 @@ Spaz.Controller.initIntercept = function() {
 				Spaz.Profile.show($(this).attr('user-screen_name'));
 			},
 			'.timeline-entry':function(e) {
-				sch.error('triggered by .timeline-entry');
+				sch.debug('triggered by .timeline-entry');
 				$target = jQuery(e.target);
 				if (!$target.is('a[href], .clickable, .status-action')) {
 					Spaz.UI.selectEntry(this);
 				}
 			},
 			'.timeline-entry *':function(e) { // this one needs to be last so the more specific ones above take precedence
-				sch.error('triggered by .timeline-entry *');
+				sch.debug('triggered by .timeline-entry *');
 				$target = jQuery(e.target);
 				if (!$target.is('a[href], .clickable, .status-action')) {
 					var entry = $(this).parents('.timeline-entry').get(0);
@@ -401,15 +401,15 @@ Spaz.Controller.initIntercept = function() {
 				
 			},
 			'div.followers-row':function(e) {
-				sch.error('triggered by .followers-row');
+				sch.debug('triggered by .followers-row');
 				$target = jQuery(e.target);
 				Spaz.Profile.show($(this).attr('user-screen_name'));
 			},
 			'div.followers-row *':function(e) {
-				sch.error('triggered by .followers-row *');
+				sch.debug('triggered by .followers-row *');
 				$target = jQuery(e.target);
-				sch.error('e.target.innerHTML'+e.target.innerHTML);
-				sch.error("$target.attr('user-screen_name'):"+$target.attr('user-screen_name'));
+				sch.debug('e.target.innerHTML'+e.target.innerHTML);
+				sch.debug("$target.attr('user-screen_name'):"+$target.attr('user-screen_name'));
 				Spaz.Profile.show($target.attr('user-screen_name'));				
 			},
 			'a .highlight':function(e) { // this is for search-highlighted links

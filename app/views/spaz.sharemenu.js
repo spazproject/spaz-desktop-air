@@ -3,8 +3,8 @@ Spaz.ShareMenu = function() {};
 Spaz.ShareMenu.prototype.createAndShow = function(event, status_obj) {
 	
 	var status_id = status_obj.id;
-	sch.error('status_id:'+status_id);
-	sch.error(status_obj);
+	sch.debug('status_id:'+status_id);
+	sch.debug(status_obj);
 	
 	var menu = new SpazMenu({
 		base_id:    'share-menu',
@@ -48,12 +48,12 @@ Spaz.ShareMenu.prototype.createAndShow = function(event, status_obj) {
  */
 jQuery(document).ready(function(){    
 	jQuery('.status-action-retweet').live('click', function(e) {
-        sch.error(this.outerHTML);
+        sch.debug(this.outerHTML);
 		var entryid = $(this).attr('entry-id');
 
 		var sharemenu = new Spaz.ShareMenu();
 		
-		sch.error(entryid);
+		sch.debug(entryid);
 
 		Spaz.Data.getTweet(entryid, null, function(data) {
 		    sharemenu.createAndShow(e, data);

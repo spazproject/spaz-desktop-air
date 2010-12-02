@@ -42,7 +42,7 @@ function usernameCompleter(opts) {
 		$(this.textarea).bind('keyup', function(e) {
 			clearTimeout(that.timeoutID);
 			that.timeoutID = setTimeout(function() {
-				sch.error('Firing autocomplete lookup');
+				sch.debug('Firing autocomplete lookup');
 				var $target  = $(e.target);
 				var curpos   = $target[0].selectionStart;
 				var contents = $target.val();

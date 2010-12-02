@@ -552,20 +552,20 @@ Spaz.UI.decodeSourceLinkEntities = function(str) {
 Spaz.UI.setSelectedTab = function(tab) {
     if (typeof tab == 'number') {
         // if a # is passed in, get the element of the corresponding tab
-        sch.error('getting tab element for number ' + tab);
+        sch.debug('getting tab element for number ' + tab);
         Spaz.UI.selectedTab = Spaz.UI.tabbedPanels.getTabs()[tab];
     } else if (typeof tab == 'string') { // this is an ID
-        sch.error('getting tab element for id ' + tab);
+        sch.debug('getting tab element for id ' + tab);
 		if (tab.indexOf('#') !== 0) {
 			tab = '#'+tab;
 		}
 		Spaz.UI.selectedTab = $(tab).get(0);
     } else {
-        sch.error('tab element passed in ' + $(tab).attr('id'));
+        sch.debug('tab element passed in ' + $(tab).attr('id'));
         Spaz.UI.selectedTab = tab;
     }
 
-    sch.error('Spaz.UI.selectedTab: ' + Spaz.UI.selectedTab.id);
+    sch.debug('Spaz.UI.selectedTab: ' + Spaz.UI.selectedTab.id);
 
     // sch.debug('restarting reload timer');
     // Spaz.restartReloadTimer();
@@ -645,7 +645,7 @@ Spaz.UI.toggleTimelineFilter = function() {
 
 Spaz.UI.setView = function(type ) {
 
-	sch.error('setView type:'+type);
+	sch.debug('setView type:'+type);
 
 	if (!type) {
 		var type = Spaz.UI.currentFriendsTimelineView || 'view-friends-menu-all';
@@ -767,7 +767,7 @@ Spaz.UI.buildToolsMenu = function(){
 			i = accts.length; while(i--){
 				acct = accts[i];
 				account_class = 'account_'+acct.id;
-        		sch.error(account_class);        		
+        		sch.debug(account_class);        		
 				items.unshift({
 					label:   acct.username + '@' + acct.type,
 					'class': account_class,
@@ -811,6 +811,10 @@ Spaz.UI.buildToolsMenu = function(){
 				{
 					label:   'Help',
 					handler: function(){ Spaz.UI.showHelp(); }
+				},
+				{
+					label:   'News &amp; Updates',
+					handler: function(){ Spaz.Newspopup.build(true); }
 				},
 				{
 					label:   'About Spaz',
@@ -1653,7 +1657,7 @@ Spaz.UI.shortenPostPanelText = function() {
 };
 
 Spaz.UI.shortenPostPanelURLs = function() {
-	sch.error('firing entrybox-shortenURLs');
+	sch.debug('firing entrybox-shortenURLs');
 	Spaz.postPanel.textarea.focus();
 	Spaz.postPanel.shortenURLs.call(Spaz.postPanel);
 };

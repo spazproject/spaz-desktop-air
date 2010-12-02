@@ -50,7 +50,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 	}, opts);
 	
 	if (!this.uuid) {
-		sch.error('UUID was not set');
+		sch.debug('UUID was not set');
 	    this.setUUID(opts.uuid);
 	}
 	
@@ -76,7 +76,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 		sch.dump('showing tooltip "' + thisTT.content + '"');
 
 		if (!thisTT.event) {
-			sch.error('No event found in Spaz_Tooltip.show; returning');
+			sch.debug('No event found in Spaz_Tooltip.show; returning');
 			return;
 		}
 
@@ -150,7 +150,7 @@ Spaz_Tooltip.prototype.showIRT = function(irt_id) {
 	this.show();
 
 	sch.listen(this.trigger, 'get_one_status_succeeded', function(e, d) {
-		    sch.error('resetting content');
+		    sch.debug('resetting content');
 		    content = '';
 		    content += "<div class='irt-preview-container' id='"+uuid+"'>";
         	content += "  <img class='tooltip-user-image' src='"+d.user.profile_image_url+"' />";
@@ -216,9 +216,9 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 	var thisTT = this;
 	
 	var display_url = sch.escape_html(url);
-	sch.error('display_url:'+display_url);
+	sch.debug('display_url:'+display_url);
 	var uuid = sch.UUID();
-	sch.error('uuid is:'+uuid);
+	sch.debug('uuid is:'+uuid);
 	this.setUUID(uuid);
 	
 	if (display_url.length > 40) {
@@ -233,7 +233,7 @@ Spaz_Tooltip.prototype.showURLPreview = function(url) {
 	this.show();
 	
 	$.get('http://api.getspaz.com/url/title.json', {'url':url}, function(data){
-		sch.error('data:'+data);
+		sch.debug('data:'+data);
 		if (sch.isString(data)) {
 			data = sch.deJSON(data);
 		}
@@ -261,11 +261,11 @@ Spaz_Tooltip.prototype.setTrigger = function(trigger_element) {
 };
 
 Spaz_Tooltip.prototype.setContent = function(content, uuid) {
-    sch.error('setContent for '+ uuid + " to " + content);
-	sch.error('uuid is '+uuid+'; this.uuid:'+this.uuid);
-    sch.error("this.jqtt.attr('title'):"+this.jqtt.attr('title'));
+    sch.debug('setContent for '+ uuid + " to " + content);
+	sch.debug('uuid is '+uuid+'; this.uuid:'+this.uuid);
+    sch.debug("this.jqtt.attr('title'):"+this.jqtt.attr('title'));
     if (uuid && this.uuid && (this.uuid != uuid || this.jqtt.attr('title') !== uuid)) {
-        sch.error('UUID did not match, not updating');
+        sch.debug('UUID did not match, not updating');
         return;
     } else {
         this.content = content;

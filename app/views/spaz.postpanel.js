@@ -175,13 +175,13 @@ SpazPostPanel.prototype.addListeners = function() {
 		blur(function(e){
 			thisPP.updateTextMetadata();
 			if (!thisPP.panelClicked) {
-				sch.error('panel NOT clicked, blur-ing');
+				sch.debug('panel NOT clicked, blur-ing');
 				Spaz.UI.resetStatusBar();
 				jQuery("body").focus();
 				jQuery('#entrybox-popup').fadeOut('fast');
 				thisPP.panelClicked = false;
 			} else {
-				sch.error('panel clicked, blocking blur');
+				sch.debug('panel clicked, blocking blur');
 			}
 			return false;
 		});
@@ -292,8 +292,8 @@ SpazPostPanel.prototype.shortenURLs = function() {
 	
 	var longurls = sc.helpers.extractURLs(this.getMessageText());
 
-	sch.error(this.getMessageText());
-	sch.error(longurls);
+	sch.debug(this.getMessageText());
+	sch.debug(longurls);
 
 	/*
 		check URL lengths

@@ -70,14 +70,14 @@ Spaz.Update.getNewestVersion = function(url) {
 		dataType: "json",
 	
 		complete: function(xhr, rstr) {
-			sch.error('Ajax Update Complete');
-			sch.error(rstr);
-			sch.error(xhr.status);
+			sch.debug('Ajax Update Complete');
+			sch.debug(rstr);
+			sch.debug(xhr.status);
 		},
 	
 		success: function(data) {
-			sch.error('Success');
-			sch.error(data);
+			sch.debug('Success');
+			sch.debug(data);
 			for(key in data) {
 				Spaz.Update.info[key] = data[key]
 			}
@@ -86,8 +86,8 @@ Spaz.Update.getNewestVersion = function(url) {
 		},
 	
 		error: function(xhr, rstr) {
-			sch.error('Error getting newest version');
-			sch.error(xhr.responseText);
+			sch.debug('Error getting newest version');
+			sch.debug(xhr.responseText);
 		},
 	});
 	
@@ -106,22 +106,22 @@ Spaz.Update.compareVersions = function(current, newest) {
 	var currV = {};
 	
 	var newpieces = newest.split('.');
-	sch.error(newpieces);
+	sch.debug(newpieces);
 	siteV.major = parseInt(newpieces[0]);
 	siteV.minor = parseInt(newpieces[1]);
 	siteV.micro = parseInt(newpieces[2]);
 	siteV.builddate = parseInt(newpieces[3]);
 	
-	sch.error('SITE VERSION:'+siteV);
+	sch.debug('SITE VERSION:'+siteV);
 	
 	var curpieces = current.split('.');
-	sch.error(curpieces);
+	sch.debug(curpieces);
 	currV.major = parseInt(curpieces[0]);
 	currV.minor = parseInt(curpieces[1]);
 	currV.micro = parseInt(curpieces[2]);
 	currV.builddate = parseInt(curpieces[3]);
 	
-	sch.error('LOCAL VERSION:'+currV);
+	sch.debug('LOCAL VERSION:'+currV);
 	
 	Spaz.Update.info.status = 'SAME';
 	if (siteV.major > currV.major) {
@@ -152,7 +152,7 @@ Spaz.Update.compareVersions = function(current, newest) {
 		}	
 	}
 	
-	sch.error(Spaz.Update.info.status)
+	sch.debug(Spaz.Update.info.status)
 	
 	switch (Spaz.Update.info.status) {
 		case 'NEWER':
@@ -161,10 +161,10 @@ Spaz.Update.compareVersions = function(current, newest) {
 			}
 			break;
 		case 'OLDER':
-			sch.error('Your version is newer that the one online!');
+			sch.debug('Your version is newer that the one online!');
 			break;
 		case 'SAME':
-			sch.error('Your have the newest version available');
+			sch.debug('Your have the newest version available');
 			break;
 	}
 };
@@ -190,12 +190,12 @@ Spaz.Update.downloadNewest = function(url) {
 	urlStream.addEventListener(air.Event.COMPLETE, loaded);
 	urlStream.addEventListener(air.ProgressEvent.PROGRESS, progress);
 	Spaz.UI.statusBar('Downloading new version…')
-	sch.error("Downloading from "+url);
+	sch.debug("Downloading from "+url);
 	urlStream.load(urlReq);
 	
 	function loaded(event) {
-		sch.error("Loaded...");
-		sch.error(event);
+		sch.debug("Loaded...");
+		sch.debug(event);
 		// sch.dump(urlStream.bytesAvailable);
 		urlStream.readBytes(fileData, 0, urlStream.bytesAvailable);
 		writeAirFile();
@@ -209,7 +209,7 @@ Spaz.Update.downloadNewest = function(url) {
 
 	
 	function writeAirFile() {
-		sch.error("Writing File...");
+		sch.debug("Writing File...");
 		
 		
 		var file = air.File.applicationStorageDirectory.resolvePath("Spaz-Newest.air");
@@ -218,7 +218,7 @@ Spaz.Update.downloadNewest = function(url) {
 		fileStream.open(file, air.FileMode.WRITE);
 		fileStream.writeBytes(fileData, 0, fileData.length);
 		fileStream.close();
-		sch.error("The AIR file is written.");
+		sch.debug("The AIR file is written.");
 		Spaz.Update.info.airfile = file;
 		
 		Spaz.UI.statusBar('New version downloaded');

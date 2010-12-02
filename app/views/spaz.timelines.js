@@ -54,7 +54,7 @@ AppTimeline.prototype.activate = function() {
  */
 AppTimeline.prototype.filter = function(terms) {
 	var entry_selector = this.getEntrySelector();
-	sch.error(entry_selector);
+	sch.debug(entry_selector);
 	var jqentries = jQuery(entry_selector);
 	jqentries.removeClass('hidden');
 
@@ -66,7 +66,7 @@ AppTimeline.prototype.filter = function(terms) {
 				terms  = terms.slice(NEGATION_TOKEN.length);
 			}
 			var filter_re = new RegExp(sch.trim(terms), "i");
-			sch.error(filter_re.toString());
+			sch.debug(filter_re.toString());
 			jqentries.each(function(i) {
 				var jqthis = jQuery(this);
 				if (negate) {
@@ -80,7 +80,7 @@ AppTimeline.prototype.filter = function(terms) {
 				}
 			});
 		} catch(e) {
-			sch.error(e.name+":"+e.message);
+			sch.debug(e.name+":"+e.message);
 		}
 	}
 
@@ -159,11 +159,11 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 		for (i = 0, iMax = itemAttrs.length; i < iMax; i++){
 			attrobj = itemAttrs[i];
 			selector = this.getEntrySelector()+"["+idattr+"=" + attrobj.id + "]";
-			// sch.error(selector);
+			// sch.debug(selector);
 			$item = jQuery(selector);
-			// sch.error($item.length);
+			// sch.debug($item.length);
 			itemHTML = $item.get(0).outerHTML;
-			// sch.error(itemHTML);
+			// sch.debug(itemHTML);
 			itemsSorted.push(itemHTML);
 		}
 	})();
@@ -174,7 +174,7 @@ AppTimeline.prototype.sortByAttribute = function(sortattr, idattr, sortfunc) {
 };
 
 AppTimeline.prototype.refresh = function() {
-	sch.error('refreshing timeline');
+	sch.debug('refreshing timeline');
 	this.timeline.refresh();
 };
 
@@ -209,32 +209,32 @@ var FriendsTimeline = function() {
 	
 	// set up listener to close existing user streams
 	sch.listen(document, 'before_account_switched', function(e, account) {
-		sch.error('closing user stream because of account switch');
+		sch.debug('closing user stream because of account switch');
 		thisFT.twit.closeUserStream();
 	});
 
 	sch.listen(document, 'pref_user_stream_changed', function(e, stream_enabled) {
-		sch.error('user stream changed ===========================================');
-		sch.error("stream_enabled: "+ stream_enabled);
+		sch.debug('user stream changed ===========================================');
+		sch.debug("stream_enabled: "+ stream_enabled);
 		if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && stream_enabled ) {
-			sch.error('Spaz.Prefs.getAccountType():'+Spaz.Prefs.getAccountType());
-			sch.error('stream_enabled:'+stream_enabled);
-			sch.error('opening user stream');
+			sch.debug('Spaz.Prefs.getAccountType():'+Spaz.Prefs.getAccountType());
+			sch.debug('stream_enabled:'+stream_enabled);
+			sch.debug('opening user stream');
 			thisFT.twit.openUserStream(function(data) {
-				sch.error('new stream data received');
+				sch.debug('new stream data received');
 				sch.trigger('new_combined_timeline_data', document, [data]);
 			});
 		} else {
-			sch.error('closing user stream because of pref change');
+			sch.debug('closing user stream because of pref change');
 			thisFT.twit.closeUserStream();
 		}
 		thisFT.timeline.refresh_time = getRefreshTime(stream_enabled);
-		sch.error('refresh_time:'+thisFT.timeline.refresh_time);
-		sch.error('refreshing because of pref_user_stream_changed');
+		sch.debug('refresh_time:'+thisFT.timeline.refresh_time);
+		sch.debug('refreshing because of pref_user_stream_changed');
 		setTimeout(function() {
 			thisFT.refresh();
 		}, 1000); // give it a sec to refresh (so pref sets correctly and things aren't so busy)
-		sch.error('user stream listener done ======================================');
+		sch.debug('user stream listener done ======================================');
 	});
 
 	var maxFT = {
@@ -291,12 +291,12 @@ var FriendsTimeline = function() {
 			thisFT.twit.getCombinedTimeline(com_opts);
 			
 			if (Spaz.Prefs.get('twitter-enable-userstream')) {
-				sch.error("Spaz.Prefs.get('twitter-enable-userstream'): "+Spaz.Prefs.get('twitter-enable-userstream'));
-				sch.error("typeof Spaz.Prefs.get('twitter-enable-userstream'): "+ typeof Spaz.Prefs.get('twitter-enable-userstream'));
+				sch.debug("Spaz.Prefs.get('twitter-enable-userstream'): "+Spaz.Prefs.get('twitter-enable-userstream'));
+				sch.debug("typeof Spaz.Prefs.get('twitter-enable-userstream'): "+ typeof Spaz.Prefs.get('twitter-enable-userstream'));
 				if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && !thisFT.twit.userStreamExists() ) {
-					sch.error('opening user stream in request_data');
+					sch.debug('opening user stream in request_data');
 					thisFT.twit.openUserStream(function(data) {
-						sch.error('new stream data received');
+						sch.debug('new stream data received');
 						sch.trigger('new_combined_timeline_data', document, [data]);
 					});
 				}
@@ -388,14 +388,14 @@ var FriendsTimeline = function() {
 				if (new_first_time < old_first_time || new_last_time < old_first_time) {
 					$('div.timeline-entry', $timeline).tsort({attr:'data-timestamp', place:'orig', order:'desc'});					
 				} else {
-					sch.error('Didn\'t resort…');
+					sch.debug('Didn\'t resort…');
 				}
 
 			}
 			var after = new Date();
 			var total = new Date();
 			total.setTime(after.getTime() - before.getTime());
-			sch.error('Sorting took ' + total.getMilliseconds() + 'ms');				
+			sch.debug('Sorting took ' + total.getMilliseconds() + 'ms');				
 			
 
 			sch.note('notify of new entries!');
@@ -863,7 +863,7 @@ var UserTimeline = function(args) {
 
 			thisUT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			Spaz.Data.setAPIUrl(thisUT.twit);
-			sch.error('username in UserTimeline is '+username);
+			sch.debug('username in UserTimeline is '+username);
 			thisUT.twit.getUserTimeline(username, count);
 		},
 		'data_success': function(e, data) {
@@ -1253,8 +1253,8 @@ var SearchTimeline = function(args) {
 			Spaz.Hooks.trigger('search_timeline_data_success_start');
 			
 			sch.debug(e);
-			sch.error(data[1]);
-			sch.error(data[0]);
+			sch.debug(data[1]);
+			sch.debug(data[0]);
 			var query_info = data[1];
 			data = data[0] || [];
 			
@@ -1427,7 +1427,7 @@ SearchTimeline.prototype = new AppTimeline();
  */
 var FollowersTimeline = function(args) {
 	
-	sch.error('Firing FollowersTimeline constructor');
+	sch.debug('Firing FollowersTimeline constructor');
 
 	var thisFLT			 = this,
 		$timeline		 = $('#timeline-followerslist'),
@@ -1457,7 +1457,7 @@ var FollowersTimeline = function(args) {
 	 */
 	this.buildViewMenu = function() {
 		
-		sch.error('Firing buildViewMenu');
+		sch.debug('Firing buildViewMenu');
 		
 		var i, iMax, menu,
 		    menuId  = 'view-followers-menu',
@@ -1492,7 +1492,7 @@ var FollowersTimeline = function(args) {
 					}
 				];
 				
-				sch.error('items:' + sch.enJSON(items));
+				sch.debug('items:' + sch.enJSON(items));
 				
 				return items;
 			}
@@ -1500,7 +1500,7 @@ var FollowersTimeline = function(args) {
 		// binds the trigger element
 		menu.bindToggle($toggle.selector, {
 			afterShow: function(e){
-				sch.error('thisFLT.mode:'+thisFLT.mode);
+				sch.debug('thisFLT.mode:'+thisFLT.mode);
 				jQuery('#view-followerslist-' + thisFLT.mode).addClass('selected').
 					siblings('.selected').removeClass('selected');
 			}
@@ -1524,8 +1524,8 @@ var FollowersTimeline = function(args) {
 	 * sets/changes the mode 
 	 */
 	this.setMode = function(mode) {
-		sch.error('thisFLT.mode:'+thisFLT.mode);
-		sch.error('mode:'+mode);
+		sch.debug('thisFLT.mode:'+thisFLT.mode);
+		sch.debug('mode:'+mode);
 
 		$('#timeline-followerslist-full-name').
 			text(mode == 'friends' ? 'following' : mode).show();
@@ -1556,14 +1556,14 @@ var FollowersTimeline = function(args) {
 			cursor = event;
 		}
 
-		sch.error('CURSOR:'+ cursor);
+		sch.debug('CURSOR:'+ cursor);
 
 		if (this.mode === 'friends') {
 		    method_name = 'getFriendsList';
 		} else if (this.mode === 'followers') {
 		    method_name = 'getFollowersList';
 		} else {
-		    sch.error('Invalid mode:%s', this.mode);
+		    sch.debug('Invalid mode:%s', this.mode);
 		    return;
 		}
 
@@ -1599,7 +1599,7 @@ var FollowersTimeline = function(args) {
 
 					};
 
-				    sch.error('no_dupes.length:', no_dupes.length);
+				    sch.debug('no_dupes.length:', no_dupes.length);
 					$timelineWrapper.children('.loading, .new-user').hide();
 					
 					thisA.addItems(no_dupes);
@@ -1612,7 +1612,7 @@ var FollowersTimeline = function(args) {
 				}
 				
 				
-				sch.error('cursor_obj:'+sch.enJSON(cursor_obj));
+				sch.debug('cursor_obj:'+sch.enJSON(cursor_obj));
 				
 				if (cursor_obj && cursor_obj.next) {
 				    thisFLT.followers_more_cursor = cursor_obj.next;
@@ -1624,7 +1624,7 @@ var FollowersTimeline = function(args) {
 				Spaz.Hooks.trigger('followers_timeline_data_success_finish');
 			},
 			function(xhr, msg, exc) {
-				sch.error('EROROR in getFriends');
+				sch.debug('EROROR in getFriends');
 
 				var err_msg = "There was an error retrieving the user timeline";
 				Spaz.UI.statusBar(err_msg);
@@ -1643,7 +1643,7 @@ var FollowersTimeline = function(args) {
 	 */
 	this.loadMore = function(event) {
 
-	    sch.error('this.followers_more_cursor:'+this.followers_more_cursor);
+	    sch.debug('this.followers_more_cursor:'+this.followers_more_cursor);
 
 		this.refresh(this.followers_more_cursor);
 	};
@@ -1660,12 +1660,12 @@ var FollowersTimeline = function(args) {
 	 * check if this item already exists 
 	 */
 	this.itemExists = function(id) {
-		sch.error('Looking for:'+id );
+		sch.debug('Looking for:'+id );
 		if (jQuery('div.followers-row[data-user-id="'+id+'"]', $timeline).length > 0) {
-			sch.error('found:'+id );
+			sch.debug('found:'+id );
 			return true;
 		}
-		sch.error('Did not find:'+id );
+		sch.debug('Did not find:'+id );
 		return false;
 	};
 	
@@ -1780,7 +1780,7 @@ Spaz.Timelines.resetTimelines = function() {
 	if (typeof timelinesMap !== 'undefined') {
 		for (var key in timelinesMap) {
 			if(timelinesMap.hasOwnProperty(key)){
-				sch.error(key);
+				sch.debug(key);
 				timelinesMap[key].timeline.stopListening();
 			}
 		}

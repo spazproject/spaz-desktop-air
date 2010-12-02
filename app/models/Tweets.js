@@ -36,11 +36,11 @@ var Tweets = function(replace) {
 		var matches = [];
 		this.each(function(record, index) {
 			if (is(record)) {
-				sch.error("found match "+record.key);
+				sch.debug("found match "+record.key);
 				matches.push(record);
 			}
 		}, function(count) {
-			sch.error('Firing callback on array of matches('+count+')');
+			sch.debug('Firing callback on array of matches('+count+')');
 			cb(matches);
 		});
 	};
@@ -55,12 +55,12 @@ Tweets.prototype.maxBucketSize = 20000;
 
 Tweets.prototype._init  = function(replace) {
 	if (replace === true) {
-		sch.error('REPLACING DEPOT!!!!!!!!!!!=======================');
+		sch.debug('REPLACING DEPOT!!!!!!!!!!!=======================');
 		this.bucket.nuke();
 		this.dm_bucket.nuke();
 		this.user_bucket.nuke();
 	} else {
-		sch.error('NOT REPLACING DEPOT!!!!!!!!!!====================');
+		sch.debug('NOT REPLACING DEPOT!!!!!!!!!!====================');
 	}
 };
 
@@ -69,29 +69,29 @@ Tweets.prototype.get    = function(id, isdm, onSuccess, onFailure) {
 	
 	var that = this;
 	
-	sch.error('ID PASSED IN AS '+id+', '+typeof id);
+	sch.debug('ID PASSED IN AS '+id+', '+typeof id);
 	/*
 		make sure this is an integer
 	*/	
 	// id = parseInt(id, 10);
-	sch.error('ID CONVERTED TO '+id+', '+typeof id);
+	sch.debug('ID CONVERTED TO '+id+', '+typeof id);
 	
 	bucket.get(id,
 		function(data) { // wrapper for the passed onSuccess
 			if (!data) {
-				sch.error("Couldn't retrieve id "+id+"; getting remotely");
+				sch.debug("Couldn't retrieve id "+id+"; getting remotely");
 				that.getRemote(
 					id,
 					isdm,
 					function(data) {
-						sch.error('saving remotely retrieved message');
+						sch.debug('saving remotely retrieved message');
 						bucket.save(data);
 						onSuccess(data);
 					},
 					onFailure
 				);
 			} else {
-				sch.error("Retrieved id "+id+" from lawnchair bucket");
+				sch.debug("Retrieved id "+id+" from lawnchair bucket");
 				onSuccess(data);
 			}
 		},
@@ -103,35 +103,35 @@ Tweets.prototype.get    = function(id, isdm, onSuccess, onFailure) {
 Tweets.prototype.save   = function(object, onSuccess, onFailure) {
 	var objid = object.id;
 	
-	sch.error('ID PASSED IN AS '+objid+', '+typeof objid);
+	sch.debug('ID PASSED IN AS '+objid+', '+typeof objid);
 	/*
 		make sure this is an integer
 	*/
 	// objid = parseInt(objid, 10);
-	sch.error('ID CONVERTED TO '+objid+', '+typeof objid);
+	sch.debug('ID CONVERTED TO '+objid+', '+typeof objid);
 	
 	object.key = objid;
 
 	if (!object.SC_is_dm) {
-		sch.error("Saving TWEET "+objid);
+		sch.debug("Saving TWEET "+objid);
 		this.bucket.save(object);
 		if (object.user) {
-			sch.error("Saving user "+object.user.id);
+			sch.debug("Saving user "+object.user.id);
 			this.saveUser(object.user);			
 		} else {
 			sch.error('Tweet '+objid+' did not have a user object');
 		}
 	} else {
-		sch.error("Saving DM "+objid);
+		sch.debug("Saving DM "+objid);
 		this.dm_bucket.save(object);
 		if (object.sender) {
-			sch.error("Saving user "+object.sender.id);
+			sch.debug("Saving user "+object.sender.id);
 			this.saveUser(object.sender);
 		} else {
 			sch.error('Tweet '+objid+' did not have a sender object');
 		}
 		if (object.recipient) {
-			sch.error("Saving user "+object.recipient.id);
+			sch.debug("Saving user "+object.recipient.id);
 			this.saveUser(object.recipient);
 		} else {
 			sch.error('Tweet '+objid+' did not have a recipient object');
@@ -161,7 +161,7 @@ Tweets.prototype.getUser = function(id, onSuccess, onFailure) {
 	var that = this;
 	var screen_name;
 	
-	sch.error('passed id is "'+id+'"');
+	sch.debug('passed id is "'+id+'"');
 	
 	var onDataSuccess = function(data) { // wrapper for the passed onSuccess
 		if (!data) {
@@ -169,15 +169,15 @@ Tweets.prototype.getUser = function(id, onSuccess, onFailure) {
 			that.getRemoteUser(
 				id,
 				function(data) {
-					sch.error('saving remotely retrieved user');
+					sch.debug('saving remotely retrieved user');
 					that.saveUser(data);
 					onSuccess(data);
 				},
 				onFailure
 			);
 		} else {
-			sch.error("Retrieved user id "+id+" from lawnchair bucket");
-			sch.error(sch.enJSON(data));
+			sch.debug("Retrieved user id "+id+" from lawnchair bucket");
+			sch.debug(sch.enJSON(data));
 			onSuccess(data);
 		}
 	};
@@ -186,9 +186,9 @@ Tweets.prototype.getUser = function(id, onSuccess, onFailure) {
 		if the id starts with a '@', we have a screen_name
 	*/
 	if ((id+'').indexOf('@') === 0) {
-		sch.error('we have a screen name');
+		sch.debug('we have a screen name');
 		screen_name = id.slice(1);
-		sch.error('screen name is '+screen_name);	
+		sch.debug('screen name is '+screen_name);	
 	}
 	
 	if (screen_name) {
@@ -305,7 +305,7 @@ Tweets.prototype.getBucket = function(isdm) {
 Tweets.prototype.getRemote = function(id, isdm, onSuccess, onFailure) {
 	this.initSpazTwit();
 	
-	sch.error("getting message id "+id+" remotely!!");
+	sch.debug("getting message id "+id+" remotely!!");
 	
 	if (isdm) {
 		sch.error($L('There was an error retrieving this direct message from cache'));
@@ -317,7 +317,7 @@ Tweets.prototype.getRemote = function(id, isdm, onSuccess, onFailure) {
 Tweets.prototype.getRemoteUser = function(id, onSuccess, onFailure) {
 	this.initSpazTwit();
 	
-	sch.error("getting user id "+id+" remotely!!");
+	sch.debug("getting user id "+id+" remotely!!");
 	
 	this.twit.getUser(id, onSuccess, onFailure);
 };
@@ -375,7 +375,7 @@ Tweets.prototype.saveTweet = function(obj, onSuccess, onFailure) {
 Tweets.prototype.tweetExists = function(id, onComplete) {
     var that = this;
 	
-	sch.error('passed id is "'+id+'" '+typeof id);
+	sch.debug('passed id is "'+id+'" '+typeof id);
 	
 		// id = parseInt(id, 10);
 
@@ -418,15 +418,15 @@ Tweets.prototype.markRead = function(twitter_id, isdm, onSuccess, onFailure) {
 Tweets.prototype.userExists = function(id, onComplete) {
     var that = this;
 	
-	sch.error('passed id is "'+id+'"');
+	sch.debug('passed id is "'+id+'"');
 	
 	/*
 		if the id starts with a '@', we have a screen_name
 	*/
 	if ((id+'').indexOf('@') === 0) {
-		sch.error('we have a screen name');
+		sch.debug('we have a screen name');
 		screen_name = id.slice(1);
-		sch.error('screen name is '+screen_name);
+		sch.debug('screen name is '+screen_name);
 		this.user_bucket.match(
 			function(r) {
 				if (r.screen_name == screen_name) {
@@ -483,7 +483,7 @@ Tweets.prototype.userExistsId = function(userid, onComplete) {
 Tweets.prototype.findOrCreate = function(userobj, onComplete) {
     var user_id;
 	
-	sch.error(userobj);
+	sch.debug(userobj);
 	
 	user_id = this.userExistsId(userobj.id, true);
 	

@@ -1001,8 +1001,8 @@ Spaz.Prefs.init = function() {
 
 	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
 
-	sch.error('THIS IS THE USERNAME:');
-	sch.error(Spaz.Prefs.getUsername()+'@'+Spaz.Prefs.getAccountType());
+	sch.debug('THIS IS THE USERNAME:');
+	sch.debug(Spaz.Prefs.getUsername()+'@'+Spaz.Prefs.getAccountType());
 
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();
@@ -1199,7 +1199,7 @@ Spaz.Prefs.get = function(key) {
 
 
 Spaz.Prefs.set = function(key, value) {
-	sch.error("setting "+key+" to "+value+" ("+typeof value+")");
+	sch.debug("setting "+key+" to "+value+" ("+typeof value+")");
 	return Spaz.Prefs._prefs.set(key, value);
 };
 
@@ -1213,7 +1213,7 @@ Spaz.Prefs.setPrefs = function() {
 }
 
 Spaz.Prefs.setCurrentUser = function() {
-	sch.error('setCurrentUser is @TODO');
+	sch.debug('setCurrentUser is @TODO');
 	return;
 
 	//	   var user = $('#username').val();
@@ -1313,7 +1313,7 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 
 
 Spaz.Prefs.setRateLimit = function(rateinfo, data) {
-	sch.error(JSON.stringify(rateinfo));
+	sch.debug(JSON.stringify(rateinfo));
 
 	var limit = rateinfo.hourly_limit;
 	var per_min = Math.ceil((60 / (limit / 3)));
@@ -1353,7 +1353,7 @@ Spaz.Prefs.getUsername = function() {
  * DEPRECATED; calls Spaz.Prefs.getAuthKey
  */
 Spaz.Prefs.getPassword = function() {
-	sch.error('Spaz.Prefs.getPassword is deprecated; use Spaz.Prefs.getAuthKey');
+	sch.debug('Spaz.Prefs.getPassword is deprecated; use Spaz.Prefs.getAuthKey');
 	return Spaz.Prefs.getAuthKey();
 };
 
@@ -1362,7 +1362,7 @@ Spaz.Prefs.getPassword = function() {
  */
 Spaz.Prefs.getAuthKey = function() {
 	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
-	sch.error('getAuthKey currentAccountId:'+currentAccountId);
+	sch.debug('getAuthKey currentAccountId:'+currentAccountId);
 	if (currentAccountId) {
 		var accobj = Spaz.Prefs._accounts.get(currentAccountId);
 		return !!accobj ? accobj.auth : null;
@@ -1383,7 +1383,7 @@ Spaz.Prefs.getCustomAPIUrl = function() {
  */
 Spaz.Prefs.getAuthObject = function() {
 	var authkey = Spaz.Prefs.getAuthKey();
-	sch.error('getAuthObject authkey:'+authkey);
+	sch.debug('getAuthObject authkey:'+authkey);
 	if (authkey) {
 		var auth = new SpazAuth(Spaz.Prefs.getAccountType());
 		auth.load(authkey);

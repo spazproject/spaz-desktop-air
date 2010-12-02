@@ -138,7 +138,7 @@ Spaz.Data.destroyStatus = function(postid, onSuccess, onFailure) {
 			}
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			Spaz.UI.statusBar("Deleting post " + postid + " failed!");
 			Spaz.UI.hideLoading();
 			if (onFailure) {
@@ -167,7 +167,7 @@ Spaz.Data.retweet = function(postid, onSuccess, onFailure) {
 			}
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			Spaz.UI.statusBar("Retweeting post " + postid + " failed!");
 			Spaz.UI.hideLoading();
 			if (onFailure) {
@@ -205,7 +205,7 @@ Spaz.Data.destroyDirectMessage = function(postid, onSuccess, onFailure) {
 			}
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			Spaz.UI.statusBar("Deleting DM " + postid + " failed!");
 			Spaz.UI.hideLoading();
 			if (onFailure) {
@@ -249,7 +249,7 @@ Spaz.Data.makeFavorite = function(postid, onSuccess, onFailure) {
 			}
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			sch.debug("Adding fav " + postid + " failed!");
 			Spaz.UI.statusBar('Error while adding favorite');
 			Spaz.UI.hideLoading();
@@ -275,7 +275,7 @@ Spaz.Data.makeFavorite = function(postid, onSuccess, onFailure) {
 	//			Spaz.UI.statusBar('Added fav: ' + postid);
 	//
 	//			$('.timeline-entry[data-status-id='+postid+']').addClass('favorited');
-	//			sch.error(faved_element);
+	//			sch.debug(faved_element);
 	//			//Spaz.Data.loadUserTimelineData('tab-user');
 	//		},
 	//		beforeSend:function(xhr){
@@ -324,7 +324,7 @@ Spaz.Data.makeNotFavorite = function(postid, onSuccess, onFailure) {
 			}
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			sch.debug("Removing fav " + postid + " failed!");
 			Spaz.UI.statusBar('Error while removing favorite');
 			Spaz.UI.hideLoading();
@@ -406,7 +406,7 @@ Spaz.Data.addFriend = function(userid, options) {
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to follow ' + username + '; try again later.');
-				sch.error('Spaz.Data.addFriend: error: ' + msg);
+				sch.debug('Spaz.Data.addFriend: error: ' + msg);
 				if(options.onFailure){ options.onFailure(); }
 				Spaz.UI.hideLoading();
 			}
@@ -455,7 +455,7 @@ Spaz.Data.removeFriend = function(userid, options) {
 			function(xhr, msg, exc) {
 				Spaz.UI.statusBar(
 					'Failed to unfollow ' + username + '; try again later.');
-				sch.error('Spaz.Data.removeFriend: error: ' + msg);
+				sch.debug('Spaz.Data.removeFriend: error: ' + msg);
 				if(options.onFailure){ options.onFailure(); }
 				Spaz.UI.hideLoading();
 			}
@@ -472,12 +472,12 @@ Spaz.Data.blockUser = function(userid) {
 	twit.block(
 		userid,
 		function(data) {
-			sch.error(data);
+			sch.debug(data);
 			Spaz.UI.statusBar("Blocked " + userid);
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			Spaz.UI.statusBar("Block failed for " + userid);
 			Spaz.UI.hideLoading();
 		}
@@ -493,13 +493,13 @@ Spaz.Data.reportUser = function(userid) {
 	twit.reportSpam(
 		userid,
 		function(data) {
-			sch.error(data);
+			sch.debug(data);
 			jQuery('div.timeline-entry[data-user_id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]');
 			Spaz.UI.statusBar("Blocked and reported " + userid);
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			Spaz.UI.statusBar("Block & report failed for " + userid);
 			Spaz.UI.hideLoading();
 		}
@@ -657,7 +657,7 @@ Spaz.Data.getRateLimitInfo = function(callback, cbdata) {
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
-			sch.error(msg);
+			sch.debug(msg);
 			Spaz.UI.statusBar('Failed getting rate limit info!');
 			Spaz.UI.hideLoading();
 		}
@@ -846,14 +846,14 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 
 
-	sch.error('GETTING:'+user_id);
+	sch.debug('GETTING:'+user_id);
 
 	var userobj = null;
 	target_el = target_el || document;
 
 	function onComplete(userobj) {
 		if (userobj) {
-			sch.error('Got userobj:'+userobj);
+			sch.debug('Got userobj:'+userobj);
 			if (userobj.twitter_id) {
 				userobj.id = userobj.twitter_id;
 			}
@@ -862,7 +862,7 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 			}
 			sch.trigger('get_user_succeeded', target_el, userobj);
 		} else {
-			sch.error('Getting userobj remotely in Spaz.Data.getUser');
+			sch.debug('Getting userobj remotely in Spaz.Data.getUser');
 			var twit = new SpazTwit({
 				auth: Spaz.Prefs.getAuthObject(),
 				event_target: target_el
@@ -872,8 +872,8 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 			twit.getUser(
 				user_id,
 				function(data) {
-					sch.error('DATA FROM twit.getUser');
-					sch.error(data.screen_name);
+					sch.debug('DATA FROM twit.getUser');
+					sch.debug(data.screen_name);
 					if (onSuccess) {
 						onSuccess(data);
 					}
@@ -928,7 +928,7 @@ Spaz.Data.getTweet = function(status_id, target_el, onSuccess) {
 
 	Spaz.TweetsModel.getById(status_id, false, function(statusobj) {
 		if (statusobj) {
-			sch.error('loaded statusobj from model');
+			sch.debug('loaded statusobj from model');
 			if (onSuccess) {
 				onSuccess(statusobj);
 			}

@@ -169,11 +169,11 @@ if (typeof window.time == 'undefined') {
     };
 
     function defaultReport(l) {
-      sch.error(l.join("\n"));
+      sch.debug(l.join("\n"));
     }
 
     function defaultLineReport(l) {
-      sch.error(l);
+      sch.debug(l);
     }
 
     function error(e) {
