@@ -2627,3 +2627,29 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
   background: transparent url(images/profiles/tools.png) 0 0 no-repeat;
   text-indent: -999em;
 }
+
+
+
+/*
+	news popup
+*/
+#news-content {
+	font-size: 0.875em;
+}
+#news-content a:hover {
+	text-decoration: underline;
+}
+#news-content div.entry {
+	padding-bottom: 2em;
+}
+#news-content div.entry div.title {
+	font-size: 1.5em;
+	font-weight:normal;
+}
+#news-content div.entry div.date {
+	line-height:2em;
+	font-size:0.75em;
+}
+#news-content div.entry div.entry-content {
+	line-height:1.4em;
+}

@@ -45,8 +45,8 @@ div.popbox-content {
     overflow:auto;
     height:100%;
     padding:5px 10px;
-    background:-webkit-gradient(
-      linear, left top, left bottom, from(#fff), to(#ffffa9));
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#fff), to(#ccc));
   }
 		div.popbox-content *:focus {
 		    outline:none;
@@ -246,3 +246,5 @@ div.popbox-content {
 	#imageupload-status-text {
 		margin-left:5px;
 	}
+
+
