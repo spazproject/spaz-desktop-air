@@ -930,7 +930,11 @@ Spaz.UI.selectEntry = function(el) {
     $(el).addClass('ui-selected').addClass('read').each(function() {
         if (entryId = Spaz.UI.getStatusIdFromElement(this)) {
             sch.dump("Want to mark as read " + entryId);
-            Spaz.DB.markEntryAsRead(entryId);
+			var is_dm = false;
+			if ($(this).hasClass('dm')) {
+				is_dm = true;
+			}
+			Spaz.DB.markEntryAsRead(entryId, is_dm);
         }
     });
 

@@ -1,6 +1,8 @@
 if (!Spaz.DB) Spaz.DB = {};
 
 var SPAZ_DB_NAME = "spaz.db";
+var TABLE_READ_ENTRIES = 'read_entries_1';
+var TABLE_READ_DMS = 'read_dms_1';
 
 /***********
 Spaz.DB takes care of persisting a portion of the application state
@@ -14,25 +16,25 @@ Spaz.DB takes care of persisting a portion of the application state
 Spaz.DB.init = function() {
 	var spazDB = air.File.applicationStorageDirectory.resolvePath(SPAZ_DB_NAME);
 	var conn = new air.SQLConnection();
+	var create;
 
 	// The initializer
 	var initListener = function() {
-		sch.debug("Creating read_entries table if necessary : " + conn.connected);
-		var create = new air.SQLStatement();
+		sch.debug("Creating "+TABLE_READ_ENTRIES+" table if necessary : " + conn.connected);
+		create = new air.SQLStatement();
 		create.text =
-		"CREATE TABLE IF NOT EXISTS read_entries (entry_id INTEGER PRIMARY KEY)";
+		"CREATE TABLE IF NOT EXISTS "+TABLE_READ_ENTRIES+" (entry_id VARCHAR(32) PRIMARY KEY)";
 		create.sqlConnection = conn;
 		create.execute();
 
-		sch.debug("Creating users table if necessary : " + conn.connected);
-		var create2 = new air.SQLStatement();
-		create2.text =
-		"CREATE TABLE IF NOT EXISTS users (name TEXT PRIMARY KEY)";
-		create2.sqlConnection = conn;
-		create2.execute();
-
-		// Spaz.Accounts.checkForFirstTimeUse();
+		sch.debug("Creating "+TABLE_READ_DMS+" table if necessary : " + conn.connected);
+		create = new air.SQLStatement();
+		create.text =
+		"CREATE TABLE IF NOT EXISTS "+TABLE_READ_DMS+" (entry_id VARCHAR(32) PRIMARY KEY)";
+		create.sqlConnection = conn;
+		create.execute();
 	};
+	
 	conn.addEventListener(air.SQLEvent.OPEN, initListener);
 
 	sch.debug("Opening database");
@@ -46,16 +48,22 @@ Spaz.DB.init = function() {
  * Mark an entry as read using the provided entry id. The entry id must be
  * an integer which is the value of the id returned by Twitter.
  */
-Spaz.DB.markEntryAsRead = function(entryId) {
+Spaz.DB.markEntryAsRead = function(entryId, is_dm) {
 	var conn = Spaz.DB.conn;
-	if (conn.connected)
-	{
+	var table = TABLE_READ_ENTRIES;	
+
+	
+	if (conn.connected) {
 		// We insert the value only if it does not exist already (otherwise will have an SQL error due to the existing PK)
-		Spaz.DB.asyncGetAsRead(entryId, function(read) {
-			if (!read) {
+		Spaz.DB.asyncGetAsRead(entryId, is_dm, function(data) {
+			if (!data) {
+				if (is_dm) {
+					table = TABLE_READ_DMS;
+				}
 				sch.debug("Marking as read entry " + entryId);
 				var markAsReadSt = new air.SQLStatement();
-				markAsReadSt.text = "INSERT INTO read_entries (entry_id) VALUES (:entryId)";
+				sch.debug('USING '+table+" for entryId "+entryId);
+				markAsReadSt.text = "INSERT INTO "+table+" (entry_id) VALUES (:entryId)";
 				markAsReadSt.parameters[":entryId"] = entryId;
 				markAsReadSt.sqlConnection = conn;
 				try {
@@ -70,19 +78,27 @@ Spaz.DB.markEntryAsRead = function(entryId) {
 	}
 };
 
-Spaz.DB.isRead = function(entryId) {
-	var conn = getSyncConnection(air.SQLMode.READ);
+
+
+Spaz.DB.isRead = function(entryId, is_dm) {
+	
+	var table = TABLE_READ_ENTRIES;	
+	var conn = Spaz.DB.getSyncConnection(air.SQLMode.READ);
 	if (conn.connected) {
+		
+		if (is_dm) { table = TABLE_READ_DMS; }
+		
 		var stmt = new air.SQLStatement();
-		stmt.text = "SELECT entry_id FROM read_entries WHERE entry_id=:entryId";
+		sch.debug('USING '+table+" for entryId "+entryId);
+		stmt.text = "SELECT entry_id FROM "+table+" WHERE entry_id=:entryId";
 		stmt.parameters[":entryId"] = entryId;
 		stmt.sqlConnection = conn;
 		try {			
 			stmt.execute();
 			var result = stmt.getResult(); // we can't read the result until we assign it to a var
-			sch.debug(JSON.stringify(result));
+			sch.debug("Result for "+entryId+":"+JSON.stringify(result));
 			if (result.data) {
-				sch.debug(JSON.stringify(result.data));
+				sch.debug("result.data for "+entryId+":"+JSON.stringify(result.data));
 				return result.data.length > 0;
 			} else {
 				return false;
@@ -103,7 +119,11 @@ Spaz.DB.isRead = function(entryId) {
  * be an integer and the second argument is the callback function made once it has been determined if the entry should be marked as
  * read or not. The callback function takes as unique argument a boolean value which is true if the entry should be marked as read.
  */
-Spaz.DB.asyncGetAsRead = function(entryId, callback) {
+Spaz.DB.asyncGetAsRead = function(entryId, is_dm, callback) {
+	var table = TABLE_READ_ENTRIES;	
+	if (is_dm) {
+		table = TABLE_READ_DMS;
+	}
 	var conn = Spaz.DB.conn;
 	if (conn.connected)
 	{
@@ -112,17 +132,18 @@ Spaz.DB.asyncGetAsRead = function(entryId, callback) {
 		var callbackAdapter = function(event) {
 			markAsReadSt.removeEventListener(air.SQLEvent.RESULT, callbackAdapter);
 			markAsReadSt.removeEventListener(air.SQLErrorEvent.ERROR, errorHandler);
-			var read =  markAsReadSt.getResult().data != null;
-			sch.debug("Entry status of " + entryId + " read=" + read);
+			var data =  markAsReadSt.getResult().data;
+			sch.debug("Entry status of " + entryId + " read=" + sch.enJSON(data));
 
-			callback.call(this, read);
+			callback.call(this, data);
 		};
 		var errorHandler = function(event) {
 			sch.debug("Async get read for entry id " + entryId + " failed " + event.error);
 		};
 		markAsReadSt.addEventListener(air.SQLEvent.RESULT, callbackAdapter);
 		markAsReadSt.addEventListener(air.SQLErrorEvent.ERROR, errorHandler);
-		markAsReadSt.text = "SELECT entry_id FROM read_entries WHERE entry_id=:entryId";
+		sch.debug('USING '+table+" for entryId "+entryId);
+		markAsReadSt.text = "SELECT entry_id FROM "+table+" WHERE entry_id=:entryId";
 		markAsReadSt.parameters[":entryId"] = entryId;
 		markAsReadSt.sqlConnection = conn;
 		markAsReadSt.execute();
@@ -136,7 +157,7 @@ Spaz.DB.asyncGetAsRead = function(entryId, callback) {
  * @returns An active synchronous connection to the database, or false
  *          if unable to connect.
  */
-function getSyncConnection(mode) {
+Spaz.DB.getSyncConnection = function(mode) {
 	var spazDB = air.File.applicationStorageDirectory.resolvePath(SPAZ_DB_NAME);
 	var conn = new air.SQLConnection();
 
@@ -144,100 +165,8 @@ function getSyncConnection(mode) {
 		conn.open(spazDB, mode);
 		return conn;
 	} catch (error)	{
-		sch.debug("Failed to open database in sync mode:", error);
+		sch.error("Failed to open database in sync mode:", error);
 		return false;
 	}
 };
 
-/**
- * How many users are registered with Spaz? Uses a synchronous database
- * connection.
- * @returns The number of users registered with Spaz; -1 if unable
- *          to retrieve the count.
- */
-Spaz.DB.getUserCount = function() {
-	var conn = getSyncConnection(air.SQLMode.READ);
-
-	if (conn.connected) {
-		var sql = new air.SQLStatement();
-		sql.text = "SELECT count(*) FROM users";
-		sql.sqlConnection = conn;
-		try {
-			sql.execute();
-			return sql.getResult().data[0]["count(*)"];
-		} catch (error) {
-			sch.debug("Failed to retrieve user count:", error);
-			return -1;
-		}
-	}
-
-	return -1;
-};
-
-/**
- * Get a list of all users registered with Spaz. Uses a synchronous
- * database connection.
- * @returns An array containing a sorted list of usernames registered
- *          with Spaz; NULL if unable to retrieve the list.
- */
-Spaz.DB.getUserList = function() {
-	var conn = getSyncConnection(air.SQLMode.READ);
-
-	if (conn.connected) {
-		var sql = new air.SQLStatement();
-		sql.text = "SELECT name FROM users ORDER BY 1";
-		sql.sqlConnection = conn;
-		try {
-			sql.execute();
-			var result = sql.getResult();
-			var list = new Array();
-			for (i = 0; i < result.data.length; i++) {
-				list[i] = result.data[i]["name"];
-			}
-			return list;
-		} catch (error) {
-			sch.debug("Failed to retrieve user list:", error);
-			return null;
-		}
-	}
-
-	return null;
-};
-
-/**
- * Add/remove a user from the table of registered users.
- * @param action   The action to perform: "add" or "remove".
- * @param username The Twitter username to add/remove
- * @returns true if action is successful; otherwise false;
- */
-Spaz.DB.maintainUser = function(action, username) {
-	var conn = getSyncConnection(air.SQLMode.UPDATE);
-
-	if (conn.connected)	{
-		var sql = new air.SQLStatement();
-
-		switch(action) {
-		case "add":
-			sql.text = "INSERT INTO users (name) VALUES(:name)";
-			break;
-		case "remove":
-			sql.text = "DELETE FROM users WHERE name=:name";
-			break;
-		default:
-			sch.debug("Invalid action (" + action + ") sent to Spaz.DB.maintainUser");
-			sql.text = "this will fail";
-		}
-
-		sql.parameters[":name"] = username;
-		sql.sqlConnection = conn;
-		try {
-			sql.execute();
-			return true;
-		} catch (error) {
-			sch.debug("Failed to " + action + " user " +  username + ":", error);
-			return false;
-		}
-	}
-
-	return false;
-};

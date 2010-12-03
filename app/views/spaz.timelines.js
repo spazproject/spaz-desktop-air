@@ -118,7 +118,13 @@ AppTimeline.prototype.markAsRead = function() {
 	/* we use our own "mark as read" here because the helper version just removes the 'new' class' */
 	$(entry_selector+':visible').removeClass('new').addClass('read').each(function(i){
 		var status_id = $(this).attr('data-status-id');
-		Spaz.DB.markEntryAsRead(status_id);
+		var is_dm = false;
+		if ($(this).hasClass('dm')) {
+			is_dm = true;
+		} else {
+			is_dm = false;
+		}
+		Spaz.DB.markEntryAsRead(status_id, is_dm);
 	});
 	$().trigger('UNREAD_COUNT_CHANGED');
 
@@ -332,11 +338,13 @@ var FriendsTimeline = function() {
 					only add if it doesn't already exist
 				*/
 				if ($timeline.find('div.timeline-entry[data-status-id='+dataItem.id+']').length<1) {
+					var is_dm = false;
 					
 					// check if entry has been read
-					dataItem.SC_is_read = !!Spaz.DB.isRead(dataItem.id);
+					if (dataItem.SC_is_dm) { is_dm = true; }
+					dataItem.SC_is_read = !!Spaz.DB.isRead(dataItem.id, is_dm);
 					
-					sch.debug(i +' is ' + dataItem.SC_is_read);
+					sch.error(i +' is ' + dataItem.SC_is_read);
 					
 					no_dupes.push(dataItem);
 					

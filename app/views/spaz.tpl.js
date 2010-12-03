@@ -123,13 +123,23 @@ Spaz.Templates.timeline_entry = function(d) {
 
 
 Spaz.Templates.timeline_entry_dm = function(d) {
+	var read_or_new;
 	
 	d.isSent = (d.sender_screen_name.toLowerCase() === Spaz.Prefs.getUsername().toLowerCase());
 	
 	// sch.dump(sch.enJSON(d));
 
+	if (d.SC_is_read) {
+		sch.debug(d.id + " is being marked as read");
+		read_or_new = ' read ';
+	} else {
+		sch.debug(d.id + " is being marked as NOT read");
+		read_or_new = ' new ';
+	}
+
+
 	var entryHTML = '';
-	entryHTML += '<div class="timeline-entry dm new" data-status-id="'+d.id+'" data-user-screen_name="'+d.sender_screen_name+'" data-user-id="'+d.sender.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
+	entryHTML += '<div class="timeline-entry dm '+read_or_new+'" data-status-id="'+d.id+'" data-user-screen_name="'+d.sender_screen_name+'" data-user-id="'+d.sender.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">';
 	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.sender.profile_image_url+')" title="View profile" user-id="'+d.sender.id+'" user-screen_name="'+d.sender.screen_name+'">'+d.sender.screen_name+'</div>';
 	entryHTML += '		<div class="user-screen-name clickable" title="View profile" user-id="'+d.sender_id+'" user-screen_name="'+d.sender_screen_name+'">'+d.sender_screen_name+'</div>';
