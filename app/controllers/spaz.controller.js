@@ -320,47 +320,6 @@ Spaz.Controller.initIntercept = function() {
 			'.status-action-dm':function(e) {
 				Spaz.postPanel.prepDirectMessage($(this).attr('user-screen_name'));
 			},
-			'.status-action-reply':function(e) {
-				var tweet_id = $(this).attr('entry-id');
-				Spaz.TweetsModel.getById(
-					tweet_id,
-					false,
-					function(data) {
-					    var screenname = data.user.screen_name;
-						var names = sc.helpers.extractScreenNames(data.SC_text_raw);
-						
-						sch.debug('names for reply 2 are:'+names);
-						
-						if (names.length >= 1) {
-            			    var screenname_exists = false;
-            				sch.debug('names for reply are:'+names);
-
-            				for (var i=0; i < names.length; i++) {
-            				    if (names[i].toLowerCase() == screenname.toLowerCase()) {
-            				        screenname_exists = true;
-            				    }
-            				    // remove references to current username
-            				    if (names[i].toLowerCase() == Spaz.Prefs.getUsername()) {
-            				        names.splice(i, 1);
-            				    }
-            				}
-
-            				// add screenname if it is not in the message
-            				if (!screenname_exists) {
-            				    names.unshift(screenname);
-            				}
-            				sch.debug('names for reply 2 are:'+names);
-
-							Spaz.postPanel.prepReply(names, data.id, data.SC_text_raw);
-						} else {
-							Spaz.postPanel.prepReply(data.user.screen_name, data.id, data.SC_text_raw);
-						}
-						
-					}
-				);
-
-				
-			},
 			'.status-action-del':function(e) {
 				if ($(this).hasClass('dm')) {
 					Spaz.Data.destroyDirectMessage($(this).attr('entry-id'), function() {
