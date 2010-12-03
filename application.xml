@@ -3,7 +3,7 @@
 	<id>Spaz.AIR</id>
     <publisherID>16CB261D461B1CA2027F7C39946115FA2DC8CD7F.1</publisherID>
 	<name>Spaz</name>
-	<versionNumber>0.9.11</versionNumber>
+	<versionNumber>0.9.12</versionNumber>
 	<filename>Spaz</filename>
 	<description>
 		<text xml:lang="en">A microblogging client for Twitter, Identi.ca, and StatusNet</text>
