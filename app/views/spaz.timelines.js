@@ -1791,8 +1791,9 @@ Spaz.Timelines.resetTimelines = function() {
 	if (typeof timelinesMap !== 'undefined') {
 		for (var key in timelinesMap) {
 			if(timelinesMap.hasOwnProperty(key)){
-				sch.debug(key);
-				timelinesMap[key].timeline.stopListening();
+				if (timelinesMap[key].timeline) {
+					timelinesMap[key].timeline.stopListening();
+				}
 			}
 		}
 	}
