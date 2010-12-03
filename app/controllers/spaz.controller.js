@@ -696,8 +696,7 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 	
 	// esc from #entrybox
 	shortcut.add('esc', function() {
-			$('#entrybox').trigger('blur');
-			$('body').trigger('focus');
+			$('#entrybox')[0].blur();
 		}, {
 			'target':'entrybox'
 	});
