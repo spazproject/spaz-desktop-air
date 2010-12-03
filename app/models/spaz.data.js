@@ -388,7 +388,7 @@ Spaz.Data.addFriend = function(userid, options) {
 	Spaz.Data.getUser(userid, null, function(userData){
 		var username = userData.screen_name;
 
-		sch.error('Spaz.Data.addFriend: ' +
+		sch.debug('Spaz.Data.addFriend: ' +
 			'Adding friend: ' + username + ' (' + userid + ')');
 		Spaz.UI.statusBar('Following ' + username + '&hellip;');
 
@@ -847,7 +847,7 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 
 
-	sch.error('GETTING:'+user_id);
+	sch.debug('GETTING:'+user_id);
 
 	var userobj = null;
 	target_el = target_el || document;
