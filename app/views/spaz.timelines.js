@@ -344,7 +344,7 @@ var FriendsTimeline = function() {
 					if (dataItem.SC_is_dm) { is_dm = true; }
 					dataItem.SC_is_read = !!Spaz.DB.isRead(dataItem.id, is_dm);
 					
-					sch.error(i +' is ' + dataItem.SC_is_read);
+					sch.debug(i +' is ' + dataItem.SC_is_read);
 					
 					no_dupes.push(dataItem);
 					
