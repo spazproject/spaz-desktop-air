@@ -133,7 +133,7 @@ Spaz.Keyboard.moveSelect = function(jqelement, timeline) {
 		sch.debug("Problem - jqelement passed length = 0 - can't scroll to anything");
 	}
 	
-	$().trigger('UNREAD_COUNT_CHANGED');
+	$(document).trigger('UNREAD_COUNT_CHANGED');
 };
 
 

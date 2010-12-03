@@ -111,12 +111,12 @@ Spaz.Dock.sync = function()
    if (reloadID != null)
    {
       // sch.dump("Stopping dock refresh thread");
-		$().unbind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);
+		$(document).unbind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);
       // window.clearInterval(reloadID);
    }
    if (Spaz.Prefs.getDockDisplayUnreadBadge())
    {
-		$().bind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);      
+		$(document).bind('UNREAD_COUNT_CHANGED', Spaz.Dock.refresh);      
 		// var refresh = Spaz.Prefs.getDockRefreshInterval();
 		//       sch.dump("Starting dock refresh thread with refresh rate of " + refresh + " ms");
 		//       // Spaz.Dock.reloadID = window.setInterval(Spaz.Dock.refresh, refresh);

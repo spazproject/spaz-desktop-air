@@ -691,7 +691,7 @@ Spaz.UI.setView = function(type ) {
 
 	Spaz.UI.currentFriendsTimelineView = type;
 
-	$().trigger('UNREAD_COUNT_CHANGED');
+	$(document).trigger('UNREAD_COUNT_CHANGED');
 
 }
 
@@ -937,7 +937,7 @@ Spaz.UI.selectEntry = function(el) {
 	sch.debug(el);
     sch.debug('selected tweet #' + el.id + ':' + el.tagName + '.' + el.className);
 
-    $().trigger('UNREAD_COUNT_CHANGED');
+    $(document).trigger('UNREAD_COUNT_CHANGED');
 
 }
 
@@ -1110,7 +1110,7 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 
 	var notify_entries = [];
 
-    $().trigger('UNREAD_COUNT_CHANGED');
+    $(document).trigger('UNREAD_COUNT_CHANGED');
     sch.debug('notifyOfNewEntries');
 
 	/*

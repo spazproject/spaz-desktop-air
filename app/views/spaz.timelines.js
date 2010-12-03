@@ -126,7 +126,7 @@ AppTimeline.prototype.markAsRead = function() {
 		}
 		Spaz.DB.markEntryAsRead(status_id, is_dm);
 	});
-	$().trigger('UNREAD_COUNT_CHANGED');
+	$(document).trigger('UNREAD_COUNT_CHANGED');
 
 };
 
