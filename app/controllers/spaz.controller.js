@@ -688,6 +688,19 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 		}, {
 			'disable_in_input':true
 	});
+	shortcut.add('esc', function() {
+			Spaz.UI.deselectAllEntries();
+		}, {
+			'disable_in_input':true
+	});
+	
+	// esc from #entrybox
+	shortcut.add('esc', function() {
+			$('#entrybox').trigger('blur');
+			$('body').trigger('focus');
+		}, {
+			'target':'entrybox'
+	});
 
 	shortcut.add(Modkey+Spaz.Prefs.get('key-toggle'), function() {
 			Spaz.UI.toggleTimelineFilter();

@@ -48,6 +48,10 @@ AppTimeline.prototype.activate = function() {
 	
 };
 
+AppTimeline.prototype.deactivate = function() {
+	
+};
+
 /**
  * filter the timeline (hide or show entries) based on a string of terms
  * @param {string} terms 
@@ -1722,17 +1726,16 @@ Spaz.Timelines.init = function() {
 	Spaz.Timelines.followers = new FollowersTimeline();
 	
 	Spaz.Timelines.map = {
-		friends:	Spaz.Timelines.friends,
-		user:		Spaz.Timelines.user,
-		'public':	Spaz.Timelines['public'],
-		userlists:	Spaz.Timelines.userlists,
-		favorites:	Spaz.Timelines.favorites,
-		search:		Spaz.Timelines.search//,
-		// followerslist: Spaz.Timelines.followerslist
+		'friends'   : Spaz.Timelines.friends,
+		'user'      : Spaz.Timelines.user,
+		'public'    : Spaz.Timelines['public'],
+		'userlists' : Spaz.Timelines.userlists,
+		'favorites' : Spaz.Timelines.favorites,
+		'search'    : Spaz.Timelines.search,
+		'followers' : Spaz.Timelines.followers
 	};
-
-
 };
+
 
 Spaz.Timelines.getTimelineFromTab = function(tab) {
 	var timeline = tab.id.replace(/tab-/, '');

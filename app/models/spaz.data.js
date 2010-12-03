@@ -833,6 +833,7 @@ Spaz.Data.loadDataForTab = function(tab, force, reset) {
 			sch.error('Tab not implemented or something!');
 			break;
 	}
+	
 	return false;
 };
 

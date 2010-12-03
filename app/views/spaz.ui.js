@@ -923,7 +923,7 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 Spaz.UI.selectEntry = function(el) {
 
     sch.debug('unselected tweets');
-    $('div.timeline-entry.ui-selected').removeClass('ui-selected');
+    Spaz.UI.deselectAllEntries()
 
 
     sch.debug('selecting tweet');
@@ -942,12 +942,16 @@ Spaz.UI.selectEntry = function(el) {
 }
 
 
+Spaz.UI.deselectAllEntries = function() {
+    $('div.timeline-entry.ui-selected').removeClass('ui-selected');
+}
+
 
 Spaz.UI.getStatusIdFromElement = function(el) {
 	var entryId = $(el).attr('data-status-id');
 
     if (entryId === null) {
-        sch.dump("Cannot obtain entry id for entry with DOM id " + this.id);
+        sch.error("Cannot obtain entry id for entry with DOM id " + this.id);
         return false;
     } else {
         return entryId;
