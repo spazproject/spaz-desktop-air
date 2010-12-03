@@ -796,10 +796,6 @@ Spaz.UI.buildToolsMenu = function(){
 					handler: function(){ Spaz.postPanel.prepDirectMessage(''); }
 				},
 				{
-					label:   'Shorten URL…',
-					handler: function(){ Spaz.UI.showShortLink(); }
-				},
-				{
 					label:   'Upload image…',
 					handler: function(){ Spaz.UI.uploadImage(); }
 				},
