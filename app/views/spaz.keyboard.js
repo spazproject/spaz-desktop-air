@@ -9,52 +9,58 @@ if (!Spaz.Keyboard) Spaz.Keyboard = {};
 
 
 Spaz.Keyboard.move = function(dir, selector) {
-	
+	var movefunc,
+		wrapselc,
+		timeline,
+		entry_selector,
+		jqall,
+		jqsel;
+		
 	sch.debug(dir);
 	sch.debug(selector);
 	
 	dir      = dir      || 'down';
 	selector = selector || '';
 	
-	sch.debug("selector is '" + selector+"'")
+	sch.debug("selector is '" + selector+"'");
 	
 	// var timelineid = 'timeline-friends';
-	var timeline       = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab);
+	timeline       = Spaz.Timelines.getTimelineFromTab(Spaz.UI.selectedTab);
 	if (!timeline) {
 		sch.error('no timeline in Spaz.Keyboard.move');
 	}
-	var entry_selector = timeline.getEntrySelector();
+	entry_selector = timeline.getEntrySelector();
 	sch.debug("timeline.getTimelineSelector():"+timeline.getTimelineSelector());
 	sch.debug("entry_selector:"+entry_selector);
 	
-	var jqall = $(entry_selector).is(':visible');
+	jqall = $(entry_selector).is(':visible');
 	
 	if (dir == 'down') {
-		var movefunc = 'nextAll';
-		var wrapselc = 'first';
+		movefunc = 'nextAll';
+		wrapselc = 'first';
 	} else if (dir == 'up') {
-		dir = 'up'
-		var movefunc = 'prevAll';
-		var wrapselc = 'last';
+		dir = 'up';
+		movefunc = 'prevAll';
+		wrapselc = 'last';
 	} else {
-		return false;
+		return;
 	}
 	
 	// get current selected
-	var jqsel = $(entry_selector+'.ui-selected');
+	jqsel = $(entry_selector+'.ui-selected');
 	
 	// if none selected, or there is no 'next', select first
 	if (selector == ":first" || selector == ":last") {
 		sch.debug('first in timeline');
-		Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector), timeline)
+		Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector), timeline);
 	} else if (jqsel.length == 0 ) {
-		sch.debug('nothing is selected')
-		Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector+':'+wrapselc), timeline)
+		sch.debug('nothing is selected');
+		Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector+':'+wrapselc), timeline);
 		jqsel = $(entry_selector+'.ui-selected'+selector);
 	} else if (jqsel[movefunc]('div.timeline-entry'+selector).eq(0).length == 0) {
 		sch.debug('we are at the beginning or end');
 		if (Spaz.Prefs.get('timeline-keyboardnavwrap')) {
-			Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector+':'+wrapselc), timeline)
+			Spaz.Keyboard.moveSelect($(entry_selector+':visible'+selector+':'+wrapselc), timeline);
 			jqsel = $(entry_selector+'.ui-selected'+selector);				
 		} else {
 			sch.debug('NOT WRAPPING');
@@ -64,7 +70,7 @@ Spaz.Keyboard.move = function(dir, selector) {
 		Spaz.Keyboard.moveSelect(jqsel[movefunc]('div.timeline-entry:visible'+selector).eq(0), timeline);
 	}
 	// if selected is at bottom, go to top
-}
+};
 
 
 
@@ -98,11 +104,11 @@ Spaz.Keyboard.moveSelect = function(jqelement, timeline) {
 		/*
 			going down
 		*/
-		sch.debug('bottom--- GOING DOWN')
-		sch.debug("selected_bottom:"+selected_bottom)
-		sch.debug("viewport_bottom:"+viewport_bottom)
+		sch.debug('bottom--- GOING DOWN');
+		sch.debug("selected_bottom:"+selected_bottom);
+		sch.debug("viewport_bottom:"+viewport_bottom);
 		if ( selected_bottom > viewport_bottom ) {
-			var scroll_offset = ($(wrapper_selector).innerHeight()-jqelement.height())*-1;
+			var scroll_offset = ($(wrapper_selector).innerHeight()-jqelement.height() - 10 )*-1;
 			sch.debug('scroll offset:'+scroll_offset);
 			$(wrapper_selector).scrollTo(jqelement, {
 				offset:scroll_offset,
@@ -113,9 +119,9 @@ Spaz.Keyboard.moveSelect = function(jqelement, timeline) {
 		/*
 			going up
 		*/
-		sch.debug('top--- GOING UP')
-		sch.debug("jqelement.position().top:"+jqelement.position().top)
-		sch.debug("$(timeline_selector).position().top:"+$(timeline_selector).position().top)
+		sch.debug('top--- GOING UP');
+		sch.debug("jqelement.position().top:"+jqelement.position().top);
+		sch.debug("$(timeline_selector).position().top:"+$(timeline_selector).position().top);
 		if ( jqelement.position().top < $(wrapper_selector).position().top ) {
 			$(wrapper_selector).scrollTo(jqelement, {
 				offset:0,
@@ -128,7 +134,7 @@ Spaz.Keyboard.moveSelect = function(jqelement, timeline) {
 	}
 	
 	$().trigger('UNREAD_COUNT_CHANGED');
-}
+};
 
 
 
@@ -167,4 +173,4 @@ Spaz.Keyboard.keyboardHandler = function(event) {
 	// 
 	// 
 	// return true;
-}
+};
