@@ -41,6 +41,15 @@ means themes must set display:block on the <body> element */
 			}
 		}
 
+/*
+	beta ribbon image that appears inside the #container
+*/
+#beta-ribbon {
+	position: absolute;
+	top:     -1px;
+	right:    0px;
+	z-index:  1000;
+}
 
 /*
 	cheezy new items animation test
