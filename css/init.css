@@ -48,6 +48,7 @@ means themes must set display:block on the <body> element */
 	position: absolute;
 	top:     -1px;
 	right:    0px;
+	pointer-events: none;
 	z-index:  1000;
 }
 
