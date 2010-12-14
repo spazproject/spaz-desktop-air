@@ -16,6 +16,12 @@ Spaz.startReloadTimer = function() {
 	return reloadID;
 };
 
+/**
+ * this forces a reload of the index.html doc in the HTMLLoader 
+ */
+Spaz.reloadHTMLDoc = function() {
+	window.htmlLoader.load(new air.URLRequest("index.html"));
+}
 
 Spaz.stopReloadTimer = function() {
 	if (reloadID) {

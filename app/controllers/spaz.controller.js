@@ -709,6 +709,9 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 			target:$('#entrybox')[0],
 			propagate:false
 	});
+	shortcut.add(Modkey+'+F10', function() {
+		Spaz.reloadHTMLDoc();
+	});
 
 	// ****************************************
 	// Username/password prefs -> save
