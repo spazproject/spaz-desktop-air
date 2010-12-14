@@ -1,0 +1,1 @@
+sch.debug('loaded spaz/theme.js');
