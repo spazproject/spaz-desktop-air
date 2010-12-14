@@ -517,10 +517,12 @@ Spaz.Prefs.changeMethods = {
 			Spaz.Themes.setCurrentTheme();
 		},
         onGet: function(key, value) {
-            return 'Leopaz'; // HARDCODE LEOPAZ
+			return value;
+            // return 'Leopaz'; // HARDCODE LEOPAZ
         },
         onSet: function(key, value) {
-            return 'Leopaz'; // HARDCODE LEOPAZ
+			return value
+            // return 'Leopaz'; // HARDCODE LEOPAZ
         }
 	},
 
