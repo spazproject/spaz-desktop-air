@@ -2,156 +2,333 @@
 @import "jquery-ui/jquery-ui.css";
 
 /*
-	Setting up some basics here
+*	BASE COLORS
+*	
+*	#8E8E5F		142,142,95
+*	#85886A		136,136,106
+*	#575A47		87,90,71		
+*	#3A3C2C		58,60,44
+*	#3A3C2C		58,60,44
+*	#24251A		36,37,26
+*	#000000		0,0,0
+*
+* 	Beige gradients
+*   #D6D5CC		214,213,204
+* 	#E4E6F2		247,246,234
+* 
+* 	Blue gradients
+* 	#BEC0C8		190,192,200
+* 	#E4E6F2		228,230,242
+* 	
+* 	Olive Border
+* 	#666699
+* 
+* 	Blue border
+* 	#666699
+* 
+* 	Greys
+* 	#606060
+* 	#666666
+* 	#909090
+* 	#CCCCCC
+* 		
 */
+
+
+/*** Global ***/
+
 html {
-    width: 100%;
-    height:100%;
+	width: 100%;
+	height: 100%;
 }
-
 body {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
 	font-family:Tahoma, Arial, Helvetica, sans-serif;
-	margin:0px;
-	padding:0px;
-    width: 100%;
-    height:100%;
-    display:block;
 }
-/*body:not(.active){
-  opacity:0.75;
+h1, h2, h3, h4, h5 {
+	margin: 0;
+	padding: 0;
+}
+a, a:link, .clickable {
+	color: #333399;
+	cursor: pointer;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+*:focus {
+	outline: 0;
+}
+input[type=text],
+input[type=password],
+#entrybox {
+	z-index: 1;
+}
+input[type=text]:focus,
+input[type=password]:focus,
+div.prefs input[type=text]:focus,
+div.prefs input[type=password]:focus,
+#entrybox:focus {
+	border-color: #7aadda; /* Light blue */
+	border-top-color: #7092b0;
+}
+input[type=text]:focus,
+input[type=password]:focus,
+/* #entrybox:focus {*/
+/* box-shadow: 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda; /* Hack: Repetition intensifies glow */
+/* -webkit-box-shadow: 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda; */
+/*
 }
 */
-h1, h2, h3, h4, h5 {
-	padding:0;
-	margin:0;
+/* #entrybox.dm:focus {*/
+/* border-color: #ffb3b2; /* Light red */
+/* border-top-color: #f0a090; */
+/* box-shadow: 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2; /* Hack: Repetition intensifies glow */
+/* -webkit-box-shadow: 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2; */
+/*
+}
+*/
+/* .panelmenu input[type=text]:focus {*/
+/* box-shadow: 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda; /* Hack: Repetition intensifies glow */
+/* -webkit-box-shadow: 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda; */
+/*
+}
+*/
+.highlight {
+	border-bottom: 1px dotted #884;
 }
 
-a, a:link, .clickable {
-	color:#333399;
-	text-decoration:none;
-	cursor:pointer;
-}
+/*** Global > Zebra striping ***/
 
-div.timeline-entry:nth-child(odd){
+div.timeline-entry:nth-child(odd),
+ul#account-list li:nth-child(odd),
+div.followers-row:nth-child(odd) {
 	background-color: #FFFFEE;
 	border-top-color: #999966;
 	background-image: url('images/entry-odd-bg.png');
 	background-repeat: repeat-x;
+
 }
-div.timeline-entry:nth-child(even){
+div.timeline-entry:nth-child(even),
+ul#account-list li:nth-child(even),
+div.followers-row:nth-child(even) {
 	background-color: #EEEEFF;
 	border-top-color: #666699;
 	background-image: url('images/entry-even-bg.png');
 	background-repeat: repeat-x;
 }
 
+/*** Global > Animations ***/
 
-
-
-	/*********************************************************************
-		The container is a div that wraps around all of the content
-	*/
-	#container {
-		overflow:hidden;
-		background-color:#333333;
-		-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
-		top:	1px; /* This has an effective 8px padding to show us the app dropshadow */
-		left:	8px; /* using all-four-sides positioning lets it expand properly on resizing */
-		bottom:	8px;
-		right:	8px;
-        position: fixed;
+@-webkit-keyframes discrete-spinner {
+	from {
+		-webkit-transform: rotate(0deg);
 	}
-	
-		/*
-			DOMWindowOverlay is used by the DOMWindow plugin for popboxes
-		*/
-		#DOMWindowOverlay {
-			-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
-			top:	1px !important; /* This has an effective 8px padding to show us the app dropshadow */
-			left:	8px !important; /* using all-four-sides positioning lets it expand properly on resizing */
-			bottom:	8px !important;
-			right:	8px !important;
-			position:fixed !important;
-			width:  auto !important;			
-			height: auto !important;			
-		}
+	8.32% {
+		-webkit-transform: rotate(0deg);
+	}
+	/* Forces jump from 0deg to 30deg, not a smooth rotation */
+	8.33% {
+		-webkit-transform: rotate(30deg);
+	}
+	16.65% {
+		-webkit-transform: rotate(30deg);
+	}
+	16.66% {
+		-webkit-transform: rotate(60deg);
+	}
+	24.99% {
+		-webkit-transform: rotate(60deg);
+	}
+	25% {
+		-webkit-transform: rotate(90deg);
+	}
+	33.32% {
+		-webkit-transform: rotate(90deg);
+	}
+	33.33% {
+		-webkit-transform: rotate(120deg);
+	}
+	41.65% {
+		-webkit-transform: rotate(120deg);
+	}
+	41.66% {
+		-webkit-transform: rotate(150deg);
+	}
+	49.99% {
+		-webkit-transform: rotate(150deg);
+	}
+	50% {
+		-webkit-transform: rotate(180deg);
+	}
+	58.32% {
+		-webkit-transform: rotate(180deg);
+	}
+	58.33% {
+		-webkit-transform: rotate(210deg);
+	}
+	66.65% {
+		-webkit-transform: rotate(210deg);
+	}
+	66.66% {
+		-webkit-transform: rotate(240deg);
+	}
+	74.99% {
+		-webkit-transform: rotate(240deg);
+	}
+	75% {
+		-webkit-transform: rotate(270deg);
+	}
+	83.32% {
+		-webkit-transform: rotate(270deg);
+	}
+	83.33% {
+		-webkit-transform: rotate(300deg);
+	}
+	91.65% {
+		-webkit-transform: rotate(300deg);
+	}
+	91.66% {
+		-webkit-transform: rotate(330deg);
+	}
+	99.99% {
+		-webkit-transform: rotate(330deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+
+}
+@-webkit-keyframes entrybox-flash {
+	from {
+		background: #fcec8f;
+	}
+	to {
+		background: #fff;
+	}
+
+}
 
 
-		/*********************************************************************
-			The contains the classic "Spaz" title and the window buttons
-		*/
-		#header {
-			background:#000000;
-			color:#FFFFFF;
-			font-size:18px;
-			margin-left:auto;
-			margin-right:auto;
-			margin-top:0;
-			padding:5px 10px 10px 10px;
-			text-align:left;
-			height:42px;
+
+/*********************************************************************
+The container is a div that wraps around all of the content
+*/
+#container {
+	overflow:hidden;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(52,52,52,.65)),
+		to(rgba(34,34,34,.65)),
+		color-stop(0.20, rgba(66,66,66,.85)),
+		color-stop(0.25, rgba(77,77,77,.85)),
+		color-stop(0.26, rgba(52,52,52,.85))
+	);
+	-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
+	top:	1px; /* This has an effective 8px padding to show us the app dropshadow */
+	left:	8px; /* using all-four-sides positioning lets it expand properly on resizing */
+	bottom:	8px;
+	right:	8px;
+    position: fixed;
+}
+/*body:not(.active) #container {
+	background-color: #d2d2d2;
+	border-top-color: rgba(234, 234, 234, 0.9);
+}*/
+
+
+/*********************************************************************
+The contains the classic "Spaz" title and the window buttons
+*/
+#header {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#000000), to(#222222),
+		color-stop(0.5, #111111)
+	);
+	color:#FFFFFF;
+	font-size:18px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:0;
+	padding:5px 10px 10px 10px;
+	text-align:left;
+	height:42px;
+	position:absolute;
+	top:   10px;
+	left:  10px;
+	right: 10px;
+	-khtml-border-top-left-radius:5px;
+	-khtml-border-top-right-radius:5px;
+	cursor: move;
+}
+		#window-buttons {
 			position:absolute;
-			top:   10px;
-			left:  10px;
-			right: 10px;
-			-khtml-border-top-left-radius:5px;
-			-khtml-border-top-right-radius:5px;
-			cursor: move;
+			right:	5px;
+			top:	0px;
+			text-align:right;
 		}
-			/*
-				These are the minimize and close buttons for the main window
-			*/
-			#window-buttons {
-				position:absolute;
-				right:	5px;
-				top:	0px;
-				text-align:right;
-			}
-
-				.window-button {
-					padding:0px 6px 2px;
-					color:#CCCCCC;
-					background-color:#606060;
-					-khtml-border-radius:5px;
-					font-size:14px;
-					cursor:pointer;
-					margin:0;
-				}
-				
-
-
-				.window-button:hover {
-					color:#FFFFFF;
-					background-color:#909090;
-				}
-
-			/*
-				These mimic the window-button styles
-			*/
+		#header-label, .window-button {
+			padding:0px 6px 2px;
+			color:#E0E0E0;
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#404040), to(#606060)
+			);
+			-khtml-border-radius:5px;
+			font-size:14px;
+			cursor:pointer;
+			margin:0;
+		}
 			#header-label {
-				padding:0px 6px 2px;
-				font-size:14px;
-				color:#FFFFFF;
-				background-color:#606060;
-				-khtml-border-radius:5px;
-				cursor:pointer;
-				margin:0;
-				-webkit-animation-name: pulse;
-				-webkit-animation-duration: 2s;
-				-webkit-animation-direction: alternate;
-				-webkit-animation-timing-function: ease-in-out;
-				-webkit-animation-iteration-count: 5;
+				display:inline-block;
 			}
-				@-webkit-keyframes pulse {
-					0% {
-						background-color: #666600;
-					}
-					50% {
-						background-color: #222200;
-					}
-					100% {
-						background-color: #606060;
-					}
+				#header-label .current {
+					display: inline-block;
+					width: 16px;
+					height: 16px;
+					margin: 3px 6px 0 0;
+					background: transparent 0 0 no-repeat;
+					background-size: 16px 16px;
+					-webkit-background-size: 16px 16px;
+					border-radius: 4px;
+					-webkit-border-radius: 4px;
+					pointer-events: none;
+					text-indent: -9999em;
 				}
 				/*
 					This puts a &raquo; after "Spaz"
@@ -160,1068 +337,2535 @@ div.timeline-entry:nth-child(even){
 					content:' \00BB';
 				}
 
-				#header-label:hover {
-					color:#FFFFFF;
-					background-color:#666666;
-				}
-
-
-		/*
-			The tabs group contains the tabs themselves and the content panels
-
-			From Spry CSS Notes:
-			This is the selector for the main TabbedPanels container. For our
-			default style, this container does not contribute anything visually,
-			but it is floated left to make sure that any floating or clearing done
-			with any of its child elements are contained completely within the
-			TabbedPanels container, to minimize any impact or undesireable
-			interaction with other floated elements on the page that may be used
-			for layout.
-
-			If you want to constrain the width of the TabbedPanels widget, set a
-			width on the TabbedPanels container. By default, the TabbedPanels widget
-			expands horizontally to fill up available space.
-
-		*/
-		#tabs, .TabbedPanels {
-			margin: 0px;
-			padding: 0px;
-			float: left;
-			clear: none;
-		}
-
-			/*
-				The timeline tabs, a UL group
-
-				From Spry CSS Notes:
-				This is the selector for the TabGroup. The TabGroup container houses
-				all of the tab buttons for each tabbed panel in the widget. This container
-				does not contribute anything visually to the look of the widget for our
-				default style.
-			*/
-			#timeline-tabs, .TabbedPanelsTabGroup {
-				position:absolute;
-				left:20px;
-				right:10px;
-				top:50px;
-				margin: 0px;
-				padding: 0px;
-			}
-
-				/*
-					From Spry CSS Notes:
-					This is the selector for the TabbedPanelsTab. This container houses
-					the title for the panel. This is also the tab "button" that the user clicks
-					on to activate the corresponding content panel so that it appears on top
-					of the other tabbed panels contained in the widget.
-
-					For our default style, each tab is positioned relatively 1 pixel down from
-					where it wold normally render. This allows each tab to overlap the content
-					panel that renders below it. Each tab is rendered with a 1 pixel bottom
-					border that has a color that matches the top border of the current content
-					panel. This gives the appearance that the tab is being drawn behind the
-					content panel.
-				 */
-				.TabbedPanelsTab {
-					position: relative;
-					top: -5px;
-					float: left;
-					padding: 2px 6px;
-					margin: 0px 1px 0px 0px;
-					font-size: 11px;
-					background-color: #222200;
-					color:#CCCCCC;
-					list-style: none;
-					-moz-user-select: none;
-					-khtml-user-select: none;
-					-khtml-border-top-left-radius:.5em;
-					-khtml-border-top-right-radius:.5em;
-
-					cursor: pointer;
-					border:none;
-				}
-
-				/*
-					From Spry CSS Notes:
-					This selector is an example of how to change the appearnce of a tab button
-					container as the mouse enters it. The class "TabbedPanelsTabHover" is
-					programatically added and removed from the tab element as the mouse enters
-					and exits the container.
-				 */
-				.TabbedPanelsTabHover {
-					background-color: #333300;
-				}
-
-				/*
-					From Spry CSS Notes:
-					This selector is an example of how to change the appearance of a tab button
-					container after the user has clicked on it to activate a content panel.
-					The class "TabbedPanelsTabSelected" is programatically added and removed
-					from the tab element as the user clicks on the tab button containers in
-					the widget.
-
-					As mentioned above, for our default style, tab buttons are positioned
-					1 pixel down from where it would normally render. When the tab button is
-					selected, we change its bottom border to match the background color of the
-					content panel so that it looks like the tab is part of the content panel.
-				 */
-				.TabbedPanelsTabSelected {
-					background-color: #333300;
-					border-bottom: solid 1px #333300;
-					color:#FFFFFF;
-				}
-
-				/*
-					From Spry CSS Notes:
-					This selector is an example of how to make a link inside of a tab button
-					look like normal text. Users may want to use links inside of a tab button
-					so that when it gets focus, the text *inside* the tab button gets a focus
-					ring around it, instead of the focus ring around the entire tab.
-				 */
-				.TabbedPanelsTab a {
-					color: #FFFFFF;
-					text-decoration: none;
-				}
-				/* These two tabs get a little extra margin-left to separate things into groups */
-				#tab-followerslist {
-					margin-left:5px;
-				}
-				#tab-prefs {
-					margin-left:5px;
-				}
-					/* The image in the tab itself */
-					.tab-icon {
-						margin-bottom:-1px;
-						width:18px;
-						height:18px;
-						display:block;
-						background-repeat: no-repeat;
-					}
-				    #tab-friends .tab-icon { background-image:url('images/tab-icon-timeline.png'); }
-				    #tab-user .tab-icon { background-image:url('images/tab-icon-user.png'); }
-				    #tab-public .tab-icon { background-image:url('images/tab-icon-public.png'); }
-					#tab-favorites .tab-icon { background-image:url('images/tab-icon-favorites.png'); }
-				    #tab-userlists  .tab-icon { background-image:url('images/tab-icon-userlists.png'); }
-					#tab-search .tab-icon { background-image:url('images/tab-icon-search.png'); }
-				    #tab-followerslist .tab-icon { background-image:url('images/tab-icon-following.png'); }
-				    #tab-followerslist .tab-icon { background-image:url('images/tab-icon-followers.png'); }
-				    #tab-prefs .tab-icon { background-image:url('images/tab-icon-prefs.png'); }
-
-			/*
-				These are the content panels, wrapped inside a single container div
-
-				From Spry CSS Notes:
-				This is the selector for the ContentGroup. The ContentGroup container houses
-				all of the content panels for each tabbed panel in the widget. For our
-				default style, this container provides the background color and borders that
-				surround the content.
-			*/
-			#timeline-tabs-content, .TabbedPanelsContentGroup {
-				clear: both;
-				position:absolute;
-				border-top:   6px solid #333300;
-				border-bottom:4px solid #333300;
-				top:   67px;
-				left:  10px;
-				right: 10px;
-				bottom:90px;
-				background-color:#FFFFFF;
-			}
-
-				/* This is the selector for the Content panel. The Content panel holds the
-				 * content for a single tabbed panel. For our default style, this container
-				 * provides some padding, so that the content is not pushed up against the
-				 * widget borders.
-				 *
-				 * The name of the class ("TabbedPanelsContent") used in this selector is
-				 * not necessary to make the widget function. You can use any class name you
-				 * want to style the Content container.
-				 */
-				.TabbedPanelsContent {
-					margin:0px;
-					padding:0px;
-				}
-
-				/* This selector is an example of how to change the appearnce of the currently
-				 * active container panel. The class "TabbedPanelsContentVisible" is
-				 * programatically added and removed from the content element as the panel
-				 * is activated/deactivated.
-				 */
-				.TabbedPanelsContentVisible {
-
-				}
-
-					/*
-						The panelmenu appears at the top of each timeline
-					*/
-					.panelmenu {
-	                    background-color:#111100;
-	                    padding:2px;
-						height:20px;
-					}
-						.panelmenu form {
-	                        margin-left: auto;
-	                        margin-right:auto;
-	                        text-align:left;
-							margin:0px;
-							padding:0px;
-							line-height:9px;
-	                    }
-						.panelmenu form input {
-							font-size:10px;
-							margin:2px 0 2px;
-						}
-							.panelmenu form input[type='button'] {
-								padding:1px 4px;
-								border:1px solid transparent;
-								background-color:#333;
-								color:#DDD;
-							}
-							.panelmenu form input[type='button']:hover {
-								border:1px solid #888;
-								background-color:#444;
-								color:#FFF;
-							}
-
-				        .panelmenu form input[type='text'] {
-	                        width:75px;
-							padding-left:6px;
-							background-color:#333;
-	                        border:1px solid #666;
-							color:#CCC;
-							-khtml-border-radius:5px;
-	                    }
-	                		.panelmenu form input[type='text']:focus {
-	                            border:1px solid #888;
-								background-color:#444;
-								color:#FFF;
-	                        }
-
-
-					/*
-						This wraps to provide scrolling for div.timeline
-					*/
-					.timeline-wrapper {
-						overflow:auto;
-						position:absolute;
-						top:24px;
-						left:0px;
-						right:0px;
-						bottom:0px;
-					}
-					#timelinewrapper-prefs {
-						top:0px;
-					}
-
-						/*
-							The .timeline divs are all inside .TabbedPanelsContent divs
-						*/
-						div.timeline {
-/*							overflow:auto;*/
-/*							background:green;*/
-							background-image:url('images/dropshadow.png');
-							background-repeat:repeat-x;
-							background-position: 0px -4px;
-							padding:0px;
-							margin:0px;
-/*							overflow:auto;*/
-/*							position:absolute;*/
-						}
-
-							#timeline-userlists-full-name {
-								font-size:12px;
-/*								font-variant: small-caps;*/
-								padding:3px 3px 4px;
-								background-color:#444422;
-								color:#FFFFCC;
-							}
-
-							/*
-								This is effectively dead since the Twitter API doesn't support paging anymore.
-								Still, I'm keeping it in in case we ever re-enable some sort of paging.
-							*/
-							div.timeline-pager {
-								background-color: #555555;
-								color:#ffffcc;
-								position:absolute;
-								bottom: 90px;
-								left:   10px;
-								right:  10px;
-								height: 11px;
-								padding:2px;
-								font-size: 8px;
-								border-top:   1px solid #555555;
-								border-bottom:1px solid #555555;
-							}
-							div.timeline-pager a {
-								color:#ffffcc;
-							}
-							div.timeline-pager-left {
-								position:absolute;
-								left: 4px;
-								top: -4px;
-								font-size:16px;
-							}
-							div.timeline-pager-info {
-								text-align:center;
-							}
-							div.timeline-pager-right {
-								position:absolute;
-								right: 4px;
-								top:  -4px;
-								font-size:16px;
-							}
-					.timeline-wrapper div.intro,
-					.timeline-wrapper div.loading,
-					.timeline-wrapper div.empty{
-						margin:150px 50px 0;
-						color:#999;
-						font-size:0.75em;
-						text-align:center;
-					}
-
-		/*
-			The entryform contains the #entrybox textarea input for posts and the #updateButton
-		*/
-		#entryform {
-			position:absolute;
-			margin:0;
-			padding:0;
-			bottom:30px;
-			left:10px;
-			right:10px;
-			z-index: 10;
-		}
-			/*
-				This is a Spry textarea widget
-			*/
-			#entrybox {
-				bottom:0px;
-				position:absolute;
-				margin:0;
-				left:   0px;
-				right:  0px;
-				height:55px;
-				font-size:13px;
-				overflow:auto;
-				padding:5px 5px 0px 5px;
-				text-align:left;
-				background-color:#FFFFEE;
-				border:none;
-				background-image:url("images/dropshadow.png");
-				background-repeat:repeat-x;
-				background-position: 0px -4px;
-			}
-				/* the hint shown when the widget does not have focus */
-				.textareaHintState {
-					color:#999999;
-				}
-				/* Formatting for when the textarea has focus */
-				.textareaFocusState {
-					color:#000000;
-				}
-				#entrybox.under {
-					background-color:#FFFFEE;
-				}
-				#entrybox.over {
-					background-color:#FFCCCC;
-				}
-
-			/*
-				This is the counter for number of chars entered
-			*/
-			#entrybox-popup {
-				position:absolute;
-				z-index: 100;
-				font-size:10px;
-				display:none;
-				bottom:60px;
-				right: 18px;
-				padding:6px;
-				background-color:rgba(34,34,0,.9);
+			#header-label:hover, .window-button:hover  {
 				color:#FFFFFF;
-				-khtml-border-top-left-radius: 8px;
-				-khtml-border-top-right-radius:8px;
+				background:#909090;
 			}
-				#chars-left {
-					font-size:12px;
-					margin:4px 0;
-				}
-					#chars-left-count.under {
-						color:#FFFF66;
-					}
-					#chars-left-count.over {
-						color:#FF9999;
-					}
-				#irt {
-					background-color:rgba(34,34,34,.9);
-					color:#DDDDDD;
-					-khtml-border-radius:8px;
-					padding:4px;
-					margin-bottom:4px;
-					overflow:auto;
-					padding-left:20px;
-				}
-					#irt-message {
-					}
-					#irt-dismiss {
-						padding:0px 4px 1px;
-						margin-left:-17px;
-						color:#AAAAAA;
-						background-color:#000000;
-						-khtml-border-radius:5px;
-						font-size:11px;
-						cursor:pointer;
-						float:left;
-						line-height:7px;
-					}
-						#irt-dismiss:hover {
-							color:#FFFFFF;
-							background-color:#666666;
-						}
+
+/*
+The tabs group contains the tabs themselves and the content panels
+
+From Spry CSS Notes:
+This is the selector for the main TabbedPanels container. For our
+default style, this container does not contribute anything visually,
+but it is floated left to make sure that any floating or clearing done
+with any of its child elements are contained completely within the
+TabbedPanels container, to minimize any impact or undesireable
+interaction with other floated elements on the page that may be used
+for layout.
+
+If you want to constrain the width of the TabbedPanels widget, set a
+width on the TabbedPanels container. By default, the TabbedPanels widget
+expands horizontally to fill up available space.
+
+*/
+#tabs, .TabbedPanels {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	clear: none;
+}
+
+/*
+The timeline tabs, a UL group
+
+From Spry CSS Notes:
+This is the selector for the TabGroup. The TabGroup container houses
+all of the tab buttons for each tabbed panel in the widget. This container
+does not contribute anything visually to the look of the widget for our
+default style.
+*/
+#timeline-tabs, .TabbedPanelsTabGroup {
+	position:absolute;
+	left:20px;
+	right:10px;
+	top:50px;
+	margin: 0px;
+	padding: 0px;
+	pointer-events: none;
+	/* Pass pointer events through this invisible wrapper to allow
+	dragging the entire header */
+}
+#timeline-tabs *, .TabbedPanelsTabGroup * {
+	pointer-events: auto;
+	/* Re-capture pointer events for visible controls, e.g., tabs */
+}
+
+/*
+From Spry CSS Notes:
+This is the selector for the TabbedPanelsTab. This container houses
+the title for the panel. This is also the tab "button" that the user clicks
+on to activate the corresponding content panel so that it appears on top
+of the other tabbed panels contained in the widget.
+
+For our default style, each tab is positioned relatively 1 pixel down from
+where it wold normally render. This allows each tab to overlap the content
+panel that renders below it. Each tab is rendered with a 1 pixel bottom
+border that has a color that matches the top border of the current content
+panel. This gives the appearance that the tab is being drawn behind the
+content panel.
+*/
+.TabbedPanelsTab,
+#tools-menu-toggle {
+	position: relative;
+	top: -5px;
+	float: left;
+	padding: 2px 6px;
+	margin: 0px 5px 0px 0px;
+	font-size: 11px;
+	background-color: #3A3C2C;
+	color:#CCCCCC;
+	list-style: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-khtml-border-top-left-radius:.5em;
+	-khtml-border-top-right-radius:.5em;
+
+	cursor: pointer;
+	border:none;
+}
+.TabbedPanelsTab {
+	position: relative;
+	top: -5px;
+	float: left;
+	border: none;
+	list-style: none;
+}
+#tools-menu-toggle {
+/*	display:none;*/
+}
+
+/*
+From Spry CSS Notes:
+This selector is an example of how to change the appearnce of a tab button
+container as the mouse enters it. The class "TabbedPanelsTabHover" is
+programatically added and removed from the tab element as the mouse enters
+and exits the container.
+*/
+.TabbedPanelsTabHover {
+	background-color: #575A47;
+}
+
+/*
+From Spry CSS Notes:
+This selector is an example of how to change the appearance of a tab button
+container after the user has clicked on it to activate a content panel.
+The class "TabbedPanelsTabSelected" is programatically added and removed
+from the tab element as the user clicks on the tab button containers in
+the widget.
+
+As mentioned above, for our default style, tab buttons are positioned
+1 pixel down from where it would normally render. When the tab button is
+selected, we change its bottom border to match the background color of the
+content panel so that it looks like the tab is part of the content panel.
+*/
+.TabbedPanelsTabSelected {
+	background-color: #575A47;
+	border-bottom: solid 1px #575A47;
+
+}
+
+/*
+From Spry CSS Notes:
+This selector is an example of how to make a link inside of a tab button
+look like normal text. Users may want to use links inside of a tab button
+so that when it gets focus, the text *inside* the tab button gets a focus
+ring around it, instead of the focus ring around the entire tab.
+*/
+.TabbedPanelsTab a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+/*#tab-friends {
+}
+body:not(.active) #tab-friends {
+	background-position: 0 -23px;
+}
+#tab-friends:not(.TabbedPanelsTabSelected):active {
+	background-position: 0 -46px;
+}
+#tab-friends.TabbedPanelsTabSelected {
+	background-position: 0 -69px;
+}
+body:not(.active) #tab-friends.TabbedPanelsTabSelected {
+	background-position: 0 -92px;
+}
+#tab-friends.TabbedPanelsTabSelected:active {
+	background-position: 0 -115px;
+}
+#tab-user {
+	background-position: -31px 0;
+}
+body:not(.active) #tab-user {
+	background-position: -31px -23px;
+}
+#tab-user:not(.TabbedPanelsTabSelected):active {
+	background-position: -31px -46px;
+}
+#tab-user.TabbedPanelsTabSelected {
+	background-position: -31px -69px;
+}
+body:not(.active) #tab-user.TabbedPanelsTabSelected {
+	background-position: -31px -92px;
+}
+#tab-user.TabbedPanelsTabSelected:active {
+	background-position: -31px -115px;
+}
+#tab-favorites {
+	background-position: -31px 0;
+}
+body:not(.active) #tab-favorites {
+	background-position: -31px -23px;
+}
+#tab-favorites:not(.TabbedPanelsTabSelected):active {
+	background-position: -31px -46px;
+}
+#tab-favorites.TabbedPanelsTabSelected {
+	background-position: -31px -69px;
+}
+body:not(.active) #tab-favorites.TabbedPanelsTabSelected {
+	background-position: -31px -92px;
+}
+#tab-favorites.TabbedPanelsTabSelected:active {
+	background-position: -31px -115px;
+}
+#tab-userlists {
+	background-position: -62px 0;
+}
+body:not(.active) #tab-userlists {
+	background-position: -62px -23px;
+}
+#tab-userlists:not(.TabbedPanelsTabSelected):active {
+	background-position: -62px -46px;
+}
+#tab-userlists.TabbedPanelsTabSelected {
+	background-position: -62px -69px;
+}
+body:not(.active) #tab-userlists.TabbedPanelsTabSelected {
+	background-position: -62px -92px;
+}
+#tab-userlists.TabbedPanelsTabSelected:active {
+	background-position: -62px -115px;
+}
+#tab-public {
+	background-position: 0 0;
+	margin-left: 8px;
+}
+body:not(.active) #tab-public {
+	background-position: 0 -23px;
+}
+#tab-public:not(.TabbedPanelsTabSelected):active {
+	background-position: 0 -46px;
+}
+#tab-public.TabbedPanelsTabSelected {
+	background-position: 0 -69px;
+}
+body:not(.active) #tab-public.TabbedPanelsTabSelected {
+	background-position: 0 -92px;
+}
+#tab-public.TabbedPanelsTabSelected:active {
+	background-position: 0 -115px;
+}
+#tab-search {
+	background-position: -62px 0;
+}
+body:not(.active) #tab-search {
+	background-position: -62px -23px;
+}
+#tab-search:not(.TabbedPanelsTabSelected):active {
+	background-position: -62px -46px;
+}
+#tab-search.TabbedPanelsTabSelected {
+	background-position: -62px -69px;
+}
+body:not(.active) #tab-search.TabbedPanelsTabSelected {
+	background-position: -62px -92px;
+}
+#tab-search.TabbedPanelsTabSelected:active {
+	background-position: -62px -115px;
+}
+#tab-followerslist {
+	background-position: -93px 0;
+	margin-left: 8px;
+}
+body:not(.active) #tab-followerslist {
+	background-position: -93px -23px;
+}
+#tab-followerslist:not(.TabbedPanelsTabSelected):active {
+	background-position: -93px -46px;
+}
+#tab-followerslist.TabbedPanelsTabSelected {
+	background-position: -93px -69px;
+}
+body:not(.active) #tab-followerslist.TabbedPanelsTabSelected {
+	background-position: -93px -92px;
+}
+#tab-followerslist.TabbedPanelsTabSelected:active {
+	background-position: -93px -115px;
+}
+#tools-menu-toggle {
+	background-position: -124px 0;
+	position: absolute;
+	width: 40px;
+	margin-left: 15px;
+}
+body:not(.active) #tools-menu-toggle {
+	background-position: -124px -23px;
+}
+#tools-menu-toggle:active {
+	background-position: -124px -46px;
+}*/
+
+/* The image in the tab itself */
+.tab-icon {
+	margin-bottom:-1px;
+	width:18px;
+	height:18px;
+	display:block;
+	background-repeat: no-repeat;
+}
+body:not(.active) .tab-icon {
+/*	opacity: 0.5;*/
+}
+#tab-friends .tab-icon {
+	background: url(images/tab-icon-timeline.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-friends.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-timeline-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-user .tab-icon {
+	background: url(images/tab-icon-user.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-user.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-user-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-favorites .tab-icon {
+	background: url(images/tab-icon-favorites.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-favorites.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-favorites-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-userlists .tab-icon {
+	background: url(images/tab-icon-userlists.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-userlists.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-userlists-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-public .tab-icon {
+	background: url(images/tab-icon-public.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-public.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-public-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-search .tab-icon {
+	background: url(images/tab-icon-search.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-search.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-search-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-followerslist .tab-icon {
+	background: url(images/tab-icon-followers.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-followerslist.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-followers-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tools-menu-toggle .tab-icon {
+	background: url(images/tab-icon-tools.png) 6px 4px no-repeat;
+	width: 40px;
+	padding-right: 10px;
+}
+#tools-menu-toggle .tab-icon:after {
+	position: absolute;
+	right: 5px;
+	top: 1px;
+	display: block;
+	content: ' \025BE'; /* Down-pointing triangle */
+	font-size:13px;
+}
+
+/*
+These are the content panels, wrapped inside a single container div
+
+From Spry CSS Notes:
+This is the selector for the ContentGroup. The ContentGroup container houses
+all of the content panels for each tabbed panel in the widget. For our
+default style, this container provides the background color and borders that
+surround the content.
+*/
+#timeline-tabs-content,
+.TabbedPanelsContentGroup {
+	clear: both;
+	position:absolute;
+	border-top:   6px solid #575A47;
+	border-bottom:0px solid #575A47;
+	top:   67px;
+	left:  10px;
+	right: 10px;
+	bottom:130px;
+	background-color:#FFFFFF;
+}
+
+/* This is the selector for the Content panel. The Content panel holds the
+* content for a single tabbed panel. For our default style, this container
+* provides some padding, so that the content is not pushed up against the
+* widget borders.
+*
+* The name of the class ("TabbedPanelsContent") used in this selector is
+* not necessary to make the widget function. You can use any class name you
+* want to style the Content container.
+*/
+.TabbedPanelsContent {
+	margin: 0px;
+	padding: 0px;
+}
+
+/* This selector is an example of how to change the appearnce of the currently
+* active container panel. The class "TabbedPanelsContentVisible" is
+* programatically added and removed from the content element as the panel
+* is activated/deactivated.
+*/
+.TabbedPanelsContentVisible {
+}
+
+/*
+The panelmenu appears at the top of each timeline
+*/
+.panelmenu {
+	position: relative;
+    background-color:#111100;
+    padding:2px;
+	height:27px;
+    background: #000 url(images/panel-menu/bg.png) 0 0 repeat-x;
+    box-shadow:           0 0 10px rgba(0, 0, 0, 0.25);
+      -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+	z-index: 1; /* = div.timeline-subtitle z-index */
+}
+.panelmenu form {
+	position: relative;
+	margin: 0 2px;
+	padding: 1px 0 0;
+	line-height: 9px;
+	text-align: left;
+}
+.panelmenu form input,
+.panelmenu form button {
+	font-size: 10px;
+	font-weight: normal;
+	margin: 2px 0;
+}
+.panelmenu form button {
+	width: 45px;
+	height: 22px;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-image: url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
+	-webkit-border-image: url(images/panel-menu/button.png) 0 8 0 8 repeat repeat;
+	border-width: 0 8px;
+	color: #fff;
+	cursor: default;
+	white-space: nowrap;
+}
+.panelmenu form button[id^="refresh-"] {
+	position: relative;
+	width: 30px;
+	color: transparent;
+}
+.panelmenu form button[id^="refresh-"]:before {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: transparent url(images/refresh-white.png) center center no-repeat;
+	content: ""; /* Forces background to be used */
+}
+.panelmenu form button:active {
+	border-image: url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
+	-webkit-border-image: url(images/panel-menu/button-active.png) 0 8 0 8 repeat repeat;
+	/* border-image-source:url(images/panel-menu/button-active.png); */
+}
+#panel-friends .panelmenu #view-friends:after,
+#panel-userlists .panelmenu #view-userlists:after,
+#panel-public .panelmenu #trends-public:after,
+#panel-search .panelmenu #search-saved:after,
+#panel-followerslist .panelmenu #view-followerslist:after {
+	content: ' \025BE'; /* Down-pointing triangle */
+}
+#panel-public .panelmenu form #trends-public,
+#panel-search .panelmenu form #search-saved {
+	width: auto;
+}
+#panel-search .panelmenu form #search-help {
+	width: 30px;
+}
+#panel-search .panelmenu form #search-go {
+	display: none;
+	/* Allows for making the text input wider. Hit Enter to
+	search instead. */
+}
+#panel-search .panelmenu form #search-help {
+	float: right;
+	margin-right: 0;
+}
+.panelmenu form input[type=text] {
+	float: right;
+	width: 75px;
+	height: 19px;
+	margin-top: 3px;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-image: url(images/search-input.png) 0 9 0 18 repeat repeat;
+	-webkit-border-image: url(images/search-input.png) 0 9 0 18 repeat repeat;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-width: 0 9px 0 18px;
+	color: #828282;
+}
+body:not(.active) .panelmenu form input[type=text] {
+	border-image: url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+	-webkit-border-image: url(images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+}
+.panelmenu form input[type=text]:focus {
+	color: #0f0f0f;
+}
+#panel-user .panelmenu form input[type=text],
+#panel-favorites .panelmenu form input[type=text],
+#panel-public .panelmenu form input[type=text] {
+	width: 75px;
+}
+/*
+For use if "Trends" menu is visible:
+#panel-public .panelmenu form input[type=text] {
+width: 90px;
+}
+*/
+#panel-search .panelmenu form input[type=text] {
+	float: none;
+	width: 41%;
+}
+
+/*
+This wraps to provide scrolling for div.timeline
+*/
+.timeline-wrapper {
+	overflow:auto;
+	position:absolute;
+	top:31px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+}
+.timeline-wrapper,
+#timeline-tabs-content {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#3A3C2C), to(#24251A),
+		color-stop(0.005, #575A47)
+	);
+	/* These `color-stop` values create top and bottom inner
+	shadows. However, the shadow heights are percent-based;
+	static heights would be ideal. */
+}
+#timelinewrapper-userlists {
+	top: 59px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+	background:transparent;
+	/* Show the background for `#timeline-tabs-content`, not this
+	element. This is because `#timeline-userlists-full-name` is
+	initially empty, which leaves the normal `.timeline-wrapper`
+	background with a floating, clearly fake "drop shadow". */
+}
+#timelinewrapper-followerslist {
+	top: 59px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+	background:transparent;
+	/* Show the background for `#timeline-tabs-content`, not this
+	element. This is because `#timeline-userlists-full-name` is
+	initially empty, which leaves the normal `.timeline-wrapper`
+	background with a floating, clearly fake "drop shadow". */
+}
+#timelinewrapper-prefs {
+	top: 0px; /* No .panelmenu */
+}
+
+/*
+The .timeline divs are all inside .TabbedPanelsContent divs
+*/
+div.timeline {
+	margin: 0px;
+	padding: 0px;
+	/* background:transparent url(images/dropshadow.png) 0 -6px repeat-x;*/
+	z-index: 0;
+}
+div.timeline-subtitle {
+	position: fixed;
+	left: 18px;
+	right: 18px;
+	top: 105px;
+	overflow: hidden;
+/*	min-width: 261px; /* = #container min-width - horizontal padding */*/
+	margin: -1px 0 0;
+	padding: 0 8px;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#BEC0C8), to(#E4E6F2));
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.50); 
+	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.50);
+	color: #000000;
+	cursor: default;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 27px;
+	text-overflow: ellipsis;
+/*	text-shadow: 0 1px 0 rgba(32,32,32, 0.75);*/
+	white-space: nowrap;
+	z-index: 1; /* .panelmenu z-index */
+	border-bottom:1px solid #666699;
+}
+	div.timeline-subtitle:empty {
+		border-bottom: 0;
+	}
+	div#panel-followerslist div.timeline-subtitle {
+		text-transform: uppercase;
+	}
 
 
-			/*
-				The button to submit the post. This can be hidden completely, and the user can still
-				hit ENTER to send, so it's not really necessary
-			*/
-			#updateButton {
-				bottom:6px;
-				right: 6px;
-				position:absolute;
-				opacity:0.5;
-				padding:2px;
-				display:none;
-			}
-				#updateButton:hover {
-					opacity:0.9;
-				}
+.timeline-wrapper div.empty,
+.timeline-wrapper div.intro,
+.timeline-wrapper div.loading,
+.timeline-wrapper div.new-user {
+	margin: 150px 50px 0;
+	color: #fff;
+	cursor: default;
+	font-size: 0.75em;
+	text-align: center;
+}
+.timeline-wrapper div.loading,
+#popbox-content-conversation div.loading,
+#popbox-content-profile div.content div.loading {
+	width: 50px;
+	height: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	background: transparent url(images/loading-white-50x50.png) center center no-repeat;
+	text-indent: -9999em;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-name: discrete-spinner;
+	-webkit-animation-timing-function: linear;
+}
+#timelinewrapper-userlists div.intro,
+#timelinewrapper-userlists div.loading,
+#timelinewrapper-userlists div.new-user {
+	margin-top: 124px; /* = default margin-top - #timeline-userlists-full-name line-height */
+}
+.timeline-wrapper div.new-user {
+	display: none;
+}
+.timeline-wrapper div.new-user .add-account {
+	display: block;
+	width: 130px;
+	height: 48px;
+	margin: 0 auto;
+	border-image: url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
+	-webkit-border-image: url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
+	border-width: 0 10px 0 36px;
+	color: #000;
+	font-size: 12px;
+	line-height: 46px;
+}
+.timeline-wrapper div.new-user .add-account:active {
+	border-image: url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
+	-webkit-border-image: url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
+	/* border-image-source:url(images/buttons/large-prefs-active.png);*/
+}
+body:not(.active) .timeline-wrapper div.new-user .add-account {
+	border-image: url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
+	-webkit-border-image: url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
+	/* border-image-source:url(images/buttons/large-prefs-disabled.png);*/
+	color:#909090;
+}
+
+/*
+The entryform contains the #entrybox textarea input for posts and the #updateButton
+*/
+#entryform {
+	position: absolute;
+	margin:0;
+	padding:0;
+	bottom:29px;
+	left:10px;
+	right:10px;
+	height:100px;
+	z-index: 10;
+}
+/*body:not(.active) #entryform {
+	background: #f1f1f1;
+	border-top-color: #999;
+}*/
+#entryform-resize {
+	height: 6px;
+	background: #575A47 url(images/resize-ns.png) center center no-repeat;
+	cursor: ns-resize;
+}
+
+/*
+This is a Spry textarea widget
+*/
+#entrybox {
+	position:absolute;
+    left: 0px;
+    right:0px;
+    top:  7px;
+    bottom:0;
+    margin:0;
+	font-size:11px;
+	overflow:auto;
+	padding:5px 5px 15px 5px;
+	text-align:left;
+	border:none;
+	background:#f9f9f9 url(images/text-input-top-bg.png) 0 0 repeat-x;
+}
+body:not(.active) #entrybox {
+/*	border-bottom: 1px solid #e1e1e1;*/
+}
+#entryform.has-drafts #entrybox {
+	bottom: 26px;
+}
+/* the hint shown when the widget does not have focus */
+.textareaHintState {
+	color: #999999;
+}
+/* Formatting for when the textarea has focus */
+.textareaFocusState,
+#entrybox:focus {
+	background-color: #ffffff;
+	color: #000000;
+}
 
 
-		/*
-			The bar at the bottom of the app that displays info
-		*/
-		#statusbar {
+/*
+Shows the number of characters entered, and the tweet being replied
+to, if any
+*/
+#entrybox-popup {
+	position: absolute;
+	display: none;
+	left: 1px;
+	right: 1px;
+	bottom: 99px; /* = #entryform height - 1px */
+	max-width:300px;
+	margin: 0 auto;
+	padding: 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(117, 117, 117, 0.95)),
+		to(rgba(16,16,16, 0.95)),
+		color-stop(0.5, rgba(49, 49, 49, 0.95)),
+		color-stop(0.75, rgba(33, 33, 33, 0.95))
+		);
+	border: 1px solid rgba(38, 38, 38, 0.95);
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	font-size: 9px;
+	opacity: 1;
+	z-index: 100;
+}
+#entrybox-popup > :first-child {
+	overflow: hidden;
+	padding: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#irt {
+}
+#irt-dismiss {
+	position: relative;
+	float: left;
+	width: 20px;
+	height: 20px;
+	margin: -8px 0 0 -4px;
+	background: transparent url(images/close-black.png) 0 0 no-repeat;
+	cursor: pointer;
+	text-indent: -9999em;
+	z-index: 9;
+}
+#irt-content {
+	display: block;
+	margin: 4px 4px 8px -10px;
+	padding: 4px 4px 5px 10px;
+	overflow: hidden;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#a2a2a2), to(#636363)
+	);
+	border-top: 1px solid #c4c4c4;
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	color: #fff;
+}
+#irt-message {
+}
+#chars-left {
+	float: left;
+	color: #c0c0c0;
+	cursor: default;
+	font-size: 12px;
+	line-height: 20px;
+	text-shadow: 0 -1px 0 #000;
+}
+#chars-left-count {
+	font-weight: bold;
+}
+#chars-left-count.under {
+	color: #fff;
+}
+#chars-left-count.over {
+	color: #f00;
+}
+#entrybox-actions {
+	float: right;
+}
+#entrybox-actions button {
+	padding: 0 8px;
+	background: -webkit-gradient(linear,
+		left top, left bottom,
+		from(rgba(58,60,44, 0.25)), to(rgba(58,60,44, 0.50))
+		);
+	border: 1px solid rgba(20,20,20,.75);
+	border-radius: 9px; /* = line-height / 2 */
+	-webkit-border-radius: 9px;
+	box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+	color: #FFF;
+	font-size: 10px;
+	line-height: 18px; /* = vertical border widths + #chars-left line-height */
+	font-weight: normal;
+}
+#entrybox-actions button:hover,
+#entrybox-actions button:focus,
+#entrybox-actions button:active {
+	background:-webkit-gradient(linear, left top, left bottom,
+		from(rgba(58,60,44, 0.75)), to(rgba(58,60,44, 1))
+	);
+}
+#entrybox-attach span {
+	display: block;
+	width: 16px;
+	background: url(../../../images/glyphish/photos.png) center center no-repeat;
+	pointer-events: none;
+	text-indent: -9999em;
+}
+#entryform-drafts {
+	/* See also #timeline-userlists-full-name */
+	position:absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	padding: 0 8px;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#BEC0C8), to(#E4E6F2));
+	color: #000000;
+	border-top: 1px solid #999;
+	cursor: default;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 25px;
+	text-overflow: ellipsis;
+	text-shadow: 0 1px 1px #999;
+	white-space: nowrap;
+}
+#entryform-drafts input {
+	float: right;
+	padding: 3px 0.75em;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
+	border: 1px solid #a5a5a5;
+	border-radius: 1em;
+	-webkit-border-radius: 1em;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+	font-weight: normal;
+	text-shadow: 0 1px 1px #fff;
+}
+
+#entryform-drafts input:active {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#a7a7a7), to(#d2d2d2),
+		color-stop(0.1, #c2c2c2));
+	border-color: #767676;
+}
+
+/*
+The button to submit the post. This can be hidden completely, and the user can still
+hit ENTER to send, so it's not really necessary
+*/
+#updateButton {
+	display: none;
+}
+
+
+/*
+The bar at the bottom of the app that displays info
+*/
+#statusbar {
+	position:absolute;
+	height:14px;
+	padding:4px 5px 2px;
+	font-size:10px;
+	color:#cccccc;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#222222), to(#000000),
+		color-stop(0.5, #111111));
+	bottom:10px;
+	left:10px;
+	right:10px;
+	-khtml-border-bottom-left-radius: 5px;
+	-khtml-border-bottom-right-radius:5px;
+	overflow:hidden;
+	white-space:nowrap;
+	cursor:move;
+}
+		#loading {
 			position:absolute;
-			padding:13px 6px 4px;
-			font-size:10px;
-			color:#cccccc;
-			background-color:#000000;
-			bottom:10px;
-			left:10px;
-			right:10px;
-			-khtml-border-bottom-left-radius:5px;
-			-khtml-border-bottom-right-radius:5px;
-			overflow:hidden;
-			white-space:nowrap;
-			cursor:move;
+			float:right;
+			display:none;
+			top:  0px;
+			right:8px;
+			height:10px;
+			width: 10px;
+			background: transparent url(images/loading-16x16.png) 0 0 no-repeat;
+			-webkit-animation-duration: 1s;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-name: discrete-spinner;
+			-webkit-animation-timing-function: linear;
 		}
-			/*
-				The wrapper for the little loading animation
-			*/
-			#loading {
-				float:right;
-				display:none;
-				height:10px;
-				width: 10px;
-				background-image:url('images/loading.gif');
-				background-repeat: no-repeat;
-
-			}
-
-			#statusbar-text {}
-
-			span.statusbar-username {
-				font-weight:bold;
-			}
-
-
-		/*
-			The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
-			but I'm kind of an idiot.
-		*/
-		#resize-sw {
-			position:absolute;
-			bottom:0px;
-			right:0px;
-			font-size:12px;
-			background-image:url('images/resize-sw.png');
-			cursor: sw-resize;
-			text-align:center;
-			width:13px;
-			height:13px;
-			opacity:0.5;
+		#statusbar-text {
+		}
+/*		body:not(.active) #statusbar-text {
+			color: #6f6f6f;
+		}
+*/		
+		span.statusbar-username {
+			font-weight: bold;
 		}
 
 
+/*
+The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
+but I'm kind of an idiot.
+*/
+#resize-sw {
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+	font-size: 12px;
+	background-image: url(images/resize-sw.png);
+	text-align: center;
+	width: 12px;
+	height: 12px;
+}
 
 
 
 
-	/*
-		Tooltips, those little popup messages that appear when you float over links and some other junk
-	*/
-	#tooltip {
-		background-color: rgba(0,0,0,.8);
-		color:#FFFFFF;
-		font-size:10px;
-		padding:5px !important;
-		border:0px solid black;
-/*		opacity:0.8;*/
-		opacity:1.0;
-		position:fixed;
-		z-index:1000;
-		top:1px;
-		left:1px;
-		-khtml-border-radius:5px;
-		display:none;
-		min-width:100px;
-		max-width:320px;
-
-	}
-		#tooltip h3, #tooltip div {
-			margin: 0;
-			font-weight:normal;
-			font-size:inherit;
-		}
-
-	/*********************************************
-		context menus
-		- not sure that these will continue to be used, if native versions can work okay
-	*/
-	div.context-menu {
-		position:fixed;
-		z-index: 1010;
-		font-size:10px;
-		font-weight: normal;
-		top:10px;
-		left:10px;
-		overflow: auto;
-		background-color: #FFFFFF;
-		background-color: rgba(255,255,255,.8);
-		background-repeat: repeat-x;
-		color:#333333;
-		-webkit-box-shadow:0px 0px 6px #333333;
-		display:none;
-		padding:5px;
-		opacity:1.0;
-		-khtml-border-radius:5px;
-	}
-		div.context-menu ul {
-			padding:0;
-			margin:0;
-			list-style: none;
-		}
-			div.context-menu li {
-				list-style: none;
-				padding:4px;
-			}
-				div.context-menu li:hover {
-					background-color:#333333;
-					color:#ffffff;
-					cursor: pointer;
-					-khtml-border-radius:5px;
-				}
 
 
-	/*********************************************
-		context menus
-		- not sure that these will continue to be used, if native versions can work okay
-	*/
-	ul.popup-menu {
-		z-index: 1010;
-		font-size:10px;
-		font-weight: normal;
-		overflow: auto;
-		background-color: #FFFFFF;
-		background-color: rgba(255,255,255,.8);
-		background-repeat: repeat-x;
-		color:#333333;
-		-webkit-box-shadow:0px 0px 6px #333333;
-		padding:5px;
-		opacity:1.0;
-		-khtml-border-radius:5px;
-		margin:0;
-		list-style: none;
-		display:none;
-	}
-		ul.popup-menu li {
-			list-style: none;
-			padding:4px;
-		}
-			ul.popup-menu li:hover {
-				background-color:#333333;
-				color:#ffffff;
-				cursor: pointer;
-				-khtml-border-radius:5px;
-			}
+/*
+Tooltips, those little popup messages that appear when you float over links and some other junk
+*/
+#tooltip {
+	position: fixed;
+	display: none;
+	max-width: 300px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
+		color-stop(0.5, rgba(49, 49, 49, 0.95)),
+		color-stop(0.5, rgba(33, 33, 33, 0.95))
+	);
+	border: 1px solid rgba(38, 38, 38, 0.95);
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+	-webkit-box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+	color: #fff;
+	font-size: 10px;
+	opacity: 1;
+}
+#tooltip > :first-child {
+	padding: 5px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#tooltip h3, #tooltip div {
+	margin: 0;
+	font-weight: normal;
+	font-size: inherit;
+}
+#tooltip div.latest {
+	margin: 1em 0 0;
+}
+#tooltip .tooltip-user-image {
+	float: right;
+	width: 24px;
+	height: 24px;
+	margin: 0 0 0 10px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#tooltip .website-title {
+	margin: 0 0 1em;
+}
+#tooltip .website-title:empty {
+	margin: 0;
+}
 
+
+
+/*** Root/context/popup menus ***/
+/* NOTE: These will eventually be replaced by SpazMenu; see next section. */
+/* (May be replaced with native OS versions in the future) */
+
+div.outerbox {
+	margin-left: -1px; /* Indent submenus */
+	padding:0;
+	background: transparent;
+}
+div.context-menu {
+	position: fixed;
+	display: none;
+	z-index: 1010;
+}
+ul.popup-menu {
+	display: none;
+}
+div.outerbox,
+div.context-menu,
+ul.popup-menu {
+	opacity: 0.95;
+}
+#root-menu-div ul,
+div.context-menu ul,
+ul.popup-menu {
+	margin: 0;
+	padding: 4px 0;
+	background: #f9f9f9;
+	border: 1px solid #dfdfdf;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#root-menu-div ul {
+	border-top-left-radius: 0;
+	-webkit-border-top-left-radius: 0;
+}
+#root-menu-div ul li a,
+div.context-menu ul li,
+ul.popup-menu li {
+	margin: 0;
+	padding: 2px 15px 2px 20px;
+	background: transparent;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	color: #000;
+	cursor: default;
+	font-size: 10px;
+	list-style: none;
+	text-decoration: none;
+}
+#root-menu-div ul li a:hover,
+div.context-menu ul li:hover,
+ul.popup-menu li:hover {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#668BF4), to(#2B64F0));
+	border-top-color: #5C83EA;
+	border-bottom-color: #1D58E7;
+	color: #fff;
+}
+#root-menu-div hr {/* divider */
+	width:100%;
+	border-bottom: 1px solid #dfdfdf;
+}
+
+/*** Menus ***/
+
+div.spaz-menu {
+	position: absolute;
+	display: none;
+	margin: 0;
+	width: auto;
+	margin-right: 20px; /* Margin away from viewport's right edge */
+	padding: 4px 0;
+	background-color: rgba(255, 255, 255, 0.95);
+	border: 1px solid #dfdfdf;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-shadow: 0 10px 17px rgba(0, 0, 0, 0.25);
+	-webkit-box-shadow: 0 10px 17px rgba(0, 0, 0, 0.25);
+	cursor: default;
+	z-index: 99999;
+}
+div.spaz-menu#tools-menu,
+div.spaz-menu#user-menu {
+	white-space: nowrap;
+}
+div.spaz-menu#tools-menu {
+	margin-right: 14px;
+}
+div.spaz-menu#user-menu {
+	margin-right: 31px;
+}
+div.spaz-menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow: auto;
+}
+div.spaz-menu ul > li {
+	list-style: none;
+}
+li.spaz-menu-item {
+	margin: 0px;
+	border: solid transparent;
+	border-width: 1px 0;
+	font-size: 10px;
+}
+li.spaz-menu-item:hover {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#668bf4), to(#2b64f0));
+	border-top-color: #5c83ea;
+	border-bottom-color: #1d58e7;
+	color: #fff;
+}
+li.spaz-menu-item span {
+	display: block;
+	padding: 2px 15px 2px 20px;
+}
+li.spaz-menu-item.selected span {
+	background: transparent url(images/menu-checkmark.png) 6px 1px no-repeat;
+}
+li.spaz-menu-item.selected:hover span {
+	background-position: 6px -87px;
+}
+div.spaz-menu#entrybox-shorten-menu li.spaz-menu-item {
+	white-space: nowrap;
+}
+div.spaz-menu ul li.separator {
+	margin: 5px 1px;
+	border-bottom: 1px solid #dfdfdf;
+}
 
 
 
 
 /*************************************************
-	Timeline entries are... entries in the timelines
+Timeline entries are... entries in the timelines
 */
 div.timeline-entry {
-/*	background-color: #CCCC99;*/
-	padding: 10px 5px;
+	position: relative;
+	clear: both;
+	overflow: hidden;
 	border-top-width: medium;
 	border-top-style: solid;
 	border-top-color: #999966;
-	clear:both;
-	overflow:hidden;
+	padding: 10px 5px;
+	
 }
-
-
-	/*
-		Entries that are replies directed at the user
-	*/
-	div.timeline-entry.reply {
-		background-color: #EEEEAA;
-		background-image: none;
-	}
-	/*
-		Entries that are direct messages to the user
-	*/
-	div.timeline-entry.dm {
-		background-color: #EEAAAA;
-		background-image: none;
-	}
-	/*
-		Selected entries
-		the .ui-selected class name comes from the one used by the jQuery.ui selectables plugin
-		We don't actually use that here, but it was experimented with, and may return sometime
-	*/
-	div.timeline-entry.ui-selected
-	{
-		background-color:#717598 !important;
-		background-image: url('images/entry-selected-bg.png') !important;
-		color:#FFFFFF;
-	}
-		div.timeline-entry.ui-selected div.status-link {
-			font-size:10px;
-			color:#CCCCCC;
-		}
-		div.timeline-entry.ui-selected a, div.timeline-entry.ui-selected a:link, div.timeline-entry.ui-selected .clickable {
-			color:#CCCC66;
-			text-decoration:none;
-			cursor:pointer;
-		}
-		div.timeline-entry.ui-selecting
-		{
-			background-color: #666666 !important;
-			opacity:0.6;
-		}
-
-	/*
-		Entries that have been "read" (selected and then deselected)
-	*/
-	div.timeline-entry.read {}
-		div.timeline-entry.read .status-text {
-			color:#666666;
-		}
-		div.timeline-entry.read.ui-selected .status-text {
-			color:#CCCCCC;
-		}
-		div.timeline-entry.read div.user-image {
-/*			opacity:.8;*/
-		}
-	/*
-		A container for the avatar image and the user's screen name
-	*/
-	div.user {
-		float:left;
-		width:60px;
-		text-align:center;
-		overflow:visible;
-		margin-right:5px;
-		position:relative;
-	}
-
-		div.user-image {
-			width:48px;
-			height:48px;
-			margin:0 auto 2px;
-			background:#FFFFFF 0 0 no-repeat;
-/*      background-image:url(images/userimg-bg.png);*/
-			background-size:48px 48px;
-				-webkit-background-size:48px 48px;
-			border:3px double #999999;
-			box-shadow:0 1px 5px #333;
-  			-webkit-box-shadow:0 1px 5px #333;
-			opacity:1;
-			text-indent:-9999em;
-		}
-
-		div.user-screen-name {
-			font-size:10px;
-			overflow:hidden;
-		}
-
-	/*
-		This is the container for the "status", which is the message posted + some metadata about it + some action links
-	*/
-	div.status {
-		font-size:13px;
-		margin:0 0 0 70px;
-		padding:0;
-	}
-		/*
-			This is the actual text of the posting
-		*/
-		div.status-text {
-			font-family:Palatino,Georgia, "Times New Roman", Times, serif;
-			margin-bottom:4px;
-		}
-				div.status-text a:link{
-					text-overflow:ellipsis;
-                    white-space: nowrap;
-					max-width:150px;
-					overflow:hidden;
-					display:inline-block;
-				}
-		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
-
-
-		div.status-link {
-			padding:3px 0px; 
-		}
-
-
-		div.status-actions {
-			font-size:10px;
-			float:right;
-			opacity:0;
-			-webkit-transition-property:opacity;
-			-webkit-transition-duration:.5s;
-			-webkit-border-radius: .5em;
-			background-color:rgba(255,255,255,.8);
-			padding:3px 7px 3px 8px;
-
-		}
-		
-		div.timeline-entry:hover div.status-actions,
-		div.timeline-entry.ui-selected div.status-actions {
-			opacity:1;
-		}
-		    .status-action {
-		        width:15px;
-		        height:12px;
-		        background-repeat: no-repeat;
-		        display: inline-block;
-		    }
-
-    		    .status-action-fav { background-image:url('images/status-fav-off.png'); }
-		 			div.timeline-entry.favorited .status-action-fav { background-image:url('images/status-fav-on.png'); }
-    		    .status-action-retweet { background-image:url('images/status-retweet.png'); }
-    		    .status-action-dm { background-image:url('images/status-dm.png'); }
-    		    .status-action-reply { background-image:url('images/status-reply.png'); }
-				.status-action-del { background-image:url('images/status-delete.png'); }
-
-		/* the container for the "permalink" to the post */
-		div.status-link {
-			font-size:10px;
-			color:#666666;
-		}
-			a.status-created-at {} /* the link to the relative time of the posting. this is the permalink */
-
-			.status-source {} /* the text that says "from Foobar" */
-			.status-source-label {} /* the text with the name of the posting source ("Foobar") */
-
-			/* the icon that indicates this is a protected post */
-			span.status-protected {
-				background-image:url('images/icon-lock.png');
-                padding:0 6px; /* width doesn't matter on inline element, so use padding to force width */
-                height:12px;
-			}
-
-
-.followerslist-row {
-	font-size:8pt;
-	clear:both;
-	padding:8px;
-	border-top-width: medium;
-	border-top-style: solid;
-/*	border-top-color: #999966;*/
-	position:relative;
+div.timeline-entry:hover {
+	opacity: 1;
 }
-
-
-	.directory-user-followstatus {
-		background-repeat:no-repeat;
-		position:absolute;
-		right:3px;
-		top:  7px;
-		padding:1px 4px;
-		background-color:rgba(255,255,255,.5);
-		color:#000;
-		-khtml-border-radius:7px;
-		font-weight:bold;
-	}
-
-	.followerslist-row .directory-user {
-		position:relative;
-	}
-		.directory-user .user-image {
-			background-color:#dddddd;
-			border:1px solid #999;
-			width:24px;
-			height:24px;
-			margin:0 5px 0 0;
-			-webkit-box-shadow:none;
-			float:left;
-		}
-		.directory-user .directory-user-name {
-			font-weight:bold;
-			font-size:8pt;
-			margin-left:36px;
-		}
-		.directory-user .directory-user-name a {
-			color:333300;
-		}
-			.directory-user .directory-user-name .name {
-			}
-			.directory-user .directory-user-name .screen-name {
-			}
-		.directory-user .directory-user-location {
-
-		}
-		.directory-user .directory-user-homepage {
-
-		}
-		.directory-user .directory-user-info {
-			margin-left:36px;
-		}
-
-
-
-
-/*************************************************
-	All about the PREFERENCES panel
+div.timeline-entry.reply {/* Replies/mentions */
+	background:-webkit-gradient(
+		linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
+	outline: 1px solid #fcec8f;
+}
+div.timeline-entry.dm {/* Direct messages */
+	background:-webkit-gradient(
+		linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
+	outline: 1px solid #ffb3b2;
+}
+div.timeline-entry.retweet .status-text {
+	background: transparent url(images/retweeted.png) 0 0 no-repeat;
+	text-indent: 24px;
+}
+div.timeline-entry.retweet .status-text * {
+	text-indent: 0;
+}
+/*
+Entries that have been "read" (selected and then deselected)
 */
+div.timeline-entry.read {
+}
+div.timeline-entry.read:not(.ui-selected) {
+	max-height: 25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+div.timeline-entry.read:hover {
+	opacity: 1;
+}
+div.timeline-entry.read .status-text {
+	color: #999;
+}
+div.timeline-entry.read.reply .status-text {
+	color: #ccbc5f;
+}
+div.timeline-entry.read.dm .status-text {
+	color: #cf9392;
+}
+div.timeline-entry.read.ui-selected .status-text {
+	color: #f0f0f0;
+}
+div.timeline-entry.read:not(.ui-selected) div.user {
+	padding: 0;
+	overflow: hidden;
+	opacity: 0.75;
+	white-space: nowrap;
+	transition: opacity 0.125s linear;
+	-webkit-transition: opacity 0.125s linear;
+}
+div.timeline-entry.read:not(.ui-selected):hover div.user {
+	opacity: 1;
+}
+div.timeline-entry.read:not(.ui-selected) div.user div.user-image {
+	width: 24px;
+	height: 24px;
+	margin: 0 auto;
+	background-size: 24px 24px;
+	-webkit-background-size: 24px 24px;
+}
+div.timeline-entry.read:not(.ui-selected) div.user div.user-screen-name {
+	display: none;
+}
+div.timeline-entry.read:not(.ui-selected) div.status {
+	padding: 0;
+}
+div.timeline-entry.read:not(.ui-selected) .status-text {
+	margin-top: 5px; /* Show only status text */
+	margin-bottom:99px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+div.timeline-entry.read:not(.ui-selected):hover .status-text {
+	color: #000;
+}
+
+/*
+Selected entries
+The .ui-selected class name comes from the one used by the jQuery.ui
+selectables plugin. We don't actually use that here, but it was
+experimented with, and may return sometime.
+*/
+div.timeline-entry.ui-selected {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#666699), to(#444466));
+/*	border-top: 1px solid #519BD6;*/
+	color: #fff;
+	outline: 0;
+}
+div.timeline-entry.ui-selected div.status-link {
+	color: #fff;
+	font-size: 9px;
+}
+div.timeline-entry.ui-selected a,
+div.timeline-entry.ui-selected a:link,
+div.timeline-entry.ui-selected .clickable {
+	color: #FFFFCC;
+	cursor: pointer;
+}
+div.timeline-entry.ui-selected div.user {
+}
+div.timeline-entry.ui-selecting {
+	background-color: #666 !important;
+}
+
+/*
+A container for the avatar image and the user's screen name
+*/
+div.user {
+	position: relative;
+	float: left;
+	width: 65px;
+	padding: 5px 5px 0 0;
+	overflow: visible;
+	text-align: center;
+}
+div.user-image {
+	width: 48px;
+	height: 48px;
+	margin: 0 auto 2px;
+	background: transparent 0 0 no-repeat;
+	/* background-image:url(images/userimg-bg.png);*/
+	background-size:48px 48px;
+	-webkit-background-size: 48px 48px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	/* box-shadow:0 1px 5px #333; */ /* Disabled: Not all imgs are square */
+	text-indent:-9999em;
+}
+div.user-screen-name {
+	font-size: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+div.user-screen-name:hover {
+	text-decoration: underline;
+}
+
+/*
+This is the container for the "status", which is the message posted + some metadata about it + some action links
+*/
+div.status {
+	min-height: 60px; /* Pushes bg image to bottom of div.timeline-entry */
+	margin:0 0 0 70px;
+	padding: 5px 0;
+	background: transparent right bottom no-repeat;
+	font-size: 11px;
+}
+div.timeline-entry.reply div.status {
+	background-image: url(images/timeline-mention-bg-inset100.png);
+}
+div.timeline-entry.reply.ui-selected div.status {
+	background-image: url(images/timeline-mention-bg.png);
+}
+div.timeline-entry.favorited div.status {
+	background-image: url(images/timeline-favorite-bg-inset100.png);
+}
+div.timeline-entry.favorited.ui-selected div.status {
+	background-image: url(images/timeline-favorite-bg.png);
+}
+div.timeline-entry.dm div.status {
+	background-image: url(images/timeline-dm-bg.png);
+}
+div.timeline-entry div.status-thumbnails {
+	margin: 0 0 4px;
+}
+div.timeline-entry div.status-thumbnails img {
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+div.timeline-entry.read:not(.ui-selected) div.status-thumbnails {
+	float: left;
+	height: 24px !important;
+	margin-top: -5px;
+	margin-right: 4px;
+	padding: 0;
+	overflow: hidden;
+	opacity: 0.75;
+	transition: opacity 0.125s linear;
+	-webkit-transition: opacity 0.125s linear;
+}
+div.timeline-entry.read:not(.ui-selected):hover div.status-thumbnails {
+	opacity: 1;
+}
+div.timeline-entry.read:not(.ui-selected) div.status-thumbnails img {
+	height: 100%;
+}
+div.status-text {
+	margin-bottom: 4px;
+	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+div.status-text a:link {
+	display: inline-block;
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+div.timeline-entry.read:not(.ui-selected) div.status-text br {
+	display: none; /* Hide <br />s in collapsed tweets */
+}
+/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
+div.status-actions,
+div.draft-actions {
+	position: absolute;
+	left: -9999em;
+	top: -9999em;
+	/* Position out of bounds, rather than `display:none`, to hide this
+	element but still enable -webkit-transition when it reappears. */
+	background:rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	font-size: 10px;
+	opacity: 0;
+	transition: opacity 0.125s linear;
+	-webkit-transition: opacity 0.125s linear;
+}
+div.timeline-entry:hover:not(.read) div.status-actions,
+div.timeline-entry.ui-selected div.status-actions,
+#popbox-content-drafts div.content ul li:hover div.draft-actions {
+	left: auto;
+	right: 4px;
+	top: auto;
+	bottom: 4px;
+	opacity: 1;
+}
+.status-action,
+.status-action-del,
+.draft-action {
+	display: inline-block;
+	width: 23px;
+	height: 20px;
+	margin: 0 0 0 -8px; /* Reduce spacing */
+	background-color:transparent;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	text-indent: -9999em;
+	vertical-align: middle;
+}
+.status-action:hover,
+.status-action-del:hover,
+.draft-action:hover {
+	background-position: 0 -20px;
+}
+.status-action:first-child,
+.draft-action:first-child {
+	margin-left: 0;
+}
+.status-action-fav {
+	background-image: url(images/status-fav-off.png);
+}
+div.timeline-entry.favorited .status-action-fav {
+	background-image: url(images/status-fav-on.png);
+}
+.status-action-retweet {
+	background-image: url(images/status-retweet.png);
+}
+.status-action-dm {
+	background-image: url(images/status-dm.png);
+}
+.status-action-reply {
+	background-image: url(images/status-reply.png);
+}
+.status-action-edit,
+.draft-action[data-action=edit] {
+	background-image: url(images/status-edit.png);
+}
+.status-action-del,
+.draft-action[data-action=delete] {
+	background-image: url(images/status-delete.png);
+}
+
+/* the container for the "permalink" to the post */
+div.status-link {
+	font-size: 9px;
+	color: #666666;
+}
+/* the link to the relative time of the posting. this is the permalink */
+a.status-created-at {
+}
+/* the text that says "from Foobar" */
+.status-source {
+	display: block;
+}
+/* the text with the name of the posting source ("Foobar") */
+.status-source-label {
+}
+/* the icon that indicates this is a protected post */
+span.status-protected {
+	display: block;
+	width: 9px;
+	height: 11px;
+	margin: 2px 0 0;
+	background: transparent url(images/lock-black.png) 0 0 no-repeat;
+	opacity: 0.75;
+}
+div.timeline-entry.ui-selected span.status-protected {
+	background-image: url(images/lock-white.png);
+	opacity: 1;
+}
+
+
+div.followers-row {
+	position: relative;
+	clear: both;
+	overflow: hidden;
+	padding: 5px;
+}
+div.followers-row div.user-name {
+	min-height: 35px;
+	margin: 5px 0 0 70px;
+	padding: 5px 0;
+}
+div.followers-row div.user-name-screen {
+	font-weight: bold;
+}
+div.followers-row div.user-name-full {
+	font-size: 0.75em;
+}
+
+
+
+/*** Pagination ***/
+
+div.loadmore-panel {
+	margin: 0;
+	padding: 10px;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+	border-top: 1px solid #c0c7cf;
+	color: #6e6e6e;
+	text-align: center;
+}
+body:not(.active) div.loadmore-panel {
+	background: #ededed;
+	border-top-color: #b4b4b4;
+}
+div.loadmore-panel input[type=button] {
+	height: 23px;
+	margin: 0;
+	padding: 0 1em;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
+	border: 1px solid #a5a5a5;
+	border-radius: 1em;
+	-webkit-border-radius: 1em;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+	font-size: 12px;
+}
+div.loadmore-panel input[type=button]:active {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#a7a7a7), to(#d2d2d2),
+		color-stop(0.1, #c2c2c2));
+	border-color: #767676;
+}
+body:not(.active) div.loadmore-panel input[type=button],
+div.loadmore-panel input[type=button][disabled] {
+	border-color: #d8d8d8;
+	color: rgba(0, 0, 0, 0.5);
+	text-shadow: 0 1px 1px #fff;
+}
+
+
+
+/*** Preferences ***/
+
+#panel-prefs .timeline-wrapper {
+	border-top: 1px solid #646464;
+}
+body:not(.active) #panel-prefs .timeline-wrapper {
+	border-top-color: #a9a9a9;
+}
 #prefs-form {
-	font-size:11px;
-	margin:0px 10px;
-	padding:10px;
-}
-
-	/*
-		The Prefs form contains a collapsible panel group Spry widget
-	*/
-	#prefsCPG, .CollapsiblePanelGroup {}
-
-		.CollapsiblePanel {}
-
-		.CollapsiblePanelClosed {}
-
-		/* make the title tab darker when the panel is open */
-		#prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab {
-			color:#333333;
-		}
-
-			/*
-				The tab is the clickable title that opens and closes the panel
-			*/
-			#prefs-form h2.CollapsiblePanelTab {
-				font-weight:bold;
-				font-size:13px;
-				color:#999999;
-				border-bottom:2px solid #999999;
-				cursor: pointer;
-				padding-bottom:2px;
-				padding-top:8px;
-				margin-bottom:0px;
-			}
-				#prefs-form h2.CollapsiblePanelTabHover {
-					color:#666666;
-				}
-
-
-			/*
-				The panel that actually contains stuff
-			*/
-			#prefs-form .CollapsiblePanelContent {
-				margin:   0px;
-				padding: 10px 10px 0;
-				border-bottom: 2px solid #D0D0D0;
-				clear:both;
-				background-color: #F0F0F0;
-				overflow: hidden;
-			}
-
-
-
-
-				/*
-					The div.formrows wrap each pref gui piece
-				*/
-				div.formrow {
-/*                    white-space: nowrap;*/
-					clear:both;
-					margin-bottom:5px;
-				}
-
-					#prefs-form label {
-						min-width:80px;
-						text-align:left;
-						font-weight:bold;
-						display:block;
-					}
-					#prefs-form label.checkbox {
-						float: none;
-						padding:0;
-						margin:0 0 0 1px;
-						display:inline;
-					}
-
-                    #prefs-form fieldset {
-                        border-left-width: 0px;
-                        border-right-width: 0px;
-                        border-bottom-width: 0px;
-                        padding:5px 0 5px 3px;
-                        margin: 10px 0 0 0;
-                    }
-
-                        #prefs-form legend {
-                            font-weight:bold;
-                        }
-
-                        #prefs-form fieldset label {
-                            font-weight:normal;
-                        }
-
-					/*
-						Buncha junk for various form fields, really only used in the Preferences section
-					*/
-					#prefs-form input[type='password'],
-					#prefs-form input[type='text'],
-					#prefs-form select {
-						border:1px solid #666;
-						padding:4px;
-						width:90%;
-					}
-					#prefs-form input[type='checkbox'] {
-						vertical-align:-20%;
-					}
-					#prefs-form option {
-						font-family:sans-serif;
-						size:10px;
-					}
-					input[type='button'], input[type='submit'] {
-						background-color:#666666;
-						color:#FFFFFF;
-						-khtml-border-radius:5px;
-						border:2px solid #333333;
-						font-size:10px;
-						cursor:pointer;
-						padding:3px;
-					}
-						input[type='button']:focus, input[type='submit']:focus,
-						input[type='button']:hover, input[type='submit']:hover {
-							background-color:#111111;
-							border-color:#444444;
-							color:#FFFFFF;
-						}
-
-                    input[type="text"]:focus,
-                    input[type="password"]:focus,
-                    textarea:focus {
-                        background-color:#FFFFCC;
-                    }
-
-
-					/*
-						A few specific pref "widgets" need special formatting
-					*/
-					input[type='text']#prefs-user-stylesheet {
-						width:80px;
-					}
-					input[type='text']#network-refreshinterval {
-						width:20px;
-					}
-               input[type='text']#dock-refreshinterval {
-                  width:30px;
-               }
-					input[type='text']#window-alpha {
-						width:30px;
-						text-align:right;
-					}
-					#prefs-user-stylesheet-button, #prefs-user-stylesheet-clear {
-						padding:2px;
-						font-size:10px;
-						margin:0px;
-					}
-
-	/*
-		The update/save prefs button sits outside the panel group
-	*/
-	#prefs-update-button {
-		margin-left:0;
-		font-size:13px;
+	margin: 10px 1px 0;
+	padding: 0 0 10px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0)),
+		color-stop(0.95, rgba(0, 0, 0, 0.125)));
+		/* Fake shadow below form */
+		font-size:11px;
 	}
 
-
-
-
-
-
-
-
 /*
-	Tables should look pretty
+The Prefs form contains a collapsible panel group Spry widget
 */
-table.data {
-	margin-left:auto;
-	margin-right:auto;
-	text-align:center;
-	padding:5px;
-	border-top:3px solid #333333;
-	border-bottom:1px solid #333333;
-	border-collapse:collapse;
-	width:100%;
+#prefsCPG, .CollapsiblePanelGroup {
 }
-	table.data th {
-		background-color:#202020;
-		color:#DDDDDD;
-		font-size:9px;
-		font-weight:bold;
-		text-align:left;
-		padding:4px;
-	}
-
-	table.data tr {
-		border-top-style: solid;
-		border-top-width: 1px;
-	}
-
-		table.data tr:hover {
-			background:#FFFFCC;
-		}
-
-	table.data td {
-		font-size:10px;
-		padding:4px;
-		text-align:left;
-	}
-
-		table.data td.label {
-			font-weight:bold;
-			text-align:right;
-			border-right:1px solid #999999;
-		}
-		table.data td.label:after { /*content:":";*/ }
-		table.data td.value {
-			padding:2px;
-		}
+#prefs-form .CollapsiblePanel {
+	margin: 0;
+}
+#panel-prefs .CollapsiblePanelOpen:last-child {
+	border-bottom: 1px solid #a5a5a5;
+}
+#prefs-form .CollapsiblePanelClosed {
+}
 
 /*
-	I think this is needed by some widgets. Maybe not?
+The tab is the clickable title that opens and closes the panel
+*/
+#prefs-form h2.CollapsiblePanelTab {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#e6e6e6), to(#d2d2d2));
+		border-top: 1px solid #f3f3f3;
+		border-bottom: 1px solid #bdbdbd;
+		color: #6e6e6e;
+		cursor: pointer;
+		font-size: 1.125em;
+	}
+	body:not(.active) #prefs-form h2.CollapsiblePanelTab {
+		background: -webkit-gradient(
+			linear, left top, left bottom, from(#f6f6f6), to(#e2e2e2));
+			color: #9e9e9e;
+		}
+		#prefs-form h2.CollapsiblePanelTabHover {
+		}
+		#prefs-form h2.CollapsiblePanelTab:active,
+		body:not(.active) #prefs-form h2.CollapsiblePanelTab:active {
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#cecece), to(#bbb));
+				border-top-color: #e7e7e7;
+				border-bottom-color: #b2b2b2;
+			}
+			#prefs-form h2.CollapsiblePanelTab strong {
+				display: block;
+				padding: 0.25em 0 0.25em 20px;
+				background: transparent url(images/disclosure-triangles.png) 4px -14px no-repeat;
+			}
+			body:not(.active) #prefs-form h2.CollapsiblePanelTab strong {
+				background-position: 4px 6px;
+			}
+			form#prefs-form h2.CollapsiblePanelTab:active strong,
+			body:not(.active) form#prefs-form h2.CollapsiblePanelTab:active strong {
+				background-position: 4px -54px;
+			}
+			#prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab strong {
+				background-position: 4px -94px;
+			}
+			body:not(.active) #prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab strong {
+				background-position: 4px -74px;
+			}
+
+/*
+Form content -- fieldsets, legends, and controls. `div.prefs` affects
+both the primary prefs form and the form popbox(es).
+*/
+div.prefs #prefs-form .CollapsiblePanelContent {
+	clear: both;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#ccc), to(#e0e0e0), color-stop(0.01, #e0e0e0));
+	}
+	div.prefs fieldset {
+		margin: 8px;
+		padding: 0;
+		overflow: auto; /* Wrap children's margins */
+		background:-webkit-gradient(
+			linear, left top, left bottom,
+			from(#fff), to(#f0f0f0), color-stop(0.75, #fff));
+			border-radius: 8px;
+			-webkit-border-radius: 8px;
+			border: 0;
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+			-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+		}
+		div.prefs legend {
+			float: left;
+			width: 100%;
+			margin: 0 0 8px;
+			padding: 4px 0;
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#fff), to(#ededed));
+				border-top-left-radius: 6px;
+				-webkit-border-top-left-radius: 6px;
+				border-top-right-radius: 6px;
+				-webkit-border-top-right-radius: 6px;
+				border-bottom: 1px solid #dfdfdf;
+				color: #202020;
+				cursor: default;
+				font-size: 11px;
+				font-weight: bold;
+				text-indent: 12px;
+			}
+			div.prefs div.formrow {
+				clear: both;
+				margin: 8px 0;
+				padding: 0 12px;
+			}
+			div.prefs label {
+				display: block;
+			}
+			div.prefs .relaunch-required {
+				color: #c00;
+			}
+			div.prefs #account-list-fieldset div.formrow.cta {
+				padding: 76px 0;
+				text-align: center;
+			}
+			div.prefs #account-list-fieldset div.formrow.controls {
+				overflow: hidden;
+				height: 18px;
+				/* Clips the extra pixel from the border between buttons */
+			}
+			div.prefs #account-list-fieldset div.formrow.controls input[name=add-account] {
+				margin-right: 0;
+				padding: 0 6px 0 1px;
+				border-right-width: 0;
+			}
+			div.prefs #account-list-fieldset div.formrow.controls input[name=del-account] {
+				margin-left: -4px;
+				padding: 0 1px 0 6px;
+				border-left-width: 1px;
+			}
+			div.prefs ul#account-list {
+				width: 100%;
+				height: 143px;
+				overflow: auto;
+				margin: 0;
+				padding: 0;
+				border: 1px solid rgba(0, 0, 0, 0.25);
+				border-radius: 2px;
+				-webkit-border-radius: 2px;
+				list-style: none;
+			}
+			div.prefs ul#account-list li {
+				border-top: 1px solid transparent;
+			}
+			div.prefs ul#account-list li:first-child {
+				border-top-left-radius: 1px;
+				-webkit-border-top-left-radius: 1px;
+				border-top-right-radius: 1px;
+				-webkit-border-top-right-radius: 1px;
+			}
+			div.prefs ul#account-list li:last-child {
+				border-bottom-left-radius: 1px;
+				-webkit-border-bottom-left-radius: 1px;
+				border-bottom-right-radius: 1px;
+				-webkit-border-bottom-right-radius: 1px;
+			}
+			div.prefs ul#account-list li.selected {
+				background: -webkit-gradient(
+					linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
+					border-top-color: #519BD6;
+				}
+				body:not(.active) ul#account-list li.selected {
+					background: -webkit-gradient(
+						linear, left top, left bottom, from(#989797), to(#666));
+						border-top-color: #7f7e7e;
+					}
+					div.prefs ul#account-list li > span {
+						display: block;
+						padding: 4px 0 6px 30px;
+						color: #000;
+						cursor: default;
+						line-height: 24px;
+					}
+					div.prefs ul#account-list li.current > span {
+						background: transparent url(images/accounts-current.png)
+						10px 10px no-repeat;
+					}
+					div.prefs ul#account-list li.selected > span {
+						color: #f0f0f0;
+						font-weight: bold;
+					}
+					div.prefs ul#account-list li.current.selected > span {
+						background-position: 10px -30px;
+					}
+					div.prefs ul#account-list li .image {
+						display: inline-block;
+						width: 24px;
+						height: 24px;
+						margin: 0 0.5em 0 0;
+						background: transparent 0 0 no-repeat;
+						background-size: 24px 24px;
+						-webkit-background-size: 24px 24px;
+						border-radius: 4px;
+						-webkit-border-radius: 4px;
+						text-indent: -9999em;
+					}
+
+/*** Preferences > Controls ***/
+
+body:not(.active) div.prefs input[type=text],
+body:not(.active) div.prefs input[type=password],
+body:not(.active) div.prefs select {
+	opacity: 0.5;
+}
+div.prefs input[type=text],
+div.prefs input[type=password] {
+	width: 96%;
+	padding: 4px;
+	background: #fff url(images/text-input-bg.png) 0 0 no-repeat;
+	border-top: 0;
+	border-left: 0;
+	border-right: 1px solid #c3c3c3;
+	border-bottom: 1px solid #ddd;
+}
+div.prefs input[type=checkbox] {
+	display: none;
+}
+div.prefs input[type=checkbox] + label {
+	display: inline-block;
+	height: auto;
+	min-height: 14px;
+	padding: 0 0 0 20px;
+	background: transparent url(images/checkbox.png) 0 -100px no-repeat;
+}
+body:not(.active) div.prefs input[type=checkbox] + label {
+	background-position: 0 0;
+}
+body:not(.active) div.prefs input[type=checkbox]:checked + label {
+	background-position: 0 -50px;
+}
+div.prefs input[type=checkbox]:checked + label {
+	background-position: 0 -150px;
+}
+div.prefs input[type=checkbox] + label:active {
+	background-position: 0 -200px;
+}
+div.prefs input[type=checkbox]:checked + label:active {
+	background-position: 0 -250px;
+}
+div.prefs option {
+	font-size: 10px;
+}
+div.prefs input[type=button],
+div.prefs input[type=submit],
+#popbox-content-drafts div.content ul li div.controls input {
+	height: 19px;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-image: url(images/buttons/small.png) 0 9 0 9 repeat repeat;
+	-webkit-border-image: url(images/buttons/small.png) 0 9 0 9 repeat repeat;
+	border-width: 0 9px;
+	color: #000;
+	font-size: 10px;
+}
+div.prefs input[type=button]:active,
+div.prefs input[type=submit]:active,
+#popbox-content-drafts div.content ul li div.controls input:active {
+	border-image: url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
+	-webkit-border-image: url(images/buttons/small-active.png) 0 9 0 9 repeat repeat;
+}
+body:not(.active) div.prefs input[type=button],
+body:not(.active) div.prefs input[type=submit],
+div.prefs input[type=button][disabled],
+div.prefs input[type=submit][disabled],
+body:not(.active) #popbox-content-drafts div.content ul li div.controls input {
+	border-image: url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
+	-webkit-border-image: url(images/buttons/small-disabled.png) 0 9 0 9 repeat repeat;
+	color: #999;
+}
+input[type=text]#prefs-user-stylesheet {
+	width: 80px;
+}
+input[type=text]#network-refreshinterval {
+	width: 20px;
+}
+input[type=text]#dock-refreshinterval {
+	width: 30px;
+}
+input[type=text]#window-alpha {
+	width: 30px;
+	text-align: right;
+}
+#prefs-user-stylesheet-button,
+#prefs-user-stylesheet-edit,
+#prefs-user-stylesheet-clear {
+	margin: 2px 0 0;
+	font-size: 10px;
+}
+
+/*** Preferences > Footer ***/
+
+#prefs-form div.formrow.footer {
+	margin: 0;
+	padding: 20px 10px;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#d2d2d2), to(#bdbdbd));
+		border-top: 1px solid #e1e1e1;
+		border-bottom: 1px solid #ababab;
+		text-align: right;
+	}
+	body:not(.active) #prefs-form div.formrow.footer {
+		background: -webkit-gradient(
+			linear, left top, left bottom, from(#e2e2e2), to(#cdcdcd));
+			border-top-color: #f1f1f1;
+			border-bottom-color: #bbb;
+		}
+		#prefs-form div.formrow.footer p.prefs-relaunch {
+			margin: 0;
+		}
+		#prefs-form div.formrow.footer p.prefs-update {
+			float: right;
+			display: inline-block;
+			margin: 0.5em 0 0 0.25em;
+		}
+		#prefs-form div.formrow.footer p.prefs-open-folder {
+			display: inline-block;
+			margin: 0.5em 0 0;
+		}
+		#prefs-form div.formrow.footer p input[type=button] {
+			height: 23px;
+			margin: 0;
+			border-image: url(images/buttons/large.png) 0 11 0 11 repeat repeat;
+			-webkit-border-image: url(images/buttons/large.png) 0 11 0 11 repeat repeat;
+			border-width: 0 11px;
+			font-size: 12px;
+		}
+		#prefs-form div.formrow.footer p input[type=button]:active {
+			border-image: url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
+			-webkit-border-image: url(images/buttons/large-active.png) 0 11 0 11 repeat repeat;
+		}
+		body:not(.active) #prefs-form div.formrow.footer p input[type=button] {
+			border-image: url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
+			-webkit-border-image: url(images/buttons/large-disabled.png) 0 11 0 11 repeat repeat;
+		}
+		#prefs-form div.formrow.footer p.prefs-update input#prefs-update-button {
+			padding: 0 0.5em;
+		}
+		#prefs-form div.formrow.footer p.prefs-open-folder input#prefs-open-folder {
+			font-size: 10px;
+		}
+
+
+
+/*** Tables ***/
+
+table.data {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	padding: 5px;
+	border-top: 3px solid #333333;
+	border-bottom: 1px solid #333333;
+	border-collapse: collapse;
+	width: 100%;
+}
+table.data th {
+	background-color: #202020;
+	color: #DDDDDD;
+	font-size: 9px;
+	font-weight: bold;
+	text-align: left;
+	padding: 4px;
+}
+table.data tr {
+	border-top-style: solid;
+	border-top-width: 1px;
+}
+table.data tr:hover {
+	background: #FFFFCC;
+}
+table.data td {
+	font-size: 10px;
+	padding: 4px;
+	text-align: left;
+}
+table.data td.label {
+	font-weight: bold;
+	text-align: right;
+	border-right: 1px solid #999999;
+}
+table.data td.label:after {/*content:":";*/
+}
+table.data td.value {
+	padding: 2px;
+}
+
+
+
+/*
+I think this is needed by some widgets. Maybe not?
 */
 .SpryHiddenRegion {
-	visibility:hidden;
+	visibility: hidden;
 }
 
-.selected-account:after {
-	content: " \2713";
+
+
+/*** Scrollbars ***/
+
+::-webkit-scrollbar {
+	width: 15px;
+	height: 15px;
+	background: transparent url(images/scrollbar/track.png) 0 0 repeat-y;
+}
+::-webkit-scrollbar-button:vertical {
+	display: block;
+	height: 26px;
+	background: transparent -15px 0 no-repeat;
+}
+/*
+Disabled because the AIR 2 beta doesn't apply this selector until you hover
+over each button:
+body:not(.active) ::-webkit-scrollbar-button:vertical {
+background-position: 0 0;
+}
+*/
+::-webkit-scrollbar-button:vertical:start {
+	display: none;
+}
+::-webkit-scrollbar-button:vertical:active {
+	background-position: -30px 0;
+}
+::-webkit-scrollbar-button:vertical:end:decrement {
+	background-image: url(images/scrollbar/button-vertical-bottom-up.png);
+}
+::-webkit-scrollbar-button:vertical:end:increment {
+	height: 16px;
+	background-image: url(images/scrollbar/button-vertical-bottom-down-square.png);
+}
+::-webkit-scrollbar-track:vertical {
+	margin-top: 0px;
+	margin-bottom: -11px;
+	background: transparent url(images/scrollbar/cap-top.png) 0 0 no-repeat;
+}
+::-webkit-scrollbar-track-piece {
+}
+::-webkit-scrollbar-track-piece:vertical:start {/* Above thumb */
+	margin-top:4px;
+}
+::-webkit-scrollbar-track-piece:vertical:end {
+}
+/* Below thumb */
+
+/* Single buttons at the start and end: */
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:start:decrement,
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:end:increment {
+	display: block;
+	height: 26px;
+}
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:start:increment,
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:end:decrement {
+	display: none;
+}
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:start:decrement {
+	background-image: url(images/scrollbar/button-vertical-top-up.png);
+}
+body.scrollbar-single-both ::-webkit-scrollbar-button:vertical:end:increment {
+	background-image: url(images/scrollbar/button-vertical-bottom-down.png);
+}
+body.scrollbar-single-both ::-webkit-scrollbar-track:vertical {
+	margin-top: -11px;
+	margin-bottom: -11px;
+	background: transparent;
+}
+body.scrollbar-single-both ::-webkit-scrollbar-track-piece:vertical:start {
+	margin-top: 0;
+}
+
+/* Doubled buttons at the start and end: */
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:start,
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:end {
+	display: block;
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:start:decrement {
+	height: 16px;
+	background-image: url(images/scrollbar/button-vertical-top-up-square.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:start:increment {
+	background-image: url(images/scrollbar/button-vertical-top-down.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:end:decrement {
+	background-image: url(images/scrollbar/button-vertical-bottom-up.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-button:vertical:end:increment {
+	height: 16px;
+	background-image: url(images/scrollbar/button-vertical-bottom-down-square.png);
+}
+body.scrollbar-double-both ::-webkit-scrollbar-track:vertical {
+	margin-top: -11px;
+	margin-bottom: -11px;
+	background: transparent;
+}
+body.scrollbar-double-both ::-webkit-scrollbar-track-piece:vertical:start {
+	margin-top: 0;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+	min-height: 24px;
+	border-width: 8px 0;
+	-webkit-border-image: url(images/scrollbar/thumb-active.png) 8 0 8 0 repeat repeat;
+}
+/*
+Disabled because the AIR 2 beta doesn't apply this selector until you hover
+over the thumb:
+body:not(.active) ::-webkit-scrollbar-thumb:vertical {
+-webkit-border-image: url(images/scrollbar/thumb-inactive.png) 8 0 8 0 repeat repeat;
+}
+*/
+::-webkit-scrollbar-corner:vertical {
+	background: transparent url(images/scrollbar/corner.png) 0 0 no-repeat;
+}
+/*
+::-webkit-scrollbar-resizer:vertical {
+background: #eee;
+}
+*/
+
+
+
+/*** Popboxes ***/
+
+#DOMWindowOverlay {
+/* Using lots of `!important` to override the JS plugin. */
+left:8px !important;
+right: 8px !important;
+top: 0 !important;
+bottom: 8px !important;
+width: auto !important;
+height: auto !important;
+min-width: 297px;
+border-radius: 4px;
+-webkit-border-radius: 4px;
+}
+div.popbox-content {
+	overflow: auto;
+	overflow-x: hidden;
+	max-height: 380px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(117, 117, 117, 0.95)), to(rgb(38, 38, 38)),
+		color-stop(0.5, rgba(49, 49, 49, 0.95)),
+		color-stop(0.5, rgba(33, 33, 33, 0.95))
+		) no-repeat;
+		background-size: 100% 40px;
+		-webkit-background-size: 100% 40px;
+		border: 1px solid rgba(38, 38, 38, 0.95);
+		border-top-left-radius: 7px;
+		-webkit-border-top-left-radius: 7px;
+		border-top-right-radius: 7px;
+		-webkit-border-top-right-radius: 7px;
+		border-bottom-left-radius: 4px;
+		-webkit-border-bottom-left-radius: 4px;
+		border-bottom-right-radius: 4px;
+		-webkit-border-bottom-right-radius: 4px;
+	}
+	div#popbox-content-account-details,
+	div#popbox-content-profile {
+		border-bottom-left-radius: 7px;
+		-webkit-border-bottom-left-radius: 7px;
+		border-bottom-right-radius: 7px;
+		-webkit-border-bottom-right-radius: 7px;
+	}
+	div.popbox-content h1 {
+		background: transparent;
+		border-top: 1px solid rgba(255, 255, 255, 0.15);
+		border-radius: 6px; /* = div.popbox-content border-radius - 1 */
+		-webkit-border-radius:6px;
+		cursor: default;
+		font-size: 14px;
+		font-weight: normal;
+		text-align: center;
+	}
+	div.popbox-content h1 .closeDOMWindow {
+		position: absolute;
+		left: 15px;
+		top: 12px;
+		display: block;
+		width: 14px;
+		height: 15px;
+		background: transparent url(images/close-white-small.png) 0 0 no-repeat;
+		cursor: pointer;
+		text-indent: -9999em;
+	}
+	div.popbox-content div.content {
+		max-height: 295px;
+		border: 3px solid rgb(38, 38, 38);
+		/* The border is opaque because, when translucent, the border corners
+		overlap and still turn opaque. */
+		border-top-width:0;
+	}
+	div.popbox-content div.controls {
+		overflow: hidden;
+		margin-top: -3px; /* = div.content border-bottom-width */
+		padding: 8px;
+		background: -webkit-gradient(
+			linear, left top, left bottom,
+			from(rgba(38, 38, 38, 0.95)), to(rgba(0, 0, 0, 0.95)),
+			color-stop(0.5, rgba(19, 19, 19, 0.95)),
+			color-stop(0.5, rgba(0, 0, 0, 0.95))
+			) no-repeat;
+			border-bottom-left-radius: 6px;
+			-webkit-border-bottom-left-radius: 6px;
+			border-bottom-right-radius: 6px;
+			-webkit-border-bottom-right-radius: 6px;
+		}
+		div.popbox-content div.controls button {
+			float: right;
+			height: auto;
+			margin: 0 0 0 6px;
+			padding: 3px 16px;
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#828282), to(#333));
+				border: 0;
+				border-image: none;
+				-webkit-border-image: none;
+				border-radius: 1em;
+				-webkit-border-radius: 1em;
+				color: #fff;
+				font-size: 10px;
+				font-weight: normal;
+				line-height: 15px;
+				text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+			}
+			div.popbox-content div.controls button.primary {
+				background: -webkit-gradient(
+					linear, left top, left bottom, from(#a2a2a2), to(#636363));
+					font-size: 12px;
+				}
+				div.popbox-content div.controls button:hover,
+				div.popbox-content div.controls button:focus,
+				div.popbox-content div.controls button:active {
+					background: -webkit-gradient(
+						linear, left top, left bottom, from(#668bf4), to(#2b64f0));
+						border-color: #5c83ea transparent #1d58e7 transparent;
+					}
+
+/*** Popboxes > Info ***/
+
+div.popbox-content.info h1 {
+	padding: 10px;
+	background: transparent url(../../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
+	border-top: 1px solid rgba(255, 255, 255, 0.15);
+	border-bottom: 1px solid rgb(38, 38, 38);
+	text-align: center;
+}
+div.popbox-content.info div.content {
+	padding: 15px;
+}
+
+/*** Popboxes > Account details ***/
+
+div#popbox-content-account-details {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
+		color-stop(0.5, rgba(49, 49, 49, 0.95)),
+		color-stop(0.5, rgba(33, 33, 33, 0.95))
+		) no-repeat;
+	}
+	div#popbox-content-account-details h1 {
+		border-bottom-color: rgba(38, 38, 38, 0.95);
+	}
+	div#popbox-content-account-details div.content {
+		overflow-x: hidden;
+		max-height: 285px;
+		padding: 0 12px;
+		background: #e0e0e0;
+		border-color: rgba(38, 38, 38, 0.95);
+		font-size: 11px;
+	}
+	div#popbox-content-account-details div.content div.formrow {
+		white-space: normal;
+	}
+	div#popbox-content-account-details div.content > div.formrow {
+		padding: 0;
+	}
+	div#popbox-content-account-details div.content fieldset {
+		margin-left: 0;
+		margin-right: 0;
+		padding: 0;
+	}
+	div#popbox-content-account-details div.content label + input[type=text],
+	div#popbox-content-account-details div.content label + input[type=password] {
+		display: block;
+	}
+	div#popbox-content-account-details div.content input#username,
+	div#popbox-content-account-details div.content input#password {
+		font-size: 16px;
+	}
+
+/*** Popboxes > Conversation ***/
+
+div#popbox-content-conversation {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(117, 117, 117, 0.95)), to(rgba(38, 38, 38, 0.95)),
+		color-stop(0.5, rgba(49, 49, 49, 0.95)),
+		color-stop(0.5, rgba(33, 33, 33, 0.95))
+		) repeat-x;
+		background-size: 100% 42px;
+		-webkit-background-size: 100% 42px;
+		border: 1px solid rgba(38, 38, 38, 0.95);
+	}
+	div#popbox-content-conversation div.loading {
+	/* See also `.timeline-wrapper div.loading` */
+	margin:20px auto;
+}
+div#popbox-content-conversation div.content {
+	padding: 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#49525F), to(#7C8695),
+		color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+		/* See also `.timeline-wrapper`; `color-stop` values differ slightly. */
+		/* These `color-stop` values create top and bottom inner
+		shadows. However, the shadow heights are percent-based;
+		static heights would be ideal. */
+		border:3px solid rgb(38, 38, 38);
+	}
+	div#popbox-content-conversation #timeline-conversation {
+		overflow: auto;
+	}
+	div#popbox-content-conversation #timeline-conversation div.timeline-entry {
+		outline: 0;
+	}
+
+/*** Popboxes > Drafts ***/
+
+#popbox-content-drafts div.content {
+	padding: 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#49525F), to(#7C8695),
+		color-stop(0.02, #69727F), color-stop(0.95, #8C96A5));
+	}
+	/*
+	#popbox-content-drafts div.content > div.meta {
+	/* See also #timeline-userlists-full-name * /
+	overflow:hidden;
+	padding: 2px 11px;
+	background: -webkit-gradient(
+	linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+	border-bottom: 1px solid #c0c7cf;
+	font-size: 0.875em;
+	line-height: 1.75em;
+	text-shadow: 0 1px 1px #fff;
+	}
+	#popbox-content-drafts div.content > div.meta input {
+	float: right;
+	display: block;
+	padding: 3px 0.75em;
+	background: -webkit-gradient(
+	linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
+	border: 1px solid #a5a5a5;
+	border-radius: 1em;
+	-webkit-border-radius: 1em;
+	font-size: 0.875em;
+	}
+	*/
+	#popbox-content-drafts div.content ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	#popbox-content-drafts div.content ul li {
+		position: relative;
+		padding: 10px 11px;
+		background: -webkit-gradient(
+			linear, left top, left bottom, from(#fff), to(#f9f9f9));
+			border-top: 1px solid #fff;
+			border-bottom: 1px solid #f0f0f0;
+			color: rgba(0, 0, 0, 0.9);
+		}
+		#popbox-content-drafts div.content ul li.editing {
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
+				border-top-color: #fffbcc;
+				border-bottom-color: #ecdc7f;
+			}
+			#popbox-content-drafts div.content ul li p {
+				margin: 0;
+			}
+			#popbox-content-drafts div.content ul li div.meta {
+				margin: 1em 0 0;
+				color: rgba(0, 0, 0, 0.25);
+				font-size: 0.75em;
+			}
+			#popbox-content-drafts div.content ul li.editing div.meta {
+				color: #ccbc5f;
+			}
+			#popbox-content-drafts div.content ul li div.meta p.chars.over {
+				color: rgba(255, 0, 0, 0.75);
+			}
+
+/*** Popboxes > Profile ***/
+
+#popbox-content-profile div.content {
+	padding: 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#fff), to(#ccc));
+	}
+	#popbox-content-profile div.content.loading {
+		background: -webkit-gradient(
+			linear, left top, left bottom,
+			from(#49525F), to(#7C8695),
+			color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+			/* See also `.timeline-wrapper`; `color-stop` values differ slightly.
+			These `color-stop` values create top and bottom inner
+			shadows. However, the shadow heights are percent-based;
+			static heights would be ideal. */
+		}
+		#popbox-content-profile div.content div.loading {
+		/* See also `.timeline-wrapper div.loading` */
+		display: none;
+		margin: 20px auto;
+	}
+	#popbox-content-profile div.content.loading div.loading {
+		display: block;
+		border-top-width: 3px;
+	}
+	#popbox-content-profile div.content.loading div.header,
+	#popbox-content-profile div.content.loading div.body,
+	#popbox-content-profile div.content.loading + div.controls {
+		display: none;
+	}
+	#popbox-content-profile div.content div.header {
+		overflow: hidden;
+		height: 48px;
+		margin: 0;
+		padding: 1em;
+		background: -webkit-gradient(
+			linear, left top, left bottom, from(#fff), to(#ccc),
+			color-stop(0.5, #efefef), color-stop(0.5, #eaeaea));
+		}
+		#popbox-content-profile div.content div.header div.profile-user-image {
+			float: left;
+			width: 48px;
+			height: 48px;
+			background-size: 48px 48px;
+			-webkit-background-size: 48px 48px;
+			border-radius: 4px;
+			-webkit-border-radius: 4px;
+			text-indent: -9999em;
+		}
+		#popbox-content-profile div.content div.header p.name {
+			float: left;
+			margin: 0.375em 0 0 1em;
+		}
+		#popbox-content-profile div.content div.header p.name .real-name,
+		#popbox-content-profile div.content div.header p.name .username {
+			display: block;
+			line-height: 1.5;
+		}
+		#popbox-content-profile div.content div.header p.name .real-name[style^="display: none"] + .username {
+			line-height: 3;
+		}
+		#popbox-content-profile div.content div.body {
+			overflow: auto;
+			max-height: 199px;
+			padding: 1em;
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#ddd), to(#ccc),
+				color-stop(0.025, #fff), color-stop(0.5, #fff));
+			}
+			#popbox-content-profile div.content div.body .clickable:hover {
+				text-decoration: underline;
+			}
+			#popbox-content-profile div.content div.body p.location {
+				margin: 0;
+			}
+			#popbox-content-profile div.content div.body p.location .label {
+				font-size: 0.75em;
+				font-weight: bold;
+				opacity: 0.5;
+				text-shadow: 0 1px 1px #fff;
+				text-transform: uppercase;
+			}
+			#popbox-content-profile div.content div.body p.location .value {
+				font-size: 0.875em;
+			}
+			#popbox-content-profile div.content div.body p.website {
+				overflow: hidden;
+				display: inline-block;
+				max-width: 100%;
+				margin: 0;
+				font-size: 0.875em;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			#popbox-content-profile div.content div.body ul.counts {
+				margin: 0;
+				padding: 0;
+			}
+			#popbox-content-profile div.content div.body ul.counts li {
+				display: inline-block;
+				padding: 0.5em 2%;
+				border: 1px solid transparent;
+				border-radius: 4px;
+				-webkit-border-radius: 4px;
+			}
+			#popbox-content-profile div.content div.body ul.counts li:hover {
+				background: -webkit-gradient(
+					linear, left top, left bottom,
+					from(rgba(255, 255, 255, 0.5)), to(rgba(191, 191, 191, 0.25)),
+					color-stop(0.75, rgba(255, 255, 255, 0)));
+					border-color: rgba(127, 127, 127, 0.25);
+					border-bottom-color: rgba(127, 127, 127, 0.5);
+					text-decoration: none;
+				}
+				#popbox-content-profile div.content div.body ul.counts li:active {
+					background: -webkit-gradient(
+						linear, left top, left bottom, from(#5b5b5b), to(#979797),
+						color-stop(0.125,#7f7f7f), color-stop(0.95, #a3a3a3));
+						border-color: rgba(0, 0, 0, 0.5);
+						border-bottom-color: rgba(127, 127, 127, 0.5);
+						color: #fff;
+						text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+					}
+					#popbox-content-profile div.content div.body ul.counts li em {
+						display: block;
+						font-size: 0.75em;
+						font-style: normal;
+						font-weight: bold;
+					}
+					#popbox-content-profile div.content div.body ul.counts li .label {
+						font-size: 0.75em;
+					}
+					#popbox-content-profile div.content div.body p.faves {
+						display: inline-block;
+						min-height: 15px; /* = background-image height */
+						margin: 1em 0 0;
+						padding: 0 0 0 21px; /* padding-left = background-image width + 5px */
+						background: transparent url(images/profiles/faves.png) 0 center no-repeat;
+						font-size: 0.875em;
+					}
+					#popbox-content-profile div.controls button.follow-toggle {
+						float: none;
+						display: none;
+						margin-left: 0;
+					}
+					#popbox-content-profile:not(.following) div.controls button.follow-toggle.follow,
+					#popbox-content-profile.following div.controls button.follow-toggle.unfollow {
+						display: inline-block;
+					}
+					#popbox-content-profile div.controls button.lists {
+						padding-right: 14px;
+					}
+					#popbox-content-profile div.controls button.tools {
+						padding: 3px 12px 1px 14px;
+					}
+					#popbox-content-profile div.controls button.lists:after,
+					#popbox-content-profile div.controls button.tools:after {
+						content: ' \025BE'; /* Down-pointing triangle */
+						font-size: 1.25em;
+						line-height: 0.8; /* 1 / font-size */
+					}
+					#popbox-content-profile div.controls button.tools span {
+						display: inline-block;
+						width: 17px;
+						height: 17px;
+						background: transparent url(images/profiles/tools.png) 0 0 no-repeat;
+						text-indent: -999em;
+					}
+
+
+
+/*
+news popup
+*/
+#news-content {
+	font-size: 0.875em;
+}
+#news-content a:hover {
+	text-decoration: underline;
+}
+#news-content div.entry {
+	padding-bottom: 2em;
+}
+#news-content div.entry div.title {
+	font-size: 1.5em;
+	font-weight: normal;
+}
+#news-content div.entry div.date {
+	line-height: 2em;
+	font-size: 0.75em;
+}
+#news-content div.entry div.entry-content {
+	line-height: 1.4em;
 }

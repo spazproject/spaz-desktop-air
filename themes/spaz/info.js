@@ -1,6 +1,7 @@
 {
-	"name"        : "Spaz Default Theme",
+	"name"        : "Spaz",
 	"author"      : "Ed Finkler",
-	"description" : "The original, default Spaz theme",
-	"link"        : "http://getspaz.com"
+	"description" : "Default Spaz theme",
+	"link"        : "http://funkatron.com",
+    "version"     : "v2.0"
 }
