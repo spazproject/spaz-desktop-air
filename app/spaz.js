@@ -91,7 +91,7 @@ Spaz.initialize = function() {
 
 	sch.debug('root init begin');
 	
-	window.htmlLoader.navigateInSystemBrowser = true;
+	window.htmlLoader.navigateInSystemBrowser = false;
 
 	air.NativeApplication.nativeApplication.autoExit = true;
 	
