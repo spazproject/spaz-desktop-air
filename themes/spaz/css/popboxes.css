@@ -1,0 +1,472 @@
+/*** Popboxes ***/
+
+#DOMWindowOverlay {
+/* Using lots of `!important` to override the JS plugin. */
+left: 10px !important;
+right:10px !important;
+top: 0 !important;
+bottom: 10px !important;
+width: auto !important;
+height: auto !important;
+min-width: 297px;
+border-radius: 4px;
+-webkit-border-radius: 4px;
+}
+div.popbox-content {
+	overflow: auto;
+	overflow-x: hidden;
+	max-height: 380px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(136,136,106, 0.95)), to(rgb(36,37,26)),
+		color-stop(0.5, rgba(58,60,44, 0.95)),
+		color-stop(0.5, rgba(36,37,26, 0.95))
+		) no-repeat;
+	background-size: 100% 40px;
+	-webkit-background-size: 100% 40px;
+	border: 2px solid rgba(36,37,26, 0.95);
+	border-top-left-radius: 2px;
+	-webkit-border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	-webkit-border-top-right-radius: 2px;
+	border-bottom-left-radius: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+div#popbox-content-account-details,
+div#popbox-content-profile {
+/*	border-bottom-left-radius: 7px;
+	-webkit-border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+	-webkit-border-bottom-right-radius: 7px;*/
+}
+div.popbox-content h1 {
+	background: transparent;
+	border-top: 1px solid rgba(255, 255, 255, 0.15);
+/*	border-radius: 6px; /* = div.popbox-content border-radius - 1 */*/
+/*	-webkit-border-radius:6px;*/
+	cursor: default;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: center;
+}
+div.popbox-content h1 .closeDOMWindow {
+	position: absolute;
+	right: 15px;
+	top: 12px;
+	display: block;
+	width: 14px;
+	height: 15px;
+	background: transparent url(../images/close-white-small.png) 0 0 no-repeat;
+	cursor: pointer;
+	text-indent: -9999em;
+}
+div.popbox-content div.content {
+	max-height: 295px;
+	border: 3px solid rgb(36,37,26);
+	/* The border is opaque because, when translucent, the border corners
+	overlap and still turn opaque. */
+	border-top-width:0;
+}
+div.popbox-content div.controls {
+	overflow: hidden;
+	margin-top: -3px; /* = div.content border-bottom-width */
+	padding: 8px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(36,37,26, 0.95)), to(rgba(0, 0, 0, 0.95)),
+		color-stop(0.5, rgba(19, 19, 19, 0.95)),
+		color-stop(0.5, rgba(0, 0, 0, 0.95))
+		) no-repeat;
+/*	border-bottom-left-radius: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;*/
+}
+div.popbox-content div.controls button {
+	float: right;
+	height: auto;
+	margin: 0 0 0 6px;
+	padding: 3px 16px;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#575A47), to(#3A3C2C));
+	border: 0;
+	border-image: none;
+	-webkit-border-image: none;
+	border-radius: 1em;
+	-webkit-border-radius: 1em;
+	color: #fff;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 15px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+div.popbox-content div.controls button.primary {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#575A47), to(#3A3C2C));
+	font-size: 12px;
+}
+div.popbox-content div.controls button:hover,
+div.popbox-content div.controls button:focus,
+div.popbox-content div.controls button:active {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#3A3C2C), to(#24251A));
+	border-color: #5c83ea transparent #1d58e7 transparent;
+}
+
+/*** Popboxes > Info ***/
+
+div.popbox-content.info h1 {
+	padding: 10px;
+	background: transparent url(../../../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
+	border-top: 1px solid rgba(255, 255, 255, 0.15);
+	border-bottom: 1px solid rgb(36,37,26);
+	text-align: center;
+}
+div.popbox-content.info div.content {
+	padding: 15px;
+}
+
+/*** Popboxes > Account details ***/
+
+div#popbox-content-account-details {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(136,136,106, 0.95)), to(rgba(36,37,26, 0.95)),
+		color-stop(0.5, rgba(58,60,44, 0.95)),
+		color-stop(0.5, rgba(36,37,26, 0.95))
+		) no-repeat;
+	}
+	div#popbox-content-account-details h1 {
+		border-bottom-color: rgba(36,37,26, 0.95);
+	}
+	div#popbox-content-account-details div.content {
+		overflow-x: hidden;
+		max-height: 285px;
+		padding: 0 12px;
+		background: #e0e0e0;
+		border-color: rgba(36,37,26, 0.95);
+		font-size: 11px;
+	}
+	div#popbox-content-account-details div.content div.formrow {
+		white-space: normal;
+	}
+	div#popbox-content-account-details div.content > div.formrow {
+		padding: 0;
+	}
+	div#popbox-content-account-details div.content fieldset {
+		margin-left: 0;
+		margin-right: 0;
+		padding: 0;
+	}
+	div#popbox-content-account-details div.content label + input[type=text],
+	div#popbox-content-account-details div.content label + input[type=password] {
+		display: block;
+	}
+	div#popbox-content-account-details div.content input#username,
+	div#popbox-content-account-details div.content input#password {
+		font-size: 16px;
+	}
+
+/*** Popboxes > Conversation ***/
+
+div#popbox-content-conversation {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(136,136,106, 0.95)), to(rgba(36,37,26, 0.95)),
+		color-stop(0.5, rgba(58,60,44, 0.95)),
+		color-stop(0.5, rgba(36,37,26, 0.95))
+		) repeat-x;
+		background-size: 100% 42px;
+		-webkit-background-size: 100% 42px;
+		border: 1px solid rgba(36,37,26, 0.95);
+	}
+	div#popbox-content-conversation div.loading {
+	/* See also `.timeline-wrapper div.loading` */
+	margin:20px auto;
+}
+div#popbox-content-conversation div.content {
+	padding: 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#49525F), to(#7C8695),
+		color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+		/* See also `.timeline-wrapper`; `color-stop` values differ slightly. */
+		/* These `color-stop` values create top and bottom inner
+		shadows. However, the shadow heights are percent-based;
+		static heights would be ideal. */
+		border:3px solid rgb(36,37,26);
+	}
+	div#popbox-content-conversation #timeline-conversation {
+		overflow: auto;
+	}
+	div#popbox-content-conversation #timeline-conversation div.timeline-entry {
+		outline: 0;
+	}
+
+/*** Popboxes > Drafts ***/
+
+#popbox-content-drafts div.content {
+	padding: 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#49525F), to(#7C8695),
+		color-stop(0.02, #69727F), color-stop(0.95, #8C96A5));
+	}
+	/*
+	#popbox-content-drafts div.content > div.meta {
+	/* See also #timeline-userlists-full-name * /
+	overflow:hidden;
+	padding: 2px 11px;
+	background: -webkit-gradient(
+	linear, left top, left bottom, from(#ebf1f6), to(#dee4ea));
+	border-bottom: 1px solid #c0c7cf;
+	font-size: 0.875em;
+	line-height: 1.75em;
+	text-shadow: 0 1px 1px #fff;
+	}
+	#popbox-content-drafts div.content > div.meta input {
+	float: right;
+	display: block;
+	padding: 3px 0.75em;
+	background: -webkit-gradient(
+	linear, left top, left bottom, from(#f6f6f6), to(#dfdfdf));
+	border: 1px solid #a5a5a5;
+	border-radius: 1em;
+	-webkit-border-radius: 1em;
+	font-size: 0.875em;
+	}
+	*/
+	#popbox-content-drafts div.content ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	#popbox-content-drafts div.content ul li {
+		position: relative;
+		padding: 10px 11px;
+		background: -webkit-gradient(
+			linear, left top, left bottom, from(#fff), to(#f9f9f9));
+			border-top: 1px solid #fff;
+			border-bottom: 1px solid #f0f0f0;
+			color: rgba(0, 0, 0, 0.9);
+		}
+		#popbox-content-drafts div.content ul li.editing {
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
+				border-top-color: #fffbcc;
+				border-bottom-color: #ecdc7f;
+			}
+			#popbox-content-drafts div.content ul li p {
+				margin: 0;
+			}
+			#popbox-content-drafts div.content ul li div.meta {
+				margin: 1em 0 0;
+				color: rgba(0, 0, 0, 0.25);
+				font-size: 0.75em;
+			}
+			#popbox-content-drafts div.content ul li.editing div.meta {
+				color: #ccbc5f;
+			}
+			#popbox-content-drafts div.content ul li div.meta p.chars.over {
+				color: rgba(255, 0, 0, 0.75);
+			}
+
+/*** Popboxes > Profile ***/
+
+#popbox-content-profile div.content {
+	padding: 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#fff), to(#ccc));
+	}
+	#popbox-content-profile div.content.loading {
+		background: -webkit-gradient(
+			linear, left top, left bottom,
+			from(#49525F), to(#7C8695),
+			color-stop(0.05, #69727F), color-stop(0.95, #8C96A5));
+			/* See also `.timeline-wrapper`; `color-stop` values differ slightly.
+			These `color-stop` values create top and bottom inner
+			shadows. However, the shadow heights are percent-based;
+			static heights would be ideal. */
+		}
+		#popbox-content-profile div.content div.loading {
+		/* See also `.timeline-wrapper div.loading` */
+		display: none;
+		margin: 20px auto;
+	}
+	#popbox-content-profile div.content.loading div.loading {
+		display: block;
+		border-top-width: 3px;
+	}
+	#popbox-content-profile div.content.loading div.header,
+	#popbox-content-profile div.content.loading div.body,
+	#popbox-content-profile div.content.loading + div.controls {
+		display: none;
+	}
+	#popbox-content-profile div.content div.header {
+		overflow: hidden;
+		height: 48px;
+		margin: 0;
+		padding: 1em;
+		background: -webkit-gradient(
+			linear, left top, left bottom, from(#fff), to(#ccc),
+			color-stop(0.5, #efefef), color-stop(0.5, #eaeaea));
+		}
+		#popbox-content-profile div.content div.header div.profile-user-image {
+			float: left;
+			width: 48px;
+			height: 48px;
+			background-size: 48px 48px;
+			-webkit-background-size: 48px 48px;
+			-webkit-box-shadow:0 1px 5px #666; /* Disabled: Not all imgs are square */
+			border:1px solid #666666;
+			text-indent: -9999em;
+		}
+		#popbox-content-profile div.content div.header p.name {
+			float: left;
+			margin: 0.375em 0 0 1em;
+		}
+		#popbox-content-profile div.content div.header p.name .real-name,
+		#popbox-content-profile div.content div.header p.name .username {
+			display: block;
+			line-height: 1.5;
+		}
+		#popbox-content-profile div.content div.header p.name .real-name[style^="display: none"] + .username {
+			line-height: 3;
+		}
+		#popbox-content-profile div.content div.body {
+			overflow: auto;
+			max-height: 199px;
+			padding: 1em;
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#ddd), to(#ccc),
+				color-stop(0.025, #fff), color-stop(0.5, #fff));
+			}
+			#popbox-content-profile div.content div.body .clickable:hover {
+				text-decoration: underline;
+			}
+			#popbox-content-profile div.content div.body p.location {
+				margin: 0;
+			}
+			#popbox-content-profile div.content div.body p.location .label {
+				font-size: 0.75em;
+				font-weight: bold;
+				opacity: 0.5;
+				text-shadow: 0 1px 1px #fff;
+				text-transform: uppercase;
+			}
+			#popbox-content-profile div.content div.body p.location .value {
+				font-size: 0.875em;
+			}
+			#popbox-content-profile div.content div.body p.website {
+				overflow: hidden;
+				display: inline-block;
+				max-width: 100%;
+				margin: 0;
+				font-size: 0.875em;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			#popbox-content-profile div.content div.body ul.counts {
+				margin: 0;
+				padding: 0;
+			}
+			#popbox-content-profile div.content div.body ul.counts li {
+				display: inline-block;
+				padding: 0.5em 2%;
+				border: 1px solid transparent;
+				border-radius: 4px;
+				-webkit-border-radius: 4px;
+			}
+			#popbox-content-profile div.content div.body ul.counts li:hover {
+				background: -webkit-gradient(
+					linear, left top, left bottom,
+					from(rgba(255, 255, 255, 0.5)), to(rgba(191, 191, 191, 0.25)),
+					color-stop(0.75, rgba(255, 255, 255, 0)));
+					border-color: rgba(127, 127, 127, 0.25);
+					border-bottom-color: rgba(127, 127, 127, 0.5);
+					text-decoration: none;
+				}
+				#popbox-content-profile div.content div.body ul.counts li:active {
+					background: -webkit-gradient(
+						linear, left top, left bottom, from(#5b5b5b), to(#979797),
+						color-stop(0.125,#7f7f7f), color-stop(0.95, #a3a3a3));
+						border-color: rgba(0, 0, 0, 0.5);
+						border-bottom-color: rgba(127, 127, 127, 0.5);
+						color: #fff;
+						text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+					}
+					#popbox-content-profile div.content div.body ul.counts li em {
+						display: block;
+						font-size: 0.75em;
+						font-style: normal;
+						font-weight: bold;
+					}
+					#popbox-content-profile div.content div.body ul.counts li .label {
+						font-size: 0.75em;
+					}
+					#popbox-content-profile div.content div.body p.faves {
+						display: inline-block;
+						min-height: 15px; /* = background-image height */
+						margin: 1em 0 0;
+						padding: 0 0 0 21px; /* padding-left = background-image width + 5px */
+						background: transparent url(../images/profiles/faves.png) 0 center no-repeat;
+						font-size: 0.875em;
+					}
+					#popbox-content-profile div.controls button.follow-toggle {
+						float: none;
+						display: none;
+						margin-left: 0;
+					}
+					#popbox-content-profile:not(.following) div.controls button.follow-toggle.follow,
+					#popbox-content-profile.following div.controls button.follow-toggle.unfollow {
+						display: inline-block;
+					}
+					#popbox-content-profile div.controls button.lists {
+						padding-right: 14px;
+					}
+					#popbox-content-profile div.controls button.tools {
+						padding: 3px 12px 1px 14px;
+					}
+					#popbox-content-profile div.controls button.lists:after,
+					#popbox-content-profile div.controls button.tools:after {
+						content: ' \025BE'; /* Down-pointing triangle */
+						font-size: 1.25em;
+						line-height: 0.8; /* 1 / font-size */
+					}
+					#popbox-content-profile div.controls button.tools span {
+						display: inline-block;
+						width: 17px;
+						height: 17px;
+						background: transparent url(../images/profiles/tools.png) 0 0 no-repeat;
+						text-indent: -999em;
+					}
+
+
+
+/*
+news popup
+*/
+#news-content {
+	font-size: 0.875em;
+}
+#news-content a:hover {
+	text-decoration: underline;
+}
+#news-content div.entry {
+	padding-bottom: 2em;
+}
+#news-content div.entry div.title {
+	font-size: 1.5em;
+	font-weight: normal;
+}
+#news-content div.entry div.date {
+	line-height: 2em;
+	font-size: 0.75em;
+}
+#news-content div.entry div.entry-content {
+	line-height: 1.4em;
+}

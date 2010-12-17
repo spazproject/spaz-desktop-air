@@ -1,0 +1,122 @@
+/*
+The panelmenu appears at the top of each timeline
+*/
+.panelmenu {
+	position: relative;
+    background-color:#111100;
+    padding:2px;
+	height:27px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(32,32,32, 1)),
+		to(rgba(16,16,16, 1)),
+		color-stop(0.1, rgba(49, 49, 49, 1)),
+		color-stop(0.6, rgba(24,24,24, 1))
+	);
+    box-shadow:           0 0 10px rgba(0, 0, 0, 0.25);
+      -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+	z-index: 1; /* = div.timeline-subtitle z-index */
+}
+.panelmenu form {
+	position: relative;
+	margin: 0 2px;
+	padding: 1px 0 0;
+	line-height: 9px;
+	text-align: left;
+}
+.panelmenu form input,
+.panelmenu form button {
+	font-size: 10px;
+	font-weight: normal;
+	margin: 2px 0;
+}
+.panelmenu form button {
+	width: 45px;
+	height: 22px;
+	padding: 0;
+	background: -webkit-gradient(linear, left top, left bottom, from(#3A3C2C), to(#24251A));
+	border: 1px solid rgba(16,16,16, 1);
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	color: #fff;
+	cursor: default;
+	white-space: nowrap;
+}
+.panelmenu form button[id^="refresh-"] {
+	position: relative;
+	width: 30px;
+	color: transparent;
+}
+.panelmenu form button[id^="refresh-"]:before {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: transparent url(../images/refresh-white.png) center center no-repeat;
+	content: ""; /* Forces background to be used */
+}
+.panelmenu form button:active {
+	background: -webkit-gradient(linear, left top, left bottom, from(#24251A), to(#3A3C2C));
+	border: 2px solid rgba(32,32,32, 1);
+}
+#panel-friends .panelmenu #view-friends:after,
+#panel-userlists .panelmenu #view-userlists:after,
+#panel-public .panelmenu #trends-public:after,
+#panel-search .panelmenu #search-saved:after,
+#panel-followerslist .panelmenu #view-followerslist:after {
+	content: ' \025BE'; /* Down-pointing triangle */
+}
+#panel-public .panelmenu form #trends-public,
+#panel-search .panelmenu form #search-saved {
+	width: 50px;
+}
+#panel-search .panelmenu form #search-help {
+	width: 30px;
+}
+#panel-search .panelmenu form #search-go {
+	display: none;
+	/* Allows for making the text input wider. Hit Enter to
+	search instead. */
+}
+#panel-search .panelmenu form #search-help {
+	float: right;
+	margin-right: 0;
+}
+.panelmenu form input[type=text] {
+	float: right;
+	width: 75px;
+	height: 19px;
+	margin-top: 3px;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-image: url(../images/search-input.png) 0 9 0 18 repeat repeat;
+	-webkit-border-image: url(../images/search-input.png) 0 9 0 18 repeat repeat;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-width: 0 9px 0 18px;
+	color: #828282;
+}
+body:not(.active) .panelmenu form input[type=text] {
+	border-image: url(../images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+	-webkit-border-image: url(../images/search-input-inactive.png) 0 9 0 18 repeat repeat;
+}
+.panelmenu form input[type=text]:focus {
+	color: #0f0f0f;
+}
+#panel-user .panelmenu form input[type=text],
+#panel-favorites .panelmenu form input[type=text],
+#panel-public .panelmenu form input[type=text] {
+	width: 75px;
+}
+/*
+For use if "Trends" menu is visible:
+#panel-public .panelmenu form input[type=text] {
+width: 90px;
+}
+*/
+#panel-search .panelmenu form input[type=text] {
+	float: none;
+	width: 41%;
+}

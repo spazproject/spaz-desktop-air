@@ -1,0 +1,43 @@
+/*** Pagination ***/
+
+div.loadmore-panel {
+	margin: 0;
+	padding: 10px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(32,32,32, 1)),
+		to(rgba(16,16,16, 1)),
+		color-stop(0.1, rgba(49, 49, 49, 1)),
+		color-stop(0.6, rgba(24,24,24, 1))
+	);
+	border-top: 1px solid #000000;
+	text-align: center;
+}
+div.loadmore-panel input[type=button] {
+	height: 23px;
+	margin: 0;
+	padding: 0 1em;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(58,60,44, 1)), to(rgba(58,60,44, 1)),
+		color-stop(0.1, rgba(87,90,71, 1)),
+		color-stop(0.6, rgba(58,60,44, 1))
+	);
+	border: 1px solid rgba(16,16,16, 1);
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	font-size: 12px;
+	color: #fff;
+	cursor: default;
+	white-space: nowrap;
+	
+}
+div.loadmore-panel input[type=button]:active {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(58,60,44, 1)), to(rgba(58,60,44, 1)),
+		color-stop(0.6, rgba(87,90,71, 1)),
+		color-stop(0.1, rgba(58,60,44, 1))
+	);
+	border: 2px solid rgba(32,32,32, 1);
+}

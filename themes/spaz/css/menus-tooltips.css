@@ -1,0 +1,193 @@
+
+/*
+Tooltips, those little popup messages that appear when you float over links and some other junk
+*/
+#tooltip {
+	position: fixed;
+	display: none;
+	max-width: 300px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(87,90,71, 0.95)), to(rgba(36,37,26, 0.95)),
+		color-stop(0.5, rgba(49, 49, 49, 0.95))
+	);
+	border: 1px solid rgba(38, 38, 38, 0.95);
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+	-webkit-box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+	color: #fff;
+	font-size: 10px;
+	opacity: 1;
+}
+#tooltip > :first-child {
+	padding: 5px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#tooltip h3, #tooltip div {
+	margin: 0;
+	font-weight: normal;
+	font-size: inherit;
+}
+#tooltip div.latest {
+	margin: 1em 0 0;
+}
+#tooltip .tooltip-user-image {
+	float: right;
+	width: 24px;
+	height: 24px;
+	margin: 0 0 0 10px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#tooltip .website-title {
+	margin: 0 0 1em;
+}
+#tooltip .website-title:empty {
+	margin: 0;
+}
+
+
+
+/*** Root/context/popup menus ***/
+/* NOTE: These will eventually be replaced by SpazMenu; see next section. */
+/* (May be replaced with native OS versions in the future) */
+
+div.outerbox {
+	margin-left: -1px; /* Indent submenus */
+	padding:0;
+	background: transparent;
+}
+div.context-menu {
+	position: fixed;
+	display: none;
+	z-index: 1010;
+}
+ul.popup-menu {
+	display: none;
+}
+div.outerbox,
+div.context-menu,
+ul.popup-menu {
+	opacity: 0.95;
+}
+#root-menu-div ul,
+div.context-menu ul,
+ul.popup-menu {
+	margin: 0;
+	padding: 4px 0;
+	background: #f9f9f9;
+	border: 1px solid #dfdfdf;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#root-menu-div ul {
+	border-top-left-radius: 0;
+	-webkit-border-top-left-radius: 0;
+}
+#root-menu-div ul li a,
+div.context-menu ul li,
+ul.popup-menu li {
+	margin: 0;
+	padding: 2px 15px 2px 20px;
+	background: transparent;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	color: #000;
+	cursor: default;
+	font-size: 10px;
+	list-style: none;
+	text-decoration: none;
+}
+#root-menu-div ul li a:hover,
+div.context-menu ul li:hover,
+ul.popup-menu li:hover {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#668BF4), to(#2B64F0));
+	border-top-color: #5C83EA;
+	border-bottom-color: #1D58E7;
+	color: #fff;
+}
+#root-menu-div hr {/* divider */
+	width:100%;
+	border-bottom: 1px solid #dfdfdf;
+}
+
+/*** Menus ***/
+
+div.spaz-menu {
+	position: absolute;
+	display: none;
+	margin: 0;
+	width: auto;
+	margin-right: 20px; /* Margin away from viewport's right edge */
+	padding: 4px 0;
+	background: -webkit-gradient(
+		linear, left top, right bottom,
+		from(rgba(32,32,32,.95)),
+		to(rgba(16,16,16,.95)),
+		color-stop(0.20, rgba(48,48,48,.90)),
+		color-stop(0.36, rgba(32,32,32,.90))
+	);
+	border: 1px solid #000000;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.75);
+	-webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.75);
+	cursor: default;
+	z-index: 99999;
+}
+div.spaz-menu#tools-menu,
+div.spaz-menu#user-menu {
+	white-space: nowrap;
+}
+div.spaz-menu#tools-menu {
+	margin-right: 14px;
+}
+div.spaz-menu#user-menu {
+	margin-right: 31px;
+}
+div.spaz-menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow: auto;
+}
+div.spaz-menu ul > li {
+	list-style: none;
+}
+li.spaz-menu-item {
+	margin: 0px;
+	border: solid transparent;
+	border-width: 1px 0;
+	font-size: 11px;
+	color:#FFF;
+}
+li.spaz-menu-item:hover {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#666699), to(#444466));
+	color: #fff;
+}
+li.spaz-menu-item span {
+	display: block;
+	padding: 2px 15px 2px 20px;
+}
+li.spaz-menu-item.selected span {
+	background: transparent url(../images/menu-checkmark.png) 6px -87px no-repeat;
+}
+li.spaz-menu-item.selected:hover span {
+	background-position: 6px -87px;
+}
+div.spaz-menu#entrybox-shorten-menu li.spaz-menu-item {
+	white-space: nowrap;
+}
+div.spaz-menu ul li.separator {
+	margin: 5px 1px;
+	border-top: 1px solid #666666;
+	border-bottom: 1px solid #222222;
+}
+
