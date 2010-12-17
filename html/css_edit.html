@@ -8,20 +8,33 @@
 	<title>User CSS Editor</title>
 	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
+    
+
 	<style type="text/css" media="screen">
 		#css {
-			border:2px solid #AAA;
-			-khtml-border-radius:10px;
-			padding:5px;
+			border:        none;
+			border-top:    1px solid #999;
+			border-bottom: 1px solid #999;
+			padding:       5px;
+			font-family:   AnonymousPro, Anonymous, Inconsolata, Consolas, Monaco, "Courier New", monospaced;
+			line-height: 1.5em;
+		}
+		#content {
+			margin-top: 34px;
+			padding:    10px 0px;
+		}
+		#buttons {
+			text-align:right;
 		}
 	</style>
 	
 	<script src="app:/vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/vendors/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/vendors/jquery.dimensions.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/vendors/jquery/jquery.textarea.js"></script> <!-- $.tabby() -->
 	<script src="app:/app/spaz.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/apps/libs/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
-	<script src="app:/apps/libs/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/app/libs/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/app/libs/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/app/views/spaz.themes.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
 
@@ -32,19 +45,19 @@
 	<script type="text/javascript" charset="utf-8">
 
 		function resizeTextarea() {
-			$('#css').height($(window).height()-$("#css").offset().top-35);
-			$('#css').width($('#content').width()-15);
+			$('#css').height($(window).height()-$("#css").offset().top-50);
+			$('#css').width($('#content').width()-5);
 		}
 		
 		
 		function getUserCSS() {
-			$('#css').val( $(window.opener.document.getElementById('UserCSSOverride')).text() )
-			// alert(window.opener.document.getElementById('UserCSSOverride').innerText)
+			$('#css').val( $(window.opener.document.getElementById('UserCSSOverride')).text() );
+			sch.debug(window.opener.document.getElementById('UserCSSOverride').innerText);
 		}
 		
 		function setUserCSS() {
-			// alert($('#css')[0].outerHTML);
-			// alert('hi! '+$('#css').val())
+			sch.debug($('#css')[0].outerHTML);
+			sch.debug('hi! '+$('#css').val());
 			
 			
 			$(window.opener.document.getElementById('UserCSSOverride')).text( $('#css').val() );
@@ -54,32 +67,30 @@
 			Spaz.Sys.setFileContents(csspath, $('#css').val() );
 			
 			// getUserCSS()
-			// alert(window.opener.document.getElementById('UserCSSOverride').innerText)
+			sch.debug(window.opener.document.getElementById('UserCSSOverride').innerText);
 		}
 		
-		$(window).resize(
-			function() {
-				resizeTextarea()
-			}
-		)
+
 		
-		$(document).ready(
-			function() {
+		$(document).ready(function() {				
+			$('#save').click(
+				function() {
+					$('#css').val();
+				}
+			);
+
+			$('#reset').click(getUserCSS);
+
+			$('#css').change(setUserCSS);
+
+			$(window).resize(function() {
 				resizeTextarea();
-				getUserCSS()
-			}
-
-
-		)
-
-		// $('#save').click(
-		// 	function() {
-		// 		$('#css').val()
-		// 	}
-		// );
-		// $('#reset').click(getUserCSS);
-		// $('#css').change(setUserCSS);
-
+			});
+			
+			resizeTextarea();
+			getUserCSS();
+			$('#css').tabby();
+		});
 
 	</script>
 
@@ -90,14 +101,16 @@
 	<h1>User CSS Editor</h1>
 	<div id="content">
 		<form action="poop" method="get">
-		<div id="buttons">
-			<input type="button" name="save" value="Save" id="save"		onclick="setUserCSS()" />
-			<input type="button" name="reset" value="Reset" id="reset"	onclick="getUserCSS()" />
-			<a class="clickable" onClick="sc.helpers.openInBrowser('http://funkatron.com/spaziki/User-CSS-Hacks/')" title="Load the Spaziki CSS hacks page">Get &amp; share CSS hacks</a>
-			<!-- <span style="color:red">CSS Does Not Get Saved Yet</span> -->
-		</div>
-		<!-- <input type="text" name="csscode" value="" id="css" /> -->
-		<textarea name="csscode" id="css">hi</textarea>
+			<textarea name="csscode" id="css" cols="120" rows="30">
+				/* User CSS Overrides */
+
+			</textarea>
+			<div id="buttons">
+				<a class="clickable" onClick="sc.helpers.openInBrowser('http://getspaz.com/csshacks')" title="Load the Spaziki CSS hacks page">Get &amp; share CSS hacks</a>
+				<input type="button" name="reset" value="Reset" id="reset"	onclick="getUserCSS()" />
+				<input type="button" name="save" value="Save" id="save"		onclick="setUserCSS()" />
+				<!-- <span style="color:red">CSS Does Not Get Saved Yet</span> -->
+			</div>
 		</form>
 	</div>
 </body>

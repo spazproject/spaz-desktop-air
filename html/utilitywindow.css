@@ -4,18 +4,12 @@
 body {
 	padding:0px;
 	margin:0px;
-	font-family:Tahoma, Arial, Helvetica, sans-serif;
-	background-color: #FFFF9B;
-	background-image: url('img/body-bg.png');
-	background-repeat:repeat-x;
-	background-position: center bottom;
-	-webkit-background-size:100% 100%;	
+	font-family:Myriad Pro, Tahoma, Arial, Helvetica, sans-serif;
 	font-size:.8em;
 	color:#444444;
-	height:100%;
 	bottom:0px;
 	top:0px;
-	
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));	
 	overflow:auto;
 }
 
@@ -39,7 +33,7 @@ h1 {
 	width:100%;
 	top:0px;
 	height:25px;
-	background-image: url('img/spaz-icon-alpha.png');
+	background-image: url('../images/spaz-icon-alpha.png');
 	background-repeat: no-repeat;
 	background-position: 90% 40%;
 }
@@ -64,7 +58,6 @@ h2 {
 	bottom:0px;
 	top:0px;
 	overflow:auto;
-	
 }
 
 div.formrow {
