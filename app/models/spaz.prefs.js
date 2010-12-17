@@ -516,15 +516,22 @@ Spaz.Prefs.changeMethods = {
 		onChange: function(value) {
 			Spaz.Themes.setCurrentTheme();
 		},
-        onGet: function(key, value) {
-			return value;
-            // return 'Leopaz'; // HARDCODE LEOPAZ
-        },
-        onSet: function(key, value) {
-			return value
-            // return 'Leopaz'; // HARDCODE LEOPAZ
-        }
+		onGet: function(key, value) {
+			if (Spaz.Themes.validThemes.indexOf(value) != -1) {
+				return value;
+			} else {
+				return 'Leopaz';
+			}
+		},
+		onSet: function(key, value) {
+			if (Spaz.Themes.validThemes.indexOf(value) != -1) {
+				return value;
+			} else {
+				return 'Leopaz';
+			}
+		}
 	},
+
 
 	'sound-enabled': {
 		setUI: function(value) {

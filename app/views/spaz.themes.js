@@ -3,10 +3,14 @@ if (!Spaz.Themes) Spaz.Themes = {};
 // placeholder for themes object
 Spaz.Themes.themes = {};
 
+Spaz.Themes.validThemes = ['spaz', 'Leopaz'];
+
+
 // initializer
 Spaz.Themes.init = function() {
 	Spaz.Themes.themes = Spaz.Themes.getThemePaths();
 	for(x in Spaz.Themes.themes) {
+		if (Spaz.Themes.validThemes.indexOf(Spaz.Themes.themes[x].themename) != -1)
 		$('head').append('<link href="'+Spaz.Themes.themes[x].themecss+'" title="'+Spaz.Themes.themes[x].themename+'" rel="stylesheet" type="text/css" />');
 	}
 
