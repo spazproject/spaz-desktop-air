@@ -51,6 +51,14 @@ Spaz.cssFilters.filters = [
 	}
 ];
 
+/**
+ * default 
+ */
+Spaz.cssFilters.currentFilter = 'view-friends-menu-all';
+
+/**
+ * get CSS code for this id 
+ */
 Spaz.cssFilters.getCSS = function(id) {
 	for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
 		if (Spaz.cssFilters.filters[i].id === id) {
@@ -60,25 +68,36 @@ Spaz.cssFilters.getCSS = function(id) {
 	return false;
 };
 
-
+/**
+ * apply a given filter 
+ */
 Spaz.cssFilters.applyFilter = function(id) {
 	var css = Spaz.cssFilters.getCSS(id),
 	    $style = jQuery('#cssfilter');
 
 	if ($style.length < 1) {
-		$style = jQuery('<style id="cssfilter" type="text/css"></style>');
+		$style = jQuery('<style id="cssfilter" data-filter="'+id+'" type="text/css"></style>');
 		jQuery('head').append($style);
 	}
-
+	
+	Spaz.cssFilters.currentFilter = id;
+	
 	$style.text(css);
+	$(document).trigger('UNREAD_COUNT_CHANGED');
+		
 };
 
-
+/**
+ * clear the filter 
+ */
 Spaz.cssFilters.clearFilter = function() {
 	jQuery('#cssfilter').remove();
+	Spaz.cssFilters.currentFilter = null;
 };
 
-
+/**
+ * add a filter 
+ */
 Spaz.cssFilters.addFilter = function(data) {
 	if ( data.label && data.id && data.css &&
 		   !(Spaz.cssFilters.setFilterCSS(data.id, data.css))
@@ -87,6 +106,9 @@ Spaz.cssFilters.addFilter = function(data) {
 	}
 };
 
+/**
+ * remove a filter 
+ */
 Spaz.cssFilters.removeFilter = function(id) {
 	for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
 		if (Spaz.cssFilters.filters[i].id === id) {
@@ -97,12 +119,16 @@ Spaz.cssFilters.removeFilter = function(id) {
 	return false;
 };
 
+/**
+ * set CSS for a filter 
+ */
 Spaz.cssFilters.setFilterCSS = function(id, css) {
 	for (var i=0; i < Spaz.cssFilters.filters.length; i++) {
 		if (Spaz.cssFilters.filters[i].id === id) {
 			Spaz.cssFilters.filters[i].css = css;
 			return true;
 		}
+		Spaz.cssFilters.currentFilter = id;
 	}
 	return false;
 };

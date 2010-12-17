@@ -495,12 +495,10 @@ var FriendsTimeline = function() {
 
 	this.buildViewMenu = function(){
 		var menu,
-		    menuId = 'view-friends-menu',
-		    currentFilterId = Spaz.cssFilters.filters[0].id;
-
+		    menuId = 'view-friends-menu';
+		
 		function onStandardFilterClick(e){
 			Spaz.cssFilters.applyFilter(e.data.item.id);
-			currentFilterId = e.data.item.id;
 		}
 		function onCustomFilterClick(e, itemData){
 			// TODO: Implement
@@ -550,7 +548,7 @@ var FriendsTimeline = function() {
 		});
 		menu.bindToggle('#view-friends', {
 			afterShow: function(e){
-				jQuery('#' + currentFilterId).addClass('selected').
+				jQuery('#' + Spaz.cssFilters.currentFilter).addClass('selected').
 					siblings('.selected').removeClass('selected');
 			}
 		});

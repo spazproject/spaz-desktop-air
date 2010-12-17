@@ -631,69 +631,16 @@ Spaz.UI.markCurrentTimelineAsRead = function() {
 
 
 Spaz.UI.toggleTimelineFilter = function() {
-	if (!Spaz.UI.currentFriendsTimelineView) {
-		Spaz.UI.currentFriendsTimelineView = 'view-friends-menu-all';
+	if (!Spaz.cssFilters.currentFilter) {
+		Spaz.cssFilters.currentFilter = 'view-friends-menu-all';
 	}
 	
-	if (Spaz.UI.currentFriendsTimelineView !== 'view-friends-menu-all') {
-		Spaz.UI.setView('view-friends-menu-all');
+	if (Spaz.cssFilters.currentFilter !== 'view-friends-menu-all') {
+		Spaz.cssFilters.applyFilter('view-friends-menu-all');
 	} else {
-		Spaz.UI.setView('view-friends-menu-replies-dms');
+		Spaz.cssFilters.applyFilter('view-friends-menu-replies-dms');
 	}
-
 };
-
-Spaz.UI.setView = function(type ) {
-
-	sch.debug('setView type:'+type);
-
-	if (!type) {
-		var type = Spaz.UI.currentFriendsTimelineView || 'view-friends-menu-all';
-	}
-
-	sch.dump('View type is '+type);
-
-	var container  = Spaz.Timelines.friends.timeline.timeline_container_selector,
-	    $container = jQuery(container);
-	
-	/*
-		clear it and add the base 'timeline' class back
-	*/
-	$container.attr('class', '').attr('class', 'timeline');
-
-	switch(type) {
-
-		case 'view-friends-menu-all':
-			$container.addClass('filter-timeline-all');
-			break;
-		case 'view-friends-menu-replies-dms':
-			$container.addClass('filter-timeline-replies-dms');
-			// Spaz.UI.statusBar('Hiding tweets not directed at you');
-			break;
-		case 'view-friends-menu-replies':
-			$container.addClass('filter-timeline-replies');
-			break;
-		case 'view-friends-menu-dms':
-			$container.addClass('filter-timeline-dms');
-			break;
-		case 'view-friends-menu-unread':
-			$container.addClass('filter-timeline-unread');
-			break;
-		case 'view-friends-menu-custom':
-			alert('not yet implemented');
-			break;
-		default:
-			$container.addClass('filter-timeline-all');
-			break;
-	}
-
-	sch.dump($container.attr('class'));
-
-	Spaz.UI.currentFriendsTimelineView = type;
-
-	$(document).trigger('UNREAD_COUNT_CHANGED');
-
-}
 
 
 
