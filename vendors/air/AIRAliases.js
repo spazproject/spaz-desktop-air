@@ -1,8 +1,8 @@
-/* AIRAliases.js - Revision: 2.0beta */
+/* AIRAliases.js - Revision: 2.5 */
 
 /*
 ADOBE SYSTEMS INCORPORATED
-Copyright 2007-2008 Adobe Systems Incorporated. All Rights Reserved.
+Copyright 2007-2009 Adobe Systems Incorporated. All Rights Reserved.
  
 NOTICE:   Adobe permits you to modify and distribute this file only in accordance with
 the terms of Adobe AIR SDK license agreement.  You may have received this file from a
@@ -12,7 +12,7 @@ distribute this file only in accordance with such agreement.
 
 
 var air;
-if (window.runtime) 
+if (window.runtime)
 {
     if (!air) air = {};
     // functions
@@ -54,9 +54,10 @@ if (window.runtime)
     air.DNSResolverEvent = window.runtime.flash.events.DNSResolverEvent;
     air.ServerSocketConnectEvent = window.runtime.flash.events.ServerSocketConnectEvent;
     air.StorageVolumeChangeEvent = window.runtime.flash.events.StorageVolumeChangeEvent;
-    air.NativeProcessStartEvent = window.runtime.flash.events.NativeProcessStartEvent;
     air.NativeProcessExitEvent = window.runtime.flash.events.NativeProcessExitEvent;
-    
+    air.UncaughtErrorEvent = window.runtime.flash.events.UncaughtErrorEvent;
+    air.MouseEvent = window.runtime.flash.events.MouseEvent;
+
     // native window
     air.NativeWindow = window.runtime.flash.display.NativeWindow;
     air.NativeWindowDisplayState = window.runtime.flash.display.NativeWindowDisplayState;
@@ -100,6 +101,9 @@ if (window.runtime)
     air.URLVariables = window.runtime.flash.net.URLVariables;
     air.Socket = window.runtime.flash.net.Socket;
     air.XMLSocket = window.runtime.flash.net.XMLSocket;
+
+	air.SecureSocket = window.runtime.flash.net.SecureSocket;
+	air.CertificateStatus = window.runtime.flash.security.CertificateStatus;
 
     air.Responder = window.runtime.flash.net.Responder;
     air.ObjectEncoding = window.runtime.flash.net.ObjectEncoding;
@@ -148,8 +152,7 @@ if (window.runtime)
 
     air.NativeProcess = window.runtime.flash.desktop.NativeProcess;
     air.NativeProcessStartupInfo = window.runtime.flash.desktop.NativeProcessStartupInfo;
-    air.URLFilePromise = window.runtime.flash.desktop.URLFilePromise;
-
+   
     // display
     air.NativeMenu = window.runtime.flash.display.NativeMenu;
     air.NativeMenuItem = window.runtime.flash.display.NativeMenuItem;
@@ -181,6 +184,8 @@ if (window.runtime)
 
     air.HTMLLoader = window.runtime.flash.html.HTMLLoader;
     air.HTMLPDFCapability = window.runtime.flash.html.HTMLPDFCapability;    
+
+    air.Vector = window.runtime.Vector;    
 
     // media
     air.ID3Info = window.runtime.flash.media.ID3Info;
@@ -216,11 +221,13 @@ if (window.runtime)
     air.SQLUpdateEvent = window.runtime.flash.events.SQLUpdateEvent;
     air.SQLViewSchema = window.runtime.flash.data.SQLViewSchema;
 
-    // service monitoring framework
-    air.__defineGetter__("ServiceMonitor", function() { return window.runtime.air.net.ServiceMonitor; })
-    air.__defineGetter__("SocketMonitor", function() { return window.runtime.air.net.SocketMonitor; })
-    air.__defineGetter__("URLMonitor", function() { return window.runtime.air.net.URLMonitor; })
-    
+    // core framework
+    air.__defineGetter__("ServiceMonitor", function() { return window.runtime.air.net.ServiceMonitor; });
+    air.__defineGetter__("SocketMonitor", function() { return window.runtime.air.net.SocketMonitor; });
+    air.__defineGetter__("URLMonitor", function() { return window.runtime.air.net.URLMonitor; });
+    air.__defineGetter__("SecureSocketMonitor", function() { return window.runtime.air.net.SecureSocketMonitor; });
+    air.__defineGetter__("URLFilePromise", function() { return window.runtime.air.desktop.URLFilePromise; });
+
     // update framework
     air.__defineGetter__("ApplicationUpdater", function() { return window.runtime.air.update.ApplicationUpdater; });
     air.__defineGetter__("ApplicationUpdaterUI", function() { return window.runtime.air.update.ApplicationUpdaterUI; });
