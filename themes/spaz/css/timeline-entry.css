@@ -40,12 +40,12 @@ div.timeline-entry:hover {
 div.timeline-entry.reply {/* Replies/mentions */
 	background:-webkit-gradient(
 		linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
-	outline: 1px solid #fcec8f;
+	outline: 0;
 }
 div.timeline-entry.dm {/* Direct messages */
 	background:-webkit-gradient(
 		linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
-	outline: 1px solid #ffb3b2;
+	outline: 0;
 }
 div.timeline-entry.retweet .status-text {
 	background: transparent url(../images/retweeted.png) 0 0 no-repeat;
@@ -123,8 +123,7 @@ experimented with, and may return sometime.
 */
 div.timeline-entry.ui-selected {
 	background: -webkit-gradient(
-		linear, left top, left bottom, from(#666699), to(#444466));
-/*	border-top: 1px solid #519BD6;*/
+		linear, left top, left bottom, from(#8888CC), to(#444466));
 	color: #fff;
 	outline: 0;
 }
@@ -160,12 +159,9 @@ div.user-image {
 	height: 48px;
 	margin: 0 auto 2px;
 	background: transparent 0 0 no-repeat;
-	/* background-image:url(../images/userimg-bg.png);*/
 	background-size:48px 48px;
 	-webkit-background-size: 48px 48px;
-/*	border-radius: 4px;
-	-webkit-border-radius: 4px;*/
-	-webkit-box-shadow:0 1px 5px #666; /* Disabled: Not all imgs are square */
+	-webkit-box-shadow:0 1px 5px #666;
 	border:1px solid #666666;
 	text-indent:-9999em;
 }
