@@ -248,9 +248,9 @@ var FriendsTimeline = function() {
 	});
 
 	var maxFT = {
-		'home': Spaz.Prefs.get('timeline-home-pager-count-max'),
-		'direct': Spaz.Prefs.get('timeline-direct-pager-count-max'),
-		'replies': Spaz.Prefs.get('timeline-replies-pager-count-max')
+		'home':    500,
+		'direct':  100,
+		'replies': 100
 	};
 	
 	
@@ -628,7 +628,7 @@ var PublicTimeline = function(args) {
 		'event_target' :document,
 		
 		'refresh_time':1000*60*30, // 30 minutes
-		'max_items':100,
+		'max_items':300,
 
 		'request_data': function() {
 			// Give UI feedback immediately
@@ -741,7 +741,7 @@ var FavoritesTimeline = function(args) {
 		'event_target' :document,
 
 		'refresh_time':1000*60*30, // 30 minutes
-		'max_items':100,
+		'max_items':300,
 
 		'request_data': function() {
 			// Give UI feedback immediately
@@ -840,7 +840,7 @@ var UserTimeline = function(args) {
 		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 
-	var maxUT = Spaz.Prefs.get('timeline-user-pager-count-max');
+	
 
 	/*
 		set up the user timeline
@@ -854,7 +854,7 @@ var UserTimeline = function(args) {
 		'event_target' :document,
 		
 		'refresh_time':1000*60*30, // 30 minutes
-		'max_items': maxUT,
+		'max_items': 200,
 
 		'request_data': function() {
 			var username = Spaz.Prefs.getUsername();
@@ -869,7 +869,6 @@ var UserTimeline = function(args) {
 
 			var countmax = thisUT.timeline.max_items;
 			var count = Spaz.Prefs.get('timeline-user-pager-count');
-			count = (count > maxUT ? maxUT : count);
 
 			thisUT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			Spaz.Data.setAPIUrl(thisUT.twit);
@@ -1208,7 +1207,6 @@ var SearchTimeline = function(args) {
 	
 	this.twit = new SpazTwit();
 	
-	var maxST = Spaz.Prefs.get('timeline-search-pager-count-max');
 	/*
 		set up the public timeline
 	*/
@@ -1223,12 +1221,11 @@ var SearchTimeline = function(args) {
 		
 		
 		'refresh_time':1000*60*15, // 15 minutes
-		'max_items': maxST,
+		'max_items': 300,
 
 		'request_data': function() {
 			var $searchInput = jQuery('#search-for');
 			var count = Spaz.Prefs.get('timeline-search-pager-count');
-			count = (count > maxST ? maxST : count);
 
 			if ($searchInput.val().length > 0) {
 				thisST.query = $searchInput.val();
@@ -1254,7 +1251,7 @@ var SearchTimeline = function(args) {
         		var auth = Spaz.Prefs.getAuthObject();
         		var username = Spaz.Prefs.getUsername();
         		thisST.twit.setCredentials(auth);
-				thisST.twit.search(thisST.query, null, count);
+				thisST.twit.search(thisST.query, null, 100);
 				thisST.lastquery = thisST.query;
 			}
 		},
