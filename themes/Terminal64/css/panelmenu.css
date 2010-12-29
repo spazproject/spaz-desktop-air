@@ -6,6 +6,7 @@ The panelmenu appears at the top of each timeline
     padding:2px;
 	height:27px;
 	background-color: 	#6C5EB5;
+	background-image:url(../images/domwindowoverlay.png);
 	color:				#352879;
 	z-index: 1; /* = div.timeline-subtitle z-index */
 }
@@ -18,7 +19,7 @@ The panelmenu appears at the top of each timeline
 }
 .panelmenu form input,
 .panelmenu form button {
-	font-size: 10px;
+	font-size: 7pt;
 	font-weight: normal;
 	margin: 2px 0;
 }
@@ -31,6 +32,7 @@ The panelmenu appears at the top of each timeline
 	border:0;
 	cursor: default;
 	white-space: nowrap;
+	text-transform:uppercase;
 }
 .panelmenu form button[id^="refresh-"] {
 	position: relative;
@@ -58,8 +60,9 @@ The panelmenu appears at the top of each timeline
 	content: ' \025BE'; /* Down-pointing triangle */
 }
 #panel-public .panelmenu form #trends-public,
-#panel-search .panelmenu form #search-saved {
-	width: 50px;
+#panel-search .panelmenu form #search-saved,
+#panel-userlists .panelmenu #view-userlists {
+	width: 55px;
 }
 #panel-search .panelmenu form #search-help {
 	width: 30px;
@@ -76,9 +79,9 @@ The panelmenu appears at the top of each timeline
 .panelmenu form input[type=text] {
 	float: right;
 	width: 75px;
-	height: 19px;
+	height: 22px;
 	margin-top: 3px;
-	padding: 0;
+	padding: 0 4px;
 	background: transparent;
 	border: 0;
 	background-color: 	#352879;

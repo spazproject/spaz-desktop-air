@@ -5,8 +5,7 @@
 	width: 15px;
 	height: 15px;
 	background: #6C5EB5;
-	color:      #352879;
-	
+	color:      #352879;	
 }
 ::-webkit-scrollbar-button:vertical {
 	display: block;
@@ -36,14 +35,16 @@ background-position: 0 0;
 ::-webkit-scrollbar-track:vertical {
 	margin-top: 0px;
 	margin-bottom: -11px;
-	background: #6C5EB5;
+	background: #352879;
+	background-image: url(../images/scrollbar/scrollbar-bg.png);
 }
 ::-webkit-scrollbar-track-piece {
 }
 ::-webkit-scrollbar-track-piece:vertical:start {/* Above thumb */
-	margin-top:4px;
+/*	margin-top:4px;*/
 }
 ::-webkit-scrollbar-track-piece:vertical:end {
+	
 }
 /* Below thumb */
 

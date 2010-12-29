@@ -9,8 +9,11 @@ Tooltips, those little popup messages that appear when you float over links and 
 	background:#352879;
 	color:#6C5EB5;
 	border: 2px solid #6C5EB5;
-	font-size: 10px;
+	font-size: 7pt;
 	opacity: 1;
+	line-height:1.3em;
+	-webkit-box-shadow: 4px 4px 0px #444444;
+	box-shadow: 4px 4px 0px #444444;
 }
 #tooltip > :first-child {
 	padding: 5px;
@@ -51,6 +54,8 @@ div.context-menu {
 	position: fixed;
 	display: none;
 	z-index: 1010;
+	-webkit-box-shadow: 4px 4px 0px #444444;
+	box-shadow: 4px 4px 0px #444444;
 }
 ul.popup-menu {
 	display: none;
@@ -80,7 +85,7 @@ ul.popup-menu li {
 	border-bottom: 1px solid transparent;
 	color: #000;
 	cursor: default;
-	font-size: 10px;
+	font-size: 7pt;
 	list-style: none;
 	text-decoration: none;
 }
@@ -109,6 +114,8 @@ div.spaz-menu {
 	border: 2px solid #6C5EB5;
 	cursor: default;
 	z-index: 99999;
+	-webkit-box-shadow: 4px 4px 0px #444444;
+	box-shadow: 4px 4px 0px #444444;
 }
 div.spaz-menu#tools-menu,
 div.spaz-menu#user-menu {
@@ -133,7 +140,7 @@ li.spaz-menu-item {
 	margin: 0px;
 	border: solid transparent;
 	border-width: 1px 0;
-	font-size: 11px;
+	font-size: 7pt;
 }
 li.spaz-menu-item:hover {
 	background:#6C5EB5;

@@ -38,19 +38,20 @@ div.timeline-entry {
 	position: relative;
 	clear: both;
 	overflow: hidden;
-/*	border-top-width: medium;
-	border-top-style: solid;
-	border-top-color: #999966;
-*/	padding: 8px 5px;
+	padding: 8px 5px;
 	line-height:1.3em;
 	
 }
 div.timeline-entry:hover {
 	opacity: 1;
 }
-div.timeline-entry.reply {/* Replies/mentions */
+div.timeline-entry.reply, div.timeline-entry.reply a, div.timeline-entry.reply .clickable {/* Replies/mentions */
+	background-color:	#588D43;
+	color:				#9AD284;
 }
-div.timeline-entry.dm {/* Direct messages */
+div.timeline-entry.dm, div.timeline-entry.dm a, div.timeline-entry.dm .clickable {/* Direct messages */
+	background-color:	#68372B;
+	color:				#9A6759;
 }
 div.timeline-entry.retweet .status-text {
 /*	background: transparent url(../images/retweeted.png) 0 0 no-repeat;
@@ -126,24 +127,35 @@ The .ui-selected class name comes from the one used by the jQuery.ui
 selectables plugin. We don't actually use that here, but it was
 experimented with, and may return sometime.
 */
-div.timeline-entry.ui-selected {
-	color: #fff;
+div.timeline-entry.ui-selected,
+div.timeline-entry.ui-selected div.status-link,
+div.timeline-entry.ui-selected a,
+div.timeline-entry.ui-selected a:link,
+div.timeline-entry.ui-selected .clickable,
+div.timeline-entry.ui-selected div.user {
+	color: #FFFFFF;
 	outline: 0;
-}
-div.timeline-entry.ui-selected div.status-link {
-	color: #fff;
 }
 div.timeline-entry.ui-selected a,
 div.timeline-entry.ui-selected a:link,
 div.timeline-entry.ui-selected .clickable {
-	color: #fff;
 	cursor: pointer;
 }
-div.timeline-entry.ui-selected div.user {
-	color: #fff;
-}
-div.timeline-entry.ui-selecting {
-/*	background-color: #666 !important;*/
+
+div.timeline-entry.ui-selected.dm,
+div.timeline-entry.ui-selected.dm div.status-link,
+div.timeline-entry.ui-selected.dm a,
+div.timeline-entry.ui-selected.dm a:link,
+div.timeline-entry.ui-selected.dm .clickable,
+div.timeline-entry.ui-selected.dm div.user,
+div.timeline-entry.ui-selected.reply,
+div.timeline-entry.ui-selected.reply div.status-link,
+div.timeline-entry.ui-selected.reply a,
+div.timeline-entry.ui-selected.reply a:link,
+div.timeline-entry.ui-selected.reply .clickable,
+div.timeline-entry.ui-selected.reply div.user {
+	color: #FFFFFF;
+	outline: 0;
 }
 
 /*
@@ -167,7 +179,7 @@ div.user-image {
 	text-indent:-9999em;
 }
 div.user-screen-name {
-	font-size: 8px;
+	font-size: 6pt;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -185,22 +197,17 @@ div.status {
 	margin:0 0 0 65px;
 	padding: 5px 0;
 	background: transparent right bottom no-repeat;
-	font-size: 11px;
+	font-size: 7pt;
 }
 div.timeline-entry.reply div.status {
-	background-image: url(../images/timeline-mention-bg-inset100.png);
 }
 div.timeline-entry.reply.ui-selected div.status {
-	background-image: url(../images/timeline-mention-bg.png);
 }
 div.timeline-entry.favorited div.status {
-	background-image: url(../images/timeline-favorite-bg-inset100.png);
 }
 div.timeline-entry.favorited.ui-selected div.status {
-	background-image: url(../images/timeline-favorite-bg.png);
 }
 div.timeline-entry.dm div.status {
-	background-image: url(../images/timeline-dm-bg.png);
 }
 div.timeline-entry div.status-thumbnails {
 	margin: 0 0 4px;
@@ -302,7 +309,7 @@ div.timeline-entry.favorited .status-action-fav {
 
 div.status-meta, div.status-link {
 	text-transform:uppercase;
-	font-size:7px;
+	font-size:6pt;
 }
 
 * /* the link to the relative time of the posting. this is the permalink */
@@ -345,5 +352,6 @@ div.followers-row div.user-name-screen {
 /*	font-weight: bold;*/
 }
 div.followers-row div.user-name-full {
-	font-size: 0.75em;
+	font-size: 8pt;
+	line-height:14pt;
 }

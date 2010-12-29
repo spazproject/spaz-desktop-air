@@ -18,8 +18,14 @@ The entryform contains the #entrybox textarea input for posts and the #updateBut
 }*/
 #entryform-resize {
 	height: 6px;	
-	background: #352879 url(../images/resize-ns.png) center center no-repeat;
-	cursor: ns-resize;
+	background-color: #352879;
+	background-image: url('../images/domwindowoverlay.png');
+	cursor: 'ns-resize';
+}
+#entryform-resize:hover {
+/*	background-image: none;*/
+	background-color: #6C5EB5;
+	
 }
 
 /*
@@ -32,7 +38,8 @@ This is a Spry textarea widget
     top:  7px;
     bottom:0;
     margin:0;
-	font-size:11px;
+	font-size:7pt;
+	line-height:1.3em;
 	overflow:auto;
 	padding:5px 5px 15px 5px;
 	text-align:left;
@@ -73,14 +80,16 @@ to, if any
 	background:#6C5EB5;
 	color:#352879;
 	border: 2px solid #352879;
-	font-size: 9px;
+	font-size: 7pt;
 	opacity: 1;
 	z-index: 100;
+	-webkit-box-shadow: 0px 4px 0px #444444;
+	box-shadow: 0px 4px 0px #444444;
+	
 }
 #entrybox-popup > :first-child {
 	overflow: hidden;
 	padding: 10px;
-/*	border: 1px solid rgba(255, 255, 255, 0.15);*/
 }
 #irt {
 }
@@ -110,7 +119,7 @@ to, if any
 	float: left;
 	color: #352879;
 	cursor: default;
-	font-size: 12px;
+	font-size: 7pt;
 	line-height: 20px;
 }
 #chars-left-count {
@@ -134,7 +143,7 @@ to, if any
 	border:0;
 	cursor: default;
 	white-space: nowrap;
-	font-size:9px;
+	font-size:7pt;
 }
 #entrybox-actions button:hover,
 #entrybox-actions button:focus,
@@ -158,7 +167,7 @@ to, if any
 	color: #6C5EB5;
 	border-top: 2px solid #6C5EB5;
 	cursor: default;
-	font-size: 8px;
+	font-size: 7pt;
 	line-height: 25px;
 	text-overflow: ellipsis;
 	white-space: nowrap;

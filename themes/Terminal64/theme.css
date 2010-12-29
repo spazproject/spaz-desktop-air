@@ -15,6 +15,23 @@
 * #352879; dark blue
 * #6C5EB5; lighter blue
 * 
+* #000000 black
+* #FFFFFF white
+* #68372B red
+* #70A4B2 light blue
+* #6F3D86 purple
+* #588D43 green
+* #352879 dark blue
+* #B8C76F yellow
+* #6F4F25 brown
+* #433900 dark brown
+* #9A6759 light red
+* #444444 dark grey
+* #6C6C6C mid grey
+* #9AD284 light green
+* #6C5EB5 mid blue
+* #959595 light grey
+* 
 */
 
 
@@ -32,7 +49,7 @@ body {
 	padding: 0px;
 	overflow: hidden;
 	font-family:"C64 Pro";
-	font-size:70%;
+	font-size:62.5%;
 }
 h1, h2, h3, h4, h5 {
 	margin: 0;
@@ -198,20 +215,23 @@ The contains the classic "Spaz" title and the window buttons
 		#window-buttons {
 			position:absolute;
 			right:	5px;
-			top:	0px;
+			top:	4px;
 			text-align:right;
+			font-size:80%;
 		}
 		#header-label, .window-button {
 			padding:0px 6px 2px;
 			color:#352879;
 			background: #6C5EB5;
-			font-size:14px;
 			cursor:pointer;
 			margin:0;
 			text-transform:uppercase;
+			display:inline-block;
 		}
 			#header-label {
-				display:inline-block;
+				left:	5px;
+				top:	5px;
+				font-size:70%;
 			}
 				#header-label .current {
 					display: inline-block;
@@ -228,7 +248,7 @@ The contains the classic "Spaz" title and the window buttons
 					This puts a &raquo; after "Spaz"
 				*/
 				#header-label:after {
-					content:' \00BB';
+/*					content:'READY.';*/
 				}
 
 			#header-label:hover, .window-button:hover  {
@@ -306,7 +326,7 @@ content panel.
 	float: left;
 	padding: 4px 6px;
 	margin: 0px 5px 0px 0px;
-	font-size: 11px;
+	font-size: 70%;
 	background: #6C5EB5;
 	color:      #352879;
 	list-style: none;
@@ -408,8 +428,8 @@ ring around it, instead of the focus ring around the entire tab.
 	right: 5px;
 	top: 1px;
 	display: block;
-	content: ' \025BE'; /* Down-pointing triangle */
-	font-size:13px;
+	content: ''; /* Down-pointing triangle */
+	font-size:80%;
 }
 
 /*
@@ -509,7 +529,7 @@ div.timeline-subtitle {
 	position: fixed;
 	left: 18px;
 	right: 18px;
-	top: 105px;
+	top: 119px;
 	overflow: hidden;
 /*	min-width: 261px; /* = #container min-width - horizontal padding */*/
 	margin: -1px 0 0;
@@ -517,7 +537,7 @@ div.timeline-subtitle {
 	background:#6C5EB5;
 	color:     #352879;
 	cursor: default;
-	font-size: 11px;
+	font-size: 62.5%;
 	font-weight: bold;
 	line-height: 27px;
 	text-overflow: ellipsis;
@@ -575,7 +595,7 @@ div.timeline-subtitle {
 	-webkit-border-image: url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
 	border-width: 0 10px 0 36px;
 	color: #000;
-	font-size: 12px;
+	font-size: 75%;
 	line-height: 46px;
 }
 .timeline-wrapper div.new-user .add-account:active {
@@ -598,7 +618,7 @@ The bar at the bottom of the app that displays info
 	height:24px;
 	line-height:24px;
 	padding:0px 5px 2px;
-	font-size:10px;
+	font-size:6pt;
 	background:#6C5EB5;
 	color:     #352879;
 	bottom: 5px;
@@ -607,6 +627,7 @@ The bar at the bottom of the app that displays info
 	overflow:hidden;
 	white-space:nowrap;
 	cursor:move;
+	text-transform:uppercase;
 }
 	#loading {
 		position:absolute;

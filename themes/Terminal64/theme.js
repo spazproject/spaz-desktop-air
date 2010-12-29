@@ -105,9 +105,24 @@
 })();
 
 
+/**
+ * bitmap emoticons are not 80s.
+ */
+(function() {
+	Spaz.TimelineFilters.friends.removeFilter('emoticons');
+	Spaz.TimelineFilters['public'].removeFilter('emoticons');
+	Spaz.TimelineFilters.lists.removeFilter('emoticons');
+	Spaz.TimelineFilters.search.removeFilter('emoticons');
+	Spaz.TimelineFilters.other.removeFilter('emoticons');
+})()
 
-// Add the following to your user.js file to customize the interface:
-// Single scrollbar arrows at both the start and the end
-// $('body').addClass('scrollbar-single-both');
-// Double scrollbar arrows at both the start and the end
-// $('body').addClass('scrollbar-double-both');
+/**
+ * change header label text 
+ */
+(function() {
+	var jqlabel = jQuery('#header-label');
+	var html = jqlabel.html();
+	html = html.replace('Spaz', 'READY.');
+	jqlabel.html(html);
+})();
+
