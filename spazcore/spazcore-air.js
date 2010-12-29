@@ -1,4 +1,4 @@
-/*********** Built 2010-12-02 10:09:01 EST ***********/
+/*********** Built 2010-12-27 15:15:54 EST ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -6826,8 +6826,11 @@ sc.helpers.error = function(obj) {
  * @platformstub
  * @member sc.helpers
  */
-sc.helpers.dump = function(obj, level) {
+sc.helpers.dump = function(obj, level, cb) {
 	console.log(obj);
+	if (cb) {
+		cb(obj, level);
+	}
 };
 
 /**
@@ -10691,15 +10694,15 @@ SpazShortURL.prototype.findExpandableURLs = function(str) {
 		
 	};
 	
+	sch.debug("looking for "+regexes+ " in '"+str+"'");
 	for (i=0; i < regexes.length; i++) {
 		thisregex = regexes[i];
-		sch.dump("looking for "+thisregex+ " in '"+str+"'");
 		while( (re_matches = thisregex.exec(sch.trim(str))) != null) {
 			matches.push(re_matches[0]);
 		}		
 	};
 	
-	sch.dump(matches);
+	sch.debug('Matches: '+matches);
 	
 	if (matches.length > 0) {
 		return matches;
@@ -15518,7 +15521,7 @@ var sc, air, DOMParser;
 /*
 	dump an object's first level to console
 */
-sc.helpers.dump = function(obj, level) {
+sc.helpers.dump = function(obj, level, cb) {
 	var dumper;
 	
 	if (!level) { level = SPAZCORE_DUMPLEVEL_DEBUG; }
@@ -15531,9 +15534,7 @@ sc.helpers.dump = function(obj, level) {
 		dumper = air.trace;
 	} else {
 		dumper = function() {
-			for(var x in obj) {
-				air.trace("'"+x+"':"+obj[x]);
-			}
+			typeof(obj) + ' - ' + sch.enJSON(obj);
 		};
 	}
 	
@@ -15548,6 +15549,11 @@ sc.helpers.dump = function(obj, level) {
 	} else { // this should be a "normal" object
 		dumper(obj);
 	}
+	
+	if (cb) {
+		cb(obj, level);
+	}
+	
 };
 
 
