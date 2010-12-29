@@ -3,7 +3,7 @@ if (!Spaz.Themes) Spaz.Themes = {};
 // placeholder for themes object
 Spaz.Themes.themes = {};
 
-Spaz.Themes.validThemes = ['spaz', 'Leopaz'];
+Spaz.Themes.validThemes = ['spaz', 'Leopaz', 'Terminal64'];
 
 
 // initializer

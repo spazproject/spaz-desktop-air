@@ -1,0 +1,26 @@
+/*** Pagination ***/
+
+div.loadmore-panel {
+	margin: 0;
+	padding: 10px;
+	background:#6C5EB5;
+	color:#352879;
+	border: 2px solid #6C5EB5;
+	text-align: center;
+}
+div.loadmore-panel input[type=button] {
+	height: 23px;
+	margin: 0;
+	padding: 0 1em;
+	background: #352879;
+	color: #6C5EB5;
+	border:0;
+	font-size: 12px;
+	cursor: default;
+	white-space: nowrap;
+	
+}
+div.loadmore-panel input[type=button]:active {
+	background: #6C5EB5;
+	color: #352879;
+}
