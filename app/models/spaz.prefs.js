@@ -51,6 +51,7 @@ Spaz.Prefs.defaultPreferences = {
 	'network-airhandlehttpauth': false,
 
 	'debug-enabled': false,
+	'inspector-enabled': false,
 
 	'sound-url-update':	 'app:/sounds/TokyoTrainStation/CSnd.mp3',
 	'sound-url-startup': 'app:/sounds/TokyoTrainStation/On.mp3',
@@ -896,18 +897,21 @@ Spaz.Prefs.changeMethods = {
 	},
 
 
-	// 'url-shortener': {
-	//	setUI: function(value){
-	//		$('#url-shortener').attr('checked', value);
-	//	},
-	//	onChange: function(value) {},
-	//	check: function() {
-	//		Spaz.Prefs.set('url-shortener', Boolean(Spaz.Prefs.get('url-shortener')))
-	//	}
-	// },
 	'debug-enabled': {
 		setUI: function(value) {
 			$('#debug-enabled').attr('checked', value);
+		},
+		onGet: function(key, value) {
+			return !!value;
+		},
+		onSet: function(key, value) {
+			return !!value;
+		}
+	},
+	
+	'inspector-enabled': {
+		setUI: function(value) {
+			$('#inspector-enabled').attr('checked', value);
 		},
 		onGet: function(key, value) {
 			return !!value;
@@ -1078,6 +1082,7 @@ Spaz.Prefs.initUI = function() {
 	$('#network-airhandlehttpauth').bind('change', Spaz.Prefs.setFromUI);
 	$('#network-autoadjustrefreshinterval').bind('change', Spaz.Prefs.setFromUI);
 	$('#debug-enabled').bind('change', Spaz.Prefs.setFromUI);
+	$('#inspector-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
 	$('#timeline-scrollonupdate').bind('change', Spaz.Prefs.setFromUI);
 	$('#twitter-base-urls').bind('change', Spaz.Prefs.setFromUI);

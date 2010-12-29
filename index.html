@@ -862,8 +862,16 @@
 											<fieldset>
 												<div class="formrow">
 													<input type="checkbox" name="debugging-enabled" value="1" id="debug-enabled" />
-													<label class="checkbox" for="debug-enabled">Enable debug mode</label>
+													<label class="checkbox" for="debug-enabled">Enable detailed logging</label>
 													<span class="relaunch-required">*</span>
+												</div>
+												<div class="formrow">
+													<input type="checkbox" name="inspector-enabled" value="1" id="inspector-enabled" />
+													<label class="checkbox" for="inspector-enabled">Enable Inspector (open with F12)</label>
+													<span class="relaunch-required">*</span>
+												</div>
+												<div class="formrow">
+													<input type="button" id="prefs-openlogfile-button" name="open-logfile" value="View Log File" onclick="Spaz.Debug.openLogFile()" />
 												</div>
 												<div class="formrow">
 													<input type="button" id="prefs-dumphtml-button" name="dump-html" value="Dump HTML" onclick="Spaz.Debug.dumpHTML()" />

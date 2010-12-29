@@ -21,7 +21,7 @@ Spaz.startReloadTimer = function() {
  */
 Spaz.reloadHTMLDoc = function() {
 	window.htmlLoader.load(new air.URLRequest("index.html"));
-}
+};
 
 Spaz.stopReloadTimer = function() {
 	if (reloadID) {
@@ -81,13 +81,14 @@ Spaz.loadOAuthServices = function() {
         consumerSecret: SPAZCORE_CONSUMERSECRET_TWITTER,
         accessURL: 'https://twitter.com/oauth/access_token'
     });
-}
+};
 
 
 /**
  * Bootstraps the app
  */
 Spaz.initialize = function() {
+	
 
 	sch.debug('root init begin');
 	
@@ -106,15 +107,33 @@ Spaz.initialize = function() {
 	Spaz.loadOAuthServices();
 	Spaz.Prefs.init();
 	Spaz.AccountPrefs.init();
+	
+	// turn on inspector
+	if (Spaz.Prefs.get('inspector-enabled')) {
+		Spaz.Debug.insertInspectorScripts();
+	}
+	
+	// turn on debugging
+	if (Spaz.Prefs.get('debug-enabled')) {
+		
+		/*
+			wrap this to log
+		*/
+		function wrap(fn) {
+			return function(){
+				Spaz.Debug.logToFile.apply(this, arguments);
+				return fn.apply(this, arguments);
+			};
+		}
+		
+		sc.helpers.dump = wrap(sc.helpers.dump);
+
+		sc.setDumpLevel(5);
+	}
 
 	// sch.debug('init Sections');
 	// Spaz.Section.init();
 
-	// turn on debugging
-	if (Spaz.Prefs.get('debug-enabled')) {
-		sc.setDumpLevel(5);
-		Spaz.Debug.insertDebugScripts();
-	}
 	
 	// Database initialization
 	sch.debug("database initialization");

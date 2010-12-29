@@ -6,11 +6,13 @@ Spaz.Debug
 if (!Spaz.Debug) Spaz.Debug = {};
 
 Spaz.Debug.enable = function() {
-	Spaz.Prefs.set('debug-enabled', true);
+	Spaz.Debug.enableLogging(true);
+	Spaz.Debug.enableInspector(true);
 };
 
 Spaz.Debug.disable = function() {
-	Spaz.Prefs.set('debug-enabled', false);
+	Spaz.Debug.enableLogging(false);
+	Spaz.Debug.enableInspector(false);
 };
 
 Spaz.Debug.setEnable = function(state) {
@@ -21,6 +23,14 @@ Spaz.Debug.setEnable = function(state) {
 	}
 };
 
+Spaz.Debug.enableLogging = function(state) {
+	Spaz.Prefs.set('debug-enabled', !!state);
+}
+
+Spaz.Debug.enableInspector = function(state) {
+	Spaz.Prefs.set('inspector-enabled', !!state);
+}
+
 Spaz.Debug.dump = function(msg, type) {
 	if ( Spaz.Prefs && Spaz.Prefs.get('debug-enabled') ) {
 		
@@ -30,16 +40,29 @@ Spaz.Debug.dump = function(msg, type) {
 
 		if (air.Introspector && air.Introspector.Console && air.Introspector.Console[type]) {
 			air.Introspector.Console[type](msg);
-		} else {
-			sch.dump(msg);
 		}
+
+		window.runtime.trace(msg);
 	
 		Spaz.Debug.logToFile(msg);
 	}
 }
 
 
-Spaz.Debug.logToFile = function(msg) {
+Spaz.Debug.logToFile = function(obj, level) {
+	
+	var msg = ''
+	
+	if (!level) { level = SPAZCORE_DUMPLEVEL_DEBUG; }
+	
+	msg += level + ' : '
+	
+	if (sc.helpers.isString(obj) || sc.helpers.isNumber(obj) || !obj) {
+		msg += obj.toString();
+	} else {
+		msg += typeof(obj) + ' - ' + sch.enJSON(obj);
+	}
+
 	var cr = air.File.lineEnding;
 	var file   = air.File.documentsDirectory;
 	file       = file.resolvePath("spaz-debug.log");
@@ -49,6 +72,17 @@ Spaz.Debug.logToFile = function(msg) {
 	stream.writeUTFBytes(now.toString() + ' : ' + msg + cr);
 	stream.close();
 }
+
+
+
+Spaz.Debug.openLogFile = function() {
+	var file   = air.File.documentsDirectory;
+	file       = file.resolvePath("spaz-debug.log");
+	alert('file is:\n'+file.nativePath+"\n\nI'll open the containing directory for you now");
+	air.File.documentsDirectory.openWithDefaultApplication();
+}
+
+
 
 
 
@@ -95,7 +129,7 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 }
 
 
-Spaz.Debug.insertDebugScripts = function() {
+Spaz.Debug.insertInspectorScripts = function() {
 	sch.dump("INSERT DEBUGGING SCRIPTS");
 	var e = document.createElement("script");
 	e.src = "vendors/air/AIRIntrospector.js";
