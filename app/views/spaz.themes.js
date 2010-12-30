@@ -52,14 +52,14 @@ Spaz.Themes.browseForUserCss = function() {
 	var userFile = new air.File();
 	userFile.browseForOpen("Choose a CSS file", [cssFilter]);
 	userFile.addEventListener(air.Event.SELECT, Spaz.Themes.userCSSSelected);
-}
+};
 
 Spaz.Themes.userCSSSelected = function(event) {
 	sch.debug(event.target.url);
-	var stylestr = Spaz.Themes.loadUserStylesFromURL(event.target.url)
+	var stylestr = Spaz.Themes.loadUserStylesFromURL(event.target.url);
 	sch.debug(stylestr);
 	Spaz.Themes.setUserStyleSheet(stylestr, event.target.url);
-}
+};
 
 Spaz.Themes.setUserStyleSheet = function(stylestr, url) {
 	Spaz.Prefs.set('theme-userstylesheet', url);
@@ -69,7 +69,7 @@ Spaz.Themes.setUserStyleSheet = function(stylestr, url) {
 	// save the userstylesheet to the user's css file
 	var csspath = Spaz.Themes.getUserCSSFile().url;
 	Spaz.Sys.setFileContents(csspath, stylestr);
-}
+};
 
 
 Spaz.Themes.loadUserCSS = function() {
@@ -90,7 +90,7 @@ Spaz.Themes.getUserCSSFile = function() {
 
 Spaz.Themes.loadUserStylesFromURL = function(fileurl) {
 	return Spaz.Sys.getFileContents(fileurl);
-}
+};
 
 
 Spaz.Themes.loadThemeInfo = function(fileurl) {
@@ -107,7 +107,7 @@ Spaz.Themes.loadThemeInfo = function(fileurl) {
 Spaz.Themes.clearUserStyleSheet = function() {
 	Spaz.Prefs.set('theme-userstylesheet', '');
 	$('#UserCSSOverride').text('');
-}
+};
 
 
 
@@ -118,6 +118,8 @@ Spaz.Themes.clearUserStyleSheet = function() {
 * By Kelvin Luck ( http://www.kelvinluck.com/ )
 **/
 Spaz.Themes.setCurrentTheme = function() {
+	
+	
 	sch.debug('current theme:' + Spaz.Prefs.get('theme-basetheme'));
 	$('link[rel*=style][title]').each(function(i) {
 		this.disabled = true;
@@ -130,9 +132,6 @@ Spaz.Themes.setCurrentTheme = function() {
 
 	// change the paths for embedded imgs
 	$('img.tab-icon, #loading img, .status-actions img').each(function(i) {
-		// sch.dump('SETTING EMBEDDED IMG PATHS');
-		// 		var themePath = Spaz.Themes.getPathByName( Spaz.Prefs.get('theme-basetheme') );
-
 		this.src = this.src.replace(/\{theme-dir\}/, Spaz.Prefs.get('theme-basetheme'));
 	});
 
@@ -146,7 +145,7 @@ Spaz.Themes.getThemePaths = function() {
 	var userthemesdir = appStore.resolvePath(USERDIR_THEMES);
 
 	// we load from both the built-in themes dir and the userthemes dir
-	var list = themesdir.getDirectoryListing().concat(userthemesdir.getDirectoryListing())
+	var list = themesdir.getDirectoryListing().concat(userthemesdir.getDirectoryListing());
 
 	var themes = new Array();
 	for (i = 0; i < list.length; i++) {
@@ -165,7 +164,7 @@ Spaz.Themes.getThemePaths = function() {
 				themecss : thisthemecss.url,
 				themejs  : thisthemejs.url,
 				themeinfo: Spaz.Themes.loadThemeInfo(thisthemeinfo.url)
-			}
+			};
 
 			// sanity check to make sure the themedir actually has something in it
 			if (thisthemecss.exists) {
