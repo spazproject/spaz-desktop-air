@@ -114,7 +114,7 @@
 	Spaz.TimelineFilters.lists.removeFilter('emoticons');
 	Spaz.TimelineFilters.search.removeFilter('emoticons');
 	Spaz.TimelineFilters.other.removeFilter('emoticons');
-})()
+})();
 
 /**
  * change header label text 
