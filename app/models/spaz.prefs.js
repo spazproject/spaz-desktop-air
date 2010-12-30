@@ -525,6 +525,12 @@ Spaz.Prefs.changeMethods = {
 			}
 		},
 		onSet: function(key, value) {
+			var rs = window.confirm($L('The main window should be reloaded when switching themes.\n\nDo you want to reload it now?'));
+			
+			if (rs) {
+				Spaz.reloadHTMLDoc();
+			}
+			
 			if (Spaz.Themes.validThemes.indexOf(value) != -1) {
 				return value;
 			} else {
