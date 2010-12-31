@@ -44,6 +44,11 @@ div.popbox-content h1 {
 	text-align: center;
 	border:0;
 }
+
+div.popbox-content h2,div.popbox-content h3 {
+	text-shadow: none;
+}
+
 div.popbox-content h1 .closeDOMWindow {
 	position: absolute;
 	right: 15px;
@@ -373,4 +378,38 @@ news popup
 }
 #news-content div.entry div.entry-content {
 	line-height: 1.4em;
+}
+
+
+
+
+div.popbox-content table.data {
+	padding:5px;
+	border:   2px solid #6C5EB5;
+	border-collapse:collapse;
+	width:100%;
+}
+div.popbox-content table.data th {
+	background-color:#352879;
+	color:#6C5EB5;
+	font-size:  8pt;
+	text-transform:uppercase;
+	border:   2px solid #6C5EB5;
+}
+div.popbox-content table.data tr {
+}
+div.popbox-content table.data td {
+	font-size:7pt;
+	padding:  4px;
+}
+div.popbox-content table.data td.label {
+	font-weight:bold;
+	text-align:right;
+	border:2px solid #6C5EB5;
+}
+div.popbox-content table.data td.label:after { /*content:":";*/ }
+div.popbox-content table.data td.value {
+	text-align:left;
+	padding:  4px;
+	border:2px solid #6C5EB5;
 }

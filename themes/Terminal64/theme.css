@@ -689,25 +689,26 @@ table.data {
 	margin-right: auto;
 	text-align: center;
 	padding: 5px;
-	border-top: 3px solid #333333;
-	border-bottom: 1px solid #333333;
+	border-top: 2px solid #6C5EB5;
 	border-collapse: collapse;
 	width: 100%;
 }
 table.data th {
-	background-color: #202020;
-	color: #DDDDDD;
-	font-size: 9px;
+	font-size: 8pt;
 	font-weight: bold;
 	text-align: left;
 	padding: 4px;
 }
 table.data tr {
-	border-top-style: solid;
-	border-top-width: 1px;
+	border: 2px solid #6C5EB5;
 }
 table.data tr:hover {
-	background: #FFFFCC;
+	background: #6C5EB5;
+	color: #352879;
+}
+table.data td.section-header {
+	border: 2px solid #6C5EB5;
+	text-transform:uppercase;
 }
 table.data td {
 	font-size: 10px;
@@ -717,7 +718,6 @@ table.data td {
 table.data td.label {
 	font-weight: bold;
 	text-align: right;
-	border-right: 1px solid #999999;
 }
 table.data td.label:after {/*content:":";*/
 }
