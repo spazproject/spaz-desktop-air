@@ -571,3 +571,38 @@ Tweets.prototype.getDMBucket = function() {
     return this.getBucket(true);
 };
 
+/**
+ * a helper method to process a status object and get the screen names out of it 
+ */
+Tweets.prototype.getScreenNamesFromStatus = function(status_obj) {
+	
+	var screen_name = status_obj.user.screen_name;
+	var names = sc.helpers.extractScreenNames(status_obj.SC_text_raw||status_obj.text);
+	
+	sch.debug('names for reply 2 are:'+names);
+	
+	if (names.length >= 1) {
+	    var screen_name_exists = false;
+		sch.debug('names for reply are:'+names);
+
+		for (var i=0; i < names.length; i++) {
+		    if (names[i].toLowerCase() == screen_name.toLowerCase()) {
+		        screen_name_exists = true;
+		    }
+		    // remove references to current username
+		    if (names[i].toLowerCase() == Spaz.Prefs.getUsername()) {
+		        names.splice(i, 1);
+		    }
+		}
+
+		// add screen_name if it is not in the message
+		if (!screen_name_exists) {
+		    names.unshift(screen_name);
+		}
+		sch.debug('names for reply 2 are:'+names);
+	}
+    
+	
+	return {screen_name:screen_name, names:names};
+	
+}

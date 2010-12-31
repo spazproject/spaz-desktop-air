@@ -489,9 +489,9 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 
 	sch.debug('Modkey is '+Modkey);
 
-  shortcut.add(Modkey+Spaz.Prefs.get('key-newEntry'), function() {
-   $('#entrybox').focus();
-  });
+	shortcut.add(Modkey+Spaz.Prefs.get('key-newEntry'), function() {
+		$('#entrybox').focus();
+	});
 
 	shortcut.add('F5', function() {
 		Spaz.UI.reloadCurrentTab(true);
@@ -529,40 +529,21 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 		Spaz.Sys.openAppStorageFolder();
 	});
 
-	shortcut.add(Modkey+Spaz.Prefs.get('key-reply'), function() {
-			sch.debug('getting screenname from current selection');
-			var screenname = $('div.ui-selected .user-screen-name').text();
+	shortcut.add(Modkey+Spaz.Prefs.get('key-reply'), function(e) {
 			
-			var irt_id = $('div.ui-selected .entry-id').text().replace(/(\[|\])/g, '');
-			
-			var names = sc.helpers.extractScreenNames($('div.ui-selected .status-text').text());
-			if (names.length >= 1) {
-			    var screenname_exists = false;
-				sch.debug('names for reply are:'+names);
+			var jqsel = jQuery('div.timeline-entry.ui-selected');
+			if (jqsel.length > 0) {
 				
-				for (var i=0; i < names.length; i++) {
-				    if (names[i].toLowerCase() == screenname.toLowerCase()) {
-				        screenname_exists = true;
-				    }
-				    // remove references to current username
-				    if (names[i].toLowerCase() == Spaz.Prefs.getUsername()) {
-				        names.splice(i, 1);
-				    }
-				}
+				var tweet_id = jqsel.attr('data-status-id');
 				
-				// add screenname if it is not in the message
-				if (!screenname_exists) {
-				    names.unshift(screenname);
-				}
-				sch.debug('names for reply 2 are:'+names);
-				
-				// var username = '';
-				Spaz.postPanel.prepReply(names, irt_id);
-				
-			} else if (screenname) {
-				sch.debug('username for reply is:'+screenname);
-				// var username = '';
-				Spaz.postPanel.prepReply(screenname, irt_id);
+				Spaz.TweetsModel.getById(
+					tweet_id,
+					false,
+					function(data) {
+						var resp = Spaz.TweetsModel.getScreenNamesFromStatus(data);
+						Spaz.postPanel.prepReply(resp.screen_name, data.id, data.SC_text_raw||data.text);
+					}
+				);
 			}
 		}, {
 			'disable_in_input':false
@@ -570,6 +551,14 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 
 
 
+
+	/**
+	 * reload main window 
+	 */
+	shortcut.add(Modkey+'+F10', function() {
+		Spaz.reloadHTMLDoc();
+	});
+	
 
 	// ****************************************
 	// Tabs shortcuts
@@ -708,9 +697,6 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 		}, {
 			target:$('#entrybox')[0],
 			propagate:false
-	});
-	shortcut.add(Modkey+'+F10', function() {
-		Spaz.reloadHTMLDoc();
 	});
 
 	// ****************************************
