@@ -82,7 +82,7 @@ Spaz.Windows.onAppExit = function(event)
 	
 
 	if (Spaz.Prefs.get('sound-enabled')) {
-		Spaz.UI.playSoundShutdown(function() {
+		Spaz.Sounds.playSoundShutdown(function() {
 			air.NativeApplication.nativeApplication.exit();
 		});
 	} else {

@@ -204,7 +204,7 @@ Spaz.initialize = function() {
 	/************************
 	 * Other stuff to do when document is ready
 	 ***********************/
-	Spaz.UI.playSoundStartup();
+	Spaz.Sounds.playSoundStartup();
 	sch.debug('Played startup sound');
 
 	Spaz.Windows.makeWindowVisible();
@@ -307,9 +307,9 @@ Spaz.initialize = function() {
 					if (data[0].text.length == 140) {
 						if (Spaz.Prefs.get('sound-enabled')) {
 							if (Spaz.Prefs.get('wilhelm-enabled')) {
-								Spaz.UI.doWilhelm();
+								Spaz.Wilhelm.start();
 								Spaz.UI.statusBar("Wilhelm!");
-								Spaz.UI.playSoundWilhelm();
+								Spaz.Sounds.playSoundWilhelm();
 							} else {
 								sch.dump('not doing Wilhelm because Wilhelm disabled');
 							}
@@ -317,7 +317,7 @@ Spaz.initialize = function() {
 							sch.dump('not doing Wilhelm because sound disabled');
 						}
 					} else {
-						Spaz.UI.playSoundUpdate();
+						Spaz.Sounds.playSoundUpdate();
 						Spaz.UI.statusBar("Update succeeded");
 					}
 

@@ -23,111 +23,7 @@ Spaz.UI.tooltipShowTimeout = null;
 Spaz.UI.mainTimelineId = 'timeline-friends';
 
 
-Spaz.UI.playSound = function(url, callback) {
-    if (!Spaz.Prefs.get('sound-enabled')) {
-        sch.debug('Not playing sound ' + url + '- disabled');
-        if (callback) {
-            sch.debug('calling callback manually');
-            callback();
-            sch.debug('ending callback');
-        } else {
-            sch.debug('no callback, returning');
-        }
-        return;
-    }
 
-    sch.debug('Spaz.UI.playSound callback:' + callback);
-    sch.debug("loading " + url);
-
-    var req = new air.URLRequest(url);
-    var s = new air.Sound();
-
-    function onComplete(e) {
-        var sc = s.play();
-        if (sc) {
-            sch.debug("playing " + url);
-            if (callback) {
-                sc.addEventListener(air.Event.SOUND_COMPLETE, callback);
-            }
-        }
-    }
-
-    function onIOError(e) {
-        sch.debug("failed to load " + url);
-        if (callback) {
-            sch.debug('calling callback manually');
-            callback();
-            sch.debug('ending callback');
-        } else {
-            sch.debug('no callback, returning');
-        }
-
-    }
-
-    s.addEventListener(air.Event.COMPLETE, onComplete);
-    s.addEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
-    s.load(req);
-};
-
-
-Spaz.UI.onSoundPlaybackComplete = function(event) {
-    sch.dump("The sound has finished playing.");
-};
-
-
-Spaz.UI.playSoundUpdate = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-update'), callback);
-};
-
-Spaz.UI.playSoundStartup = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-startup'), callback);
-};
-
-Spaz.UI.playSoundShutdown = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-shutdown'), callback);
-};
-
-Spaz.UI.playSoundNew = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-new'), callback);
-};
-
-Spaz.UI.playSoundWilhelm = function(callback) {
-    Spaz.UI.playSound(Spaz.Prefs.get('sound-url-wilhelm'), callback);
-};
-
-
-Spaz.UI.doWilhelm = function() {
-	sch.debug('Applying Flash Filter Dropshadow and Negative');
-
-	if (Spaz.Prefs.get('window-dropshadow')) {
-		sch.dump('Applying Flash Filter Dropshadow');
-
-		window.htmlLoader.filters = window.runtime.Array(
-			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6),
-			new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-		);
-	} else {
-		window.htmlLoader.filters = window.runtime.Array(
-			new window.runtime.flash.filters.ColorMatrixFilter(([ - 1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]))
-		);
-	}
-
-	var $wilhelm = $('#wilhelm');
-	$wilhelm.center();
-	$wilhelm.show(300);
-	setTimeout(Spaz.UI.endWilhelm, 960); // end with a timeout instead of relying on sound to finish
-};
-
-Spaz.UI.endWilhelm = function() {
-	if (Spaz.Prefs.get('window-dropshadow')) {
-		sch.dump('Applying Flash Filter Dropshadow');
-
-		window.htmlLoader.filters = window.runtime.Array(
-			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
-		);
-	}
-	$('#wilhelm').hide();
-};
 
 
 
@@ -1179,7 +1075,7 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 
 		}
 
-        Spaz.UI.playSoundNew();
+        Spaz.Sounds.playSoundNew();
         Spaz.UI.statusBar('Updates found');
 
     } else {
