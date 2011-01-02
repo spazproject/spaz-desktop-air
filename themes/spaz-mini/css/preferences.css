@@ -1,0 +1,354 @@
+/*** Preferences ***/
+
+#panel-prefs .timeline-wrapper {
+/*	border-top: 1px solid #646464;*/
+}
+body:not(.active) #panel-prefs .timeline-wrapper {
+/*	border-top-color: #a9a9a9;*/
+}
+#prefs-form {
+	margin: 0;
+	padding: 0 0 10px;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0)),
+		color-stop(0.95, rgba(0, 0, 0, 0.125)));
+		/* Fake shadow below form */
+	font-size:11px;
+	color:#FFF;
+}
+
+/*
+The Prefs form contains a collapsible panel group Spry widget
+*/
+#prefsCPG, .CollapsiblePanelGroup {
+}
+#prefs-form .CollapsiblePanel {
+	margin: 0;
+}
+#panel-prefs .CollapsiblePanelOpen:last-child {
+	border-bottom: 1px solid #333333;
+}
+#prefs-form .CollapsiblePanelClosed {
+}
+
+/*
+The tab is the clickable title that opens and closes the panel
+*/
+#prefs-form h2.CollapsiblePanelTab {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(32,32,32, 1)),
+		to(rgba(16,16,16, 1)),
+		color-stop(0.1, rgba(49, 49, 49, 1)),
+		color-stop(0.6, rgba(24,24,24, 1))
+	);
+	border-top: 1px solid #000000;
+	border-bottom: 1px solid #333333;
+	color: #CCCCCC;
+	cursor: pointer;
+	font-size: 1.125em;
+	padding:.5em;
+}
+#prefs-form h2.CollapsiblePanelTabHover, #prefs-form h2.CollapsiblePanelTabOpen {
+	color: #FFFFFF;
+}
+#prefs-form h2.CollapsiblePanelTab:active {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(32,32,32, 1)),
+		to(rgba(16,16,16, 1)),
+		color-stop(0.1, rgba(49, 49, 49, 1)),
+		color-stop(0.6, rgba(24,24,24, 1))
+	);
+	border-top: 1px solid #000000;
+	border-bottom: 1px solid #333333;
+	color: #FFFFFF;
+}
+#prefs-form h2.CollapsiblePanelTab strong {
+	display: block;
+	padding: 0.25em 0 0.25em 20px;
+	background: transparent url(../images/disclosure-triangles.png) 4px -14px no-repeat;
+}
+form#prefs-form h2.CollapsiblePanelTab:active strong,
+#prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab strong {
+	background-position: 4px -94px;
+}
+
+/*
+Form content -- fieldsets, legends, and controls. `div.prefs` affects
+both the primary prefs form and the form popbox(es).
+*/
+div.prefs #prefs-form .CollapsiblePanelContent {
+	clear: both;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#444444), to(#333333)
+	);
+	color:#FFFFFF;
+}
+div.prefs fieldset {
+	margin: 8px;
+	padding: 0;
+	overflow: auto; /* Wrap children's margins */
+	background:-webkit-gradient(
+		linear, left top, left bottom,
+		from(#111111), to(#333333), color-stop(0.75, #222222));
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border: 0;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
+	-webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
+}
+div.prefs legend {
+	float: left;
+	width: 100%;
+	margin: 0 0 8px;
+	padding: 4px 0;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#444444), to(#333333));
+	border-top-left-radius: 6px;
+	-webkit-border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	border-bottom: 1px solid #666666;
+	color: #EEEEEE;
+	cursor: default;
+	font-size: 11px;
+	font-weight: bold;
+	text-indent: 12px;
+}
+div.prefs div.formrow {
+	clear: both;
+	margin: 8px 0;
+	padding: 0 12px;
+}
+div.prefs label {
+	display: block;
+}
+div.prefs .relaunch-required {
+	color: #c00;
+}
+div.prefs #account-list-fieldset div.formrow.cta {
+	padding: 76px 0;
+	text-align: center;
+}
+div.prefs #account-list-fieldset div.formrow.controls {
+	overflow: hidden;
+	height: 24px;
+	/* Clips the extra pixel from the border between buttons */
+}
+div.prefs #account-list-fieldset div.formrow.controls input[name=add-account] {
+	margin-right: 0;
+/*	padding: 0 6px 0 1px;*/
+	border-right-width: 0;
+	border-top-right-radius: 0;
+	-webkit-border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	-webkit-border-bottom-right-radius: 0;
+	
+}
+div.prefs #account-list-fieldset div.formrow.controls input[name=del-account] {
+	margin-left: -4px;
+/*	padding: 0 1px 0 6px;*/
+	border-left-width: 0;
+	border-top-left-radius: 0;
+	-webkit-border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	-webkit-border-bottom-left-radius: 0;
+}
+div.prefs ul#account-list {
+	width: 100%;
+	height: 143px;
+	overflow: auto;
+	margin: 0;
+	padding: 0;
+	border: 1px solid rgba(0, 0, 0, 0.25);
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	list-style: none;
+}
+div.prefs ul#account-list li {
+	border-top: 1px solid transparent;
+}
+div.prefs ul#account-list li:first-child {
+	border-top-left-radius: 1px;
+	-webkit-border-top-left-radius: 1px;
+	border-top-right-radius: 1px;
+	-webkit-border-top-right-radius: 1px;
+}
+div.prefs ul#account-list li:last-child {
+	border-bottom-left-radius: 1px;
+	-webkit-border-bottom-left-radius: 1px;
+	border-bottom-right-radius: 1px;
+	-webkit-border-bottom-right-radius: 1px;
+}
+div.prefs ul#account-list li.selected {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#64A6DB), to(#0A71BB));
+	border-top-color: #519BD6;
+}
+body:not(.active) ul#account-list li.selected {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#989797), to(#666));
+	border-top-color: #7f7e7e;
+}
+div.prefs ul#account-list li > span {
+	display: block;
+	padding: 4px 0 6px 30px;
+	color: #000;
+	cursor: default;
+	line-height: 24px;
+}
+div.prefs ul#account-list li.current > span {
+	background: transparent url(../images/accounts-current.png)
+	10px 10px no-repeat;
+}
+div.prefs ul#account-list li.selected > span {
+	color: #f0f0f0;
+	font-weight: bold;
+}
+div.prefs ul#account-list li.current.selected > span {
+	background-position: 10px -30px;
+}
+div.prefs ul#account-list li .image {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin: 0 0.5em 0 0;
+	background: transparent 0 0 no-repeat;
+	background-size: 24px 24px;
+	-webkit-background-size: 24px 24px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	text-indent: -9999em;
+}
+
+
+
+/*** Preferences > Controls ***/
+
+div.prefs input[type=text],
+div.prefs input[type=password] {
+	width: 96%;
+	padding: 4px;
+	background: #fff url(../images/text-input-bg.png) 0 0 no-repeat;
+	border-top: 0;
+	border-left: 0;
+	border-right: 1px solid #c3c3c3;
+	border-bottom: 1px solid #ddd;
+}
+div.prefs input[type=checkbox] {
+	display: none;
+}
+div.prefs input[type=checkbox] + label {
+	display: inline-block;
+	height: auto;
+	min-height: 14px;
+	padding: 0 0 0 20px;
+	background: transparent url(../images/checkbox.png) 0 -100px no-repeat;
+}
+div.prefs input[type=checkbox]:checked + label {
+	background-position: 0 -150px;
+}
+div.prefs input[type=checkbox] + label:active {
+	background-position: 0 -200px;
+}
+div.prefs input[type=checkbox]:checked + label:active {
+	background-position: 0 -250px;
+}
+div.prefs option {
+	font-size: 10px;
+}
+div.prefs input[type=button],
+div.prefs input[type=submit],
+#popbox-content-drafts div.content ul li div.controls input {
+	font-size: 10px;
+	border: 1px solid #333;
+	padding: 4px 10px;
+	color: #FFF;
+	font-size: 10px;
+	line-height: 12px;
+	background: #24251A;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	box-shadow: 0px 1px 2px rgba(0,0,0,.5);
+	-webkit-box-shadow: 0px 1px 2px rgba(0,0,0,.5);
+	text-shadow: #000 0px 1px 0px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#3A3C2C), to(#24251A));
+}
+div.prefs input[type=button]:active,
+div.prefs input[type=submit]:active,
+#popbox-content-drafts div.content ul li div.controls input:active {
+	background: -webkit-gradient(linear, left top, left bottom, from(#24251A), to(#3A3C2C));
+}
+div.prefs input[type=button][disabled],
+div.prefs input[type=submit][disabled] {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(58,60,44, 1)), to(rgba(58,60,44, 1)),
+		color-stop(0.1, rgba(87,90,71, 1)),
+		color-stop(0.6, rgba(58,60,44, 1))
+	);
+	border: 1px solid rgba(16,16,16, 1);
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	color: #AAA;
+}
+input[type=text]#prefs-user-stylesheet {
+	width: 80px;
+}
+input[type=text]#network-refreshinterval {
+	width: 20px;
+}
+input[type=text]#dock-refreshinterval {
+	width: 30px;
+}
+input[type=text]#window-alpha {
+	width: 30px;
+	text-align: right;
+}
+#prefs-user-stylesheet-button,
+#prefs-user-stylesheet-edit,
+#prefs-user-stylesheet-clear {
+	margin: 2px 0 0;
+	font-size: 10px;
+}
+
+/*** Preferences > Footer ***/
+
+#prefs-form div.formrow.footer {
+	margin: 0;
+	padding: 20px 10px;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#333333), to(#222222));
+	border-top: 1px solid #222222;
+	border-bottom: 1px solid #111111;
+	text-align: right;
+}
+#prefs-form div.formrow.footer p.prefs-relaunch {
+	margin: 0;
+}
+#prefs-form div.formrow.footer p.prefs-update {
+	float: right;
+	display: inline-block;
+	margin: 0.5em 0 0 0.25em;
+}
+#prefs-form div.formrow.footer p.prefs-open-folder {
+	display: inline-block;
+	margin: 0.5em 0 0;
+}
+#prefs-form div.formrow.footer p input[type=button]:active {
+/*	border-image: url(../images/buttons/large-active.png) 0 11 0 11 repeat repeat;
+	-webkit-border-image: url(../images/buttons/large-active.png) 0 11 0 11 repeat repeat;*/
+}
+#prefs-form div.formrow.footer p.prefs-update input#prefs-update-button {
+	padding:.7em;
+	font-size: 12px;
+}
+#prefs-form div.formrow.footer p.prefs-open-folder input#prefs-open-folder {
+	padding:.7em;
+	font-size: 12px;
+}

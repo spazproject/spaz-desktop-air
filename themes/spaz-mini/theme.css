@@ -1,0 +1,1000 @@
+@charset "UTF-8";
+
+@import url("css/timeline-entry.css");
+@import url("css/panelmenu.css");
+@import url("css/menus-tooltips.css");
+@import url("css/entrybox.css");
+@import url("css/popboxes.css");
+@import url("css/preferences.css");
+@import url("css/pagination.css");
+@import url("css/scrollbars.css");
+
+/*
+*	BASE COLORS
+*	
+*	#8E8E5F		142,142,95
+*	#85886A		136,136,106
+*	#575A47		87,90,71		
+*	#3A3C2C		58,60,44
+*	#24251A		36,37,26
+*	#000000		0,0,0
+*
+* 	Beige gradients
+*   #D6D5CC		214,213,204
+* 	#E4E6F2		247,246,234
+* 
+* 	Blue gradients
+* 	#BEC0C8		190,192,200
+* 	#E4E6F2		228,230,242
+* 	
+* 	Olive Border
+* 	#666699
+* 
+* 	Blue border
+* 	#666699
+* 
+* 	Greys
+* 	#606060
+* 	#666666
+* 	#909090
+* 	#CCCCCC
+* 		
+*/
+
+
+/*** Global ***/
+
+html {
+	width: 100%;
+	height: 100%;
+}
+body {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	font-family:Tahoma, Arial, Helvetica, sans-serif;
+}
+h1, h2, h3, h4, h5 {
+	margin: 0;
+	padding: 0;
+}
+a, a:link, .clickable {
+	color: #333399;
+	cursor: pointer;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+*:focus {
+	outline: 0;
+}
+input[type=text],
+input[type=password],
+#entrybox {
+	z-index: 1;
+}
+input[type=text]:focus,
+input[type=password]:focus,
+div.prefs input[type=text]:focus,
+div.prefs input[type=password]:focus,
+#entrybox:focus {
+	border-color: #7aadda; /* Light blue */
+	border-top-color: #7092b0;
+}
+input[type=text]:focus,
+input[type=password]:focus,
+/* #entrybox:focus {*/
+/* box-shadow: 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda; /* Hack: Repetition intensifies glow */
+/* -webkit-box-shadow: 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda, */
+/* inset 0 0 2px #7aadda; */
+/*
+}
+*/
+/* #entrybox.dm:focus {*/
+/* border-color: #ffb3b2; /* Light red */
+/* border-top-color: #f0a090; */
+/* box-shadow: 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2; /* Hack: Repetition intensifies glow */
+/* -webkit-box-shadow: 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2, */
+/* inset 0 0 2px #ffb3b2; */
+/*
+}
+*/
+/* .panelmenu input[type=text]:focus {*/
+/* box-shadow: 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda; /* Hack: Repetition intensifies glow */
+/* -webkit-box-shadow: 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda, */
+/* inset 0 0 4px #7aadda; */
+/*
+}
+*/
+.highlight {
+	border-bottom: 1px dotted #884;
+}
+
+
+/*** Global > Animations ***/
+
+@-webkit-keyframes discrete-spinner {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	8.32% {
+		-webkit-transform: rotate(0deg);
+	}
+	/* Forces jump from 0deg to 30deg, not a smooth rotation */
+	8.33% {
+		-webkit-transform: rotate(30deg);
+	}
+	16.65% {
+		-webkit-transform: rotate(30deg);
+	}
+	16.66% {
+		-webkit-transform: rotate(60deg);
+	}
+	24.99% {
+		-webkit-transform: rotate(60deg);
+	}
+	25% {
+		-webkit-transform: rotate(90deg);
+	}
+	33.32% {
+		-webkit-transform: rotate(90deg);
+	}
+	33.33% {
+		-webkit-transform: rotate(120deg);
+	}
+	41.65% {
+		-webkit-transform: rotate(120deg);
+	}
+	41.66% {
+		-webkit-transform: rotate(150deg);
+	}
+	49.99% {
+		-webkit-transform: rotate(150deg);
+	}
+	50% {
+		-webkit-transform: rotate(180deg);
+	}
+	58.32% {
+		-webkit-transform: rotate(180deg);
+	}
+	58.33% {
+		-webkit-transform: rotate(210deg);
+	}
+	66.65% {
+		-webkit-transform: rotate(210deg);
+	}
+	66.66% {
+		-webkit-transform: rotate(240deg);
+	}
+	74.99% {
+		-webkit-transform: rotate(240deg);
+	}
+	75% {
+		-webkit-transform: rotate(270deg);
+	}
+	83.32% {
+		-webkit-transform: rotate(270deg);
+	}
+	83.33% {
+		-webkit-transform: rotate(300deg);
+	}
+	91.65% {
+		-webkit-transform: rotate(300deg);
+	}
+	91.66% {
+		-webkit-transform: rotate(330deg);
+	}
+	99.99% {
+		-webkit-transform: rotate(330deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+
+}
+@-webkit-keyframes entrybox-flash {
+	from {
+		background: #fcec8f;
+	}
+	to {
+		background: #fff;
+	}
+
+}
+
+
+
+/*********************************************************************
+The container is a div that wraps around all of the content
+*/
+#container {
+	overflow:hidden;
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(52,52,52,.65)),
+		to(rgba(34,34,34,.65)),
+		color-stop(0.20, rgba(66,66,66,.85)),
+		color-stop(0.25, rgba(77,77,77,.85)),
+		color-stop(0.26, rgba(52,52,52,.85))
+	);
+	-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
+	top:	1px; /* This has an effective 8px padding to show us the app dropshadow */
+	left:	8px; /* using all-four-sides positioning lets it expand properly on resizing */
+	bottom:	8px;
+	right:	8px;
+    position: fixed;
+}
+/*body:not(.active) #container {
+	background-color: #d2d2d2;
+	border-top-color: rgba(234, 234, 234, 0.9);
+}*/
+
+
+/*********************************************************************
+The contains the classic "Spaz" title and the window buttons
+*/
+#header {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#000000), to(#222222),
+		color-stop(0.5, #111111)
+	);
+	color:#FFFFFF;
+	font-size:18px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:0;
+	padding:5px 10px 10px 10px;
+	text-align:left;
+	height:42px;
+	position:absolute;
+	top:   10px;
+	left:  10px;
+	right: 10px;
+	-khtml-border-top-left-radius:5px;
+	-khtml-border-top-right-radius:5px;
+	cursor: move;
+}
+		#window-buttons {
+			position:absolute;
+			right:	5px;
+			top:	0px;
+			text-align:right;
+		}
+		#header-label, .window-button {
+			padding:0px 6px 2px;
+			color:#E0E0E0;
+			background: -webkit-gradient(
+				linear, left top, left bottom, from(#404040), to(#606060)
+			);
+			-khtml-border-radius:5px;
+			font-size:14px;
+			cursor:pointer;
+			margin:0;
+		}
+			#header-label {
+				display:inline-block;
+			}
+				#header-label .current {
+					display: inline-block;
+					width: 16px;
+					height: 16px;
+					margin: 3px 6px 0 0;
+					background: transparent 0 0 no-repeat;
+					background-size: 16px 16px;
+					-webkit-background-size: 16px 16px;
+					border-radius: 4px;
+					-webkit-border-radius: 4px;
+					pointer-events: none;
+					text-indent: -9999em;
+				}
+				/*
+					This puts a &raquo; after "Spaz"
+				*/
+				#header-label:after {
+					content:' \00BB';
+				}
+
+			#header-label:hover, .window-button:hover  {
+				color:#FFFFFF;
+				background:#909090;
+			}
+
+/*
+The tabs group contains the tabs themselves and the content panels
+
+From Spry CSS Notes:
+This is the selector for the main TabbedPanels container. For our
+default style, this container does not contribute anything visually,
+but it is floated left to make sure that any floating or clearing done
+with any of its child elements are contained completely within the
+TabbedPanels container, to minimize any impact or undesireable
+interaction with other floated elements on the page that may be used
+for layout.
+
+If you want to constrain the width of the TabbedPanels widget, set a
+width on the TabbedPanels container. By default, the TabbedPanels widget
+expands horizontally to fill up available space.
+
+*/
+#tabs, .TabbedPanels {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	clear: none;
+}
+
+/*
+The timeline tabs, a UL group
+
+From Spry CSS Notes:
+This is the selector for the TabGroup. The TabGroup container houses
+all of the tab buttons for each tabbed panel in the widget. This container
+does not contribute anything visually to the look of the widget for our
+default style.
+*/
+#timeline-tabs, .TabbedPanelsTabGroup {
+	position:absolute;
+	left:20px;
+	right:10px;
+	top:50px;
+	margin: 0px;
+	padding: 0px;
+	pointer-events: none;
+	/* Pass pointer events through this invisible wrapper to allow
+	dragging the entire header */
+}
+#timeline-tabs *, .TabbedPanelsTabGroup * {
+	pointer-events: auto;
+	/* Re-capture pointer events for visible controls, e.g., tabs */
+}
+
+/*
+From Spry CSS Notes:
+This is the selector for the TabbedPanelsTab. This container houses
+the title for the panel. This is also the tab "button" that the user clicks
+on to activate the corresponding content panel so that it appears on top
+of the other tabbed panels contained in the widget.
+
+For our default style, each tab is positioned relatively 1 pixel down from
+where it wold normally render. This allows each tab to overlap the content
+panel that renders below it. Each tab is rendered with a 1 pixel bottom
+border that has a color that matches the top border of the current content
+panel. This gives the appearance that the tab is being drawn behind the
+content panel.
+*/
+.TabbedPanelsTab,
+#tools-menu-toggle {
+	position: relative;
+	top: -5px;
+	float: left;
+	padding: 2px 6px;
+	margin: 0px 5px 0px 0px;
+	font-size: 11px;
+	background-color: #3A3C2C;
+	color:#CCCCCC;
+	list-style: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-khtml-border-top-left-radius:.5em;
+	-khtml-border-top-right-radius:.5em;
+
+	cursor: pointer;
+	border:none;
+}
+.TabbedPanelsTab {
+	position: relative;
+	top: -5px;
+	float: left;
+	border: none;
+	list-style: none;
+}
+#tools-menu-toggle {
+/*	display:none;*/
+}
+
+/*
+From Spry CSS Notes:
+This selector is an example of how to change the appearnce of a tab button
+container as the mouse enters it. The class "TabbedPanelsTabHover" is
+programatically added and removed from the tab element as the mouse enters
+and exits the container.
+*/
+.TabbedPanelsTabHover {
+	background-color: #575A47;
+}
+
+/*
+From Spry CSS Notes:
+This selector is an example of how to change the appearance of a tab button
+container after the user has clicked on it to activate a content panel.
+The class "TabbedPanelsTabSelected" is programatically added and removed
+from the tab element as the user clicks on the tab button containers in
+the widget.
+
+As mentioned above, for our default style, tab buttons are positioned
+1 pixel down from where it would normally render. When the tab button is
+selected, we change its bottom border to match the background color of the
+content panel so that it looks like the tab is part of the content panel.
+*/
+.TabbedPanelsTabSelected {
+	background-color: #575A47;
+	border-bottom: solid 1px #575A47;
+
+}
+
+/*
+From Spry CSS Notes:
+This selector is an example of how to make a link inside of a tab button
+look like normal text. Users may want to use links inside of a tab button
+so that when it gets focus, the text *inside* the tab button gets a focus
+ring around it, instead of the focus ring around the entire tab.
+*/
+.TabbedPanelsTab a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+/*#tab-friends {
+}
+body:not(.active) #tab-friends {
+	background-position: 0 -23px;
+}
+#tab-friends:not(.TabbedPanelsTabSelected):active {
+	background-position: 0 -46px;
+}
+#tab-friends.TabbedPanelsTabSelected {
+	background-position: 0 -69px;
+}
+body:not(.active) #tab-friends.TabbedPanelsTabSelected {
+	background-position: 0 -92px;
+}
+#tab-friends.TabbedPanelsTabSelected:active {
+	background-position: 0 -115px;
+}
+#tab-user {
+	background-position: -31px 0;
+}
+body:not(.active) #tab-user {
+	background-position: -31px -23px;
+}
+#tab-user:not(.TabbedPanelsTabSelected):active {
+	background-position: -31px -46px;
+}
+#tab-user.TabbedPanelsTabSelected {
+	background-position: -31px -69px;
+}
+body:not(.active) #tab-user.TabbedPanelsTabSelected {
+	background-position: -31px -92px;
+}
+#tab-user.TabbedPanelsTabSelected:active {
+	background-position: -31px -115px;
+}
+#tab-favorites {
+	background-position: -31px 0;
+}
+body:not(.active) #tab-favorites {
+	background-position: -31px -23px;
+}
+#tab-favorites:not(.TabbedPanelsTabSelected):active {
+	background-position: -31px -46px;
+}
+#tab-favorites.TabbedPanelsTabSelected {
+	background-position: -31px -69px;
+}
+body:not(.active) #tab-favorites.TabbedPanelsTabSelected {
+	background-position: -31px -92px;
+}
+#tab-favorites.TabbedPanelsTabSelected:active {
+	background-position: -31px -115px;
+}
+#tab-userlists {
+	background-position: -62px 0;
+}
+body:not(.active) #tab-userlists {
+	background-position: -62px -23px;
+}
+#tab-userlists:not(.TabbedPanelsTabSelected):active {
+	background-position: -62px -46px;
+}
+#tab-userlists.TabbedPanelsTabSelected {
+	background-position: -62px -69px;
+}
+body:not(.active) #tab-userlists.TabbedPanelsTabSelected {
+	background-position: -62px -92px;
+}
+#tab-userlists.TabbedPanelsTabSelected:active {
+	background-position: -62px -115px;
+}
+#tab-public {
+	background-position: 0 0;
+	margin-left: 8px;
+}
+body:not(.active) #tab-public {
+	background-position: 0 -23px;
+}
+#tab-public:not(.TabbedPanelsTabSelected):active {
+	background-position: 0 -46px;
+}
+#tab-public.TabbedPanelsTabSelected {
+	background-position: 0 -69px;
+}
+body:not(.active) #tab-public.TabbedPanelsTabSelected {
+	background-position: 0 -92px;
+}
+#tab-public.TabbedPanelsTabSelected:active {
+	background-position: 0 -115px;
+}
+#tab-search {
+	background-position: -62px 0;
+}
+body:not(.active) #tab-search {
+	background-position: -62px -23px;
+}
+#tab-search:not(.TabbedPanelsTabSelected):active {
+	background-position: -62px -46px;
+}
+#tab-search.TabbedPanelsTabSelected {
+	background-position: -62px -69px;
+}
+body:not(.active) #tab-search.TabbedPanelsTabSelected {
+	background-position: -62px -92px;
+}
+#tab-search.TabbedPanelsTabSelected:active {
+	background-position: -62px -115px;
+}
+#tab-followerslist {
+	background-position: -93px 0;
+	margin-left: 8px;
+}
+body:not(.active) #tab-followerslist {
+	background-position: -93px -23px;
+}
+#tab-followerslist:not(.TabbedPanelsTabSelected):active {
+	background-position: -93px -46px;
+}
+#tab-followerslist.TabbedPanelsTabSelected {
+	background-position: -93px -69px;
+}
+body:not(.active) #tab-followerslist.TabbedPanelsTabSelected {
+	background-position: -93px -92px;
+}
+#tab-followerslist.TabbedPanelsTabSelected:active {
+	background-position: -93px -115px;
+}
+#tools-menu-toggle {
+	background-position: -124px 0;
+	position: absolute;
+	width: 40px;
+	margin-left: 15px;
+}
+body:not(.active) #tools-menu-toggle {
+	background-position: -124px -23px;
+}
+#tools-menu-toggle:active {
+	background-position: -124px -46px;
+}*/
+
+/* The image in the tab itself */
+.tab-icon {
+	margin-bottom:-1px;
+	width:18px;
+	height:18px;
+	display:block;
+	background-repeat: no-repeat;
+}
+body:not(.active) .tab-icon {
+/*	opacity: 0.5;*/
+}
+#tab-friends .tab-icon {
+	background: url(images/tab-icon-timeline.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-friends.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-timeline-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-user .tab-icon {
+	background: url(images/tab-icon-user.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-user.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-user-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-favorites .tab-icon {
+	background: url(images/tab-icon-favorites.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-favorites.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-favorites-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-userlists .tab-icon {
+	background: url(images/tab-icon-userlists.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-userlists.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-userlists-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-public .tab-icon {
+	background: url(images/tab-icon-public.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-public.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-public-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-search .tab-icon {
+	background: url(images/tab-icon-search.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-search.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-search-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tab-followerslist .tab-icon {
+	background: url(images/tab-icon-followers.png) 0px 0px no-repeat;
+	opacity:.7;
+}
+#tab-followerslist.TabbedPanelsTabSelected .tab-icon {
+	background: url(images/tab-icon-followers-selected.png) 0px 0px no-repeat;
+	opacity:1.0;
+}
+#tools-menu-toggle .tab-icon {
+	background: url(images/tab-icon-tools.png) 6px 4px no-repeat;
+	width: 40px;
+	padding-right: 10px;
+}
+#tools-menu-toggle .tab-icon:after {
+	position: absolute;
+	right: 5px;
+	top: 1px;
+	display: block;
+	content: ' \025BE'; /* Down-pointing triangle */
+	font-size:13px;
+}
+
+/*
+These are the content panels, wrapped inside a single container div
+
+From Spry CSS Notes:
+This is the selector for the ContentGroup. The ContentGroup container houses
+all of the content panels for each tabbed panel in the widget. For our
+default style, this container provides the background color and borders that
+surround the content.
+*/
+#timeline-tabs-content,
+.TabbedPanelsContentGroup {
+	clear: both;
+	position:absolute;
+	border-top:   6px solid #575A47;
+	border-bottom:0px solid #575A47;
+	top:   67px;
+	left:  10px;
+	right: 10px;
+	bottom:130px;
+	background-color:#FFFFFF;
+}
+
+/* This is the selector for the Content panel. The Content panel holds the
+* content for a single tabbed panel. For our default style, this container
+* provides some padding, so that the content is not pushed up against the
+* widget borders.
+*
+* The name of the class ("TabbedPanelsContent") used in this selector is
+* not necessary to make the widget function. You can use any class name you
+* want to style the Content container.
+*/
+.TabbedPanelsContent {
+	margin: 0px;
+	padding: 0px;
+}
+
+/* This selector is an example of how to change the appearnce of the currently
+* active container panel. The class "TabbedPanelsContentVisible" is
+* programatically added and removed from the content element as the panel
+* is activated/deactivated.
+*/
+.TabbedPanelsContentVisible {
+}
+
+
+
+/*
+This wraps to provide scrolling for div.timeline
+*/
+.timeline-wrapper {
+	overflow:auto;
+	position:absolute;
+	top:31px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+}
+.timeline-wrapper,
+#timeline-tabs-content {
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#3A3C2C), to(#24251A),
+		color-stop(0.005, #575A47)
+	);
+	/* These `color-stop` values create top and bottom inner
+	shadows. However, the shadow heights are percent-based;
+	static heights would be ideal. */
+}
+#timelinewrapper-userlists {
+	top: 59px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+	background:transparent;
+	/* Show the background for `#timeline-tabs-content`, not this
+	element. This is because `#timeline-userlists-full-name` is
+	initially empty, which leaves the normal `.timeline-wrapper`
+	background with a floating, clearly fake "drop shadow". */
+}
+#timelinewrapper-followerslist {
+	top: 59px; /* Makes room for .panelmenu and #timeline-userlists-full-name */
+	background:transparent;
+	/* Show the background for `#timeline-tabs-content`, not this
+	element. This is because `#timeline-userlists-full-name` is
+	initially empty, which leaves the normal `.timeline-wrapper`
+	background with a floating, clearly fake "drop shadow". */
+}
+#timelinewrapper-prefs {
+	top: 0px; /* No .panelmenu */
+}
+
+/*
+The .timeline divs are all inside .TabbedPanelsContent divs
+*/
+div.timeline {
+	margin: 0px;
+	padding: 0px;
+	/* background:transparent url(images/dropshadow.png) 0 -6px repeat-x;*/
+	z-index: 0;
+}
+div.timeline-subtitle {
+	position: fixed;
+	left: 18px;
+	right: 18px;
+	top: 105px;
+	overflow: hidden;
+/*	min-width: 261px; /* = #container min-width - horizontal padding */*/
+	margin: -1px 0 0;
+	padding: 0 8px;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#BEC0C8), to(#E4E6F2));
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.50); 
+	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.50);
+	color: #000000;
+	cursor: default;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 27px;
+	text-overflow: ellipsis;
+/*	text-shadow: 0 1px 0 rgba(32,32,32, 0.75);*/
+	white-space: nowrap;
+	z-index: 1; /* .panelmenu z-index */
+	border-bottom:1px solid #666699;
+}
+	div.timeline-subtitle:empty {
+		border-bottom: 0;
+	}
+	div#panel-followerslist div.timeline-subtitle {
+		text-transform: uppercase;
+	}
+
+
+.timeline-wrapper div.empty,
+.timeline-wrapper div.intro,
+.timeline-wrapper div.loading,
+.timeline-wrapper div.new-user {
+	margin: 150px 50px 0;
+	color: #fff;
+	cursor: default;
+	font-size: 0.75em;
+	text-align: center;
+}
+.timeline-wrapper div.loading,
+#popbox-content-conversation div.loading,
+#popbox-content-profile div.content div.loading {
+	width: 50px;
+	height: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	background: transparent url(images/loading-white-50x50.png) center center no-repeat;
+	text-indent: -9999em;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-name: discrete-spinner;
+	-webkit-animation-timing-function: linear;
+}
+#timelinewrapper-userlists div.intro,
+#timelinewrapper-userlists div.loading,
+#timelinewrapper-userlists div.new-user {
+	margin-top: 124px; /* = default margin-top - #timeline-userlists-full-name line-height */
+}
+.timeline-wrapper div.new-user {
+	display: none;
+}
+.timeline-wrapper div.new-user .add-account {
+	display: block;
+	width: 130px;
+	height: 48px;
+	margin: 0 auto;
+	border-image: url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
+	-webkit-border-image: url(images/buttons/large-prefs.png) 0 10 0 36 repeat repeat;
+	border-width: 0 10px 0 36px;
+	color: #000;
+	font-size: 12px;
+	line-height: 46px;
+}
+.timeline-wrapper div.new-user .add-account:active {
+	border-image: url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
+	-webkit-border-image: url(images/buttons/large-prefs-active.png) 0 10 0 36 repeat repeat;
+	/* border-image-source:url(images/buttons/large-prefs-active.png);*/
+}
+body:not(.active) .timeline-wrapper div.new-user .add-account {
+	border-image: url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
+	-webkit-border-image: url(images/buttons/large-prefs-disabled.png) 0 10 0 36 repeat repeat;
+	/* border-image-source:url(images/buttons/large-prefs-disabled.png);*/
+	color:#909090;
+}
+
+/*
+The bar at the bottom of the app that displays info
+*/
+#statusbar {
+	position:absolute;
+	height:18px;
+	line-height:18px;
+	padding:0px 5px 2px;
+	font-size:10px;
+	color:#cccccc;
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#222222), to(#000000),
+		color-stop(0.5, #111111));
+	bottom:10px;
+	left:10px;
+	right:10px;
+	-khtml-border-bottom-left-radius: 5px;
+	-khtml-border-bottom-right-radius:5px;
+	overflow:hidden;
+	white-space:nowrap;
+	cursor:move;
+}
+	#loading {
+		position:absolute;
+		float:right;
+		display:none;
+		top:  5px;
+		right:6px;
+		height:12px;
+		width: 12px;
+		background: transparent url(images/loading-white-12x12.png) 0 0 no-repeat;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-name: discrete-spinner;
+		-webkit-animation-timing-function: linear;
+	}
+	#statusbar-text {
+	}
+	span.statusbar-username {
+		font-weight: bold;
+	}
+
+
+/*
+The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
+but I'm kind of an idiot.
+*/
+#resize-sw {
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+	font-size: 12px;
+	background-image: url(images/resize-sw.png);
+	text-align: center;
+	width: 12px;
+	height: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*** Tables ***/
+
+table.data {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	padding: 5px;
+	border-top: 3px solid #333333;
+	border-bottom: 1px solid #333333;
+	border-collapse: collapse;
+	width: 100%;
+}
+table.data th {
+	background-color: #202020;
+	color: #DDDDDD;
+	font-size: 9px;
+	font-weight: bold;
+	text-align: left;
+	padding: 4px;
+}
+table.data tr {
+	border-top-style: solid;
+	border-top-width: 1px;
+}
+table.data tr:hover {
+	background: #FFFFCC;
+}
+table.data td {
+	font-size: 10px;
+	padding: 4px;
+	text-align: left;
+}
+table.data td.label {
+	font-weight: bold;
+	text-align: right;
+	border-right: 1px solid #999999;
+}
+table.data td.label:after {/*content:":";*/
+}
+table.data td.value {
+	padding: 2px;
+}
+
+
+
+/*
+I think this is needed by some widgets. Maybe not?
+*/
+.SpryHiddenRegion {
+	visibility: hidden;
+}
+
+

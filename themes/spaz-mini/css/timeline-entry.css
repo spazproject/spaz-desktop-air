@@ -1,0 +1,360 @@
+
+
+/*** Global > Zebra striping ***/
+
+div.timeline-entry:nth-child(odd),
+ul#account-list li:nth-child(odd),
+div.followers-row:nth-child(odd) {
+	background-color: #FFFFEE;
+	border-top-color: #999966;
+	background-image: url('../images/entry-odd-bg.png');
+	background-repeat: repeat-x;
+
+}
+div.timeline-entry:nth-child(even),
+ul#account-list li:nth-child(even),
+div.followers-row:nth-child(even) {
+	background-color: #EEEEFF;
+	border-top-color: #666699;
+	background-image: url('../images/entry-even-bg.png');
+	background-repeat: repeat-x;
+}
+
+ 
+/*************************************************
+Timeline entries are... entries in the timelines
+*/
+div.timeline-entry {
+	position: relative;
+	clear: both;
+	overflow: hidden;
+	border-top-width: medium;
+	border-top-style: solid;
+	border-top-color: #999966;
+	padding: 8px 5px;
+	
+}
+div.timeline-entry:hover {
+	opacity: 1;
+}
+div.timeline-entry.reply {/* Replies/mentions */
+	background:-webkit-gradient(
+		linear, left top, left bottom, from(#fdf7c6), to(#fcec8f));
+	outline: 0;
+}
+div.timeline-entry.dm {/* Direct messages */
+	background:-webkit-gradient(
+		linear, left top, left bottom, from(#ffcbcb), to(#ffb3b2));
+	outline: 0;
+}
+div.timeline-entry.retweet .status-text {
+	background: transparent url(../images/retweeted.png) 0 0 no-repeat;
+	text-indent: 24px;
+}
+div.timeline-entry.retweet .status-text * {
+	text-indent: 0;
+}
+/*
+Entries that have been "read" (selected and then deselected)
+*/
+div.timeline-entry.read {
+}
+div.timeline-entry.read:not(.ui-selected) {
+	max-height: 25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+div.timeline-entry.read:hover {
+	opacity: 1;
+}
+div.timeline-entry.read .status-text {
+	color: #999;
+}
+div.timeline-entry.read.reply .status-text {
+	color: #ccbc5f;
+}
+div.timeline-entry.read.dm .status-text {
+	color: #cf9392;
+}
+div.timeline-entry.read.ui-selected .status-text {
+	color: #f0f0f0;
+}
+div.timeline-entry.read:not(.ui-selected) div.user {
+	padding: 0;
+	overflow: hidden;
+	opacity: 0.75;
+	white-space: nowrap;
+	transition: opacity 0.125s linear;
+	-webkit-transition: opacity 0.125s linear;
+}
+div.timeline-entry.read:not(.ui-selected):hover div.user {
+	opacity: 1;
+}
+div.timeline-entry.read:not(.ui-selected) div.user div.user-image {
+	width: 24px;
+	height: 24px;
+	margin: 0 auto;
+	background-size: 24px 24px;
+	-webkit-background-size: 24px 24px;
+	border:none;
+}
+div.timeline-entry.read:not(.ui-selected) div.user div.user-screen-name {
+	display: none;
+}
+div.timeline-entry.read:not(.ui-selected) div.status {
+	padding: 0;
+}
+div.timeline-entry.read:not(.ui-selected) .status-text {
+	margin-top: 5px; /* Show only status text */
+	margin-bottom:99px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+div.timeline-entry.read:not(.ui-selected):hover .status-text {
+	color: #000;
+}
+
+/*
+Selected entries
+The .ui-selected class name comes from the one used by the jQuery.ui
+selectables plugin. We don't actually use that here, but it was
+experimented with, and may return sometime.
+*/
+div.timeline-entry.ui-selected {
+	background: -webkit-gradient(
+		linear, left top, left bottom, from(#8888CC), to(#444466));
+	color: #fff;
+	outline: 0;
+}
+div.timeline-entry.ui-selected div.status-link {
+	color: #fff;
+	font-size: 9px;
+}
+div.timeline-entry.ui-selected a,
+div.timeline-entry.ui-selected a:link,
+div.timeline-entry.ui-selected .clickable {
+	color: #FFFFCC;
+	cursor: pointer;
+}
+div.timeline-entry.ui-selected div.user {
+}
+div.timeline-entry.ui-selecting {
+	background-color: #666 !important;
+}
+
+/*
+A container for the avatar image and the user's screen name
+*/
+div.user {
+	position: relative;
+	float: left;
+	width: 60px;
+	padding: 5px 3px 0 0;
+	overflow: visible;
+	text-align: center;
+}
+div.user-image {
+	width: 48px;
+	height: 48px;
+	margin: 0 auto 2px;
+	background: transparent 0 0 no-repeat;
+	background-size:48px 48px;
+	-webkit-background-size: 48px 48px;
+	-webkit-box-shadow:0 1px 5px #666;
+	border:1px solid #666666;
+	text-indent:-9999em;
+}
+div.user-screen-name {
+	font-size: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+div.user-screen-name:hover {
+	text-decoration: underline;
+}
+
+/*
+This is the container for the "status", which is the message posted + some metadata about it + some action links
+*/
+div.status {
+	min-height: 60px; /* Pushes bg image to bottom of div.timeline-entry */
+	margin:0 0 0 65px;
+	padding: 5px 0;
+	background: transparent right bottom no-repeat;
+	font-size: 11px;
+}
+div.timeline-entry.reply div.status {
+	background-image: url(../images/timeline-mention-bg-inset100.png);
+}
+div.timeline-entry.reply.ui-selected div.status {
+	background-image: url(../images/timeline-mention-bg.png);
+}
+div.timeline-entry.favorited div.status {
+	background-image: url(../images/timeline-favorite-bg-inset100.png);
+}
+div.timeline-entry.favorited.ui-selected div.status {
+	background-image: url(../images/timeline-favorite-bg.png);
+}
+div.timeline-entry.dm div.status {
+	background-image: url(../images/timeline-dm-bg.png);
+}
+div.timeline-entry div.status-thumbnails {
+	margin: 0 0 4px;
+}
+div.timeline-entry div.status-thumbnails img {
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+div.timeline-entry.read:not(.ui-selected) div.status-thumbnails {
+	float: left;
+	height: 24px !important;
+	margin-top: -5px;
+	margin-right: 4px;
+	padding: 0;
+	overflow: hidden;
+	opacity: 0.75;
+	transition: opacity 0.125s linear;
+	-webkit-transition: opacity 0.125s linear;
+}
+div.timeline-entry.read:not(.ui-selected):hover div.status-thumbnails {
+	opacity: 1;
+}
+div.timeline-entry.read:not(.ui-selected) div.status-thumbnails img {
+	height: 100%;
+}
+div.status-text {
+	margin-bottom: 4px;
+	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+div.status-text a:link {
+	display: inline-block;
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+div.timeline-entry.read:not(.ui-selected) div.status-text br {
+	display: none; /* Hide <br />s in collapsed tweets */
+}
+/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
+div.status-actions,
+div.draft-actions {
+	position: absolute;
+	left: -9999em;
+	top: -9999em;
+	/* Position out of bounds, rather than `display:none`, to hide this
+	element but still enable -webkit-transition when it reappears. */
+	background:rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	font-size: 10px;
+	opacity: 0;
+	transition: opacity 0.125s linear;
+	-webkit-transition: opacity 0.125s linear;
+}
+div.timeline-entry:hover:not(.read) div.status-actions,
+div.timeline-entry.ui-selected div.status-actions,
+#popbox-content-drafts div.content ul li:hover div.draft-actions {
+	left: auto;
+	right: 4px;
+	top: auto;
+	bottom: 4px;
+	opacity: 1;
+}
+.status-action,
+.status-action-del,
+.draft-action {
+	display: inline-block;
+	width: 23px;
+	height: 20px;
+	margin: 0 0 0 -8px; /* Reduce spacing */
+	background-color:transparent;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	text-indent: -9999em;
+	vertical-align: middle;
+}
+.status-action:hover,
+.status-action-del:hover,
+.draft-action:hover {
+	background-position: 0 -20px;
+}
+.status-action:first-child,
+.draft-action:first-child {
+	margin-left: 0;
+}
+.status-action-fav {
+	background-image: url(../images/status-fav-off.png);
+}
+div.timeline-entry.favorited .status-action-fav {
+	background-image: url(../images/status-fav-on.png);
+}
+.status-action-retweet {
+	background-image: url(../images/status-retweet.png);
+}
+.status-action-dm {
+	background-image: url(../images/status-dm.png);
+}
+.status-action-reply {
+	background-image: url(../images/status-reply.png);
+}
+.status-action-edit,
+.draft-action[data-action=edit] {
+	background-image: url(../images/status-edit.png);
+}
+.status-action-del,
+.draft-action[data-action=delete] {
+	background-image: url(../images/status-delete.png);
+}
+
+/* the container for the "permalink" to the post */
+div.status-link {
+	font-size: 9px;
+	color: #666666;
+}
+/* the link to the relative time of the posting. this is the permalink */
+a.status-created-at {
+}
+/* the text that says "from Foobar" */
+.status-source {
+	display: block;
+}
+/* the text with the name of the posting source ("Foobar") */
+.status-source-label {
+}
+/* the icon that indicates this is a protected post */
+span.status-protected {
+	display: block;
+	width: 9px;
+	height: 11px;
+	margin: 2px 0 0;
+	background: transparent url(../images/lock-black.png) 0 0 no-repeat;
+	opacity: 0.75;
+}
+div.timeline-entry.ui-selected span.status-protected {
+	background-image: url(../images/lock-white.png);
+	opacity: 1;
+}
+
+
+div.followers-row {
+	position: relative;
+	clear: both;
+	overflow: hidden;
+	padding: 5px;
+	border-top-width: medium;
+	border-top-style: solid;
+}
+div.followers-row div.user-name {
+	min-height: 35px;
+	margin: 5px 0 0 70px;
+	padding: 5px 0;
+}
+div.followers-row div.user-name-screen {
+	font-weight: bold;
+}
+div.followers-row div.user-name-full {
+	font-size: 0.75em;
+}
