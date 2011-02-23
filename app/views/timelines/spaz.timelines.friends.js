@@ -238,8 +238,8 @@ var FriendsTimeline = function() {
 			$('div.timeline-entry.new div.status-text', thisFT.timeline.container).each(function(i) {
 				var urls = thisFT.shurl.findExpandableURLs(this.innerHTML);
 				if (urls) {
-					sch.debug(urls);
-					sch.debug(this.innerHTML);
+					sch.debug("urls:");
+					sch.debug(JSON.stringify(urls));
 					sch.listen(this, sc.events.newExpandURLSuccess, thisFT.expandURL);
 					thisFT.shurl.expandURLs(urls, this);
 				}
@@ -386,7 +386,8 @@ var FriendsTimeline = function() {
 		sch.unlisten(el, sc.events.newExpandURLSuccess, thisFT.expandURL);
 
 		sch.debug('expanding…');
-		sch.debug(data);
+		sch.debug(JSON.stringify(data));
+		
 		if(data.longurl){
 			// `data.longurl` may be null if the URL lengthening service fails
 			el.innerHTML = thisFT.shurl.replaceExpandableURL(
