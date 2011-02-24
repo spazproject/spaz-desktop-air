@@ -1,4 +1,4 @@
-/*********** Built 2011-02-23 18:58:18 EST ***********/
+/*********** Built 2011-02-23 19:56:22 EST ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -10710,7 +10710,7 @@ SpazShortURL.prototype.findExpandableURLs = function(str) {
 		} else if (thisdomain == 'ow.ly') { // we have to skip ow.ly/i/XXX links
 			regexes.push(new RegExp("http://"+thisdomain+"/(-?[a-zA-Z0-9]{2,})", "gi"));
 		} else {
-			regexes.push(new RegExp("http://"+thisdomain+"/([a-zA-Z0-9]+)", "gi"));
+			regexes.push(new RegExp("http://"+thisdomain+"/([a-zA-Z0-9-_]+)", "gi"));
 		}
 		
 	};
@@ -10718,12 +10718,9 @@ SpazShortURL.prototype.findExpandableURLs = function(str) {
 	sch.debug("looking for "+regexes+ " in '"+str+"'");
 	for (i=0; i < regexes.length; i++) {
 		thisregex = regexes[i];
-		
-		for (j=0; j < all_urls.length; j++) {
-			if (all_urls[j].match(thisregex)) {
-				matches.push(all_urls[j]);
-			}
-		}
+		while( (re_matches = thisregex.exec(sch.trim(str))) != null) {
+			matches.push(re_matches[0]);
+		}		
 	};
 	
 	sch.debug('Matches: '+matches);
