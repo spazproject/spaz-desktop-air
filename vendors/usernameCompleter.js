@@ -15,7 +15,7 @@ function usernameCompleter(opts) {
 	this.displayDiv		= opts.displayDiv;
 	this.textarea 		= opts.textarea;
 	this.maxMatches		= opts.maxMatches;
-	this.timeout        = opts.timeout || 500; // the delay, in ms, before firing the autocomplete lookup
+	this.timeout        = opts.timeout || 250; // the delay, in ms, before firing the autocomplete lookup
 	
 	this.timeoutID      = null; // holds the timeout function ID, so we can clear it
 	this.topMatch		= null;
