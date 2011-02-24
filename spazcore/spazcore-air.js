@@ -1,4 +1,4 @@
-/*********** Built 2010-12-30 17:23:24 EST ***********/
+/*********** Built 2011-02-23 18:58:18 EST ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -8559,16 +8559,23 @@ SpazImageUploader.prototype.services = {
 			
 			var parser=new DOMParser();
 			xmldoc = parser.parseFromString(data,"text/xml");
-
+			
 			var status;
-			var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
-			status = rspAttr.getNamedItem("stat").nodeValue;
+			var rspAttr;
+			var errMsg;
+			
+			try {
+				rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+				status = rspAttr.getNamedItem("stat").nodeValue;
+			} catch(e) {
+				errMsg = 'Unknown error uploading image';
+				return {'error':errMsg};
+			}
 			
 			if (status == 'ok') {
 				var mediaurl = xmldoc.getElementsByTagName("mediaurl")[0].childNodes[0].nodeValue; 
 				return {'url':mediaurl};
 			} else {
-				var errMsg;
 				if (xmldoc.getElementsByTagName("err")[0]) {
 					errMsg = xmldoc.getElementsByTagName("err")[0].childNodes[0].nodeValue;
 				} else {
@@ -9355,7 +9362,7 @@ var sc, Titanium, air, jQuery, Mojo;
 /**
  * @constant 
  */
-var SPAZCORE_PREFS_TI_KEY = 'preferences_json';
+var SPAZCORE_PREFS_TI_KEY = 'preferences.json';
 
 /**
  * @constant 
@@ -10341,10 +10348,6 @@ var sc, jQuery;
 /**
  * @constant 
  */
-var SPAZCORE_SHORTURL_SERVICE_SHORTIE = 'short.ie';
-/**
- * @constant 
- */
 var SPAZCORE_SHORTURL_SERVICE_ISGD	  = 'is.gd';
 /**
  * @constant 
@@ -10354,6 +10357,10 @@ var SPAZCORE_SHORTURL_SERVICE_BITLY	  = 'bit.ly';
  * @constant 
  */
 var SPAZCORE_SHORTURL_SERVICE_JMP     = 'j.mp';
+/**
+ * @constant 
+ */
+var SPAZCORE_SHORTURL_SERVICE_GOOGLE  = 'goo.gl';
 
 /**
  * @constant 
@@ -10473,91 +10480,37 @@ SpazShortURL.prototype.getAPIObj = function(service) {
 	
 	apis[SPAZCORE_SHORTURL_SERVICE_BITLY] = {
 		'url'	  : 'http://bit.ly/api',
-		'getData' : function(longurl, opts){
-			
-			/*
-				use the api if we're doing multiple URLs
-			*/
-			if (sc.helpers.isArray(longurl)) {
-				apis[SPAZCORE_SHORTURL_SERVICE_BITLY].processing_multiple = true;
-				apis[SPAZCORE_SHORTURL_SERVICE_BITLY].url = 'http://api.bit.ly/shorten';
-				opts.longUrl = longurl;
-				return opts;
-			} else {
-				apis[SPAZCORE_SHORTURL_SERVICE_BITLY].processing_multiple = false;
-				return { 'url':longurl };				
-			}
-		},
-		'processResult' : function(data) {
-			if (apis[SPAZCORE_SHORTURL_SERVICE_BITLY].processing_multiple === true) {
-				var result = sc.helpers.deJSON(data);
-				var rs = {};
-				for (var i in result.results) {
-					rs[i] = result.results[i].shortUrl;
-				}
-				return rs;
-			} else {
-				return data;
-			}
+		'getData' : function(longurl, opts) {
+			return { 'url':longurl };				
 		}
-		
 	};
 		
 	apis[SPAZCORE_SHORTURL_SERVICE_JMP] = {
 		'url'	  : 'http://j.mp/api',
 		'getData' : function(longurl, opts){
-			
-			/*
-				use the api if we're doing multiple URLs
-			*/
-			if (sc.helpers.isArray(longurl)) {
-				apis[SPAZCORE_SHORTURL_SERVICE_JMP].processing_multiple = true;
-				apis[SPAZCORE_SHORTURL_SERVICE_JMP].url = 'http://api.j.mp/shorten';
-				opts.longUrl = longurl;
-				return opts;
-			} else {
-				apis[SPAZCORE_SHORTURL_SERVICE_JMP].processing_multiple = false;
-				return { 'url':longurl };				
-			}
-		},
-		'processResult' : function(data) {
-			if (apis[SPAZCORE_SHORTURL_SERVICE_JMP].processing_multiple === true) {
-				var result = sc.helpers.deJSON(data);
-				var rs = {};
-				for (var i in result.results) {
-					rs[i] = result.results[i].shortUrl;
-				}
-				return rs;
-			} else {
-				return data;
-			}
-		}
-		
-	};
-		
-	apis[SPAZCORE_SHORTURL_SERVICE_SHORTIE] = {
-		'url'	  : 'http://short.ie/api?',
-		'getData' : function(longurl, opts){
-			
-			if (longurl.match(/ /gi)) {
-				longurl = longurl.replace(/ /gi, '%20');
-			}
-			
-			var shortie = {
-				orig: longurl,
-				url:  longurl,
-				email:	 '',
-				'private': 'false',
-				format:	 'rest'
-			};
-			return shortie;
+			return { 'url':longurl };				
 		}
 	};
 		
 	apis[SPAZCORE_SHORTURL_SERVICE_ISGD] = {
-		'url'	  : 'http://is.gd/api.php',
+		'url'	  : 'http://is.gd/create.php',
 		'getData' : function(longurl, opts) {
-			return { 'longurl':longurl };
+			return { 'url':longurl, 'format':'simple' };
+		}
+	};
+	
+	apis[SPAZCORE_SHORTURL_SERVICE_GOOGLE] = {
+		'url'	  : 'https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBMFTY7VjWGoXeFwbiY7vXoqAssjTr0od0',
+		// 'url'	  : 'https://www.googleapis.com/urlshortener/v1/url',
+		'contentType':'application/json',
+		'getData' : function(longurl, opts) {
+			return JSON.stringify({ 'longUrl':longurl  });
+		},
+		'processResult' : function(data) {
+			var result = sc.helpers.deJSON(data);
+			result.longurl = result.longUrl;
+			result.shorturl = result.id;
+			return result;
 		}
 	};
 	
@@ -10581,55 +10534,74 @@ SpazShortURL.prototype.shorten = function(longurl, opts) {
 	*/
 	opts.event_target = opts.event_target || document;
 	opts.apiopts	  = opts.apiopts	  || null;
-	
-	/*
-		we call getData now in case it needs to override anything
-	*/
-	var apidata = this.api.getData(longurl, opts.apiopts);
 
-	if (sc.helpers.getMojoURL) {
-		this.api.url = sc.helpers.getMojoURL(this.api.url);
+
+
+	if (sch.isString(longurl)) {
+		longurl = [longurl];
 	}
+	
+	
+	for (var i=0; i < longurl.length; i++) {
+
+		longurl[i];
+
+	
+		/*
+			we call getData now in case it needs to override anything
+		*/
+		var apidata = this.api.getData(longurl[i], opts.apiopts);
+
+		if (sc.helpers.getMojoURL) {
+			this.api.url = sc.helpers.getMojoURL(this.api.url);
+		}
 		
+		getShortURL(longurl[i], shortener, apidata, opts, this);
+		
+	}
+	
+	function getShortURL(longurl, shortener, apidata, opts, self) {
+		jQuery.ajax({
+			'traditional':true, // so we don't use square brackets on arrays in data. Bit.ly doesn't like it
+			'dataType':'text',
+			complete:function(xhr, rstr) {
+			},
+			'error':function(xhr, msg, exc) {
+				sc.helpers.dump(shortener.api.url + ' error:'+msg);
 
-	var xhr = jQuery.ajax({
-		'traditional':true, // so we don't use square brackets on arrays in data. Bit.ly doesn't like it
-		'dataType':'text',
-		complete:function(xhr, rstr) {
-		},
-		'error':function(xhr, msg, exc) {
-			sc.helpers.dump(shortener.api.url + ' error:'+msg);
-			
-			var errobj = {'url':shortener.api.url, 'xhr':null, 'msg':null};
-			
-			if (xhr) {
-				errobj.xhr = xhr;
-				sc.helpers.error("Error:"+xhr.status+" from "+ shortener.api.url);
-			} else {
-				sc.helpers.error("Error:Unknown from "+ shortener.api.url);
-				errobj.msg = 'Unknown Error';
-			}
-			shortener._onShortenResponseFailure(errobj, opts.event_target);
-		},
-		success:function(data) {
-			// var shorturl = trim(data);
-			var return_data = {};
-			if (shortener.api.processResult) {
-				return_data = shortener.api.processResult(data);
-			} else {
-				return_data = {
-					'shorturl':data,
-					'longurl' :longurl
-				};
-			}
-			sch.error(return_data);
-			shortener._onShortenResponseSuccess(return_data, opts.event_target);
-		},
-		'type':"POST",
-		'url' :this.api.url,
-		'data':apidata
-	});
+				var errobj = {'url':shortener.api.url, 'xhr':null, 'msg':null};
 
+				if (xhr) {
+					errobj.xhr = xhr;
+					sc.helpers.error("Error:"+xhr.status+" from "+ shortener.api.url);
+				} else {
+					sc.helpers.error("Error:Unknown from "+ shortener.api.url);
+					errobj.msg = 'Unknown Error';
+				}
+				shortener._onShortenResponseFailure(errobj, opts.event_target);
+			},
+			success:function(data) {
+				// var shorturl = trim(data);
+				var return_data = {};
+				if (shortener.api.processResult) {
+					return_data = shortener.api.processResult(data);
+				} else {
+					return_data = {
+						'shorturl':data,
+						'longurl' :longurl
+					};
+				}
+				sch.error(return_data);
+				shortener._onShortenResponseSuccess(return_data, opts.event_target);
+			},
+
+			'type':self.api.method || "POST",
+			'contentType':self.api.contentType || "application/x-www-form-urlencoded",
+			'url' :self.api.url,
+			'data':apidata
+		});			
+	}
+	
 };
 
 SpazShortURL.prototype._onShortenResponseSuccess = function(data, target) {
@@ -10727,12 +10699,16 @@ SpazShortURL.prototype._onExpandResponseFailure = function(errobj, target) {
 
 
 SpazShortURL.prototype.findExpandableURLs = function(str) {
-	var x, i, matches = [], re_matches, key, thisdomain, thisregex, regexes = [];
+	var x, i, j, matches = [], key, thisdomain, thisregex, regexes = [];
+	
+	var all_urls = sch.extractURLs(str);
 	
 	for (i=0; i < SPAZCORE_EXPANDABLE_DOMAINS.length; i++) {
 		thisdomain = SPAZCORE_EXPANDABLE_DOMAINS[i];
 		if (thisdomain == 'ff.im') {
 			regexes.push(new RegExp("http://"+thisdomain+"/(-?[a-zA-Z0-9]+)", "gi"));
+		} else if (thisdomain == 'ow.ly') { // we have to skip ow.ly/i/XXX links
+			regexes.push(new RegExp("http://"+thisdomain+"/(-?[a-zA-Z0-9]{2,})", "gi"));
 		} else {
 			regexes.push(new RegExp("http://"+thisdomain+"/([a-zA-Z0-9]+)", "gi"));
 		}
@@ -10742,9 +10718,12 @@ SpazShortURL.prototype.findExpandableURLs = function(str) {
 	sch.debug("looking for "+regexes+ " in '"+str+"'");
 	for (i=0; i < regexes.length; i++) {
 		thisregex = regexes[i];
-		while( (re_matches = thisregex.exec(sch.trim(str))) != null) {
-			matches.push(re_matches[0]);
-		}		
+		
+		for (j=0; j < all_urls.length; j++) {
+			if (all_urls[j].match(thisregex)) {
+				matches.push(all_urls[j]);
+			}
+		}
 	};
 	
 	sch.debug('Matches: '+matches);
