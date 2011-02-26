@@ -225,16 +225,6 @@ var FriendsTimeline = function() {
 			/*
 				expand URLs
 			*/
-			// var exp_urls = [];
-			// for (var i=0; i < no_dupes.length; i++) {
-			//	urls = thisFT.shurl.findExpandableURLs(no_dupes[i].text);
-			//	if (urls) {
-			//		exp_urls = exp_urls.concat(urls);
-			//	}
-			// };
-			// 
-			// thisFT.shurl.expandURLs(exp_urls, thisFT.timeline.container);
-
 			$('div.timeline-entry.new div.status-text', thisFT.timeline.container).each(function(i) {
 				var urls = thisFT.shurl.findExpandableURLs(this.innerHTML);
 				if (urls) {
