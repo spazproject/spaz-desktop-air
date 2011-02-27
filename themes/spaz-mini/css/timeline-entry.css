@@ -28,10 +28,10 @@ div.timeline-entry {
 	position: relative;
 	clear: both;
 	overflow: hidden;
-	border-top-width: medium;
+	border-top-width: 1px;
 	border-top-style: solid;
 	border-top-color: #999966;
-	padding: 8px 5px;
+	padding: 4px;
 	
 }
 div.timeline-entry:hover {
@@ -48,8 +48,8 @@ div.timeline-entry.dm {/* Direct messages */
 	outline: 0;
 }
 div.timeline-entry.retweet .status-text {
-	background: transparent url(../images/retweeted.png) 0 0 no-repeat;
-	text-indent: 24px;
+	background: transparent url(../images/retweeted.png) 2px 3px no-repeat;
+	text-indent: 18px;
 }
 div.timeline-entry.retweet .status-text * {
 	text-indent: 0;
@@ -149,20 +149,19 @@ A container for the avatar image and the user's screen name
 div.user {
 	position: relative;
 	float: left;
-	width: 60px;
-	padding: 5px 3px 0 0;
+	width: 30px;
+	padding: 2px 1px 0 0;
 	overflow: visible;
 	text-align: center;
 }
 div.user-image {
-	width: 48px;
-	height: 48px;
+	width: 24px;
+	height: 24px;
 	margin: 0 auto 2px;
 	background: transparent 0 0 no-repeat;
-	background-size:48px 48px;
-	-webkit-background-size: 48px 48px;
-	-webkit-box-shadow:0 1px 5px #666;
-	border:1px solid #666666;
+	background-size:24px 24px;
+	-webkit-background-size:24px 24px;
+/*	-webkit-box-shadow:0 1px 5px #666;*/
 	text-indent:-9999em;
 }
 div.user-screen-name {
@@ -170,6 +169,11 @@ div.user-screen-name {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	display:inline-block;
+	font-weight: bold;
+}
+div.user-screen-name:after {
+	content:":";
 }
 div.user-screen-name:hover {
 	text-decoration: underline;
@@ -179,9 +183,9 @@ div.user-screen-name:hover {
 This is the container for the "status", which is the message posted + some metadata about it + some action links
 */
 div.status {
-	min-height: 60px; /* Pushes bg image to bottom of div.timeline-entry */
-	margin:0 0 0 65px;
-	padding: 5px 0;
+/*	min-height: 60px;*/
+	margin:0 0 0 35px;
+	padding: 0px 0;
 	background: transparent right bottom no-repeat;
 	font-size: 11px;
 }
@@ -225,7 +229,7 @@ div.timeline-entry.read:not(.ui-selected) div.status-thumbnails img {
 	height: 100%;
 }
 div.status-text {
-	margin-bottom: 4px;
+	margin-bottom: 2px;
 	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 div.status-text a:link {
@@ -313,20 +317,21 @@ div.timeline-entry.favorited .status-action-fav {
 div.status-link {
 	font-size: 9px;
 	color: #666666;
+	font-weight:bold;
 }
 /* the link to the relative time of the posting. this is the permalink */
 a.status-created-at {
 }
 /* the text that says "from Foobar" */
 .status-source {
-	display: block;
+	display: inline-block;
 }
 /* the text with the name of the posting source ("Foobar") */
 .status-source-label {
 }
 /* the icon that indicates this is a protected post */
 span.status-protected {
-	display: block;
+	display: inline-block;
 	width: 9px;
 	height: 11px;
 	margin: 2px 0 0;
@@ -349,8 +354,8 @@ div.followers-row {
 }
 div.followers-row div.user-name {
 	min-height: 35px;
-	margin: 5px 0 0 70px;
-	padding: 5px 0;
+	margin:  0px 0 0 35px;
+	padding: 0px 0;
 }
 div.followers-row div.user-name-screen {
 	font-weight: bold;

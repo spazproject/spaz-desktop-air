@@ -6,9 +6,9 @@ The entryform contains the #entrybox textarea input for posts and the #updateBut
 	position: absolute;
 	margin:0;
 	padding:0;
-	bottom:29px;
-	left:10px;
-	right:10px;
+	bottom:24px;
+	left:  5px;
+	right: 5px;
 	height:100px;
 	z-index: 10;
 }

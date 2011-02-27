@@ -270,25 +270,25 @@ The contains the classic "Spaz" title and the window buttons
 		color-stop(0.5, #111111)
 	);
 	color:#FFFFFF;
-	font-size:18px;
+	font-size:14px;
 	margin-left:auto;
 	margin-right:auto;
 	margin-top:0;
-	padding:5px 10px 10px 10px;
+	padding:5px 10px 10px 5px;
 	text-align:left;
-	height:42px;
+	height:37px;
 	position:absolute;
-	top:   10px;
-	left:  10px;
-	right: 10px;
+	top:   5px;
+	left:  5px;
+	right: 5px;
 	-khtml-border-top-left-radius:5px;
 	-khtml-border-top-right-radius:5px;
 	cursor: move;
 }
 		#window-buttons {
 			position:absolute;
-			right:	5px;
-			top:	0px;
+			right:	4px;
+			top:	2px;
 			text-align:right;
 		}
 		#header-label, .window-button {
@@ -298,21 +298,23 @@ The contains the classic "Spaz" title and the window buttons
 				linear, left top, left bottom, from(#404040), to(#606060)
 			);
 			-khtml-border-radius:5px;
-			font-size:14px;
+			font-size:12px;
 			cursor:pointer;
 			margin:0;
+			line-height:14px;
+			overflow:hidden;
 		}
 			#header-label {
 				display:inline-block;
 			}
 				#header-label .current {
 					display: inline-block;
-					width: 16px;
-					height: 16px;
-					margin: 3px 6px 0 0;
+					width:  10px;
+					height: 10px;
+					margin: 0px 0px 0 0;
 					background: transparent 0 0 no-repeat;
-					background-size: 16px 16px;
-					-webkit-background-size: 16px 16px;
+					background-size: 10px 10px;
+					-webkit-background-size: 10px 10px;
 					border-radius: 4px;
 					-webkit-border-radius: 4px;
 					pointer-events: none;
@@ -365,9 +367,9 @@ default style.
 */
 #timeline-tabs, .TabbedPanelsTabGroup {
 	position:absolute;
-	left:20px;
+	left: 55px;
 	right:10px;
-	top:50px;
+	top:  10px;
 	margin: 0px;
 	padding: 0px;
 	pointer-events: none;
@@ -396,12 +398,11 @@ content panel.
 .TabbedPanelsTab,
 #tools-menu-toggle {
 	position: relative;
-	top: -5px;
 	float: left;
-	padding: 2px 6px;
-	margin: 0px 5px 0px 0px;
+	padding: 0px;
+	margin:  0px;
 	font-size: 11px;
-	background-color: #3A3C2C;
+	background-color: transparent;
 	color:#CCCCCC;
 	list-style: none;
 	-moz-user-select: none;
@@ -414,10 +415,12 @@ content panel.
 }
 .TabbedPanelsTab {
 	position: relative;
-	top: -5px;
+/*	top: -5px;*/
 	float: left;
 	border: none;
 	list-style: none;
+	padding:1px 3px;
+	margin:0 1px 0 0;
 }
 #tools-menu-toggle {
 /*	display:none;*/
@@ -464,150 +467,11 @@ ring around it, instead of the focus ring around the entire tab.
 	color: #FFFFFF;
 	text-decoration: none;
 }
-/*#tab-friends {
-}
-body:not(.active) #tab-friends {
-	background-position: 0 -23px;
-}
-#tab-friends:not(.TabbedPanelsTabSelected):active {
-	background-position: 0 -46px;
-}
-#tab-friends.TabbedPanelsTabSelected {
-	background-position: 0 -69px;
-}
-body:not(.active) #tab-friends.TabbedPanelsTabSelected {
-	background-position: 0 -92px;
-}
-#tab-friends.TabbedPanelsTabSelected:active {
-	background-position: 0 -115px;
-}
-#tab-user {
-	background-position: -31px 0;
-}
-body:not(.active) #tab-user {
-	background-position: -31px -23px;
-}
-#tab-user:not(.TabbedPanelsTabSelected):active {
-	background-position: -31px -46px;
-}
-#tab-user.TabbedPanelsTabSelected {
-	background-position: -31px -69px;
-}
-body:not(.active) #tab-user.TabbedPanelsTabSelected {
-	background-position: -31px -92px;
-}
-#tab-user.TabbedPanelsTabSelected:active {
-	background-position: -31px -115px;
-}
-#tab-favorites {
-	background-position: -31px 0;
-}
-body:not(.active) #tab-favorites {
-	background-position: -31px -23px;
-}
-#tab-favorites:not(.TabbedPanelsTabSelected):active {
-	background-position: -31px -46px;
-}
-#tab-favorites.TabbedPanelsTabSelected {
-	background-position: -31px -69px;
-}
-body:not(.active) #tab-favorites.TabbedPanelsTabSelected {
-	background-position: -31px -92px;
-}
-#tab-favorites.TabbedPanelsTabSelected:active {
-	background-position: -31px -115px;
-}
-#tab-userlists {
-	background-position: -62px 0;
-}
-body:not(.active) #tab-userlists {
-	background-position: -62px -23px;
-}
-#tab-userlists:not(.TabbedPanelsTabSelected):active {
-	background-position: -62px -46px;
-}
-#tab-userlists.TabbedPanelsTabSelected {
-	background-position: -62px -69px;
-}
-body:not(.active) #tab-userlists.TabbedPanelsTabSelected {
-	background-position: -62px -92px;
-}
-#tab-userlists.TabbedPanelsTabSelected:active {
-	background-position: -62px -115px;
-}
-#tab-public {
-	background-position: 0 0;
-	margin-left: 8px;
-}
-body:not(.active) #tab-public {
-	background-position: 0 -23px;
-}
-#tab-public:not(.TabbedPanelsTabSelected):active {
-	background-position: 0 -46px;
-}
-#tab-public.TabbedPanelsTabSelected {
-	background-position: 0 -69px;
-}
-body:not(.active) #tab-public.TabbedPanelsTabSelected {
-	background-position: 0 -92px;
-}
-#tab-public.TabbedPanelsTabSelected:active {
-	background-position: 0 -115px;
-}
-#tab-search {
-	background-position: -62px 0;
-}
-body:not(.active) #tab-search {
-	background-position: -62px -23px;
-}
-#tab-search:not(.TabbedPanelsTabSelected):active {
-	background-position: -62px -46px;
-}
-#tab-search.TabbedPanelsTabSelected {
-	background-position: -62px -69px;
-}
-body:not(.active) #tab-search.TabbedPanelsTabSelected {
-	background-position: -62px -92px;
-}
-#tab-search.TabbedPanelsTabSelected:active {
-	background-position: -62px -115px;
-}
-#tab-followerslist {
-	background-position: -93px 0;
-	margin-left: 8px;
-}
-body:not(.active) #tab-followerslist {
-	background-position: -93px -23px;
-}
-#tab-followerslist:not(.TabbedPanelsTabSelected):active {
-	background-position: -93px -46px;
-}
-#tab-followerslist.TabbedPanelsTabSelected {
-	background-position: -93px -69px;
-}
-body:not(.active) #tab-followerslist.TabbedPanelsTabSelected {
-	background-position: -93px -92px;
-}
-#tab-followerslist.TabbedPanelsTabSelected:active {
-	background-position: -93px -115px;
-}
-#tools-menu-toggle {
-	background-position: -124px 0;
-	position: absolute;
-	width: 40px;
-	margin-left: 15px;
-}
-body:not(.active) #tools-menu-toggle {
-	background-position: -124px -23px;
-}
-#tools-menu-toggle:active {
-	background-position: -124px -46px;
-}*/
 
 /* The image in the tab itself */
 .tab-icon {
 	margin-bottom:-1px;
-	width:18px;
+	width: 18px;
 	height:18px;
 	display:block;
 	background-repeat: no-repeat;
@@ -698,12 +562,12 @@ surround the content.
 .TabbedPanelsContentGroup {
 	clear: both;
 	position:absolute;
-	border-top:   6px solid #575A47;
+	border-top:   3px solid #575A47;
 	border-bottom:0px solid #575A47;
-	top:   67px;
-	left:  10px;
-	right: 10px;
-	bottom:130px;
+	top:   31px;
+	left:  5px;
+	right: 5px;
+	bottom:125px;
 	background-color:#FFFFFF;
 }
 
@@ -784,9 +648,9 @@ div.timeline {
 }
 div.timeline-subtitle {
 	position: fixed;
-	left: 18px;
-	right: 18px;
-	top: 105px;
+	left:  13px;
+	right: 13px;
+	top:   66px;
 	overflow: hidden;
 /*	min-width: 261px; /* = #container min-width - horizontal padding */*/
 	margin: -1px 0 0;
@@ -883,9 +747,9 @@ The bar at the bottom of the app that displays info
 	background: -webkit-gradient(
 		linear, left top, left bottom, from(#222222), to(#000000),
 		color-stop(0.5, #111111));
-	bottom:10px;
-	left:10px;
-	right:10px;
+	bottom:5px;
+	left:  5px;
+	right: 5px;
 	-khtml-border-bottom-left-radius: 5px;
 	-khtml-border-bottom-right-radius:5px;
 	overflow:hidden;
@@ -897,7 +761,7 @@ The bar at the bottom of the app that displays info
 		float:right;
 		display:none;
 		top:  5px;
-		right:6px;
+		right: 6px;
 		height:12px;
 		width: 12px;
 		background: transparent url(images/loading-white-12x12.png) 0 0 no-repeat;
@@ -919,8 +783,8 @@ but I'm kind of an idiot.
 */
 #resize-sw {
 	position: absolute;
-	bottom: 4px;
-	right: 4px;
+	bottom: 6px;
+	right:  6px;
 	font-size: 12px;
 	background-image: url(images/resize-sw.png);
 	text-align: center;
