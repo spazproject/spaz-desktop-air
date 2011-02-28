@@ -316,7 +316,7 @@ SpazPostPanel.prototype.shortenURLs = function() {
 		Spaz.UI.statusBar('URLs shortened');
 		Spaz.UI.hideLoading();		
 		
-		var newtext = sc.helpers.replaceMultiple(thisPP.getMessageText(), data);
+		var newtext = thisPP.getMessageText().replace(data.longurl, data.shorturl);
 		thisPP.setMessageText(newtext); 
 		thisPP.updateTextMetadata();
 		sch.unlisten(event_target, sc.events.newShortURLSuccess, onShortURLSuccess);
@@ -341,8 +341,6 @@ SpazPostPanel.prototype.shortenURLs = function() {
 	surl.shorten(reallylongurls, {
 		'event_target':event_target,
 		'apiopts': {
-			'version':'2.0.1',
-			'format':'json',
 			'login':Spaz.Prefs.get('services-bitly-login') || 'spazcore',
 			'apiKey':Spaz.Prefs.get('services-bitly-apikey') || 'R_f3b86681a63a6bbefc7d8949fd915f1d'
 		}
