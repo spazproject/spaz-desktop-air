@@ -185,13 +185,12 @@ SpazPostPanel.prototype.addListeners = function() {
 			}
 			return false;
 		});
+	
+	// bind shortener listeners
+	sch.listen(this.textarea, sc.events.newShortURLSuccess, _.bind(this.onShortURLSuccess, this));
+	sch.listen(this.textarea, sc.events.newShortURLFailure, _.bind(this.onShortURLFailure, this));
 };
 
-// SpazPostPanel.prototype.removeListeners = function() {
-//	sc.helpers.unlisten(this.textarea, 'keyup');
-//	sc.helpers.unlisten(this.textarea, 'focus');
-//	sc.helpers.unlisten(this.textarea, 'blur');
-// };
 
 SpazPostPanel.prototype.updateTextMetadata = function(){
 	var thisPP = this;
@@ -312,29 +311,7 @@ SpazPostPanel.prototype.shortenURLs = function() {
 		return;
 	}
 	
-	function onShortURLSuccess(e, data) {
-		Spaz.UI.statusBar('URLs shortened');
-		Spaz.UI.hideLoading();		
-		
-		var newtext = thisPP.getMessageText().replace(data.longurl, data.shorturl);
-		thisPP.setMessageText(newtext); 
-		thisPP.updateTextMetadata();
-		sch.unlisten(event_target, sc.events.newShortURLSuccess, onShortURLSuccess);
-		sch.unlisten(event_target, sc.events.newShortURLFailure, onShortURLFailure);
-	}
-	function onShortURLFailure(e) {
-		Spaz.UI.statusBar('URL shortening failed');
-		Spaz.UI.hideLoading();
-
-		thisPP.updateTextMetadata();
-		sch.unlisten(event_target, sc.events.newShortURLSuccess, onShortURLSuccess);
-		sch.unlisten(event_target, sc.events.newShortURLFailure, onShortURLFailure);
-	}
 	
-	sch.listen(event_target, sc.events.newShortURLSuccess, onShortURLSuccess);
-	sch.listen(event_target, sc.events.newShortURLFailure, onShortURLFailure);
-
-
 	Spaz.UI.statusBar('Shortening URLs in message');
 	Spaz.UI.showLoading();
 	
@@ -346,6 +323,25 @@ SpazPostPanel.prototype.shortenURLs = function() {
 		}
 	});
 };
+
+
+
+SpazPostPanel.prototype.onShortURLSuccess = function(e, data) {
+	Spaz.UI.statusBar('URLs shortened');
+	Spaz.UI.hideLoading();		
+	
+	var newtext = this.getMessageText().replace(data.longurl, data.shorturl);
+	this.setMessageText(newtext); 
+	this.updateTextMetadata();
+};
+
+SpazPostPanel.prototype.onShortURLFailure = function(e) {
+	Spaz.UI.statusBar('URL shortening failed');
+	Spaz.UI.hideLoading();
+
+	this.updateTextMetadata();
+};
+
 
 
 SpazPostPanel.prototype.submit = function() {
