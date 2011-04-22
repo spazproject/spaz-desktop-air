@@ -692,12 +692,23 @@ Spaz.Controller.setKeyboardShortcuts = function() {
 			target:$('#entrybox')[0],
 			propagate:false
 	});
-	shortcut.add('Enter', function() {
+	
+    shortcut.add('Enter', function() {
+        if (!Spaz.Prefs.get('keyboard-enterInsertsNewline')) {
+            Spaz.postPanel.submit();
+        }
+		}, {
+			target:$('#entrybox')[0],
+			propagate:true
+	});
+	
+    shortcut.add('Shift+Enter', function() {
 			Spaz.postPanel.submit();
 		}, {
 			target:$('#entrybox')[0],
 			propagate:false
 	});
+
 
 	// ****************************************
 	// Username/password prefs -> save
