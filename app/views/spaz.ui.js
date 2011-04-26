@@ -217,7 +217,11 @@ Spaz.UI.setCurrentPage = function(tabEl, newpage) {
     $('#' + panel + ' .timeline-pager-number').html(newpage);
 };
 Spaz.UI.showEntryboxTip = function() {
-    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '@'+Spaz.Prefs.getAccountType()+'</span>. ENTER sends.');
+    var enter_does_what = 'ENTER sends.';
+    if (Spaz.Prefs.get('keyboard-enterInsertsNewline')) {
+        enter_does_what = 'SHIFT+ENTER sends.';
+    }
+    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '@'+Spaz.Prefs.getAccountType()+'</span>. '+enter_does_what);
 }
 
 Spaz.UI.showLocationOnMap = function(location) {
