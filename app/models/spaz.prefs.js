@@ -124,7 +124,9 @@ Spaz.Prefs.defaultPreferences = {
 	'key-reloadTimeline': "Shift+F5",
 	'key-showShortenWindow': "+Shift+A",
 	'key-showUploadImageWindow': "+Shift+U",
-	'key-highlight-code': "+R"
+	'key-highlight-code': "+R",
+	
+	'key-enterIsNewline' : false
 };
 
 
@@ -998,8 +1000,20 @@ Spaz.Prefs.changeMethods = {
 		onChange: function(value) {
 			Spaz.Dock.setShape(value);
 		}
-	}
-
+	},
+    
+    'keyboard-enterInsertsNewline' : {
+        setUI: function(value) {
+			$('#keyboard-enterInsertsNewline').attr('checked', value);
+		},
+        onGet: function(key, value) {
+			return !!value;
+		},
+		onSet: function(key, value) {
+			return !!value;
+		}
+    }
+    
 };
 
 
@@ -1108,7 +1122,8 @@ Spaz.Prefs.initUI = function() {
 	$('#dock-displayunreadbadge').bind('change', Spaz.Prefs.setFromUI);
 	$('#dock-unreadbadgecolor').bind('change', Spaz.Prefs.setFromUI);
 	$('#dock-unreadbadgeshape').bind('change', Spaz.Prefs.setFromUI);
-
+    
+    $('#keyboard-enterInsertsNewline').bind('change', Spaz.Prefs.setFromUI);
 };
 
 
