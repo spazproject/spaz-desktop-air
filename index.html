@@ -32,6 +32,9 @@
 	<script src="vendors/BlenderEffect.js" type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/Tween.js" type="text/javascript" charset="utf-8"></script>
 
+	<!-- jsOAuth -->
+	<script src="vendors/jsOAuth-1.1.js" type="text/javascript" charset="utf-8"></script>
+
 	<!-- jQuery libs -->
 	<script src="vendors/jquery/jquery-1.4.2.js"				type="text/javascript" charset="utf-8"></script>
 	
@@ -478,12 +481,22 @@
 													<div class="content">
 														<!-- a place to store the ID we're editing -->
 														<input type="hidden" name="id_edit" value="" id="id_edit" />
-												
-														<div class="formrow">
+														
+														<div class="formrow reauthorize-twitter-controls">
+															<h2 id="twitter-username"></h2>
+															<button id="twitter-reauthorize" class="primary">Re-Authorize</button>
+														</div>
+														<div class="formrow reauthorize-twitter-controls" id="twitter-pin-row">
+															<label for="twitter-pin">PIN</label>
+															<input type="text" name="twitter-pin" id="twitter-pin" value="" />
+															<button id="twitter-pin-ok" class="primary">OK</button>
+														</div>
+
+														<div class="formrow username-password-controls">
 															<label for="username">Username</label>
 															<input type="text" name="username" id="username" value="" />
 														</div>
-														<div class="formrow">
+														<div class="formrow username-password-controls">
 															<label for="password">Password</label>
 															<input type="password" name="password" id="password" value="" />
 														</div>

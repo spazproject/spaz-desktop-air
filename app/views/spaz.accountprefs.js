@@ -164,6 +164,10 @@ Spaz.AccountPrefs.init = function(){
 			var id = Spaz.AccountPrefs.getSelectedAccountId();
 			if (id) {
 				var editing = that.spaz_acc.get(id);
+
+				$('#twitter-reauthorize').unbind('click').click(function() {
+					Spaz.AccountPrefs.authorizeTwitterAccount(editing);
+				});
 				
 				Spaz.UI.openPopboxInline('#account-details');
 				
@@ -173,11 +177,15 @@ Spaz.AccountPrefs.init = function(){
 				$idEdit.val(editing.id);
 				$username.val(editing.username).focus();
 				$password.val(editing.password);
+				
+				$('#twitter-username').text(editing.username);
+				$('#twitter-pin-row').hide();
 				$accountType.val(editing.type).change((function(){
 					// Run `fn` immediately, then bind it as a callback
 					function fn(){
-						var isOauth = ($accountType.val() === SPAZCORE_ACCOUNT_TWITTER);
-						$password.add($password.siblings()).toggle(!isOauth);
+						var isTwitter = ($accountType.val() === SPAZCORE_ACCOUNT_TWITTER);
+						$('div.reauthorize-twitter-controls').toggle(isTwitter);
+						$('div.username-password-controls').toggle(!isTwitter);
 					}
 					fn();
 					return fn;
@@ -446,4 +454,143 @@ Spaz.AccountPrefs.updateWindowTitleAndToolsMenu = function(accountId){
 			addClass('selected').siblings().removeClass('selected');
 	});
 
+};
+
+
+
+Spaz.AccountPrefs.getOauth = function() {
+	return OAuth({
+		'consumerKey':SPAZCORE_CONSUMERKEY_TWITTER,
+		'consumerSecret':SPAZCORE_CONSUMERSECRET_TWITTER,
+		'requestTokenUrl':'https://twitter.com/oauth/request_token',
+		'authorizationUrl':'https://twitter.com/oauth/authenticate',
+		'accessTokenUrl':'https://twitter.com/oauth/access_token'
+	});
+};
+
+
+/**
+ * check to find twitter accounts that need upgrading 
+ */
+Spaz.AccountPrefs.getOldTwitterAccounts = function() {
+	var twitter_accts = Spaz.Prefs._accounts.getByType(SPAZCORE_SERVICE_TWITTER);
+	var matches = [];
+	for (var i=0; i < twitter_accts.length; i++) {
+		if (!!!(Spaz.Prefs._accounts.getMeta(twitter_accts[i].id, 'twitter_dm_access'))) {
+			matches.push(twitter_accts[i]);
+			air.trace(JSON.stringify(twitter_accts[i]));
+		}
+	}
+	return matches;
+};
+
+
+
+
+Spaz.AccountPrefs.reauthTwitterAccounts = function() {
+
+	var matches = Spaz.AccountPrefs.getOldTwitterAccounts();
+
+	if (matches.length > 0) {
+		var go = confirm([
+			"Twitter has chosen to change how 3rd party applications connect to their service.\n\n ",
+			"As a consequence, you need to re-authorize your Twitter accounts to have continued access",
+			" to direct messages on the system.\n\n",
+			"Click OK to re-authorize now."
+			].join('')
+		);
+		if (go) {
+			
+			// loop through accounts, authorizing each one
+			(function reauth(new_matches) {
+				
+				if (new_matches) {
+					matches = new_matches;
+				}
+				
+				if (matches.length < 1) {
+					return;
+				} 
+				
+				alert("Let's try to re-authorize "+matches[0].username+"@twitter");
+				
+				$('#account-list li[data-account-id="'+matches[0].id+'"]').trigger('click');
+				setTimeout(function() {
+					$('#edit-account').trigger('click');
+					setTimeout(function() {				
+						Spaz.AccountPrefs.authorizeTwitterAccount(matches[0], function(last_acc_id) {
+							matches.splice(0,1);
+							reauth(matches);
+						});
+					}, 100);
+				}, 100);
+			})();
+			
+			return true;
+			
+		}
+		
+		return false;
+		
+
+	} else {
+		return false;
+	}
+};
+
+
+
+Spaz.AccountPrefs.authorizeTwitterAccount = function(acc_obj, success) {
+
+	var oauth = Spaz.AccountPrefs.getOauth();
+	
+	oauth.fetchRequestToken(function(url) {
+			if (acc_obj && acc_obj.username) {
+				url += '&force_login=true&screen_name='+acc_obj.username;
+			} else {
+				url += '&force_login=true';
+			}
+			var auth_window = window.open(url, 'authorize', 'height=500,width=500');
+			
+			$('#twitter-pin-row').show();
+			$('#twitter-pin').val(''); // clear
+			$('#twitter-pin-ok').unbind('click').click(function() {
+				if ($('#twitter-pin').val()) {
+					oauth.setVerifier($('#twitter-pin').val());
+					if (auth_window) {
+						auth_window.close();
+					}
+					oauth.fetchAccessToken(function(data) {
+							var acc_id;
+							var qvars = Spaz.getQueryVars(data.text);
+							var auth_pickle = qvars.screen_name+':'+qvars.oauth_token+':'+qvars.oauth_token_secret;
+							if (acc_obj && acc_obj.id) { // edit existing
+								Spaz.Prefs._accounts.setAuthKey(acc_obj.id, auth_pickle);
+								// Spaz.Prefs._accounts.setMeta(acc_obj.id, 'twitter_dm_access', true);
+								acc_id = acc_obj.id;
+							} else { // add new
+								acc_id = App.Users.add(qvars.screen_name.toLowerCase(), auth_pickle, type);
+								App.Users.setMeta(acc_id, 'twitter-api-base-url', api_base_url);
+								App.Users.setMeta(acc_id, 'twitter_dm_access', true);
+							}
+							$('#twitter-pin-row').hide();
+							alert($L('Account re-authorized'));
+							if (success) {
+								success(acc_id);
+							}
+						},
+						function(data) {
+							alert($L('Problem getting access token from Twitter'));
+						}
+					);
+				} else {
+					alert($L('You need to enter a PIN'));
+				}
+			});
+		},
+		function(data) {
+			alert($L('Problem getting Request Token from Twitter'));
+		}
+	);
+	
 };

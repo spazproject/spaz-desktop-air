@@ -84,6 +84,17 @@ Spaz.loadOAuthServices = function() {
 };
 
 
+Spaz.getQueryVars = function(qstring) {
+	var qvars = [];
+	var qvars_tmp = qstring.split('&');
+	for (var i = 0; i < qvars_tmp.length; i++) {;
+		var y = qvars_tmp[i].split('=');
+		qvars[y[0]] = decodeURIComponent(y[1]);
+	};
+	return qvars;
+};
+
+
 /**
  * Bootstraps the app
  */
@@ -264,13 +275,7 @@ Spaz.initialize = function() {
 	*/
 	Spaz.Controller.initIntercept();
 
-	/*
-		if we have a username and password set, trigger an "account_switched" event
-		to kick things off
-	*/
-	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getAccountType()) {
-		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
-	}
+
 
 
 	/*
@@ -358,9 +363,9 @@ Spaz.initialize = function() {
 
 
 	/*
-		initialinze URL shortener
+		initialize URL shortener
 	*/
-	var initUrlShortener = function() {
+	(function() {
 		
 		var method;
 		
@@ -411,9 +416,8 @@ Spaz.initialize = function() {
 		});
 		
 		// sch.debug(air.NativeApplication.nativeApplication.spazPrefs);
-	};
+	}());
 
-	initUrlShortener();
 
 	/*
 		initialize Image uploader popbox
@@ -424,10 +428,24 @@ Spaz.initialize = function() {
 	// load User JS file
 	Spaz.loadUserJS();
 
-	/*
-		load news popup
-	*/
-	setTimeout(Spaz.Newspopup.build, 3000);
 	
-	sch.debug('ended document.ready()');
+	if (Spaz.AccountPrefs.reauthTwitterAccounts()) {
+		//
+	} else {
+		/*
+			if we have a username and password set, trigger an "account_switched" event
+			to kick things off
+		*/
+		if (Spaz.Prefs.getUsername() && Spaz.Prefs.getAccountType()) {
+			sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
+		}
+
+		/*
+			load news popup
+		*/
+		setTimeout(Spaz.Newspopup.build, 3000);
+
+		sch.debug('ended document.ready()');
+	}
+	
 };
