@@ -20,7 +20,7 @@ Spaz.AccountPrefs.init = function(){
 	    $saveAccountButton    = $('#account-save'),
 	    $cancelAccountButton  = $('#account-cancel');
 	
-	$().ready(function(){
+	$(document).ready(function(){
 
 		/*
 		 bind click on list to deselect
@@ -66,15 +66,41 @@ Spaz.AccountPrefs.init = function(){
 			
 			sch.debug($accountDetails.get(0).outerHTML);
 			
+			
+			$('#twitter-pin-row').hide();
+			sch.error($('#twitter-pin-row')[0].outerHTML);
+			$('#twitter-reauthorize').html('Authorize').unbind('click').click(function() {
+				$('#twitter-pin-row').show();
+				Spaz.AccountPrefs.authorizeTwitterAccount(null, function(acc_id){
+					Spaz.UI.closePopbox();
+					$('#twitter-pin-row').hide();
+					if (acc_id) {
+						Spaz.AccountPrefs.setAccount(acc_id);
+					}
+				});
+			});
+			
 			/*
 			 populate form
 			 */
 			$idEdit.val('');
 			$username.val('').focus();
-			$password.val('');
+			$password.val('').hide();
 			if($password.is(':hidden')){
 				$password.add($password.siblings()).show();
 			}
+			$('#twitter-username').hide();
+			$('#twitter-pin-row').hide();
+			$accountType.change((function(){
+				// Run `fn` immediately, then bind it as a callback
+				function fn(){
+					var isTwitter = ($accountType.val() === SPAZCORE_ACCOUNT_TWITTER);
+					$('div.reauthorize-twitter-controls').toggle(isTwitter);
+					$('div.username-password-controls').toggle(!isTwitter);
+				}
+				fn();
+				return fn;
+			})());
 			$accountType.val(SPAZCORE_ACCOUNT_TWITTER);
 			
 			/*
@@ -93,31 +119,8 @@ Spaz.AccountPrefs.init = function(){
 			 bind save button
 			 */
 			$saveAccountButton.click(function(){
-				var auth  = new SpazAuth($accountType.val());
-				
-				if (auth.authorize($username.val(), $password.val())) { // check credentials first
-					var newaccid = Spaz.AccountPrefs.add($username.val(), auth.save(), $accountType.val()).id;
-					var val;
-					
-					for (var i = 0; i < that.metavals.length; i++) {
-						if (that.checkboxes.indexOf(that.metavals[i]) !== -1) { // is a checkbox
-							val = !!($('#' + that.metavals[i] + ':checked').length) || false;
-						}
-						else {
-							val = $('#' + that.metavals[i]).val();
-						}
-						that.spaz_acc.setMeta(newaccid, that.metavals[i], val);
-					};
-
-					$accountList.val(newaccid);
-					Spaz.AccountPrefs.setAccount(newaccid);
-					Spaz.UI.closePopbox();
-
-				} else { // failed!!
-					$('#current-account-id').val(newaccid);
-					Spaz.UI.statusBar('Authoriztion failed!');
-					Spaz.UI.flashStatusBar();
-				}
+				Spaz.UI.closePopbox();
+				$('#twitter-pin-row').hide();
 			});
 			
 			/*
@@ -125,6 +128,7 @@ Spaz.AccountPrefs.init = function(){
 			 */
 			$cancelAccountButton.click(function(){
 				Spaz.UI.closePopbox();
+				$('#twitter-pin-row').hide();
 			});
 		});
 		
@@ -163,10 +167,15 @@ Spaz.AccountPrefs.init = function(){
 			
 			var id = Spaz.AccountPrefs.getSelectedAccountId();
 			if (id) {
+				$('#twitter-pin-row').hide();
 				var editing = that.spaz_acc.get(id);
 
-				$('#twitter-reauthorize').unbind('click').click(function() {
-					Spaz.AccountPrefs.authorizeTwitterAccount(editing);
+				$('#twitter-reauthorize').html('Re-authorize').unbind('click').click(function() {
+ 					$('#twitter-pin-row').show();
+					Spaz.AccountPrefs.authorizeTwitterAccount(editing, function(acc_id) {
+						Spaz.UI.closePopbox();
+						$('#twitter-pin-row').hide();
+					});
 				});
 				
 				Spaz.UI.openPopboxInline('#account-details');
@@ -210,12 +219,6 @@ Spaz.AccountPrefs.init = function(){
 				 bind save button
 				 */
 				$saveAccountButton.click(function(){
-					var editedaccid = Spaz.AccountPrefs.edit($idEdit.val(), {
-						'username': $username.val(),
-						'password': $password.val(),
-						'type': $accountType.val()
-					}).id;
-					
 					var val;
 					for (var i = 0, iMax = that.metavals.length; i < iMax; i++) {
 						if (that.checkboxes.indexOf(that.metavals[i]) !== -1) {
@@ -224,7 +227,7 @@ Spaz.AccountPrefs.init = function(){
 						else {
 							val = $('#' + that.metavals[i]).val();
 						}
-						that.spaz_acc.setMeta(editedaccid, that.metavals[i], val);
+						that.spaz_acc.setMeta(editing.id, that.metavals[i], val);
 					};
 					
 					Spaz.UI.closePopbox();
@@ -235,6 +238,7 @@ Spaz.AccountPrefs.init = function(){
 				 */
 				$cancelAccountButton.click(function(){
 					Spaz.UI.closePopbox();
+					$('#twitter-pin-row').hide();
 				});
 
 			} else {
@@ -458,7 +462,7 @@ Spaz.AccountPrefs.updateWindowTitleAndToolsMenu = function(accountId){
 
 
 
-Spaz.AccountPrefs.getOauth = function() {
+Spaz.AccountPrefs.getTwOAuth = function() {
 	return OAuth({
 		'consumerKey':SPAZCORE_CONSUMERKEY_TWITTER,
 		'consumerSecret':SPAZCORE_CONSUMERSECRET_TWITTER,
@@ -476,9 +480,8 @@ Spaz.AccountPrefs.getOldTwitterAccounts = function() {
 	var twitter_accts = Spaz.Prefs._accounts.getByType(SPAZCORE_SERVICE_TWITTER);
 	var matches = [];
 	for (var i=0; i < twitter_accts.length; i++) {
-		if (!!!(Spaz.Prefs._accounts.getMeta(twitter_accts[i].id, 'twitter_dm_access'))) {
+		if (!(Spaz.Prefs._accounts.getMeta(twitter_accts[i].id, 'twitter_dm_access'))) {
 			matches.push(twitter_accts[i]);
-			air.trace(JSON.stringify(twitter_accts[i]));
 		}
 	}
 	return matches;
@@ -502,17 +505,24 @@ Spaz.AccountPrefs.reauthTwitterAccounts = function() {
 		if (go) {
 			
 			// loop through accounts, authorizing each one
-			(function reauth(new_matches) {
+			(function reauth(new_matches, acc_id) {
+				sch.error(acc_id);
 				
 				if (new_matches) {
 					matches = new_matches;
 				}
 				
 				if (matches.length < 1) {
+					if (acc_id) {
+						Spaz.AccountPrefs.setAccount(acc_id);
+					}
 					return;
 				} 
 				
 				alert("Let's try to re-authorize "+matches[0].username+"@twitter");
+				
+				Spaz.UI.showPrefs();
+				Spaz.UI.openAccountsPrefs();
 				
 				$('#account-list li[data-account-id="'+matches[0].id+'"]').trigger('click');
 				setTimeout(function() {
@@ -520,7 +530,8 @@ Spaz.AccountPrefs.reauthTwitterAccounts = function() {
 					setTimeout(function() {				
 						Spaz.AccountPrefs.authorizeTwitterAccount(matches[0], function(last_acc_id) {
 							matches.splice(0,1);
-							reauth(matches);
+							Spaz.UI.closePopbox();
+							reauth(matches, last_acc_id);
 						});
 					}, 100);
 				}, 100);
@@ -542,7 +553,7 @@ Spaz.AccountPrefs.reauthTwitterAccounts = function() {
 
 Spaz.AccountPrefs.authorizeTwitterAccount = function(acc_obj, success) {
 
-	var oauth = Spaz.AccountPrefs.getOauth();
+	var oauth = Spaz.AccountPrefs.getTwOAuth();
 	
 	oauth.fetchRequestToken(function(url) {
 			if (acc_obj && acc_obj.username) {
@@ -565,16 +576,20 @@ Spaz.AccountPrefs.authorizeTwitterAccount = function(acc_obj, success) {
 							var qvars = Spaz.getQueryVars(data.text);
 							var auth_pickle = qvars.screen_name+':'+qvars.oauth_token+':'+qvars.oauth_token_secret;
 							if (acc_obj && acc_obj.id) { // edit existing
-								Spaz.Prefs._accounts.setAuthKey(acc_obj.id, auth_pickle);
-								// Spaz.Prefs._accounts.setMeta(acc_obj.id, 'twitter_dm_access', true);
 								acc_id = acc_obj.id;
+								Spaz.Prefs._accounts.setAuthKey(acc_id, auth_pickle);
+								Spaz.Prefs._accounts.setMeta(acc_id, 'twitter_dm_access', true);
+								Spaz.Prefs._accounts.save();
+								alert($L('Account re-authorized'));
 							} else { // add new
-								acc_id = App.Users.add(qvars.screen_name.toLowerCase(), auth_pickle, type);
-								App.Users.setMeta(acc_id, 'twitter-api-base-url', api_base_url);
-								App.Users.setMeta(acc_id, 'twitter_dm_access', true);
+								acc_id = Spaz.Prefs._accounts.add(qvars.screen_name.toLowerCase(), auth_pickle, SPAZCORE_ACCOUNT_TWITTER);
+								Spaz.Prefs._accounts.setMeta(acc_id, 'twitter-api-base-url', SPAZCORE_SERVICEURL_TWITTER);
+								Spaz.Prefs._accounts.setMeta(acc_id, 'twitter_dm_access', true);
+								Spaz.Prefs._accounts.save();
+								alert($L('Account authorized'));
 							}
 							$('#twitter-pin-row').hide();
-							alert($L('Account re-authorized'));
+							
 							if (success) {
 								success(acc_id);
 							}
