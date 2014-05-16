@@ -161,22 +161,22 @@ Spaz.Profile.build = function(username){
 		sch.openInBrowser(baseURL + 'account/profile_image/' + username);
 	});
 	$profile.delegate('.name', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username);
+		sch.openInBrowser(baseURL + username);
 	});
 	$profile.delegate('.tweets', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username);
+		sch.openInBrowser(baseURL + username);
 	});
 	$profile.delegate('ul.counts .following', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/following');
+		sch.openInBrowser(baseURL + username + '/following');
 	});
 	$profile.delegate('ul.counts .followers', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/followers');
+		sch.openInBrowser(baseURL + username + '/followers');
 	});
 	$profile.delegate('ul.counts .listed', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/lists/memberships');
+		sch.openInBrowser(baseURL + username + '/lists/memberships');
 	});
 	$profile.delegate('.faves', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/favorites');
+		sch.openInBrowser(baseURL + username + '/favorites');
 	});
 	$profile.delegate('.bio .username.clickable', 'click', function(ev){
 		Spaz.Profile.show($(ev.target).attr('data-username'));

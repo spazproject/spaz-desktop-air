@@ -29,7 +29,6 @@ Spaz.Data.getAPIURL = function(key) {
 
 	var base_url = Spaz.Data.getBaseURL(),
 	    urls = {};
-
 	// Timeline URLs
 	urls.public_timeline	= "statuses/public_timeline.json";
 	urls.friends_timeline	= "statuses/friends_timeline.json";
@@ -993,6 +992,7 @@ Spaz.Data.setAPIUrl = function(twit_obj) {
 	} else {
 	    twit_obj.setBaseURLByService(Spaz.Prefs.getAccountType());
 	}
+	// Getting the account type but stripping the dot. Is it necessary for the prefs to have 'identi.ca' - didn't want to change without further investigation.
+	// Also, this only works for identica. Need to look into other StatusNet instances.
+	Spaz.Prefs.changeMethods['twitter-base-urls'].onChange(Spaz.Prefs.getAccountType().replace('.',''));
 };
-
-
